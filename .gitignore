@@ -1,0 +1,69 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Tt]est[Rr]esult*/
+artifacts/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+*.code-workspace
+
+# .NET tooling and NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+packages/
+nuget.config.local
+
+# User and operating-system files
+*.userprefs
+*.pidb
+*.svclog
+*.cache
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.Development.local.json
+secrets.json
+*.secret
+*.secrets
+*.key
+*.pem
+*.pfx
+*.p12
+
+# Local artifacts and generated data
+local/
+output/
+coverage/
+*.coverage
+*.coveragexml
