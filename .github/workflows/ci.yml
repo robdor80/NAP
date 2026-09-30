@@ -1,0 +1,34 @@
+name: NAP CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore NAP.sln
+
+      - name: Build
+        run: dotnet build NAP.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test NAP.sln --configuration Release --no-build
