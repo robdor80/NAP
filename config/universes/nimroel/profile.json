@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "universe_id": "nimroel",
   "display_name": "Nimroel",
   "classification_dimensions": ["culture", "realm", "region", "location", "role", "sex"],
@@ -8,7 +8,13 @@
       "asset_type": "portrait",
       "production_profile": "portrait_npc",
       "allowed_classification": ["culture", "realm", "region", "location", "role", "sex"],
-      "required_classification": ["culture", "location", "role", "sex"]
+      "required_classification": ["culture", "location", "role", "sex"],
+      "package_files": [
+        { "role": "master", "suffix": "", "extension": ".png", "required": true, "content_validator": "png_master" },
+        { "role": "prompt", "suffix": "_prompt", "extension": ".md", "required": true, "content_validator": null },
+        { "role": "info", "suffix": "_info", "extension": ".md", "required": true, "content_validator": null },
+        { "role": "visual_identity", "suffix": "_visual_identity", "extension": ".json", "required": true, "content_validator": null }
+      ]
     }
   ]
 }

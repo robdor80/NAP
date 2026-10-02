@@ -6,6 +6,50 @@ namespace NAP.Tests;
 public sealed class UniverseAssetRuleTests
 {
     [Fact]
+    public void HistoricalConstructorHasEmptyReadOnlyPackageFiles()
+    {
+        var rule = new UniverseAssetRule("type", "profile", [], []);
+        Assert.Empty(rule.PackageFiles);
+        Assert.Throws<NotSupportedException>(() => ((IList<AssetPackageFileRule>)rule.PackageFiles).Add(File("master", "", ".png")));
+    }
+
+    [Fact]
+    public void PackageFilesAreOrderedDefensiveAndReadOnly()
+    {
+        var first = File("master", "", ".png");
+        AssetPackageFileRule[] files = [first, File("prompt", "_prompt", ".md")];
+        var rule = new UniverseAssetRule("type", "profile", ["dim"], ["dim"], files);
+        files[0] = File("changed", "_changed", ".json");
+        Assert.Same(first, rule.PackageFiles[0]);
+        Assert.Equal(new[] { "master", "prompt" }, rule.PackageFiles.Select(file => file.Role));
+        Assert.Throws<NotSupportedException>(() => ((IList<AssetPackageFileRule>)rule.PackageFiles)[0] = files[0]);
+        Assert.Throws<NotSupportedException>(() => ((IList<AssetPackageFileRule>)rule.PackageFiles).Clear());
+    }
+
+    [Fact]
+    public void NullFilesDuplicateRolesAndFilenameCollisionsAreRejected()
+    {
+        Assert.Throws<ArgumentNullException>(() => new UniverseAssetRule("type", "profile", [], [], null!));
+        Assert.Throws<ArgumentException>(() => new UniverseAssetRule("type", "profile", [], [], [null!]));
+        Assert.Throws<ArgumentException>(() => new UniverseAssetRule("type", "profile", [], [],
+            [File("master", "", ".png"), File("master", "_different", ".wav")]));
+        Assert.Throws<ArgumentException>(() => new UniverseAssetRule("type", "profile", [], [],
+            [File("first", "_info", ".md"), File("second", "_info", ".md")]));
+        Assert.Throws<ArgumentException>(() => new UniverseAssetRule("type", "profile", [], [],
+            [File("metadata", "_manifest", ".json")])); // Universal envelope filename is reserved.
+    }
+
+    [Fact]
+    public void SameSuffixDifferentExtensionAndDifferentSuffixSameExtensionAreAllowed()
+    {
+        var rule = new UniverseAssetRule("type", "profile", [], [],
+            [File("first", "_metadata", ".json"), File("second", "_metadata", ".md"), File("third", "_info", ".md")]);
+        Assert.Equal(3, rule.PackageFiles.Count);
+    }
+
+    private static AssetPackageFileRule File(string role, string suffix, string extension) => new(role, suffix, extension, true);
+
+    [Fact]
     public void Collections_AreOrderedDefensiveAndReadOnly()
     {
         string[] allowed = ["required_dim", "optional_dim"];

@@ -1,4 +1,4 @@
-# Multi-Universe Foundation — 2.6.1 y 2.6.2
+# Multi-Universe Foundation y Package Contract — 2.6 y 2.8.1
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
@@ -50,7 +50,11 @@ como identidad, ruta ni clave de búsqueda.
 Las dimensiones y reglas tienen snapshot defensivo; Naming v1 comprueba sus
 identificadores. Cada `UniverseAssetRule` describe una combinación exacta
 AssetType/ProductionProfile y dimensiones Allowed/Required, con required
-como subconjunto de allowed. Las combinaciones son únicas y sus dimensiones
+como subconjunto de allowed. En 2.8.1 añade PackageFiles: reglas inmutables
+de role/suffix/extension/required/content validator, con snapshot defensivo,
+roles únicos y filenames sin colisión. El constructor histórico conserva
+PackageFiles vacío. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md).
+Las combinaciones son únicas y sus dimensiones
 deben estar registradas por el perfil. No hay significado especial de culture,
 location, role o sex en el Core. `TryGetAssetRule` usa lookup ordinal.
 El constructor mínimo sigue creando listas vacías.
@@ -67,9 +71,12 @@ reload, service locator ni framework de DI.
 
 En 2.6.2 el primer perfil real se carga explícitamente desde
 `config/universes/nimroel/profile.json` con `UniverseProfileLoader`.
-El contrato [Universe Profile configuration v1](UNIVERSE_PROFILE_V1.md) es
-genérico; el loader admite stream y ruta en solo lectura, con guardas de forma
-y semántica. No hay reglas Nimroel-specific hardcodeadas ni carga global.
+El contrato [Universe Profile configuration v1](UNIVERSE_PROFILE_V1.md) se
+conserva intacto como histórico. En 2.8.1 Nimroel pasa a
+[Universe Profile v2](UNIVERSE_PROFILE_V2.md), que exige package_files en cada
+asset rule. El loader detecta versión y aplica estrictamente v1 o v2; admite
+stream y ruta en solo lectura con guardas de configuración. No hay reglas
+Nimroel-specific hardcodeadas ni carga global; no valida packages.
 
 ## Raíces físicas autorizadas
 
@@ -177,9 +184,15 @@ La hoja de ruta vigente es:
 - **2.7 — ZIP deliberadamente incorrectos para tests: HECHO.**
   Auditoría genérica documentada en [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md).
 
-**Fase 2 completa.** Siguiente decisión: revisión de entrada a Fase 3 — Routing
-y repo, incluyendo si hace falta una capa explícita de validación semántica del
-package antes de routing. No se añade en 2.7 ni se inicia Fase 3.
+- **2.8 — Package Semantic Validation: EN CURSO.** Insertado tras 2.7.
+- **2.8.1 — Package Contract v1 + Universe Profile v2: HECHO.** Contrato
+  genérico de package flat; manifest universal externo a PackageFiles; Nimroel
+  portrait_npc exige PNG master, prompt, info y Visual Identity, sin WebP de entrada.
+- **2.8.2 — Package Semantic Validator: PENDIENTE, siguiente.**
+
+**Fase 2 EN CURSO DE NUEVO; 2.1–2.7 HECHOS. Fase 3 no iniciada.** Routing
+no recibirá packages extraídos sin validación semántica completa previa.
+El contrato prepara esa capa; PackageValidator todavía no existe.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción/routing, vocabularios de valores, PackageValidator, SQLite,

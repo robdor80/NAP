@@ -113,10 +113,8 @@ classification, PNG, prompt, info ni visual_identity; no recibe UniverseContext.
 Manifest ausente, universo incorrecto o PNG ausente no convierten un ZIP legible
 y seguro en corrupto. El caller futuro seleccionará contexto y raíces.
 
-**Fase 2 (2.1–2.7) HECHA. Siguiente decisión: revisión de entrada a Fase 3 —
-Routing y repo.** Antes de permitir que Routing consuma un asset, hay que
-revisar si hace falta una capa explícita de validación semántica del package
-(PackageValidator o equivalente) entre extracción y routing. Manifest v2,
-UniverseProfile, reglas de classification, Naming, PNG validation y universe
-scope ya existen, pero ningún componente los reúne para un package completo.
-Esta auditoría no decide ni implementa esa solución y no inicia Fase 3.
+**Al cierre de 2.7 quedaron hechos 2.1–2.7.** La revisión posterior insertó
+2.8 — Package Semantic Validation antes de routing y reabrió Fase 2.
+[2.8.1 — Package Contract v1](PACKAGE_CONTRACT_V1.md) está hecho; 2.8.2 será
+el siguiente capítulo pendiente. Esta auditoría conserva su alcance ZIP,
+sin implementar validación semántica ni iniciar Fase 3.

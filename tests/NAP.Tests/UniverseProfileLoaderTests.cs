@@ -9,6 +9,7 @@ namespace NAP.Tests;
 public sealed class UniverseProfileLoaderTests
 {
     internal static string ConfigPath => Path.Combine(AppContext.BaseDirectory, "config", "universes", "nimroel", "profile.json");
+    internal static string HistoricalConfigPath => Path.Combine(AppContext.BaseDirectory, "test-data", "phase2", "universe-profile-v1", "profile.json");
 
     [Fact]
     public void NimroelFile_LoadsExactlyTheHistoricalRule()
@@ -147,7 +148,7 @@ public sealed class UniverseProfileLoaderTests
 
     [Theory]
     [InlineData("0")]
-    [InlineData("2")]
+    [InlineData("3")]
     [InlineData("null")]
     [InlineData("\"1\"")]
     public void UnsupportedVersion_IsRejected(string version)
@@ -194,7 +195,7 @@ public sealed class UniverseProfileLoaderTests
 
     private static Dictionary<string, string> Minimum() => new()
     { ["culture"] = "anything", ["location"] = "anything", ["role"] = "anything", ["sex"] = "anything" };
-    private static JsonObject Config() => JsonNode.Parse(File.ReadAllText(ConfigPath))!.AsObject();
+    private static JsonObject Config() => JsonNode.Parse(File.ReadAllText(HistoricalConfigPath))!.AsObject();
     private static JsonObject Rule(JsonObject config) => config["asset_rules"]![0]!.AsObject();
     private static UniverseProfile Load(JsonObject json) => LoadText(json.ToJsonString());
     private static UniverseProfile LoadText(string json)
