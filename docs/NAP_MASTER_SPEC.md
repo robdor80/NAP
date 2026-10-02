@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Significado funcional:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1 formalizado y 2.2 — Modelo C# implementado. Próximo capítulo: 2.3 — Naming, todavía sin implementar.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1, 2.2 — Modelo C# y 2.3 — Naming v1 hechos. Próximo capítulo: 2.4 — Validación PNG, todavía sin implementar.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -241,8 +241,13 @@ Las cinco propiedades raíz son obligatorias y no se admiten propiedades
 raíz adicionales. `schema_version` es el entero `1`, versión incompatible
 del contrato; no es SemVer ni una revisión del asset. `asset_id`, `asset_type`
 y `production_profile` son strings con al menos un carácter no whitespace;
-la misma condición se aplica a los valores de `classification`. La gramática de identificadores
-queda para 2.3. Las categorías y perfiles no se cierran mediante enums.
+la misma condición se aplica a los valores de `classification`. La gramática
+ya está definida en [NAMING_V1.md](NAMING_V1.md): machine identifiers lowercase
+snake_case ASCII de hasta 64 caracteres; asset_id de hasta 96, con descriptor
+y secuencia 001–999. Debe comenzar por el asset_type completo seguido de `_`;
+classification no se deduce del ID. El ZIP es `<asset_id>.zip` y la futura
+producción `<asset_id>.webp`. El ID es estable tras su registro. Las categorías
+y perfiles no se cierran mediante enums.
 
 `classification` es un objeto extensible de dimensiones estructurales con
 valores de máquina normalizados, no nombres de presentación. Dimensiones
@@ -1624,7 +1629,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. El siguiente trabajo previsto es **2.3 — Naming**; ese capítulo y los posteriores todavía no están implementados.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. El siguiente trabajo previsto es **2.4 — Validación PNG**; ese capítulo y los posteriores todavía no están implementados.
 
 # 55. Hoja de ruta acordada
 
@@ -1699,11 +1704,11 @@ Modelo C#. **HECHO:** AssetManifestV1, mapeo JSON y tests.
 
 ### 2.3
 
-Naming. **PENDIENTE — próximo capítulo.**
+Naming. **HECHO:** Naming v1, utilidades puras, nombres canónicos y schema.
 
 ### 2.4
 
-Validación PNG.
+Validación PNG. **PENDIENTE — próximo capítulo.**
 
 ### 2.5
 
@@ -2097,7 +2102,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1 y su modelo C# está implementado en 2.2. La siguiente implementación es **Fase 2 · Capítulo 2.3 — Naming**, todavía pendiente. Debe partir del contrato de `docs/MANIFEST_V1.md` y `schemas/nap-manifest-v1.schema.json`, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2 y Naming v1 definido e implementado en 2.3. La siguiente implementación es **Fase 2 · Capítulo 2.4 — Validación PNG**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
