@@ -71,6 +71,10 @@ anonimizar, relativizar ni normalizar. PNG por stream y readiness pueden
 carecer de ruta. ZIP y PNG copian `Reason` a `Detail`, incluido `null`.
 Readiness y staging no aportan `Reason`, por lo que su `Detail` es `null`.
 El fallback no incluye el detalle técnico ni interpola rutas.
+En 2.6.2 se añade `universe_storage_overlap` para raíces de distintos universos
+iguales o contenidas entre sí: Error + Stop, Message genérico, SubjectPath de
+una raíz y Detail técnico con ambas raíces/universos. Se produce directamente
+desde el validador puro de aislamiento, sin cambiar los mapeos anteriores.
 `Detail` debe contener información técnica controlada, nunca excepciones
 completas, stack traces ni secretos. Este capítulo no añade un sanitizador:
 el caller es responsable de los detalles que crea directamente.

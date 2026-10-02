@@ -21,6 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\..\config\universes\nimroel\profile.json"
+             Link="config\universes\nimroel\profile.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\schemas\nap-manifest-v2.schema.json"
+             Link="schemas\nap-manifest-v2.schema.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\schemas\nap-universe-profile-v1.schema.json"
+             Link="schemas\nap-universe-profile-v1.schema.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\test-data\phase1\first-valid-package\payload\**\*"
              Link="test-data\phase1\first-valid-package\payload\%(RecursiveDir)%(Filename)%(Extension)"
              CopyToOutputDirectory="PreserveNewest" />

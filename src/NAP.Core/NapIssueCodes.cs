@@ -13,4 +13,5 @@ public static class NapIssueCodes
     public const string ZipRejected = "zip_rejected";
     public const string PngInvalid = "png_invalid";
     public const string PngUnsupportedFeature = "png_unsupported_feature";
+    public const string UniverseStorageOverlap = "universe_storage_overlap";
 }

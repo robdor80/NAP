@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nap:universe-profile:v1",
+  "title": "NAP Universe Profile v1",
+  "type": "object",
+  "required": ["schema_version", "universe_id", "display_name", "classification_dimensions", "asset_rules"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "universe_id": { "$ref": "#/$defs/machineIdentifier" },
+    "display_name": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "classification_dimensions": { "$ref": "#/$defs/dimensions" },
+    "asset_rules": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/assetRule" }
+    }
+  },
+  "$defs": {
+    "machineIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$(?![\\s\\S])"
+    },
+    "dimensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/machineIdentifier" }
+    },
+    "assetRule": {
+      "type": "object",
+      "required": ["asset_type", "production_profile", "allowed_classification", "required_classification"],
+      "additionalProperties": false,
+      "properties": {
+        "asset_type": { "$ref": "#/$defs/machineIdentifier" },
+        "production_profile": { "$ref": "#/$defs/machineIdentifier" },
+        "allowed_classification": { "$ref": "#/$defs/dimensions" },
+        "required_classification": { "$ref": "#/$defs/dimensions" }
+      }
+    }
+  }
+}
