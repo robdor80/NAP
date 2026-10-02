@@ -18,3 +18,8 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 - Capítulo 2.5: NapIssue con códigos estables, severidad y STOP independientes, mapper de resultados Readiness/Staging/ZIP/PNG y report inmutable con tests; sin cambiar los componentes ni crear PackageValidator.
 - Capítulo 2.6.1 — Multi-Universe Core Foundation: UniverseId, UniverseAssetKey, UniverseProfile, UniverseRegistry, UniverseStorageConfig y UniverseContext con tests; NAP adopta arquitectura multiuniverso y Nimroel queda como primer perfil previsto, sin dependencia específica en el Core ni cambios a Manifest v1.
 - Capítulo 2.6.2: Manifest v2 multiuniverso y DTO, contrato genérico Universe Profile v1, perfil Nimroel declarativo con loader y reglas de clasificación, comprobación de universo activo y aislamiento puro de storage roots con universe_storage_overlap (Error + Stop); schemas/tests sin nuevas dependencias ni cambios a Manifest v1.
+- Capítulo 2.7: auditoría del boundary ZIP con inventario, 74 casos nuevos y fixtures sintéticos deterministas, invariantes de filesystem y mapeo real a NapIssue; Fase 2 completa y revisión de arquitectura previa a Fase 3 pendiente.
+
+### Fixed
+
+- Capítulo 2.7: la apertura de una entry cuyo offset local apunta al EOF o deja una signatura truncada convierte EndOfStreamException de .NET 8 en InvalidArchive, manteniendo cleanup y propagación de otros errores de E/S.

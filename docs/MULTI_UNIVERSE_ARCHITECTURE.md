@@ -174,8 +174,12 @@ La hoja de ruta vigente es:
 - **2.6.1 — Core Universe Scope: HECHO.** Los seis tipos y sus tests.
 - **2.6.2 — Manifest v2 + Nimroel profile configuration: HECHO.**
   Contratos genéricos, loader, perfil Nimroel, classification y aislamiento.
-- **2.7 — ZIP deliberadamente incorrectos para tests: PENDIENTE, siguiente.**
-  Corresponde al antiguo 2.6.
+- **2.7 — ZIP deliberadamente incorrectos para tests: HECHO.**
+  Auditoría genérica documentada en [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md).
+
+**Fase 2 completa.** Siguiente decisión: revisión de entrada a Fase 3 — Routing
+y repo, incluyendo si hace falta una capa explícita de validación semántica del
+package antes de routing. No se añade en 2.7 ni se inicia Fase 3.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción/routing, vocabularios de valores, PackageValidator, SQLite,
