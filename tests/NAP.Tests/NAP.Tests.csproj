@@ -19,4 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NAP.Core\NAP.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\test-data\phase1\first-valid-package\payload\**\*"
+             Link="test-data\phase1\first-valid-package\payload\%(RecursiveDir)%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
