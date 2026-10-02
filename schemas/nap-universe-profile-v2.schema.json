@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nap:universe-profile:v2",
+  "title": "NAP Universe Profile v2",
+  "type": "object",
+  "required": ["schema_version", "universe_id", "display_name", "classification_dimensions", "asset_rules"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 2 },
+    "universe_id": { "$ref": "#/$defs/machineIdentifier" },
+    "display_name": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "classification_dimensions": { "$ref": "#/$defs/dimensions" },
+    "asset_rules": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/assetRule" }
+    }
+  },
+  "$defs": {
+    "machineIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$(?![\\s\\S])"
+    },
+    "dimensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/machineIdentifier" }
+    },
+    "assetRule": {
+      "type": "object",
+      "required": ["asset_type", "production_profile", "allowed_classification", "required_classification", "package_files"],
+      "additionalProperties": false,
+      "properties": {
+        "asset_type": { "$ref": "#/$defs/machineIdentifier" },
+        "production_profile": { "$ref": "#/$defs/machineIdentifier" },
+        "allowed_classification": { "$ref": "#/$defs/dimensions" },
+        "required_classification": { "$ref": "#/$defs/dimensions" },
+        "package_files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/packageFile" }
+        }
+      }
+    },
+    "packageFile": {
+      "type": "object",
+      "required": ["role", "suffix", "extension", "required", "content_validator"],
+      "additionalProperties": false,
+      "not": {
+        "properties": { "suffix": { "const": "_manifest" }, "extension": { "const": ".json" } }
+      },
+      "properties": {
+        "role": { "$ref": "#/$defs/machineIdentifier" },
+        "suffix": {
+          "type": "string",
+          "maxLength": 65,
+          "pattern": "^(?:_[a-z][a-z0-9]*(?:_[a-z0-9]+)*)?$(?![\\s\\S])"
+        },
+        "extension": {
+          "type": "string",
+          "pattern": "^\\.[a-z0-9]+(?:\\.[a-z0-9]+)*$(?![\\s\\S])"
+        },
+        "required": { "type": "boolean" },
+        "content_validator": {
+          "anyOf": [{ "$ref": "#/$defs/machineIdentifier" }, { "type": "null" }]
+        }
+      }
+    }
+  }
+}
