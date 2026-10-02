@@ -94,7 +94,7 @@ public sealed class StagedPackageExtractor
 
                 Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
                 await using var output = new FileStream(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
-                using var input = entry.Source.Open();
+                using var input = OpenEntry(entry.Source);
                 var buffer = new byte[81920];
                 long written = 0;
                 var crc = uint.MaxValue;
@@ -160,6 +160,19 @@ public sealed class StagedPackageExtractor
             {
                 Directory.Delete(temporaryPath, recursive: true);
             }
+        }
+    }
+
+    private static Stream OpenEntry(ZipArchiveEntry entry)
+    {
+        try
+        {
+            return entry.Open();
+        }
+        catch (EndOfStreamException ex)
+        {
+            // .NET 8 can report a truncated local header as EndOfStreamException.
+            throw new InvalidDataException("ZIP local header is truncated.", ex);
         }
     }
 

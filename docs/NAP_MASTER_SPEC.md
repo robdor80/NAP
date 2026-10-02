@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Nombre del producto:** NAP; significado histórico de las siglas: Nimroel Asset Pipeline. La arquitectura vigente es multiuniverso.\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1–2.6 hechos. 2.6 — Multi-Universe Foundation HECHO: 2.6.1 — Core Universe Scope y 2.6.2 — Manifest v2 + Nimroel profile configuration completos. Siguiente: 2.7 — ZIP deliberadamente incorrectos para tests, PENDIENTE.\
+**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.7) completas. 2.6 — Multi-Universe Foundation HECHO; 2.7 — auditoría adversarial ZIP HECHO. Siguiente decisión: revisión de entrada a Fase 3 — Routing y repo, incluida la necesidad de validación semántica del package antes de routing. Fase 3 no iniciada.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -1724,7 +1724,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** El siguiente trabajo previsto es **2.7 — ZIP deliberadamente incorrectos para tests**, todavía pendiente. Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 completa.** Siguiente decisión: revisión de entrada a Fase 3 — Routing y repo, incluida la capa semántica de package que falta por revisar; no se inicia Fase 3.
 
 # 55. Hoja de ruta acordada
 
@@ -1789,6 +1789,8 @@ Primer paquete de prueba.
 
 ## FASE 2 --- Manifest y validación
 
+**HECHA:** todos los capítulos de la hoja de ruta vigente (2.1–2.7) completos.
+
 ### 2.1
 
 Diseñar manifest definitivo. **HECHO:** Manifest v1 formalizado, schema y documentación.
@@ -1829,8 +1831,21 @@ routing ni migración de v1. Véase [MANIFEST_V2.md](MANIFEST_V2.md) y
 
 ### 2.7
 
-ZIP deliberadamente incorrectos para tests. **PENDIENTE — siguiente capítulo.** Corresponde al
-antiguo capítulo 2.6, desplazado por la fundación multiuniverso.
+ZIP deliberadamente incorrectos para tests. **HECHO:** auditoría de cobertura,
+fixtures sintéticos, regresiones para nombres/tipos/estructuras ZIP y límites,
+invariantes de filesystem y mapeo real de Rejected/InvalidArchive a NapIssue.
+Corrección mínima demostrada: EndOfStreamException al abrir una cabecera local
+truncada se traduce a InvalidArchive. Véase
+[ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). Corresponde al antiguo 2.6,
+desplazado por la fundación multiuniverso.
+
+**Siguiente decisión: revisión de entrada a Fase 3 — Routing y repo.** Antes
+de permitir que Routing consuma un asset, revisar si hace falta introducir una
+capa explícita de validación semántica del package (PackageValidator o equivalente)
+entre extracción y routing. Manifest v2, UniverseProfile, reglas de classification,
+Naming, PNG validation y universe scope existen, pero ningún componente reúne
+esas comprobaciones para un package completo. No se decide ni implementa esa
+solución en 2.7; Fase 3 no iniciada.
 
 ------------------------------------------------------------------------
 
@@ -2216,7 +2231,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo.** La siguiente implementación es **2.7 — ZIP deliberadamente incorrectos para tests**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. Fase 2 completa.** Siguiente decisión: revisión de entrada a Fase 3 — Routing y repo, incluida la necesidad de una capa semántica de package antes de routing. No se inicia Fase 3 ni se implementa PackageValidator. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
