@@ -14,3 +14,4 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 - Capítulo 2.1: contrato Manifest v1 formalizado, JSON Schema Draft 2020-12, documentación y manifest del fixture actualizado; sin modelo ni validación C#.
 - Capítulo 2.2: modelo C# AssetManifestV1 extensible, mapeo System.Text.Json y tests de serialización sin normalización ni validador de producción.
 - Capítulo 2.3: Naming v1 formalizado, comprobaciones puras de identificadores/prefijos, nombres canónicos de paquete y reglas de naming en el schema Manifest v1.
+- Capítulo 2.4: inspección PNG estructural por stream con CRC de chunks, metadatos IHDR, reglas PLTE/IDAT, rechazo APNG/datos tras IEND y proporciones exactas; sin decodificación ni conversión.

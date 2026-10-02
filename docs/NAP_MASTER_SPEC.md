@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Significado funcional:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1, 2.2 — Modelo C# y 2.3 — Naming v1 hechos. Próximo capítulo: 2.4 — Validación PNG, todavía sin implementar.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1, 2.2 — Modelo C#, 2.3 — Naming v1 y 2.4 — Validación PNG estructural hechos. Próximo capítulo: 2.5 — Errores controlados, todavía sin implementar.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -1629,7 +1629,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. El siguiente trabajo previsto es **2.4 — Validación PNG**; ese capítulo y los posteriores todavía no están implementados.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. El siguiente trabajo previsto es **2.5 — Errores controlados**; ese capítulo y los posteriores todavía no están implementados.
 
 # 55. Hoja de ruta acordada
 
@@ -1708,11 +1708,11 @@ Naming. **HECHO:** Naming v1, utilidades puras, nombres canónicos y schema.
 
 ### 2.4
 
-Validación PNG. **PENDIENTE — próximo capítulo.**
+Validación PNG. **HECHO:** inspección estructural y CRC, metadatos y proporción exacta, sin decoder. Véase [PNG_VALIDATION.md](PNG_VALIDATION.md).
 
 ### 2.5
 
-Errores controlados.
+Errores controlados. **PENDIENTE — próximo capítulo.**
 
 ### 2.6
 
@@ -2102,7 +2102,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2 y Naming v1 definido e implementado en 2.3. La siguiente implementación es **Fase 2 · Capítulo 2.4 — Validación PNG**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. La siguiente implementación es **Fase 2 · Capítulo 2.5 — Errores controlados**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
