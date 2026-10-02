@@ -5,7 +5,14 @@ su clasificación estructural y el perfil de producción que NAP deberá resolve
 El contrato se define mediante [el JSON Schema](../schemas/nap-manifest-v1.schema.json)
 y este documento. En 2.1 no se implementan modelo C#, parser, serializer,
 validación semántica ni registros de categorías, perfiles o dimensiones.
-El siguiente capítulo es **2.2 — Modelo C#**.
+En 2.2 se implementó `NAP.Core.AssetManifestV1`: un record con cinco
+propiedades `required`, nombres JSON explícitos y `Dictionary<string, string>`
+para classification. Se serializa directamente con `System.Text.Json`, sin
+normalización ni servicios de parser/validator. `required` expresa presencia;
+no valida valores, versión, whitespace, campos adicionales ni semántica, y
+la nullability de C# no impide valores `null` al deserializar en .NET 8.
+El diccionario es mutable; `init` no hace inmutable su contenido. El contrato
+y el schema no cambian. El siguiente capítulo es **2.3 — Naming**.
 
 ## Contrato raíz
 

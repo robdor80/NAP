@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Significado funcional:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, Capítulo 2.1 — Manifest v1 formalizado. Próximo capítulo: 2.2 — Modelo C#, todavía sin implementar.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1 formalizado y 2.2 — Modelo C# implementado. Próximo capítulo: 2.3 — Naming, todavía sin implementar.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -1624,7 +1624,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. El siguiente trabajo previsto es **2.2 — Modelo C#**; ese modelo y los capítulos posteriores todavía no están implementados.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. El siguiente trabajo previsto es **2.3 — Naming**; ese capítulo y los posteriores todavía no están implementados.
 
 # 55. Hoja de ruta acordada
 
@@ -1691,15 +1691,15 @@ Primer paquete de prueba.
 
 ### 2.1
 
-Diseñar manifest definitivo. **FORMALIZADO:** Manifest v1, schema y documentación.
+Diseñar manifest definitivo. **HECHO:** Manifest v1 formalizado, schema y documentación.
 
 ### 2.2
 
-Modelo C#. **PENDIENTE — próximo capítulo.**
+Modelo C#. **HECHO:** AssetManifestV1, mapeo JSON y tests.
 
 ### 2.3
 
-Naming.
+Naming. **PENDIENTE — próximo capítulo.**
 
 ### 2.4
 
@@ -2097,7 +2097,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa y Manifest v1 está formalizado en 2.1. La siguiente implementación es **Fase 2 · Capítulo 2.2 — Modelo C#**, todavía pendiente. Debe partir del contrato de `docs/MANIFEST_V1.md` y `schemas/nap-manifest-v1.schema.json`, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1 y su modelo C# está implementado en 2.2. La siguiente implementación es **Fase 2 · Capítulo 2.3 — Naming**, todavía pendiente. Debe partir del contrato de `docs/MANIFEST_V1.md` y `schemas/nap-manifest-v1.schema.json`, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
