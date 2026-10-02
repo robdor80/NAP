@@ -119,4 +119,5 @@ Naming ni Manifest v1. No hay nuevas dependencias ni I/O en esta capa.
 
 Los tests cubren todos los estados actuales, códigos estables/únicos, contexto,
 guardas de argumentos, independencia de severidad y flujo, orden e inmutabilidad
-del report. Próximo capítulo: **2.6 — ZIP deliberadamente incorrectos para tests**.
+del report. La hoja de ruta vigente inserta **2.6 — Multi-Universe Foundation**
+y desplaza los ZIP deliberadamente incorrectos para tests a **2.7**.
