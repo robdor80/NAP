@@ -19,31 +19,32 @@
       "description": "Versión incompatible del contrato; no es la versión del asset ni SemVer."
     },
     "asset_id": {
-      "$ref": "#/$defs/nonEmptyString",
-      "description": "Identidad única del asset. La gramática se definirá en el capítulo 2.3."
+      "$ref": "#/$defs/assetId",
+      "description": "Identidad única del asset. Formato Naming v1; la coherencia dinámica con asset_type se comprueba en C#."
     },
     "asset_type": {
-      "$ref": "#/$defs/nonEmptyString",
+      "$ref": "#/$defs/machineIdentifier",
       "description": "Categoría estructural extensible. Su soporte se resolverá posteriormente en NAP.",
       "examples": ["portrait", "scene", "heraldry", "object", "environment"]
     },
     "production_profile": {
-      "$ref": "#/$defs/nonEmptyString",
+      "$ref": "#/$defs/machineIdentifier",
       "description": "Identificador del perfil; sus parámetros pertenecen a la configuración de NAP.",
       "examples": ["portrait_npc"]
     },
     "classification": {
       "type": "object",
+      "propertyNames": { "$ref": "#/$defs/machineIdentifier" },
       "description": "Dimensiones estructurales y valores de máquina normalizados. Las dimensiones adicionales deberán estar registradas en la futura validación semántica.",
       "properties": {
-        "culture": { "$ref": "#/$defs/nonEmptyString", "description": "Cultura.", "examples": ["norgard"] },
-        "realm": { "$ref": "#/$defs/nonEmptyString", "description": "Reino; opcional para portrait/portrait_npc." },
-        "region": { "$ref": "#/$defs/nonEmptyString", "description": "Región; opcional para portrait/portrait_npc." },
-        "location": { "$ref": "#/$defs/nonEmptyString", "description": "Localización.", "examples": ["treskal"] },
-        "role": { "$ref": "#/$defs/nonEmptyString", "description": "Rol estructural.", "examples": ["farmer"] },
-        "sex": { "$ref": "#/$defs/nonEmptyString", "description": "Sexo como dimensión estructural.", "examples": ["male"] }
+        "culture": { "$ref": "#/$defs/machineIdentifier", "description": "Cultura.", "examples": ["norgard"] },
+        "realm": { "$ref": "#/$defs/machineIdentifier", "description": "Reino; opcional para portrait/portrait_npc." },
+        "region": { "$ref": "#/$defs/machineIdentifier", "description": "Región; opcional para portrait/portrait_npc." },
+        "location": { "$ref": "#/$defs/machineIdentifier", "description": "Localización.", "examples": ["treskal"] },
+        "role": { "$ref": "#/$defs/machineIdentifier", "description": "Rol estructural.", "examples": ["farmer"] },
+        "sex": { "$ref": "#/$defs/machineIdentifier", "description": "Sexo como dimensión estructural.", "examples": ["male"] }
       },
-      "additionalProperties": { "$ref": "#/$defs/nonEmptyString" }
+      "additionalProperties": { "$ref": "#/$defs/machineIdentifier" }
     }
   },
   "if": {
@@ -61,10 +62,16 @@
     }
   },
   "$defs": {
-    "nonEmptyString": {
+    "machineIdentifier": {
       "type": "string",
       "minLength": 1,
-      "pattern": "\\S"
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$(?![\\s\\S])"
+    },
+    "assetId": {
+      "type": "string",
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)+_(?!000)[0-9]{3}$(?![\\s\\S])"
     }
   }
 }
