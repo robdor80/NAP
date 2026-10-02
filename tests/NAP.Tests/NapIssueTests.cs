@@ -19,7 +19,8 @@ public sealed class NapIssueTests
             (NapIssueCodes.ZipInvalidArchive, "zip_invalid_archive"),
             (NapIssueCodes.ZipRejected, "zip_rejected"),
             (NapIssueCodes.PngInvalid, "png_invalid"),
-            (NapIssueCodes.PngUnsupportedFeature, "png_unsupported_feature")
+            (NapIssueCodes.PngUnsupportedFeature, "png_unsupported_feature"),
+            (NapIssueCodes.UniverseStorageOverlap, "universe_storage_overlap")
         ];
         Assert.Equal(codes.Length, codes.Select(pair => pair.Actual).Distinct(StringComparer.Ordinal).Count());
         foreach (var (actual, expected) in codes)

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nap:manifest:v2",
+  "title": "NAP Manifest v2",
+  "description": "Universal multi-universe asset shape. Classification semantics belong to the UniverseProfile.",
+  "type": "object",
+  "required": ["schema_version", "universe_id", "asset_id", "asset_type", "production_profile", "classification"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 2 },
+    "universe_id": { "$ref": "#/$defs/machineIdentifier" },
+    "asset_id": { "$ref": "#/$defs/assetId" },
+    "asset_type": { "$ref": "#/$defs/machineIdentifier" },
+    "production_profile": { "$ref": "#/$defs/machineIdentifier" },
+    "classification": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/machineIdentifier" },
+      "additionalProperties": { "$ref": "#/$defs/machineIdentifier" }
+    }
+  },
+  "$defs": {
+    "machineIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$(?![\\s\\S])"
+    },
+    "assetId": {
+      "type": "string",
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)+_(?!000)[0-9]{3}$(?![\\s\\S])"
+    }
+  }
+}

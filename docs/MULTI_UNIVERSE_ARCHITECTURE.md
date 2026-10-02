@@ -1,4 +1,4 @@
-# Multi-Universe Foundation — 2.6.1 · Core Universe Scope
+# Multi-Universe Foundation — 2.6.1 y 2.6.2
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
@@ -9,7 +9,7 @@ siglas no se redefine en este subcapítulo.
 La separación `CoreRPG + Universe Pack` (consola + cartucho) tiene su
 equivalente conceptual en `NAP Core + Universe Profile`. El núcleo contiene
 capacidades genéricas; las reglas, vocabularios y destinos específicos
-llegarán desde perfiles/configuración. Star Trek y Star Wars son solamente
+proceden de perfiles/configuración. Star Trek y Star Wars son solamente
 ejemplos futuros: no se implementa contenido, configuración ni clases para
 esos universos, ni un framework de plugins.
 
@@ -41,10 +41,19 @@ No se implementan migraciones ni copias entre universos.
 
 ## Perfil y registry
 
-`UniverseProfile` contiene únicamente `UniverseId Id` y `string DisplayName`,
-ambos de solo lectura. Rechaza ID nulo y nombre nulo/vacío/solo whitespace.
+`UniverseProfile` contiene `UniverseId Id`, `string DisplayName`,
+`ClassificationDimensions` y `AssetRules`, todos de solo lectura. Rechaza
+ID nulo y nombre nulo/vacío/solo whitespace.
 El nombre humano puede contener espacios, acentos y puntuación: no sirve
 como identidad, ruta ni clave de búsqueda.
+
+Las dimensiones y reglas tienen snapshot defensivo; Naming v1 comprueba sus
+identificadores. Cada `UniverseAssetRule` describe una combinación exacta
+AssetType/ProductionProfile y dimensiones Allowed/Required, con required
+como subconjunto de allowed. Las combinaciones son únicas y sus dimensiones
+deben estar registradas por el perfil. No hay significado especial de culture,
+location, role o sex en el Core. `TryGetAssetRule` usa lookup ordinal.
+El constructor mínimo sigue creando listas vacías.
 
 `UniverseRegistry` recibe perfiles, toma un snapshot ordenado y expone
 `IReadOnlyList<UniverseProfile>` mediante una colección de solo lectura.
@@ -53,8 +62,14 @@ nula, perfiles nulos y IDs duplicados por igualdad de `UniverseId`, aunque
 los nombres humanos difieran. Puede estar vacío.
 `TryGet(UniverseId, out UniverseProfile?)` busca por identidad, devuelve
 `false` y `null` si no encuentra el perfil y rechaza un ID nulo.
-El futuro selector de UI podrá consumirlo; no hay discovery, JSON, watchers,
+El futuro selector de UI podrá consumirlo; no hay discovery, watchers,
 reload, service locator ni framework de DI.
+
+En 2.6.2 el primer perfil real se carga explícitamente desde
+`config/universes/nimroel/profile.json` con `UniverseProfileLoader`.
+El contrato [Universe Profile configuration v1](UNIVERSE_PROFILE_V1.md) es
+genérico; el loader admite stream y ruta en solo lectura, con guardas de forma
+y semántica. No hay reglas Nimroel-specific hardcodeadas ni carga global.
 
 ## Raíces físicas autorizadas
 
@@ -88,11 +103,29 @@ catálogo SQLite por universo. SQLite todavía no está implementado.
 La conservación futura en TeraBox/archive y el repositorio de producción
 también quedan scoped por el contexto del universo.
 
-El objeto no comprueba permisos, existencia, solapamientos, enlaces ni
-exclusividad de raíces entre configuraciones. No constituye una barrera de
-seguridad de filesystem por sí solo. La configuración futura debe asignar
-raíces separadas por universo; los componentes que escriban deberán mantener
-sus controles de contención y seguridad al usar esas raíces.
+El objeto individual no comprueba permisos, existencia, enlaces ni
+exclusividad de raíces entre configuraciones. En 2.6.2
+`UniverseStorageIsolationValidator.Validate(configurations)` comprueba
+solapamientos léxicos entre universos distintos antes de futuras escrituras.
+No constituye una barrera de seguridad de filesystem por sí solo: los
+componentes que escriban deberán mantener controles de contención y enlaces.
+
+El validador compara las nueve combinaciones de Workspace/Production/Archive
+de cada par de universos. Igualdad o contención en cualquier dirección produce
+un `NapIssue` por par de raíces conflictivo: `universe_storage_overlap`,
+Error + Stop. El `NapIssueReport` conserva orden de configuraciones/raíces.
+El Message es genérico, sin rutas; SubjectPath señala la primera raíz y Detail
+incluye ambos universos, tipos de raíz y paths. Ese detalle técnico no se
+debe exponer externamente sin la futura política de contexto.
+
+Se normalizan rutas en UniverseStorageConfig y se comparan con boundary de
+segmento, eliminando separadores finales salvo los de raíz del volumen.
+Windows usa OrdinalIgnoreCase; otras plataformas, Ordinal. Siblings y nombres
+con prefijos similares no son ancestros. No hay I/O ni resolución de symlinks,
+junctions, aliases de volumen o nombres físicos alternativos.
+No se introduce política para raíces del mismo universo. Dos configuraciones
+con el mismo UniverseId son un uso ambiguo del API y producen ArgumentException;
+colección nula o elementos nulos también son errores de argumentos.
 
 ## Contexto explícito y separación de storage
 
@@ -124,21 +157,27 @@ La identidad histórica del producto se conserva sin decidir una expansión
 nueva de las siglas NAP.
 
 Manifest v1, su modelo y schema permanecen intactos como contrato histórico;
-no se añade `universe_id` ni se vincula automáticamente un manifest v1 a un
-universo. `NAP_CONTINUIDAD_NAP1.md` tampoco cambia.
+no se añade `universe_id` a v1 ni se vincula automáticamente a un universo.
+`NAP_CONTINUIDAD_NAP1.md` tampoco cambia. [Manifest v2](MANIFEST_V2.md) es el
+contrato vigente para nuevos assets, con `universe_id` obligatorio y sin
+requisitos de clasificación específicos del primer universo en su schema.
+El DTO conserva un string de transporte para universe_id; el runtime usa
+UniverseId/UniverseAssetKey. `ManifestUniverseScope.Matches` comprueba el
+boundary contra el contexto activo; un mismatch futuro deberá causar STOP.
+No es un PackageValidator ni se integra todavía en un pipeline global.
 Los ejemplos específicos de Nimroel de la documentación anterior conservan
 su valor como ejemplos del primer universo, no como reglas universales.
 
 La hoja de ruta vigente es:
 
-- **2.6 — Multi-Universe Foundation: en curso.**
+- **2.6 — Multi-Universe Foundation: HECHO.**
 - **2.6.1 — Core Universe Scope: HECHO.** Los seis tipos y sus tests.
-- **2.6.2 — Manifest v2 + Nimroel profile configuration: PENDIENTE, siguiente.**
-  Formalizará `universe_id` y trasladará requisitos específicos al perfil.
-- **2.7 — ZIP deliberadamente incorrectos para tests: PENDIENTE.**
+- **2.6.2 — Manifest v2 + Nimroel profile configuration: HECHO.**
+  Contratos genéricos, loader, perfil Nimroel, classification y aislamiento.
+- **2.7 — ZIP deliberadamente incorrectos para tests: PENDIENTE, siguiente.**
   Corresponde al antiguo 2.6.
 
-Quedan pendientes carga JSON de perfiles, schemas de clasificación/metadata,
-reglas de producción/routing, perfil Nimroel completo, PackageValidator,
-SQLite, TeraBox, conversiones y selector UI. No hay dependencias nuevas ni
-I/O nuevo fuera de las APIs puras de Path.
+Quedan pendientes schemas completos de assets/metadata, reglas de
+producción/routing, vocabularios de valores, PackageValidator, SQLite,
+TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
+de filesystem en esta capa: el loader solo lee configuración.

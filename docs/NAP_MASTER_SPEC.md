@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Nombre del producto:** NAP; significado histórico de las siglas: Nimroel Asset Pipeline. La arquitectura vigente es multiuniverso.\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1–2.5 hechos. 2.6 — Multi-Universe Foundation en curso: 2.6.1 — Core Universe Scope HECHO; siguiente 2.6.2 — Manifest v2 + Nimroel profile configuration PENDIENTE. Los ZIP deliberadamente incorrectos para tests pasan a 2.7.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1–2.6 hechos. 2.6 — Multi-Universe Foundation HECHO: 2.6.1 — Core Universe Scope y 2.6.2 — Manifest v2 + Nimroel profile configuration completos. Siguiente: 2.7 — ZIP deliberadamente incorrectos para tests, PENDIENTE.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -39,7 +39,7 @@ el primer Universe Profile real, no una dependencia del núcleo.
 La separación del RPG en **CoreRPG + Universe Pack** (consola + cartucho)
 se corresponde conceptualmente con **NAP Core + Universe Profile**.
 El núcleo permanece genérico; vocabularios, schemas y reglas específicas
-llegarán desde configuración/perfiles. Star Trek y Star Wars son únicamente
+proceden de configuración/perfiles. Star Trek y Star Wars son únicamente
 ejemplos futuros, sin implementación en este trabajo.
 
 En **2.6.1 — Core Universe Scope** se introducen `UniverseId`,
@@ -47,6 +47,10 @@ En **2.6.1 — Core Universe Scope** se introducen `UniverseId`,
 `UniverseStorageConfig` y `UniverseContext`. El contexto se pasa explícitamente:
 no existe universo actual global. Identidad y almacenamiento quedan scoped
 por universo, sin routing, SQLite, TeraBox ni configuración JSON todavía.
+En 2.6.2 se añade configuración JSON genérica con el primer perfil real
+Nimroel, Manifest v2, comprobaciones puras de clasificación/universo y
+aislamiento de raíces antes de futuras escrituras. Routing, SQLite y TeraBox
+siguen pendientes.
 Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
 
 Los ejemplos de culturas, lugares, profesiones y portraits que siguen
@@ -237,16 +241,42 @@ Todos los archivos deben compartir un `asset_id` coherente.
 
 # 5. Manifest
 
+## 5.1 Contrato multiuniverso vigente para nuevos assets
+
+[Manifest v2](MANIFEST_V2.md) y
+[nap-manifest-v2.schema.json](../schemas/nap-manifest-v2.schema.json)
+definen exactamente seis campos obligatorios: `schema_version = 2`,
+`universe_id`, `asset_id`, `asset_type`, `production_profile`, `classification`.
+El objeto raíz está cerrado. El schema comprueba Naming v1 de identificadores,
+claves y valores, sin dimensiones especiales ni condiciones de portrait.
+`universe_id` utiliza machine identifier de hasta 64 caracteres; asset_id
+conserva forma y límite 96, scoped por universo sin cambiar sus filenames.
+
+`AssetManifestV2` es un DTO con string para universe_id; el runtime sigue
+usando UniverseId/UniverseAssetKey. `ManifestUniverseScope.Matches` exige
+coincidencia con UniverseContext.Id; mismatch futuro implica STOP.
+El helper no es un PackageValidator ni valida el resto del manifest.
+
+`UniverseProfile` obtiene las dimensiones y reglas semánticas de la
+[configuración genérica v1](UNIVERSE_PROFILE_V1.md). El primer perfil real,
+[Nimroel](../config/universes/nimroel/profile.json), registra culture/realm/
+region/location/role/sex y únicamente portrait + portrait_npc: requiere
+culture/location/role/sex y permite realm/region como opcionales.
+`UniverseAssetRule.ValidateClassification` devuelve dimensiones faltantes
+y no permitidas sin validar vocabularios de valores. Esos nombres no son
+conceptos especiales del Core universal. No se inventan otras reglas.
+
+## 5.2 Contrato histórico Manifest v1 (Nimroel-era)
+
 Manifest v1 se conserva intacto como contrato histórico, incluidos sus
 requisitos específicos del primer universo. No se añade `universe_id` a v1.
-**2.6.2** formalizará Manifest v2 y la configuración del perfil Nimroel;
-todavía no están implementados. La base multiuniverso de 2.6.1 no modifica
-el modelo, schema ni reglas actuales de v1.
+2.6.2 no modifica el modelo, schema, fixtures ni reglas históricas de v1.
+No existe migración automática v1→v2.
 
 **Manifest v1 está formalizado en Fase 2 · Capítulo 2.1.** Representa
 exclusivamente la identidad administrativa/estructural del asset, su
 clasificación estructural y la referencia al perfil de producción.
-El contrato vigente se detalla en [MANIFEST_V1.md](MANIFEST_V1.md) y
+El contrato histórico se detalla en [MANIFEST_V1.md](MANIFEST_V1.md) y
 [nap-manifest-v1.schema.json](../schemas/nap-manifest-v1.schema.json).
 
 Ejemplo canónico:
@@ -285,7 +315,9 @@ Para `portrait` con `portrait_npc`, son obligatorias `culture`, `location`,
 `role` y `sex`; `realm` y `region` son opcionales. Dimensiones futuras, como
 `house`, pueden admitirse estructuralmente; la futura capa semántica deberá
 rechazar dimensiones no registradas y detenerse ante categorías/perfiles
-no soportados. Los registros y esa validación aún no están implementados.
+no soportados. V1 mantiene ese schema intacto; en v2, 2.6.2 implementa el
+registro de dimensiones/reglas por perfil y su comprobación de claves,
+sin implementar vocabularios de valores ni PackageValidator.
 
 `apparent_age` y todos los rasgos visuales pertenecen a
 `<asset_id>_visual_identity.json`, nunca al manifest ni a classification.
@@ -303,7 +335,8 @@ Scenes sigue sin perfil, resolución ni proporción definitivos.
 Los cambios incompatibles exigen un nuevo entero `schema_version`; ampliar
 registros compatibles con esta estructura extensible no lo exige por sí solo.
 El ejemplo conceptual anterior queda como contexto histórico en
-`NAP_CONTINUIDAD_NAP1.md`; el contrato vigente es Manifest v1.
+`NAP_CONTINUIDAD_NAP1.md`; v1 permanece como contrato histórico y v2 es
+el contrato vigente para nuevos assets.
 
 ------------------------------------------------------------------------
 
@@ -469,6 +502,12 @@ La conservación y los backups de assets se resolverán por universo mediante
 `UniverseContext.Storage.ArchiveRoot`. Las raíces se configuran ya resueltas;
 el Core no hardcodea rutas de Nimroel. Cada universo deberá tener storage
 separado. La integración TeraBox todavía no está implementada.
+En 2.6.2, `UniverseStorageIsolationValidator` comprueba sin I/O todas las
+combinaciones Workspace/Production/Archive entre universos distintos:
+igualdad o contención produce `universe_storage_overlap`, Error + Stop.
+La comparación léxica respeta boundaries de segmentos y casing de plataforma.
+No resuelve symlinks/junctions ni introduce política para roots del mismo universo.
+Configuraciones duplicadas del mismo UniverseId son errores de argumentos.
 
 TeraBox está instalado en Windows y se comporta como una carpeta/unidad
 accesible localmente.
@@ -1685,7 +1724,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6 — Multi-Universe Foundation sigue en curso.** El siguiente trabajo previsto es **2.6.2 — Manifest v2 + Nimroel profile configuration**, todavía pendiente; los ZIP deliberadamente incorrectos pasan a **2.7**. Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** El siguiente trabajo previsto es **2.7 — ZIP deliberadamente incorrectos para tests**, todavía pendiente. Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
 
 # 55. Hoja de ruta acordada
 
@@ -1772,7 +1811,7 @@ Errores controlados. **HECHO:** NapIssue, códigos estables, severidad y STOP se
 
 ### 2.6
 
-**Multi-Universe Foundation — EN CURSO; no completo.**
+**Multi-Universe Foundation — HECHO (2.6.1 y 2.6.2).**
 
 #### 2.6.1 — Core Universe Scope
 
@@ -1782,11 +1821,15 @@ Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
 
 #### 2.6.2 — Manifest v2 + Nimroel profile configuration
 
-**PENDIENTE — siguiente subcapítulo.** No implementado en 2.6.1.
+**HECHO:** contrato Manifest v2 universal, modelo C#, perfil Nimroel declarativo,
+schema genérico de perfiles, loader, reglas de clasificación, comprobación
+de universo activo y aislamiento puro de storage roots. Sin PackageValidator,
+routing ni migración de v1. Véase [MANIFEST_V2.md](MANIFEST_V2.md) y
+[UNIVERSE_PROFILE_V1.md](UNIVERSE_PROFILE_V1.md).
 
 ### 2.7
 
-ZIP deliberadamente incorrectos para tests. **PENDIENTE.** Corresponde al
+ZIP deliberadamente incorrectos para tests. **PENDIENTE — siguiente capítulo.** Corresponde al
 antiguo capítulo 2.6, desplazado por la fundación multiuniverso.
 
 ------------------------------------------------------------------------
@@ -2173,7 +2216,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6 — Multi-Universe Foundation no está completo.** La siguiente implementación es **2.6.2 — Manifest v2 + Nimroel profile configuration**, todavía pendiente; después llegará **2.7 — ZIP deliberadamente incorrectos para tests**. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo.** La siguiente implementación es **2.7 — ZIP deliberadamente incorrectos para tests**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
