@@ -16,3 +16,4 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 - Capítulo 2.3: Naming v1 formalizado, comprobaciones puras de identificadores/prefijos, nombres canónicos de paquete y reglas de naming en el schema Manifest v1.
 - Capítulo 2.4: inspección PNG estructural por stream con CRC de chunks, metadatos IHDR, reglas PLTE/IDAT, rechazo APNG/datos tras IEND y proporciones exactas; sin decodificación ni conversión.
 - Capítulo 2.5: NapIssue con códigos estables, severidad y STOP independientes, mapper de resultados Readiness/Staging/ZIP/PNG y report inmutable con tests; sin cambiar los componentes ni crear PackageValidator.
+- Capítulo 2.6.1 — Multi-Universe Core Foundation: UniverseId, UniverseAssetKey, UniverseProfile, UniverseRegistry, UniverseStorageConfig y UniverseContext con tests; NAP adopta arquitectura multiuniverso y Nimroel queda como primer perfil previsto, sin dependencia específica en el Core ni cambios a Manifest v1.

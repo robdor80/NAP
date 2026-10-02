@@ -1,9 +1,9 @@
 # NAP — Master Specification
 
 **Proyecto:** NAP\
-**Significado funcional:** Nimroel Asset Pipeline\
+**Nombre del producto:** NAP; significado histórico de las siglas: Nimroel Asset Pipeline. La arquitectura vigente es multiuniverso.\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1 — Manifest v1, 2.2 — Modelo C#, 2.3 — Naming v1, 2.4 — Validación PNG estructural y 2.5 — Errores controlados hechos. Próximo capítulo: 2.6 — ZIP deliberadamente incorrectos para tests, todavía sin implementar.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, 2.1–2.5 hechos. 2.6 — Multi-Universe Foundation en curso: 2.6.1 — Core Universe Scope HECHO; siguiente 2.6.2 — Manifest v2 + Nimroel profile configuration PENDIENTE. Los ZIP deliberadamente incorrectos para tests pasan a 2.7.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -32,8 +32,26 @@ diseño y desarrollo sin depender de conversaciones anteriores.
 # 1. Qué es NAP
 
 NAP será la aplicación de escritorio encargada de automatizar y
-gestionar la producción masiva de assets visuales del videojuego
-**Nimroel RPG**.
+gestionar la producción, conservación, catalogación, auditoría y planificación
+de assets visuales organizada por **universos/perfiles**. **Nimroel** será
+el primer Universe Profile real, no una dependencia del núcleo.
+
+La separación del RPG en **CoreRPG + Universe Pack** (consola + cartucho)
+se corresponde conceptualmente con **NAP Core + Universe Profile**.
+El núcleo permanece genérico; vocabularios, schemas y reglas específicas
+llegarán desde configuración/perfiles. Star Trek y Star Wars son únicamente
+ejemplos futuros, sin implementación en este trabajo.
+
+En **2.6.1 — Core Universe Scope** se introducen `UniverseId`,
+`UniverseAssetKey`, `UniverseProfile`, `UniverseRegistry`,
+`UniverseStorageConfig` y `UniverseContext`. El contexto se pasa explícitamente:
+no existe universo actual global. Identidad y almacenamiento quedan scoped
+por universo, sin routing, SQLite, TeraBox ni configuración JSON todavía.
+Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
+
+Los ejemplos de culturas, lugares, profesiones y portraits que siguen
+documentan el primer universo, Nimroel; no definen vocabularios universales
+del Core. Se conserva la historia del diseño sin generalizar sus reglas.
 
 La necesidad nace de que Nimroel necesitará potencialmente **miles de
 assets**, especialmente:
@@ -66,7 +84,7 @@ PNG maestro → TeraBox
         ↓
 PNG → WebP de producción
         ↓
-WebP + documentación → repo Nimroel
+WebP + documentación → repo del universo activo
         ↓
 actualización SQLite
         ↓
@@ -128,7 +146,8 @@ y explicación clara al usuario.
 
 El PNG original generado/aprobado será el **maestro**.
 
-El maestro se conservará en TeraBox.
+El maestro se conservará en el ArchiveRoot del universo activo; TeraBox
+es el destino de conservación previsto. Su integración todavía es futura.
 
 El repositorio de producción utilizará normalmente WebP optimizado.
 
@@ -164,6 +183,10 @@ SQLite
 # 3. Flujo de un asset
 
 El flujo deseado final es aproximadamente:
+
+El caller trabajará con un `UniverseContext` explícito y la identidad
+completa `(UniverseId, AssetId)`; toda escritura futura quedará dentro de
+las raíces autorizadas de ese contexto.
 
 ``` text
 1. ChatGPT crea imagen.
@@ -213,6 +236,12 @@ Todos los archivos deben compartir un `asset_id` coherente.
 ------------------------------------------------------------------------
 
 # 5. Manifest
+
+Manifest v1 se conserva intacto como contrato histórico, incluidos sus
+requisitos específicos del primer universo. No se añade `universe_id` a v1.
+**2.6.2** formalizará Manifest v2 y la configuración del perfil Nimroel;
+todavía no están implementados. La base multiuniverso de 2.6.1 no modifica
+el modelo, schema ni reglas actuales de v1.
 
 **Manifest v1 está formalizado en Fase 2 · Capítulo 2.1.** Representa
 exclusivamente la identidad administrativa/estructural del asset, su
@@ -345,6 +374,10 @@ considerarlo fuente fiable para SQLite.
 
 # 7. Conversión de imágenes
 
+Las decisiones Portrait/Scenes siguientes pertenecen al primer perfil
+previsto, Nimroel. Las reglas futuras de producción se resolverán desde
+el profile/config del universo activo; no son parámetros universales del Core.
+
 ## Portrait
 
 Perfil previsto actualmente:
@@ -380,6 +413,11 @@ environment
 ------------------------------------------------------------------------
 
 # 8. Destinos y routing
+
+La raíz de producción autorizada procederá de `UniverseContext.Storage.ProductionRoot`.
+Las reglas de routing vendrán del profile/config; ninguna metadata de asset
+podrá seleccionar una raíz de otro universo. No hay routing implementado.
+Los ejemplos siguientes corresponden a Nimroel.
 
 Uno de los problemas importantes es determinar automáticamente dónde va
 cada asset.
@@ -426,6 +464,11 @@ portrait
 ------------------------------------------------------------------------
 
 # 9. TeraBox
+
+La conservación y los backups de assets se resolverán por universo mediante
+`UniverseContext.Storage.ArchiveRoot`. Las raíces se configuran ya resueltas;
+el Core no hardcodea rutas de Nimroel. Cada universo deberá tener storage
+separado. La integración TeraBox todavía no está implementada.
 
 TeraBox está instalado en Windows y se comporta como una carpeta/unidad
 accesible localmente.
@@ -484,14 +527,17 @@ hash origen == hash destino
 
 **SQLite es una función obligatoria de NAP. No es opcional.**
 
-Nombre provisional:
+Arquitectura futura: **un catálogo SQLite por universo**, dentro de su
+workspace local. Ruta derivada de `UniverseStorageConfig.CatalogPath`:
 
 ``` text
-NimroelAssetCatalog.db
+<WorkspaceRoot>/state/AssetCatalog.db
 ```
 
 La DB activa debe residir en disco local normal, no directamente dentro
 de una carpeta sincronizada por TeraBox/Dropbox.
+El catálogo se reconstruirá en el contexto de ese universo. SQLite aún
+no está implementado; el nombre genérico sustituye la convención anterior.
 
 Objetivos de SQLite:
 
@@ -509,6 +555,11 @@ Objetivos de SQLite:
 ------------------------------------------------------------------------
 
 # 12. Información prevista en SQLite
+
+La identidad completa de un asset es `UniverseAssetKey(UniverseId, AssetId)`.
+Un mismo AssetId puede existir en universos distintos. La clasificación y
+los vocabularios siguientes son ejemplos del perfil Nimroel; los schemas
+y vocabularios configurables por universo se definirán posteriormente.
 
 El esquema definitivo se diseñará durante el desarrollo, pero
 conceptualmente debe representar:
@@ -563,7 +614,7 @@ Debe existir una función que permita reconstruir la DB desde los assets.
 Si:
 
 ``` text
-NimroelAssetCatalog.db
+<WorkspaceRoot>/state/AssetCatalog.db
 ```
 
 se pierde o corrompe, NAP debe poder recorrer:
@@ -587,23 +638,23 @@ Además de poder reconstruirla, se quieren backups históricos.
 Arquitectura:
 
 ``` text
-NAP local
+WorkspaceRoot del universo
 └── state/
-    └── NimroelAssetCatalog.db
+    └── AssetCatalog.db
              ↓
         snapshot seguro
              ↓
         verificación
              ↓
-          TeraBox
+          ArchiveRoot del universo (por ejemplo TeraBox)
 ```
 
 Destino conceptual:
 
 ``` text
-TeraBox/
+ArchiveRoot del universo/
 └── NAP_DATABASE_BACKUPS/
-    ├── NimroelAssetCatalog_YYYY-MM-DD_HHMM.db
+    ├── AssetCatalog_YYYY-MM-DD_HHMM.db
     └── ...
 ```
 
@@ -1012,6 +1063,9 @@ La IA:
 
 # 28. ProcessingPlan / Dry Run
 
+El plan futuro recibirá un `UniverseContext` explícito: producción y archive
+se calcularán dentro de sus raíces. Este ejemplo usa el primer perfil Nimroel.
+
 Antes de ejecutar, NAP construye un plan completo.
 
 Ejemplo:
@@ -1065,6 +1119,8 @@ distinto Asset ID + mismo PNG
 ```
 
 También verificar copias después de escribir.
+Estos casos se evalúan dentro del mismo universo; la identidad global es
+`UniverseAssetKey`. Coincidir solo en AssetId entre universos no es colisión.
 
 ------------------------------------------------------------------------
 
@@ -1629,7 +1685,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). El siguiente trabajo previsto es **2.6 — ZIP deliberadamente incorrectos para tests**; ese capítulo y los posteriores todavía no están implementados.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6 — Multi-Universe Foundation sigue en curso.** El siguiente trabajo previsto es **2.6.2 — Manifest v2 + Nimroel profile configuration**, todavía pendiente; los ZIP deliberadamente incorrectos pasan a **2.7**. Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
 
 # 55. Hoja de ruta acordada
 
@@ -1716,7 +1772,22 @@ Errores controlados. **HECHO:** NapIssue, códigos estables, severidad y STOP se
 
 ### 2.6
 
-ZIP deliberadamente incorrectos para tests.
+**Multi-Universe Foundation — EN CURSO; no completo.**
+
+#### 2.6.1 — Core Universe Scope
+
+**HECHO:** UniverseId, UniverseAssetKey, UniverseProfile, UniverseRegistry,
+UniverseStorageConfig y UniverseContext, con tests de identidad y storage.
+Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md).
+
+#### 2.6.2 — Manifest v2 + Nimroel profile configuration
+
+**PENDIENTE — siguiente subcapítulo.** No implementado en 2.6.1.
+
+### 2.7
+
+ZIP deliberadamente incorrectos para tests. **PENDIENTE.** Corresponde al
+antiguo capítulo 2.6, desplazado por la fundación multiuniverso.
 
 ------------------------------------------------------------------------
 
@@ -1724,7 +1795,7 @@ ZIP deliberadamente incorrectos para tests.
 
 ### 3.1
 
-Configurar repo Nimroel.
+Configurar production repository / storage del universo activo.
 
 ### 3.2
 
@@ -1844,7 +1915,7 @@ Pruebas en Dry Run.
 
 ### 8.1
 
-Configurar ruta.
+Configurar ArchiveRoot del universo activo.
 
 ### 8.2
 
@@ -1868,7 +1939,7 @@ Estructura definitiva.
 
 ------------------------------------------------------------------------
 
-## FASE 9 --- Producción repo Nimroel
+## FASE 9 --- Producción repo del universo activo
 
 ### 9.1
 
@@ -1892,7 +1963,7 @@ Completed.
 
 ### 10.1
 
-Crear DB.
+Crear un catálogo SQLite por universo en StateRoot/AssetCatalog.db.
 
 ### 10.2
 
@@ -1976,7 +2047,7 @@ Git bundle.
 
 ------------------------------------------------------------------------
 
-## FASE 13 --- Git del repo Nimroel
+## FASE 13 --- Git del repo de producción del universo activo
 
 ### 13.1
 
@@ -2102,16 +2173,16 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La siguiente implementación es **Fase 2 · Capítulo 2.6 — ZIP deliberadamente incorrectos para tests**, todavía pendiente. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6 — Multi-Universe Foundation no está completo.** La siguiente implementación es **2.6.2 — Manifest v2 + Nimroel profile configuration**, todavía pendiente; después llegará **2.7 — ZIP deliberadamente incorrectos para tests**. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
-1.  **SQLite sí o sí.**
+1.  **SQLite sí o sí, un catálogo por universo.**
 2.  SQLite debe ser reconstruible.
 3.  Backups históricos SQLite → TeraBox.
 4.  Assets maestros PNG → TeraBox.
 5.  Producción → WebP Q90 según perfil.
-6.  Routing basado en metadata + estructura real del repo.
+6.  Routing basado en profile/config + metadata + estructura del repo del universo activo, limitado a sus raíces autorizadas.
 7.  Dry Run antes de escritura.
 8.  IA audita; NAP ejecuta.
 9.  RoDo forma parte de NAP.
@@ -2129,6 +2200,8 @@ La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# imp
 21. No paralizar durante demasiado tiempo el desarrollo del RPG.
 22. Conseguir primero un NAP mínimo realmente útil y luego
     evolucionarlo.
+23. Identidad global = UniverseId + AssetId; ningún CurrentUniverse global.
+24. Toda escritura futura de assets queda scoped por UniverseContext.
 
 ------------------------------------------------------------------------
 
@@ -2142,7 +2215,7 @@ Debe convertirse en:
 
 > **el sistema de producción, conservación, catalogación, consulta,
 > cobertura, auditoría y planificación de los assets visuales de
-> Nimroel.**
+> cada universo/perfil, comenzando por Nimroel.**
 
 La visión completa es:
 
@@ -2161,7 +2234,7 @@ La visión completa es:
           ┌─────────────────┼──────────────────┐
           │                 │                  │
           ▼                 ▼                  ▼
-       TeraBox           Repo Nimroel       SQLite
+       TeraBox           Repo universo      SQLite
        maestros          producción         catálogo
           │                 │                  │
           │                 │          ┌───────┴────────┐
@@ -2180,6 +2253,8 @@ La visión completa es:
 
 Todo ello presentado mediante **RobStyle UI**, con seguridad,
 trazabilidad, reconstrucción y backups.
+Las tres ramas del diagrama operarán en el `UniverseContext` activo:
+archive, producción y un catálogo SQLite por universo.
 
 ------------------------------------------------------------------------
 
