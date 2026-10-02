@@ -1,4 +1,12 @@
 {
-  "fixture_only": true,
-  "note": "Payload provisional; no define el esquema de manifest de NAP."
+  "schema_version": 1,
+  "asset_id": "portrait_treskal_farmer_male_001",
+  "asset_type": "portrait",
+  "production_profile": "portrait_npc",
+  "classification": {
+    "culture": "norgard",
+    "location": "treskal",
+    "role": "farmer",
+    "sex": "male"
+  }
 }

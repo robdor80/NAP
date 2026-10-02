@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Significado funcional:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** la Fase 0 (capítulos 0.1–0.5) está implementada en el repositorio; la próxima fase es Fase 1, Capítulo 1.1 — Inbox.\
+**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2, Capítulo 2.1 — Manifest v1 formalizado. Próximo capítulo: 2.2 — Modelo C#, todavía sin implementar.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -214,25 +214,62 @@ Todos los archivos deben compartir un `asset_id` coherente.
 
 # 5. Manifest
 
-El `manifest.json` representa la identidad administrativa/estructural
-del asset.
+**Manifest v1 está formalizado en Fase 2 · Capítulo 2.1.** Representa
+exclusivamente la identidad administrativa/estructural del asset, su
+clasificación estructural y la referencia al perfil de producción.
+El contrato vigente se detalla en [MANIFEST_V1.md](MANIFEST_V1.md) y
+[nap-manifest-v1.schema.json](../schemas/nap-manifest-v1.schema.json).
 
-Ejemplo conceptual:
+Ejemplo canónico:
 
 ``` json
 {
-  "asset_id": "portrait_treskal_farmer_male_040",
+  "schema_version": 1,
+  "asset_id": "portrait_treskal_farmer_male_001",
   "asset_type": "portrait",
-  "culture": "Norgard",
-  "location": "Treskal",
-  "role": "farmer",
-  "sex": "male",
-  "apparent_age": 38,
-  "production_profile": "portrait_npc"
+  "production_profile": "portrait_npc",
+  "classification": {
+    "culture": "norgard",
+    "location": "treskal",
+    "role": "farmer",
+    "sex": "male"
+  }
 }
 ```
 
-No debe confundirse con `visual_identity.json`.
+Las cinco propiedades raíz son obligatorias y no se admiten propiedades
+raíz adicionales. `schema_version` es el entero `1`, versión incompatible
+del contrato; no es SemVer ni una revisión del asset. `asset_id`, `asset_type`
+y `production_profile` son strings con al menos un carácter no whitespace;
+la misma condición se aplica a los valores de `classification`. La gramática de identificadores
+queda para 2.3. Las categorías y perfiles no se cierran mediante enums.
+
+`classification` es un objeto extensible de dimensiones estructurales con
+valores de máquina normalizados, no nombres de presentación. Dimensiones
+conocidas: `culture`, `realm`, `region`, `location`, `role` y `sex`.
+Para `portrait` con `portrait_npc`, son obligatorias `culture`, `location`,
+`role` y `sex`; `realm` y `region` son opcionales. Dimensiones futuras, como
+`house`, pueden admitirse estructuralmente; la futura capa semántica deberá
+rechazar dimensiones no registradas y detenerse ante categorías/perfiles
+no soportados. Los registros y esa validación aún no están implementados.
+
+`apparent_age` y todos los rasgos visuales pertenecen a
+`<asset_id>_visual_identity.json`, nunca al manifest ni a classification.
+La edad o apariencia solicitadas pueden conservarse en el prompt.
+El manifest describe qué es el asset; Visual Identity describe qué se ve
+realmente en la imagen final.
+
+No contiene parámetros de conversión, rutas, hashes, estados del pipeline,
+jobs, auditorías, thumbnails, tags libres ni listas redundantes de archivos.
+El perfil `portrait_npc` referencia la decisión existente: fuente PNG,
+proporción 4:5, salida WebP 768 × 960, Q90 y crop no permitido. Esos parámetros
+pertenecen a la futura configuración de perfiles, no al JSON del manifest.
+Scenes sigue sin perfil, resolución ni proporción definitivos.
+
+Los cambios incompatibles exigen un nuevo entero `schema_version`; ampliar
+registros compatibles con esta estructura extensible no lo exige por sí solo.
+El ejemplo conceptual anterior queda como contexto histórico en
+`NAP_CONTINUIDAD_NAP1.md`; el contrato vigente es Manifest v1.
 
 ------------------------------------------------------------------------
 
@@ -1587,7 +1624,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. El siguiente trabajo previsto es **FASE 1 — Entrada y paquetes, Capítulo 1.1 — Inbox**. No se afirma que fases posteriores estén implementadas.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. El siguiente trabajo previsto es **2.2 — Modelo C#**; ese modelo y los capítulos posteriores todavía no están implementados.
 
 # 55. Hoja de ruta acordada
 
@@ -1622,6 +1659,8 @@ Estrategia Git + CI.
 
 ## FASE 1 --- Entrada y paquetes
 
+**COMPLETA (1.1–1.6).** Componentes reales y prueba de integración presentes.
+
 ### 1.1
 
 Inbox.
@@ -1652,11 +1691,11 @@ Primer paquete de prueba.
 
 ### 2.1
 
-Diseñar manifest definitivo.
+Diseñar manifest definitivo. **FORMALIZADO:** Manifest v1, schema y documentación.
 
 ### 2.2
 
-Modelo C#.
+Modelo C#. **PENDIENTE — próximo capítulo.**
 
 ### 2.3
 
@@ -2058,7 +2097,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La especificación ya forma parte del repositorio como `docs/NAP_MASTER_SPEC.md`. La siguiente implementación es **Fase 1 · Capítulo 1.1 — Inbox**. El desarrollo debe continuar desde el estado real del repositorio, comprobándolo antes de afirmar su contenido.
+La Fase 1 está completa y Manifest v1 está formalizado en 2.1. La siguiente implementación es **Fase 2 · Capítulo 2.2 — Modelo C#**, todavía pendiente. Debe partir del contrato de `docs/MANIFEST_V1.md` y `schemas/nap-manifest-v1.schema.json`, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 

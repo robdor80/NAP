@@ -7,8 +7,12 @@ Este fixture demuestra la cadena real:
 `payload/` contiene cinco archivos pequeños con el prefijo provisional
 `portrait_treskal_farmer_male_001`: `.png`, `_prompt.md`, `_info.md`,
 `_manifest.json` y `_visual_identity.json`. El `.png` es texto de prueba,
-no una imagen real. Los JSON son payload opaco y no constituyen esquemas.
-No se comprueban PNG, JSON, asset_id, naming semántico ni coherencia del asset.
+no una imagen real. El manifest ya sigue el contrato formal
+[Manifest v1](../../../../docs/MANIFEST_V1.md), diseñado en el capítulo 2.1.
+Visual Identity sigue siendo un payload provisional, sin contrato formal.
+Fase 1 trata ambos JSON como payload opaco: el test no valida JSON,
+semántica, PNG, asset_id, naming ni coherencia del asset. Esa validación
+pertenece a Fase 2 y no se añade al test de integración de Fase 1.
 «Válido» significa únicamente que el ZIP tiene una estructura segura y puede
 atravesar los componentes de Fase 1.
 

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nap:manifest:v1",
+  "title": "NAP Manifest v1",
+  "description": "Identidad administrativa, clasificación estructural y referencia al perfil de producción. No contiene apariencia visual ni datos de procesamiento.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "asset_id",
+    "asset_type",
+    "production_profile",
+    "classification"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Versión incompatible del contrato; no es la versión del asset ni SemVer."
+    },
+    "asset_id": {
+      "$ref": "#/$defs/nonEmptyString",
+      "description": "Identidad única del asset. La gramática se definirá en el capítulo 2.3."
+    },
+    "asset_type": {
+      "$ref": "#/$defs/nonEmptyString",
+      "description": "Categoría estructural extensible. Su soporte se resolverá posteriormente en NAP.",
+      "examples": ["portrait", "scene", "heraldry", "object", "environment"]
+    },
+    "production_profile": {
+      "$ref": "#/$defs/nonEmptyString",
+      "description": "Identificador del perfil; sus parámetros pertenecen a la configuración de NAP.",
+      "examples": ["portrait_npc"]
+    },
+    "classification": {
+      "type": "object",
+      "description": "Dimensiones estructurales y valores de máquina normalizados. Las dimensiones adicionales deberán estar registradas en la futura validación semántica.",
+      "properties": {
+        "culture": { "$ref": "#/$defs/nonEmptyString", "description": "Cultura.", "examples": ["norgard"] },
+        "realm": { "$ref": "#/$defs/nonEmptyString", "description": "Reino; opcional para portrait/portrait_npc." },
+        "region": { "$ref": "#/$defs/nonEmptyString", "description": "Región; opcional para portrait/portrait_npc." },
+        "location": { "$ref": "#/$defs/nonEmptyString", "description": "Localización.", "examples": ["treskal"] },
+        "role": { "$ref": "#/$defs/nonEmptyString", "description": "Rol estructural.", "examples": ["farmer"] },
+        "sex": { "$ref": "#/$defs/nonEmptyString", "description": "Sexo como dimensión estructural.", "examples": ["male"] }
+      },
+      "additionalProperties": { "$ref": "#/$defs/nonEmptyString" }
+    }
+  },
+  "if": {
+    "required": ["asset_type", "production_profile"],
+    "properties": {
+      "asset_type": { "const": "portrait" },
+      "production_profile": { "const": "portrait_npc" }
+    }
+  },
+  "then": {
+    "properties": {
+      "classification": {
+        "required": ["culture", "location", "role", "sex"]
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  }
+}
