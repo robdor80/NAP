@@ -1,4 +1,4 @@
-# Multi-Universe Foundation y validación semántica — 2.6 y 2.8
+# Multi-Universe Foundation, validación semántica y raíz de producción — 2.6, 2.8 y 3.1
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
@@ -154,6 +154,28 @@ resolverá destinos dentro de las raíces del contexto activo.
 En 2.6.1 esta regla se documenta; no se implementa routing ni se cambia la
 API de los componentes existentes que reciben rutas explícitas.
 
+## Frontera read-only de producción — 3.1
+
+`ProductionRepositoryValidator.Validate(UniverseContext)` obtiene únicamente
+`context.Storage.ProductionRoot` y lee los atributos de esa raíz. Ausencia,
+archivo y directorio raíz ReparsePoint generan respectivamente
+production_root_missing, production_root_invalid y production_root_reparse,
+todos Error + Stop. Solo FileNotFoundException/DirectoryNotFoundException se
+tratan como ausencia; los demás errores operativos se propagan.
+
+Un directorio normal produce `ValidatedProductionRepository`, sellado e
+inmutable, con constructor internal sin I/O y UniverseId/RootPath exactos del
+contexto. `ProductionRepositoryValidationResult` exige report limpio si y solo
+si Repository no null. Las responsabilidades de UniverseStorageConfig y
+UniverseContext permanecen intactas.
+
+No se enumeran entries, inspeccionan ancestros reparse, resuelven links ni crean
+carpetas. No se exige `.git`. El futuro **3.2 — Repository Scanner** solo deberá
+consumir esta raíz validada y controlar sus propias entries internas. No hay
+scanner ni routing todavía; el árbol canónico Nimroel se decidirá después de
+conocer el repositorio existente mediante 3.2. Véase
+[PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -195,11 +217,17 @@ La hoja de ruta vigente es:
   validación read-only con contexto explícito y ValidatedAssetPackage inmutable.
   Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
-**Fase 2 HECHA (2.1–2.8). Siguiente: Fase 3 — Routing y repo, no iniciada.**
+**Fase 2 HECHA (2.1–2.8). Fase 3 — Routing y repo EN CURSO.**
+
+- **3.1 — Production Repository Boundary: HECHO.** Validación read-only de raíz.
+- **3.2 — Repository Scanner: siguiente, pendiente.** Solo consumirá una raíz validada.
+- **3.3–3.6: pendientes.**
+
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción/routing, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
-de filesystem en esta capa: el loader solo lee configuración.
+de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
+los atributos de la raíz de producción.

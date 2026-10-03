@@ -27,4 +27,7 @@ public static class NapIssueCodes
     public const string PackageRequiredFileMissing = "package_required_file_missing";
     public const string PackageUnexpectedFile = "package_unexpected_file";
     public const string PackageContentValidatorUnsupported = "package_content_validator_unsupported";
+    public const string ProductionRootMissing = "production_root_missing";
+    public const string ProductionRootInvalid = "production_root_invalid";
+    public const string ProductionRootReparse = "production_root_reparse";
 }
