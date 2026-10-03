@@ -2,9 +2,8 @@
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
-Nimroel es el primer universo real previsto, no una dependencia del núcleo.
-El nombre del producto sigue siendo NAP; el significado histórico de las
-siglas no se redefine en este subcapítulo.
+El nombre oficial es **NAP — Nexus Asset Platform**.
+Nimroel es el primer Universe Profile real soportado, no una dependencia del núcleo.
 
 La separación `CoreRPG + Universe Pack` (consola + cartucho) tiene su
 equivalente conceptual en `NAP Core + Universe Profile`. El núcleo contiene
@@ -160,8 +159,10 @@ API de los componentes existentes que reciben rutas explícitas.
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
 de Nimroel. Detector, readiness, stager, extractor ZIP, PNG, NapIssue y Naming
 siguen genéricos y no necesitan depender del universo para su función local.
-La identidad histórica del producto se conserva sin decidir una expansión
-nueva de las siglas NAP.
+NAP nació originalmente como Nimroel Asset Pipeline. Tras evolucionar a una
+arquitectura multiuniverso, el nombre oficial pasa a ser Nexus Asset Platform.
+Nimroel permanece como el primer Universe Profile soportado. Esta decisión
+de marca no introduce cambios técnicos de arquitectura.
 
 Manifest v1, su modelo y schema permanecen intactos como contrato histórico;
 no se añade `universe_id` a v1 ni se vincula automáticamente a un universo.
