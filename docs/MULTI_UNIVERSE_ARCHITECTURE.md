@@ -273,6 +273,17 @@ declara que las operaciones no están definidas; SAFETY no ejecuta ni autoriza
 escrituras. Sin CLI, serializer, outputs inventados o DTO adicional de report.
 Véase [DRY_RUN.md](DRY_RUN.md).
 
+## Validación estructural del plan — 4.3
+
+`ProcessingPlanValidator.Validate(ProcessingPlan, ProductionRepositorySnapshot)`
+es la frontera pura de 4.3: exige universo/root coherentes y paths únicos según
+plataforma. Recorre prefijos canónicos con `/`, permite directorios ausentes y
+ancestors exactos; el primer casing conflict Windows, File blocker o Directory
+final existente devuelve Error + Stop. Conserva FullPath observado como SubjectPath.
+Sin scanner, diff, re-routing, source revalidation, contents, hashes o escrituras.
+El report limpio es point-in-time y no autoriza ejecución. Véase
+[PLAN_VALIDATION.md](PLAN_VALIDATION.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -325,14 +336,14 @@ La hoja de ruta vigente es:
 - **Fase 4 — PLAN / Dry Run: EN CURSO.**
 - **4.1 — ProcessingPlan: HECHO.** Base inmutable de hechos validados y destino calculado.
 - **4.2 — Dry Run: HECHO.** Representación textual humana determinista del plan, sin I/O.
-- **4.3 — Plan Validation: siguiente.** Validación operativa todavía sin implementar.
-- **4.4 — Logs: pendiente.**
+- **4.3 — Plan Validation: HECHO.** Validación estructural pura del destino contra un snapshot materializado.
+- **4.4 — Logs: siguiente.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción, Plan Validation / Logs, vocabularios de valores, SQLite,
+producción, Logs, pre-execution, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

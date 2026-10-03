@@ -31,4 +31,7 @@ public static class NapIssueCodes
     public const string ProductionRootInvalid = "production_root_invalid";
     public const string ProductionRootReparse = "production_root_reparse";
     public const string RepositoryEntryReparse = "repository_entry_reparse";
+    public const string PlanDestinationCasingConflict = "plan_destination_casing_conflict";
+    public const string PlanDestinationBlocked = "plan_destination_blocked";
+    public const string PlanDestinationExists = "plan_destination_exists";
 }

@@ -1,7 +1,7 @@
 # ProcessingPlan — Fase 4 · Capítulo 4.1
 
-**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan y
-4.2 — Dry Run HECHOS. Siguiente: 4.3 — Plan Validation. 4.4 — Logs pendiente.**
+**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan,
+4.2 — Dry Run y 4.3 — Plan Validation HECHOS. Siguiente: 4.4 — Logs.**
 
 ## Propósito y fronteras
 
@@ -119,8 +119,10 @@ hashes, colisiones, ejecución o persistencia. El ejemplo completo de la secció
 
 4.2 añade [DryRunTextRenderer](DRY_RUN.md), que devuelve texto humano
 determinista desde esta base, con LF fijo, orden Ordinal y paths escapados.
-No revalida ni ejecuta operaciones. 4.3 — Plan Validation es siguiente;
-4.4 — Logs permanece pendiente. Los contratos de conversión,
+No revalida ni ejecuta operaciones. [4.3 — Plan Validation](PLAN_VALIDATION.md)
+interpreta estructuralmente el destino contra un snapshot materializado, sin I/O,
+source revalidation ni hashes. Un report limpio es point-in-time y no autoriza
+escritura. 4.4 — Logs es siguiente. Los contratos de conversión,
 archive, hashes y jobs corresponden a fases posteriores; JobId pertenece a Fase 6.
 No se implementan esos contratos anticipadamente en 4.1.
 
