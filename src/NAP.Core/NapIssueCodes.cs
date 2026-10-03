@@ -30,4 +30,5 @@ public static class NapIssueCodes
     public const string ProductionRootMissing = "production_root_missing";
     public const string ProductionRootInvalid = "production_root_invalid";
     public const string ProductionRootReparse = "production_root_reparse";
+    public const string RepositoryEntryReparse = "repository_entry_reparse";
 }
