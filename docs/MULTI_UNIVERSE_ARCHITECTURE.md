@@ -249,6 +249,19 @@ ProductionRoot. No infiere valores desde AssetId ni transforma casing.
 No comprueba existencia/colisiones ni realiza I/O o escrituras. Resolver no
 autoriza escribir. Véase [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md).
 
+## Base inmutable del plan — 4.1
+
+`ProcessingPlanBuilder.Build(ValidatedAssetPackage, ValidatedProductionRepository,
+ProductionAssetDestination)` comprueba universo, AssetKey completo y equivalencia
+léxica del root, sin I/O ni re-routing. Produce ProcessingPlan sellado/inmutable
+con identidad, tipo/perfil, classification completa, package root, manifest path,
+archivos presentes por role y la misma instancia de destino recibida.
+Classification y FilesByRole son snapshots Ordinal realmente read-only; el
+manifest permanece separado. No hay operations list, timestamps, JobId,
+existencia, colisiones ni escrituras. Es la base del plan, todavía sin contratos
+de conversión/archive/hash ni grafo de ejecución. Véase
+[PROCESSING_PLAN.md](PROCESSING_PLAN.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -298,13 +311,16 @@ La hoja de ruta vigente es:
 - **3.4 — Structural Change Detection: HECHO.** Diff puro de snapshots.
 - **3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy: HECHO.** Primera interpretación de estructura y política declarativa real.
 - **3.6 — Destination Resolver: HECHO.** Cálculo puro de directorios con la regla retenida en el package validado.
-- **Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan: siguiente.** Todavía sin implementar.
+- **Fase 4 — PLAN / Dry Run: EN CURSO.**
+- **4.1 — ProcessingPlan: HECHO.** Base inmutable de hechos validados y destino calculado.
+- **4.2 — Dry Run: siguiente.**
+- **4.3 — Plan Validation y 4.4 — Logs: pendientes.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción, ProcessingPlan / Dry Run, vocabularios de valores, SQLite,
+producción, Dry Run / Plan Validation / Logs, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.
