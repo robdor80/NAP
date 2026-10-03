@@ -1,6 +1,7 @@
 # Repository Scanner — Fase 3 · Capítulo 3.2
 
-**Fase 3 EN CURSO. 3.1 y 3.2 HECHOS. Siguiente: 3.3 — Routing. 3.4–3.6 pendientes.**
+**Fase 3 EN CURSO. 3.1–3.4 HECHOS. Siguiente: 3.5 — Historical Structure Audit / clasificación.
+3.6 — Destination Resolver pendiente.**
 
 ```text
 ValidatedProductionRepository
@@ -11,8 +12,9 @@ ProductionRepositorySnapshot
 ```
 
 3.1 autoriza/valida exclusivamente el root del contexto. 3.2 fotografía la
-estructura filesystem real de esa raíz. 3.3 y capítulos posteriores podrán
-interpretar esa estructura. El scanner todavía no sabe qué es un asset ni
+estructura filesystem real de esa raíz. 3.3 define routing declarativo y 3.4
+compara snapshots sin semántica; 3.5 será el primer capítulo que interpreta
+la estructura. El scanner todavía no sabe qué es un asset ni
 qué carpetas son correctas, sobrantes, antiguas o específicas de un perfil.
 
 ## Entrada y revalidación
@@ -111,9 +113,11 @@ El snapshot y la lista de trabajo se materializan en memoria. Por ahora no hay
 cuota explícita de entries ni profundidad. El recorrido iterativo evita depender
 de la profundidad del stack de llamadas, pero no impone límites de recursos.
 
-**3.3 — Routing es el siguiente capítulo.** Todavía no existe routing,
+**3.3 define Routing Contract v1 y 3.4 — [Structural Change Detection](STRUCTURAL_CHANGE_DETECTION.md)
+compara snapshots con cero I/O. Siguiente: 3.5 — Historical Structure Audit / clasificación.**
+No hay resolución de routing,
 destination resolver, comparación con estructura esperada, detección semántica
 de new folders, migración, ProcessingPlan, Dry Run, SQLite, TeraBox, conversión,
 automatización Git ni UI. No se ha decidido el árbol canónico real de Nimroel:
 esa decisión requiere observar y auditar después su estructura histórica.
-No se crea Universe Profile v3 ni se añaden routing rules al perfil.
+3.3 dispone del contrato Profile v3, pero Nimroel sigue en v2 sin routing rules.
