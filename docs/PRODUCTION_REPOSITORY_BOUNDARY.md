@@ -1,6 +1,6 @@
 # Production Repository Boundary — Fase 3 · Capítulo 3.1
 
-**3.1 y 3.2 HECHOS. Fase 3 — Routing y repo EN CURSO. Siguiente: 3.3 — Routing.**
+**3.1–3.6 HECHOS. Fase 3 — Routing y repo HECHA. Siguiente: Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan.**
 
 La frontera valida exclusivamente la raíz de producción autorizada del universo
 activo y produce un objeto que los componentes posteriores podrán consumir:
@@ -104,11 +104,11 @@ Los casos específicos de Windows solo ejecutan su comprobación en Windows.
 **3.2 — [Repository Scanner](REPOSITORY_SCANNER.md) HECHO:** consume únicamente
 `ValidatedProductionRepository`, revalida el root y fotografía estructura raw,
 sin leer contenidos ni atravesar reparse internos. 3.1 conserva sus responsabilidades.
-Todavía no existen routing, reglas de carpetas, destination resolver, creación de
-carpetas, movimiento/copia de assets, auditoría de assets existentes,
-ProcessingPlan, Dry Run, Git, SQLite, TeraBox, conversión ni UI en este capítulo.
-
-La estructura canónica real de Nimroel sigue sin decidir: requiere conocer y
-auditar su repositorio existente mediante 3.2. No se impone un árbol nuevo, no se
-añade routing al perfil ni se crea Universe Profile v3. Los contratos, schemas,
-perfil Nimroel y fixtures históricos permanecen intactos.
+3.1 no calcula rutas ni crea carpetas. El contrato declarativo se añadió en 3.3
+y la [auditoría de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) fijó el árbol
+canónico Nimroel en Profile v3, conservando los contratos históricos.
+En 3.6, [ProductionDestinationResolver](DESTINATION_RESOLVER.md) consume esta
+raíz validada junto con ValidatedAssetPackage y calcula el directorio usando
+exclusivamente la regla retenida por el package, sin revalidar físicamente el root.
+Resolver no autoriza escritura. No hay creación de carpetas, movimiento/copia,
+ProcessingPlan, Dry Run, SQLite, TeraBox, conversión ni UI implementados aquí.

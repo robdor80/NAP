@@ -120,8 +120,8 @@ parte del routing. La ruta depende de semántica estable del manifest validado:
 `culture`, `location`, `role`, `sex` y `asset_id`. No depende de life stage,
 `boy|girl`, agrupaciones legacy, casing de presentación ni edad aparente.
 
-NAP no deduce ninguna classification de los tokens de `AssetId`. El futuro
-Destination Resolver recibirá `ValidatedAssetPackage` y usará
+NAP no deduce ninguna classification de los tokens de `AssetId`. El
+[Destination Resolver de 3.6](DESTINATION_RESOLVER.md) recibe `ValidatedAssetPackage` y usa
 `Manifest.Classification`. Routing Contract v1 ya expresa toda la política; no
 se necesita Routing v2, transformaciones, condicionales o scripts.
 
@@ -152,8 +152,10 @@ identidad, dimensiones, allowed/required classification y los cuatro
 `package_files` de v2. El fixture histórico v2 permite seguir comprobando el
 contrato anterior sin hacer depender esos tests de la configuración vigente.
 
-**Fase 3 sigue EN CURSO. 3.5 queda HECHO. 3.6 — Destination Resolver es el
-siguiente capítulo.** 3.6 conectará configuración validada y package validado
-para calcular destinos; todavía no existe sustitución de segmentos,
-`Path.Combine`, creación de carpetas, `ProcessingPlan`, Dry Run ni escritura de
-producción.
+**Fase 3 HECHA (3.1–3.6). 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS.
+Siguiente: Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan.** 3.6 calcula
+directorios con la regla retenida en el package validado y la raíz del repository
+validado. Sustituye segmentos y usa Path.Combine/Path.GetFullPath sin I/O,
+inferencia ni adaptación al layout histórico. No crea carpetas ni implementa
+ProcessingPlan, Dry Run, migración o escritura de producción. El corte histórico
+de esta auditoría permanece intacto.

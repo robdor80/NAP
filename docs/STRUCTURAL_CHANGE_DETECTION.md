@@ -1,6 +1,6 @@
 # Structural Change Detection — Fase 3 · Capítulo 3.4
 
-**3.1–3.5 HECHOS. Fase 3 EN CURSO. Siguiente: 3.6 — Destination Resolver.**
+**3.1–3.6 HECHOS. Fase 3 HECHA. Siguiente: Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan.**
 
 ```text
 ProductionRepositorySnapshot(before)
@@ -105,6 +105,7 @@ Materializa índices y cambios en memoria, sin cuotas nuevas de tamaño.
 corte y política futura, migra Nimroel a Profile v3 y fija su routing canónico.
 3.4 no toma ninguna de esas decisiones y su diff permanece neutral.
 
-No se migran assets históricos. 3.6 — Destination Resolver es el siguiente capítulo;
-no hay resolución, creación de carpetas, escrituras, ProcessingPlan, Dry Run,
-SQLite, TeraBox, automatización Git ni UI en este capítulo.
+No se migran assets históricos. [3.6 — Destination Resolver](DESTINATION_RESOLVER.md)
+calcula directorios sin usar snapshots; no modifica este diff puro. 3.4 no
+resuelve destinos ni crea carpetas. No hay escrituras, ProcessingPlan, Dry Run,
+SQLite, TeraBox, automatización Git ni UI implementados en este capítulo.
