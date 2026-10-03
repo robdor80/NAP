@@ -71,13 +71,14 @@ aplica un dispatch explícito:
 
 | Versión | Contrato de asset_rule | Runtime |
 | --- | --- | --- |
-| 1 | Cuatro propiedades históricas; rechaza package_files. | UniverseAssetRule con PackageFiles vacío. |
-| 2 | Cinco propiedades; exige package_files y todos los campos de cada file. | UniverseAssetRule con AssetPackageFileRule inmutables. |
+| 1 | Cuatro propiedades históricas; rechaza package_files y routing. | UniverseAssetRule con PackageFiles vacío y Routing null. |
+| 2 | Cinco propiedades; exige package_files y rechaza routing. | UniverseAssetRule con AssetPackageFileRule inmutables y Routing null. |
+| 3 | Seis propiedades; exige package_files + routing. | Véase [Universe Profile v3](UNIVERSE_PROFILE_V3.md). |
 | Otra, string, null o número no entero admitido | Rechazado. | InvalidDataException. |
 
 Las representaciones numéricas `1.0`/`1e0` y `2.0`/`2e0` representan las versiones
 enteras correspondientes y siguen aceptándose. El runtime no añade una
-propiedad schema_version a UniverseProfile: ambos contratos construyen el
+propiedad schema_version a UniverseProfile: los contratos construyen el
 mismo modelo genérico. No hay conversión silenciosa de contratos ni carga global.
 
 Se rechazan propiedades desconocidas y duplicadas en todos los niveles;
@@ -109,7 +110,9 @@ y el perfil real. `scripts/Test-MultiUniverseSchemas.ps1` conserva las checks
 anteriores de Manifest v2 y Profile v1, y añade Profile v2/Nimroel actual.
 No se modifican los contratos históricos v1 ni los schemas de manifest.
 
-No se crea PackageValidator, registry de contenido, Visual Identity schema,
-routing, producción WebP ni nuevas dependencias. La carga sigue materializando
+Nimroel permanece en v2. 3.3 añade [Routing Contract v1](ROUTING_CONTRACT_V1.md)
+solo mediante v3; no migra este perfil ni decide su árbol canónico. No se crea
+PackageValidator, registry de contenido, Visual Identity schema, resolución de
+destinos, producción WebP ni nuevas dependencias. La carga sigue materializando
 configuración explícita en memoria, sin límite nuevo de tamaño; cualquier
 límite operativo adicional se decidirá después.

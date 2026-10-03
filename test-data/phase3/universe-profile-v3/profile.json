@@ -1,0 +1,27 @@
+{
+  "schema_version": 3,
+  "universe_id": "test_universe",
+  "display_name": "Test fixture only — not a real universe profile",
+  "classification_dimensions": ["culture", "location", "role", "sex", "optional_dimension"],
+  "asset_rules": [{
+    "asset_type": "portrait",
+    "production_profile": "portrait_npc",
+    "allowed_classification": ["culture", "location", "role", "sex", "optional_dimension"],
+    "required_classification": ["culture", "location", "role", "sex"],
+    "package_files": [{
+      "role": "master", "suffix": "", "extension": ".png",
+      "required": true, "content_validator": "png_master"
+    }, {
+      "role": "info", "suffix": "_info", "extension": ".md",
+      "required": false, "content_validator": null
+    }],
+    "routing": { "segments": [
+      { "literal": "portraits" },
+      { "classification": "culture" },
+      { "classification": "location" },
+      { "classification": "role" },
+      { "classification": "sex" },
+      { "asset_id": true }
+    ] }
+  }]
+}

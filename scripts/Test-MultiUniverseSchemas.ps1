@@ -4,6 +4,7 @@ $ErrorActionPreference = 'Stop'
 $manifestSchema = Join-Path $RepositoryRoot 'schemas/nap-manifest-v2.schema.json'
 $profileSchema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v1.schema.json'
 $profileV2Schema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v2.schema.json'
+$profileV3Schema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v3.schema.json'
 $script:checks = 0
 
 function Assert-Schema($value, [string] $schema, [bool] $expected, [string] $name) {
@@ -227,5 +228,113 @@ $value = New-ProfileV2
 $value.asset_rules[0].package_files[1].suffix = ''
 $value.asset_rules[0].package_files[1].extension = '.png'
 Assert-Schema $value $profileV2Schema $true 'filename collision belongs to C#'
+
+function New-ProfileV3 {
+    return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'test-data/phase3/universe-profile-v3/profile.json') -Raw | ConvertFrom-Json -AsHashtable
+}
+
+Assert-Schema (New-ProfileV3) $profileV3Schema $true 'generic Profile v3 test fixture, not a real universe'
+Assert-Schema (New-ProfileV3) $profileV2Schema $false 'Profile v3 is not interpreted as v2'
+Assert-Schema (New-ProfileV3) $profileSchema $false 'Profile v3 is not interpreted as v1'
+Assert-Schema (New-ProfileV2) $profileV3Schema $false 'Nimroel v2 does not silently migrate to v3'
+Assert-Schema (New-Profile) $profileV3Schema $false 'historical Profile v1 does not silently migrate to v3'
+foreach ($version in @(3.0, 3e0)) {
+    $value = New-ProfileV3
+    $value.schema_version = $version
+    Assert-Schema $value $profileV3Schema $true 'mathematically integer Profile v3 version'
+}
+foreach ($version in @(1, 2, 4, 3.5, '3', $null)) {
+    $value = New-ProfileV3
+    $value.schema_version = $version
+    Assert-Schema $value $profileV3Schema $false 'invalid Profile v3 version'
+}
+foreach ($field in @('schema_version', 'universe_id', 'display_name', 'classification_dimensions', 'asset_rules')) {
+    $value = New-ProfileV3
+    $value.Remove($field)
+    Assert-Schema $value $profileV3Schema $false "missing Profile v3 $field"
+}
+foreach ($field in @('asset_type', 'production_profile', 'allowed_classification', 'required_classification', 'package_files', 'routing')) {
+    $value = New-ProfileV3
+    $value.asset_rules[0].Remove($field)
+    Assert-Schema $value $profileV3Schema $false "missing Profile v3 asset rule $field"
+}
+foreach ($mode in @('unknown_root', 'unknown_rule', 'null_routing', 'array_routing', 'missing_segments', 'unknown_routing',
+    'null_segments', 'object_segments', 'string_segments', 'empty_segments')) {
+    $value = New-ProfileV3
+    switch ($mode) {
+        'unknown_root' { $value.extra = 1 }
+        'unknown_rule' { $value.asset_rules[0].extra = 1 }
+        'null_routing' { $value.asset_rules[0].routing = $null }
+        'array_routing' { $value.asset_rules[0].routing = @() }
+        'missing_segments' { $value.asset_rules[0].routing.Remove('segments') }
+        'unknown_routing' { $value.asset_rules[0].routing.extra = 1 }
+        'null_segments' { $value.asset_rules[0].routing.segments = $null }
+        'object_segments' { $value.asset_rules[0].routing.segments = @{} }
+        'string_segments' { $value.asset_rules[0].routing.segments = 'assets' }
+        'empty_segments' { $value.asset_rules[0].routing.segments = @() }
+    }
+    Assert-Schema $value $profileV3Schema $false "invalid Profile v3 $mode"
+}
+foreach ($segment in @(@{}, @{ extra = 'assets' }, @{ literal = 'assets'; classification = 'culture' },
+    @{ literal = 'assets'; asset_id = $true }, @{ classification = 'culture'; asset_id = $true },
+    @{ asset_id = $false }, @{ asset_id = 'true' }, @{ asset_id = 1 }, @{ asset_id = $null },
+    @{ asset_id = $true; extra = 1 }, @{ literal = 1 }, @{ literal = $null },
+    @{ classification = $true }, @{ classification = $null }, $null, @('not_an_object'))) {
+    $value = New-ProfileV3
+    $value.asset_rules[0].routing.segments = @($segment)
+    Assert-Schema $value $profileV3Schema $false 'segment must have exactly one correctly typed variant'
+}
+foreach ($variant in @('literal', 'classification')) {
+    foreach ($invalid in @('', '   ', 'Upper', ' Culture ', 'a/b', 'a\b', '.', '..', '../assets', 'C:assets',
+        '\\server\share', '%HOME%', '{asset_id}', 'bad__name', 'bad_', "name`n", ('a' * 65))) {
+        $value = New-ProfileV3
+        $value.asset_rules[0].routing.segments = @(@{ $variant = $invalid })
+        Assert-Schema $value $profileV3Schema $false "invalid $variant machine identifier"
+    }
+    $value = New-ProfileV3
+    $value.asset_rules[0].routing.segments = @(@{ $variant = ('a' * 64) })
+    Assert-Schema $value $profileV3Schema $true "$variant machine identifier length 64"
+}
+foreach ($mode in @('literal_only', 'classification_only', 'asset_id_only', 'repeated')) {
+    $value = New-ProfileV3
+    switch ($mode) {
+        'literal_only' { $value.asset_rules[0].routing.segments = @(@{ literal = 'assets' }) }
+        'classification_only' { $value.asset_rules[0].routing.segments = @(@{ classification = 'culture' }) }
+        'asset_id_only' { $value.asset_rules[0].routing.segments = @(@{ asset_id = $true }) }
+        'repeated' { $value.asset_rules[0].routing.segments = @(@{ literal = 'assets' }, @{ literal = 'assets' }, @{ asset_id = $true }, @{ asset_id = $true }) }
+    }
+    Assert-Schema $value $profileV3Schema $true 'nonempty routes may omit variants and repeat segments'
+}
+$value = New-ProfileV3
+$value.asset_rules[0].routing.segments = @(@{ classification = 'optional_dimension' })
+Assert-Schema $value $profileV3Schema $true 'routing dimension membership in RequiredClassification belongs to runtime configuration checks'
+$value = New-ProfileV3
+$value.asset_rules[0].package_files = @()
+Assert-Schema $value $profileV3Schema $true 'Profile v3 retains empty package_files support'
+$value.asset_rules = @()
+Assert-Schema $value $profileV3Schema $true 'Profile v3 retains empty asset_rules support'
+foreach ($field in @('role', 'suffix', 'extension', 'required', 'content_validator')) {
+    $value = New-ProfileV3
+    $value.asset_rules[0].package_files[0].Remove($field)
+    Assert-Schema $value $profileV3Schema $false "Profile v3 still requires package file $field"
+}
+foreach ($mode in @('unknown_file', 'bad_suffix', 'bad_extension', 'bad_validator', 'string_required', 'universal_manifest', 'duplicate_file')) {
+    $value = New-ProfileV3
+    switch ($mode) {
+        'unknown_file' { $value.asset_rules[0].package_files[0].extra = 1 }
+        'bad_suffix' { $value.asset_rules[0].package_files[0].suffix = '../x' }
+        'bad_extension' { $value.asset_rules[0].package_files[0].extension = '.PNG' }
+        'bad_validator' { $value.asset_rules[0].package_files[0].content_validator = 'PNG' }
+        'string_required' { $value.asset_rules[0].package_files[0].required = 'true' }
+        'universal_manifest' { $value.asset_rules[0].package_files[0].suffix = '_manifest'; $value.asset_rules[0].package_files[0].extension = '.json' }
+        'duplicate_file' { $value.asset_rules[0].package_files += $value.asset_rules[0].package_files[0].Clone() }
+    }
+    Assert-Schema $value $profileV3Schema $false "Profile v3 preserves package_files check $mode"
+}
+foreach ($schemaAndProfile in @(@($profileSchema, (New-Profile)), @($profileV2Schema, (New-ProfileV2)))) {
+    $value = $schemaAndProfile[1]
+    $value.asset_rules[0].routing = @{ segments = @(@{ asset_id = $true }) }
+    Assert-Schema $value $schemaAndProfile[0] $false 'historical schemas reject routing'
+}
 
 Write-Output "JSON Schema: $script:checks checks passed."
