@@ -121,10 +121,10 @@ $value.asset_rules[0].package_files = @()
 Assert-Schema $value $profileSchema $false 'Profile v1 must reject package_files'
 
 function New-ProfileV2 {
-    return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'config/universes/nimroel/profile.json') -Raw | ConvertFrom-Json -AsHashtable
+    return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'test-data/phase2/universe-profile-v2/profile.json') -Raw | ConvertFrom-Json -AsHashtable
 }
 
-Assert-Schema (New-ProfileV2) $profileV2Schema $true 'real Nimroel Profile v2'
+Assert-Schema (New-ProfileV2) $profileV2Schema $true 'historical Nimroel Profile v2 fixture'
 Assert-Schema (New-ProfileV2) $profileSchema $false 'Profile v2 is not interpreted as v1'
 Assert-Schema (New-Profile) $profileV2Schema $false 'Profile v1 is not interpreted as v2'
 foreach ($version in @(2.0, 2e0)) {
@@ -236,8 +236,16 @@ function New-ProfileV3 {
 Assert-Schema (New-ProfileV3) $profileV3Schema $true 'generic Profile v3 test fixture, not a real universe'
 Assert-Schema (New-ProfileV3) $profileV2Schema $false 'Profile v3 is not interpreted as v2'
 Assert-Schema (New-ProfileV3) $profileSchema $false 'Profile v3 is not interpreted as v1'
-Assert-Schema (New-ProfileV2) $profileV3Schema $false 'Nimroel v2 does not silently migrate to v3'
+Assert-Schema (New-ProfileV2) $profileV3Schema $false 'historical Nimroel Profile v2 does not silently migrate to v3'
 Assert-Schema (New-Profile) $profileV3Schema $false 'historical Profile v1 does not silently migrate to v3'
+
+function New-RealNimroelProfile {
+    return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'config/universes/nimroel/profile.json') -Raw | ConvertFrom-Json -AsHashtable
+}
+
+Assert-Schema (New-RealNimroelProfile) $profileV3Schema $true 'real Nimroel Profile v3'
+Assert-Schema (New-RealNimroelProfile) $profileV2Schema $false 'real Nimroel Profile v3 is not interpreted as v2'
+Assert-Schema (New-RealNimroelProfile) $profileSchema $false 'real Nimroel Profile v3 is not interpreted as v1'
 foreach ($version in @(3.0, 3e0)) {
     $value = New-ProfileV3
     $value.schema_version = $version

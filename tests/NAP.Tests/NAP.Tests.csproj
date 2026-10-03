@@ -27,6 +27,8 @@
              Link="test-data\phase3\universe-profile-v3\profile.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\test-data\phase2\universe-profile-v1\profile.json"
              Link="test-data\phase2\universe-profile-v1\profile.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\test-data\phase2\universe-profile-v2\profile.json"
+             Link="test-data\phase2\universe-profile-v2\profile.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\schemas\nap-manifest-v2.schema.json"
              Link="schemas\nap-manifest-v2.schema.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\schemas\nap-universe-profile-v1.schema.json"

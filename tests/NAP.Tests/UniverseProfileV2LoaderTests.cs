@@ -20,11 +20,11 @@ public sealed class UniverseProfileV2LoaderTests
     }
 
     [Fact]
-    public void NimroelV2HasExactlyTheRequiredFilesAndKeepsClassification()
+    public void HistoricalNimroelV2HasExactlyTheRequiredFilesAndKeepsClassification()
     {
         var json = Config();
         Assert.Equal(2, json["schema_version"]!.GetValue<int>());
-        var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
+        var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.HistoricalV2ConfigPath);
         Assert.Equal("nimroel", profile.Id.Value);
         Assert.Equal("Nimroel", profile.DisplayName);
         Assert.Equal(new[] { "culture", "realm", "region", "location", "role", "sex" }, profile.ClassificationDimensions);
@@ -164,7 +164,7 @@ public sealed class UniverseProfileV2LoaderTests
         Assert.Throws<JsonException>(() => LoadText(json));
     }
 
-    private static JsonObject Config() => JsonNode.Parse(File.ReadAllText(UniverseProfileLoaderTests.ConfigPath))!.AsObject();
+    private static JsonObject Config() => JsonNode.Parse(File.ReadAllText(UniverseProfileLoaderTests.HistoricalV2ConfigPath))!.AsObject();
     private static JsonObject Rule(JsonObject json) => json["asset_rules"]![0]!.AsObject();
     private static JsonObject PackageFile(JsonObject json) => Rule(json)["package_files"]![0]!.AsObject();
     private static UniverseProfile Load(JsonObject json) => LoadText(json.ToJsonString());

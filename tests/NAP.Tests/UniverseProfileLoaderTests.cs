@@ -10,9 +10,10 @@ public sealed class UniverseProfileLoaderTests
 {
     internal static string ConfigPath => Path.Combine(AppContext.BaseDirectory, "config", "universes", "nimroel", "profile.json");
     internal static string HistoricalConfigPath => Path.Combine(AppContext.BaseDirectory, "test-data", "phase2", "universe-profile-v1", "profile.json");
+    internal static string HistoricalV2ConfigPath => Path.Combine(AppContext.BaseDirectory, "test-data", "phase2", "universe-profile-v2", "profile.json");
 
     [Fact]
-    public void NimroelFile_LoadsExactlyTheHistoricalRule()
+    public void NimroelFile_LoadsExactlyTheCurrentRule()
     {
         var profile = UniverseProfileLoader.Load(ConfigPath);
         Assert.Equal(new UniverseId("nimroel"), profile.Id);

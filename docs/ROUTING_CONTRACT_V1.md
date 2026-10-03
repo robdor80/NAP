@@ -1,7 +1,7 @@
 # Routing Contract v1 — Fase 3 · Capítulo 3.3
 
-**3.3 HECHO como contrato declarativo y 3.4 HECHO como diff puro. Fase 3 EN CURSO.
-Siguiente: 3.5 — Historical Structure Audit / clasificación.**
+**3.3 HECHO como contrato declarativo, 3.4 HECHO como diff puro y 3.5 HECHO
+como política canónica Nimroel. Fase 3 EN CURSO. Siguiente: 3.6 — Destination Resolver.**
 
 El contrato define qué es una regla de routing, sin resolver destinos ni formar
 paths. No compara snapshots, crea carpetas, mueve assets o interpreta estructura
@@ -71,7 +71,8 @@ requieren dimensiones.
 }
 ```
 
-Es un ejemplo **conceptual de tests**, no una decisión canónica de Nimroel.
+La forma del contrato se validó inicialmente con un fixture genérico. En 3.5,
+Nimroel adopta esta misma secuencia como política canónica para `portrait_npc`.
 Routing solo tiene segments; cada segmento contiene exactamente una de las
 tres propiedades anteriores. asset_id debe ser boolean true. Objetos cerrados,
 sin variantes mezcladas, campos desconocidos ni duplicados en el loader.
@@ -88,16 +89,16 @@ routing. No hay nuevos NapIssueCodes: los errores actuales son de configuración
 
 ## Nimroel y siguientes capítulos
 
-Nimroel permanece en Universe Profile v2, con Routing null y profile.json intacto.
-El árbol canónico real sigue sin decidir. Ningún ejemplo conceptual fija si la
-ruta futura usará culture, location u otras dimensiones. Los assets históricos
-no se migran.
+Tras la [auditoría histórica de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md),
+Nimroel usa Universe Profile v3 y declara exactamente
+`portraits/{culture}/{location}/{role}/{sex}/{asset_id}`. `realm` y `region`
+siguen allowed, pero no son required ni segmentos de ruta. Los valores futuros
+son machine identifiers; no existe title casing, mapping, condicional, life
+stage ni inferencia desde AssetId. Routing Contract v1 es suficiente.
 
 - **3.4 HECHO:** [diff estructural puro](STRUCTURAL_CHANGE_DETECTION.md) mediante snapshots, sin usar routing.
-- **3.5 siguiente:** primer capítulo que interpretará estructura y assets históricos,
-  infraestructura, inconsistencias, posibles migraciones y compatibilidad con el
-  contrato; allí podrá fijarse la política canónica de Nimroel.
-- **3.6 — Destination Resolver pendiente:** calcular destinos usando las reglas ya validadas.
+- **3.5 HECHO:** estructura histórica auditada y política canónica Nimroel declarada, sin migración.
+- **3.6 — Destination Resolver siguiente:** calcular destinos usando las reglas ya validadas.
 
 Este capítulo no implementa resolución, diff de repositorio, auditoría histórica, migración,
 colisiones, creación de carpetas, ProcessingPlan, Dry Run, hashes, conversión,

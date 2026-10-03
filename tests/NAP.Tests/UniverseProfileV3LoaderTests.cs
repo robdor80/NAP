@@ -181,7 +181,7 @@ public sealed class UniverseProfileV3LoaderTests
     [InlineData(2)]
     public void HistoricalVersionsLoadRoutingNullAndRejectRoutingField(int version)
     {
-        var path = version == 1 ? UniverseProfileLoaderTests.HistoricalConfigPath : UniverseProfileLoaderTests.ConfigPath;
+        var path = version == 1 ? UniverseProfileLoaderTests.HistoricalConfigPath : UniverseProfileLoaderTests.HistoricalV2ConfigPath;
         var json = JsonNode.Parse(File.ReadAllText(path))!.AsObject();
         Assert.Equal(version, json["schema_version"]!.GetValue<int>());
         Assert.Null(Assert.Single(Load(json).AssetRules).Routing);
