@@ -26,6 +26,8 @@ La arquitectura es **NAP Core + Universe Profile**, equivalente conceptualmente 
 
 **Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — [ProcessingPlan](docs/PROCESSING_PLAN.md) HECHO:** snapshot inmutable de identidad, metadata completa, inputs validados y destino de producción recibido. ProcessingPlanBuilder comprueba coherencia de universo/AssetKey/root, sin re-routing ni I/O. No añade operaciones, outputs, timestamps, JobId o escrituras; es la base del plan y todavía no un grafo de ejecución completo.
 
-**4.2 — [Dry Run](docs/DRY_RUN.md) HECHO:** DryRunTextRenderer devuelve texto humano determinista desde ProcessingPlan, con orden Ordinal, LF fijo y paths escapados. Muestra los hechos congelados y declara que las operaciones aún no están definidas; no revalida, inspecciona filesystem, inventa outputs ni ejecuta o autoriza nada. Sin CLI. **Siguiente: 4.3 — Plan Validation.** 4.4 — Logs pendiente.
+**4.2 — [Dry Run](docs/DRY_RUN.md) HECHO:** DryRunTextRenderer devuelve texto humano determinista desde ProcessingPlan, con orden Ordinal, LF fijo y paths escapados. Muestra los hechos congelados y declara que las operaciones aún no están definidas; no revalida, inspecciona filesystem, inventa outputs ni ejecuta o autoriza nada. Sin CLI.
+
+**4.3 — [Plan Validation](docs/PLAN_VALIDATION.md) HECHO:** ProcessingPlanValidator interpreta los prefijos del destino contra un ProductionRepositorySnapshot materializado, sin filesystem I/O. Permite directorios ausentes y ancestors canónicos; el primer casing conflict Windows, File blocker o destino Directory existente produce Error + Stop. No revalida sources ni usa hashes/idempotencia. Un resultado limpio es point-in-time y no autoriza escritura. **Siguiente: 4.4 — Logs.** Fase 4 sigue EN CURSO.
 
 NAP nació originalmente como Nimroel Asset Pipeline. Tras evolucionar a una arquitectura multiuniverso, el nombre oficial pasa a ser Nexus Asset Platform. Nimroel permanece como el primer Universe Profile soportado.

@@ -1,7 +1,7 @@
 # Dry Run — Fase 4 · Capítulo 4.2
 
-**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan y
-4.2 — Dry Run HECHOS. Siguiente: 4.3 — Plan Validation. 4.4 — Logs pendiente.**
+**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan,
+4.2 — Dry Run y 4.3 — Plan Validation HECHOS. Siguiente: 4.4 — Logs.**
 
 ## Propósito y API
 
@@ -151,8 +151,10 @@ maestro, archive/TeraBox, output WebP, hashes, JobId, timestamps o estados.
 SAFETY garantiza el comportamiento del renderer, no el estado global del
 filesystem ante procesos concurrentes. Renderizar no ejecuta ni autoriza nada.
 
-4.3 — Plan Validation es el siguiente capítulo y abordará validación operativa;
-4.4 — Logs sigue pendiente. El objetivo futuro completo de PLAN crecerá cuando
+4.3 — [Plan Validation](PLAN_VALIDATION.md) valida estructuralmente el destino
+contra un snapshot materializado, sin I/O ni revalidación de sources. Es una
+frontera separada del renderer; un report limpio es point-in-time y no autoriza
+escrituras. 4.4 — Logs es siguiente. El objetivo futuro completo de PLAN crecerá cuando
 existan los contratos correspondientes, sin presentarlos como implementados hoy.
 
 Los tests verifican el documento completo, LF, orden Ordinal, colecciones vacías,
