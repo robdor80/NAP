@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace NAP.Core;
 
-/// <summary>Loads profile configuration v1 or v2 explicitly. Leaves caller-owned streams open.</summary>
+/// <summary>Loads profile configuration v1, v2 or v3 explicitly. Leaves caller-owned streams open.</summary>
 public static class UniverseProfileLoader
 {
     public static UniverseProfile Load(string path)
@@ -22,7 +22,7 @@ public static class UniverseProfileLoader
         RequireKind(root, JsonValueKind.Object);
         if (!root.TryGetProperty("schema_version", out var version))
             throw new JsonException("The universe profile schema version is missing.");
-        if (version.ValueKind != JsonValueKind.Number || !version.TryGetDecimal(out var number) || number is not (1 or 2))
+        if (version.ValueKind != JsonValueKind.Number || !version.TryGetDecimal(out var number) || number is not (1 or 2 or 3))
             throw new InvalidDataException("Unsupported universe profile schema version.");
         RequireObject(root, "schema_version", "universe_id", "display_name", "classification_dimensions", "asset_rules");
 
@@ -35,6 +35,7 @@ public static class UniverseProfileLoader
         foreach (var rule in ruleArray.EnumerateArray())
         {
             IReadOnlyList<AssetPackageFileRule> packageFiles;
+            AssetRoutingRule? routing = null;
             switch (number)
             {
                 case 1:
@@ -45,15 +46,47 @@ public static class UniverseProfileLoader
                     RequireObject(rule, "asset_type", "production_profile", "allowed_classification", "required_classification", "package_files");
                     packageFiles = PackageFiles(rule.GetProperty("package_files"));
                     break;
+                case 3:
+                    RequireObject(rule, "asset_type", "production_profile", "allowed_classification", "required_classification", "package_files", "routing");
+                    packageFiles = PackageFiles(rule.GetProperty("package_files"));
+                    routing = Routing(rule.GetProperty("routing"));
+                    break;
                 default:
                     throw new InvalidDataException("Unsupported universe profile schema version.");
             }
             rules.Add(new UniverseAssetRule(String(rule.GetProperty("asset_type")),
                 String(rule.GetProperty("production_profile")),
                 Strings(rule.GetProperty("allowed_classification")),
-                Strings(rule.GetProperty("required_classification")), packageFiles));
+                Strings(rule.GetProperty("required_classification")), packageFiles, routing));
         }
         return new UniverseProfile(id, displayName, dimensions, rules);
+    }
+
+    private static AssetRoutingRule Routing(JsonElement element)
+    {
+        RequireObject(element, "segments");
+        var segmentArray = element.GetProperty("segments");
+        RequireKind(segmentArray, JsonValueKind.Array);
+        var segments = new List<AssetRouteSegment>();
+        foreach (var segment in segmentArray.EnumerateArray())
+        {
+            RequireKind(segment, JsonValueKind.Object);
+            var properties = segment.EnumerateObject().ToArray();
+            if (properties.Length != 1)
+                throw new JsonException("A routing segment must contain exactly one variant.");
+            var property = properties[0];
+            switch (property.Name)
+            {
+                case "literal": segments.Add(AssetRouteSegment.Literal(String(property.Value))); break;
+                case "classification": segments.Add(AssetRouteSegment.Classification(String(property.Value))); break;
+                case "asset_id":
+                    RequireKind(property.Value, JsonValueKind.True);
+                    segments.Add(AssetRouteSegment.AssetId());
+                    break;
+                default: throw new JsonException("Unknown routing segment variant.");
+            }
+        }
+        return new AssetRoutingRule(segments);
     }
 
     private static IReadOnlyList<AssetPackageFileRule> PackageFiles(JsonElement element)

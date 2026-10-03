@@ -148,7 +148,7 @@ public sealed class UniverseProfileLoaderTests
 
     [Theory]
     [InlineData("0")]
-    [InlineData("3")]
+    [InlineData("4")]
     [InlineData("null")]
     [InlineData("\"1\"")]
     public void UnsupportedVersion_IsRejected(string version)

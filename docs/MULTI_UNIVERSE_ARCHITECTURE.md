@@ -171,7 +171,7 @@ UniverseContext permanecen intactas.
 
 No se enumeran entries, inspeccionan ancestros reparse, resuelven links ni crean
 carpetas. No se exige `.git`. **3.2 — Repository Scanner** consume esta raíz
-validada y controla las entries internas. Routing y árbol canónico Nimroel
+validada y controla las entries internas. Resolución de destinos y árbol canónico Nimroel
 siguen pendientes. Véase
 [PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
 
@@ -189,6 +189,23 @@ Cualquier issue deja Snapshot null. `.git` y otras entries de infraestructura
 se incluyen normalmente, sin interpretación ni ignores. La observación es
 puntual, materializada en memoria, sin garantía transaccional ni cuota explícita
 de entries/profundidad. Véase [REPOSITORY_SCANNER.md](REPOSITORY_SCANNER.md).
+
+## Routing declarativo — 3.3
+
+AssetRouteSegmentKind define exactamente Literal, Classification y AssetId.
+AssetRouteSegment y AssetRoutingRule son sellados/inmutables, sin I/O ni
+resolución de paths. Segments preserva orden mediante snapshot defensivo
+read-only. Literal y nombre de dimensión usan Naming v1 sin corrección;
+AssetId lleva Value null. No hay templates libres.
+
+UniverseAssetRule añade Routing nullable; constructores y profiles v1/v2
+conservan Routing null. Toda Classification usada por routing debe estar en
+RequiredClassification de esa regla, no solo Allowed. Profile v3 exige
+package_files + routing, con parsing estricto y dispatch explícito v1/v2/v3.
+Nimroel sigue en Profile v2 intacto; v3 solo tiene fixture genérico de tests.
+El árbol canónico se decidirá en 3.5 tras auditoría histórica y los destinos
+se calcularán en 3.6. Véanse [ROUTING_CONTRACT_V1.md](ROUTING_CONTRACT_V1.md) y
+[UNIVERSE_PROFILE_V3.md](UNIVERSE_PROFILE_V3.md).
 
 ## Continuidad y alcance
 
@@ -235,14 +252,16 @@ La hoja de ruta vigente es:
 
 - **3.1 — Production Repository Boundary: HECHO.** Validación read-only de raíz.
 - **3.2 — Repository Scanner: HECHO.** Fotografía raw de una raíz validada.
-- **3.3 — Routing: siguiente, pendiente.**
-- **3.4–3.6: pendientes.**
+- **3.3 — Routing Contract v1: HECHO.** Configuración pura, sin calcular destinos.
+- **3.4: siguiente, pendiente.** Cambios estructurales mediante snapshots.
+- **3.5: pendiente.** Auditoría histórica y posible política canónica Nimroel.
+- **3.6: pendiente.** Cálculo de destinos con reglas validadas.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción/routing, vocabularios de valores, SQLite,
+producción/resolución de routing, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

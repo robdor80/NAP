@@ -23,6 +23,8 @@
   <ItemGroup>
     <Content Include="..\..\config\universes\nimroel\profile.json"
              Link="config\universes\nimroel\profile.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\test-data\phase3\universe-profile-v3\profile.json"
+             Link="test-data\phase3\universe-profile-v3\profile.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\test-data\phase2\universe-profile-v1\profile.json"
              Link="test-data\phase2\universe-profile-v1\profile.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\schemas\nap-manifest-v2.schema.json"
