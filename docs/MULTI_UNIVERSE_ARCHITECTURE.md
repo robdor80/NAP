@@ -151,8 +151,8 @@ Toda futura operación de escritura de assets debe estar scoped por un
 en `.../universes/nimroel/...` y `.../universes/star_trek/...`, pero esas rutas
 no se hardcodean: las raíces autorizadas ya vienen de `Storage`.
 Ningún routing podrá seleccionar una raíz de otro universo mediante metadata
-del asset. El routing futuro recibirá sus reglas desde profile/config y
-resolverá destinos dentro de las raíces del contexto activo.
+del asset. El resolver de 3.6 recibe la regla de profile/config conservada en
+package.AssetRule.Routing y calcula destinos dentro de la raíz validada.
 En 2.6.1 esta regla se documentó; ese capítulo no implementó routing ni cambió la
 API de los componentes existentes que reciben rutas explícitas.
 
@@ -173,8 +173,8 @@ UniverseContext permanecen intactas.
 
 No se enumeran entries, inspeccionan ancestros reparse, resuelven links ni crean
 carpetas. No se exige `.git`. **3.2 — Repository Scanner** consume esta raíz
-validada y controla las entries internas. La política canónica Nimroel se fija
-en 3.5; la resolución de destinos sigue pendiente. Véase
+validada y controla las entries internas. La política canónica Nimroel se fijó
+en 3.5 y 3.6 calcula directorios sin I/O. Véase
 [PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
 
 ## Fotografía raw del repositorio — 3.2
@@ -205,7 +205,7 @@ conservan Routing null. Toda Classification usada por routing debe estar en
 RequiredClassification de esa regla, no solo Allowed. Profile v3 exige
 package_files + routing, con parsing estricto y dispatch explícito v1/v2/v3.
 En 3.5 Nimroel migra a Profile v3 con su política canónica declarada; v2 queda
-preservado como fixture histórico. Los destinos se calcularán en 3.6. Véanse
+preservado como fixture histórico. Los destinos se calculan en 3.6. Véanse
 [NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md),
 [ROUTING_CONTRACT_V1.md](ROUTING_CONTRACT_V1.md) y
 [UNIVERSE_PROFILE_V3.md](UNIVERSE_PROFILE_V3.md).
@@ -233,7 +233,21 @@ semánticas `children`/`elder` y el casing histórico `Norgard/Treskal`. Para la
 regla `portrait + portrait_npc`, la política canónica queda fijada como
 `portraits/{culture}/{location}/{role}/{sex}/{asset_id}`, relativa a
 ProductionRoot y con machine identifiers. No se infieren classifications desde
-AssetId ni se ejecuta migración. 3.6 calculará destinos usando la configuración.
+AssetId ni se ejecuta migración. 3.6 calcula destinos usando la regla retenida
+en el package validado.
+
+## Cálculo puro del directorio de producción — 3.6
+
+`ProductionDestinationResolver.Resolve(ValidatedAssetPackage, ValidatedProductionRepository)`
+produce `ProductionAssetDestination` sellado/inmutable: AssetKey, RootPath,
+RelativeDirectory portable con `/` y FullDirectoryPath native normalizado.
+La única autoridad es package.AssetRule.Routing, sin recarga de perfiles ni
+snapshot. Exige identidad de universo por valor; routing ausente, dimensiones
+faltantes o segmentos inseguros fallan cerrado. Comprueba Naming v1, dispositivos
+Windows reservados en todas las plataformas y contención léxica estricta bajo
+ProductionRoot. No infiere valores desde AssetId ni transforma casing.
+No comprueba existencia/colisiones ni realiza I/O o escrituras. Resolver no
+autoriza escribir. Véase [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md).
 
 ## Continuidad y alcance
 
@@ -276,20 +290,21 @@ La hoja de ruta vigente es:
   validación read-only con contexto explícito y ValidatedAssetPackage inmutable.
   Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
-**Fase 2 HECHA (2.1–2.8). Fase 3 — Routing y repo EN CURSO.**
+**Fase 2 HECHA (2.1–2.8). Fase 3 — Routing y repo HECHA (3.1–3.6).**
 
 - **3.1 — Production Repository Boundary: HECHO.** Validación read-only de raíz.
 - **3.2 — Repository Scanner: HECHO.** Fotografía raw de una raíz validada.
 - **3.3 — Routing Contract v1: HECHO.** Configuración pura, sin calcular destinos.
 - **3.4 — Structural Change Detection: HECHO.** Diff puro de snapshots.
 - **3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy: HECHO.** Primera interpretación de estructura y política declarativa real.
-- **3.6 — Destination Resolver: siguiente.** Cálculo de destinos con reglas validadas.
+- **3.6 — Destination Resolver: HECHO.** Cálculo puro de directorios con la regla retenida en el package validado.
+- **Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan: siguiente.** Todavía sin implementar.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción/resolución de routing, vocabularios de valores, SQLite,
+producción, ProcessingPlan / Dry Run, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

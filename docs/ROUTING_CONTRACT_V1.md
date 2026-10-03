@@ -1,7 +1,8 @@
 # Routing Contract v1 — Fase 3 · Capítulo 3.3
 
-**3.3 HECHO como contrato declarativo, 3.4 HECHO como diff puro y 3.5 HECHO
-como política canónica Nimroel. Fase 3 EN CURSO. Siguiente: 3.6 — Destination Resolver.**
+**3.1–3.6 HECHOS. 3.3 es el contrato declarativo, 3.4 el diff puro y 3.5 la
+política canónica Nimroel. Fase 3 HECHA. Siguiente: Fase 4 — PLAN / Dry Run,
+4.1 — ProcessingPlan.**
 
 El contrato define qué es una regla de routing, sin resolver destinos ni formar
 paths. No compara snapshots, crea carpetas, mueve assets o interpreta estructura
@@ -50,7 +51,7 @@ inmutable recibido; no copia ni calcula paths.
 **Cada Classification("x") usada en routing debe pertenecer a
 RequiredClassification de esa misma regla, mediante comparación Ordinal.**
 Estar solo en AllowedClassification no basta: un package validado debe poder
-proporcionar siempre la dimensión que un futuro resolver necesite. La violación
+proporcionar siempre la dimensión que el resolver de 3.6 necesite. La violación
 lanza ArgumentException de configuración, sin NapIssue. Literal y AssetId no
 requieren dimensiones.
 
@@ -83,9 +84,11 @@ validado. **3.3 todavía no sustituye esos valores ni forma paths.** No admite
 root ni rutas absolutas desde metadata y no conecta ValidatedAssetPackage,
 ValidatedProductionRepository o ProductionRepositorySnapshot al contrato.
 
-Los modelos no realizan I/O. No existen RouteResolver, DestinationResolver,
-ResolvePath, ResolveDirectory, GetDestination, BuildPath ni Path.Combine para
-routing. No hay nuevos NapIssueCodes: los errores actuales son de configuración.
+Los modelos no realizan I/O ni calculan paths. En 3.3 no se implementó resolver;
+3.6 añade [ProductionDestinationResolver](DESTINATION_RESOLVER.md), que usa
+exclusivamente package.AssetRule.Routing y calcula un directorio, sin I/O.
+No hay nuevos NapIssueCodes: configuración y estados inválidos se expresan
+mediante excepciones, sin escrituras ni permisos de escritura implícitos.
 
 ## Nimroel y siguientes capítulos
 
@@ -98,7 +101,8 @@ stage ni inferencia desde AssetId. Routing Contract v1 es suficiente.
 
 - **3.4 HECHO:** [diff estructural puro](STRUCTURAL_CHANGE_DETECTION.md) mediante snapshots, sin usar routing.
 - **3.5 HECHO:** estructura histórica auditada y política canónica Nimroel declarada, sin migración.
-- **3.6 — Destination Resolver siguiente:** calcular destinos usando las reglas ya validadas.
+- **3.6 — [Destination Resolver](DESTINATION_RESOLVER.md) HECHO:** calcula directorios bajo la raíz autorizada, usando las reglas retenidas por packages validados.
+- **Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan siguiente:** todavía sin implementar.
 
 Este capítulo no implementa resolución, diff de repositorio, auditoría histórica, migración,
 colisiones, creación de carpetas, ProcessingPlan, Dry Run, hashes, conversión,

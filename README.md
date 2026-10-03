@@ -12,7 +12,7 @@ La arquitectura es **NAP Core + Universe Profile**, equivalente conceptualmente 
 
 **Fase 2 HECHA (2.1–2.8).** **2.8.1 — [Package Contract v1](docs/PACKAGE_CONTRACT_V1.md) + [Universe Profile v2](docs/UNIVERSE_PROFILE_V2.md) HECHO:** archivos declarativos y compatibilidad histórica. **2.8.2 — [Package Semantic Validator](docs/PACKAGE_SEMANTIC_VALIDATION.md) HECHO:** Manifest v2 estricto, universo/rule/classification, envelope flat, required/extras y contenido soportado, en solo lectura. Produce un ValidatedAssetPackage inmutable. **Routing solo podrá consumir ValidatedAssetPackage.**
 
-**Fase 3 — Routing y repo EN CURSO. 3.1 — [Production Repository Boundary](docs/PRODUCTION_REPOSITORY_BOUNDARY.md) HECHO:** valida únicamente los atributos de `UniverseContext.Storage.ProductionRoot` y produce un `ValidatedProductionRepository` inmutable. Es read-only, sin enumerar entries, crear carpetas, resolver links ni exigir `.git`.
+**Fase 3 — Routing y repo HECHA. 3.1 — [Production Repository Boundary](docs/PRODUCTION_REPOSITORY_BOUNDARY.md) HECHO:** valida únicamente los atributos de `UniverseContext.Storage.ProductionRoot` y produce un `ValidatedProductionRepository` inmutable. Es read-only, sin enumerar entries, crear carpetas, resolver links ni exigir `.git`.
 
 **3.2 — [Repository Scanner](docs/REPOSITORY_SCANNER.md) HECHO:** consume exclusivamente una raíz validada, revalida el root y fotografía archivos/directorios con nombres exactos, RelativePath con `/` y orden Ordinal. Es read-only, no lee contenidos ni interpreta `.git`; cualquier entry ReparsePoint causa STOP sin traversal ni snapshot parcial.
 
@@ -20,6 +20,8 @@ La arquitectura es **NAP Core + Universe Profile**, equivalente conceptualmente 
 
 **3.4 — [Structural Change Detection](docs/STRUCTURAL_CHANGE_DETECTION.md) HECHO:** diff puro entre snapshots del mismo universo/root, con Added/Removed/KindChanged y RelativePath Ordinal. Sin I/O, inferencias move/rename, contenido, routing semantics ni ignores.
 
-**3.5 — [Nimroel Historical Structure Audit + Canonical Routing Policy](docs/NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) HECHO:** el corte histórico 39/39 separa el layout legacy de la semántica y fija para `portrait_npc` la ruta `portraits/{culture}/{location}/{role}/{sex}/{asset_id}`. Nimroel usa Profile v3; Routing Contract v1 resulta suficiente. **Siguiente: 3.6 — Destination Resolver.** No se han migrado assets ni escrito en producción.
+**3.5 — [Nimroel Historical Structure Audit + Canonical Routing Policy](docs/NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) HECHO:** el corte histórico 39/39 separa el layout legacy de la semántica y fija para `portrait_npc` la ruta `portraits/{culture}/{location}/{role}/{sex}/{asset_id}`. Nimroel usa Profile v3; Routing Contract v1 resulta suficiente. No se han migrado assets ni escrito en producción.
+
+**3.6 — [Destination Resolver](docs/DESTINATION_RESOLVER.md) HECHO:** calcula un `ProductionAssetDestination` desde `ValidatedAssetPackage` + `ValidatedProductionRepository`, usando exclusivamente `package.AssetRule.Routing`. Aísla universos, valida segmentos y nombres reservados Windows, y comprueba contención léxica bajo ProductionRoot. Sin I/O, snapshot, comprobación de existencia/colisiones ni escrituras. Resolver un destino no autoriza escribirlo. **Siguiente: Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan.**
 
 NAP nació originalmente como Nimroel Asset Pipeline. Tras evolucionar a una arquitectura multiuniverso, el nombre oficial pasa a ser Nexus Asset Platform. Nimroel permanece como el primer Universe Profile soportado.

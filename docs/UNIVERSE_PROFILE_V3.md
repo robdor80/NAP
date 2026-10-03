@@ -82,5 +82,9 @@ La [auditoría de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) fija exactamente
 `portraits/{culture}/{location}/{role}/{sex}/{asset_id}` para Nimroel
 `portrait_npc`. `realm` y `region` quedan fuera del routing. No se configuran
 transformaciones, mappings ni casing de display, y no se infiere classification
-desde AssetId. 3.6 resolverá destinos con reglas ya validadas. Fase 3 sigue EN
-CURSO; no se calculan paths, migran assets ni escriben destinos en 3.5.
+desde AssetId. [3.6 — Destination Resolver](DESTINATION_RESOLVER.md) calcula
+directorios desde la regla retenida en ValidatedAssetPackage y la raíz de
+ValidatedProductionRepository, sin recargar perfiles ni realizar I/O.
+En 3.5 no se calcularon paths; 3.6 tampoco migra assets ni escribe destinos.
+**Fase 3 HECHA (3.1–3.6). Siguiente: Fase 4 — PLAN / Dry Run,
+4.1 — ProcessingPlan**, todavía sin implementar.
