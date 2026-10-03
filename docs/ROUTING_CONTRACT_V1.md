@@ -1,6 +1,7 @@
 # Routing Contract v1 — Fase 3 · Capítulo 3.3
 
-**3.3 HECHO como contrato declarativo. Fase 3 EN CURSO. Siguiente: 3.4.**
+**3.3 HECHO como contrato declarativo y 3.4 HECHO como diff puro. Fase 3 EN CURSO.
+Siguiente: 3.5 — Historical Structure Audit / clasificación.**
 
 El contrato define qué es una regla de routing, sin resolver destinos ni formar
 paths. No compara snapshots, crea carpetas, mueve assets o interpreta estructura
@@ -92,11 +93,12 @@ El árbol canónico real sigue sin decidir. Ningún ejemplo conceptual fija si l
 ruta futura usará culture, location u otras dimensiones. Los assets históricos
 no se migran.
 
-- **3.4 siguiente:** detectar cambios estructurales mediante snapshots.
-- **3.5 pendiente:** auditar/clasificar estructura y assets históricos; será el
-  punto donde podrá fijarse la política canónica de Nimroel.
-- **3.6 pendiente:** calcular destinos usando las reglas ya validadas.
+- **3.4 HECHO:** [diff estructural puro](STRUCTURAL_CHANGE_DETECTION.md) mediante snapshots, sin usar routing.
+- **3.5 siguiente:** primer capítulo que interpretará estructura y assets históricos,
+  infraestructura, inconsistencias, posibles migraciones y compatibilidad con el
+  contrato; allí podrá fijarse la política canónica de Nimroel.
+- **3.6 — Destination Resolver pendiente:** calcular destinos usando las reglas ya validadas.
 
-Todavía no hay resolución, diff de repositorio, auditoría histórica, migración,
+Este capítulo no implementa resolución, diff de repositorio, auditoría histórica, migración,
 colisiones, creación de carpetas, ProcessingPlan, Dry Run, hashes, conversión,
 SQLite, TeraBox, automatización Git ni UI en este capítulo.

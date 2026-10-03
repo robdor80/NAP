@@ -207,6 +207,26 @@ El árbol canónico se decidirá en 3.5 tras auditoría histórica y los destino
 se calcularán en 3.6. Véanse [ROUTING_CONTRACT_V1.md](ROUTING_CONTRACT_V1.md) y
 [UNIVERSE_PROFILE_V3.md](UNIVERSE_PROFILE_V3.md).
 
+## Diff estructural puro — 3.4
+
+ProductionRepositoryStructureDiffer.Compare(before, after) consume únicamente
+snapshots materializados. Exige mismo UniverseId por valor y RootPath comparado
+con OrdinalIgnoreCase en Windows, Ordinal en otras plataformas, sin normalización
+ni I/O. RelativePath se compara siempre Ordinal, también en Windows; duplicados
+dentro de un snapshot se rechazan como ArgumentException.
+
+ProductionRepositoryStructureDiff conserva identidad/raíz de before y Changes
+defensivas/read-only ordenadas Ordinal. Los únicos cambios son Added, Removed y
+KindChanged; mismo path/mismo kind no cambia. No usa FullPath como identidad,
+colapsa árboles, infiere moves/renames, detecta contenido, aplica ignores o usa
+semántica de routing. No genera NapIssue: son observaciones neutrales.
+Véase [STRUCTURAL_CHANGE_DETECTION.md](STRUCTURAL_CHANGE_DETECTION.md).
+
+3.5 será el primer capítulo que interpreta estructura histórica, infraestructura,
+agrupaciones de assets, inconsistencias, posibles migraciones y compatibilidad
+con Routing Contract v1; allí podrá fijarse la política canónica Nimroel.
+Todavía no se migran assets ni se calcula destino; 3.6 sigue pendiente.
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -253,9 +273,9 @@ La hoja de ruta vigente es:
 - **3.1 — Production Repository Boundary: HECHO.** Validación read-only de raíz.
 - **3.2 — Repository Scanner: HECHO.** Fotografía raw de una raíz validada.
 - **3.3 — Routing Contract v1: HECHO.** Configuración pura, sin calcular destinos.
-- **3.4: siguiente, pendiente.** Cambios estructurales mediante snapshots.
-- **3.5: pendiente.** Auditoría histórica y posible política canónica Nimroel.
-- **3.6: pendiente.** Cálculo de destinos con reglas validadas.
+- **3.4 — Structural Change Detection: HECHO.** Diff puro de snapshots.
+- **3.5 — Historical Structure Audit / clasificación: siguiente, pendiente.** Primera interpretación de estructura.
+- **3.6 — Destination Resolver: pendiente.** Cálculo de destinos con reglas validadas.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
