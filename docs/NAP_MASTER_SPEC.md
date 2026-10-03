@@ -1,7 +1,8 @@
 # NAP — Master Specification
 
 **Proyecto:** NAP\
-**Nombre del producto:** NAP; significado histórico de las siglas: Nimroel Asset Pipeline. La arquitectura vigente es multiuniverso.\
+**Nombre oficial:** Nexus Asset Platform\
+**Origen histórico:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
 **Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Siguiente: Fase 3 — Routing y repo, NO iniciada. Routing solo podrá consumir ValidatedAssetPackage.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
@@ -31,10 +32,10 @@ diseño y desarrollo sin depender de conversaciones anteriores.
 
 # 1. Qué es NAP
 
-NAP será la aplicación de escritorio encargada de automatizar y
+NAP — Nexus Asset Platform será la aplicación de escritorio encargada de automatizar y
 gestionar la producción, conservación, catalogación, auditoría y planificación
-de assets visuales organizada por **universos/perfiles**. **Nimroel** será
-el primer Universe Profile real, no una dependencia del núcleo.
+de assets visuales organizada por **universos/perfiles**. **Nimroel** es
+el primer Universe Profile real soportado, no una dependencia del núcleo.
 
 La separación del RPG en **CoreRPG + Universe Pack** (consola + cartucho)
 se corresponde conceptualmente con **NAP Core + Universe Profile**.

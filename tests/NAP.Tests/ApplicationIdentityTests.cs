@@ -12,8 +12,8 @@ public class ApplicationIdentityTests
     }
 
     [Fact]
-    public void FullName_IsNimroelAssetPipeline()
+    public void FullName_IsNexusAssetPlatform()
     {
-        Assert.Equal("Nimroel Asset Pipeline", ApplicationIdentity.FullName);
+        Assert.Equal("Nexus Asset Platform", ApplicationIdentity.FullName);
     }
 }
