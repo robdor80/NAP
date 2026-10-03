@@ -142,6 +142,21 @@ No se cambian NapIssueMapper ni los mapeos previos.
 con report limpio; cualquier issue impide adjuntarlo. Véase
 [PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
 
+## Repository Scanner — 3.2
+
+`ProductionRepositoryScanner` reutiliza production_root_missing,
+production_root_invalid y production_root_reparse al revalidar RootPath antes
+de enumerar. Solo FileNotFoundException/DirectoryNotFoundException de esa
+comprobación inicial se convierten en missing; los demás errores operativos,
+incluidas desapariciones durante traversal, se propagan.
+
+Se añade exactamente `repository_entry_reparse`: **Error + Stop**, SubjectPath
+absoluto de la entry descendiente y Detail con su RelativePath. El scanner
+no atraviesa esas entries y puede inspeccionar otras ramas normales. Los issues
+se ordenan por RelativePath con Ordinal. Cualquier issue impide devolver snapshot.
+No se añaden códigos de routing, nombres históricos ni contenido de assets.
+Véase [REPOSITORY_SCANNER.md](REPOSITORY_SCANNER.md).
+
 ## Excepciones y límites
 
 El mapper no atrapa excepciones. Resultados nulos o estados no reconocidos

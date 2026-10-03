@@ -1,4 +1,4 @@
-# Multi-Universe Foundation, validación semántica y raíz de producción — 2.6, 2.8 y 3.1
+# Multi-Universe Foundation, validación semántica y repositorio de producción — 2.6, 2.8, 3.1 y 3.2
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
@@ -170,11 +170,25 @@ si Repository no null. Las responsabilidades de UniverseStorageConfig y
 UniverseContext permanecen intactas.
 
 No se enumeran entries, inspeccionan ancestros reparse, resuelven links ni crean
-carpetas. No se exige `.git`. El futuro **3.2 — Repository Scanner** solo deberá
-consumir esta raíz validada y controlar sus propias entries internas. No hay
-scanner ni routing todavía; el árbol canónico Nimroel se decidirá después de
-conocer el repositorio existente mediante 3.2. Véase
+carpetas. No se exige `.git`. **3.2 — Repository Scanner** consume esta raíz
+validada y controla las entries internas. Routing y árbol canónico Nimroel
+siguen pendientes. Véase
 [PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
+
+## Fotografía raw del repositorio — 3.2
+
+`ProductionRepositoryScanner.Scan(ValidatedProductionRepository)` revalida los
+atributos actuales del root y recorre descendants con un Stack explícito.
+Produce un `ProductionRepositorySnapshot` inmutable con identidad/raíz exactas,
+files/directories incluidos los vacíos, RelativePath con `/`, nombres originales
+y orden Ordinal. No aplica Naming v1 ni semántica de perfiles y no lee contents.
+
+Cada descendiente ReparsePoint causa repository_entry_reparse (Error + Stop),
+sin traversal ni resolución de targets; varios issues se ordenan por RelativePath.
+Cualquier issue deja Snapshot null. `.git` y otras entries de infraestructura
+se incluyen normalmente, sin interpretación ni ignores. La observación es
+puntual, materializada en memoria, sin garantía transaccional ni cuota explícita
+de entries/profundidad. Véase [REPOSITORY_SCANNER.md](REPOSITORY_SCANNER.md).
 
 ## Continuidad y alcance
 
@@ -220,8 +234,9 @@ La hoja de ruta vigente es:
 **Fase 2 HECHA (2.1–2.8). Fase 3 — Routing y repo EN CURSO.**
 
 - **3.1 — Production Repository Boundary: HECHO.** Validación read-only de raíz.
-- **3.2 — Repository Scanner: siguiente, pendiente.** Solo consumirá una raíz validada.
-- **3.3–3.6: pendientes.**
+- **3.2 — Repository Scanner: HECHO.** Fotografía raw de una raíz validada.
+- **3.3 — Routing: siguiente, pendiente.**
+- **3.4–3.6: pendientes.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
@@ -230,4 +245,4 @@ Quedan pendientes schemas completos de assets/metadata, reglas de
 producción/routing, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
-los atributos de la raíz de producción.
+los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.
