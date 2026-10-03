@@ -20,6 +20,7 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 - Capítulo 2.6.2: Manifest v2 multiuniverso y DTO, contrato genérico Universe Profile v1, perfil Nimroel declarativo con loader y reglas de clasificación, comprobación de universo activo y aislamiento puro de storage roots con universe_storage_overlap (Error + Stop); schemas/tests sin nuevas dependencias ni cambios a Manifest v1.
 - Capítulo 2.7: auditoría del boundary ZIP con inventario, 74 casos nuevos y fixtures sintéticos deterministas, invariantes de filesystem y mapeo real a NapIssue; Fase 2 completa y revisión de arquitectura previa a Fase 3 pendiente.
 - Capítulo 2.8.1: Package Contract v1, AssetPackageFileRule puro e inmutable, PackageFiles con snapshots/unicidad, Universe Profile v2 y loader explícito v1/v2; Nimroel migrado a cuatro archivos requeridos, manteniendo Profile v1 histórico intacto y su fixture de compatibilidad. Sin PackageValidator ni cambios a extracción ZIP; Fase 2 reabierta para 2.8.2 antes de routing.
+- Capítulo 2.8.2: loader runtime estricto de Manifest v2 y PackageSemanticValidator de solo lectura, con contexto de universo explícito, envelope flat/canónico, clasificación y archivos por perfil, dispatch png_master mediante mapper existente y 13 códigos package_*; resultado con invariantes y ValidatedAssetPackage inmutable con snapshots defensivos. Fase 2 completa; routing futuro solo podrá consumir el objeto validado, sin implementar Fase 3 ni modificar extracción ZIP o Manifest v1 histórico.
 
 ### Fixed
 

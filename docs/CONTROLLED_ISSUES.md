@@ -102,6 +102,27 @@ inmutables. No deduplica ni reordena. Rechaza colección o elementos nulos.
 Un report vacío está limpio y permite continuar. El report no almacena
 resultados locales ni realiza procesamiento, logging o persistencia.
 
+## Package Semantic Validation — 2.8.2
+
+PackageSemanticValidator crea directamente issues de contrato de package:
+package_root_invalid, package_structure_invalid, package_manifest_missing,
+package_manifest_ambiguous, package_manifest_invalid,
+package_manifest_filename_mismatch, package_root_name_mismatch,
+package_universe_mismatch, package_rule_not_found, package_classification_invalid,
+package_required_file_missing, package_unexpected_file y
+package_content_validator_unsupported. Todos son **Error + Stop**, centralizados
+en NapIssueCodes; no se amplía artificialmente el mapper para estas decisiones.
+
+Para png_master se reutiliza el mapeo PNG existente con el path concreto:
+png_invalid/png_unsupported_feature, Reason → Detail. Los fallos de JSON/Naming
+del manifest son conocidos y controlados; errores operativos de E/S siguen
+propagándose. No se incluyen JSON completo, valores de clasificación ni stack
+traces en issues de manifest/classification.
+
+PackageSemanticValidationResult solo lleva ValidatedAssetPackage si el report
+está limpio. El orden y SubjectPath/Detail de cada código están documentados en
+[PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
+
 ## Excepciones y límites
 
 El mapper no atrapa excepciones. Resultados nulos o estados no reconocidos

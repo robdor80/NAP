@@ -14,4 +14,17 @@ public static class NapIssueCodes
     public const string PngInvalid = "png_invalid";
     public const string PngUnsupportedFeature = "png_unsupported_feature";
     public const string UniverseStorageOverlap = "universe_storage_overlap";
+    public const string PackageRootInvalid = "package_root_invalid";
+    public const string PackageStructureInvalid = "package_structure_invalid";
+    public const string PackageManifestMissing = "package_manifest_missing";
+    public const string PackageManifestAmbiguous = "package_manifest_ambiguous";
+    public const string PackageManifestInvalid = "package_manifest_invalid";
+    public const string PackageManifestFilenameMismatch = "package_manifest_filename_mismatch";
+    public const string PackageRootNameMismatch = "package_root_name_mismatch";
+    public const string PackageUniverseMismatch = "package_universe_mismatch";
+    public const string PackageRuleNotFound = "package_rule_not_found";
+    public const string PackageClassificationInvalid = "package_classification_invalid";
+    public const string PackageRequiredFileMissing = "package_required_file_missing";
+    public const string PackageUnexpectedFile = "package_unexpected_file";
+    public const string PackageContentValidatorUnsupported = "package_content_validator_unsupported";
 }

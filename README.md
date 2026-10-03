@@ -10,6 +10,6 @@ La arquitectura es **NAP Core + Universe Profile**, equivalente conceptualmente 
 
 **2.7 — ZIP deliberadamente incorrectos para tests** está hecho: [auditoría adversarial](docs/ADVERSARIAL_ZIP_TESTS.md), fixtures reproducibles y corrección de apertura de cabeceras truncadas.
 
-**Fase 2 vuelve a estar en curso** con 2.8 — Package Semantic Validation. **2.8.1 — [Package Contract v1](docs/PACKAGE_CONTRACT_V1.md) + [Universe Profile v2](docs/UNIVERSE_PROFILE_V2.md) HECHO:** reglas genéricas de archivos, filenames puros y Nimroel migrado declarativamente a v2; Profile v1 permanece como contrato histórico. **2.8.2 — Package Semantic Validator PENDIENTE, siguiente.** Routing deberá recibir packages validados; Fase 3 no está iniciada. No hay PackageValidator, routing, SQLite, TeraBox, UI ni migración de manifests.
+**Fase 2 HECHA (2.1–2.8).** **2.8.1 — [Package Contract v1](docs/PACKAGE_CONTRACT_V1.md) + [Universe Profile v2](docs/UNIVERSE_PROFILE_V2.md) HECHO:** archivos declarativos y compatibilidad histórica. **2.8.2 — [Package Semantic Validator](docs/PACKAGE_SEMANTIC_VALIDATION.md) HECHO:** Manifest v2 estricto, universo/rule/classification, envelope flat, required/extras y contenido soportado, en solo lectura. Produce un ValidatedAssetPackage inmutable. **Routing solo podrá consumir ValidatedAssetPackage.** Siguiente: Fase 3 — Routing y repo, todavía no iniciada. No hay routing, SQLite, TeraBox, UI ni migración de manifests.
 
 El producto sigue llamándose NAP; no se decide todavía un nuevo significado para sus siglas.

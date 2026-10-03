@@ -3,7 +3,7 @@
 **Proyecto:** NAP\
 **Nombre del producto:** NAP; significado histórico de las siglas: Nimroel Asset Pipeline. La arquitectura vigente es multiuniverso.\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0 y Fase 1 (1.1–1.6) completas; Fase 2 EN CURSO DE NUEVO tras insertar 2.8 — Package Semantic Validation. 2.1–2.7 HECHOS; 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO; 2.8.2 — Package Semantic Validator PENDIENTE, siguiente. Fase 3 no iniciada; routing exige validación semántica completa previa.\
+**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Siguiente: Fase 3 — Routing y repo, NO iniciada. Routing solo podrá consumir ValidatedAssetPackage.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -202,7 +202,7 @@ las raíces autorizadas de ese contexto.
 7. NAP espera a que esté completamente copiado.
 8. NAP copia a staging.
 9. NAP extrae de forma segura.
-10. NAP valida contenido.
+10. NAP valida semánticamente el package y produce ValidatedAssetPackage.
 11. NAP identifica asset.
 12. NAP determina destino.
 13. NAP genera ProcessingPlan.
@@ -255,10 +255,12 @@ PackageFiles toma snapshot read-only, exige roles/filenames únicos y reserva
 `_manifest.json` al envelope. AssetPackageFileNames conserva compatibilidad como
 naming histórico/convenience, sin determinar los archivos requeridos del perfil.
 
-2.8.1 solo define este contrato; 2.8.2 validará packages reales. No se enumeran
-directorios ni se leen manifests/PNG de assets. ZIP extraction continúa genérica
-y opaca, también para ZIP seguros con nested entries. Package flat no limita la
-estructura futura de los destinos de routing.
+2.8.1 define este contrato y 2.8.2 implementa
+[Package Semantic Validation](PACKAGE_SEMANTIC_VALIDATION.md) de solo lectura
+para packages reales: root/estructura, manifest v2 estricto, envelope canónico,
+universo/rule/classification y archivos/contenido por perfil. ZIP extraction
+continúa genérica y opaca, también para ZIP seguros con nested entries. Package
+flat no limita los destinos futuros. Routing solo podrá consumir ValidatedAssetPackage.
 
 ------------------------------------------------------------------------
 
@@ -277,8 +279,13 @@ conserva forma y límite 96, scoped por universo sin cambiar sus filenames.
 
 `AssetManifestV2` es un DTO con string para universe_id; el runtime sigue
 usando UniverseId/UniverseAssetKey. `ManifestUniverseScope.Matches` exige
-coincidencia con UniverseContext.Id; mismatch futuro implica STOP.
+coincidencia con UniverseContext.Id; mismatch en 2.8.2 implica STOP antes de aplicar el perfil activo.
 El helper no es un PackageValidator ni valida el resto del manifest.
+
+AssetManifestV2Loader aporta carga estricta de contrato/Naming, sin cambiar el
+DTO ni añadir JSON Schema runtime. PackageSemanticValidator reúne después las
+comprobaciones con contexto explícito y produce un snapshot inmutable únicamente
+con report limpio. Manifest v1 sigue histórico, sin compatibilidad/migración silenciosa.
 
 `UniverseProfile` obtiene las dimensiones y reglas semánticas de la
 [configuración genérica v2](UNIVERSE_PROFILE_V2.md), conservando
@@ -476,6 +483,7 @@ environment
 La raíz de producción autorizada procederá de `UniverseContext.Storage.ProductionRoot`.
 Las reglas de routing vendrán del profile/config; ninguna metadata de asset
 podrá seleccionar una raíz de otro universo. No hay routing implementado.
+Routing solo podrá consumir ValidatedAssetPackage, tras la frontera semántica de 2.8.2.
 Los ejemplos siguientes corresponden a Nimroel.
 
 Uno de los problemas importantes es determinar automáticamente dónde va
@@ -1750,7 +1758,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 EN CURSO DE NUEVO:** se inserta 2.8 — Package Semantic Validation. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator PENDIENTE, siguiente.** Routing exige validación semántica completa previa; Fase 3 no iniciada.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 HECHA:** 2.8 — Package Semantic Validation completo. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator HECHO:** loader Manifest v2 estricto, validación read-only del envelope/contexto/rule/archivos y ValidatedAssetPackage inmutable. Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md). Siguiente: Fase 3 — Routing y repo, no iniciada. Routing solo podrá consumir ValidatedAssetPackage.
 
 # 55. Hoja de ruta acordada
 
@@ -1815,7 +1823,7 @@ Primer paquete de prueba.
 
 ## FASE 2 --- Manifest y validación
 
-**EN CURSO DE NUEVO:** 2.1–2.7 hechos; insertado 2.8 antes de Routing.
+**HECHA:** todos los capítulos de la hoja de ruta vigente, 2.1–2.8, completos.
 
 ### 2.1
 
@@ -1871,8 +1879,8 @@ validación semántica completa previa.
 
 ### 2.8 — Package Semantic Validation
 
-**EN CURSO.** Manifest v2, UniverseProfile, classification, Naming, PNG y universe
-scope son capacidades independientes que deberán reunirse para validar packages
+**HECHO (2.8.1 y 2.8.2).** Contrato configurable y validación semántica read-only
+reúnen Manifest v2, UniverseProfile, classification, Naming, PNG y universe scope
 antes de Fase 3. La extracción ZIP conserva su responsabilidad genérica.
 
 #### 2.8.1 — Package Contract v1 + Universe Profile v2
@@ -1881,23 +1889,33 @@ antes de Fase 3. La extracción ZIP conserva su responsabilidad genérica.
 snapshot/unicidad; Profile v2 cerrado con package_files obligatorio y loader
 explícito v1/v2. Nimroel migrado declarativamente a cuatro archivos required,
 con clasificación intacta; manifest universal y ProductionWebP fuera de PackageFiles.
-Profile v1 schema/documentación permanecen intactos como históricos. No hay
-validación de directorios, PackageValidator ni cambios a ZIP extraction.
+Profile v1 schema/documentación permanecen intactos como históricos. Este
+subcapítulo no añadió validación de directorios ni cambios a ZIP extraction.
 Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y
 [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md).
 
 #### 2.8.2 — Package Semantic Validator
 
-**PENDIENTE, siguiente.** Validará una instancia real mediante envelope universal,
-reglas del perfil y capacidades de contenido, antes de permitir routing.
-No está implementado y no se añade ValidatedAssetPackage en 2.8.1.
+**HECHO:** AssetManifestV2Loader estricto, PackageSemanticValidator de solo lectura,
+PackageSemanticValidationResult con invariantes y ValidatedAssetPackage inmutable.
+Se exige root flat, manifest universal v2/canónico, nombre de package, universo
+activo, rule conocida, clasificación permitida, required completos, ausencia
+de extras y contenido soportado. png_master reutiliza PngMasterValidator y
+NapIssueMapper sin aspect ratio hardcoded; validator desconocido presente causa STOP.
+El objeto validado solo existe con report limpio y contiene snapshots de
+metadata/paths por role, con manifest separado. Véase
+[PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
+
+**Fase 2 HECHA. Siguiente: Fase 3 — Routing y repo. Routing solo podrá consumir
+ValidatedAssetPackage.** No se implementa routing, conversiones, hashes, Visual
+Identity schema ni migración de Manifest v1 en este capítulo.
 
 ------------------------------------------------------------------------
 
 ## FASE 3 --- Routing y repo
 
-**NO INICIADA.** Su entrada requiere completar 2.8.2 y la validación semántica
-previa al routing.
+**NO INICIADA, siguiente.** 2.8.2 ya aporta la frontera semántica previa.
+Routing solo podrá consumir ValidatedAssetPackage.
 
 ### 3.1
 
@@ -2279,7 +2297,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. Fase 2 EN CURSO DE NUEVO.** 2.8.2 — Package Semantic Validator PENDIENTE, siguiente; deberá preceder a routing. No se inicia Fase 3 ni se implementa PackageValidator en 2.8.1. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. 2.8.2 — Package Semantic Validator HECHO. Fase 2 completa.** Siguiente: Fase 3 — Routing y repo, no iniciada. Routing solo podrá consumir ValidatedAssetPackage. La frontera semántica es read-only; no se implementan routing ni escrituras. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 

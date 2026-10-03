@@ -1,4 +1,4 @@
-# Multi-Universe Foundation y Package Contract — 2.6 y 2.8.1
+# Multi-Universe Foundation y validación semántica — 2.6 y 2.8
 
 NAP es un sistema genérico de producción, conservación, catalogación,
 auditoría y planificación de assets organizado por universos/perfiles.
@@ -171,7 +171,9 @@ requisitos de clasificación específicos del primer universo en su schema.
 El DTO conserva un string de transporte para universe_id; el runtime usa
 UniverseId/UniverseAssetKey. `ManifestUniverseScope.Matches` comprueba el
 boundary contra el contexto activo; un mismatch futuro deberá causar STOP.
-No es un PackageValidator ni se integra todavía en un pipeline global.
+El helper no es un PackageValidator. En 2.8.2, PackageSemanticValidator lo
+reutiliza tras carga estricta de manifest: el mismatch detiene la validación
+antes de aplicar rules del perfil activo. No se integra un pipeline global.
 Los ejemplos específicos de Nimroel de la documentación anterior conservan
 su valor como ejemplos del primer universo, no como reglas universales.
 
@@ -184,17 +186,19 @@ La hoja de ruta vigente es:
 - **2.7 — ZIP deliberadamente incorrectos para tests: HECHO.**
   Auditoría genérica documentada en [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md).
 
-- **2.8 — Package Semantic Validation: EN CURSO.** Insertado tras 2.7.
+- **2.8 — Package Semantic Validation: HECHO.** Insertado tras 2.7.
 - **2.8.1 — Package Contract v1 + Universe Profile v2: HECHO.** Contrato
   genérico de package flat; manifest universal externo a PackageFiles; Nimroel
   portrait_npc exige PNG master, prompt, info y Visual Identity, sin WebP de entrada.
-- **2.8.2 — Package Semantic Validator: PENDIENTE, siguiente.**
+- **2.8.2 — Package Semantic Validator: HECHO.** Manifest v2 estricto,
+  validación read-only con contexto explícito y ValidatedAssetPackage inmutable.
+  Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
-**Fase 2 EN CURSO DE NUEVO; 2.1–2.7 HECHOS. Fase 3 no iniciada.** Routing
-no recibirá packages extraídos sin validación semántica completa previa.
-El contrato prepara esa capa; PackageValidator todavía no existe.
+**Fase 2 HECHA (2.1–2.8). Siguiente: Fase 3 — Routing y repo, no iniciada.**
+Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
+completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción/routing, vocabularios de valores, PackageValidator, SQLite,
+producción/routing, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en esta capa: el loader solo lee configuración.
