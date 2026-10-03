@@ -71,9 +71,11 @@ reload, service locator ni framework de DI.
 En 2.6.2 el primer perfil real se carga explícitamente desde
 `config/universes/nimroel/profile.json` con `UniverseProfileLoader`.
 El contrato [Universe Profile configuration v1](UNIVERSE_PROFILE_V1.md) se
-conserva intacto como histórico. En 2.8.1 Nimroel pasa a
+conserva intacto como histórico. En 2.8.1 Nimroel pasó a
 [Universe Profile v2](UNIVERSE_PROFILE_V2.md), que exige package_files en cada
-asset rule. El loader detecta versión y aplica estrictamente v1 o v2; admite
+asset rule; 3.5 conserva ese estado como fixture histórico y migra el perfil
+real a [Universe Profile v3](UNIVERSE_PROFILE_V3.md) con routing. El loader
+detecta versión y aplica estrictamente v1, v2 o v3; admite
 stream y ruta en solo lectura con guardas de configuración. No hay reglas
 Nimroel-specific hardcodeadas ni carga global; no valida packages.
 
@@ -151,7 +153,7 @@ no se hardcodean: las raíces autorizadas ya vienen de `Storage`.
 Ningún routing podrá seleccionar una raíz de otro universo mediante metadata
 del asset. El routing futuro recibirá sus reglas desde profile/config y
 resolverá destinos dentro de las raíces del contexto activo.
-En 2.6.1 esta regla se documenta; no se implementa routing ni se cambia la
+En 2.6.1 esta regla se documentó; ese capítulo no implementó routing ni cambió la
 API de los componentes existentes que reciben rutas explícitas.
 
 ## Frontera read-only de producción — 3.1
@@ -171,8 +173,8 @@ UniverseContext permanecen intactas.
 
 No se enumeran entries, inspeccionan ancestros reparse, resuelven links ni crean
 carpetas. No se exige `.git`. **3.2 — Repository Scanner** consume esta raíz
-validada y controla las entries internas. Resolución de destinos y árbol canónico Nimroel
-siguen pendientes. Véase
+validada y controla las entries internas. La política canónica Nimroel se fija
+en 3.5; la resolución de destinos sigue pendiente. Véase
 [PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
 
 ## Fotografía raw del repositorio — 3.2
@@ -202,9 +204,10 @@ UniverseAssetRule añade Routing nullable; constructores y profiles v1/v2
 conservan Routing null. Toda Classification usada por routing debe estar en
 RequiredClassification de esa regla, no solo Allowed. Profile v3 exige
 package_files + routing, con parsing estricto y dispatch explícito v1/v2/v3.
-Nimroel sigue en Profile v2 intacto; v3 solo tiene fixture genérico de tests.
-El árbol canónico se decidirá en 3.5 tras auditoría histórica y los destinos
-se calcularán en 3.6. Véanse [ROUTING_CONTRACT_V1.md](ROUTING_CONTRACT_V1.md) y
+En 3.5 Nimroel migra a Profile v3 con su política canónica declarada; v2 queda
+preservado como fixture histórico. Los destinos se calcularán en 3.6. Véanse
+[NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md),
+[ROUTING_CONTRACT_V1.md](ROUTING_CONTRACT_V1.md) y
 [UNIVERSE_PROFILE_V3.md](UNIVERSE_PROFILE_V3.md).
 
 ## Diff estructural puro — 3.4
@@ -222,10 +225,15 @@ colapsa árboles, infiere moves/renames, detecta contenido, aplica ignores o usa
 semántica de routing. No genera NapIssue: son observaciones neutrales.
 Véase [STRUCTURAL_CHANGE_DETECTION.md](STRUCTURAL_CHANGE_DETECTION.md).
 
-3.5 será el primer capítulo que interpreta estructura histórica, infraestructura,
-agrupaciones de assets, inconsistencias, posibles migraciones y compatibilidad
-con Routing Contract v1; allí podrá fijarse la política canónica Nimroel.
-Todavía no se migran assets ni se calcula destino; 3.6 sigue pendiente.
+## Auditoría histórica y política canónica Nimroel — 3.5
+
+El corte auditado de `robdor80/Videojuego_Nimroel` documenta 39 registros y 39
+carpetas bajo `Worldbuilding/Direccion artistica/Assets`, las excepciones
+semánticas `children`/`elder` y el casing histórico `Norgard/Treskal`. Para la
+regla `portrait + portrait_npc`, la política canónica queda fijada como
+`portraits/{culture}/{location}/{role}/{sex}/{asset_id}`, relativa a
+ProductionRoot y con machine identifiers. No se infieren classifications desde
+AssetId ni se ejecuta migración. 3.6 calculará destinos usando la configuración.
 
 ## Continuidad y alcance
 
@@ -274,8 +282,8 @@ La hoja de ruta vigente es:
 - **3.2 — Repository Scanner: HECHO.** Fotografía raw de una raíz validada.
 - **3.3 — Routing Contract v1: HECHO.** Configuración pura, sin calcular destinos.
 - **3.4 — Structural Change Detection: HECHO.** Diff puro de snapshots.
-- **3.5 — Historical Structure Audit / clasificación: siguiente, pendiente.** Primera interpretación de estructura.
-- **3.6 — Destination Resolver: pendiente.** Cálculo de destinos con reglas validadas.
+- **3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy: HECHO.** Primera interpretación de estructura y política declarativa real.
+- **3.6 — Destination Resolver: siguiente.** Cálculo de destinos con reglas validadas.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

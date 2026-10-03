@@ -11,10 +11,12 @@ permanecen intactos; no hay reinterpretación ni migración automática.
 | v2 | Clasificación + package_files; sin routing. | null |
 | v3 | Clasificación + package_files + routing requerido. | AssetRoutingRule |
 
-**Nimroel sigue en v2**, con su profile.json intacto. v3 está disponible como
-contrato genérico; el [fixture v3](../test-data/phase3/universe-profile-v3/profile.json)
-usa test_universe y no representa un segundo Universe Profile real ni una ruta
-canónica Nimroel.
+Desde 3.5, el [perfil real Nimroel](../config/universes/nimroel/profile.json)
+usa v3 con la política canónica `portrait_npc`. El
+[fixture v3](../test-data/phase3/universe-profile-v3/profile.json) continúa como
+caso genérico `test_universe`; el
+[fixture Nimroel v2](../test-data/phase2/universe-profile-v2/profile.json)
+preserva la compatibilidad histórica sin reinterpretarla como v3.
 
 ## Contrato JSON cerrado
 
@@ -72,10 +74,13 @@ La configuración se materializa en memoria, sin resolver destinos.
 
 Los tests verifican factories, snapshots, required dimensions, parsing estricto,
 compatibilidad histórica, package_files y solo lectura. El script
-Test-MultiUniverseSchemas.ps1 conserva sus 198 checks anteriores y añade checks
-v3. Los fixtures históricos y el perfil real Nimroel no cambian.
+Test-MultiUniverseSchemas.ps1 conserva los controles previos y valida el perfil
+real Nimroel contra v3, rechazándolo como v2; hace la comprobación inversa con
+el fixture histórico v2. Ningún schema cambia.
 
-3.3 solo define configuración pura. 3.4 será comparación estructural de
-snapshots; 3.5 auditará assets/estructura históricos y permitirá decidir la
-política canónica Nimroel; 3.6 resolverá destinos con reglas ya validadas.
-Fase 3 sigue EN CURSO. No se calculan paths, migran assets ni escriben destinos.
+La [auditoría de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) fija exactamente
+`portraits/{culture}/{location}/{role}/{sex}/{asset_id}` para Nimroel
+`portrait_npc`. `realm` y `region` quedan fuera del routing. No se configuran
+transformaciones, mappings ni casing de display, y no se infiere classification
+desde AssetId. 3.6 resolverá destinos con reglas ya validadas. Fase 3 sigue EN
+CURSO; no se calculan paths, migran assets ni escriben destinos en 3.5.

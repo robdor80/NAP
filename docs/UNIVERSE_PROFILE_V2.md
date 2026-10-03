@@ -6,11 +6,13 @@ para añadir archivos de package por asset rule. La versión es independiente
 de Manifest v2 y de [Package Contract v1](PACKAGE_CONTRACT_V1.md).
 
 [Universe Profile v1](UNIVERSE_PROFILE_V1.md) y su schema se conservan intactos
-como contrato histórico. Su referencia a Nimroel describe el estado de 2.6.2;
-el [perfil real actual](../config/universes/nimroel/profile.json) ahora es v2.
-El [fixture v1](../test-data/phase2/universe-profile-v1/profile.json) conserva
-la configuración anterior para pruebas de compatibilidad. No se reescribe JSON
-v1 como v2 ni se exige a v1 declarar package_files.
+como contrato histórico. Su referencia a Nimroel describe el estado de 2.6.2.
+El capítulo 2.8.1 llevó el perfil a v2 y 3.5 conserva ese JSON exacto en el
+[fixture v2](../test-data/phase2/universe-profile-v2/profile.json); el
+[perfil real actual](../config/universes/nimroel/profile.json) usa v3 para
+declarar routing. El [fixture v1](../test-data/phase2/universe-profile-v1/profile.json)
+conserva la configuración anterior para pruebas de compatibilidad. No se
+reescriben los contratos históricos.
 
 ## Contrato JSON
 
@@ -106,12 +108,13 @@ ProductionWebP queda fuera del package de entrada. El detalle está en
 [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md).
 
 Los tests cubren ambos loaders, nombres puros, guardas, snapshots, colisiones
-y el perfil real. `scripts/Test-MultiUniverseSchemas.ps1` conserva las checks
-anteriores de Manifest v2 y Profile v1, y añade Profile v2/Nimroel actual.
+y el fixture histórico v2. `scripts/Test-MultiUniverseSchemas.ps1` conserva las
+checks anteriores de Manifest v2 y Profile v1/v2, además del perfil real v3.
 No se modifican los contratos históricos v1 ni los schemas de manifest.
 
-Nimroel permanece en v2. 3.3 añade [Routing Contract v1](ROUTING_CONTRACT_V1.md)
-solo mediante v3; no migra este perfil ni decide su árbol canónico. No se crea
+Nimroel permaneció en v2 durante 2.8.1–3.4. La auditoría de 3.5 migra el perfil
+real a v3 y fija su política canónica; este documento y su fixture siguen siendo
+la referencia histórica de v2. No se crea
 PackageValidator, registry de contenido, Visual Identity schema, resolución de
 destinos, producción WebP ni nuevas dependencias. La carga sigue materializando
 configuración explícita en memoria, sin límite nuevo de tamaño; cualquier

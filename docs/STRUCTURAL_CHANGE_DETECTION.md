@@ -1,7 +1,6 @@
 # Structural Change Detection — Fase 3 · Capítulo 3.4
 
-**3.1–3.4 HECHOS. Fase 3 EN CURSO. Siguiente: 3.5 — Historical Structure Audit / clasificación.
-3.6 — Destination Resolver pendiente.**
+**3.1–3.5 HECHOS. Fase 3 EN CURSO. Siguiente: 3.6 — Destination Resolver.**
 
 ```text
 ProductionRepositorySnapshot(before)
@@ -101,12 +100,11 @@ nuevos NapIssueCodes. La comparación no demuestra consistencia transaccional
 entre snapshots ni añade información a las observaciones puntuales de 3.2.
 Materializa índices y cambios en memoria, sin cuotas nuevas de tamaño.
 
-**3.5 será el primer capítulo que interpreta la estructura.** Estudiará la
-estructura histórica real, entries de infraestructura, agrupaciones de assets,
-inconsistencias, posibles migraciones, compatibilidad con Routing Contract v1 y
-política canónica Nimroel. 3.4 no toma ninguna de esas decisiones.
+**3.5 es el primer capítulo que interpreta la estructura.** La
+[auditoría histórica](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) separa hechos del
+corte y política futura, migra Nimroel a Profile v3 y fija su routing canónico.
+3.4 no toma ninguna de esas decisiones y su diff permanece neutral.
 
-Nimroel sigue en Profile v2, sin routing configurado ni árbol canónico decidido.
-No se migran assets históricos. 3.6 — Destination Resolver permanece pendiente;
+No se migran assets históricos. 3.6 — Destination Resolver es el siguiente capítulo;
 no hay resolución, creación de carpetas, escrituras, ProcessingPlan, Dry Run,
 SQLite, TeraBox, automatización Git ni UI en este capítulo.
