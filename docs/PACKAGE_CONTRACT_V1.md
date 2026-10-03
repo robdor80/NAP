@@ -3,7 +3,8 @@
 **HECHO:** contrato genérico y configurable para describir los archivos de un
 package normalizado. No valida una instancia real; esa tarea pertenece a 2.8.2.
 La versión del Package Contract es independiente de Manifest v2 y de Universe
-Profile v2. No existen todavía PackageValidator ni ValidatedAssetPackage.
+Profile v2. En 2.8.2 se implementa [Package Semantic Validation](PACKAGE_SEMANTIC_VALIDATION.md)
+con PackageSemanticValidator y ValidatedAssetPackage, manteniendo separado el contrato puro.
 
 ## Envelope y package flat
 
@@ -125,8 +126,8 @@ universo/classification de packages, rechaza archivos faltantes/extra ni produce
 NapIssue de package. El único I/O de la configuración es el loader ya existente.
 No hay estado global, routing, conversiones ni nuevas dependencias.
 
-**2.8.2 — Package Semantic Validator es el siguiente capítulo pendiente.**
-Deberá reunir envelope, perfil y capacidades de contenido antes de permitir
-que routing reciba un asset. Quedan por concretar sus resultados, política de
-extras/subdirectorios, capacidades desconocidas y límites operativos de nombres;
-no se implementan aquí. Fase 2 vuelve a estar en curso y Fase 3 no está iniciada.
+**2.8.2 — Package Semantic Validator HECHO.** Reúne envelope, perfil y contenido
+soportado en solo lectura; rechaza subdirectorios, extras y validators desconocidos
+para archivos presentes. La política y límites se documentan en
+[PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
+Fase 2 completa; Fase 3 no iniciada. Routing solo podrá consumir ValidatedAssetPackage.

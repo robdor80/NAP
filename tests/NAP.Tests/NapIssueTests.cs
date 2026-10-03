@@ -20,7 +20,20 @@ public sealed class NapIssueTests
             (NapIssueCodes.ZipRejected, "zip_rejected"),
             (NapIssueCodes.PngInvalid, "png_invalid"),
             (NapIssueCodes.PngUnsupportedFeature, "png_unsupported_feature"),
-            (NapIssueCodes.UniverseStorageOverlap, "universe_storage_overlap")
+            (NapIssueCodes.UniverseStorageOverlap, "universe_storage_overlap"),
+            (NapIssueCodes.PackageRootInvalid, "package_root_invalid"),
+            (NapIssueCodes.PackageStructureInvalid, "package_structure_invalid"),
+            (NapIssueCodes.PackageManifestMissing, "package_manifest_missing"),
+            (NapIssueCodes.PackageManifestAmbiguous, "package_manifest_ambiguous"),
+            (NapIssueCodes.PackageManifestInvalid, "package_manifest_invalid"),
+            (NapIssueCodes.PackageManifestFilenameMismatch, "package_manifest_filename_mismatch"),
+            (NapIssueCodes.PackageRootNameMismatch, "package_root_name_mismatch"),
+            (NapIssueCodes.PackageUniverseMismatch, "package_universe_mismatch"),
+            (NapIssueCodes.PackageRuleNotFound, "package_rule_not_found"),
+            (NapIssueCodes.PackageClassificationInvalid, "package_classification_invalid"),
+            (NapIssueCodes.PackageRequiredFileMissing, "package_required_file_missing"),
+            (NapIssueCodes.PackageUnexpectedFile, "package_unexpected_file"),
+            (NapIssueCodes.PackageContentValidatorUnsupported, "package_content_validator_unsupported")
         ];
         Assert.Equal(codes.Length, codes.Select(pair => pair.Actual).Distinct(StringComparer.Ordinal).Count());
         foreach (var (actual, expected) in codes)

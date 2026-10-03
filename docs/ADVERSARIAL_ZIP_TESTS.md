@@ -115,6 +115,7 @@ y seguro en corrupto. El caller futuro seleccionará contexto y raíces.
 
 **Al cierre de 2.7 quedaron hechos 2.1–2.7.** La revisión posterior insertó
 2.8 — Package Semantic Validation antes de routing y reabrió Fase 2.
-[2.8.1 — Package Contract v1](PACKAGE_CONTRACT_V1.md) está hecho; 2.8.2 será
-el siguiente capítulo pendiente. Esta auditoría conserva su alcance ZIP,
-sin implementar validación semántica ni iniciar Fase 3.
+[2.8.1 — Package Contract v1](PACKAGE_CONTRACT_V1.md) y
+[2.8.2 — Package Semantic Validation](PACKAGE_SEMANTIC_VALIDATION.md) están hechos;
+Fase 2 completa. Esta auditoría conserva su alcance ZIP; la capa semántica
+posterior está separada y Fase 3 no está iniciada.

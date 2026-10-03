@@ -60,9 +60,11 @@ Classification utiliza `Dictionary<string, string>` como v1.
 El DTO conserva los datos literalmente: `required` exige presencia al
 deserializar, pero no valida versión, formato, nulls ni requisitos del perfil.
 Su diccionario es mutable y la serialización directa no sustituye al schema.
-No se añade parser/validador global de manifest ni un runtime JSON Schema
-validator. La comparación dinámica de asset_id con asset_type continúa en
-`AssetNamingRules.MatchesAssetType`, fuera del schema.
+En 2.8.2, `AssetManifestV2Loader` añade carga runtime estricta y comprobación
+de contrato/Naming, incluidas propiedades duplicadas y
+`AssetNamingRules.MatchesAssetType`, fuera del schema. No se cambia el DTO ni
+se añade un JSON Schema validator runtime. Véase
+[PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
 ## Perfil y boundary de universo
 
@@ -89,8 +91,9 @@ schema universal. El perfil Nimroel conserva la regla histórica fuera del
 contrato universal. No se cambia Naming, filenames, conversiones, parámetros
 de producción ni los datos existentes.
 
-Las migraciones v1→v2, PackageValidator, registries completos de producción,
-routing, SQLite, TeraBox, UI y vocabularios de valores siguen pendientes.
+2.8.2 implementa PackageSemanticValidator para packages nuevos exclusivamente
+v2, con contexto explícito y sin migrar v1. Las migraciones v1→v2, registries
+completos de producción, routing, SQLite, TeraBox, UI y vocabularios siguen pendientes.
 Los tests cubren transporte, presence y universe match. Las comprobaciones
 reproducibles del schema están en `scripts/Test-MultiUniverseSchemas.ps1`:
 
