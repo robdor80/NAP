@@ -1,7 +1,7 @@
 # Destination Resolver — Fase 3 · Capítulo 3.6
 
-**3.1–3.6 HECHOS. Fase 3 — Routing y repo HECHA. Siguiente: Fase 4 — PLAN / Dry Run,
-4.1 — ProcessingPlan.** Fase 4 todavía no está implementada.
+**3.1–3.6 HECHOS. Fase 3 — Routing y repo HECHA. Fase 4 — PLAN / Dry Run EN CURSO.
+4.1 — ProcessingPlan HECHO. Siguiente: 4.2 — Dry Run.**
 
 ```text
 ValidatedAssetPackage
@@ -14,7 +14,7 @@ ProductionDestinationResolver
         ↓
 ProductionAssetDestination
         ↓
-Fase 4 ProcessingPlan (siguiente)
+Fase 4 ProcessingPlan (4.1 HECHO)
 ```
 
 ## Autoridad y API
@@ -116,9 +116,11 @@ Un root/parent inexistente, un destino existente o un File donde se deseará un
 Directory no afectan al cálculo. No genera filenames, ProcessingPlan, Dry Run,
 conversión, hashes, SQLite, TeraBox ni migración histórica.
 
-Resolver un destino **no autoriza una escritura**. Fase 4 comienza con
-ProcessingPlan; la existencia, colisiones y diferencias entre estructura
-observada/deseada pertenecen al futuro PLAN / Dry Run. Antes de futuras
+Resolver un destino **no autoriza una escritura**. [4.1 — ProcessingPlan](PROCESSING_PLAN.md)
+combina las fronteras validadas y este destino como snapshot inmutable, sin
+re-routing ni grafo de ejecución. 4.2 — Dry Run es siguiente; existencia,
+colisiones y diferencias entre estructura observada/deseada pertenecen a
+4.3 — Plan Validation, pendiente. Antes de futuras
 escrituras deberán mantenerse las comprobaciones físicas de raíz, contención
 y links que correspondan.
 
