@@ -262,6 +262,17 @@ existencia, colisiones ni escrituras. Es la base del plan, todavía sin contrato
 de conversión/archive/hash ni grafo de ejecución. Véase
 [PROCESSING_PLAN.md](PROCESSING_PLAN.md).
 
+## Representación humana del plan — 4.2
+
+`DryRunTextRenderer.Render(ProcessingPlan)` devuelve un string humano
+determinista: identidad, classification completa, package/manifest, inputs por
+role y destino congelado. Ordena dimensions/roles con StringComparer.Ordinal,
+usa LF fijo sin newline final y escapa paths entre comillas en una sola línea.
+No revalida fronteras, consulta filesystem ni recalcula routing. OPERATIONS
+declara que las operaciones no están definidas; SAFETY no ejecuta ni autoriza
+escrituras. Sin CLI, serializer, outputs inventados o DTO adicional de report.
+Véase [DRY_RUN.md](DRY_RUN.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -313,14 +324,15 @@ La hoja de ruta vigente es:
 - **3.6 — Destination Resolver: HECHO.** Cálculo puro de directorios con la regla retenida en el package validado.
 - **Fase 4 — PLAN / Dry Run: EN CURSO.**
 - **4.1 — ProcessingPlan: HECHO.** Base inmutable de hechos validados y destino calculado.
-- **4.2 — Dry Run: siguiente.**
-- **4.3 — Plan Validation y 4.4 — Logs: pendientes.**
+- **4.2 — Dry Run: HECHO.** Representación textual humana determinista del plan, sin I/O.
+- **4.3 — Plan Validation: siguiente.** Validación operativa todavía sin implementar.
+- **4.4 — Logs: pendiente.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción, Dry Run / Plan Validation / Logs, vocabularios de valores, SQLite,
+producción, Plan Validation / Logs, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.
