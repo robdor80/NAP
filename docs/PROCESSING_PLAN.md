@@ -1,7 +1,7 @@
 # ProcessingPlan — Fase 4 · Capítulo 4.1
 
-**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan HECHO.
-Siguiente: 4.2 — Dry Run. 4.3 — Plan Validation y 4.4 — Logs pendientes.**
+**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan y
+4.2 — Dry Run HECHOS. Siguiente: 4.3 — Plan Validation. 4.4 — Logs pendiente.**
 
 ## Propósito y fronteras
 
@@ -33,7 +33,7 @@ ProcessingPlanBuilder
         ↓
 ProcessingPlan
         ↓
-4.2 Dry Run (siguiente)
+4.2 Dry Run (HECHO)
 ```
 
 ## API y coherencia
@@ -117,8 +117,10 @@ conversión PNG → WebP, parámetros runtime, filenames finales de producción,
 hashes, colisiones, ejecución o persistencia. El ejemplo completo de la sección
 28 del Master Spec conserva su función de objetivo futuro.
 
-4.2 desarrollará Dry Run a partir de esta base. 4.3 añadirá validación operativa
-del plan y 4.4 logs; ambos siguen pendientes. Los contratos de conversión,
+4.2 añade [DryRunTextRenderer](DRY_RUN.md), que devuelve texto humano
+determinista desde esta base, con LF fijo, orden Ordinal y paths escapados.
+No revalida ni ejecuta operaciones. 4.3 — Plan Validation es siguiente;
+4.4 — Logs permanece pendiente. Los contratos de conversión,
 archive, hashes y jobs corresponden a fases posteriores; JobId pertenece a Fase 6.
 No se implementan esos contratos anticipadamente en 4.1.
 
