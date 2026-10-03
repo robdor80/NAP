@@ -33,7 +33,10 @@ public sealed class NapIssueTests
             (NapIssueCodes.PackageClassificationInvalid, "package_classification_invalid"),
             (NapIssueCodes.PackageRequiredFileMissing, "package_required_file_missing"),
             (NapIssueCodes.PackageUnexpectedFile, "package_unexpected_file"),
-            (NapIssueCodes.PackageContentValidatorUnsupported, "package_content_validator_unsupported")
+            (NapIssueCodes.PackageContentValidatorUnsupported, "package_content_validator_unsupported"),
+            (NapIssueCodes.ProductionRootMissing, "production_root_missing"),
+            (NapIssueCodes.ProductionRootInvalid, "production_root_invalid"),
+            (NapIssueCodes.ProductionRootReparse, "production_root_reparse")
         ];
         Assert.Equal(codes.Length, codes.Select(pair => pair.Actual).Distinct(StringComparer.Ordinal).Count());
         foreach (var (actual, expected) in codes)

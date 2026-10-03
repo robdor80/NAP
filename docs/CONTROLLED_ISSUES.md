@@ -123,6 +123,25 @@ PackageSemanticValidationResult solo lleva ValidatedAssetPackage si el report
 está limpio. El orden y SubjectPath/Detail de cada código están documentados en
 [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
+## Production Repository Boundary — 3.1
+
+`ProductionRepositoryValidator` crea directamente tres códigos de NapIssueCodes:
+
+| Código | Condición | Severity | Disposition | SubjectPath |
+| --- | --- | --- | --- | --- |
+| `production_root_missing` | FileNotFoundException o DirectoryNotFoundException al leer la raíz | Error | Stop | ProductionRoot absoluto exacto |
+| `production_root_invalid` | La raíz existe pero no es directorio | Error | Stop | ProductionRoot absoluto exacto |
+| `production_root_reparse` | El directorio raíz mismo es ReparsePoint | Error | Stop | ProductionRoot absoluto exacto |
+
+La raíz procede exclusivamente de UniverseContext.Storage.ProductionRoot.
+Se lee únicamente File.GetAttributes de esa raíz, sin enumerar entries ni
+exigir Git. Otros errores de acceso/I/O se propagan: no se confunden con missing.
+No se cambian NapIssueMapper ni los mapeos previos.
+
+`ProductionRepositoryValidationResult` solo lleva ValidatedProductionRepository
+con report limpio; cualquier issue impide adjuntarlo. Véase
+[PRODUCTION_REPOSITORY_BOUNDARY.md](PRODUCTION_REPOSITORY_BOUNDARY.md).
+
 ## Excepciones y límites
 
 El mapper no atrapa excepciones. Resultados nulos o estados no reconocidos
