@@ -1,8 +1,8 @@
 # Portrait PNG → WebP — Fase 5 · Capítulo 5.1
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
-5.1 — Portrait y 5.2 — Validar salida HECHOS. 5.3 — Scene SIGUIENTE.
-5.4 — Perfiles genéricos y 5.5 — No recorte silencioso pendientes.**
+5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
+5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente.**
 
 Primera conversión gráfica real del Core: PNG maestro estático → validación
 estructural → safety pixels → proporción exacta → decode real → resize sin crop
@@ -150,7 +150,8 @@ permiso de ejecución/escritura de assets. El converter no valida su salida:
 productiva separada, posterior a 5.1, para metadata/settings, decode WebP real
 y dimensiones; no se integra automáticamente ni autoriza escritura.
 
-Fase 5 permanece EN CURSO. 5.1 y 5.2 HECHOS; 5.3 — Scene es siguiente,
-todavía sin implementar. 5.4 conectará reglas genéricas de conversión con perfiles/config,
+Fase 5 permanece EN CURSO. 5.1–5.3 HECHOS. [Scene](SCENE_CONVERSION.md)
+tiene tipos propios/settings explícitos sin perfil canónico; no modifica 5.1.
+5.4 — Perfiles genéricos SIGUIENTE: conectará reglas de conversión con profiles/config,
 sin crear Universe Profile v4 aquí. 5.5 seguirá formalizando garantías generales
 de no recorte silencioso; Portrait ya respeta esa invariante en 5.1.

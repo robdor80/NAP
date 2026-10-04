@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1.
 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait y 5.2 — Validar salida HECHOS; siguiente: 5.3 — Scene.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos.**
 
 Logs útiles pero no invasivos: un resumen humano breve del resultado de
 planning/validation, separado del preview detallado de Dry Run.
@@ -136,8 +136,8 @@ implementa aquí. Persistencia/historial, timestamps y diagnósticos futuros
 requieren sus contratos y una política explícita de privacidad; Jobs/estados
 pertenecen a Fase 6. Fase 5 — Conversión EN CURSO; 5.1 — Portrait HECHO
 como primitive independiente ([PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md)),
-sin integrar conversión/exceptions en este log. 5.2 — Validar salida HECHO; 5.3 — Scene SIGUIENTE;
-5.4 — Perfiles genéricos y 5.5 — No recorte silencioso pendientes.
+sin integrar conversión/exceptions en este log. 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS;
+5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente.
 Portrait ya prohíbe crop.
 
 ## Validación

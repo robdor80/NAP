@@ -121,8 +121,10 @@ La decisión existente de ese perfil sigue siendo fuente PNG 4:5 y producción
 WebP 768×960, Q90, sin crop silencioso. 768×960 es resolución de producción,
 no requisito mínimo del maestro; aquí no se resuelve ningún perfil.
 
-Scenes continúa sin proporción, resolución o perfil definitivos. Se puede
-inspeccionar su PNG con el mismo componente, sin aplicar reglas de scene.
+Scene continúa sin proporción, resolución o perfil canónicos definitivos.
+[5.3 — Scene](SCENE_CONVERSION.md) reutiliza este validador antes de pixel safety,
+ratio source/output solicitado exacto y decode PNG real, con settings explícitos.
+No introduce reglas canónicas de Scene ni modifica este contrato.
 
 ## Tests y continuidad
 
@@ -139,6 +141,6 @@ probando transporte opaco. 2.4 no añadió binarios grandes ni dependencias.
 Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO.
 5.1 — Portrait HECHO (primitive independiente); 5.2 — Validar salida HECHO.
 [5.2](PORTRAIT_OUTPUT_VALIDATION.md) comprueba el WebP en memoria, sin volver
-al PNG ni alterar este validador. 5.3 — Scene SIGUIENTE;
-5.4 — Perfiles genéricos y 5.5 — No recorte silencioso pendientes;
+al PNG ni alterar este validador. 5.3 — Scene HECHO;
+5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente;
 Portrait ya prohíbe crop.
