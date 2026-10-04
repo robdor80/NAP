@@ -1,0 +1,33 @@
+{
+  "schema_version": 4,
+  "universe_id": "test_universe",
+  "display_name": "Generic conversion test fixture only",
+  "classification_dimensions": ["category"],
+  "asset_rules": [{
+    "asset_type": "image_asset",
+    "production_profile": "image_profile",
+    "allowed_classification": ["category"],
+    "required_classification": ["category"],
+    "package_files": [{
+      "role": "source_image", "suffix": "", "extension": ".png",
+      "required": true, "content_validator": "png_master"
+    }],
+    "routing": { "segments": [
+      { "literal": "images" }, { "classification": "category" }, { "asset_id": true }
+    ] },
+    "conversion": {
+      "kind": "png_to_webp", "source_role": "source_image",
+      "output_width": 1200, "output_height": 800, "webp_quality": 87
+    }
+  }, {
+    "asset_type": "metadata_asset",
+    "production_profile": "metadata_profile",
+    "allowed_classification": [], "required_classification": [],
+    "package_files": [{
+      "role": "info", "suffix": "_info", "extension": ".json",
+      "required": true, "content_validator": null
+    }],
+    "routing": { "segments": [{ "literal": "metadata" }, { "asset_id": true }] },
+    "conversion": null
+  }]
+}

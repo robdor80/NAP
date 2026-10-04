@@ -203,5 +203,14 @@ La carga JSON materializa un JsonDocument en memoria con opciones estándar;
 no se añade una cuota nueva de tamaño del manifest/configuración. Los límites
 operativos adicionales se decidirán cuando corresponda.
 
-**Fase 2 HECHA (2.1–2.8). Siguiente: Fase 3 — Routing y repo**, todavía no
-iniciada. Routing solo podrá consumir ValidatedAssetPackage.
+Desde [5.4 — Universe Profile v4](UNIVERSE_PROFILE_V4.md), UniverseAssetRule
+valida en configuración que Conversion.SourceRole corresponde Ordinal a un
+PackageFiles required `.png` con `png_master`. Un perfil incompatible falla al
+cargarse, antes de validar packages. PackageSemanticValidator conserva su
+algoritmo; ValidatedAssetPackage retiene la misma AssetRule y por tanto
+AssetRule.Conversion. Tests de config → package → resolver demuestran esa
+retención para Nimroel y el fixture genérico, sin convertir ni escribir salidas.
+
+**Fases 2 y 3 HECHAS. Fase 4 HECHA dentro del alcance v1. Fase 5 EN CURSO;
+5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.**
+Routing solo podrá consumir ValidatedAssetPackage.

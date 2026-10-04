@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "universe_id": "nimroel",
   "display_name": "Nimroel",
   "classification_dimensions": ["culture", "realm", "region", "location", "role", "sex"],
@@ -24,6 +24,13 @@
           { "classification": "sex" },
           { "asset_id": true }
         ]
+      },
+      "conversion": {
+        "kind": "png_to_webp",
+        "source_role": "master",
+        "output_width": 768,
+        "output_height": 960,
+        "webp_quality": 90
       }
     }
   ]

@@ -74,8 +74,10 @@ El contrato [Universe Profile configuration v1](UNIVERSE_PROFILE_V1.md) se
 conserva intacto como histórico. En 2.8.1 Nimroel pasó a
 [Universe Profile v2](UNIVERSE_PROFILE_V2.md), que exige package_files en cada
 asset rule; 3.5 conserva ese estado como fixture histórico y migra el perfil
-real a [Universe Profile v3](UNIVERSE_PROFILE_V3.md) con routing. El loader
-detecta versión y aplica estrictamente v1, v2 o v3; admite
+real a [Universe Profile v3](UNIVERSE_PROFILE_V3.md) con routing. Desde 5.4,
+Nimroel usa [Universe Profile v4](UNIVERSE_PROFILE_V4.md), que conserva esos
+contratos y añade conversion required nullable. El loader
+detecta versión y aplica estrictamente v1, v2, v3 o v4; admite
 stream y ruta en solo lectura con guardas de configuración. No hay reglas
 Nimroel-specific hardcodeadas ni carga global; no valida packages.
 
@@ -203,7 +205,8 @@ AssetId lleva Value null. No hay templates libres.
 UniverseAssetRule añade Routing nullable; constructores y profiles v1/v2
 conservan Routing null. Toda Classification usada por routing debe estar en
 RequiredClassification de esa regla, no solo Allowed. Profile v3 exige
-package_files + routing, con parsing estricto y dispatch explícito v1/v2/v3.
+package_files + routing, con parsing estricto. El loader actual aplica dispatch
+explícito v1/v2/v3/v4; los contratos históricos siguen intactos.
 En 3.5 Nimroel migra a Profile v3 con su política canónica declarada; v2 queda
 preservado como fixture histórico. Los destinos se calculan en 3.6. Véanse
 [NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md),
@@ -298,9 +301,22 @@ Primitive independiente de universo, profile, ProcessingPlan y repository.
 PortraitPngToWebpConverter recibe sourcePath + PortraitConversionSettings;
 ImageSharp 3.1.12 managed/cross-platform decodifica PNG tras estructura,
 pixel safety y ratio exacto, resizea sin crop con Lanczos3 y devuelve WebP lossy
-en memoria. No escribe ni carga settings de profile.json; 5.4 conectará reglas
-genéricas. Nimroel 768×960 Q90 es ejemplo probado. Véase
+en memoria. El converter recibe settings explícitos; desde 5.4 Profile v4
+declara reglas genéricas y el resolver produce un snapshot de configuración,
+sin ejecutar conversión. Nimroel declara 768×960 Q90 en config. Véase
 [PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md).
+
+## Perfiles genéricos — 5.4 HECHO
+
+[Universe Profile v4](UNIVERSE_PROFILE_V4.md) añade conversion required nullable.
+ImageConversionRule declara PNG → WebP, source role required `.png` +
+`png_master`, output dimensions y quality. MaxInputPixels sigue siendo runtime.
+ValidatedAssetPackage retiene AssetRule.Conversion; ImageConversionResolver
+produce ResolvedImageConversion con path exacto, sin I/O ni ejecución y sin
+branching por universo, asset type o production profile. v1/v2/v3 conservan
+Conversion null. Nimroel solo añade Portrait master → 768×960 Q90; no Scene.
+ProcessingPlan v1 no congela la regla y Dry Run v1 no muestra conversión;
+una evolución futura podrá consumirla cuando se formalicen operaciones.
 
 ## Portrait Output Validation — 5.2 HECHO
 
@@ -380,15 +396,15 @@ La hoja de ruta vigente es:
 - **5.1 — Portrait: HECHO.** Conversión PNG → WebP en memoria, settings explícitos.
 - **5.2 — Validar salida: HECHO.** Metadata/settings, decode WebP real y dimensiones, sin I/O.
 - **5.3 — Scene: HECHO.** Conversión y validación en memoria; sin canon Nimroel.
-- **5.4 — Perfiles genéricos: SIGUIENTE.**
-- **5.5 — No recorte silencioso: PENDIENTE.** Portrait ya prohíbe crop.
+- **5.4 — Perfiles genéricos: HECHO.**
+- **5.5 — No recorte silencioso: SIGUIENTE.** Portrait ya prohíbe crop.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción, persistencia de logs, pre-execution, vocabularios de valores, SQLite,
-TeraBox, perfiles/conversiones genéricas y selector UI. 5.1 añade únicamente
+TeraBox, orquestación de conversiones genéricas y selector UI. 5.1 añade únicamente
 ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas
 previas conservan su alcance de solo lectura: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

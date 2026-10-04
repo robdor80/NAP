@@ -93,7 +93,8 @@ mediante excepciones, sin escrituras ni permisos de escritura implícitos.
 ## Nimroel y siguientes capítulos
 
 Tras la [auditoría histórica de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md),
-Nimroel usa Universe Profile v3 y declara exactamente
+Nimroel migró a Universe Profile v3 en 3.5. Desde 5.4 usa
+[Profile v4](UNIVERSE_PROFILE_V4.md) conservando exactamente
 `portraits/{culture}/{location}/{role}/{sex}/{asset_id}`. `realm` y `region`
 siguen allowed, pero no son required ni segmentos de ruta. Los valores futuros
 son machine identifiers; no existe title casing, mapping, condicional, life
@@ -102,7 +103,7 @@ stage ni inferencia desde AssetId. Routing Contract v1 es suficiente.
 - **3.4 HECHO:** [diff estructural puro](STRUCTURAL_CHANGE_DETECTION.md) mediante snapshots, sin usar routing.
 - **3.5 HECHO:** estructura histórica auditada y política canónica Nimroel declarada, sin migración.
 - **3.6 — [Destination Resolver](DESTINATION_RESOLVER.md) HECHO:** calcula directorios bajo la raíz autorizada, usando las reglas retenidas por packages validados.
-- **Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan siguiente:** todavía sin implementar.
+- **Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 EN CURSO:** 5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.
 
 Este capítulo no implementa resolución, diff de repositorio, auditoría histórica, migración,
 colisiones, creación de carpetas, ProcessingPlan, Dry Run, hashes, conversión,

@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.**
 
 ## Propósito y API
 
@@ -146,6 +146,12 @@ colisiones o contenido del repositorio. No recibe snapshots, llama al builder
 o resolver, crea carpetas o escribe archivos. Paths inexistentes son suficientes.
 No se añade CLI, flags, UI, logs ni integración externa.
 
+Desde [5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), la conversión puede declararse
+y resolverse desde el package validado. ProcessingPlan v1 todavía no congela
+esa regla y Dry Run v1 todavía no muestra una operación de conversión.
+5.4 introduce contrato/configuración; una futura evolución del plan podrá
+consumirlo cuando se formalicen operaciones, sin fijar un capítulo para ello.
+
 OPERATIONS declara exactamente que las operaciones no están definidas en
 ProcessingPlan v1. No promete copy/convert/create/write/archive ni inventa
 maestro, archive/TeraBox, output WebP, hashes, JobId, timestamps o estados.
@@ -155,7 +161,7 @@ filesystem ante procesos concurrentes. Renderizar no ejecuta ni autoriza nada.
 4.3 — [Plan Validation](PLAN_VALIDATION.md) valida estructuralmente el destino
 contra un snapshot materializado, sin I/O ni revalidación de sources. Es una
 frontera separada del renderer; un report limpio es point-in-time y no autoriza
-escrituras. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos. El objetivo futuro completo de PLAN crecerá cuando
+escrituras. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. El objetivo futuro completo de PLAN crecerá cuando
 existan los contratos correspondientes, sin presentarlos como implementados hoy.
 
 Los tests verifican el documento completo, LF, orden Ordinal, colecciones vacías,

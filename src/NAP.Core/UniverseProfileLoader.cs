@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace NAP.Core;
 
-/// <summary>Loads profile configuration v1, v2 or v3 explicitly. Leaves caller-owned streams open.</summary>
+/// <summary>Loads profile configuration v1, v2, v3 or v4 explicitly. Leaves caller-owned streams open.</summary>
 public static class UniverseProfileLoader
 {
     public static UniverseProfile Load(string path)
@@ -22,7 +22,7 @@ public static class UniverseProfileLoader
         RequireKind(root, JsonValueKind.Object);
         if (!root.TryGetProperty("schema_version", out var version))
             throw new JsonException("The universe profile schema version is missing.");
-        if (version.ValueKind != JsonValueKind.Number || !version.TryGetDecimal(out var number) || number is not (1 or 2 or 3))
+        if (version.ValueKind != JsonValueKind.Number || !version.TryGetDecimal(out var number) || number is not (1 or 2 or 3 or 4))
             throw new InvalidDataException("Unsupported universe profile schema version.");
         RequireObject(root, "schema_version", "universe_id", "display_name", "classification_dimensions", "asset_rules");
 
@@ -36,6 +36,7 @@ public static class UniverseProfileLoader
         {
             IReadOnlyList<AssetPackageFileRule> packageFiles;
             AssetRoutingRule? routing = null;
+            ImageConversionRule? conversion = null;
             switch (number)
             {
                 case 1:
@@ -51,15 +52,43 @@ public static class UniverseProfileLoader
                     packageFiles = PackageFiles(rule.GetProperty("package_files"));
                     routing = Routing(rule.GetProperty("routing"));
                     break;
+                case 4:
+                    RequireObject(rule, "asset_type", "production_profile", "allowed_classification", "required_classification", "package_files", "routing", "conversion");
+                    packageFiles = PackageFiles(rule.GetProperty("package_files"));
+                    routing = Routing(rule.GetProperty("routing"));
+                    conversion = Conversion(rule.GetProperty("conversion"));
+                    break;
                 default:
                     throw new InvalidDataException("Unsupported universe profile schema version.");
             }
             rules.Add(new UniverseAssetRule(String(rule.GetProperty("asset_type")),
                 String(rule.GetProperty("production_profile")),
                 Strings(rule.GetProperty("allowed_classification")),
-                Strings(rule.GetProperty("required_classification")), packageFiles, routing));
+                Strings(rule.GetProperty("required_classification")), packageFiles, routing, conversion));
         }
         return new UniverseProfile(id, displayName, dimensions, rules);
+    }
+
+    private static ImageConversionRule? Conversion(JsonElement element)
+    {
+        if (element.ValueKind == JsonValueKind.Null) return null;
+        RequireObject(element, "kind", "source_role", "output_width", "output_height", "webp_quality");
+        var kind = String(element.GetProperty("kind")) switch
+        {
+            "png_to_webp" => ImageConversionKind.PngToWebp,
+            _ => throw new JsonException("Unknown image conversion kind.")
+        };
+        return new ImageConversionRule(kind, String(element.GetProperty("source_role")),
+            Integer(element.GetProperty("output_width")), Integer(element.GetProperty("output_height")),
+            Integer(element.GetProperty("webp_quality")));
+    }
+
+    private static int Integer(JsonElement element)
+    {
+        if (element.ValueKind != JsonValueKind.Number || !element.TryGetDecimal(out var value) ||
+            value != decimal.Truncate(value) || value < int.MinValue || value > int.MaxValue)
+            throw new JsonException("An image conversion value must be an integer.");
+        return (int)value;
     }
 
     private static AssetRoutingRule Routing(JsonElement element)

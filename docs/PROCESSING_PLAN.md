@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.**
 
 ## Propósito y fronteras
 
@@ -113,6 +113,12 @@ DateTime, Guid, random, contador global, JobId, Status ni estado de ejecución.
 No contiene Operations, Steps, Actions, comandos o lista de escrituras.
 4.1 no renderiza texto Dry Run, JSON de auditoría ni salida CLI.
 
+Desde [5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), el package validado retiene
+AssetRule.Conversion y ImageConversionResolver puede resolverla. ProcessingPlan
+v1 todavía no congela la conversion rule y Dry Run v1 no muestra una operación
+de conversión. Una futura evolución del plan podrá congelar la regla cuando
+se formalicen operaciones de ejecución; no se fija cuándo ni se reabre Fase 4.
+
 Todavía no conoce destino archive/maestro, estructura ArchiveRoot/TeraBox,
 conversión PNG → WebP, parámetros runtime, filenames finales de producción,
 hashes, colisiones, ejecución o persistencia. El ejemplo completo de la sección
@@ -123,7 +129,7 @@ determinista desde esta base, con LF fijo, orden Ordinal y paths escapados.
 No revalida ni ejecuta operaciones. [4.3 — Plan Validation](PLAN_VALIDATION.md)
 interpreta estructuralmente el destino contra un snapshot materializado, sin I/O,
 source revalidation ni hashes. Un report limpio es point-in-time y no autoriza
-escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
+escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
 explícitos y devuelve WebP en memoria, sin depender del plan ni añadir operaciones.
 La conexión de conversiones al plan, archive, hashes y jobs sigue pendiente;
 JobId pertenece a Fase 6.

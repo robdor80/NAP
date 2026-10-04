@@ -202,7 +202,7 @@ public sealed class UniverseProfileV3LoaderTests
     }
 
     [Theory]
-    [InlineData("4")]
+    [InlineData("5")]
     [InlineData("3.5")]
     [InlineData("\"3\"")]
     [InlineData("null")]
