@@ -8,6 +8,8 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ### Added
 
+- Capítulo 5.1 — Portrait PNG → WebP: primitive independiente con PortraitConversionSettings, PortraitWebpImage inmutable, PortraitConversionResult y PortraitPngToWebpConverter. ImageSharp 3.1.12 managed/cross-platform fijado; mismo stream read-only para estructura/decode, pixel safety y proporción long exacta antes de decode PNG Rgba32, Lanczos3 sin crop/pad/letterbox/AutoOrient, WebP lossy configurable en memoria y upscale permitido. Tres códigos portrait_* Error + Stop; reutiliza png_* y propaga errores de acceso. Sin output file, ProductionRoot/ArchiveRoot, ProcessingPlan o profile.json; Nimroel 768×960 Q90 es ejemplo probado. Fase 4 HECHA (v1), Fase 5 EN CURSO, 5.1 HECHO y 5.2 — Validar salida SIGUIENTE; 5.3–5.5 pendientes.
+
 - Capítulo 4.4 — Logs: PlanLogTextRenderer proyecta ProcessingPlan + NapIssueReport a un resumen textual determinista privacy-safe, con identidad, destino relativo y flags/code/severity/disposition en orden. Sin rutas absolutas/fuente, Message/SubjectPath/Detail, I/O, persistencia, timestamps, JobId ni revalidación. Fase 4 HECHA dentro del alcance v1 (4.1–4.4); siguiente Fase 5 — Conversión, 5.1 — Portrait. El plan completo crecerá cuando existan contratos de operaciones/archive/conversión/hashes.
 
 - Base inicial de la solución .NET 8.

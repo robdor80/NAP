@@ -34,4 +34,7 @@ public static class NapIssueCodes
     public const string PlanDestinationCasingConflict = "plan_destination_casing_conflict";
     public const string PlanDestinationBlocked = "plan_destination_blocked";
     public const string PlanDestinationExists = "plan_destination_exists";
+    public const string PortraitInputTooLarge = "portrait_input_too_large";
+    public const string PortraitAspectRatioMismatch = "portrait_aspect_ratio_mismatch";
+    public const string PortraitDecodeFailed = "portrait_decode_failed";
 }

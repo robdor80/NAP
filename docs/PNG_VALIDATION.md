@@ -98,8 +98,10 @@ no se selecciona el primer frame. Si el chunk está corrupto se devuelve
 **No se descomprime el stream zlib de IDAT.** Un payload no decodificable
 con CRC correcto puede pasar esta validación estructural. Tampoco se verifican
 Adler-32, cantidad de scanlines, filtros por fila, índices de paleta o píxeles.
-La decodificación gráfica completa deberá confirmarla el componente de imagen
-o conversión posterior, con sus propios límites de memoria/píxeles. Aceptar
+5.1 — PortraitPngToWebpConverter confirma el decode PNG real con ImageSharp 3.1.12,
+después de aplicar MaxInputPixels y proporción exacta. Reutiliza este validador
+y la misma FileStream, reseteando Position = 0; un IDAT no decodificable puede
+producir portrait_decode_failed. Véase [PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md). Aceptar
 dimensiones grandes aquí no autoriza asignar un raster de ese tamaño.
 
 No se garantiza conformidad completa de todos los metadatos auxiliares, ni
@@ -133,5 +135,8 @@ lecturas cortas/sin seek y memoria de lectura acotada. Un test explicita que
 la validación estructural no equivale a decodificación zlib.
 
 El placeholder textual de Fase 1 **no se modifica**: su integración sigue
-probando transporte opaco. No se añaden binarios grandes ni dependencias.
-El siguiente capítulo es **2.5 — Errores controlados**, todavía pendiente.
+probando transporte opaco. 2.4 no añadió binarios grandes ni dependencias.
+Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO.
+5.1 — Portrait HECHO (primitive independiente); 5.2 — Validar salida SIGUIENTE.
+5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso pendientes;
+Portrait ya prohíbe crop.
