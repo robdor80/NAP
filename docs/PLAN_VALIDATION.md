@@ -1,7 +1,8 @@
 # Plan Validation — Fase 4 · Capítulo 4.3
 
-**Fase 3 HECHA. Fase 4 — PLAN / Dry Run EN CURSO. 4.1 — ProcessingPlan,
-4.2 — Dry Run y 4.3 — Plan Validation HECHOS. Siguiente: 4.4 — Logs.**
+**Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
+4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
+Siguiente: Fase 5 — Conversión, 5.1 — Portrait.**
 
 ## Objetivo y API
 
@@ -128,7 +129,7 @@ El resultado lógico es determinista para plan/snapshot equivalentes bajo la
 semántica de plataforma, sin cultura actual, timestamps, Guid, random o dependencia
 del orden de inserción. No hay creación de carpetas, operaciones ejecutables,
 writes, migración, conversión, archive planning, JobId, estados, UI o CLI.
-**4.4 — Logs es el siguiente capítulo**, con Fase 4 todavía EN CURSO.
+**4.4 — Logs HECHO:** resumen textual privacy-safe de plan + report, sin revalidación ni persistencia. Véase [PLAN_LOGS.md](PLAN_LOGS.md). Fase 4 HECHA dentro del alcance v1; siguiente: Fase 5 — Conversión, 5.1 — Portrait.
 
 Los tests construyen snapshots en memoria usando las fronteras internas existentes:
 coherencia, duplicados, missing/ancestors, File blockers, destino existente, casing

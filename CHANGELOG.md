@@ -8,6 +8,8 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 
 ### Added
 
+- Capítulo 4.4 — Logs: PlanLogTextRenderer proyecta ProcessingPlan + NapIssueReport a un resumen textual determinista privacy-safe, con identidad, destino relativo y flags/code/severity/disposition en orden. Sin rutas absolutas/fuente, Message/SubjectPath/Detail, I/O, persistencia, timestamps, JobId ni revalidación. Fase 4 HECHA dentro del alcance v1 (4.1–4.4); siguiente Fase 5 — Conversión, 5.1 — Portrait. El plan completo crecerá cuando existan contratos de operaciones/archive/conversión/hashes.
+
 - Base inicial de la solución .NET 8.
 - Capítulo 1.5: extractor ZIP seguro en NAP.Core, publicación mediante temporal propio, límites configurables, comprobación CRC-32 y tests de seguridad.
 - Capítulo 1.6: primer paquete representativo en test-data y prueba de integración de Fase 1 completa, desde Inbox hasta extracción segura, preservando ZIP originales y contenido ajeno.
