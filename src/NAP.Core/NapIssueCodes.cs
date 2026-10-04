@@ -37,4 +37,7 @@ public static class NapIssueCodes
     public const string PortraitInputTooLarge = "portrait_input_too_large";
     public const string PortraitAspectRatioMismatch = "portrait_aspect_ratio_mismatch";
     public const string PortraitDecodeFailed = "portrait_decode_failed";
+    public const string PortraitOutputMetadataMismatch = "portrait_output_metadata_mismatch";
+    public const string PortraitOutputInvalidWebp = "portrait_output_invalid_webp";
+    public const string PortraitOutputDimensionsMismatch = "portrait_output_dimensions_mismatch";
 }

@@ -302,6 +302,15 @@ en memoria. No escribe ni carga settings de profile.json; 5.4 conectará reglas
 genéricas. Nimroel 768×960 Q90 es ejemplo probado. Véase
 [PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md).
 
+## Portrait Output Validation — 5.2 HECHO
+
+PortraitWebpOutputValidator consume únicamente PortraitWebpImage + settings,
+sin universo, source PNG, plan, repository o routing. Valida metadata, contenedor,
+decode WebP forzado y dimensiones reales, con el primer fallo Error + Stop y
+SubjectPath null. Quality es metadata contractual, sin inferencia del bitstream.
+Sin dependencias nuevas, I/O, re-encode, repair, hashes o autorización de escritura.
+Véase [PORTRAIT_OUTPUT_VALIDATION.md](PORTRAIT_OUTPUT_VALIDATION.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -358,8 +367,9 @@ La hoja de ruta vigente es:
 - **4.4 — Logs: HECHO.** Resumen textual privacy-safe.
 - **Fase 5 — Conversión: EN CURSO.**
 - **5.1 — Portrait: HECHO.** Conversión PNG → WebP en memoria, settings explícitos.
-- **5.2 — Validar salida: SIGUIENTE.**
-- **5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso: PENDIENTES.** Portrait ya prohíbe crop.
+- **5.2 — Validar salida: HECHO.** Metadata/settings, decode WebP real y dimensiones, sin I/O.
+- **5.3 — Scene: SIGUIENTE.**
+- **5.4 — Perfiles genéricos y 5.5 — No recorte silencioso: PENDIENTES.** Portrait ya prohíbe crop.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

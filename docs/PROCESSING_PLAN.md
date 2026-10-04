@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait HECHO; siguiente: 5.2 — Validar salida.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait y 5.2 — Validar salida HECHOS; siguiente: 5.3 — Scene.**
 
 ## Propósito y fronteras
 
@@ -123,7 +123,7 @@ determinista desde esta base, con LF fijo, orden Ordinal y paths escapados.
 No revalida ni ejecuta operaciones. [4.3 — Plan Validation](PLAN_VALIDATION.md)
 interpreta estructuralmente el destino contra un snapshot materializado, sin I/O,
 source revalidation ni hashes. Un report limpio es point-in-time y no autoriza
-escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait HECHO; siguiente: 5.2 — Validar salida. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
+escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait y 5.2 — Validar salida HECHOS; siguiente: 5.3 — Scene. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
 explícitos y devuelve WebP en memoria, sin depender del plan ni añadir operaciones.
 La conexión de conversiones al plan, archive, hashes y jobs sigue pendiente;
 JobId pertenece a Fase 6.
