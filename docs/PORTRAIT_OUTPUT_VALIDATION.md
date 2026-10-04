@@ -1,8 +1,8 @@
 # Portrait WebP Output Validation — Fase 5 · Capítulo 5.2
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
-5.1 — Portrait y 5.2 — Validar salida HECHOS. 5.3 — Scene SIGUIENTE.
-5.4 — Perfiles genéricos y 5.5 — No recorte silencioso pendientes.**
+5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
+5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente.**
 
 Frontera productiva posterior a 5.1: valida el WebP en memoria antes de
 cualquier futura escritura a producción. Reutiliza ImageSharp 3.1.12 sin
@@ -60,6 +60,12 @@ Todos son Error + Stop, SubjectPath null; Details numéricos invariant.
 Report limpio: IsClean true, ShouldStop false, CanContinue true.
 Primer fallo: IsClean false, ShouldStop true, CanContinue false.
 
+La comprobación del contenedor se comparte desde 5.3 mediante el helper
+internal WebpContainerValidator.IsComplete, extracción de la lógica privada
+existente sin ampliar semántica. SceneWebpOutputValidator lo reutiliza;
+no se interpreta VP8/VP8L/VP8X ni se cambia API, orden, codes, messages o
+comportamiento observable de Portrait. Decode real sigue siendo obligatorio.
+
 ## Quality e inmutabilidad
 
 Quality se verifica **solo como metadata contractual**:
@@ -105,6 +111,7 @@ futuras después de persistir bytes; seguirán siendo necesarias. No comprueba
 fidelidad visual frente al PNG ni quality efectiva del encoder.
 
 Sin ProductionRoot/ArchiveRoot/TeraBox, Jobs, estados, recovery, IA, SQLite,
-CLI/UI, orquestación o Fase 6. Fase 5 sigue EN CURSO; 5.3 — Scene es siguiente.
-5.4 conectará perfiles genéricos y 5.5 formalizará no recorte silencioso;
+CLI/UI, orquestación o Fase 6. Fase 5 sigue EN CURSO; 5.1–5.3 HECHOS.
+[Scene](SCENE_CONVERSION.md) conserva tipos propios y no define canon de Nimroel.
+5.4 — Perfiles genéricos SIGUIENTE; 5.5 formalizará no recorte silencioso;
 Portrait ya prohíbe crop en 5.1.

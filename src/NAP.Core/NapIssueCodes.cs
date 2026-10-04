@@ -40,4 +40,10 @@ public static class NapIssueCodes
     public const string PortraitOutputMetadataMismatch = "portrait_output_metadata_mismatch";
     public const string PortraitOutputInvalidWebp = "portrait_output_invalid_webp";
     public const string PortraitOutputDimensionsMismatch = "portrait_output_dimensions_mismatch";
+    public const string SceneInputTooLarge = "scene_input_too_large";
+    public const string SceneAspectRatioMismatch = "scene_aspect_ratio_mismatch";
+    public const string SceneDecodeFailed = "scene_decode_failed";
+    public const string SceneOutputMetadataMismatch = "scene_output_metadata_mismatch";
+    public const string SceneOutputInvalidWebp = "scene_output_invalid_webp";
+    public const string SceneOutputDimensionsMismatch = "scene_output_dimensions_mismatch";
 }

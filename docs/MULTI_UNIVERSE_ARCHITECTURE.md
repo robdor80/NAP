@@ -311,6 +311,17 @@ SubjectPath null. Quality es metadata contractual, sin inferencia del bitstream.
 Sin dependencias nuevas, I/O, re-encode, repair, hashes o autorización de escritura.
 Véase [PORTRAIT_OUTPUT_VALIDATION.md](PORTRAIT_OUTPUT_VALIDATION.md).
 
+## Scene Conversion — 5.3 HECHO
+
+SceneConversionSettings/SceneWebpImage/SceneConversionResult y converter/validator
+propios, sin dependencia de tipos Portrait, universo, plan o routing.
+Parámetros explícitos: PNG validado, pixel safety/ratio exacto antes de decode,
+resize Lanczos3 sin crop, WebP lossy y validación en memoria. Solo se comparte
+el helper internal de contenedor RIFF/WEBP, extraído sin cambios observables
+de Portrait. No existe perfil canónico Nimroel Scene; ejemplos técnicos no
+deciden resolución, ratio, quality, production_profile, routing o clasificación.
+Config intacta, sin filesystem output ni hashes. Véase [SCENE_CONVERSION.md](SCENE_CONVERSION.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -368,8 +379,9 @@ La hoja de ruta vigente es:
 - **Fase 5 — Conversión: EN CURSO.**
 - **5.1 — Portrait: HECHO.** Conversión PNG → WebP en memoria, settings explícitos.
 - **5.2 — Validar salida: HECHO.** Metadata/settings, decode WebP real y dimensiones, sin I/O.
-- **5.3 — Scene: SIGUIENTE.**
-- **5.4 — Perfiles genéricos y 5.5 — No recorte silencioso: PENDIENTES.** Portrait ya prohíbe crop.
+- **5.3 — Scene: HECHO.** Conversión y validación en memoria; sin canon Nimroel.
+- **5.4 — Perfiles genéricos: SIGUIENTE.**
+- **5.5 — No recorte silencioso: PENDIENTE.** Portrait ya prohíbe crop.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
