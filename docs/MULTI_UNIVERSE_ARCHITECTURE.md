@@ -292,6 +292,16 @@ relativo y flags/code/severity/disposition, sin rutas absolutas/fuente ni
 Message/SubjectPath/Detail. Sin I/O, persistencia, timestamps, JobId ni
 revalidación; no añade contratos de ejecución. Véase [PLAN_LOGS.md](PLAN_LOGS.md).
 
+## Portrait Conversion — 5.1 HECHO
+
+Primitive independiente de universo, profile, ProcessingPlan y repository.
+PortraitPngToWebpConverter recibe sourcePath + PortraitConversionSettings;
+ImageSharp 3.1.12 managed/cross-platform decodifica PNG tras estructura,
+pixel safety y ratio exacto, resizea sin crop con Lanczos3 y devuelve WebP lossy
+en memoria. No escribe ni carga settings de profile.json; 5.4 conectará reglas
+genéricas. Nimroel 768×960 Q90 es ejemplo probado. Véase
+[PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -345,13 +355,18 @@ La hoja de ruta vigente es:
 - **4.1 — ProcessingPlan: HECHO.** Base inmutable de hechos validados y destino calculado.
 - **4.2 — Dry Run: HECHO.** Representación textual humana determinista del plan, sin I/O.
 - **4.3 — Plan Validation: HECHO.** Validación estructural pura del destino contra un snapshot materializado.
-- **4.4 — Logs: HECHO.** Resumen textual privacy-safe; siguiente Fase 5 — Conversión, 5.1 — Portrait.
+- **4.4 — Logs: HECHO.** Resumen textual privacy-safe.
+- **Fase 5 — Conversión: EN CURSO.**
+- **5.1 — Portrait: HECHO.** Conversión PNG → WebP en memoria, settings explícitos.
+- **5.2 — Validar salida: SIGUIENTE.**
+- **5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso: PENDIENTES.** Portrait ya prohíbe crop.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción, persistencia de logs, pre-execution, vocabularios de valores, SQLite,
-TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
-de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
+TeraBox, perfiles/conversiones genéricas y selector UI. 5.1 añade únicamente
+ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas
+previas conservan su alcance de solo lectura: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.
