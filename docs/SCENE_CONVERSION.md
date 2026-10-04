@@ -2,7 +2,7 @@
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
-5.4 — Perfiles genéricos SIGUIENTE. 5.5 — No recorte silencioso pendiente.**
+5.4 — Perfiles genéricos HECHO. 5.5 — No recorte silencioso SIGUIENTE.**
 
 Scene conversion capability exists, but no canonical Nimroel Scene production profile has been defined yet.
 
@@ -158,5 +158,9 @@ recovery, auditor IA, SQLite, CLI/UI, execution orchestrator o Fase 6.
 Report limpio no autoriza ejecución/escritura ni significa COMPLETED. La futura
 verificación después de persistir bytes sigue siendo necesaria; no se prueba
 fidelidad visual o quality efectiva desde el bitstream. Los contratos públicos
-Scene/Portrait permanecen separados hasta la generalización formal de 5.4.
-Fase 5 EN CURSO; 5.4 — Perfiles genéricos SIGUIENTE, 5.5 pendiente.
+Scene/Portrait conservan sus contratos públicos separados. Desde
+[5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), la declaración y resolución son
+genéricas por asset rule, sin converter genérico público ni ejecución automática.
+Nimroel sigue sin regla Scene ni decisiones canónicas de producción.
+Fase 5 EN CURSO; 5.4 — Perfiles genéricos HECHO,
+5.5 — No recorte silencioso SIGUIENTE.

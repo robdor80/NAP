@@ -7,10 +7,10 @@ namespace NAP.Tests;
 public sealed class NimroelRoutingPolicyTests
 {
     [Fact]
-    public void RealNimroelProfileIsV3AndLoadsItsSinglePortraitRule()
+    public void RealNimroelProfileIsV4AndLoadsItsSinglePortraitRule()
     {
         var json = Read(UniverseProfileLoaderTests.ConfigPath);
-        Assert.Equal(3, json["schema_version"]!.GetValue<int>());
+        Assert.Equal(4, json["schema_version"]!.GetValue<int>());
 
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
         Assert.Equal(new UniverseId("nimroel"), profile.Id);

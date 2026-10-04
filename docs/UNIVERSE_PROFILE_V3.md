@@ -11,8 +11,10 @@ permanecen intactos; no hay reinterpretación ni migración automática.
 | v2 | Clasificación + package_files; sin routing. | null |
 | v3 | Clasificación + package_files + routing requerido. | AssetRoutingRule |
 
-Desde 3.5, el [perfil real Nimroel](../config/universes/nimroel/profile.json)
-usa v3 con la política canónica `portrait_npc`. El
+En 3.5, el [perfil real Nimroel](../config/universes/nimroel/profile.json)
+migró a v3 con la política canónica `portrait_npc`. Desde 5.4 usa
+[v4](UNIVERSE_PROFILE_V4.md), conservando clasificación, package_files y routing
+y añadiendo conversion. v3 sigue siendo un contrato histórico intacto. El
 [fixture v3](../test-data/phase3/universe-profile-v3/profile.json) continúa como
 caso genérico `test_universe`; el
 [fixture Nimroel v2](../test-data/phase2/universe-profile-v2/profile.json)
@@ -53,9 +55,11 @@ La última relación no se expresa como validación cruzada de arrays en el sche
 
 ## Loader y compatibilidad
 
-UniverseProfileLoader aplica dispatch explícito v1/v2/v3. v1 rechaza package_files
+UniverseProfileLoader aplica dispatch explícito v1/v2/v3/v4. v1 rechaza package_files
 y routing; v2 exige package_files y rechaza routing; v3 exige ambos. Todos
 construyen el mismo modelo genérico sin agregar schema_version runtime.
+En v1/v2/v3 Conversion permanece null; rechazan conversion JSON. v4 exige
+conversion object/null explícito, sin reinterpretar las versiones anteriores.
 Las representaciones numéricas 3, 3.0 y 3e0 siguen el criterio previo de 1/2.
 Versiones desconocidas, números no equivalentes y strings/null se rechazan.
 
@@ -74,9 +78,10 @@ La configuración se materializa en memoria, sin resolver destinos.
 
 Los tests verifican factories, snapshots, required dimensions, parsing estricto,
 compatibilidad histórica, package_files y solo lectura. El script
-Test-MultiUniverseSchemas.ps1 conserva los controles previos y valida el perfil
-real Nimroel contra v3, rechazándolo como v2; hace la comprobación inversa con
-el fixture histórico v2. Ningún schema cambia.
+Test-MultiUniverseSchemas.ps1 conserva los controles previos y valida el
+fixture v3 contra v3 y lo rechaza como v4. El perfil real Nimroel actual valida
+contra v4 y es rechazado por v1/v2/v3; los fixtures históricos siguen siendo
+válidos únicamente en sus versiones. Ningún schema histórico cambia.
 
 La [auditoría de 3.5](NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md) fija exactamente
 `portraits/{culture}/{location}/{role}/{sex}/{asset_id}` para Nimroel
@@ -86,5 +91,5 @@ desde AssetId. [3.6 — Destination Resolver](DESTINATION_RESOLVER.md) calcula
 directorios desde la regla retenida en ValidatedAssetPackage y la raíz de
 ValidatedProductionRepository, sin recargar perfiles ni realizar I/O.
 En 3.5 no se calcularon paths; 3.6 tampoco migra assets ni escribe destinos.
-**Fase 3 HECHA (3.1–3.6). Siguiente: Fase 4 — PLAN / Dry Run,
-4.1 — ProcessingPlan**, todavía sin implementar.
+**Fase 3 HECHA (3.1–3.6). Fase 4 HECHA dentro del alcance v1.
+Fase 5 EN CURSO; 5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.**

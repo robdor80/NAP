@@ -147,13 +147,16 @@ conceptual; 3.5 no la ejecuta ni crea scripts u operaciones planificadas.
 
 ## Configuración y siguiente frontera
 
-El perfil real Nimroel migra a Universe Profile v3 y declara esta ruta. Conserva
+En 3.5 el perfil real Nimroel migró a Universe Profile v3 y declaró esta ruta.
+Desde 5.4 usa [Profile v4](UNIVERSE_PROFILE_V4.md), que añade conversión Portrait
+sin alterar esta política ni el corte histórico. Conserva
 identidad, dimensiones, allowed/required classification y los cuatro
 `package_files` de v2. El fixture histórico v2 permite seguir comprobando el
 contrato anterior sin hacer depender esos tests de la configuración vigente.
 
 **Fase 3 HECHA (3.1–3.6). 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS.
-Siguiente: Fase 4 — PLAN / Dry Run, 4.1 — ProcessingPlan.** 3.6 calcula
+Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 EN CURSO;
+5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.** 3.6 calcula
 directorios con la regla retenida en el package validado y la raíz del repository
 validado. Sustituye segmentos y usa Path.Combine/Path.GetFullPath sin I/O,
 inferencia ni adaptación al layout histórico. No crea carpetas ni implementa

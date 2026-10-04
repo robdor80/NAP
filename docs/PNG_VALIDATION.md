@@ -142,5 +142,5 @@ Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO.
 5.1 — Portrait HECHO (primitive independiente); 5.2 — Validar salida HECHO.
 [5.2](PORTRAIT_OUTPUT_VALIDATION.md) comprueba el WebP en memoria, sin volver
 al PNG ni alterar este validador. 5.3 — Scene HECHO;
-5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente;
+5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso SIGUIENTE;
 Portrait ya prohíbe crop.

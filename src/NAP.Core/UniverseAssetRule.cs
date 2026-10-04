@@ -1,6 +1,6 @@
 namespace NAP.Core;
 
-/// <summary>Generic classification, package file and optional routing requirements for one exact type / profile pair.</summary>
+/// <summary>Generic classification, package file, routing and conversion requirements for one exact type / profile pair.</summary>
 public sealed record UniverseAssetRule
 {
     public UniverseAssetRule(string assetType, string productionProfile,
@@ -19,6 +19,13 @@ public sealed record UniverseAssetRule
     public UniverseAssetRule(string assetType, string productionProfile,
         IEnumerable<string> allowedClassification, IEnumerable<string> requiredClassification,
         IEnumerable<AssetPackageFileRule> packageFiles, AssetRoutingRule? routing)
+        : this(assetType, productionProfile, allowedClassification, requiredClassification, packageFiles, routing, null)
+    {
+    }
+
+    public UniverseAssetRule(string assetType, string productionProfile,
+        IEnumerable<string> allowedClassification, IEnumerable<string> requiredClassification,
+        IEnumerable<AssetPackageFileRule> packageFiles, AssetRoutingRule? routing, ImageConversionRule? conversion)
     {
         UniverseProfileIdentifiers.Require(assetType, nameof(assetType));
         UniverseProfileIdentifiers.Require(productionProfile, nameof(productionProfile));
@@ -51,6 +58,15 @@ public sealed record UniverseAssetRule
             !RequiredClassification.Contains(segment.Value!, StringComparer.Ordinal)))
             throw new ArgumentException("Routing classification dimensions must be required by this asset rule.", nameof(routing));
         Routing = routing;
+        if (conversion is not null)
+        {
+            var source = PackageFiles.SingleOrDefault(file => string.Equals(file.Role, conversion.SourceRole, StringComparison.Ordinal));
+            if (source is null || !source.Required ||
+                !string.Equals(source.Extension, ".png", StringComparison.Ordinal) ||
+                !string.Equals(source.ContentValidator, "png_master", StringComparison.Ordinal))
+                throw new ArgumentException("Conversion requires a matching required PNG source with png_master validation.", nameof(conversion));
+        }
+        Conversion = conversion;
     }
 
     public string AssetType { get; }
@@ -59,6 +75,7 @@ public sealed record UniverseAssetRule
     public IReadOnlyList<string> RequiredClassification { get; }
     public IReadOnlyList<AssetPackageFileRule> PackageFiles { get; }
     public AssetRoutingRule? Routing { get; }
+    public ImageConversionRule? Conversion { get; }
 
     /// <summary>Checks dimension presence/permission only. Values and package contents are not inspected.</summary>
     public ClassificationValidationResult ValidateClassification(IReadOnlyDictionary<string, string> classification)

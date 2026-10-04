@@ -2,7 +2,7 @@
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
-5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente.**
+5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso SIGUIENTE.**
 
 Primera conversión gráfica real del Core: PNG maestro estático → validación
 estructural → safety pixels → proporción exacta → decode real → resize sin crop
@@ -118,7 +118,10 @@ WebpEncoder usa FileFormat = Lossy y Quality = settings.WebpQuality.
 Encode a MemoryStream interno; el resultado contiene bytes WebP y metadata
 original/final, con report vacío e IsConverted true. No hay archivo de salida.
 
-Ejemplo previsto/probado para Nimroel, todavía no leído desde profile.json:
+Ejemplo de llamada explícita al converter. Desde 5.4 el perfil real Nimroel
+declara 768×960 Q90 en [Profile v4](UNIVERSE_PROFILE_V4.md), con source role
+master. ImageConversionResolver resuelve esos parámetros desde un package
+validado y recibe MaxInputPixels runtime; no ejecuta esta llamada:
 
 ```csharp
 var settings = new PortraitConversionSettings(768, 960, 90, 4_000_000);
@@ -150,8 +153,9 @@ permiso de ejecución/escritura de assets. El converter no valida su salida:
 productiva separada, posterior a 5.1, para metadata/settings, decode WebP real
 y dimensiones; no se integra automáticamente ni autoriza escritura.
 
-Fase 5 permanece EN CURSO. 5.1–5.3 HECHOS. [Scene](SCENE_CONVERSION.md)
+Fase 5 permanece EN CURSO. 5.1–5.4 HECHOS. [Scene](SCENE_CONVERSION.md)
 tiene tipos propios/settings explícitos sin perfil canónico; no modifica 5.1.
-5.4 — Perfiles genéricos SIGUIENTE: conectará reglas de conversión con profiles/config,
-sin crear Universe Profile v4 aquí. 5.5 seguirá formalizando garantías generales
+5.4 — Perfiles genéricos HECHO: Universe Profile v4 declara y resuelve reglas,
+sin modificar los contratos Portrait ni añadir orquestación. 5.5 es SIGUIENTE
+y formalizará garantías generales
 de no recorte silencioso; Portrait ya respeta esa invariante en 5.1.

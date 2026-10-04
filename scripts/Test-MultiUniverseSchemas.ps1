@@ -5,6 +5,7 @@ $manifestSchema = Join-Path $RepositoryRoot 'schemas/nap-manifest-v2.schema.json
 $profileSchema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v1.schema.json'
 $profileV2Schema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v2.schema.json'
 $profileV3Schema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v3.schema.json'
+$profileV4Schema = Join-Path $RepositoryRoot 'schemas/nap-universe-profile-v4.schema.json'
 $script:checks = 0
 
 function Assert-Schema($value, [string] $schema, [bool] $expected, [string] $name) {
@@ -243,9 +244,10 @@ function New-RealNimroelProfile {
     return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'config/universes/nimroel/profile.json') -Raw | ConvertFrom-Json -AsHashtable
 }
 
-Assert-Schema (New-RealNimroelProfile) $profileV3Schema $true 'real Nimroel Profile v3'
-Assert-Schema (New-RealNimroelProfile) $profileV2Schema $false 'real Nimroel Profile v3 is not interpreted as v2'
-Assert-Schema (New-RealNimroelProfile) $profileSchema $false 'real Nimroel Profile v3 is not interpreted as v1'
+Assert-Schema (New-RealNimroelProfile) $profileV4Schema $true 'real Nimroel Profile v4'
+Assert-Schema (New-RealNimroelProfile) $profileV3Schema $false 'real Nimroel Profile v4 is not interpreted as v3'
+Assert-Schema (New-RealNimroelProfile) $profileV2Schema $false 'real Nimroel Profile v4 is not interpreted as v2'
+Assert-Schema (New-RealNimroelProfile) $profileSchema $false 'real Nimroel Profile v4 is not interpreted as v1'
 foreach ($version in @(3.0, 3e0)) {
     $value = New-ProfileV3
     $value.schema_version = $version
@@ -343,6 +345,114 @@ foreach ($schemaAndProfile in @(@($profileSchema, (New-Profile)), @($profileV2Sc
     $value = $schemaAndProfile[1]
     $value.asset_rules[0].routing = @{ segments = @(@{ asset_id = $true }) }
     Assert-Schema $value $schemaAndProfile[0] $false 'historical schemas reject routing'
+}
+
+function New-ProfileV4 {
+    return Get-Content -LiteralPath (Join-Path $RepositoryRoot 'test-data/phase5/universe-profile-v4/profile.json') -Raw | ConvertFrom-Json -AsHashtable
+}
+
+Assert-Schema (New-ProfileV4) $profileV4Schema $true 'generic Profile v4 with conversion object and explicit null'
+foreach ($schema in @($profileSchema, $profileV2Schema, $profileV3Schema)) {
+    Assert-Schema (New-ProfileV4) $schema $false 'Profile v4 is not interpreted as a historical version'
+}
+foreach ($value in @((New-Profile), (New-ProfileV2), (New-ProfileV3))) {
+    Assert-Schema $value $profileV4Schema $false 'historical profiles do not silently migrate to v4'
+}
+$value = New-ProfileV3
+$value.asset_rules[0].conversion = (New-ProfileV4).asset_rules[0].conversion
+Assert-Schema $value $profileV3Schema $false 'Profile v3 rejects conversion'
+foreach ($version in @(4.0, 4e0)) {
+    $value = New-ProfileV4
+    $value.schema_version = $version
+    Assert-Schema $value $profileV4Schema $true 'mathematically integer Profile v4 version'
+}
+foreach ($version in @(1, 2, 3, 5, 4.5, '4', $null)) {
+    $value = New-ProfileV4
+    $value.schema_version = $version
+    Assert-Schema $value $profileV4Schema $false 'invalid Profile v4 version'
+}
+foreach ($field in @('schema_version', 'universe_id', 'display_name', 'classification_dimensions', 'asset_rules')) {
+    $value = New-ProfileV4
+    $value.Remove($field)
+    Assert-Schema $value $profileV4Schema $false "missing Profile v4 $field"
+}
+foreach ($field in @('asset_type', 'production_profile', 'allowed_classification', 'required_classification', 'package_files', 'routing', 'conversion')) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].Remove($field)
+    Assert-Schema $value $profileV4Schema $false "missing Profile v4 rule $field"
+}
+$value = New-ProfileV4
+$value.asset_rules[0].conversion = $null
+Assert-Schema $value $profileV4Schema $true 'explicit null conversion is allowed'
+foreach ($invalid in @('png_to_webp', 1, $true, @(), @('not_an_object'))) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].conversion = $invalid
+    Assert-Schema $value $profileV4Schema $false 'conversion must be an object or null'
+}
+foreach ($field in @('kind', 'source_role', 'output_width', 'output_height', 'webp_quality')) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].conversion.Remove($field)
+    Assert-Schema $value $profileV4Schema $false "missing conversion $field"
+    foreach ($invalid in @($null, $true, @(), @{})) {
+        $value = New-ProfileV4
+        $value.asset_rules[0].conversion[$field] = $invalid
+        Assert-Schema $value $profileV4Schema $false "invalid type for conversion $field"
+    }
+}
+foreach ($extra in @('max_input_pixels', 'crop', 'crop_mode', 'allow_crop', 'fit', 'fit_mode', 'resize_mode', 'letterbox', 'padding', 'output_extension', 'format', 'path', 'routing', 'hash')) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].conversion[$extra] = 1
+    Assert-Schema $value $profileV4Schema $false "closed conversion rejects $extra"
+}
+foreach ($extra in @('extra', 'max_input_pixels')) {
+    $value = New-ProfileV4
+    $value[$extra] = 1
+    Assert-Schema $value $profileV4Schema $false 'Profile v4 root remains closed'
+    $value = New-ProfileV4
+    $value.asset_rules[0][$extra] = 1
+    Assert-Schema $value $profileV4Schema $false 'Profile v4 asset rule remains closed'
+}
+foreach ($kind in @('unknown', 'PngToWebp', 'PNG_TO_WEBP', '', 1)) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].conversion.kind = $kind
+    Assert-Schema $value $profileV4Schema $false 'only exact png_to_webp is supported'
+}
+foreach ($role in @('', '   ', 'Upper', 'two words', 'bad-hyphen', 'bad__name', 'bad_', ('name' + [char]10), ('a' * 65), 1)) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].conversion.source_role = $role
+    Assert-Schema $value $profileV4Schema $false 'invalid source role identifier'
+}
+$value = New-ProfileV4
+$value.asset_rules[0].conversion.source_role = 'a' * 64
+Assert-Schema $value $profileV4Schema $true 'source role length 64; package role relationship belongs to C#'
+foreach ($field in @('output_width', 'output_height', 'webp_quality')) {
+    $minimum = if ($field -eq 'webp_quality') { 0 } else { 1 }
+    $maximum = if ($field -eq 'webp_quality') { 100 } else { 16383 }
+    foreach ($valid in @($minimum, $maximum, 2.0, 2e0)) {
+        $value = New-ProfileV4
+        $value.asset_rules[0].conversion[$field] = $valid
+        Assert-Schema $value $profileV4Schema $true "valid integer boundary for $field"
+    }
+    foreach ($invalid in @(($minimum - 1), ($maximum + 1), 2.5, '2')) {
+        $value = New-ProfileV4
+        $value.asset_rules[0].conversion[$field] = $invalid
+        Assert-Schema $value $profileV4Schema $false "invalid integer or limit for $field"
+    }
+}
+foreach ($field in @('role', 'suffix', 'extension', 'required', 'content_validator')) {
+    $value = New-ProfileV4
+    $value.asset_rules[0].package_files[0].Remove($field)
+    Assert-Schema $value $profileV4Schema $false "Profile v4 preserves required package file $field"
+}
+foreach ($mode in @('missing_segments', 'empty_segments', 'unknown_routing', 'invalid_segment')) {
+    $value = New-ProfileV4
+    switch ($mode) {
+        'missing_segments' { $value.asset_rules[0].routing.Remove('segments') }
+        'empty_segments' { $value.asset_rules[0].routing.segments = @() }
+        'unknown_routing' { $value.asset_rules[0].routing.extra = 1 }
+        'invalid_segment' { $value.asset_rules[0].routing.segments = @(@{ asset_id = $false }) }
+    }
+    Assert-Schema $value $profileV4Schema $false "Profile v4 preserves routing check $mode"
 }
 
 Write-Output "JSON Schema: $script:checks checks passed."

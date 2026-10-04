@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.**
 
 ## Objetivo y API
 
@@ -86,7 +86,8 @@ deberá distinguir esos casos cuando corresponda. No se inspecciona contenido.
 
 ## Nimroel canónico e histórico
 
-El plan real, calculado con Profile v3, conserva:
+El plan real, calculado con Profile v4 desde 5.4 y el routing conservado de v3,
+mantiene:
 
 ```text
 portraits/norgard/treskal/farmer/male/portrait_treskal_farmer_male_040
@@ -129,7 +130,7 @@ El resultado lógico es determinista para plan/snapshot equivalentes bajo la
 semántica de plataforma, sin cultura actual, timestamps, Guid, random o dependencia
 del orden de inserción. No hay creación de carpetas, operaciones ejecutables,
 writes, migración, conversión, archive planning, JobId, estados, UI o CLI.
-**4.4 — Logs HECHO:** resumen textual privacy-safe de plan + report, sin revalidación ni persistencia. Véase [PLAN_LOGS.md](PLAN_LOGS.md). Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS; siguiente: 5.4 — Perfiles genéricos.
+**4.4 — Logs HECHO:** resumen textual privacy-safe de plan + report, sin revalidación ni persistencia. Véase [PLAN_LOGS.md](PLAN_LOGS.md). Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.
 
 Los tests construyen snapshots en memoria usando las fronteras internas existentes:
 coherencia, duplicados, missing/ancestors, File blockers, destino existente, casing

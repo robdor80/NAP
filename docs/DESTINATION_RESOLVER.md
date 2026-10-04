@@ -93,7 +93,8 @@ links ni prometer seguridad frente a cambios físicos posteriores.
 
 ## Política real Nimroel
 
-El perfil real sigue siendo Universe Profile v3; Manifest v2 continúa vigente.
+El perfil real usa [Universe Profile v4](UNIVERSE_PROFILE_V4.md) desde 5.4;
+conserva el routing declarado en v3 y Manifest v2 continúa vigente.
 La política conserva `portraits/{culture}/{location}/{role}/{sex}/{asset_id}`:
 
 | AssetId | role / sex del manifest | RelativeDirectory |

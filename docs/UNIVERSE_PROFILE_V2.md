@@ -9,8 +9,9 @@ de Manifest v2 y de [Package Contract v1](PACKAGE_CONTRACT_V1.md).
 como contrato histórico. Su referencia a Nimroel describe el estado de 2.6.2.
 El capítulo 2.8.1 llevó el perfil a v2 y 3.5 conserva ese JSON exacto en el
 [fixture v2](../test-data/phase2/universe-profile-v2/profile.json); el
-[perfil real actual](../config/universes/nimroel/profile.json) usa v3 para
-declarar routing. El [fixture v1](../test-data/phase2/universe-profile-v1/profile.json)
+[perfil real actual](../config/universes/nimroel/profile.json) usa
+[v4](UNIVERSE_PROFILE_V4.md) desde 5.4, con routing conservado de v3 y
+conversion declarativa. El [fixture v1](../test-data/phase2/universe-profile-v1/profile.json)
 conserva la configuración anterior para pruebas de compatibilidad. No se
 reescriben los contratos históricos.
 
@@ -76,6 +77,7 @@ aplica un dispatch explícito:
 | 1 | Cuatro propiedades históricas; rechaza package_files y routing. | UniverseAssetRule con PackageFiles vacío y Routing null. |
 | 2 | Cinco propiedades; exige package_files y rechaza routing. | UniverseAssetRule con AssetPackageFileRule inmutables y Routing null. |
 | 3 | Seis propiedades; exige package_files + routing. | Véase [Universe Profile v3](UNIVERSE_PROFILE_V3.md). |
+| 4 | Siete propiedades; exige package_files + routing + conversion nullable. | Véase [Universe Profile v4](UNIVERSE_PROFILE_V4.md). |
 | Otra, string, null o número no entero admitido | Rechazado. | InvalidDataException. |
 
 Las representaciones numéricas `1.0`/`1e0` y `2.0`/`2e0` representan las versiones
@@ -109,7 +111,7 @@ ProductionWebP queda fuera del package de entrada. El detalle está en
 
 Los tests cubren ambos loaders, nombres puros, guardas, snapshots, colisiones
 y el fixture histórico v2. `scripts/Test-MultiUniverseSchemas.ps1` conserva las
-checks anteriores de Manifest v2 y Profile v1/v2, además del perfil real v3.
+checks anteriores de Manifest v2 y Profile v1/v2/v3, además del perfil real v4.
 No se modifican los contratos históricos v1 ni los schemas de manifest.
 
 Nimroel permaneció en v2 durante 2.8.1–3.4. La auditoría de 3.5 migra el perfil

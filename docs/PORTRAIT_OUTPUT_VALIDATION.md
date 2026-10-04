@@ -2,7 +2,7 @@
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
-5.4 — Perfiles genéricos SIGUIENTE; 5.5 — No recorte silencioso pendiente.**
+5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso SIGUIENTE.**
 
 Frontera productiva posterior a 5.1: valida el WebP en memoria antes de
 cualquier futura escritura a producción. Reutiliza ImageSharp 3.1.12 sin
@@ -92,8 +92,10 @@ if (conversion.IsConverted)
 ```
 
 Test real: PNG 1024×1280 → converter → WebP 768×960 Q90 → validator → report
-limpio. Nimroel es únicamente ejemplo representativo; parámetros explícitos,
-sin cargar profile.json ni hardcode Core. Se verifican source y bytes intactos
+limpio. Este test usa parámetros explícitos sin cargar profile.json ni hardcode
+Core. Desde 5.4, Nimroel también declara 768×960 Q90 en
+[Profile v4](UNIVERSE_PROFILE_V4.md); su resolver no invoca este validator.
+Se verifican source y bytes intactos
 y ausencia de archivos/directorios de salida; el temporal se elimina en finally.
 Las demás pruebas generan imágenes pequeñas en memoria, sin binarios añadidos.
 
@@ -111,7 +113,7 @@ futuras después de persistir bytes; seguirán siendo necesarias. No comprueba
 fidelidad visual frente al PNG ni quality efectiva del encoder.
 
 Sin ProductionRoot/ArchiveRoot/TeraBox, Jobs, estados, recovery, IA, SQLite,
-CLI/UI, orquestación o Fase 6. Fase 5 sigue EN CURSO; 5.1–5.3 HECHOS.
+CLI/UI, orquestación o Fase 6. Fase 5 sigue EN CURSO; 5.1–5.4 HECHOS.
 [Scene](SCENE_CONVERSION.md) conserva tipos propios y no define canon de Nimroel.
-5.4 — Perfiles genéricos SIGUIENTE; 5.5 formalizará no recorte silencioso;
+5.4 — Perfiles genéricos HECHO; 5.5 formalizará no recorte silencioso;
 Portrait ya prohíbe crop en 5.1.
