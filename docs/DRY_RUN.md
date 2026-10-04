@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait HECHO; siguiente: 5.2 — Validar salida.**
+Fase 5 — Conversión EN CURSO. 5.1 — Portrait y 5.2 — Validar salida HECHOS; siguiente: 5.3 — Scene.**
 
 ## Propósito y API
 
@@ -155,7 +155,7 @@ filesystem ante procesos concurrentes. Renderizar no ejecuta ni autoriza nada.
 4.3 — [Plan Validation](PLAN_VALIDATION.md) valida estructuralmente el destino
 contra un snapshot materializado, sin I/O ni revalidación de sources. Es una
 frontera separada del renderer; un report limpio es point-in-time y no autoriza
-escrituras. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait HECHO; siguiente: 5.2 — Validar salida. El objetivo futuro completo de PLAN crecerá cuando
+escrituras. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait y 5.2 — Validar salida HECHOS; siguiente: 5.3 — Scene. El objetivo futuro completo de PLAN crecerá cuando
 existan los contratos correspondientes, sin presentarlos como implementados hoy.
 
 Los tests verifican el documento completo, LF, orden Ordinal, colecciones vacías,
