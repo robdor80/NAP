@@ -284,6 +284,14 @@ Sin scanner, diff, re-routing, source revalidation, contents, hashes o escritura
 El report limpio es point-in-time y no autoriza ejecución. Véase
 [PLAN_VALIDATION.md](PLAN_VALIDATION.md).
 
+## Plan Logs v1 — 4.4 HECHO
+
+PlanLogTextRenderer recibe exclusivamente ProcessingPlan + NapIssueReport y
+devuelve un string determinista. Incluye identidad del universo/asset, destino
+relativo y flags/code/severity/disposition, sin rutas absolutas/fuente ni
+Message/SubjectPath/Detail. Sin I/O, persistencia, timestamps, JobId ni
+revalidación; no añade contratos de ejecución. Véase [PLAN_LOGS.md](PLAN_LOGS.md).
+
 ## Continuidad y alcance
 
 NAP.Core no añade conceptos, clases de perfiles, vocabularios o rutas propios
@@ -333,17 +341,17 @@ La hoja de ruta vigente es:
 - **3.4 — Structural Change Detection: HECHO.** Diff puro de snapshots.
 - **3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy: HECHO.** Primera interpretación de estructura y política declarativa real.
 - **3.6 — Destination Resolver: HECHO.** Cálculo puro de directorios con la regla retenida en el package validado.
-- **Fase 4 — PLAN / Dry Run: EN CURSO.**
+- **Fase 4 — PLAN / Dry Run: HECHA dentro del alcance v1.**
 - **4.1 — ProcessingPlan: HECHO.** Base inmutable de hechos validados y destino calculado.
 - **4.2 — Dry Run: HECHO.** Representación textual humana determinista del plan, sin I/O.
 - **4.3 — Plan Validation: HECHO.** Validación estructural pura del destino contra un snapshot materializado.
-- **4.4 — Logs: siguiente.**
+- **4.4 — Logs: HECHO.** Resumen textual privacy-safe; siguiente Fase 5 — Conversión, 5.1 — Portrait.
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
-producción, Logs, pre-execution, vocabularios de valores, SQLite,
+producción, persistencia de logs, pre-execution, vocabularios de valores, SQLite,
 TeraBox, conversiones y selector UI. No hay dependencias nuevas ni escrituras
 de filesystem en estas capas: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.
