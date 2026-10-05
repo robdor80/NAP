@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256.**
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; siguiente: 6.2 — Duplicados.**
 
 ## Objetivo y API
 
@@ -80,9 +80,11 @@ SubjectPath conserva **entry.FullPath observado**, sin reconstruirlo.
 | PlanDestinationBlocked / `plan_destination_blocked` | A file blocks a required production directory path. | Prefijo requerido |
 | PlanDestinationExists / `plan_destination_exists` | The planned production destination already exists. | destination.RelativeDirectory |
 
-Un Directory final existente causa STOP aunque esté vacío. No hay contratos de
-hash/idempotencia para decidir reutilización o sobrescritura: Fase 6 — Integridad
-deberá distinguir esos casos cuando corresponda. No se inspecciona contenido.
+Un Directory final existente causa STOP aunque esté vacío. Desde
+[6.1 — SHA-256](SHA256_INTEGRITY.md) existe la primitiva de cálculo, pero no hay
+todavía contratos de hash/idempotencia para decidir reutilización o sobrescritura:
+6.2 — Duplicados diseñará esos casos. Plan Validation continúa sin usar hashes
+ni inspeccionar contenido; Fase 4 conserva su alcance.
 
 ## Nimroel canónico e histórico
 
@@ -130,7 +132,7 @@ El resultado lógico es determinista para plan/snapshot equivalentes bajo la
 semántica de plataforma, sin cultura actual, timestamps, Guid, random o dependencia
 del orden de inserción. No hay creación de carpetas, operaciones ejecutables,
 writes, migración, conversión, archive planning, JobId, estados, UI o CLI.
-**4.4 — Logs HECHO:** resumen textual privacy-safe de plan + report, sin revalidación ni persistencia. Véase [PLAN_LOGS.md](PLAN_LOGS.md). Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256.
+**4.4 — Logs HECHO:** resumen textual privacy-safe de plan + report, sin revalidación ni persistencia. Véase [PLAN_LOGS.md](PLAN_LOGS.md). Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; siguiente: 6.2 — Duplicados.
 
 Los tests construyen snapshots en memoria usando las fronteras internas existentes:
 coherencia, duplicados, missing/ancestors, File blockers, destino existente, casing

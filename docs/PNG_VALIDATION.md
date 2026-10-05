@@ -149,5 +149,5 @@ primitiva única de geometría de Portrait/Scene y del validator genérico:
 productos long exactos, sin floating point/tolerancia. PngMasterValidator
 conserva su frontera estructural; ImageConversionGeometryValidator consume
 PngImageInfo + ResolvedImageConversion después y devuelve clean o STOP genérico.
-No abre PNG ni valida píxeles, budget o quality. Fase 6 — Integridad EN ESPERA;
-6.1 — SHA-256 SIGUIENTE.
+No abre PNG ni valida píxeles, budget o quality. Fase 6 — Integridad EN CURSO;
+6.1 — SHA-256 HECHO; 6.2 — Duplicados SIGUIENTE.
