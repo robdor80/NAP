@@ -46,4 +46,5 @@ public static class NapIssueCodes
     public const string SceneOutputMetadataMismatch = "scene_output_metadata_mismatch";
     public const string SceneOutputInvalidWebp = "scene_output_invalid_webp";
     public const string SceneOutputDimensionsMismatch = "scene_output_dimensions_mismatch";
+    public const string ImageConversionAspectRatioMismatch = "image_conversion_aspect_ratio_mismatch";
 }

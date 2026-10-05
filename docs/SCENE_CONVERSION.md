@@ -1,8 +1,8 @@
 # Scene Conversion — Fase 5 · Capítulo 5.3
 
-**Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
+**Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión HECHA.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
-5.4 — Perfiles genéricos HECHO. 5.5 — No recorte silencioso SIGUIENTE.**
+5.4 — Perfiles genéricos HECHO. 5.5 — No recorte silencioso HECHO.**
 
 Scene conversion capability exists, but no canonical Nimroel Scene production profile has been defined yet.
 
@@ -78,6 +78,10 @@ FileNotFoundException, DirectoryNotFoundException, UnauthorizedAccessException
 e IOException de acceso real se propagan.
 
 Si cambia tamaño, resize exacto con KnownResamplers.Lanczos3 explícito.
+Desde 5.5 la comprobación usa exclusivamente PngImageInfo.HasAspectRatio con
+productos long exactos, sin floating point ni tolerancia. Conserva el código
+scene_aspect_ratio_mismatch y su message/detail/SubjectPath y prioridad antes
+de decode. El validator genérico permanece separado del converter.
 ResizeMode.Stretch solo después de demostrar igualdad de proporción. Sin Crop,
 Pad, BoxPad, Max/Min, letterbox, fondos o distorsión geométrica. Si coincide
 tamaño no resamplea. Upscale permitido, sin inventar mínimo de Scene.
@@ -162,5 +166,8 @@ Scene/Portrait conservan sus contratos públicos separados. Desde
 [5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), la declaración y resolución son
 genéricas por asset rule, sin converter genérico público ni ejecución automática.
 Nimroel sigue sin regla Scene ni decisiones canónicas de producción.
-Fase 5 EN CURSO; 5.4 — Perfiles genéricos HECHO,
-5.5 — No recorte silencioso SIGUIENTE.
+Fase 5 HECHA; 5.4 — Perfiles genéricos HECHO,
+[5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza frame completo,
+sin crop/pad/BoxPad/letterbox/distorsión. Ratio exacto + Stretch + ausencia de
+esas APIs garantizan resize proporcional; Stretch aislado no basta.
+Fase 6 — Integridad EN ESPERA; 6.1 — SHA-256 SIGUIENTE.

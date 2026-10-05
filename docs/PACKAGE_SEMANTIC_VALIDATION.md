@@ -211,6 +211,6 @@ algoritmo; ValidatedAssetPackage retiene la misma AssetRule y por tanto
 AssetRule.Conversion. Tests de config → package → resolver demuestran esa
 retención para Nimroel y el fixture genérico, sin convertir ni escribir salidas.
 
-**Fases 2 y 3 HECHAS. Fase 4 HECHA dentro del alcance v1. Fase 5 EN CURSO;
-5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.**
+**Fases 2 y 3 HECHAS. Fase 4 HECHA dentro del alcance v1. Fase 5 HECHA;
+5.1–5.5 HECHOS; 5.5 — No recorte silencioso HECHO.**
 Routing solo podrá consumir ValidatedAssetPackage.

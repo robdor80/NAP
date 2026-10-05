@@ -4,7 +4,7 @@
 **Nombre oficial:** Nexus Asset Platform\
 **Origen histórico:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Routing solo podrá consumir ValidatedAssetPackage.\
+**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Routing solo podrá consumir ValidatedAssetPackage.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -455,6 +455,45 @@ Nimroel; Scene dispone de capacidad técnica, sin canon gráfico decidido.
 Las reglas futuras de producción se resolverán desde
 el profile/config del universo activo; no son parámetros universales del Core.
 
+**Arquitectura final de Fase 5 — Conversión HECHA:**
+
+```text
+Package validado
+    ↓
+AssetRule retenida del Universe Profile v4
+    ↓
+ImageConversionRule
+    ↓
+ImageConversionResolver
+    ↓
+ResolvedImageConversion
+    + PngImageInfo obtenido de PngMasterValidator sobre el source
+    ↓
+ImageConversionGeometryValidator
+    ↓
+clean / STOP
+```
+
+ImageConversionKind.PngToWebp (`png_to_webp`) requiere PNG estático validado,
+WebP con dimensiones configuradas, ratio source/output idéntico y frame completo.
+PngImageInfo.HasAspectRatio compara productos long, sin floating point ni
+tolerancia. Crop, Pad, BoxPad, letterbox y distorsión están prohibidos; reducción
+y upscale proporcional se permiten. Geometría incompatible produce exactamente
+image_conversion_aspect_ratio_mismatch, Error + Stop, SubjectPath source exacto
+y Detail invariant `source=<width>x<height>; output=<width>x<height>`.
+
+ImageConversionGeometryValidator.Validate(PngImageInfo source,
+ResolvedImageConversion conversion) solo valida geometría, sin I/O, decode,
+WebP, pixel budget, quality o hashes. Portrait converter y Scene converter
+siguen como primitives separadas con sus settings y errores históricos. Ambos
+usan HasAspectRatio antes de decode/resize y mantienen Stretch: ratio exacto
++ Stretch + ausencia de crop/pad hace el resize proporcional. No existe todavía
+ejecución/orquestación genérica. Resolver configuración y validar geometría
+no ejecutan; report clean no autoriza escritura. No cambia Profile v4, no hay
+Profile v5 ni campos de crop. Cualquier crop futuro deberá ser explícito y
+versionado, sin cambiar silenciosamente png_to_webp. Véase
+[NO_SILENT_CROP.md](NO_SILENT_CROP.md).
+
 ## Portrait
 
 Perfil previsto actualmente:
@@ -489,8 +528,8 @@ runtime, fuera del profile. Los converters conservan settings explícitos y
 5.4 solo resuelve configuración, sin ejecutar o validar salida.
 ImageSharp 3.1.12 sigue siendo la única dependencia gráfica, managed y
 cross-platform. Sin ProductionRoot/ArchiveRoot, ampliación de ProcessingPlan,
-escrituras o permiso de ejecución. Fase 5 EN CURSO; 5.1–5.4 HECHOS;
-5.5 — No recorte silencioso SIGUIENTE. Véase
+escrituras o permiso de ejecución. Fase 5 HECHA; 5.1–5.5 HECHOS;
+5.5 — No recorte silencioso HECHO. Véase
 [UNIVERSE_PROFILE_V4.md](UNIVERSE_PROFILE_V4.md) y
 [PORTRAIT_CONVERSION.md](PORTRAIT_CONVERSION.md).
 
@@ -528,7 +567,7 @@ proporción, quality, production_profile, routing o clasificación. Ejemplos té
 1920×1080 → 1280×720 Q88 y 1500×1000 → 900×600 Q93 no son canon de Nimroel.
 5.4 migra únicamente Portrait a Profile v4; no añade Scene ni su canon.
 Sin escrituras, ampliación de ProcessingPlan o hashes.
-5.4 HECHO; 5.5 — No recorte silencioso SIGUIENTE. Véase
+5.4 HECHO; 5.5 — No recorte silencioso HECHO. Véase
 [SCENE_CONVERSION.md](SCENE_CONVERSION.md).
 
 NAP debe terminar utilizando un sistema genérico de perfiles:
@@ -578,7 +617,7 @@ fronteras validadas y el destino recibido como base inmutable, sin re-routing.
 4.2 — Dry Run renderiza esos hechos de forma humana y determinista.
 4.3 — Plan Validation contrasta el destino con un snapshot materializado,
 sin I/O ni source revalidation. El report limpio es point-in-time y no autoriza
-escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.
+escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256.
 Véanse [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md) y
 [PROCESSING_PLAN.md](PROCESSING_PLAN.md).
 Los ejemplos siguientes corresponden a Nimroel.
@@ -1290,7 +1329,7 @@ ProcessingPlan v1 es completo respecto a las fronteras implementadas y todavía
 no es un execution graph completo. No inventa archive destination, conversión,
 final production output, hashes ni execution steps. Las operaciones se añadirán
 cuando existan sus contratos. Fase 4 HECHA dentro del alcance v1; 4.1–4.4 HECHOS.
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Véase
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Véase
 [PROCESSING_PLAN.md](PROCESSING_PLAN.md).
 
 **Estado real de 4.2 — Dry Run HECHO:** DryRunTextRenderer.Render(ProcessingPlan)
@@ -1310,7 +1349,7 @@ Windows o Directory final existente causa Error + Stop, sin adaptación.
 Un destino existente se detiene hasta que Fase 6 pueda distinguir hashes e
 idempotencia. No revalida sources ni lee contents. Un report limpio es
 point-in-time y no autoriza escritura; la futura frontera pre-execution deberá
-garantizar de nuevo las condiciones físicas. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Véase
+garantizar de nuevo las condiciones físicas. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Véase
 [PLAN_VALIDATION.md](PLAN_VALIDATION.md).
 
 **Estado real de 4.4 — Logs HECHO:** PlanLogTextRenderer proyecta ProcessingPlan
@@ -1905,7 +1944,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 HECHA:** 2.8 — Package Semantic Validation completo. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator HECHO:** loader Manifest v2 estricto, validación read-only del envelope/contexto/rule/archivos y ValidatedAssetPackage inmutable. Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md). Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Routing solo podrá consumir ValidatedAssetPackage.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 HECHA:** 2.8 — Package Semantic Validation completo. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator HECHO:** loader Manifest v2 estricto, validación read-only del envelope/contexto/rule/archivos y ValidatedAssetPackage inmutable. Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md). Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Routing solo podrá consumir ValidatedAssetPackage.
 
 # 55. Hoja de ruta acordada
 
@@ -2054,7 +2093,7 @@ metadata/paths por role, con manifest separado. Véase
 [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
 **Fase 2 HECHA. Fase 3 — Routing y repo HECHA (3.1–3.6 HECHOS). Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1.
-4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS; Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Routing solo podrá consumir
+4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS; Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Routing solo podrá consumir
 ValidatedAssetPackage.** No se implementa resolución de routing, conversiones, hashes, Visual
 Identity schema ni migración de Manifest v1 en este capítulo.
 
@@ -2099,7 +2138,7 @@ histórica. 3.2 no resuelve destinos; 3.6 añade el cálculo puro.
 4.1 — ProcessingPlan añade la base inmutable y 4.2 la renderiza sin I/O.
 4.3 — Plan Validation interpreta la estructura materializada; 4.4 — Logs produce
 un resumen textual privacy-safe. Fase 4 HECHA dentro del alcance v1;
-Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256.
 
 ### 3.3 — Routing Contract v1
 
@@ -2180,7 +2219,7 @@ no autoriza escribirlo. Véase [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md
 
 ## FASE 4 --- PLAN / Dry Run
 
-**HECHA dentro del alcance v1.** 4.1–4.4 HECHOS. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso.
+**HECHA dentro del alcance v1.** 4.1–4.4 HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256.
 
 ### 4.1 — ProcessingPlan
 
@@ -2221,7 +2260,7 @@ Un report limpio es point-in-time y no autoriza escritura. Véase
 
 ## FASE 5 --- Conversión
 
-**EN CURSO.** 5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.
+**HECHA.** 5.1–5.5 HECHOS. Fase 6 — Integridad EN ESPERA; 6.1 — SHA-256 SIGUIENTE.
 
 ### 5.1 — Portrait PNG → WebP
 
@@ -2255,16 +2294,21 @@ sin Scene canónico. Véase [UNIVERSE_PROFILE_V4.md](UNIVERSE_PROFILE_V4.md).
 
 ### 5.5
 
-No recorte silencioso — **SIGUIENTE** como capítulo general.
-5.1 ya prohíbe crop, pad y letterbox para Portrait.
+No recorte silencioso — **HECHO** como contrato genérico full-frame de png_to_webp.
+ImageConversionGeometryValidator usa HasAspectRatio exacto y devuelve clean o
+Error + Stop. Portrait/Scene conservan sus APIs y errores históricos y comparten
+la primitiva matemática. Sin crop, pad, letterbox o distorsión, Profile v5,
+campos nuevos u orquestación. Véase [NO_SILENT_CROP.md](NO_SILENT_CROP.md).
 
 ------------------------------------------------------------------------
 
 ## FASE 6 --- Integridad
 
+**EN ESPERA.** No iniciada. 6.1 — SHA-256 SIGUIENTE.
+
 ### 6.1
 
-SHA-256.
+SHA-256 — **SIGUIENTE**, sin implementación en 5.5.
 
 ### 6.2
 
@@ -2570,7 +2614,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. 2.8.2 — Package Semantic Validator HECHO. Fase 2 completa.** Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión EN CURSO. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene y 5.4 — Perfiles genéricos HECHOS; siguiente: 5.5 — No recorte silencioso. Routing solo podrá consumir ValidatedAssetPackage. La política canónica existe como configuración y 3.6 calcula directorios sin I/O ni escrituras, usando la regla retenida por el package validado. Resolver un destino no autoriza escribirlo. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. 2.8.2 — Package Semantic Validator HECHO. Fase 2 completa.** Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN ESPERA; siguiente: 6.1 — SHA-256. Routing solo podrá consumir ValidatedAssetPackage. La política canónica existe como configuración y 3.6 calcula directorios sin I/O ni escrituras, usando la regla retenida por el package validado. Resolver un destino no autoriza escribirlo. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 

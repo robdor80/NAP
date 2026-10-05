@@ -1,8 +1,8 @@
 # Universe Profile v4 — Fase 5 · Capítulo 5.4
 
 **5.4 — Perfiles genéricos HECHO. Fase 4 HECHA dentro del alcance v1.
-Fase 5 — Conversión EN CURSO; 5.1–5.4 HECHOS.
-5.5 — No recorte silencioso SIGUIENTE.**
+Fase 5 — Conversión HECHA; 5.1–5.5 HECHOS.
+5.5 — No recorte silencioso HECHO.**
 
 Universe Profile v4 declara qué conversión corresponde a una asset rule y
 ImageConversionResolver resuelve sus parámetros desde un package validado.
@@ -46,7 +46,12 @@ machine identifier existente, máximo 64 caracteres, sin normalización, trim o
 lowercasing. OutputWidth y OutputHeight son enteros 1..16383; WebpQuality,
 entero 0..100. Todos los objetos usan additionalProperties false. No hay paths,
 output_extension, hashes, formato redundante, crop, fit, resize_mode o padding.
-5.5 formalizará la garantía general sin anticipar esos campos en v4.
+Desde [5.5 — No recorte silencioso](NO_SILENT_CROP.md), png_to_webp significa
+frame completo, ratio source/output exacto y resize proporcional: sin crop,
+pad, BoxPad, letterbox o distorsión. La garantía no es configurable y el schema
+v4 permanece intacto. Upscale compatible se permite; mismatch implica STOP.
+Cualquier crop futuro requiere contrato explícito nuevo y versionado, sin
+cambiar silenciosamente png_to_webp.
 
 ## Modelo e invariantes
 
@@ -143,5 +148,8 @@ ProcessingPlan v1 todavía no congela la conversion rule y Dry Run v1 todavía
 no muestra una operación de conversión. 5.4 introduce contrato/configuración;
 una futura evolución del ProcessingPlan podrá congelar la regla cuando se
 formalicen operaciones de ejecución. No se fija un capítulo para esa evolución
-ni se reabre Fase 4. 5.5 — No recorte silencioso es el siguiente capítulo;
-los converters actuales ya conservan el cuadro completo sin crop.
+ni se reabre Fase 4. 5.5 — No recorte silencioso HECHO: ImageConversionGeometryValidator
+consume PngImageInfo + ResolvedImageConversion mediante HasAspectRatio exacto,
+sin I/O o ejecución; limpio o Error + Stop genérico. Los converters actuales
+mantienen sus errores históricos y Stretch condicionado al ratio exacto.
+Fase 5 HECHA; Fase 6 — Integridad EN ESPERA, 6.1 — SHA-256 SIGUIENTE.

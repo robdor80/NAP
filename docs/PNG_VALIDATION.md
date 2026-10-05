@@ -138,9 +138,16 @@ la validación estructural no equivale a decodificación zlib.
 
 El placeholder textual de Fase 1 **no se modifica**: su integración sigue
 probando transporte opaco. 2.4 no añadió binarios grandes ni dependencias.
-Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión EN CURSO.
+Fase 4 HECHA dentro del alcance v1; Fase 5 — Conversión HECHA.
 5.1 — Portrait HECHO (primitive independiente); 5.2 — Validar salida HECHO.
 [5.2](PORTRAIT_OUTPUT_VALIDATION.md) comprueba el WebP en memoria, sin volver
 al PNG ni alterar este validador. 5.3 — Scene HECHO;
-5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso SIGUIENTE;
-Portrait ya prohíbe crop.
+5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso HECHO.
+
+Desde [5.5 — No recorte silencioso](NO_SILENT_CROP.md), HasAspectRatio es la
+primitiva única de geometría de Portrait/Scene y del validator genérico:
+productos long exactos, sin floating point/tolerancia. PngMasterValidator
+conserva su frontera estructural; ImageConversionGeometryValidator consume
+PngImageInfo + ResolvedImageConversion después y devuelve clean o STOP genérico.
+No abre PNG ni valida píxeles, budget o quality. Fase 6 — Integridad EN ESPERA;
+6.1 — SHA-256 SIGUIENTE.
