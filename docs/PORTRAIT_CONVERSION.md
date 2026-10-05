@@ -1,8 +1,8 @@
 # Portrait PNG → WebP — Fase 5 · Capítulo 5.1
 
-**Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión EN CURSO.
+**Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión HECHA.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
-5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso SIGUIENTE.**
+5.4 — Perfiles genéricos HECHO; 5.5 — No recorte silencioso HECHO.**
 
 Primera conversión gráfica real del Core: PNG maestro estático → validación
 estructural → safety pixels → proporción exacta → decode real → resize sin crop
@@ -111,6 +111,9 @@ Un rechazo devuelve report no limpio e Image null, sin resize/encode.
 
 Si las dimensiones ya coinciden, no se resamplea. En otro caso se resizea
 exactamente al tamaño configurado con KnownResamplers.Lanczos3 explícito.
+Desde 5.5 la primitiva única de ratio es PngImageInfo.HasAspectRatio, que compara
+productos long exactos, sin floating point o tolerancia. El refactor conserva
+portrait_aspect_ratio_mismatch, message/detail/SubjectPath y orden anteriores.
 ResizeMode.Stretch solo se aplica tras demostrar igualdad exacta de proporción;
 conserva el cuadro completo sin distorsión, crop, pad o letterbox.
 
@@ -153,9 +156,11 @@ permiso de ejecución/escritura de assets. El converter no valida su salida:
 productiva separada, posterior a 5.1, para metadata/settings, decode WebP real
 y dimensiones; no se integra automáticamente ni autoriza escritura.
 
-Fase 5 permanece EN CURSO. 5.1–5.4 HECHOS. [Scene](SCENE_CONVERSION.md)
+Fase 5 HECHA. 5.1–5.5 HECHOS. [Scene](SCENE_CONVERSION.md)
 tiene tipos propios/settings explícitos sin perfil canónico; no modifica 5.1.
 5.4 — Perfiles genéricos HECHO: Universe Profile v4 declara y resuelve reglas,
-sin modificar los contratos Portrait ni añadir orquestación. 5.5 es SIGUIENTE
-y formalizará garantías generales
-de no recorte silencioso; Portrait ya respeta esa invariante en 5.1.
+sin modificar los contratos Portrait ni añadir orquestación.
+[5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza la invariante
+full-frame y añade el validator geométrico genérico, sin conectarlo a Portrait.
+Ratio exacto + Stretch + ausencia de crop/pad preservan el frame; Stretch aislado
+no prueba esa garantía. Fase 6 — Integridad EN ESPERA; 6.1 — SHA-256 SIGUIENTE.

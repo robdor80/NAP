@@ -24,7 +24,7 @@ public sealed class PortraitPngToWebpConverter
             return Stop(NapIssueCodes.PortraitInputTooLarge,
                 "The portrait PNG exceeds the configured pixel safety limit.", sourcePath,
                 FormattableString.Invariant($"{info.Width}x{info.Height}; max_pixels={settings.MaxInputPixels}"));
-        if ((long)info.Width * settings.OutputHeight != (long)info.Height * settings.OutputWidth)
+        if (!info.HasAspectRatio(settings.OutputWidth, settings.OutputHeight))
             return Stop(NapIssueCodes.PortraitAspectRatioMismatch,
                 "The portrait PNG aspect ratio does not match the configured output ratio.", sourcePath,
                 FormattableString.Invariant($"source={info.Width}x{info.Height}; output={settings.OutputWidth}x{settings.OutputHeight}"));

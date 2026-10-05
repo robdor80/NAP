@@ -92,4 +92,4 @@ directorios desde la regla retenida en ValidatedAssetPackage y la raíz de
 ValidatedProductionRepository, sin recargar perfiles ni realizar I/O.
 En 3.5 no se calcularon paths; 3.6 tampoco migra assets ni escribe destinos.
 **Fase 3 HECHA (3.1–3.6). Fase 4 HECHA dentro del alcance v1.
-Fase 5 EN CURSO; 5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.**
+Fase 5 HECHA; 5.1–5.5 HECHOS; 5.5 — No recorte silencioso HECHO.**

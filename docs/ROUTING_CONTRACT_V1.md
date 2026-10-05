@@ -103,7 +103,7 @@ stage ni inferencia desde AssetId. Routing Contract v1 es suficiente.
 - **3.4 HECHO:** [diff estructural puro](STRUCTURAL_CHANGE_DETECTION.md) mediante snapshots, sin usar routing.
 - **3.5 HECHO:** estructura histórica auditada y política canónica Nimroel declarada, sin migración.
 - **3.6 — [Destination Resolver](DESTINATION_RESOLVER.md) HECHO:** calcula directorios bajo la raíz autorizada, usando las reglas retenidas por packages validados.
-- **Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 EN CURSO:** 5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.
+- **Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 HECHA:** 5.1–5.5 HECHOS; 5.5 — No recorte silencioso HECHO.
 
 Este capítulo no implementa resolución, diff de repositorio, auditoría histórica, migración,
 colisiones, creación de carpetas, ProcessingPlan, Dry Run, hashes, conversión,

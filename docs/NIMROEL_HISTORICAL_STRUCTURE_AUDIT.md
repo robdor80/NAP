@@ -155,8 +155,8 @@ identidad, dimensiones, allowed/required classification y los cuatro
 contrato anterior sin hacer depender esos tests de la configuración vigente.
 
 **Fase 3 HECHA (3.1–3.6). 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS.
-Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 EN CURSO;
-5.1–5.4 HECHOS; 5.5 — No recorte silencioso SIGUIENTE.** 3.6 calcula
+Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. Fase 5 HECHA;
+5.1–5.5 HECHOS; 5.5 — No recorte silencioso HECHO.** 3.6 calcula
 directorios con la regla retenida en el package validado y la raíz del repository
 validado. Sustituye segmentos y usa Path.Combine/Path.GetFullPath sin I/O,
 inferencia ni adaptación al layout histórico. No crea carpetas ni implementa

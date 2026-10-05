@@ -318,6 +318,19 @@ Conversion null. Nimroel solo añade Portrait master → 768×960 Q90; no Scene.
 ProcessingPlan v1 no congela la regla y Dry Run v1 no muestra conversión;
 una evolución futura podrá consumirla cuando se formalicen operaciones.
 
+## No recorte silencioso — 5.5 HECHO
+
+png_to_webp conserva el frame completo: ratio source/output idéntico, resize
+proporcional, sin crop/pad/BoxPad/letterbox/distorsión. ImageConversionGeometryValidator
+consume PngImageInfo + ResolvedImageConversion y usa exclusivamente HasAspectRatio
+con productos long. Devuelve clean o image_conversion_aspect_ratio_mismatch
+Error + Stop, sin I/O, decode, ejecución, quality o pixel budget. Portrait/Scene
+comparten la primitiva matemática y mantienen errores históricos y Stretch
+condicionado al ratio exacto. Las integraciones prueban Nimroel 4:5 y fixture
+genérico 3:2, con STOP para ratios incompatibles. Profile v4/config intactos;
+sin v5 ni campos de crop. Cualquier crop futuro exige contrato explícito
+versionado. Véase [NO_SILENT_CROP.md](NO_SILENT_CROP.md).
+
 ## Portrait Output Validation — 5.2 HECHO
 
 PortraitWebpOutputValidator consume únicamente PortraitWebpImage + settings,
@@ -392,12 +405,14 @@ La hoja de ruta vigente es:
 - **4.2 — Dry Run: HECHO.** Representación textual humana determinista del plan, sin I/O.
 - **4.3 — Plan Validation: HECHO.** Validación estructural pura del destino contra un snapshot materializado.
 - **4.4 — Logs: HECHO.** Resumen textual privacy-safe.
-- **Fase 5 — Conversión: EN CURSO.**
+- **Fase 5 — Conversión: HECHA.**
 - **5.1 — Portrait: HECHO.** Conversión PNG → WebP en memoria, settings explícitos.
 - **5.2 — Validar salida: HECHO.** Metadata/settings, decode WebP real y dimensiones, sin I/O.
 - **5.3 — Scene: HECHO.** Conversión y validación en memoria; sin canon Nimroel.
 - **5.4 — Perfiles genéricos: HECHO.**
-- **5.5 — No recorte silencioso: SIGUIENTE.** Portrait ya prohíbe crop.
+- **5.5 — No recorte silencioso: HECHO.** Invariante full-frame genérica y validación geométrica exacta.
+- **Fase 6 — Integridad: EN ESPERA.** No iniciada.
+- **6.1 — SHA-256: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
