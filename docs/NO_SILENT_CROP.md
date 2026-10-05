@@ -1,8 +1,8 @@
 # No Silent Crop — Fase 5 · Capítulo 5.5
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión HECHA;
-5.1–5.5 HECHOS. Fase 6 — Integridad EN ESPERA;
-6.1 — SHA-256 SIGUIENTE.**
+5.1–5.5 HECHOS. Fase 6 — Integridad EN CURSO;
+6.1 — SHA-256 HECHO; 6.2 — Duplicados SIGUIENTE.**
 
 El principio histórico de NAP exige conservar el cuadro completo del maestro.
 Portrait y Scene ya lo cumplían en 5.1/5.3; 5.5 formaliza una invariante genérica
@@ -125,7 +125,9 @@ silenciosamente la semántica existente de png_to_webp.
 
 Resolver configuración y validar geometría son fronteras previas a ejecución.
 Report clean no autoriza escritura. No existe ejecución/orquestación genérica,
-converter genérico público o ampliación de ProcessingPlan/Dry Run. No se añaden
+converter genérico público o ampliación de ProcessingPlan/Dry Run. En 5.5 no se añadieron
 escrituras de producción/archive, hashes, duplicates, Jobs, estados, recovery,
-IA, SQLite, CLI o UI. Fase 5 queda HECHA; Fase 6 está EN ESPERA y
-6.1 — SHA-256 es SIGUIENTE, sin implementación anticipada.
+IA, SQLite, CLI o UI. Fase 5 queda HECHA. Desde
+[6.1 — SHA-256](SHA256_INTEGRITY.md), existe una primitiva de identidad de bytes
+separada, sin modificar el validator geométrico. Fase 6 EN CURSO;
+6.1 HECHO y 6.2 — Duplicados SIGUIENTE.

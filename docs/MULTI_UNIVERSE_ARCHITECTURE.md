@@ -331,6 +331,18 @@ genérico 3:2, con STOP para ratios incompatibles. Profile v4/config intactos;
 sin v5 ni campos de crop. Cualquier crop futuro exige contrato explícito
 versionado. Véase [NO_SILENT_CROP.md](NO_SILENT_CROP.md).
 
+## SHA-256 — 6.1 HECHO
+
+[Sha256Digest / Sha256Hasher](SHA256_INTEGRITY.md) aportan identidad de bytes
+genérica, sin Asset ID, universo, path, metadata o formato. Digest inmutable:
+64 hex lowercase ASCII estrictos y value equality. Hasher stateless: BCL SHA-256
+streaming con memoria acotada; path Open/Read/Share Read y stream desde posición
+actual a EOF, caller-owned y no seekable permitido. No modifica source ni
+traduce excepciones a issues. CRC ZIP sigue siendo integridad de transporte,
+sin cambios. La primitiva se prueba sobre master validado y WebP en memoria,
+sin almacenarla en modelos/plan o escribir sidecars. 6.2 diseñará duplicados,
+colisiones e idempotencia; Jobs, estados y recovery siguen pendientes.
+
 ## Portrait Output Validation — 5.2 HECHO
 
 PortraitWebpOutputValidator consume únicamente PortraitWebpImage + settings,
@@ -411,8 +423,10 @@ La hoja de ruta vigente es:
 - **5.3 — Scene: HECHO.** Conversión y validación en memoria; sin canon Nimroel.
 - **5.4 — Perfiles genéricos: HECHO.**
 - **5.5 — No recorte silencioso: HECHO.** Invariante full-frame genérica y validación geométrica exacta.
-- **Fase 6 — Integridad: EN ESPERA.** No iniciada.
-- **6.1 — SHA-256: SIGUIENTE.**
+- **Fase 6 — Integridad: EN CURSO.** Sin completar.
+- **6.1 — SHA-256: HECHO.** Digest canónico y cálculo streaming, sin persistencia.
+- **6.2 — Duplicados: SIGUIENTE.**
+- **6.3 — Job ID, 6.4 — Estados y 6.5 — Recuperación tras fallo: PENDIENTES.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

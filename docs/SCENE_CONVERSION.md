@@ -170,4 +170,4 @@ Fase 5 HECHA; 5.4 — Perfiles genéricos HECHO,
 [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza frame completo,
 sin crop/pad/BoxPad/letterbox/distorsión. Ratio exacto + Stretch + ausencia de
 esas APIs garantizan resize proporcional; Stretch aislado no basta.
-Fase 6 — Integridad EN ESPERA; 6.1 — SHA-256 SIGUIENTE.
+Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados SIGUIENTE.
