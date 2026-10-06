@@ -374,7 +374,7 @@ universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
 No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
 no cambia ProcessingPlan o renderers. Desde 6.4 existe un journal de estados
 separado; [recovery 6.5](JOB_RECOVERY.md) HECHO mediante discovery read-only.
-Fase 6 está HECHA. Siguiente: Fase 7 — Auditor IA.
+Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
 
 ## Estados persistentes — 6.4 HECHO
 
@@ -480,7 +480,8 @@ La hoja de ruta vigente es:
 - **6.3 — Job ID: HECHO.** Identidad global de proceso, sin lifecycle o persistencia.
 - **6.4 — Estados persistentes: HECHO.** Journal mínimo solo bajo StateRoot.
 - **6.5 — Recuperación tras fallo: HECHO.** Discovery durable read-only.
-- **Fase 7 — Auditor IA: SIGUIENTE.**
+- **Fase 7 — Auditor IA: HECHA.** 7.1–7.5; contratos Core provider-neutral y adapter Gemini aislado, sin writes/lifecycle.
+- **Fase 8 — TeraBox / ArchiveRoot: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
