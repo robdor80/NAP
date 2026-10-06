@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1.
 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; siguiente: Fase 7 — Auditor IA.**
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
 
 Logs útiles pero no invasivos: un resumen humano breve del resultado de
 planning/validation, separado del preview detallado de Dry Run.
@@ -144,7 +144,7 @@ Desde [6.1 — SHA-256](SHA256_INTEGRITY.md) existe una primitiva independiente
 de hashing. ProcessingPlan continúa sin guardar hashes, Plan Validation sin
 usarlos y Plan logs sin mostrarlos o persistirlos. No se reabre Fase 4.
 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO;
-6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA. El journal de estados es infraestructura
+6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot. El journal de estados es infraestructura
 separada; el renderer conserva su contrato sin persistencia o JobId/JobState.
 
 ## Validación

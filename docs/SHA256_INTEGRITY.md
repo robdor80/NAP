@@ -2,7 +2,7 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO.
-6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA.**
+6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
 
 6.1 responde únicamente «¿Cuál es el SHA-256 exacto de estos bytes?». SHA-256
 representa 32 bytes / 256 bits como 64 caracteres hexadecimal lowercase ASCII.
@@ -124,7 +124,9 @@ mínimo únicamente bajo StateRoot, sin modificar Sha256Digest/Sha256Hasher.
 read-only, sin modificar el hashing. Orquestación, SQLite y TeraBox siguen sin implementar.
 No hay persistencia en JSON/profile/
 manifest, sidecars .sha256, SHA256SUMS, logs o bases de datos. No hay copias,
-escrituras de producción/archive, output persistence, CLI/UI, auditor IA o Fase 7.
+escrituras de producción/archive, output persistence o CLI/UI. [Fase 7 — Auditor
+IA](AI_AUDIT.md) es una capa separada; no incorpora hashes al request ni cambia
+esta primitiva.
 6.1 no añade issue codes; 6.2 añade solo asset_content_collision y
 asset_content_possible_duplicate. No se añaden dependencias o cambios de schemas/config.
 
@@ -133,4 +135,4 @@ sin modificar Sha256Digest/Sha256Hasher ni guardar fingerprints en modelos.
 No hay catálogo, colección global o resolución automática de colisiones/duplicados.
 `hash origen == hash destino` continúa como requisito futuro de verificación
 cuando existan escrituras/copias; 6.1 todavía no las implementa ni autoriza.
-Fase 6 está HECHA. Siguiente: Fase 7 — Auditor IA.
+Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.

@@ -1,6 +1,6 @@
 # Job Recovery — Fase 6 · Capítulo 6.5
 
-**Fase 6 — Integridad HECHA (6.1–6.5). Siguiente: Fase 7 — Auditor IA.**
+**Fase 6 — Integridad HECHA (6.1–6.5). Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
 
 Recovery v1 recupera conocimiento durable y un punto seguro de reanudación; no reejecuta operaciones de assets.
 

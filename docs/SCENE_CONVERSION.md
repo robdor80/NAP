@@ -170,4 +170,4 @@ Fase 5 HECHA; 5.4 — Perfiles genéricos HECHO,
 [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza frame completo,
 sin crop/pad/BoxPad/letterbox/distorsión. Ratio exacto + Stretch + ausencia de
 esas APIs garantizan resize proporcional; Stretch aislado no basta.
-Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA.
+Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
