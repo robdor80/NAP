@@ -1,8 +1,8 @@
 # SHA-256 Integrity — Fase 6 · Capítulo 6.1
 
-**Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
+**Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO.
-6.5 — Recuperación tras fallo SIGUIENTE.**
+6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA.**
 
 6.1 responde únicamente «¿Cuál es el SHA-256 exacto de estos bytes?». SHA-256
 representa 32 bytes / 256 bits como 64 caracteres hexadecimal lowercase ASCII.
@@ -120,7 +120,8 @@ Cross-universe se rechaza; ninguna relación implica un Job completado.
 acoplarla a hashes ni modificar esta primitiva.
 [6.4 — Estados persistentes](JOB_STATES.md) implementa reglas puras y journal
 mínimo únicamente bajo StateRoot, sin modificar Sha256Digest/Sha256Hasher.
-Orquestación, recuperación (6.5 siguiente), SQLite y TeraBox siguen sin implementar.
+[6.5 recovery](JOB_RECOVERY.md) recupera checkpoints durables mediante discovery
+read-only, sin modificar el hashing. Orquestación, SQLite y TeraBox siguen sin implementar.
 No hay persistencia en JSON/profile/
 manifest, sidecars .sha256, SHA256SUMS, logs o bases de datos. No hay copias,
 escrituras de producción/archive, output persistence, CLI/UI, auditor IA o Fase 7.
@@ -132,4 +133,4 @@ sin modificar Sha256Digest/Sha256Hasher ni guardar fingerprints en modelos.
 No hay catálogo, colección global o resolución automática de colisiones/duplicados.
 `hash origen == hash destino` continúa como requisito futuro de verificación
 cuando existan escrituras/copias; 6.1 todavía no las implementa ni autoriza.
-Fase 6 permanece EN CURSO, sin marcarla completa.
+Fase 6 está HECHA. Siguiente: Fase 7 — Auditor IA.
