@@ -1,8 +1,8 @@
 # Job States — Fase 6 · Capítulo 6.4
 
-**Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
+**Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO;
-6.4 — Estados HECHO; 6.5 — Recuperación tras fallo SIGUIENTE.**
+6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA.**
 
 El requisito histórico exige Job ID y estados persistentes. 6.4 implementa
 vocabulario, reglas puras, snapshot inmutable y un journal mínimo del último
@@ -159,8 +159,9 @@ y solicita flush a disco; se cierra antes de publicar.
 File.Move en el mismo directorio publica con overwrite false para Create y true
 para Transition. Nunca se escribe JSON progresivamente sobre el final ni se
 borra antes el último estado válido. Un fallo anterior a publicación conserva
-el final y puede dejar un temporal completo/parcial. No se buscan ni limpian
-temporales huérfanos: eso pertenece a 6.5. Las garantías de renombrado/durabilidad
+el final y puede dejar un temporal completo/parcial. El store no busca ni limpia
+temporales huérfanos. [Recovery 6.5](JOB_RECOVERY.md) los descubre sin abrirlos,
+promocionarlos o borrarlos; no implementa cleanup. Las garantías de renombrado/durabilidad
 dependen del filesystem; no se añade un protocolo de crash recovery o fsync de
 directorio. Las pruebas observan el estado anterior y el temp completo tras un
 conflicto de publicación, sin hooks públicos artificiales.
@@ -175,10 +176,13 @@ validator y renderers siguen sin JobId/JobState; no hay CLI/UI, dependencias
 nuevas, SQLite, catálogo, schemas nuevos, NapIssueCodes o cambios a PNG/ZIP,
 conversiones, loaders o config Nimroel.
 
-6.5 — Recuperación tras fallo es SIGUIENTE: aún no existen scanning de Jobs,
-enumeración, resume/retry/rollback, journal history, checkpoints, reconciliación,
-limpieza de temp, detección de abandonos o reanudación idempotente. 6.4 solo deja
-el último estado durable como futura fuente. La Fase 6 permanece EN CURSO.
+[6.5 — Recuperación tras fallo](JOB_RECOVERY.md) HECHO: JobRecoveryScanner enumera
+solo StateRoot y reutiliza Load para recuperar exactamente el último checkpoint
+durable, separando activos, COMPLETED y FAILED. Detecta journals inválidos,
+desapariciones, temps huérfanos y reparse points mediante NapIssueReport, sin
+modificar las APIs o semántica de 6.4. No hay ejecución de assets, resume físico,
+retry/rollback, journal history, reconciliación, limpieza de temp o detección de
+abandonos. Fase 6 HECHA; siguiente: Fase 7 — Auditor IA.
 
 Las pruebas cubren la matriz 9×9 tanto en machine como store, contratos,
 inmutabilidad, tokens/bytes, parsing adversarial, roundtrips, flujo completo,

@@ -373,7 +373,8 @@ son distintas. JobId no elimina UniverseContext explícito ni crea un «current
 universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
 No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
 no cambia ProcessingPlan o renderers. Desde 6.4 existe un journal de estados
-separado; recovery 6.5 es SIGUIENTE. Fase 6 permanece EN CURSO.
+separado; [recovery 6.5](JOB_RECOVERY.md) HECHO mediante discovery read-only.
+Fase 6 está HECHA. Siguiente: Fase 7 — Auditor IA.
 
 ## Estados persistentes — 6.4 HECHO
 
@@ -388,7 +389,10 @@ Nunca busca en otros universos, infiere universo del ID o crea CurrentUniverse.
 Create no sobrescribe; Transition valida antes de publicar temp hermano
 completo/flushed/cerrado mediante move. No escribe assets u otros storage roots,
 no guarda hashes/fingerprints y no cambia PLAN/renderers, schemas o config.
-6.5 implementará recovery; no hay enumeración/reconciliación o limpieza de temp.
+[6.5 — Recovery](JOB_RECOVERY.md) enumera únicamente StateRoot, reutiliza Load
+y clasifica checkpoints activos/COMPLETED/FAILED del contexto. Cada temp se
+registra sin abrirlo; ambigüedades producen STOP. No hay reconciliación física,
+promoción/limpieza de temps o avance automático de estado.
 
 ## Portrait Output Validation — 5.2 HECHO
 
@@ -470,12 +474,13 @@ La hoja de ruta vigente es:
 - **5.3 — Scene: HECHO.** Conversión y validación en memoria; sin canon Nimroel.
 - **5.4 — Perfiles genéricos: HECHO.**
 - **5.5 — No recorte silencioso: HECHO.** Invariante full-frame genérica y validación geométrica exacta.
-- **Fase 6 — Integridad: EN CURSO.** Sin completar.
+- **Fase 6 — Integridad: HECHA.** 6.1–6.5 completos.
 - **6.1 — SHA-256: HECHO.** Digest canónico y cálculo streaming, sin persistencia.
 - **6.2 — Duplicados: HECHO.**
 - **6.3 — Job ID: HECHO.** Identidad global de proceso, sin lifecycle o persistencia.
 - **6.4 — Estados persistentes: HECHO.** Journal mínimo solo bajo StateRoot.
-- **6.5 — Recuperación tras fallo: SIGUIENTE.**
+- **6.5 — Recuperación tras fallo: HECHO.** Discovery durable read-only.
+- **Fase 7 — Auditor IA: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

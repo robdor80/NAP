@@ -49,4 +49,12 @@ public static class NapIssueCodes
     public const string ImageConversionAspectRatioMismatch = "image_conversion_aspect_ratio_mismatch";
     public const string AssetContentCollision = "asset_content_collision";
     public const string AssetContentPossibleDuplicate = "asset_content_possible_duplicate";
+    public const string JobRecoveryInvalidJournalName = "job_recovery_invalid_journal_name";
+    public const string JobRecoveryInvalidJournal = "job_recovery_invalid_journal";
+    public const string JobRecoveryJournalChanged = "job_recovery_journal_changed";
+    public const string JobRecoveryOrphanTemp = "job_recovery_orphan_temp";
+    public const string JobRecoveryTempWithoutJournal = "job_recovery_temp_without_journal";
+    public const string JobRecoveryInvalidTempName = "job_recovery_invalid_temp_name";
+    public const string JobRecoveryStateRootReparse = "job_recovery_state_root_reparse";
+    public const string JobRecoveryEntryReparse = "job_recovery_entry_reparse";
 }

@@ -1,8 +1,8 @@
 # Duplicate Detection — Fase 6 · Capítulo 6.2
 
-**Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
+**Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO.
-6.5 — Recuperación tras fallo SIGUIENTE.**
+6.5 — Recuperación tras fallo HECHO. Siguiente: Fase 7 — Auditor IA.**
 
 6.2 compara dos fingerprints ya conocidos, `candidate` frente a `existing`,
 para distinguir identidad administrativa de identidad binaria. Es una capa pura,
@@ -170,7 +170,8 @@ independiente de los fingerprints y sin modificar el analyzer o su resultado.
 6.3 no crea modelo/lifecycle de Jobs o persistencia. Desde
 [6.4 — Estados persistentes](JOB_STATES.md) existe un journal mínimo separado
 bajo StateRoot; los fingerprints/analyzer siguen puros y sin persistencia.
-6.5 recovery es SIGUIENTE, todavía sin implementar.
+[6.5 recovery](JOB_RECOVERY.md) HECHO: discovery de checkpoints durables en solo
+lectura, separado del analyzer. Fase 6 HECHA; siguiente: Fase 7 — Auditor IA.
 
 Una futura capa de catálogo podrá obtener múltiples fingerprints y agregar
 llamadas a esta primitiva. No existe overload Analyze(candidate, IEnumerable).
