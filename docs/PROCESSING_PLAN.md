@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan,
 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; siguiente: 6.4 — Estados.**
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; siguiente: 6.5 — Recuperación tras fallo.**
 
 ## Propósito y fronteras
 
@@ -133,7 +133,7 @@ determinista desde esta base, con LF fijo, orden Ordinal y paths escapados.
 No revalida ni ejecuta operaciones. [4.3 — Plan Validation](PLAN_VALIDATION.md)
 interpreta estructuralmente el destino contra un snapshot materializado, sin I/O,
 source revalidation ni hashes. Un report limpio es point-in-time y no autoriza
-escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; siguiente: 6.4 — Estados. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
+escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; siguiente: 6.5 — Recuperación tras fallo. El primitive [5.1 — Portrait](PORTRAIT_CONVERSION.md) recibe sourcePath/settings
 explícitos y devuelve WebP en memoria, sin depender del plan ni añadir operaciones.
 La conexión de conversiones al plan, archive, hashes y jobs sigue pendiente;
 JobId pertenece a Fase 6.

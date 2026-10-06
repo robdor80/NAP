@@ -163,4 +163,4 @@ sin modificar los contratos Portrait ni añadir orquestación.
 [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza la invariante
 full-frame y añade el validator geométrico genérico, sin conectarlo a Portrait.
 Ratio exacto + Stretch + ausencia de crop/pad preservan el frame; Stretch aislado
-no prueba esa garantía. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.
+no prueba esa garantía. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo SIGUIENTE.
