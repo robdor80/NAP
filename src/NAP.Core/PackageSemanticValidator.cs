@@ -9,6 +9,13 @@ namespace NAP.Core;
 public sealed class PackageSemanticValidator
 {
     public PackageSemanticValidationResult Validate(string packageRoot, UniverseContext context)
+        => ValidateCore(packageRoot, context, allowArchivePublicationTemps: false);
+
+    // Catalog-only reading of an archive copy. Original packages retain the exact strict public contract.
+    internal PackageSemanticValidationResult ValidateArchiveCopy(string packageRoot, UniverseContext context)
+        => ValidateCore(packageRoot, context, allowArchivePublicationTemps: true);
+
+    private static PackageSemanticValidationResult ValidateCore(string packageRoot, UniverseContext context, bool allowArchivePublicationTemps)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(packageRoot);
         ArgumentNullException.ThrowIfNull(context);
@@ -99,7 +106,8 @@ public sealed class PackageSemanticValidator
                 issues.Add(Issue(NapIssueCodes.PackageRequiredFileMissing, "A required package file is missing.", Path.Combine(root, name), fileRule.Role));
         }
         foreach (var name in files.Keys.Where(name => !allowed.Contains(name)).OrderBy(name => name, StringComparer.Ordinal))
-            issues.Add(Issue(NapIssueCodes.PackageUnexpectedFile, "The package contains an unexpected file.", files[name]));
+            if (!allowArchivePublicationTemps || !ProductionAssetPlanner.IsOwnTemp(allowed, name))
+                issues.Add(Issue(NapIssueCodes.PackageUnexpectedFile, "The package contains an unexpected file.", files[name]));
         foreach (var fileRule in rule.PackageFiles)
         {
             if (fileRule.ContentValidator is null || !present.TryGetValue(fileRule.Role, out var path))

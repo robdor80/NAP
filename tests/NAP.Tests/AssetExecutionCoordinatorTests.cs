@@ -29,7 +29,8 @@ public sealed class AssetExecutionCoordinatorTests
         Assert.Equal(ArchiveMasterOutcome.AlreadyArchived, second.Archive.Outcome);
         Assert.Equal(ProductionAssetOutcome.AlreadyProduced, second.Production.Outcome);
         ArchiveTestFixture.AssertSnapshot(before, f.Root);
-        Assert.False(File.Exists(f.Context.Storage.CatalogPath));
+        Assert.True(File.Exists(f.Context.Storage.CatalogPath));
+        Assert.Equal(f.Package.AssetKey, Assert.Single(new AssetCatalog(f.Context).Query()).AssetKey);
         Assert.DoesNotContain(Directory.GetFiles(f.Context.Storage.StateRoot), p => Path.GetFileName(p).Contains("lock", StringComparison.OrdinalIgnoreCase));
         Assert.Single(new JobRecoveryScanner(f.Context).Scan().CompletedJobs);
     }

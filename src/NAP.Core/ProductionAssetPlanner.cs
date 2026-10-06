@@ -116,9 +116,11 @@ public sealed class ProductionAssetPlanner
         }
     }
 
-    internal static bool IsOwnTemp(ProductionAssetPlan plan, string name) => plan.Files.Any(file =>
+    internal static bool IsOwnTemp(ProductionAssetPlan plan, string name) => IsOwnTemp(plan.Files.Select(file => file.FileName), name);
+
+    internal static bool IsOwnTemp(IEnumerable<string> expectedFileNames, string name) => expectedFileNames.Any(fileName =>
     {
-        var prefix = file.FileName + ".";
+        var prefix = fileName + ".";
         if (!name.StartsWith(prefix, StringComparison.Ordinal) || !name.EndsWith(".tmp", StringComparison.Ordinal)) return false;
         var guid = name[prefix.Length..^4];
         return guid.Length == 32 && guid.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f') && Guid.TryParseExact(guid, "N", out var id) && id != Guid.Empty;
