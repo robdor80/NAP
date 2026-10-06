@@ -96,6 +96,9 @@ v2, con contexto explícito y sin migrar v1. Las migraciones v1→v2, registries
 completos de producción, SQLite, UI y vocabularios siguen pendientes. Routing
 (Fase 3) y conservación del manifest original en [Archive Storage — Fase 8](ARCHIVE_STORAGE.md)
 ya están implementados sin cambiar este contrato universal.
+Fase 9 preserva también el manifest byte-for-byte en ProductionRoot junto al
+WebP y companions, sin reserialización ni cambios del schema; véase
+[PRODUCTION_STORAGE.md](PRODUCTION_STORAGE.md).
 Los tests cubren transporte, presence y universe match. Las comprobaciones
 reproducibles del schema están en `scripts/Test-MultiUniverseSchemas.ps1`:
 

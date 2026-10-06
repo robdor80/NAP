@@ -2,13 +2,14 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO;
-6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
+6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.**
 
 El requisito histórico exige Job ID y estados persistentes. 6.4 implementa
 vocabulario, reglas puras, snapshot inmutable y un journal mínimo del último
 estado durable. **Persistir estado no implementa recovery ni ejecuta trabajo.**
-No existe un ProcessingJob/orquestador, historial de eventos o prueba de que las
-operaciones de assets representadas por los estados se hayan realizado.
+El store no implementa ProcessingJob, historial de eventos ni prueba de efectos
+físicos. [Fase 9](PRODUCTION_STORAGE.md) añade AssetExecutionCoordinator con
+revalidación física y coordinación por Job, sin cambiar este contrato.
 
 ## Estados y reglas puras
 
@@ -125,7 +126,8 @@ Transition valida jobId y nextState antes de I/O, carga el estado, consulta el
 machine y solo publica una transición válida. Las inválidas no crean temporales
 ni cambian el final. Las operaciones de escritura se serializan dentro de una
 instancia; callers deben coordinar writers de distintas instancias/procesos para
-el mismo Job. No se implementan locks distribuidos, leases o compare-and-swap.
+el mismo Job. AssetExecutionCoordinator añade named mutex por StateRoot + JobId
+para su ejecución entre procesos; el store no añade leases o compare-and-swap.
 
 ## JSON interno v1 estricto
 
@@ -168,7 +170,7 @@ conflicto de publicación, sin hooks públicos artificiales.
 
 ## Alcance y continuidad
 
-Solo el journal bajo StateRoot introduce escrituras de infraestructura.
+En JobStateStore, solo el journal bajo StateRoot introduce escrituras de infraestructura.
 No se tocan InboxRoot, StagingRoot, CacheRoot, ProductionRoot o ArchiveRoot.
 No se copian maestros, escriben WebP/documentación de producción, mueven o
 sobrescriben assets, usa TeraBox o Git de producción. ProcessingPlan, builder,
@@ -182,7 +184,7 @@ durable, separando activos, COMPLETED y FAILED. Detecta journals inválidos,
 desapariciones, temps huérfanos y reparse points mediante NapIssueReport, sin
 modificar las APIs o semántica de 6.4. No hay ejecución de assets, resume físico,
 retry/rollback, journal history, reconciliación, limpieza de temp o detección de
-abandonos. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
+abandonos. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.
 
 Las pruebas cubren la matriz 9×9 tanto en machine como store, contratos,
 inmutabilidad, tokens/bytes, parsing adversarial, roundtrips, flujo completo,

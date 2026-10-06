@@ -1,6 +1,6 @@
 # Job Recovery — Fase 6 · Capítulo 6.5
 
-**Fase 6 — Integridad HECHA (6.1–6.5). Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
+**Fase 6 — Integridad HECHA (6.1–6.5). Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.**
 
 Recovery v1 recupera conocimiento durable y un punto seguro de reanudación; no reejecuta operaciones de assets.
 
@@ -32,8 +32,9 @@ recovery no introduce un segundo parser JSON ni modifica los contratos de 6.4.
 | FAILED | FailedJobs | FAILED, terminal fallido |
 
 Un final PLANNED devuelve PLANNED. No se infiere AUDITED ni se avanza JobState.
-FAILED no se resucita y COMPLETED no se considera recuperable. La futura
-ejecución decidirá cómo continuar de forma idempotente desde ese checkpoint.
+FAILED no se resucita y COMPLETED no se considera recuperable. La ejecución de
+[Fase 9](PRODUCTION_STORAGE.md) revalida archivo/producción antes de continuar
+de forma idempotente desde PLANNED/AUDITED/EXECUTED/VERIFIED.
 Un estado EXECUTED o VERIFIED tampoco demuestra por sí solo los efectos físicos
 actuales de una operación: su reconciliación requiere contratos específicos.
 
@@ -135,7 +136,7 @@ StagingRoot, CacheRoot, ProductionRoot y ArchiveRoot permanecen intactos.
 
 ## Consumo futuro y límites deliberados
 
-El futuro orquestador deberá consultar Issues.ShouldStop antes de decidir una
+El host debe consultar Issues.ShouldStop antes de decidir una
 continuación y coordinar writers/revalidar condiciones en el momento de actuar.
 Este resultado es un snapshot point-in-time, no un lock ni una autorización de
 ejecución. El scanner no establece exclusión entre procesos, un lease, detección
@@ -143,9 +144,15 @@ de abandono, historia de estados o atomicidad entre múltiples journals. Tampoco
 protege frente a sustituciones concurrentes de paths después de inspeccionar
 sus atributos. Los límites de publicación/durabilidad de 6.4 siguen vigentes.
 
-La ejecución idempotente, reconciliación de efectos físicos y política de
-retry/cleanup/rollback quedan para el orquestador y las fases que implementen
-filesystem, producción o TeraBox. No se deducen del estado ni de un temp.
+AssetExecutionCoordinator implementa reanudación física idempotente y cierre
+verificado en Fase 9; requiere package, ProcessingPlan, archive plan y PASS
+explícitos. No infiere esos inputs desde el journal ni limpia temps. Las
+publicaciones reutilizadas requieren además recibos del mismo Job en
+StateRoot/production-executions; AUDITED o bytes exactos solos no prueban
+ownership. El scanner no inspecciona esos recibos ni demuestra coherencia
+física de un COMPLETED; lo hace la frontera de ejecución en solo lectura. Las
+políticas de retry/cleanup/rollback siguen fuera del scanner. COMPLETED solo
+se verifica y una inconsistencia produce STOP sin reparación.
 
 ## Verificación
 

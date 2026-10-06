@@ -376,7 +376,7 @@ universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
 No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
 no cambia ProcessingPlan o renderers. Desde 6.4 existe un journal de estados
 separado; [recovery 6.5](JOB_RECOVERY.md) HECHO mediante discovery read-only.
-Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
+Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.
 
 ## Estados persistentes — 6.4 HECHO
 
@@ -484,14 +484,16 @@ La hoja de ruta vigente es:
 - **6.5 — Recuperación tras fallo: HECHO.** Discovery durable read-only.
 - **Fase 7 — Auditor IA: HECHA.** 7.1–7.5; contratos Core provider-neutral y adapter Gemini aislado, sin writes/lifecycle.
 - **Fase 8 — TeraBox / Archive Storage: HECHA.** 8.1–8.6; paquete original completo, índice v1, copia incremental verificada, colisiones y estructura derivada del routing.
-- **Fase 9 — Producción repo Nimroel: SIGUIENTE.**
+- **Fase 9 — Production Storage + Verified Completion: HECHA (9.1–9.4).** Writer genérico con archive prerequisite, WebP/documentación verificados, recovery físico y cierre COMPLETED.
+- **Fase 10 — SQLite: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
-Quedan pendientes schemas completos de assets/metadata, reglas de
-producción, persistencia de logs, pre-execution, vocabularios de valores, SQLite,
-backups generales, orquestación de conversiones genéricas y selector UI. 5.1 añade únicamente
+Quedan pendientes schemas completos de assets/metadata, persistencia de logs,
+vocabularios de valores, SQLite, backups generales y selector UI.
+[Fase 9](PRODUCTION_STORAGE.md) consume routing/conversión declarativos con
+preflight físico y escritura verificada. 5.1 añade únicamente
 ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas
 previas conservan su alcance de solo lectura: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

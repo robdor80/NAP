@@ -68,4 +68,15 @@ public static class NapIssueCodes
     public const string ArchivePossibleDuplicate = "archive_possible_duplicate";
     public const string ArchiveSourceChanged = "archive_source_changed";
     public const string ArchiveVerificationFailed = "archive_verification_failed";
+    public const string ProductionEntryReparse = "production_entry_reparse";
+    public const string ProductionSourceChanged = "production_source_changed";
+    public const string ProductionFileCollision = "production_file_collision";
+    public const string ProductionUnexpectedEntry = "production_unexpected_entry";
+    public const string ProductionVerificationFailed = "production_verification_failed";
+    public const string ProductionArchiveMismatch = "production_archive_mismatch";
+    public const string ProductionConversionFailed = "production_conversion_failed";
+    public const string ProductionOutputInvalid = "production_output_invalid";
+    public const string ProductionCompletedInconsistent = "production_completed_inconsistent";
+    public const string ProductionPathInvalid = "production_path_invalid";
+    public const string ProductionRecoveryInvalid = "production_recovery_invalid";
 }

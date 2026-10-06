@@ -96,6 +96,26 @@ internal sealed class ArchiveTestFixture : IDisposable
 
     internal static Type CoreType(string name) => typeof(ArchiveMasterPlanner).Assembly.GetType("NAP.Core." + name)!;
 
+    // Test-only deterministic lease revocation while Publish serializes entries. No timing/OS rename assumptions.
+    internal static ArchiveMasterIndex RevokeLeaseAfterEntries(ArchiveMasterIndex index, IDisposable lease)
+    {
+        typeof(ArchiveMasterIndex).GetField("<Entries>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .SetValue(index, new RevokingEntries(index.Entries, lease));
+        return index;
+    }
+
+    private sealed class RevokingEntries(IReadOnlyList<ArchiveMasterIndexEntry> entries, IDisposable lease) : IReadOnlyList<ArchiveMasterIndexEntry>
+    {
+        public int Count => entries.Count;
+        public ArchiveMasterIndexEntry this[int index] => entries[index];
+        public IEnumerator<ArchiveMasterIndexEntry> GetEnumerator()
+        {
+            foreach (var entry in entries) yield return entry;
+            lease.Dispose();
+        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
     internal static Dictionary<string, string> Snapshot(string root)
     {
         var result = new Dictionary<string, string>(StringComparer.Ordinal);
