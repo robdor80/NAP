@@ -341,7 +341,8 @@ actual a EOF, caller-owned y no seekable permitido. No modifica source ni
 traduce excepciones a issues. CRC ZIP sigue siendo integridad de transporte,
 sin cambios. La primitiva se prueba sobre master validado y WebP en memoria,
 sin almacenarla en modelos/plan o escribir sidecars. JobId ya existe desde 6.3;
-el modelo/lifecycle de Jobs, estados y recovery siguen pendientes.
+6.4 añade estados y journal mínimo separado bajo StateRoot, sin acoplar hashes.
+Orquestación y recovery siguen sin implementar.
 
 ## Duplicados — 6.2 HECHO
 
@@ -371,8 +372,23 @@ mismo JobId. UniverseAssetKey sigue siendo UniverseId + AssetId; ambas identidad
 son distintas. JobId no elimina UniverseContext explícito ni crea un «current
 universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
 No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
-no cambia ProcessingPlan o renderers. 6.4 — Estados SIGUIENTE y recovery 6.5
-PENDIENTE. Fase 6 permanece EN CURSO.
+no cambia ProcessingPlan o renderers. Desde 6.4 existe un journal de estados
+separado; recovery 6.5 es SIGUIENTE. Fase 6 permanece EN CURSO.
+
+## Estados persistentes — 6.4 HECHO
+
+[JobState / machine / record / store](JOB_STATES.md) fijan los nueve estados
+canónicos, progresión normal sin saltos/retrocesos/same-state y FAILED desde
+estados activos. COMPLETED/FAILED son terminales. JobStateRecord asocia JobId
+global con UniverseId y estado inmutables; no redefine JobId o UniverseAssetKey.
+JobStateStore exige UniverseContext y solo usa context.Storage.StateRoot,
+con journal <job_id>.json y JSON v1 estricto. JobId interno y universo deben
+coincidir con solicitud/contexto; mismatch causa InvalidDataException + STOP.
+Nunca busca en otros universos, infiere universo del ID o crea CurrentUniverse.
+Create no sobrescribe; Transition valida antes de publicar temp hermano
+completo/flushed/cerrado mediante move. No escribe assets u otros storage roots,
+no guarda hashes/fingerprints y no cambia PLAN/renderers, schemas o config.
+6.5 implementará recovery; no hay enumeración/reconciliación o limpieza de temp.
 
 ## Portrait Output Validation — 5.2 HECHO
 
@@ -458,8 +474,8 @@ La hoja de ruta vigente es:
 - **6.1 — SHA-256: HECHO.** Digest canónico y cálculo streaming, sin persistencia.
 - **6.2 — Duplicados: HECHO.**
 - **6.3 — Job ID: HECHO.** Identidad global de proceso, sin lifecycle o persistencia.
-- **6.4 — Estados: SIGUIENTE.**
-- **6.5 — Recuperación tras fallo: PENDIENTE.**
+- **6.4 — Estados persistentes: HECHO.** Journal mínimo solo bajo StateRoot.
+- **6.5 — Recuperación tras fallo: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

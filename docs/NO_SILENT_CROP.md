@@ -2,7 +2,7 @@
 
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión HECHA;
 5.1–5.5 HECHOS. Fase 6 — Integridad EN CURSO;
-6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.**
+6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo SIGUIENTE.**
 
 El principio histórico de NAP exige conservar el cuadro completo del maestro.
 Portrait y Scene ya lo cumplían en 5.1/5.3; 5.5 formaliza una invariante genérica
@@ -130,4 +130,4 @@ escrituras de producción/archive, hashes, duplicates, Jobs, estados, recovery,
 IA, SQLite, CLI o UI. Fase 5 queda HECHA. Desde
 [6.1 — SHA-256](SHA256_INTEGRITY.md), existe una primitiva de identidad de bytes
 separada, sin modificar el validator geométrico. Fase 6 EN CURSO;
-6.1 HECHO y 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.
+6.1 HECHO y 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo SIGUIENTE.

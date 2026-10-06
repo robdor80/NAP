@@ -2,7 +2,7 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO.
-6.4 — Estados SIGUIENTE; 6.5 — Recuperación tras fallo PENDIENTE.**
+6.4 — Estados HECHO; 6.5 — Recuperación tras fallo SIGUIENTE.**
 
 El requisito histórico de NAP es: «Cada proceso debe tener un Job ID».
 6.3 formaliza exclusivamente esa identidad fuerte, estable y persistible como
@@ -105,13 +105,16 @@ El lifecycle futuro decidirá la proyección en historial/logs.
 
 ```text
 JobId [6.3 HECHO]
-  → Job + estados [6.4 SIGUIENTE]
-  → recuperación tras fallo [6.5 PENDIENTE]
+  → JobState + machine/record/store [6.4 HECHO]
+  → recuperación tras fallo [6.5 SIGUIENTE]
 ```
 
-6.4 añadirá Estados; 6.5 añadirá Recuperación tras fallo. Ninguno está implementado
-por 6.3. La Fase 6 permanece EN CURSO, sin marcarla completa. No hay ejecución,
-orquestación, FAILED handling, CLI, UI o Fase 7.
+[6.4 — Estados persistentes](JOB_STATES.md) ya añade el vocabulario, reglas puras,
+JobStateRecord y journal mínimo bajo StateRoot. JobId permanece intacto y sin
+I/O o estado propio; no hay ProcessingJob/orquestador. 6.5 añadirá recuperación,
+todavía sin implementar. La Fase 6 permanece EN CURSO, sin marcarla completa.
+Persistir FAILED terminal no ejecuta recuperación. No hay ejecución de assets,
+CLI, UI o Fase 7.
 
 ## Pruebas
 
