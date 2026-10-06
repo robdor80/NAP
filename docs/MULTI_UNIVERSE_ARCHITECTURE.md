@@ -340,8 +340,25 @@ streaming con memoria acotada; path Open/Read/Share Read y stream desde posició
 actual a EOF, caller-owned y no seekable permitido. No modifica source ni
 traduce excepciones a issues. CRC ZIP sigue siendo integridad de transporte,
 sin cambios. La primitiva se prueba sobre master validado y WebP en memoria,
-sin almacenarla en modelos/plan o escribir sidecars. 6.2 diseñará duplicados,
-colisiones e idempotencia; Jobs, estados y recovery siguen pendientes.
+sin almacenarla en modelos/plan o escribir sidecars. Jobs, estados y recovery
+siguen pendientes.
+
+## Duplicados — 6.2 HECHO
+
+[AssetContentFingerprint / AssetDuplicateAnalyzer](DUPLICATE_DETECTION.md)
+asocian UniverseAssetKey + Sha256Digest y comparan candidate/existing pairwise.
+Solo el mismo UniverseId permite comparación: cross-universe produce
+ArgumentException (existing), incluso con AssetId y digest iguales; no existe
+universo global ni relaciones implícitas entre universos.
+SameAssetSameContent es semánticamente idempotente y clean, sin demostrar Jobs
+completados; SameAssetDifferentContent genera asset_content_collision Error + Stop;
+DifferentAssetSameContent genera asset_content_possible_duplicate Warning + Continue;
+Distinct es clean. Resultado sealed/inmutable, constructor internal con invariantes
+de relación y report; SubjectPath null y diagnósticos canónicos/direccionales.
+Cero I/O, hashing interno, catálogo, colección detectora, persistencia o SQLite.
+No altera roles, clasificación, perfiles, routing, package/plan o storage roots.
+Una futura capa podrá agregar comparaciones por pares dentro de cada universo;
+no hay resolución automática ni autorización de escritura.
 
 ## Portrait Output Validation — 5.2 HECHO
 
@@ -425,8 +442,9 @@ La hoja de ruta vigente es:
 - **5.5 — No recorte silencioso: HECHO.** Invariante full-frame genérica y validación geométrica exacta.
 - **Fase 6 — Integridad: EN CURSO.** Sin completar.
 - **6.1 — SHA-256: HECHO.** Digest canónico y cálculo streaming, sin persistencia.
-- **6.2 — Duplicados: SIGUIENTE.**
-- **6.3 — Job ID, 6.4 — Estados y 6.5 — Recuperación tras fallo: PENDIENTES.**
+- **6.2 — Duplicados: HECHO.**
+- **6.3 — Job ID: SIGUIENTE.**
+- **6.4 — Estados y 6.5 — Recuperación tras fallo: PENDIENTES.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

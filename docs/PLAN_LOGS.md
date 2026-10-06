@@ -2,7 +2,7 @@
 
 **Fase 3 HECHA. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1.
 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS.
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; siguiente: 6.2 — Duplicados.**
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; siguiente: 6.3 — Job ID.**
 
 Logs útiles pero no invasivos: un resumen humano breve del resultado de
 planning/validation, separado del preview detallado de Dry Run.
@@ -143,7 +143,7 @@ Portrait ya prohíbe crop.
 Desde [6.1 — SHA-256](SHA256_INTEGRITY.md) existe una primitiva independiente
 de hashing. ProcessingPlan continúa sin guardar hashes, Plan Validation sin
 usarlos y Plan logs sin mostrarlos o persistirlos. No se reabre Fase 4.
-6.2 — Duplicados es SIGUIENTE; Jobs/estados/recovery siguen pendientes.
+6.2 — Duplicados HECHO; 6.3 — Job ID SIGUIENTE; Jobs/estados/recovery siguen pendientes.
 
 ## Validación
 
