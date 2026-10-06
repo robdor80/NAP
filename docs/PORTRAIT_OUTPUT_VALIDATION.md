@@ -118,4 +118,4 @@ CLI/UI, orquestación o Fase 6. Fase 5 HECHA; 5.1–5.5 HECHOS.
 5.4 — Perfiles genéricos y [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHOS.
 5.5 valida geometría source/output antes de futura ejecución genérica; esta
 frontera de output conserva su API y comportamiento. Fase 6 — Integridad
-EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados SIGUIENTE.
+EN CURSO; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID SIGUIENTE.
