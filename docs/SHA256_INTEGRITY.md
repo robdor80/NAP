@@ -2,7 +2,7 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO.
-6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
+6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
 
 6.1 responde únicamente «¿Cuál es el SHA-256 exacto de estos bytes?». SHA-256
 representa 32 bytes / 256 bits como 64 caracteres hexadecimal lowercase ASCII.
@@ -121,8 +121,9 @@ acoplarla a hashes ni modificar esta primitiva.
 [6.4 — Estados persistentes](JOB_STATES.md) implementa reglas puras y journal
 mínimo únicamente bajo StateRoot, sin modificar Sha256Digest/Sha256Hasher.
 [6.5 recovery](JOB_RECOVERY.md) recupera checkpoints durables mediante discovery
-read-only, sin modificar el hashing. Orquestación, SQLite y TeraBox siguen sin implementar.
-No hay persistencia en JSON/profile/
+read-only, sin modificar el hashing. [Fase 8](ARCHIVE_STORAGE.md) reutiliza
+estas primitivas para verificar el paquete conservado y su índice JSON.
+Orquestación global y SQLite siguen pendientes. En la primitiva 6.1 no hay persistencia en JSON/profile/
 manifest, sidecars .sha256, SHA256SUMS, logs o bases de datos. No hay copias,
 escrituras de producción/archive, output persistence o CLI/UI. [Fase 7 — Auditor
 IA](AI_AUDIT.md) es una capa separada; no incorpora hashes al request ni cambia
@@ -133,6 +134,6 @@ asset_content_possible_duplicate. No se añaden dependencias o cambios de schema
 La semántica de 6.2 usa la identidad completa UniverseAssetKey y digests conocidos,
 sin modificar Sha256Digest/Sha256Hasher ni guardar fingerprints en modelos.
 No hay catálogo, colección global o resolución automática de colisiones/duplicados.
-`hash origen == hash destino` continúa como requisito futuro de verificación
-cuando existan escrituras/copias; 6.1 todavía no las implementa ni autoriza.
-Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
+`hash origen == hash destino` ya se comprueba en cada copia de Archive Storage
+Fase 8; 6.1 conserva su API de hashing y no implementa ni autoriza escrituras.
+Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.

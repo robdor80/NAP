@@ -110,8 +110,10 @@ Se derivan mediante `Path.Combine`:
 
 `AssetCatalog.db` es un nombre genérico: la futura arquitectura tiene un
 catálogo SQLite por universo. SQLite todavía no está implementado.
-La conservación futura en TeraBox/archive y el repositorio de producción
-también quedan scoped por el contexto del universo.
+La conservación local de [Archive Storage — Fase 8](ARCHIVE_STORAGE.md) y el
+repositorio de producción quedan scoped por el contexto del universo. Fase 8
+valida ArchiveRoot, mantiene índice/lock propios por raíz y nunca escribe
+ProductionRoot/WorkspaceRoot ni avanza JobState.
 
 El objeto individual no comprueba permisos, existencia, enlaces ni
 exclusividad de raíces entre configuraciones. En 2.6.2
@@ -374,7 +376,7 @@ universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
 No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
 no cambia ProcessingPlan o renderers. Desde 6.4 existe un journal de estados
 separado; [recovery 6.5](JOB_RECOVERY.md) HECHO mediante discovery read-only.
-Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
+Fase 6 está HECHA. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
 
 ## Estados persistentes — 6.4 HECHO
 
@@ -481,14 +483,15 @@ La hoja de ruta vigente es:
 - **6.4 — Estados persistentes: HECHO.** Journal mínimo solo bajo StateRoot.
 - **6.5 — Recuperación tras fallo: HECHO.** Discovery durable read-only.
 - **Fase 7 — Auditor IA: HECHA.** 7.1–7.5; contratos Core provider-neutral y adapter Gemini aislado, sin writes/lifecycle.
-- **Fase 8 — TeraBox / ArchiveRoot: SIGUIENTE.**
+- **Fase 8 — TeraBox / Archive Storage: HECHA.** 8.1–8.6; paquete original completo, índice v1, copia incremental verificada, colisiones y estructura derivada del routing.
+- **Fase 9 — Producción repo Nimroel: SIGUIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, reglas de
 producción, persistencia de logs, pre-execution, vocabularios de valores, SQLite,
-TeraBox, orquestación de conversiones genéricas y selector UI. 5.1 añade únicamente
+backups generales, orquestación de conversiones genéricas y selector UI. 5.1 añade únicamente
 ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas
 previas conservan su alcance de solo lectura: el loader solo lee configuración y 3.1 solo lee
 los atributos de la raíz de producción; 3.2 enumera estructura sin leer contents.

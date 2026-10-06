@@ -93,7 +93,9 @@ de producción ni los datos existentes.
 
 2.8.2 implementa PackageSemanticValidator para packages nuevos exclusivamente
 v2, con contexto explícito y sin migrar v1. Las migraciones v1→v2, registries
-completos de producción, routing, SQLite, TeraBox, UI y vocabularios siguen pendientes.
+completos de producción, SQLite, UI y vocabularios siguen pendientes. Routing
+(Fase 3) y conservación del manifest original en [Archive Storage — Fase 8](ARCHIVE_STORAGE.md)
+ya están implementados sin cambiar este contrato universal.
 Los tests cubren transporte, presence y universe match. Las comprobaciones
 reproducibles del schema están en `scripts/Test-MultiUniverseSchemas.ps1`:
 

@@ -1,6 +1,6 @@
 # AI Audit — Fase 7
 
-**Fase 7 — Auditor IA HECHA. 7.1–7.5 HECHOS. Siguiente: Fase 8 — TeraBox / ArchiveRoot.**
+**Fase 7 — Auditor IA HECHA. 7.1–7.5 HECHOS. Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6). Siguiente: Fase 9 — Producción repo Nimroel.**
 
 IA audita. NAP ejecuta. Fase 7 aporta un resultado de auditoría; no ejecuta
 operaciones, escribe assets ni integra todavía un lifecycle de Jobs.
@@ -195,15 +195,18 @@ la suite puede ejecutarse offline con dependencias ya restauradas.
 
 ProcessingPlan v1 aún no contiene un grafo completo de operaciones. Se auditan
 identidad, tipo, profile, classification, roles, destino relativo calculado y
-validación determinista suministrada. No se auditan copias TeraBox, writes WebP,
-creación de carpetas, hashes post-copy, SQLite o Git que aún no existen.
+validación determinista suministrada. El request no incorpora operaciones de
+copia, hashes post-copy ni paths ArchiveRoot. [Archive Storage](ARCHIVE_STORAGE.md)
+consume el informe validado y exige PASS más su propio preflight bajo lock;
+producción WebP, SQLite y Git siguen pendientes.
 
 No hay composition root/CLI/UI, orquestador, cola, scheduler, background service
 o retry service. La integración futura decidirá cómo consumir un PASS válido
 para JobState AUDITED. **Fase 7 no realiza PLANNED → AUDITED** ni otra transición,
 y no modifica contratos JobState/JobRecovery, PLAN, hashes, converters o perfiles.
 
-Fases 8/9 definirán archivo/producción y ejecución física; Fase 10, catálogo.
-Nada de esas fases se implementa aquí. La validación determinista sigue siendo
-obligatoria y point-in-time: tanto un report NAP limpio como PASS requieren las
-condiciones y permisos futuros antes de actuar.
+Fase 8 ya implementa conservación física local en una frontera separada; Fase 9
+definirá producción y Fase 10, catálogo. La auditoría conserva su alcance y no
+ejecuta archivos. La validación determinista sigue siendo obligatoria y
+point-in-time: ArchiveMasterExecutor revalida fuentes, destinos e índice bajo
+lock, sin ampliar el request o permisos de IA ni integrar transiciones JobState.
