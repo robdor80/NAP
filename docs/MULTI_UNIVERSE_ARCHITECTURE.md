@@ -340,8 +340,8 @@ streaming con memoria acotada; path Open/Read/Share Read y stream desde posició
 actual a EOF, caller-owned y no seekable permitido. No modifica source ni
 traduce excepciones a issues. CRC ZIP sigue siendo integridad de transporte,
 sin cambios. La primitiva se prueba sobre master validado y WebP en memoria,
-sin almacenarla en modelos/plan o escribir sidecars. Jobs, estados y recovery
-siguen pendientes.
+sin almacenarla en modelos/plan o escribir sidecars. JobId ya existe desde 6.3;
+el modelo/lifecycle de Jobs, estados y recovery siguen pendientes.
 
 ## Duplicados — 6.2 HECHO
 
@@ -359,6 +359,20 @@ Cero I/O, hashing interno, catálogo, colección detectora, persistencia o SQLit
 No altera roles, clasificación, perfiles, routing, package/plan o storage roots.
 Una futura capa podrá agregar comparaciones por pares dentro de cada universo;
 no hay resolución automática ni autorización de escritura.
+
+## Job ID — 6.3 HECHO
+
+[JobId](JOB_ID.md) es la identidad global, opaca y estable de proceso: sealed
+record con Value get-only, ToString exacto y Create mediante Guid.NewGuid().
+Formato estricto `job_` + 32 lowercase ASCII hex, no all-zero, igualdad por valor
+e independencia de cultura. No está scoped por universo y no contiene UniverseId,
+AssetId, estado o timestamp. Dos universos no reutilizan intencionadamente el
+mismo JobId. UniverseAssetKey sigue siendo UniverseId + AssetId; ambas identidades
+son distintas. JobId no elimina UniverseContext explícito ni crea un «current
+universe». Un Job futuro podrá asociarse a un universo sin embebido en su ID.
+No crea Jobs persistidos, modelo/lifecycle, I/O, SQLite, schemas o dependencias;
+no cambia ProcessingPlan o renderers. 6.4 — Estados SIGUIENTE y recovery 6.5
+PENDIENTE. Fase 6 permanece EN CURSO.
 
 ## Portrait Output Validation — 5.2 HECHO
 
@@ -443,8 +457,9 @@ La hoja de ruta vigente es:
 - **Fase 6 — Integridad: EN CURSO.** Sin completar.
 - **6.1 — SHA-256: HECHO.** Digest canónico y cálculo streaming, sin persistencia.
 - **6.2 — Duplicados: HECHO.**
-- **6.3 — Job ID: SIGUIENTE.**
-- **6.4 — Estados y 6.5 — Recuperación tras fallo: PENDIENTES.**
+- **6.3 — Job ID: HECHO.** Identidad global de proceso, sin lifecycle o persistencia.
+- **6.4 — Estados: SIGUIENTE.**
+- **6.5 — Recuperación tras fallo: PENDIENTE.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.

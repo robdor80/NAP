@@ -1,8 +1,8 @@
 # Duplicate Detection — Fase 6 · Capítulo 6.2
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
-6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID SIGUIENTE.
-6.4 — Estados y 6.5 — Recuperación tras fallo PENDIENTES.**
+6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.
+6.5 — Recuperación tras fallo PENDIENTE.**
 
 6.2 compara dos fingerprints ya conocidos, `candidate` frente a `existing`,
 para distinguir identidad administrativa de identidad binaria. Es una capa pura,
@@ -164,7 +164,10 @@ global, índices, registros, SQLite o persistencia. No recibe paths ni crea
 Sha256Hasher; consume digests ya calculados. No guarda fingerprints en schemas,
 manifest/profile, JSON, sidecars, logs, archivos o TeraBox. No cambia modelos
 package/plan, conversiones, CRC ZIP, CLI, dependencias o configuración Nimroel.
-Jobs/estados/recovery y Fase 7 siguen fuera de alcance.
+Jobs/estados/recovery y Fase 7 siguen fuera del alcance de 6.2.
+[6.3 — Job ID](JOB_ID.md) añade exclusivamente la identidad global de proceso,
+independiente de los fingerprints y sin modificar el analyzer o su resultado.
+No crea modelo/lifecycle de Jobs o persistencia; 6.4 añadirá Estados y 6.5 recovery.
 
 Una futura capa de catálogo podrá obtener múltiples fingerprints y agregar
 llamadas a esta primitiva. No existe overload Analyze(candidate, IEnumerable).
