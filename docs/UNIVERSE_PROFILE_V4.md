@@ -147,9 +147,9 @@ incluidos cruces entre versiones y adversariales.
 ProcessingPlan v1 todavía no congela la conversion rule y Dry Run v1 todavía
 no muestra una operación de conversión. 5.4 introduce contrato/configuración;
 una futura evolución del ProcessingPlan podrá congelar la regla cuando se
-formalicen operaciones de ejecución. No se fija un capítulo para esa evolución
-ni se reabre Fase 4. 5.5 — No recorte silencioso HECHO: ImageConversionGeometryValidator
+formalicen operaciones de ejecución. Fase 9 usa ProductionAssetPlan separado
+para congelar conversión/outputs, sin reabrir Fase 4. 5.5 — No recorte silencioso HECHO: ImageConversionGeometryValidator
 consume PngImageInfo + ResolvedImageConversion mediante HasAspectRatio exacto,
 sin I/O o ejecución; limpio o Error + Stop genérico. Los converters actuales
 mantienen sus errores históricos y Stretch condicionado al ratio exacto.
-Fase 5 HECHA; Fase 6 — Integridad HECHA, 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
+Fase 5 HECHA; Fase 6 — Integridad HECHA, 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.

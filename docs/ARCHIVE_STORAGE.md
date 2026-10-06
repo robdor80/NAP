@@ -1,7 +1,7 @@
 # Archive Storage — Fase 8
 
 **Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6).**
-**Siguiente: Fase 9 — Producción repo Nimroel.**
+**Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4). Siguiente: Fase 10 — SQLite.**
 
 NAP conserva el paquete original validado en una carpeta local autorizada por
 `UniverseContext.Storage.ArchiveRoot`. TeraBox sincroniza esa carpeta externamente:
@@ -213,6 +213,12 @@ executors NAP; no sustituyen permisos del sistema ni impiden que un proceso
 externo no cooperante cambie un directorio entre la comprobación de atributos
 y su apertura. Esos procesos deben respetar el archivo y su lock. No se
 promete una transacción frente a modificaciones externas o pérdida de energía.
+
+[Production Storage](PRODUCTION_STORAGE.md) consume ArchiveMasterResult como
+prerrequisito físico en solo lectura. AssetExecutionCoordinator llama al
+executor de archivo existente y después al de producción, coordinando los
+checkpoints hasta COMPLETED. El subsistema Archive conserva sus contratos,
+lock/índice y ausencia de escrituras en ProductionRoot o StateRoot.
 
 Las pruebas usan raíces temporales aisladas, bytes/tamaños/hashes/timestamps,
 junctions reales, un proceso externo con FileShare.None y escenarios

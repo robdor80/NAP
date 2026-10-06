@@ -139,7 +139,7 @@ public sealed class ArchiveMasterIndexTests
     }
 
     [Fact]
-    public void FailedAtomicRenamePreservesOldIndexAndCompleteTemp()
+    public void RevokedWriteLeasePreservesOldIndexAndCompleteTemp()
     {
         using var fixture = new ArchiveTestFixture();
         fixture.WriteIndex(ArchiveTestFixture.ValidIndex());
@@ -147,11 +147,12 @@ public sealed class ArchiveMasterIndexTests
         var lockType = ArchiveTestFixture.CoreType("ArchiveLock");
         using var lease = (IDisposable)ArchiveTestFixture.Invoke(null, lockType, "Acquire", fixture.Context)!;
         ArchiveTestFixture.Invoke(lease, lockType, "EnableWrites");
-        // A deterministic sharing violation at rename, after the complete temporary JSON was flushed and closed.
-        using var indexReader = new FileStream(fixture.Store.IndexPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        // Losing the write lease must prevent publication on every OS, after temp flush/close.
+        var index = ArchiveTestFixture.RevokeLeaseAfterEntries(
+            new ArchiveMasterIndex(fixture.Context.Id, [Entry(ArchiveTestFixture.NimroelAsset)]), lease);
         var error = Record.Exception(() => ArchiveTestFixture.Invoke(fixture.Store, typeof(ArchiveMasterIndexStore), "Publish",
-            new ArchiveMasterIndex(fixture.Context.Id, [Entry(ArchiveTestFixture.NimroelAsset)]), lease));
-        Assert.True(error is IOException or UnauthorizedAccessException, error?.ToString());
+            index, lease));
+        Assert.IsType<ObjectDisposedException>(error);
         Assert.Equal(original, File.ReadAllBytes(fixture.Store.IndexPath));
         var temp = Assert.Single(Directory.GetFiles(Path.GetDirectoryName(fixture.Store.IndexPath)!, "master_index.*.tmp"));
         Assert.Matches(@"master_index\.[0-9a-f]{32}\.tmp$", temp);

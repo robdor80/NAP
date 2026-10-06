@@ -153,16 +153,25 @@ public sealed class ArchiveVerificationTests
     }
 
     [Fact]
-    public void PublicationFailureLeavesVerifiedMastersForIndexExistingRecovery()
+    public void RevokedIndexPublicationLeavesVerifiedMastersForIndexExistingRecovery()
     {
         using var fixture = new ArchiveTestFixture();
         fixture.WriteIndex(ArchiveTestFixture.ValidIndex());
         var plan = fixture.Plan();
         var original = File.ReadAllBytes(fixture.Store.IndexPath);
-        using (var reader = new FileStream(fixture.Store.IndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        var lockType = ArchiveTestFixture.CoreType("ArchiveLock");
+        using (var lease = (IDisposable)ArchiveTestFixture.Invoke(null, lockType, "Acquire", fixture.Context)!)
         {
-            var error = Record.Exception(() => fixture.Execute(plan));
-            Assert.True(error is IOException or UnauthorizedAccessException, error?.ToString());
+            ArchiveTestFixture.Invoke(lease, lockType, "EnableWrites");
+            ArchiveTestFixture.Invoke(null, ArchiveTestFixture.CoreType("ArchivePaths"), "EnsureDirectory", fixture.Context, plan.DestinationDirectory);
+            // Exercise the actual per-file publication, then interrupt the actual index publisher deterministically.
+            var executor = new ArchiveMasterExecutor(fixture.Context);
+            foreach (var file in plan.Files) ArchiveTestFixture.Invoke(executor, typeof(ArchiveMasterExecutor), "CopyFile", file);
+            var entry = new ArchiveMasterIndexEntry(plan.AssetKey.AssetId, plan.AssetType, plan.MasterDigest,
+                plan.MasterSizeBytes, plan.RelativeDirectory, true);
+            var index = ArchiveTestFixture.RevokeLeaseAfterEntries(new ArchiveMasterIndex(fixture.Context.Id, [entry]), lease);
+            var error = Record.Exception(() => ArchiveTestFixture.Invoke(fixture.Store, typeof(ArchiveMasterIndexStore), "Publish", index, lease));
+            Assert.IsType<ObjectDisposedException>(error);
             Assert.Equal(original, File.ReadAllBytes(fixture.Store.IndexPath));
             Assert.All(plan.Files, file => Assert.Equal(File.ReadAllBytes(file.SourcePath), File.ReadAllBytes(file.DestinationPath)));
         }

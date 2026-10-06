@@ -1,9 +1,10 @@
 # AI Audit — Fase 7
 
-**Fase 7 — Auditor IA HECHA. 7.1–7.5 HECHOS. Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6). Siguiente: Fase 9 — Producción repo Nimroel.**
+**Fase 7 — Auditor IA HECHA. 7.1–7.5 HECHOS. Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6). Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4). Siguiente: Fase 10 — SQLite.**
 
 IA audita. NAP ejecuta. Fase 7 aporta un resultado de auditoría; no ejecuta
-operaciones, escribe assets ni integra todavía un lifecycle de Jobs.
+operaciones, escribe assets ni avanza Jobs. La frontera de Fase 9 consume el
+informe validado sin ampliar los permisos de IA.
 
 ## 7.1 — Cliente IA
 
@@ -98,7 +99,7 @@ repara, asume, acepta markdown fences o extrae JSON de texto adicional.
 
 El adapter envuelve InvalidDataException en AiAuditClientException sin volcar
 el informe completo. **AiAuditClientException significa que no existe PASS:** el
-futuro orquestador deberá hacer STOP, nunca sustituir el fallo por aprobación.
+coordinator debe hacer STOP, nunca sustituir el fallo por aprobación.
 
 ## 7.3 — PASS / WARNING / FAIL
 
@@ -113,9 +114,9 @@ PASS con findings, WARNING vacío/con Error y FAIL sin Error se rechazan.
 PASS significa exclusivamente que el auditor no detectó una razón para bloquear
 el plan basándose en los hechos suministrados por NAP. **PASS no ejecuta ni
 autoriza por sí solo una escritura.** Solo PASS podrá ser candidato a avance
-automático futuro cuando exista el orquestador y sus demás validaciones.
+automático en AssetExecutionCoordinator, con sus demás validaciones físicas.
 
-WARNING requiere revisión futura del usuario/orquestador: ShouldStop=false
+WARNING requiere revisión del usuario: ShouldStop=false
 no autoriza ejecución automática. FAIL bloquea. Los mensajes del auditor son
 contenido no confiable, nunca instrucciones para ejecutar código o filesystem.
 
@@ -198,15 +199,16 @@ identidad, tipo, profile, classification, roles, destino relativo calculado y
 validación determinista suministrada. El request no incorpora operaciones de
 copia, hashes post-copy ni paths ArchiveRoot. [Archive Storage](ARCHIVE_STORAGE.md)
 consume el informe validado y exige PASS más su propio preflight bajo lock;
-producción WebP, SQLite y Git siguen pendientes.
+la frontera [Production Storage](PRODUCTION_STORAGE.md) hace lo mismo para
+WebP/documentación y lifecycle. SQLite y Git siguen pendientes.
 
-No hay composition root/CLI/UI, orquestador, cola, scheduler, background service
-o retry service. La integración futura decidirá cómo consumir un PASS válido
-para JobState AUDITED. **Fase 7 no realiza PLANNED → AUDITED** ni otra transición,
+No hay composition root/CLI/UI, cola, scheduler, background service o retry
+service. AssetExecutionCoordinator exige PASS antes de JobState AUDITED.
+**Fase 7 no realiza PLANNED → AUDITED** ni otra transición,
 y no modifica contratos JobState/JobRecovery, PLAN, hashes, converters o perfiles.
 
 Fase 8 ya implementa conservación física local en una frontera separada; Fase 9
-definirá producción y Fase 10, catálogo. La auditoría conserva su alcance y no
+implementa producción y cierre verificado; Fase 10 añadirá catálogo. La auditoría conserva su alcance y no
 ejecuta archivos. La validación determinista sigue siendo obligatoria y
 point-in-time: ArchiveMasterExecutor revalida fuentes, destinos e índice bajo
 lock, sin ampliar el request o permisos de IA ni integrar transiciones JobState.

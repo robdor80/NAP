@@ -118,4 +118,4 @@ CLI/UI, orquestación o Fase 6. Fase 5 HECHA; 5.1–5.5 HECHOS.
 5.4 — Perfiles genéricos y [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHOS.
 5.5 valida geometría source/output antes de futura ejecución genérica; esta
 frontera de output conserva su API y comportamiento. Fase 6 — Integridad
-HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
+HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); siguiente: Fase 10 — SQLite.
