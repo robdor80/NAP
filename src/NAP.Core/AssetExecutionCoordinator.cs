@@ -50,7 +50,11 @@ public sealed class AssetExecutionCoordinator
         executor.VerifyCoordinated(productionPlan, coordination);
         if (state == JobState.Executed) { Transition(JobState.Verified); state = JobState.Verified; }
         executor.VerifyCoordinated(productionPlan, coordination);
-        if (state == JobState.Verified) Transition(JobState.Completed);
+        if (state == JobState.Verified)
+        {
+            new AssetCatalog(_context).RegisterVerified(package, processingPlan, archive, production, auditReport);
+            Transition(JobState.Completed);
+        }
         return new AssetExecutionResult(jobId, archive, production);
 
         void Transition(JobState next) { RequireJournal(jobId); store.Transition(jobId, next); }

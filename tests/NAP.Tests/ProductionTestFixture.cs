@@ -39,6 +39,9 @@ internal sealed class ProductionTestFixture : IDisposable
             }
             var master = Source.Context.Profile.AssetRules.Single(r => r.AssetType == Source.Manifest.AssetType && r.ProductionProfile == Source.Manifest.ProductionProfile).PackageFiles.Single(f => f.ContentValidator == "png_master");
             WritePng(Source.PathFor(master), width, height);
+            foreach (var identity in Source.Context.Profile.AssetRules.Single(r => r.AssetType == Source.Manifest.AssetType && r.ProductionProfile == Source.Manifest.ProductionProfile)
+                .PackageFiles.Where(r => r.ResolveFileName(Source.Manifest.AssetId).EndsWith("_visual_identity.json", StringComparison.Ordinal)))
+                File.WriteAllText(Source.PathFor(identity), "{\"eye_color\":\"green-grey\",\"nested\":{\"future_trait\":true}}");
             foreach (var root in new[] { Context.Storage.WorkspaceRoot, Context.Storage.ProductionRoot, Context.Storage.ArchiveRoot,
                          Context.Storage.StateRoot, Context.Storage.InboxRoot, Context.Storage.StagingRoot, Context.Storage.CacheRoot }) Directory.CreateDirectory(root);
             Refresh();

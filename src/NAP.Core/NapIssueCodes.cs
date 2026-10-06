@@ -79,4 +79,14 @@ public static class NapIssueCodes
     public const string ProductionCompletedInconsistent = "production_completed_inconsistent";
     public const string ProductionPathInvalid = "production_path_invalid";
     public const string ProductionRecoveryInvalid = "production_recovery_invalid";
+    public const string CatalogMissing = "catalog_missing";
+    public const string CatalogInvalid = "catalog_invalid";
+    public const string CatalogCorrupt = "catalog_corrupt";
+    public const string CatalogWrongUniverse = "catalog_wrong_universe";
+    public const string CatalogSchemaUnsupported = "catalog_schema_unsupported";
+    public const string CatalogAssetConflict = "catalog_asset_conflict";
+    public const string CatalogSourceInvalid = "catalog_source_invalid";
+    public const string CatalogIntegrityFailed = "catalog_integrity_failed";
+    public const string CatalogBusy = "catalog_busy";
+    public const string CatalogRebuildFailed = "catalog_rebuild_failed";
 }

@@ -1,6 +1,7 @@
 # Production Storage + Verified Completion — Fase 9
 
-**FASE 9 — HECHA (9.1–9.4). Siguiente: FASE 10 — SQLite.**
+**FASE 9 — HECHA (9.1–9.4). Fase 10 — SQLite HECHA (10.1–10.7).
+Siguiente: Fase 11 — Explorador visual, sin iniciar.**
 
 El Core puede conservar un package original aprobado, generar su WebP de
 producción, copiar su documentación exactamente, verificar todos los finales
@@ -206,7 +207,7 @@ coherentes. PASS se comprueba antes de AUDITED. No crea Jobs ni salta estados:
 ```text
 PLANNED + PASS → AUDITED → Archive execution → Production execution
               → EXECUTED → physical verification
-              → VERIFIED → physical verification → COMPLETED
+              → VERIFIED → physical verification → SQLite (Fase 10) → COMPLETED
 ```
 
 | Checkpoint inicial | Comportamiento |
@@ -223,8 +224,11 @@ Un IOException, fallo de publicación del journal o interrupción conserva el
 último checkpoint durable; no se escribe FAILED automáticamente. COMPLETED
 inconsistente produce production_completed_inconsistent y **no se repara**,
 ni siquiera si solo falta un final/índice. El resultado global expone JobId,
-FinalState, Archive y Production. SQLite podrá añadirse a la coordinación
-antes del cierre definitivo en Fase 10 sin reescribir el writer.
+FinalState, Archive y Production. Fase 10 añade el registro del catálogo
+entre VERIFIED y COMPLETED sin reescribir el writer. Si SQLite falla, el Job
+permanece VERIFIED; un commit previo exacto permite recovery idempotente.
+La rama COMPLETED conserva su comprobación física read-only y no reconstruye
+una DB desaparecida. Véase [SQLITE_CATALOG.md](SQLITE_CATALOG.md).
 
 ## Límites y pruebas
 
@@ -244,7 +248,7 @@ final de lease, preservación del índice anterior/temp completo y recuperación
 IndexExisting sin recopia. El runtime de Archive y CI ubuntu-latest no cambian;
 no hay sleeps, permisos dependientes del usuario ni skips por plataforma.
 
-No hay SQLite, Git runtime (Fase 13), red, API TeraBox, UI, CLI de producción,
+El writer físico de Fase 9 no usa SQLite. No hay Git runtime (Fase 13), red, API TeraBox, UI, CLI de producción,
 watchers, daemon, servicio, backups/retención, rollback global ni dependencias
 nuevas. No se toca producción real del usuario.
 
