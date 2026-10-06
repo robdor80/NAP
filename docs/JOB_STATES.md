@@ -2,7 +2,7 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO;
-6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
+6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
 
 El requisito histórico exige Job ID y estados persistentes. 6.4 implementa
 vocabulario, reglas puras, snapshot inmutable y un journal mínimo del último
@@ -182,7 +182,7 @@ durable, separando activos, COMPLETED y FAILED. Detecta journals inválidos,
 desapariciones, temps huérfanos y reparse points mediante NapIssueReport, sin
 modificar las APIs o semántica de 6.4. No hay ejecución de assets, resume físico,
 retry/rollback, journal history, reconciliación, limpieza de temp o detección de
-abandonos. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
+abandonos. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
 
 Las pruebas cubren la matriz 9×9 tanto en machine como store, contratos,
 inmutabilidad, tokens/bytes, parsing adversarial, roundtrips, flujo completo,

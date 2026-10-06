@@ -2,7 +2,7 @@
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad HECHA.
 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO.
-6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
+6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
 
 6.2 compara dos fingerprints ya conocidos, `candidate` frente a `existing`,
 para distinguir identidad administrativa de identidad binaria. Es una capa pura,
@@ -171,7 +171,7 @@ independiente de los fingerprints y sin modificar el analyzer o su resultado.
 [6.4 — Estados persistentes](JOB_STATES.md) existe un journal mínimo separado
 bajo StateRoot; los fingerprints/analyzer siguen puros y sin persistencia.
 [6.5 recovery](JOB_RECOVERY.md) HECHO: discovery de checkpoints durables en solo
-lectura, separado del analyzer. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.
+lectura, separado del analyzer. Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.
 
 Una futura capa de catálogo podrá obtener múltiples fingerprints y agregar
 llamadas a esta primitiva. No existe overload Analyze(candidate, IEnumerable).

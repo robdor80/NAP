@@ -57,4 +57,15 @@ public static class NapIssueCodes
     public const string JobRecoveryInvalidTempName = "job_recovery_invalid_temp_name";
     public const string JobRecoveryStateRootReparse = "job_recovery_state_root_reparse";
     public const string JobRecoveryEntryReparse = "job_recovery_entry_reparse";
+    public const string ArchiveRootMissing = "archive_root_missing";
+    public const string ArchiveRootInvalid = "archive_root_invalid";
+    public const string ArchiveRootReparse = "archive_root_reparse";
+    public const string ArchiveEntryReparse = "archive_entry_reparse";
+    public const string ArchiveIndexInvalid = "archive_index_invalid";
+    public const string ArchiveAssetCollision = "archive_asset_collision";
+    public const string ArchiveFileCollision = "archive_file_collision";
+    public const string ArchiveIndexInconsistent = "archive_index_inconsistent";
+    public const string ArchivePossibleDuplicate = "archive_possible_duplicate";
+    public const string ArchiveSourceChanged = "archive_source_changed";
+    public const string ArchiveVerificationFailed = "archive_verification_failed";
 }

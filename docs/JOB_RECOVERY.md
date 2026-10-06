@@ -1,6 +1,6 @@
 # Job Recovery — Fase 6 · Capítulo 6.5
 
-**Fase 6 — Integridad HECHA (6.1–6.5). Fase 7 — Auditor IA HECHA (7.1–7.5); siguiente: Fase 8 — TeraBox / ArchiveRoot.**
+**Fase 6 — Integridad HECHA (6.1–6.5). Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); siguiente: Fase 9 — Producción repo Nimroel.**
 
 Recovery v1 recupera conocimiento durable y un punto seguro de reanudación; no reejecuta operaciones de assets.
 
@@ -12,9 +12,10 @@ operación potencialmente incompleta se identifica por su estado activo. El
 journal no contiene información suficiente para inferir la causa del cierre
 ni qué efectos físicos llegaron a realizarse.
 
-La continuidad histórica también contempla pérdida temporal de TeraBox. TeraBox
-no está implementado: Fase 8 podrá consumir estos checkpoints cuando defina su
-ejecución. No hay integración TeraBox, SQLite/AssetCatalog, executor, CLI, UI,
+La continuidad histórica también contempla pérdida temporal de TeraBox. Fase 8
+ya implementa conservación local en ArchiveRoot con recuperación incremental
+propia, sin consumir ni avanzar estos checkpoints. No hay integración directa
+de recovery v1 con ArchiveMasterExecutor, SQLite/AssetCatalog, CLI, UI,
 servicios en background, timers, backups o Git en recovery v1.
 
 ## Autoridad y checkpoint exacto
