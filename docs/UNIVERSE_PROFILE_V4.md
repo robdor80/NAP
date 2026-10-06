@@ -152,4 +152,4 @@ ni se reabre Fase 4. 5.5 — No recorte silencioso HECHO: ImageConversionGeometr
 consume PngImageInfo + ResolvedImageConversion mediante HasAspectRatio exacto,
 sin I/O o ejecución; limpio o Error + Stop genérico. Los converters actuales
 mantienen sus errores históricos y Stretch condicionado al ratio exacto.
-Fase 5 HECHA; Fase 6 — Integridad EN CURSO, 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID SIGUIENTE.
+Fase 5 HECHA; Fase 6 — Integridad EN CURSO, 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.

@@ -1,8 +1,8 @@
 # SHA-256 Integrity — Fase 6 · Capítulo 6.1
 
 **Fase 5 — Conversión HECHA. Fase 6 — Integridad EN CURSO.
-6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID SIGUIENTE.
-6.4 — Estados y 6.5 — Recuperación tras fallo PENDIENTES.**
+6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados SIGUIENTE.
+6.5 — Recuperación tras fallo PENDIENTE.**
 
 6.1 responde únicamente «¿Cuál es el SHA-256 exacto de estos bytes?». SHA-256
 representa 32 bytes / 256 bits como 64 caracteres hexadecimal lowercase ASCII.
@@ -116,7 +116,10 @@ UniverseAssetKey + Sha256Digest y el analyzer compara pairwise dentro del mismo
 universo, sin I/O ni hashing interno. La matriz define idempotencia semántica
 limitada, colisión Error + Stop, posible duplicado Warning + Continue y Distinct.
 Cross-universe se rechaza; ninguna relación implica un Job completado.
-Job IDs, estados, recuperación, SQLite y TeraBox siguen pendientes.
+[6.3 — Job ID](JOB_ID.md) ya formaliza la identidad global de proceso, sin
+acoplarla a hashes ni modificar esta primitiva. El modelo/lifecycle de Jobs,
+estados (6.4 siguiente), recuperación (6.5 pendiente), SQLite y TeraBox siguen
+sin implementar.
 No hay persistencia en JSON/profile/
 manifest, sidecars .sha256, SHA256SUMS, logs o bases de datos. No hay copias,
 escrituras de producción/archive, output persistence, CLI/UI, auditor IA o Fase 7.
