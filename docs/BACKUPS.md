@@ -1,6 +1,8 @@
 # Fase 12 — Backups
 
-**Fase 12 — HECHA. 12.1–12.6 — HECHOS. Siguiente: Fase 13 — Git del repo de producción.**
+**Fase 12 — HECHA. 12.1–12.6 — HECHOS. Fase 13 — HECHA. Siguiente: Fase 14 — UI profesional.**
+
+El [Git operativo de Fase 13](GIT_PRODUCTION.md) usa un runner privado separado (`GitProductionProcess`). `GitBackupProcess` sigue exclusivamente read-only/backup, sin red/push/staging. Snapshots, bundles y commit/push comparten el mutex Production existente; los contratos de backup/restore/retención y SQLite v1 no cambian. UI profesional de Backups continúa pendiente de Fase 14.
 
 Motor portable en `NAP.Core`, sin UI nueva ni globals. Cada entrada pública recibe
 `UniverseContext`. Ningún caller puede elegir una DB/repo fuente ni un archivo de

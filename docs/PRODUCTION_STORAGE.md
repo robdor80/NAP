@@ -1,7 +1,9 @@
 # Production Storage + Verified Completion — Fase 9
 
 **FASE 9 — HECHA (9.1–9.4). Fase 10 — SQLite HECHA (10.1–10.7).
-Fases 11 y 12 HECHAS. Siguiente: Fase 13 — Git del repo de producción, sin iniciar.**
+Fases 11, 12 y 13 HECHAS. Siguiente: Fase 14 — UI profesional.**
+
+La [Fase 13](GIT_PRODUCTION.md) consume `ProductionAssetResult(s)` mediante llamada explícita para preparar/ejecutar commit y, por separado, push. La frontera física de producción no cambia: Git revalida destino/SHA/tamaño y exige ownership de todos los cambios bajo el mutex Production existente. `AssetExecutionCoordinator` no dispara Git automáticamente. Los receipts Git se guardan fuera de ProductionRoot, bajo StateRoot/git-production.
 
 El Core puede conservar un package original aprobado, generar su WebP de
 producción, copiar su documentación exactamente, verificar todos los finales
