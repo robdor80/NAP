@@ -3,6 +3,29 @@ namespace NAP.Core;
 /// <summary>Stable machine identities; human messages may change independently.</summary>
 public static class NapIssueCodes
 {
+    public const string BackupSourceInvalid = "backup_source_invalid";
+    public const string BackupDestinationInvalid = "backup_destination_invalid";
+    public const string BackupCollision = "backup_collision";
+    public const string BackupIntegrityFailed = "backup_integrity_failed";
+    public const string BackupManifestInvalid = "backup_manifest_invalid";
+    public const string BackupWrongUniverse = "backup_wrong_universe";
+    public const string BackupBusy = "backup_busy";
+    public const string BackupChanged = "backup_changed";
+    public const string BackupReparse = "backup_reparse";
+    public const string BackupUnmanaged = "backup_unmanaged";
+    public const string BackupIoFailed = "backup_io_failed";
+    public const string RestoreInvalid = "restore_invalid";
+    public const string RestoreStalePlan = "restore_stale_plan";
+    public const string RestorePublicationFailed = "restore_publication_failed";
+    public const string RecoveryPreservationFailed = "recovery_preservation_failed";
+    public const string RepositorySnapshotChanged = "repository_snapshot_changed";
+    public const string GitUnavailable = "git_unavailable";
+    public const string GitRepositoryInvalid = "git_repository_invalid";
+    public const string GitBundleFailed = "git_bundle_failed";
+    public const string GitTimeout = "git_timeout";
+    public const string GitOutputLimit = "git_output_limit";
+    public const string RetentionStalePlan = "retention_stale_plan";
+    public const string RetentionExecutionFailed = "retention_execution_failed";
     public const string InboxMissing = "inbox_missing";
     public const string InboxChanging = "inbox_changing";
     public const string InboxInUse = "inbox_in_use";

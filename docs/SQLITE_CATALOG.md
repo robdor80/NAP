@@ -1,6 +1,6 @@
 # SQLite Catalog — Fase 10
 
-**Fase 10 — SQLite HECHA (10.1–10.7). Siguiente: Fase 11 — Explorador visual.**
+**Fase 10 — SQLite HECHA (10.1–10.7). Fases 11 y 12 HECHAS. Siguiente: Fase 13 — Git del repo de producción.**
 
 ## Propósito y frontera
 
@@ -206,7 +206,7 @@ DB inexistente/ilegible permite reconstruir únicamente información física.
 CatalogRebuildResult declara AssetCount, OperationalDataPreserved y
 PriorCatalogUnreadable. Objetivos/campañas e historial de auditoría no se
 reconstruyen mágicamente si su única copia desapareció. No se crea un formato
-de backup ni retención; esos mecanismos siguen en Fase 12.
+de backup ni retención desde el rebuild; esos mecanismos están implementados separadamente en [Fase 12](BACKUPS.md).
 
 Una DB de otro universo/schema desconocido nunca se sustituye automáticamente,
 ni siquiera en rebuild. Una DB corrupta nunca se acepta ni se repara parcialmente.
@@ -243,6 +243,5 @@ Issues catalog_missing/invalid/corrupt/wrong_universe/schema_unsupported,
 asset_conflict/source_invalid/integrity_failed/busy/rebuild_failed distinguen
 causas con Error + Stop. Errores I/O operativos pueden propagarse sin éxito falso.
 
-No hay Fase 11+, UI, thumbnails, backups históricos, Git runtime, servicios,
-red/API cloud, generación de assets ni IA RoDo. CI sigue ubuntu-latest.
+Fase 11 añade WPF/thumbnails y Fase 12 añade backups históricos y Git bundle de solo lectura. No hay Git operativo de Fase 13, servicios, red/API cloud, generación de assets ni IA RoDo. CI sigue ubuntu-latest.
 La validación local se ejecuta en Windows; no se declara CI Linux ejecutada.
