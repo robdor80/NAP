@@ -485,13 +485,16 @@ La hoja de ruta vigente es:
 - **Fase 7 — Auditor IA: HECHA.** 7.1–7.5; contratos Core provider-neutral y adapter Gemini aislado, sin writes/lifecycle.
 - **Fase 8 — TeraBox / Archive Storage: HECHA.** 8.1–8.6; paquete original completo, índice v1, copia incremental verificada, colisiones y estructura derivada del routing.
 - **Fase 9 — Production Storage + Verified Completion: HECHA (9.1–9.4).** Writer genérico con archive prerequisite, WebP/documentación verificados, recovery físico y cierre COMPLETED.
-- **Fase 10 — SQLite: SIGUIENTE.**
+- **Fase 10 — SQLite: HECHA (10.1–10.7).**
+- **Fase 11 — Explorador visual: HECHA (11.0–11.5).**
+- **Fase 12 — Backups: HECHA (12.1–12.6).** Véase [BACKUPS.md](BACKUPS.md).
+- **Siguiente: Fase 13 — Git del repo de producción, sin iniciar.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, persistencia de logs,
-vocabularios de valores, SQLite, backups generales y selector UI.
+vocabularios de valores y Git operativo. SQLite, backups generales y selector UI están implementados en Fases 10–12.
 [Fase 9](PRODUCTION_STORAGE.md) consume routing/conversión declarativos con
 preflight físico y escritura verificada. 5.1 añade únicamente
 ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas
