@@ -488,13 +488,16 @@ La hoja de ruta vigente es:
 - **Fase 10 — SQLite: HECHA (10.1–10.7).**
 - **Fase 11 — Explorador visual: HECHA (11.0–11.5).**
 - **Fase 12 — Backups: HECHA (12.1–12.6).** Véase [BACKUPS.md](BACKUPS.md).
-- **Siguiente: Fase 13 — Git del repo de producción, sin iniciar.**
+- **Fase 13 — Git del repo de producción: HECHA (13.1–13.5).** Véase [GIT_PRODUCTION.md](GIT_PRODUCTION.md).
+- **Siguiente: Fase 14 — UI profesional.**
 
 Routing solo podrá consumir ValidatedAssetPackage, después de validación semántica
 completa, sin inferencias de universo ni fallback de rules.
 
 Quedan pendientes schemas completos de assets/metadata, persistencia de logs,
-vocabularios de valores y Git operativo. SQLite, backups generales y selector UI están implementados en Fases 10–12.
+vocabularios de valores. SQLite, backups generales y selector UI están implementados en Fases 10–12; Git operativo está implementado en Fase 13.
+
+La frontera Git recibe UniverseContext y solo inspecciona/publica su ProductionRoot exacto. Plan/result/receipt se ligan al universo y a un hash de ProductionRoot + StateRoot. No se pueden adoptar outputs de otra raíz aun con el mismo AssetId/branch/remote/mensaje; receipts separados bajo StateRoot/git-production. El motor explícito no agrega configuración Git al perfil, tablas SQLite ni auto-publicación desde el pipeline.
 [Fase 9](PRODUCTION_STORAGE.md) consume routing/conversión declarativos con
 preflight físico y escritura verificada. 5.1 añade únicamente
 ImageSharp 3.1.12 y lee el source PNG; su WebP queda en memoria. Las capas

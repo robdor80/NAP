@@ -3,6 +3,32 @@ namespace NAP.Core;
 /// <summary>Stable machine identities; human messages may change independently.</summary>
 public static class NapIssueCodes
 {
+    public const string GitOperationInProgress = "git_operation_in_progress";
+    public const string GitDetachedHead = "git_detached_head";
+    public const string GitUnbornBranch = "git_unborn_branch";
+    public const string GitUpstreamMissing = "git_upstream_missing";
+    public const string GitRemoteInvalid = "git_remote_invalid";
+    public const string GitRemoteUnavailable = "git_remote_unavailable";
+    public const string GitRemoteChanged = "git_remote_changed";
+    public const string GitNotSynchronized = "git_not_synchronized";
+    public const string GitChangesConflict = "git_changes_conflict";
+    public const string GitUnownedChange = "git_unowned_change";
+    public const string GitOwnedFileChanged = "git_owned_file_changed";
+    public const string GitIgnoredOutput = "git_ignored_output";
+    public const string GitPlanStale = "git_plan_stale";
+    public const string GitIndexNotClean = "git_index_not_clean";
+    public const string GitStagingMismatch = "git_staging_mismatch";
+    public const string GitStagedContentMismatch = "git_staged_content_mismatch";
+    public const string GitIdentityMissing = "git_identity_missing";
+    public const string GitMessageInvalid = "git_message_invalid";
+    public const string GitCommitFailed = "git_commit_failed";
+    public const string GitCommitVerificationFailed = "git_commit_verification_failed";
+    public const string GitReceiptInvalid = "git_receipt_invalid";
+    public const string GitPushRejected = "git_push_rejected";
+    public const string GitPushVerificationFailed = "git_push_verification_failed";
+    public const string GitRollbackFailed = "git_rollback_failed";
+    public const string GitBusy = "git_busy";
+    public const string GitIoFailed = "git_io_failed";
     public const string BackupSourceInvalid = "backup_source_invalid";
     public const string BackupDestinationInvalid = "backup_destination_invalid";
     public const string BackupCollision = "backup_collision";

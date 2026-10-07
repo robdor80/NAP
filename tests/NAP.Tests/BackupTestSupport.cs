@@ -48,7 +48,10 @@ internal static class BackupTestSupport
     internal static string Git(string root, params string[] args)
     {
         var info = new ProcessStartInfo("git") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
-        info.ArgumentList.Add("-C"); info.ArgumentList.Add(root); foreach (var arg in args) info.ArgumentList.Add(arg);
+        // Keep temporary fixture repositories deterministic without writing repository configuration.
+        foreach (var arg in new[] { "-c", "maintenance.auto=false", "-c", "gc.auto=0", "-C", root }.Concat(args)) info.ArgumentList.Add(arg);
+        info.Environment["GIT_CONFIG_NOSYSTEM"] = "1";
+        info.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
         info.Environment["GIT_TERMINAL_PROMPT"] = "0";
         using var p = Process.Start(info)!; var output = p.StandardOutput.ReadToEndAsync(); var errors = p.StandardError.ReadToEndAsync();
         Assert.True(p.WaitForExit(30000)); Task.WaitAll(output, errors); Assert.True(p.ExitCode == 0, errors.Result); return output.Result.Trim();
