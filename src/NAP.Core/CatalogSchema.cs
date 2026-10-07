@@ -36,6 +36,12 @@ internal static class CatalogSchema
 
     internal static void Validate(SqliteConnection connection, UniverseId universe)
     {
+        ValidateContract(connection, universe);
+        Integrity(connection);
+    }
+
+    internal static void ValidateContract(SqliteConnection connection, UniverseId universe)
+    {
         using (var command = CatalogSql.Command(connection, null, "SELECT schema_version,universe_id FROM catalog_metadata WHERE singleton=1"))
         using (var reader = command.ExecuteReader())
         {
@@ -51,7 +57,6 @@ internal static class CatalogSchema
         using (var reader = command.ExecuteReader()) while (reader.Read()) found.Add(reader.GetString(0), reader.GetString(1));
         if (found.Count != Objects.Count || Objects.Any(o => !found.TryGetValue(o.Key, out var sql) || sql != o.Value))
             throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "The required schema, constraints or indexes differ from schema v1.");
-        Integrity(connection);
     }
 
     internal static void Integrity(SqliteConnection connection)

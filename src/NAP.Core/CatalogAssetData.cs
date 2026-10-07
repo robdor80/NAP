@@ -76,26 +76,32 @@ internal static class CatalogAssetData
         foreach (var id in ids)
         {
             var asset = Read(connection, null, context.Id, id)!;
-            ProductionPaths.Resolve(context.Storage.ProductionRoot, asset.ProductionRelativeDirectory);
-            ProductionPaths.Resolve(context.Storage.ArchiveRoot, asset.ArchiveRelativeDirectory);
-            if (!AssetNamingRules.MatchesAssetType(id, asset.AssetType) || !AssetNamingRules.IsValidMachineIdentifier(asset.ProductionProfile)) throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Invalid catalog asset identifiers.");
-            foreach (var file in asset.Files)
-            {
-                ProductionPaths.Resolve(file.Location == CatalogFileLocation.Production ? context.Storage.ProductionRoot : context.Storage.ArchiveRoot, file.RelativePath);
-                if (!file.Verified || !file.RelativePath.StartsWith(asset.ProductionRelativeDirectory + "/", StringComparison.Ordinal) ||
-                    file.RelativePath[(asset.ProductionRelativeDirectory.Length + 1)..].Contains('/')) throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Invalid logical file location.");
-            }
-            var master = asset.Files.SingleOrDefault(f => f.Location == CatalogFileLocation.Archive && f.Kind == "master");
-            var output = asset.Files.SingleOrDefault(f => f.Location == CatalogFileLocation.Production && f.Kind == "generated_webp");
-            if (master is null || output is null || master.Digest != asset.MasterDigest || master.SizeBytes != asset.MasterSizeBytes ||
-                output.Digest != asset.ProductionDigest || output.SizeBytes != asset.ProductionSizeBytes || asset.Documents.Count != asset.Files.Count(f => f.Location == CatalogFileLocation.Production && f.Kind == "document"))
-                throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "Asset/file/document fingerprints are inconsistent.");
-            foreach (var document in asset.Documents)
-            {
-                var file = asset.Files.Single(f => f.Location == CatalogFileLocation.Production && f.Role == document.Role);
-                using var bytes = new MemoryStream(document.ToArray(), writable: false);
-                if (bytes.Length != file.SizeBytes || new Sha256Hasher().Compute(bytes) != file.Digest) throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "A document no longer matches its preserved bytes fingerprint.");
-            }
+            ValidateAsset(asset, context);
+        }
+    }
+
+    internal static void ValidateAsset(CatalogAssetSnapshot asset, UniverseContext context)
+    {
+        var id = asset.AssetKey.AssetId;
+        ProductionPaths.Resolve(context.Storage.ProductionRoot, asset.ProductionRelativeDirectory);
+        ProductionPaths.Resolve(context.Storage.ArchiveRoot, asset.ArchiveRelativeDirectory);
+        if (!AssetNamingRules.MatchesAssetType(id, asset.AssetType) || !AssetNamingRules.IsValidMachineIdentifier(asset.ProductionProfile)) throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Invalid catalog asset identifiers.");
+        foreach (var file in asset.Files)
+        {
+            ProductionPaths.Resolve(file.Location == CatalogFileLocation.Production ? context.Storage.ProductionRoot : context.Storage.ArchiveRoot, file.RelativePath);
+            if (!file.Verified || !file.RelativePath.StartsWith(asset.ProductionRelativeDirectory + "/", StringComparison.Ordinal) ||
+                file.RelativePath[(asset.ProductionRelativeDirectory.Length + 1)..].Contains('/')) throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Invalid logical file location.");
+        }
+        var master = asset.Files.SingleOrDefault(f => f.Location == CatalogFileLocation.Archive && f.Kind == "master");
+        var output = asset.Files.SingleOrDefault(f => f.Location == CatalogFileLocation.Production && f.Kind == "generated_webp");
+        if (master is null || output is null || master.Digest != asset.MasterDigest || master.SizeBytes != asset.MasterSizeBytes ||
+            output.Digest != asset.ProductionDigest || output.SizeBytes != asset.ProductionSizeBytes || asset.Documents.Count != asset.Files.Count(f => f.Location == CatalogFileLocation.Production && f.Kind == "document"))
+            throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "Asset/file/document fingerprints are inconsistent.");
+        foreach (var document in asset.Documents)
+        {
+            var file = asset.Files.Single(f => f.Location == CatalogFileLocation.Production && f.Role == document.Role);
+            using var bytes = new MemoryStream(document.ToArray(), writable: false);
+            if (bytes.Length != file.SizeBytes || new Sha256Hasher().Compute(bytes) != file.Digest) throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "A document no longer matches its preserved bytes fingerprint.");
         }
     }
 }

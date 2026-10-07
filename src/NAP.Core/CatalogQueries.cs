@@ -6,6 +6,15 @@ internal static class CatalogQueries
 {
     internal static IReadOnlyList<CatalogAssetSnapshot> Select(SqliteConnection connection, UniverseId universe, CatalogFilter filter)
     {
+        var (where, values) = Predicate(universe, filter);
+        var ids = new List<string>();
+        using (var command = CatalogSql.Command(connection, null, "SELECT a.asset_id FROM assets a WHERE " + where, values))
+        using (var reader = command.ExecuteReader()) while (reader.Read()) ids.Add(reader.GetString(0));
+        return Array.AsReadOnly(ids.Order(StringComparer.Ordinal).Select(id => CatalogAssetData.Read(connection, null, universe, id)!).ToArray());
+    }
+
+    internal static (string Sql, object?[] Values) Predicate(UniverseId universe, CatalogFilter filter)
+    {
         var predicates = new List<string> { "a.universe_id=$u" }; var parameters = new List<object?> { "$u", universe.Value };
         void Equal(string column, string? value)
         { if (value is null) return; var name = "$p" + parameters.Count; predicates.Add(column + "=" + name); parameters.Add(name); parameters.Add(value); }
@@ -22,11 +31,8 @@ internal static class CatalogQueries
             predicates.Add("EXISTS(SELECT 1 FROM visual_traits t WHERE t.universe_id=a.universe_id AND t.asset_id=a.asset_id AND t.trait_key=" + key + " AND t.trait_value=" + val + " AND t.scalar_type=" + type + ")");
             parameters.AddRange([key, trait.Key, val, trait.Value, type, trait.Type.ToString()]);
         }
-        var ids = new List<string>();
         // Only internal, fixed column names and generated parameter names are concatenated. All caller values are bound.
-        using (var command = CatalogSql.Command(connection, null, "SELECT a.asset_id FROM assets a WHERE " + string.Join(" AND ", predicates), parameters.ToArray()))
-        using (var reader = command.ExecuteReader()) while (reader.Read()) ids.Add(reader.GetString(0));
-        return Array.AsReadOnly(ids.Order(StringComparer.Ordinal).Select(id => CatalogAssetData.Read(connection, null, universe, id)!).ToArray());
+        return (string.Join(" AND ", predicates), parameters.ToArray());
     }
     internal static CatalogStatistics Statistics(IReadOnlyList<CatalogAssetSnapshot> assets)
     {

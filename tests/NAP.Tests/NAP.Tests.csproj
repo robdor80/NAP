@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NAP.Core\NAP.Core.csproj" />
     <ProjectReference Include="..\..\src\NAP.AI\NAP.AI.csproj" />
+    <ProjectReference Include="..\..\src\NAP.Presentation\NAP.Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
