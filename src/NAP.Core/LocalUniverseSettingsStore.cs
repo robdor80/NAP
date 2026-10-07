@@ -28,11 +28,13 @@ public sealed class LocalUniverseSettingsStore
             rows.Add(new(new(row.GetProperty("universe_id").GetString()!), row.GetProperty("workspace_root").GetString()!,
                 row.GetProperty("production_root").GetString()!, row.GetProperty("archive_root").GetString()!));
         }
-        Validate(rows, requireAvailable: false); return rows.AsReadOnly();
+        ValidateStructure(rows); return rows.AsReadOnly();
     }
-    public void Save(IEnumerable<UniverseStorageConfig> configurations)
+    /// <summary>Validate all structure, and availability of the explicit universe plus every new/changed entry.
+    /// Unchanged remembered siblings may be offline. Omit the ID only for a bulk configuration update.</summary>
+    public void Save(IEnumerable<UniverseStorageConfig> configurations, UniverseId? configuredUniverse = null)
     {
-        var rows = configurations.ToArray(); Validate(rows); Guard();
+        var rows = configurations.ToArray(); ValidateStructure(rows); Guard();
         foreach (var row in rows)
             if (new[] { row.WorkspaceRoot, row.ProductionRoot, row.ArchiveRoot }.Any(root => ProductionPaths.Within(root, SettingsPath)))
                 throw new InvalidDataException("Local settings must remain outside all universe storage roots.");
@@ -40,7 +42,12 @@ public sealed class LocalUniverseSettingsStore
         Directory.CreateDirectory(parent); Guard();
         using var lease = ExecutionMutex.Acquire("LocalSettings", parent, Path.GetFileName(SettingsPath));
         // Never silently overwrite an unreadable/unknown configuration with a new one.
-        _ = Load();
+        var prior = Load();
+        if (configuredUniverse is not null && rows.All(r => r.UniverseId != configuredUniverse))
+            throw new ArgumentException("The configured universe must be included in the saved settings.", nameof(configuredUniverse));
+        // Every new/changed universe is physically checked. The explicitly saved universe is
+        // checked even when unchanged; remembered, unchanged siblings may be disconnected.
+        foreach (var row in rows.Where(r => r.UniverseId == configuredUniverse || !prior.Contains(r))) ValidateAvailable(row);
         var bytes = JsonSerializer.SerializeToUtf8Bytes(new { schema_version = 1, universes = rows.OrderBy(r => r.UniverseId.Value, StringComparer.Ordinal)
             .Select(r => new { universe_id = r.UniverseId.Value, workspace_root = r.WorkspaceRoot, production_root = r.ProductionRoot, archive_root = r.ArchiveRoot }) }, new JsonSerializerOptions { WriteIndented = true });
         if (bytes.Length > 1024 * 1024) throw new InvalidDataException("Settings exceed their bounded format.");
@@ -58,22 +65,33 @@ public sealed class LocalUniverseSettingsStore
     }
     public static void Validate(IEnumerable<UniverseStorageConfig> configurations, bool requireAvailable = true)
     {
+        var rows = configurations.ToArray(); ValidateStructure(rows);
+        if (requireAvailable) foreach (var row in rows) ValidateAvailable(row);
+    }
+    public static void ValidateStructure(IEnumerable<UniverseStorageConfig> configurations)
+    {
         var rows = configurations.ToArray();
         var isolation = UniverseStorageIsolationValidator.Validate(rows);
         if (isolation.ShouldStop) throw new InvalidDataException("Universe storage roots overlap.");
         foreach (var row in rows)
         {
-            if (!requireAvailable) continue;
-            var context = new UniverseContext(new UniverseProfile(row.UniverseId, row.UniverseId.Value), row);
-            var production = new ProductionStorageRootValidator().Validate(context);
-            if (production.ShouldStop) throw new ProductionStorageException(production);
-            var archive = new ArchiveRootValidator().Validate(context);
-            if (archive.ShouldStop) throw new ArchiveStorageException(archive);
-            var workspace = ProductionPaths.CheckPath(row.WorkspaceRoot, NapIssueCodes.CatalogInvalid, NapIssueCodes.CatalogInvalid);
-            if (workspace is null || (workspace & FileAttributes.Directory) == 0) throw new InvalidDataException("WorkspaceRoot must be an existing controlled directory.");
-            if (row.WorkspaceRoot.StartsWith("\\\\", StringComparison.Ordinal) || new DriveInfo(row.WorkspaceRoot).DriveType == DriveType.Network)
-                throw new InvalidDataException("WorkspaceRoot must be local.");
+            if (ProductionPaths.Overlaps(row.WorkspaceRoot, row.ProductionRoot) || ProductionPaths.Overlaps(row.WorkspaceRoot, row.ArchiveRoot) ||
+                ProductionPaths.Overlaps(row.ProductionRoot, row.ArchiveRoot))
+                throw ProductionStorageException.Stop(NapIssueCodes.ProductionRootInvalid, "Roots of a universe must remain isolated.");
         }
+    }
+    public static void ValidateAvailable(UniverseStorageConfig row)
+    {
+        ValidateStructure([row]);
+        var context = new UniverseContext(new UniverseProfile(row.UniverseId, row.UniverseId.Value), row);
+        var production = new ProductionStorageRootValidator().Validate(context);
+        if (production.ShouldStop) throw new ProductionStorageException(production);
+        var archive = new ArchiveRootValidator().Validate(context);
+        if (archive.ShouldStop) throw new ArchiveStorageException(archive);
+        var workspace = ProductionPaths.CheckPath(row.WorkspaceRoot, NapIssueCodes.CatalogInvalid, NapIssueCodes.CatalogInvalid);
+        if (workspace is null || (workspace & FileAttributes.Directory) == 0) throw new InvalidDataException("WorkspaceRoot must be an existing controlled directory.");
+        if (row.WorkspaceRoot.StartsWith("\\\\", StringComparison.Ordinal) || new DriveInfo(row.WorkspaceRoot).DriveType == DriveType.Network)
+            throw new InvalidDataException("WorkspaceRoot must be local.");
     }
     private void Guard()
     {

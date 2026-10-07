@@ -4,6 +4,7 @@ namespace NAP.Presentation;
 
 public interface IExplorerService
 {
+    Task BeginSessionAsync(UniverseContext context, CancellationToken cancellation) => Task.CompletedTask;
     Task<CatalogPage> PageAsync(UniverseContext context, CatalogFilter filter, int offset, int limit, CancellationToken cancellation);
     Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext context, string id, CancellationToken cancellation);
     Task<CatalogStatistics> StatisticsAsync(UniverseContext context, CatalogFilter filter, CancellationToken cancellation);
@@ -14,16 +15,25 @@ public interface IExplorerService
 public sealed class ExplorerService : IExplorerService
 {
     private readonly SemaphoreSlim _catalog = new(1, 1);
+    private UniverseContext? _context;
+    private CatalogExplorerReader? _reader;
+    // Access exclusively under _catalog. Retain one bounded session, never a connection.
+    private CatalogExplorerReader Reader(UniverseContext context)
+    {
+        if (_reader is null || _context != context) { _context = context; _reader = new(context); }
+        return _reader;
+    }
+    public Task BeginSessionAsync(UniverseContext c, CancellationToken ct) => Run(() => { Reader(c).InvalidateValidation(); return 0; }, ct);
     private async Task<T> Run<T>(Func<T> operation, CancellationToken cancellation)
     {
         await _catalog.WaitAsync(cancellation).ConfigureAwait(false);
         try { return await Task.Run(() => { cancellation.ThrowIfCancellationRequested(); var value = operation(); cancellation.ThrowIfCancellationRequested(); return value; }, cancellation).ConfigureAwait(false); }
         finally { _catalog.Release(); }
     }
-    public Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter f, int offset, int limit, CancellationToken ct) => Run(() => new CatalogExplorerReader(c).Page(f, offset, limit, ct), ct);
-    public Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext c, string id, CancellationToken ct) => Run(() => new CatalogExplorerReader(c).Detail(id, ct), ct);
-    public Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter f, CancellationToken ct) => Run(() => new CatalogExplorerReader(c).Statistics(f, ct), ct);
-    public Task<CatalogPlanningReadModel> PlanningAsync(UniverseContext c, CancellationToken ct) => Run(() => new CatalogExplorerReader(c).Planning(ct), ct);
+    public Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter f, int offset, int limit, CancellationToken ct) => Run(() => Reader(c).Page(f, offset, limit, ct), ct);
+    public Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext c, string id, CancellationToken ct) => Run(() => Reader(c).Detail(id, ct), ct);
+    public Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter f, CancellationToken ct) => Run(() => Reader(c).Statistics(f, ct), ct);
+    public Task<CatalogPlanningReadModel> PlanningAsync(UniverseContext c, CancellationToken ct) => Run(() => Reader(c).Planning(ct), ct);
     public Task<ThumbnailResult> ThumbnailAsync(UniverseContext c, CatalogAssetSummary a, CancellationToken ct) => new ProductionThumbnailCache(c).GetAsync(a, ct);
 }
 public sealed record ExplorerError(string Message, string Code)

@@ -114,7 +114,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         if (profile is null || roots is null) { State = ExplorerState.Empty; Section = "Ajustes"; return; }
         try
         {
-            await Task.Run(() => LocalUniverseSettingsStore.Validate(_configurations));
+            await Task.Run(() => { LocalUniverseSettingsStore.ValidateStructure(_configurations); LocalUniverseSettingsStore.ValidateAvailable(roots); });
             if (SelectedUniverse != profile) return;
             _context = new(profile, roots); Notify(nameof(Context)); Section = "Catálogo"; await RefreshAsync(loadFacets: true);
         }
@@ -134,6 +134,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         State = ExplorerState.Loading;
         try
         {
+            if (loadFacets) await _service.BeginSessionAsync(context, source.Token);
             var filter = CurrentFilter();
             var page = await _service.PageAsync(context, filter, 0, PagedAssetCollection.PageSize, source.Token);
             var statistics = await _service.StatisticsAsync(context, filter, source.Token);
@@ -181,7 +182,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         if (!_settingsReadable || SelectedUniverse is null) throw new InvalidOperationException("Settings are unreadable or no profile is selected.");
         var storage = new UniverseStorageConfig(SelectedUniverse.Id, WorkspaceRoot, ProductionRoot, ArchiveRoot);
         var rows = _configurations.Where(c => c.UniverseId != storage.UniverseId).Append(storage).ToArray();
-        await Task.Run(() => _settings.Save(rows)); _configurations = Array.AsReadOnly(rows); await SwitchAsync();
+        await Task.Run(() => _settings.Save(rows, storage.UniverseId)); _configurations = Array.AsReadOnly(rows); await SwitchAsync();
     }
     private Task ClearAsync() { ResetValues(); return RefreshAsync(); }
     private void ResetValues() { AssetId = null; AssetType = null; ProductionProfile = null; foreach (var f in Facets) f.Selected = null; }

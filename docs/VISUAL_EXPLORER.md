@@ -44,6 +44,12 @@ No persiste un CurrentUniverse global: `ExplorerViewModel` crea y pasa
 `UniverseContext(profile, storage)` explícito al seleccionar un perfil configurado.
 El cambio cancela la sesión UI anterior, descarta páginas, detalle, preview,
 filtros, facets y estadísticas. Los resultados tardíos no pueden repoblarla.
+Antes de activar comprueba estructura/aislamiento de todas las configuraciones y
+disponibilidad física **solo del universo seleccionado**. Otro universo desconectado
+no bloquea grid, filtros ni estadísticas del disponible. Seleccionar el ausente
+da STOP/Ajustes sin crear raíces; al reconectarlo se puede reintentar sin cambiar
+settings. Guardar valida físicamente el universo configurado y todas las entradas
+nuevas/modificadas; conserva otros universos sin cambios aunque estén desconectados.
 
 ## Shell RobStyle
 
@@ -69,11 +75,38 @@ ordenados por AssetId BINARY; límite máximo 240, sin SELECT de BLOBs/documento
 No escanea ProductionRoot ni ArchiveRoot. Statistics utiliza GROUP BY en Core;
 Planning reutiliza objetivos/campañas y modelos Coverage/Diversity existentes.
 
-Cada lectura adquiere el mutex de catálogo, abre ReadOnly con pooling=false,
-comprueba paths/reparse, metadata/universo/schema exacto, integrity_check,
-foreign_key_check y DELETE journaling. La proyección valida las relaciones y
-fingerprints del output mostrado. **No constituye evidencia de publicación o
-recovery**. Las APIs anteriores mantienen su validación lógica completa intacta.
+Cada lectura adquiere el mismo mutex de catálogo, abre ReadOnly con pooling=false
+y comprueba paths/reparse, metadata/universo, user_version, schema exacto y DELETE
+journaling. `CatalogSchema.ValidateContract` contiene estas comprobaciones de
+identidad/schema; `CatalogSchema.Validate` sigue añadiendo **los mismos**
+integrity_check y foreign_key_check. Todos sus consumidores de Fase 10 mantienen
+validación fuerte, y su validación lógica anterior queda intacta; schema v1 no cambia.
+
+El adapter conserva una única sesión de `CatalogExplorerReader`, sin conexión ni
+handle abiertos entre consultas. La primera lectura al abrir/seleccionar un
+universo hace validación fuerte. También se repite tras cambio físico, invalidación
+explícita (`InvalidateValidation` / `BeginSessionAsync`), cualquier error de lectura
+o cinco minutos desde la última validación fuerte, con reloj monotónico. La
+paginación normal de esa sesión no repite ambas verificaciones globales por página.
+
+Antes y después de cada operación se observa el archivo de forma acotada: tamaño,
+fechas y **solo los 100 bytes de cabecera SQLite**, más identidad física y tiempo
+de cambio obtenidos del sistema. Windows utiliza volumen/FileId128/ChangeTime;
+Linux utiliza dispositivo/inode/ctime con nanosegundos mediante statx. Así se
+detectan reemplazos incluso de bytes idénticos y escrituras que restauren LastWriteTime,
+sin hash de DB, watchers ni recorrido de documentos. Referencias del contrato:
+[cabecera SQLite](https://sqlite.org/fileformat.html),
+[Windows FileId](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info),
+[Windows ChangeTime](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_basic_info),
+[Linux statx UAPI](https://github.com/torvalds/linux/blob/master/include/uapi/linux/stat.h).
+Si el sistema/filesystem no proporciona esos metadatos nativos, se desactiva la
+reutilización y cada operación valida fuertemente; no se presume una identidad
+fiable usando solo tamaño/mtime. Un cambio durante la consulta da STOP y descarta
+el resultado. Corrupción, universo/schema incompatible y errores SQLite siguen
+siendo STOP. El mutex coordina las publicaciones de NAP.
+
+La proyección valida las relaciones y fingerprints del output mostrado.
+**No constituye evidencia de publicación o recovery**.
 Detail valida el snapshot seleccionado, incluidos SHA/tamaño de todos sus BLOBs,
 reutilizando la misma `CatalogAssetData.ValidateAsset` que la validación anterior.
 Así un BLOB ajeno corrupto no se materializa para pintar el grid; seleccionar ese
@@ -84,6 +117,13 @@ LRU de cuatro páginas (240 placeholders), cancelación de páginas expulsadas y
 de toda la colección al cambiar filtros/universo. No enumera todos los assets en
 el flujo UI. Si cambia el total durante paging, STOP y actualización explícita.
 No hay filtros/sort WPF sobre la colección: se aplican en SQLite.
+El reader guarda un único COUNT para la instancia de filtro inmutable de la
+colección y hasta cuatro anclas AssetId. Scroll secuencial consulta desde el último
+AssetId con LIMIT (keyset), sin recalcular COUNT ni recorrer las páginas previas.
+Un filtro nuevo recalcula su COUNT; un cambio/invalidation del catálogo borra
+total y anclas. Un salto aleatorio sin ancla usa OFFSET: su coste puede crecer con
+la distancia y selectividad del filtro, pero no materializa documentos ni snapshots
+de todos los assets. No se promete acceso por índice arbitrario en tiempo constante.
 
 `VirtualizingTilePanel` implementa IScrollInfo: calcula filas visibles y usa
 IRecyclingItemContainerGenerator. Genera solo controles de filas intersectando
@@ -122,9 +162,11 @@ sus llamadas nativas síncronas: una consulta/integrity_check ya en curso acaba
 antes de liberar el worker/lease; no se cierra la conexión desde otro hilo.
 Integrity_check puede recorrer muchas páginas de DB (incluido almacenamiento de
 BLOBs) a nivel SQLite, sin materializarlos como documentos ni snapshots de UI.
-OFFSET y comprobación íntegra favorecen seguridad/compatibilidad; no se promete
-latencia constante con catálogos enormes. No se mantiene un lock o transacción
-de lectura durante la vida de la ventana.
+La validación fuerte se paga al inicio/cambio/expiración de sesión, no por cada
+página normal; statistics/planning agregan las filas necesarias de sus filtros.
+La lectura caliente añade comprobaciones acotadas de archivo/contrato y consulta
+la página con sus filtros, sin ValidateLogical global ni SELECT de documentos.
+No se mantiene un lock o transacción de lectura durante la vida de la ventana.
 
 La vista refleja lecturas actuales por operación, no un snapshot temporal global
 entre página/estadísticas. Cambios operativos simultáneos requieren actualizar;
@@ -143,8 +185,14 @@ git status --short
 ```
 
 Tests nuevos: LocalUniverseSettingsTests, ProductionThumbnailTests,
-CatalogExplorerTests, ExplorerViewModelTests y VisualExplorerWindowsSmokeTests.
-Los últimos lanzan la App real con settings/catalog/roots temporales, verifican
+CatalogExplorerTests, CatalogExplorerSessionTests, ExplorerViewModelTests,
+ExplorerUniverseAvailabilityTests y VisualExplorerWindowsSmokeTests.
+Las pruebas de sesión verifican validación inicial/reutilización/expiración,
+reemplazos y modificaciones con mtime restaurado, STOP por universo/schema/
+corrupción y validación fuerte de Fase 10. Las de disponibilidad usan catálogos
+reales temporales para apertura/filtros/stats, STOP del universo ausente, reconexión,
+guardado con otro offline y rechazo de roots propios inválidos/overlap/cambios inválidos.
+VisualExplorerWindowsSmokeTests lanza la App real con settings/catalog/roots temporales y verifica
 ficha/documentos/filtros/reset/estadísticas y render WPF. Un stress separado usa
 30.000 enteros exclusivamente para medir el panel/reciclaje; no sustituye los
 assets reales del primer recorrido. Settings reales de AppData no se usan.

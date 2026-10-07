@@ -10,6 +10,21 @@ public sealed record CatalogPage(long TotalCount, int Offset, IReadOnlyList<Cata
 /// <summary>Read-only UI queries over schema v1. Existing full integrity/publication APIs remain unchanged.</summary>
 public sealed class CatalogExplorerReader(UniverseContext context)
 {
+    private readonly object _session = new();
+    private CatalogFileStamp? _validated;
+    private long _validatedAt;
+    private CatalogFilter? _countFilter;
+    private readonly CatalogFilter _emptyFilter = new();
+    private readonly Dictionary<int, string> _anchors = [];
+    private long _total;
+    internal TimeProvider Clock { get; set; } = TimeProvider.System;
+    internal int StrongValidationCount { get; private set; }
+    internal int CountQueryCount { get; private set; }
+    /// <summary>Discard session evidence and paging hints; the next operation must validate strongly.</summary>
+    public void InvalidateValidation()
+    {
+        lock (_session) { _validated = null; _countFilter = null; _anchors.Clear(); }
+    }
     public CatalogAssetSnapshot? Detail(string assetId, CancellationToken cancellation = default) => Read(c =>
     {
         ArgumentNullException.ThrowIfNull(assetId);
@@ -23,13 +38,21 @@ public sealed class CatalogExplorerReader(UniverseContext context)
         if (limit is < 1 or > 240) throw new ArgumentOutOfRangeException(nameof(limit));
         return Read(c =>
         {
-            var (where, values) = CatalogQueries.Predicate(context.Id, filter ?? new());
-            var total = Convert.ToInt64(CatalogSql.Scalar(c, null, "SELECT COUNT(*) FROM assets a WHERE " + where, values));
+            filter ??= _emptyFilter;
+            var (where, values) = CatalogQueries.Predicate(context.Id, filter);
+            if (!ReferenceEquals(_countFilter, filter))
+            {
+                _total = Convert.ToInt64(CatalogSql.Scalar(c, null, "SELECT COUNT(*) FROM assets a WHERE " + where, values));
+                _countFilter = filter; CountQueryCount++; _anchors.Clear();
+            }
+            var total = _total;
+            var seek = _anchors.TryGetValue(offset, out var anchor);
+            if (seek) { where += " AND a.asset_id>$after"; values = [.. values, "$after", anchor]; }
             var items = new List<CatalogAssetSummary>();
             using var command = CatalogSql.Command(c, null,
                 "SELECT a.asset_id,a.asset_type,a.production_profile,a.production_sha256,a.production_size,a.production_directory,f.relative_path,f.sha256,f.size,f.verified " +
                 "FROM assets a LEFT JOIN files f ON f.universe_id=a.universe_id AND f.asset_id=a.asset_id AND f.location='Production' AND f.kind='generated_webp' WHERE " +
-                where + " ORDER BY a.asset_id COLLATE BINARY LIMIT $limit OFFSET $offset", [.. values, "$limit", limit, "$offset", offset]);
+                where + " ORDER BY a.asset_id COLLATE BINARY LIMIT $limit OFFSET $offset", [.. values, "$limit", limit, "$offset", seek ? 0 : offset]);
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -46,6 +69,11 @@ public sealed class CatalogExplorerReader(UniverseContext context)
             }
             if (items.Select(i => i.AssetKey).Distinct().Count() != items.Count)
                 throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "Ambiguous production output.");
+            if (items.Count > 0)
+            {
+                if (_anchors.Count == 4) _anchors.Remove(_anchors.Keys.First());
+                _anchors[offset + items.Count] = items[^1].AssetKey.AssetId;
+            }
             return new CatalogPage(total, offset, items.AsReadOnly());
         }, cancellation);
     }
@@ -89,17 +117,39 @@ public sealed class CatalogExplorerReader(UniverseContext context)
             Group("SELECT t.trait_key,t.trait_value,COUNT(*),t.scalar_type FROM assets a JOIN visual_traits t ON t.universe_id=a.universe_id AND t.asset_id=a.asset_id WHERE " + where + " GROUP BY t.trait_key,t.trait_value,t.scalar_type", true));
     }
 
-    private T Read<T>(Func<SqliteConnection, T> query, CancellationToken cancellation) => AssetCatalog.Run(() =>
+    private T Read<T>(Func<SqliteConnection, T> query, CancellationToken cancellation)
     {
-        cancellation.ThrowIfCancellationRequested();
-        using var lease = CatalogBoundary.Acquire(context);
-        CatalogBoundary.Paths(context);
-        if (!CatalogBoundary.Regular(context.Storage.CatalogPath)) throw CatalogException.Stop(NapIssueCodes.CatalogMissing, "The catalog does not exist.");
-        using var connection = CatalogBoundary.Connect(context.Storage.CatalogPath, SqliteOpenMode.ReadOnly);
-        CatalogSchema.Validate(connection, context.Id);
-        if (!string.Equals((string?)CatalogSql.Scalar(connection, null, "PRAGMA journal_mode"), "delete", StringComparison.OrdinalIgnoreCase))
-            throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Schema v1 requires DELETE journal mode.");
-        cancellation.ThrowIfCancellationRequested();
-        return query(connection);
-    });
+        lock (_session)
+        {
+            try
+            {
+                return AssetCatalog.Run(() =>
+                {
+                    cancellation.ThrowIfCancellationRequested();
+                    using var lease = CatalogBoundary.Acquire(context);
+                    CatalogBoundary.Paths(context);
+                    if (!CatalogBoundary.Regular(context.Storage.CatalogPath)) throw CatalogException.Stop(NapIssueCodes.CatalogMissing, "The catalog does not exist.");
+                    var before = CatalogFileStamp.Capture(context.Storage.CatalogPath);
+                    using var connection = CatalogBoundary.Connect(context.Storage.CatalogPath, SqliteOpenMode.ReadOnly);
+                    var strong = !before.CanReuse || _validated != before || Clock.GetElapsedTime(_validatedAt) >= TimeSpan.FromMinutes(5);
+                    if (strong)
+                    {
+                        InvalidateValidation(); StrongValidationCount++;
+                        CatalogSchema.Validate(connection, context.Id);
+                    }
+                    else CatalogSchema.ValidateContract(connection, context.Id);
+                    if (!string.Equals((string?)CatalogSql.Scalar(connection, null, "PRAGMA journal_mode"), "delete", StringComparison.OrdinalIgnoreCase))
+                        throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Schema v1 requires DELETE journal mode.");
+                    cancellation.ThrowIfCancellationRequested();
+                    var result = query(connection);
+                    cancellation.ThrowIfCancellationRequested(); CatalogBoundary.Paths(context);
+                    var after = CatalogFileStamp.Capture(context.Storage.CatalogPath);
+                    if (before != after) throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "The catalog changed during the read; refresh explicitly.");
+                    if (strong && after.CanReuse) { _validated = after; _validatedAt = Clock.GetTimestamp(); }
+                    return result;
+                });
+            }
+            catch { InvalidateValidation(); throw; }
+        }
+    }
 }
