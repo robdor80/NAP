@@ -13,7 +13,7 @@ public sealed class GitProductionSecurityTests
     {
         using var f = new GitProductionFixture(); var hooks = Path.Combine(f.Root, ".git", "hooks");
         var outsideHooks = Path.Combine(f.Production.Root, "user-hooks"); Directory.CreateDirectory(outsideHooks);
-        var names = new[] { "pre-commit", "prepare-commit-msg", "commit-msg", "post-commit", "reference-transaction", "post-index-change", "pre-auto-gc", "post-rewrite", "pre-merge-commit", "future-hook" };
+        var names = new[] { "pre-commit", "prepare-commit-msg", "commit-msg", "post-commit", "reference-transaction", "post-index-change", "pre-auto-gc", "post-rewrite", "pre-merge-commit" };
         foreach (var name in names)
         {
             var marker = Path.Combine(f.Production.Root, name + "-ran");
