@@ -1,0 +1,7 @@
+<UserControl x:Class="NAP.App.Controls.ThumbnailView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Image x:Name="PreviewImage" Stretch="Uniform" />
+    <TextBlock x:Name="Placeholder" Text="Vista previa" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Muted}" />
+    <TextBlock Text="{Binding Error.Message}" VerticalAlignment="Bottom" FontSize="11" Foreground="{StaticResource ErrorBrush}" ToolTip="{Binding Error.Code}" />
+  </Grid>
+</UserControl>

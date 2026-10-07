@@ -1,0 +1,372 @@
+<Window x:Class="NAP.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NAP.App.Controls" Title="NAP — Nexus Asset Platform" WindowState="Maximized" Width="1440" Height="900" MinWidth="1200" MinHeight="700">
+  <Window.Resources>
+    <Style x:Key="Section" TargetType="Grid">
+      <Setter Property="Visibility" Value="Collapsed" />
+    </Style>
+    <Style x:Key="CatalogSection" TargetType="Grid" BasedOn="{StaticResource Section}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Section}" Value="Catálogo">
+          <Setter Property="Visibility" Value="Visible" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="StatisticsSection" TargetType="Grid" BasedOn="{StaticResource Section}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Section}" Value="Estadísticas">
+          <Setter Property="Visibility" Value="Visible" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="SettingsSection" TargetType="Grid" BasedOn="{StaticResource Section}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Section}" Value="Ajustes">
+          <Setter Property="Visibility" Value="Visible" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <DataTemplate x:Key="FacetChoice">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding Value}" Foreground="{StaticResource BackgroundBrush}" />
+        <TextBlock Text="{Binding TraitType, StringFormat=' · {0}'}" Foreground="{StaticResource BackgroundBrush}" />
+      </StackPanel>
+    </DataTemplate>
+  </Window.Resources>
+  <Grid Margin="{StaticResource SpaceLarge}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="300" />
+      </Grid.ColumnDefinitions>
+      <StackPanel>
+        <TextBlock Text="NAP" Style="{StaticResource Heading}" />
+        <TextBlock Text="NEXUS ASSET PLATFORM · EXPLORADOR VISUAL" Style="{StaticResource Muted}" />
+      </StackPanel>
+      <StackPanel Grid.Column="1">
+        <TextBlock Text="Universo activo" Style="{StaticResource Muted}" />
+        <ComboBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedUniverse}" DisplayMemberPath="DisplayName" />
+      </StackPanel>
+    </Grid>
+    <Border Grid.Row="1">
+      <StackPanel>
+        <TextBlock Text="{Binding Error.Message}" Foreground="{StaticResource ErrorBrush}" />
+        <Expander Header="Diagnóstico técnico">
+          <TextBlock Text="{Binding Error.Code, TargetNullValue='Sin incidencias'}" />
+        </Expander>
+      </StackPanel>
+      <Border.Style>
+        <Style TargetType="Border" BasedOn="{StaticResource Card}">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+    </Border>
+    <Grid Grid.Row="2" Margin="0,16,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="160" />
+        <ColumnDefinition Width="16" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="{StaticResource SpaceSmall}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Bottom" Text="Áreas atenuadas: futuras fases" Margin="{StaticResource Space}" Style="{StaticResource Muted}" />
+          <ItemsControl ItemsSource="{Binding Navigation}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Button Content="{Binding Name}" IsEnabled="{Binding Enabled}" Style="{StaticResource Navigation}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </DockPanel>
+      </Border>
+      <Grid Grid.Column="2" Style="{StaticResource CatalogSection}">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="220" />
+          <ColumnDefinition />
+          <ColumnDefinition Width="360" />
+        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource Card}">
+          <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
+              <TextBlock Text="Filtros exactos · AND" FontWeight="SemiBold" />
+              <TextBlock Text="Asset ID" />
+              <TextBox Text="{Binding AssetId, UpdateSourceTrigger=PropertyChanged}" />
+              <TextBlock Text="Tipo" />
+              <ComboBox ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetType}" />
+              <TextBlock Text="Perfil de producción" />
+              <ComboBox ItemsSource="{Binding ProductionProfiles}" SelectedItem="{Binding ProductionProfile}" />
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom">
+              <Button Content="Aplicar / actualizar" Command="{Binding ApplyFilters}" />
+              <Button Content="Restablecer" Command="{Binding ResetFilters}" />
+              <TextBlock Text="Vacío = sin filtro. Una elección por dimensión; todas las condiciones deben coincidir." Style="{StaticResource Muted}" />
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <ItemsControl ItemsSource="{Binding Facets}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <TextBlock Text="{Binding Dimension}" />
+                      <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Selected}" ItemTemplate="{StaticResource FacetChoice}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <TextBlock Text="Catálogo" Style="{StaticResource Heading}" Margin="{StaticResource Space}" />
+          <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <controls:VirtualizingTilePanel />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Border Style="{StaticResource Card}">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition />
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:ThumbnailView />
+                    <TextBlock Grid.Row="1" Text="{Binding Title}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,8,0,4" ToolTip="{Binding Title}" />
+                    <TextBlock Grid.Row="2" Text="{Binding Subtitle}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource Muted}" />
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+        <Border Grid.Column="2" Style="{StaticResource Card}">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Text="Ficha del asset" Style="{StaticResource Heading}" />
+              <TextBlock Text="{Binding DetailState}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding DetailError.Message}" Foreground="{StaticResource ErrorBrush}" />
+              <TextBlock Text="{Binding Detail.AssetKey.AssetId, TargetNullValue='Selecciona un asset'}" FontWeight="SemiBold" />
+              <controls:ThumbnailView DataContext="{Binding Preview}" Height="240" Margin="0,12" />
+              <TextBlock Text="{Binding Detail.AssetType}" />
+              <TextBlock Text="{Binding Detail.ProductionProfile}" Style="{StaticResource Muted}" />
+              <TextBlock Text="Clasificación" FontWeight="SemiBold" Margin="0,12,0,6" />
+              <ItemsControl ItemsSource="{Binding Detail.Classification}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock>
+                      <Run Text="{Binding Mode=OneWay, Path=Key}" />
+                      <Run Text=": " />
+                      <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                    </TextBlock>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <TextBlock Text="Identidad visual" FontWeight="SemiBold" Margin="0,12,0,6" />
+              <ItemsControl ItemsSource="{Binding Detail.Traits}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock>
+                      <Run Text="{Binding Mode=OneWay, Path=Key}" />
+                      <Run Text=": " />
+                      <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                      <Run Text="{Binding Mode=OneWay, Path=Type, StringFormat=' ({0})'}" />
+                    </TextBlock>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <TextBlock Text="Estado catalogado" FontWeight="SemiBold" Margin="0,12,0,6" />
+              <TextBlock Text="{Binding Detail.Lifecycle, TargetNullValue='Sin datos'}" />
+              <TextBlock Text="{Binding Detail.AuditState, TargetNullValue='Auditoría no disponible'}" />
+              <Expander Header="Documentos originales">
+                <ItemsControl ItemsSource="{Binding Documents}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Expander Header="{Binding Role}">
+                        <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="400" VerticalScrollBarVisibility="Auto" />
+                      </Expander>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Expander>
+              <Expander Header="Datos técnicos, archivos y SHA-256">
+                <StackPanel>
+                  <TextBlock Text="{Binding Detail.AssetKey}" />
+                  <TextBlock Text="Archive (relativa)" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Detail.ArchiveRelativeDirectory}" />
+                  <TextBlock Text="Producción (relativa)" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Detail.ProductionRelativeDirectory}" />
+                  <TextBlock Text="Master · bytes / SHA-256" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Detail.MasterSizeBytes}" />
+                  <TextBlock Text="{Binding Detail.MasterDigest.Hex}" FontSize="11" />
+                  <TextBlock Text="Producción · bytes / SHA-256" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Detail.ProductionSizeBytes}" />
+                  <TextBlock Text="{Binding Detail.ProductionDigest.Hex}" FontSize="11" />
+                  <ItemsControl ItemsSource="{Binding Detail.Files}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,8">
+                          <StackPanel>
+                            <TextBlock Text="{Binding RelativePath}" />
+                            <TextBlock>
+                              <Run Text="{Binding Mode=OneWay, Path=Location}" />
+                              <Run Text=" · " />
+                              <Run Text="{Binding Mode=OneWay, Path=Role}" />
+                              <Run Text=" · " />
+                              <Run Text="{Binding Mode=OneWay, Path=Kind}" />
+                            </TextBlock>
+                            <TextBlock Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}" />
+                            <TextBlock Text="{Binding Digest.Hex}" FontSize="11" />
+                          </StackPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Text="{Binding DetailError.Code}" />
+                </StackPanel>
+              </Expander>
+            </StackPanel>
+          </ScrollViewer>
+        </Border>
+      </Grid>
+      <Grid Grid.Column="2" Style="{StaticResource StatisticsSection}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Estadísticas visuales" Style="{StaticResource Heading}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+          <Border Style="{StaticResource Card}" MinWidth="220">
+            <StackPanel>
+              <TextBlock Text="Assets · filtros activos" />
+              <TextBlock Text="{Binding Statistics.TotalAssets, TargetNullValue='Sin datos', StringFormat='{}{0:N0}'}" Style="{StaticResource Heading}" />
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" MinWidth="220">
+            <StackPanel>
+              <TextBlock Text="Tipos presentes" />
+              <TextBlock Text="{Binding Statistics.AssetTypes.Count, TargetNullValue='Sin datos'}" Style="{StaticResource Heading}" />
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" MinWidth="220">
+            <StackPanel>
+              <TextBlock Text="Perfiles presentes" />
+              <TextBlock Text="{Binding Statistics.ProductionProfiles.Count, TargetNullValue='Sin datos'}" Style="{StaticResource Heading}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+        <Grid Grid.Row="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Border Style="{StaticResource Card}">
+            <DockPanel>
+              <TextBlock DockPanel.Dock="Top" Text="Distribución factual · porcentaje de assets del conjunto filtrado" Margin="0,0,0,12" />
+              <ListBox ItemsSource="{Binding Distributions}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Margin="0,8">
+                      <TextBlock>
+                        <Run Text="{Binding Mode=OneWay, Path=Dimension}" />
+                        <Run Text=" · " />
+                        <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                        <Run Text="{Binding Mode=OneWay, Path=ScalarType, StringFormat=' ({0})'}" />
+                      </TextBlock>
+                      <TextBlock Text="{Binding Count, StringFormat='{}{0:N0} assets'}" Style="{StaticResource Muted}" />
+                      <ProgressBar Maximum="100" Value="{Binding Percent, Mode=OneWay}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </DockPanel>
+          </Border>
+          <Border Grid.Column="1" Style="{StaticResource Card}">
+            <ScrollViewer>
+              <StackPanel>
+                <TextBlock Text="Cobertura de objetivos" FontWeight="SemiBold" />
+                <TextBlock Text="Sin objetivos catalogados">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                      <Setter Property="Visibility" Value="Collapsed" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Planning.Objectives.Count}" Value="0">
+                          <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+                <ItemsControl ItemsSource="{Binding Planning.Objectives}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Margin="0,12">
+                        <TextBlock Text="{Binding Objective.Name}" />
+                        <TextBlock>
+                          <Run Text="{Binding Mode=OneWay, Path=Coverage.ActualCount}" />
+                          <Run Text=" / " />
+                          <Run Text="{Binding Mode=OneWay, Path=Coverage.TargetCount}" />
+                        </TextBlock>
+                        <ProgressBar Maximum="1" Value="{Binding Coverage.CompletionRatio, Mode=OneWay}" />
+                        <TextBlock Text="{Binding Coverage.Remaining, StringFormat='Pendientes: {0}'}" Style="{StaticResource Muted}" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </ScrollViewer>
+          </Border>
+        </Grid>
+        <TextBlock Grid.Row="3" Text="Datos del catálogo actual. Cobertura: filtro propio de cada objetivo. Sin tendencias temporales ni valoraciones creativas." Style="{StaticResource Muted}" Margin="{StaticResource Space}" />
+      </Grid>
+      <Grid Grid.Column="2" Style="{StaticResource SettingsSection}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <StackPanel MaxWidth="1000" HorizontalAlignment="Left">
+            <TextBlock Text="Configuración local del universo" Style="{StaticResource Heading}" />
+            <TextBlock Text="Selecciona tres carpetas existentes e independientes. NAP recordará las rutas en este equipo; no buscará carpetas ni creará repositorios o archivos de catálogo." Style="{StaticResource Muted}" />
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="WorkspaceRoot · estado, catálogo y caché locales" />
+                <DockPanel>
+                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Workspace" />
+                  <TextBox Text="{Binding WorkspaceRoot, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <TextBlock Text="ProductionRoot · producción de solo lectura" />
+                <DockPanel>
+                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Production" />
+                  <TextBox Text="{Binding ProductionRoot, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <TextBlock Text="ArchiveRoot · maestros de solo lectura" />
+                <DockPanel>
+                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Archive" />
+                  <TextBox Text="{Binding ArchiveRoot, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <Button Content="Guardar configuración y abrir catálogo" Command="{Binding SaveSettings}" IsEnabled="{Binding SettingsReadable}" HorizontalAlignment="Left" />
+                <Expander Header="Ubicación de la configuración local">
+                  <TextBlock Text="{Binding SettingsLocation}" />
+                </Expander>
+              </StackPanel>
+            </Border>
+            <TextBlock Text="El catálogo debe haber sido creado por el pipeline o por las operaciones explícitas existentes. El explorador no importa, reconstruye ni repara assets." Style="{StaticResource Muted}" />
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+    </Grid>
+    <TextBlock Grid.Row="3" Text="{Binding StatusText}" Margin="0,12,0,0" Style="{StaticResource Muted}" />
+  </Grid>
+</Window>

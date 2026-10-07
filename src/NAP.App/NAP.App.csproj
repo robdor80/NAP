@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /></ItemGroup>
+  <ItemGroup><Content Include="../../config/universes/nimroel/profile.json" Link="config/universes/nimroel/profile.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+</Project>
