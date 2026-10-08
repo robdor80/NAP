@@ -8,6 +8,7 @@ public interface IProfessionalUiService
     Task<DashboardSnapshot> DashboardAsync(UniverseContext c, CancellationToken ct);
     Task<PipelineSnapshot> PipelineAsync(UniverseContext c, CancellationToken ct);
     Task<PreparedPipelineAsset> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, CancellationToken ct);
+    Task<PreparedPipelineAsset> PrepareNormalizedAsync(UniverseContext c, ImageNormalizationResult candidate, CancellationToken ct);
     Task<AiAuditReport> AuditAsync(UniverseContext c, PreparedPipelineAsset prepared, CancellationToken ct);
     Task<ProductionAssetResult> ExecuteAsync(UniverseContext c, PreparedPipelineAsset prepared, AiAuditReport audit, CancellationToken ct);
     Task<CatalogPlanningReadModel> PlanningAsync(UniverseContext c, CancellationToken ct);
@@ -79,8 +80,21 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
         if (!string.Equals(Path.GetDirectoryName(source), inbox, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
             !string.Equals(Path.GetFileName(source), candidate.FileName, StringComparison.Ordinal) || (File.GetAttributes(source) & FileAttributes.ReparsePoint) != 0)
             throw new InvalidDataException("Candidate must be an ordinary file in the active Inbox.");
-        var stage = WorkspacePath(c, "staging"); var extraction = WorkspacePath(c, "packages"); WorkspacePath(c, "state");
-        var staged = new InboxPackageStager().StageAsync(candidate, stage, ct).GetAwaiter().GetResult();
+        return Prepare(c, source, WorkspacePath(c, "staging"), WorkspacePath(c, "packages"), ct);
+    });
+    public Task<PreparedPipelineAsset> PrepareNormalizedAsync(UniverseContext c, ImageNormalizationResult candidate, CancellationToken ct) => Run(c, ct, () =>
+    {
+        var verified = new ImageNormalizationService(c).ReadReceipt(candidate.Receipt.OperationId);
+        if (verified.Receipt.Decision != "Approved" || !verified.Receipt.IsPackage || verified.CandidatePath is null)
+            throw new InvalidOperationException("Only a durably approved, verified ZIP candidate may enter preparation.");
+        var attempt = Guid.NewGuid().ToString("N");
+        return Prepare(c, verified.CandidatePath, Path.Combine(WorkspacePath(c, "staging"), "normalization", verified.Receipt.OperationId, attempt),
+            Path.Combine(WorkspacePath(c, "packages"), "normalization", verified.Receipt.OperationId, attempt), ct);
+    });
+    private static PreparedPipelineAsset Prepare(UniverseContext c, string source, string stage, string extraction, CancellationToken ct)
+    {
+        WorkspacePath(c, "state");
+        var staged = new InboxPackageStager().StageAsync(new(Path.GetFileName(source), source), stage, ct).GetAwaiter().GetResult();
         if (staged.Status != InboxPackageStagingStatus.Staged) throw new InvalidDataException("ZIP staging is not ready or collides; original left untouched.");
         var job = JobId.Create(); var store = new JobStateStore(c); store.Create(job); store.Transition(job, JobState.Staged);
         var extracted = new StagedPackageExtractor().ExtractAsync(staged.FinalStagedPath, extraction, ct).GetAwaiter().GetResult();
@@ -88,6 +102,13 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
         var validated = new PackageSemanticValidator().Validate(extracted.FinalPath!, c);
         if (validated.Issues.ShouldStop) throw new UiStoppedException(validated.Issues);
         if (validated.Package is null) throw new InvalidDataException("Package semantic validation stopped.");
+        var conversion = new ImageConversionResolver().Resolve(validated.Package, MaxInputPixels);
+        if (conversion is not null)
+        {
+            var png = new PngMasterValidator().Validate(conversion.SourcePath);
+            var geometry = new ImageConversionGeometryValidator().Validate(png.ImageInfo!, conversion);
+            if (geometry.ShouldStop) throw new UiStoppedException(geometry);
+        }
         store.Transition(job, JobState.Validated);
         var repositoryValidation = new ProductionRepositoryValidator().Validate(c);
         if (repositoryValidation.Issues.ShouldStop) throw new UiStoppedException(repositoryValidation.Issues);
@@ -103,7 +124,7 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
         if (archive.Issues.ShouldStop) throw new UiStoppedException(archive.Issues);
         store.Transition(job, JobState.Planned);
         return new(c, job, package, processing, archive, issues);
-    });
+    }
     public async Task<AiAuditReport> AuditAsync(UniverseContext c, PreparedPipelineAsset prepared, CancellationToken ct)
     {
         RequireScope(c, prepared); if (auditor is null) throw new InvalidOperationException("The existing Phase 7 auditor is not configured.");

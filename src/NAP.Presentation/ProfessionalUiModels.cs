@@ -14,6 +14,7 @@ public sealed record UiNotice(string Message, string Code, UiTone Tone)
 {
     public static UiNotice From(Exception error)
     {
+        if (error is ImageNormalizationException normalization) return new(normalization.Message, normalization.Code, UiTone.Error);
         if (error is UniverseProfileStoreException profile) return new(profile.Message, profile.Code, UiTone.Error);
         var report = error switch { BackupException e => e.Issues, GitProductionException e => e.Issues,
             CatalogException e => e.Issues, ProductionStorageException e => e.Issues, ArchiveStorageException e => e.Issues, UiStoppedException e => e.Issues, _ => null };

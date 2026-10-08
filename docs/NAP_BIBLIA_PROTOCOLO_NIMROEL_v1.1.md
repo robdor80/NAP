@@ -1,6 +1,6 @@
 # Biblia de Protocolo NAP — Nimroel
 
-**Versión:** 1.1 — revisión cartografía Nimroel (pendiente de integración en `main`)
+**Versión:** 1.1 — protocolo cartografía Nimroel; preparación técnica mediante normalización explícita
 **Ámbito:** Universo **Nimroel**
 **Estado:** Documento de referencia operativo para preparar paquetes ZIP que NAP pueda procesar correctamente.
 **Objetivo:** Definir cómo preparar **retratos** y **cartografía** para el perfil de Nimroel. Las escenas narrativas se conservan únicamente como propuesta futura no habilitada.
@@ -772,7 +772,16 @@ Según la auditoría aportada, `scene_treskal_official_city_plan_001.zip` presen
 
 ## 6B.7. Estado de implantación
 
-`scene_cartography` está implementado declarativamente en `config/universes/nimroel/profile.json`, con pruebas de clasificación, conversión y pipeline completo sobre paquetes sintéticos en raíces temporales. La integración en `main` y distribución depende de revisión del PR y CI. Estas pruebas no validan el canon ni aprueban los dos mapas reales de Treskal; no se han modificado ni publicado.
+NAP incorpora además [normalización técnica segura](IMAGE_NORMALIZATION.md) como
+preparación explícita: puede proponer 1586×992 → 1592×995 conservando los píxeles
+originales y extendiendo solo bordes bajo límites. La comparación y aprobación
+humana son obligatorias; `scene_narrative` → `scene_cartography` exige un segundo
+consentimiento. El original sigue intacto, el candidato se revalida y después
+necesita auditoría PASS/publicación confirmada. No hay adaptación dentro del
+conversor ni aceptación/publicación automática de mapas. Los dos originales reales
+no se han usado durante el desarrollo y permanecen pendientes de revisión separada.
+
+`scene_cartography` está integrado en `main` mediante PR #40, declarado en `config/universes/nimroel/profile.json`, con pruebas de clasificación, conversión y pipeline completo sobre paquetes sintéticos en raíces temporales. La normalización explícita se entrega en rama/PR independientes para revisión. Estas pruebas no validan el canon ni aprueban los dos mapas reales de Treskal; no se han modificado ni publicado.
 
 La identidad del perfil se valida antes de planificar. La geometría exacta se comprueba antes de convertir y publicar. El pipeline puede archivar primero el paquete original íntegro; un STOP de conversión no autoriza modificar ese archivo ni producir WebP. El [contrato cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md) detalla la corrección controlada y la frontera de validación.
 
@@ -1042,4 +1051,4 @@ WebP producción    = 1600×1000 Q90
 
 ## Biblia de protocolo NAP adoptada
 
-Este documento define el protocolo v1.1 de preparación de ZIPs de retratos y cartografía para el perfil de esta rama, pendiente de revisión e integración en `main`. La sección narrativa sigue siendo una propuesta futura no habilitada. Ningún ejemplo autoriza cambios en cartografía canónica ni publicación automática de los originales.
+Este documento define el protocolo v1.1 de preparación de ZIPs de retratos y cartografía. El perfil cartográfico ya está integrado; la nueva preparación por normalización se entrega para revisión independiente. La sección narrativa sigue siendo una propuesta futura no habilitada. Ningún ejemplo autoriza cambios en cartografía canónica ni publicación automática de los originales.

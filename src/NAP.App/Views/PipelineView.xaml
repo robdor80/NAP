@@ -1,21 +1,34 @@
 <UserControl x:Class="NAP.App.Views.PipelineView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <UserControl.Resources><c:NormalizationPngConverter x:Key="NormalizationPng" /></UserControl.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="2*" />
       <ColumnDefinition Width="3*" />
     </Grid.ColumnDefinitions>
     <c:RobTitledFrame Header="INBOX">
-      <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Margin="0,16,0,0">
+      <ScrollViewer x:Name="NormalizationInboxScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+        <ListBox ItemsSource="{Binding Candidates}" SelectedItem="{Binding SelectedCandidate}" DisplayMemberPath="FileName" MinHeight="80" MaxHeight="160" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" />
+        <StackPanel Margin="0,16,0,0">
           <Button Content="Preparar paquete" Style="{StaticResource Primary}" Command="{Binding DataContext.PreparePackage, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.PreparePackage.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="Preparar copia el ZIP a staging, valida el paquete y congela los planes. El ZIP original se conserva." Style="{StaticResource Muted}" />
+          <TextBlock Text="Normalización técnica" FontWeight="SemiBold" Margin="0,16,0,4" />
+          <TextBlock Text="Perfil del candidato (si el original no está habilitado, selección explícita):" Style="{StaticResource Muted}" />
+          <ComboBox ItemsSource="{Binding NormalizationProfiles}" SelectedItem="{Binding NormalizationTarget}" DisplayMemberPath="Label" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <TextBlock Text="Límites de crecimiento, en % (0–5):" Style="{StaticResource Muted}" />
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+            <StackPanel><TextBlock Text="Área" Style="{StaticResource Muted}" /><TextBox Text="{Binding NormalizationAreaLimit, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" /></StackPanel>
+            <StackPanel Grid.Column="1"><TextBlock Text="Por eje" Style="{StaticResource Muted}" /><TextBox Text="{Binding NormalizationAxisLimit, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" /></StackPanel>
+          </Grid>
+          <Button Content="Preparar normalización" Style="{StaticResource Secondary}" Command="{Binding DataContext.PrepareNormalization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.PrepareNormalization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <Button x:Name="CancelNormalizationButton" Content="Cancelar preparación de vista previa" Style="{StaticResource Secondary}" Command="{Binding DataContext.CancelNormalization, RelativeSource={RelativeSource AncestorType=Window}}" />
         </StackPanel>
-        <ListBox ItemsSource="{Binding Candidates}" SelectedItem="{Binding SelectedCandidate}" DisplayMemberPath="FileName" />
-      </DockPanel>
+        </StackPanel>
+      </ScrollViewer>
     </c:RobTitledFrame>
     <c:RobTitledFrame Header="PRODUCCIÓN" Grid.Column="1">
-      <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
+      <ScrollViewer x:Name="NormalizationProductionScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
           <WrapPanel>
             <Button Content="Auditar plan" Style="{StaticResource Secondary}" Command="{Binding DataContext.AuditPackage, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.AuditPackage.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
             <Button Content="Publicar asset" Style="{StaticResource Primary}" Command="{Binding DataContext.ExecutePackage, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ExecutePackage.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -23,12 +36,37 @@
           <TextBlock Text="{Binding Prepared.Summary}" FontWeight="SemiBold" />
           <TextBlock Text="{Binding Audit.Summary}" Style="{StaticResource Muted}" />
           <TextBlock Text="Publicar requiere una auditoría PASS real del auditor de Fase 7. RoDo conversación se reserva para Fase 15." Style="{StaticResource Muted}" Margin="0,8,0,16" />
-        </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom">
+          <c:RobTitledFrame Header="COMPARAR Y DECIDIR" x:Name="NormalizationReviewSurface">
+            <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame" BasedOn="{StaticResource {x:Type c:RobTitledFrame}}"><Style.Triggers><DataTrigger Binding="{Binding Normalization}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
+            <StackPanel>
+              <TextBlock Text="Ampliar comparación; desplaza cada imagen para revisar los bordes:" Style="{StaticResource Muted}" />
+              <Slider Minimum="1" Maximum="8" Value="{Binding NormalizationZoom}" TickFrequency="1" IsSnapToTickEnabled="True" />
+              <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock Text="Original intacto" FontWeight="SemiBold" /><TextBlock Text="{Binding Normalization.OriginalDimensions}" Style="{StaticResource Muted}" /><ScrollViewer Height="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"><Image x:Name="NormalizationOriginal" Source="{Binding Normalization.OriginalPng, Converter={StaticResource NormalizationPng}}" Stretch="Uniform" Height="180"><Image.LayoutTransform><ScaleTransform ScaleX="{Binding NormalizationZoom}" ScaleY="{Binding NormalizationZoom}" /></Image.LayoutTransform></Image></ScrollViewer></StackPanel>
+                <StackPanel Grid.Column="1"><TextBlock Text="Vista previa" FontWeight="SemiBold" /><TextBlock Text="{Binding Normalization.CandidateDimensions}" Style="{StaticResource Muted}" /><ScrollViewer Height="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"><Image x:Name="NormalizationCandidate" Source="{Binding Normalization.CandidatePng, Converter={StaticResource NormalizationPng}}" Stretch="Uniform" Height="180"><Image.LayoutTransform><ScaleTransform ScaleX="{Binding NormalizationZoom}" ScaleY="{Binding NormalizationZoom}" /></Image.LayoutTransform></Image></ScrollViewer></StackPanel>
+              </Grid>
+              <TextBlock Text="{Binding Normalization.Summary}" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Normalization.Margins}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding Normalization.Method}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding Normalization.Safety}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding Normalization.ProfileChange}" FontWeight="SemiBold" Margin="0,8,0,0" />
+              <TextBlock Text="{Binding Normalization.OriginalHash}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding Normalization.CandidateHash}" Style="{StaticResource Muted}" />
+              <TextBlock Text="Una vista previa no autoriza producción. Aprobar crea un candidato separado; no cambia el ZIP del Inbox." Style="{StaticResource Muted}" Margin="0,8,0,0" />
+              <WrapPanel>
+                <Button Content="Aprobar candidato" Style="{StaticResource Primary}" Command="{Binding DataContext.ApproveNormalization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ApproveNormalization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+                <Button x:Name="RejectNormalizationButton" Content="Rechazar" Style="{StaticResource Secondary}" Command="{Binding DataContext.RejectNormalization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RejectNormalization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+              </WrapPanel>
+            </StackPanel>
+          </c:RobTitledFrame>
+          <TextBlock Text="Decisiones previas verificadas" FontWeight="SemiBold" />
+          <ListBox ItemsSource="{Binding NormalizationHistory}" SelectedItem="{Binding SelectedNormalizedCandidate}" DisplayMemberPath="Summary" MaxHeight="110" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <TextBlock Text="{Binding SelectedNormalizedCandidate.Location}" Style="{StaticResource Muted}" />
+          <Button Content="Preparar candidato aprobado" Style="{StaticResource Secondary}" Command="{Binding DataContext.PrepareNormalizedCandidate, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.PrepareNormalizedCandidate.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="Cada journal conserva un checkpoint, no una cronología. Solo se resalta el estado registrado." Style="{StaticResource Muted}" Margin="0,16,0,0" />
+          <ListBox ItemsSource="{Binding Jobs}" SelectedItem="{Binding SelectedJob}" ItemTemplate="{StaticResource PipelineJob}" MaxHeight="240" />
         </StackPanel>
-        <ListBox ItemsSource="{Binding Jobs}" SelectedItem="{Binding SelectedJob}" ItemTemplate="{StaticResource PipelineJob}" />
-      </DockPanel>
+      </ScrollViewer>
     </c:RobTitledFrame>
   </Grid>
 </UserControl>

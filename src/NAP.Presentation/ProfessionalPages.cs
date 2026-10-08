@@ -45,13 +45,26 @@ public sealed class PipelineViewModel() : ProfessionalPage("Producción", "Inbox
     private PipelineJob? _job;
     private PreparedPipelineAsset? _prepared;
     private AiAuditReport? _audit;
+    private ImageNormalizationReview? _normalization;
+    private ImageNormalizationProfileChoice? _target;
+    private ImageNormalizationRecordedCandidate? _normalizedCandidate;
+    private string _areaLimit = "1", _axisLimit = "1";
+    private double _normalizationZoom = 1;
     public ObservableCollection<InboxPackageCandidate> Candidates { get; } = [];
     public ObservableCollection<PipelineJob> Jobs { get; } = [];
-    public InboxPackageCandidate? SelectedCandidate { get => _candidate; set => Set(ref _candidate, value); }
+    public InboxPackageCandidate? SelectedCandidate { get => _candidate; set { if (Set(ref _candidate, value)) { Normalization = null; SelectedNormalizedCandidate = null; } } }
     public PipelineJob? SelectedJob { get => _job; set => Set(ref _job, value); }
     public PreparedPipelineAsset? Prepared { get => _prepared; internal set => Set(ref _prepared, value); }
     public AiAuditReport? Audit { get => _audit; internal set => Set(ref _audit, value); }
-    internal override void Reset() { base.Reset(); Candidates.Clear(); Jobs.Clear(); SelectedCandidate = null; SelectedJob = null; Prepared = null; Audit = null; }
+    public ImageNormalizationReview? Normalization { get => _normalization; internal set => Set(ref _normalization, value); }
+    public double NormalizationZoom { get => _normalizationZoom; set { if (double.IsFinite(value) && value is >= 1 and <= 8) Set(ref _normalizationZoom, value); } }
+    public ObservableCollection<ImageNormalizationProfileChoice> NormalizationProfiles { get; } = [];
+    public ImageNormalizationProfileChoice? NormalizationTarget { get => _target; set { if (Set(ref _target, value)) Normalization = null; } }
+    public string NormalizationAreaLimit { get => _areaLimit; set { if (Set(ref _areaLimit, value)) Normalization = null; } }
+    public string NormalizationAxisLimit { get => _axisLimit; set { if (Set(ref _axisLimit, value)) Normalization = null; } }
+    public ObservableCollection<ImageNormalizationRecordedCandidate> NormalizationHistory { get; } = [];
+    public ImageNormalizationRecordedCandidate? SelectedNormalizedCandidate { get => _normalizedCandidate; set => Set(ref _normalizedCandidate, value); }
+    internal override void Reset() { base.Reset(); Candidates.Clear(); Jobs.Clear(); SelectedCandidate = null; SelectedJob = null; Prepared = null; Audit = null; Normalization = null; NormalizationTarget = null; NormalizationProfiles.Clear(); NormalizationHistory.Clear(); SelectedNormalizedCandidate = null; NormalizationAreaLimit = "1"; NormalizationAxisLimit = "1"; NormalizationZoom = 1; }
 }
 public sealed class CatalogViewModel(ExplorerViewModel explorer) : ProfessionalPage("Catálogo", "Producción verificada, filtros exactos y documentos originales.")
 { public ExplorerViewModel Explorer { get; } = explorer; }

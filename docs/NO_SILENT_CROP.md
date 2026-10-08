@@ -10,6 +10,11 @@ reutilizable sin cambiar el comportamiento observable de esas APIs.
 
 ## Semántica actual de png_to_webp
 
+La [normalización técnica explícita](IMAGE_NORMALIZATION.md) puede preparar un
+**nuevo maestro candidato** mediante extensión mínima de bordes, con límites y
+aprobación humana. Esa preparación está fuera de `png_to_webp`: no modifica el
+original, no introduce tolerancia geométrica ni habilita Pad/Crop en el conversor.
+
 ImageConversionKind.PngToWebp y su JSON `png_to_webp` significan actualmente:
 source PNG estático validado, output WebP con dimensiones configuradas,
 igualdad exacta de aspect ratio y conservación del frame completo. Se permite

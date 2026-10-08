@@ -1,5 +1,11 @@
 # Fase 14 · UI profesional
 
+La ampliación posterior [Normalización técnica segura](IMAGE_NORMALIZATION.md)
+añade a Producción preparación de preview, comparación, límites, aprobación/rechazo
+y selección de candidatos verificados. Respeta RobStyle y las confirmaciones
+existentes; una normalización aprobada nunca habilita publicación por sí sola.
+El historial de Fase 14 que sigue describe su entrega original.
+
 Implementación funcional de **14.1–14.11**. La primera revisión física en el MSI aprobó
 el RobStyle; la pasada final de UX, perfiles importables y mascota queda pendiente de **segunda revisión física**.
 La fase **no está cerrada** y no autoriza commit, push, merge o PR. Rama: `feature/professional-ui-v1`.

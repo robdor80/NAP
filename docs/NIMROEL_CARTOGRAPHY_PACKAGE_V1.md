@@ -1,6 +1,6 @@
 # Nimroel — paquete de cartografía NAP v1
 
-**Estado:** implementado y probado en rama independiente; incorporación a `main` sujeta a revisión del PR y CI.
+**Estado:** perfil cartográfico integrado en `main` mediante PR #40; la nueva normalización explícita se entrega en rama/PR independientes para revisión.
 **Universo:** `nimroel`.
 **Regla independiente:** `asset_type=scene`, `production_profile=scene_cartography`.
 
@@ -68,9 +68,12 @@ Según la auditoría aportada del ZIP original `scene_treskal_official_city_plan
    el original ni decidir automáticamente una nueva identidad/versionado canónico.
 3. Declarar `scene_cartography` en el manifest del nuevo candidato. Cambiar solo
    ese campo **no basta**: 1586×992 sigue siendo incompatible con la conversión.
-4. Reexportar desde una fuente cartográfica con composición 16:10 exacta o preparar
-   un nuevo maestro aprobado visualmente. La decisión de composición/canon requiere
-   revisión humana; NAP no recorta, estira, rellena ni modifica el original para resolverlo.
+4. Reexportar desde una fuente cartográfica con composición 16:10 exacta o usar la
+   [normalización técnica explícita](IMAGE_NORMALIZATION.md) para proponer un
+   candidato 1592×995 mediante extensión mínima de bordes, conservando cada píxel
+   original. Requiere comparación y consentimiento humano; puede rechazarse por
+   artefactos. Es una derivación separada, sin recorte/estiramiento ni cambios al
+   original. La corrección de `production_profile` requiere aprobación independiente.
 5. Revisar los companions y validar el nuevo ZIP; obtener auditoría PASS y autorización
    explícita de publicación. Auditar el segundo mapa por separado antes de admitirlo.
 

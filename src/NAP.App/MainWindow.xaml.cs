@@ -4,7 +4,7 @@ namespace NAP.App;
 public partial class MainWindow : Window
 {
     private readonly TrayHost _tray;
-    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false)
+    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null)
     {
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
@@ -15,7 +15,7 @@ public partial class MainWindow : Window
         {
             await shell.InitializeAsync();
             if (!smokeTest) return;
-            try { await VisualSmokeProbe.RunAsync(this, shell.Explorer, shell, diagnostics, smokeOutput, smokeImport); Application.Current.Shutdown(shell.Explorer.State == ExplorerState.Error ? 2 : 0); }
+            try { await VisualSmokeProbe.RunAsync(this, shell.Explorer, shell, diagnostics, smokeOutput, smokeImport, smokeNormalizationProfile); Application.Current.Shutdown(shell.Explorer.State == ExplorerState.Error ? 2 : 0); }
             catch (Exception ex) { Console.WriteLine("smoke_failed: " + ex.Message); Application.Current.Shutdown(3); }
         };
     }

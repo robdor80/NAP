@@ -551,6 +551,12 @@ ni reabrir Fase 4.
 
 ## Scenes
 
+La [normalización técnica explícita](IMAGE_NORMALIZATION.md) puede preparar un
+nuevo candidato por extensión mínima de lienzo bajo límites y consentimiento
+humano. Conserva el original y no modifica identidad, archivado, conversor ni
+auditoría/publicación. ZIP y trazabilidad permanecen separados; las colisiones
+existentes de assets archivados/publicados siguen produciendo STOP.
+
 El perfil específico [scene_cartography](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md)
 declara PNG maestro 16:10 exacto → WebP 1600×1000 Q90 y routing
 `scenes/cartography/<culture>/<location>/<asset_id>/`. No activa scene_narrative.
