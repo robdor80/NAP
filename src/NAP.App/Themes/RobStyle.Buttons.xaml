@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="RobStyle.Colors.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <Style TargetType="Button">
+    <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+    <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="{StaticResource Stroke}" />
+    <Setter Property="Padding" Value="18,12" />
+    <Setter Property="Margin" Value="0,0,8,8" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Grid>
+            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="{StaticResource Radius}">
+              <Border.Effect>
+                <DropShadowEffect x:Name="Elevation" Color="Black" BlurRadius="12" ShadowDepth="{StaticResource RestElevation}" Opacity="0.25" />
+              </Border.Effect>
+            </Border>
+            <Border x:Name="Outline" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource Radius}" />
+            <ContentPresenter x:Name="Label" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" RecognizesAccessKey="True" />
+            <Border x:Name="FocusRing" Margin="3" BorderThickness="1" BorderBrush="{StaticResource TextBrush}" CornerRadius="15" Visibility="Collapsed" IsHitTestVisible="False" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Surface" Property="Background" Value="{StaticResource CardBrush}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Trigger.EnterActions>
+                <BeginStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="Elevation" Storyboard.TargetProperty="ShadowDepth" To="{StaticResource PressedElevation}" Duration="{StaticResource QuickTransition}" />
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <BeginStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="Elevation" Storyboard.TargetProperty="ShadowDepth" To="{StaticResource RestElevation}" Duration="{StaticResource QuickTransition}" />
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Label" Property="Opacity" Value="{StaticResource DisabledContentOpacity}" />
+              <Setter TargetName="Outline" Property="Opacity" Value="{StaticResource DisabledBorderOpacity}" />
+              <Setter Property="Cursor" Value="Arrow" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style x:Key="Primary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Background" Value="{StaticResource CardBrush}" />
+  </Style>
+  <Style x:Key="Secondary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" />
+  <Style x:Key="Danger" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
+  </Style>
+  <Style x:Key="Navigation" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    <Setter Property="MinHeight" Value="40" />
+    <Setter Property="Margin" Value="0,0,0,4" />
+    <Setter Property="Padding" Value="14,10" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsActive}" Value="True">
+        <Setter Property="Background" Value="{StaticResource CardBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+  <Style x:Key="ActionTile" TargetType="Button" BasedOn="{StaticResource Primary}">
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="Padding" Value="{StaticResource SpaceLarge}" />
+    <Setter Property="MinHeight" Value="90" />
+  </Style>
+</ResourceDictionary>

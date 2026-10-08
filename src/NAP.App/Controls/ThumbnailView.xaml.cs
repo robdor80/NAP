@@ -54,4 +54,10 @@ public partial class ThumbnailView : UserControl
         catch (OperationCanceledException) { }
         catch (Exception ex) { if (version == _version) tile?.Fail(ex); }
     }
+    internal async Task VerifyRenderedAsync()
+    {
+        if (_tile?.Asset is null) return;
+        await _tile.ActivateAsync(); await RenderAsync();
+        if (PreviewImage.Source is null) throw new InvalidOperationException("Real catalog thumbnail did not render.");
+    }
 }

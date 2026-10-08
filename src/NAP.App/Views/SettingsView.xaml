@@ -1,0 +1,82 @@
+<UserControl x:Class="NAP.App.Views.SettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <c:RobTitledFrame Header="UNIVERSOS">
+        <StackPanel>
+          <DockPanel>
+            <Button DockPanel.Dock="Right" Content="Añadir perfil de universo…" Style="{StaticResource Primary}" Command="{Binding DataContext.ImportProfile, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ImportProfile.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding DataContext.UniverseLabel, RelativeSource={RelativeSource AncestorType=Window}, StringFormat='Universo activo: {0}'}" FontWeight="SemiBold" VerticalAlignment="Center" />
+          </DockPanel>
+          <ItemsControl ItemsSource="{Binding InstalledProfiles}">
+            <ItemsControl.ItemTemplate><DataTemplate><WrapPanel Margin="0,4"><TextBlock Text="{Binding Name}" Margin="0,0,16,0" /><TextBlock Text="{Binding Id}" Style="{StaticResource Technical}" Margin="0,0,16,0" /><TextBlock Text="{Binding Origin}" Style="{StaticResource Muted}" /></WrapPanel></DataTemplate></ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <ItemsControl ItemsSource="{Binding ProfileIssues}" ItemTemplate="{StaticResource Notice}" />
+          <TextBlock Text="Instala un perfil válido y configura sus tres raíces existentes. Los perfiles incluidos con NAP son de solo lectura." Style="{StaticResource Muted}" Margin="0,8,0,0" />
+          <Expander Header="Ubicación de perfiles importados"><TextBlock Text="{Binding ProfilesLocation}" Style="{StaticResource Technical}" /></Expander>
+        </StackPanel>
+      </c:RobTitledFrame>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*" />
+          <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <c:RobTitledFrame Header="ALMACENAMIENTO">
+          <StackPanel DataContext="{Binding Explorer}">
+            <TextBlock Text="Tres raíces existentes e independientes, guardadas localmente por universo." Style="{StaticResource Muted}" Margin="0,0,0,16" />
+            <TextBlock Text="Workspace · Inbox, staging, estado" />
+            <TextBlock Text="{Binding WorkspaceStatus.Text}" Foreground="{Binding WorkspaceStatus.Tone, Converter={StaticResource ToneBrush}}" Style="{StaticResource Muted}" />
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Workspace" />
+              <TextBox Text="{Binding WorkspaceRoot, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <TextBlock Text="Producción" />
+            <TextBlock Text="{Binding ProductionStatus.Text}" Foreground="{Binding ProductionStatus.Tone, Converter={StaticResource ToneBrush}}" Style="{StaticResource Muted}" />
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Production" />
+              <TextBox Text="{Binding ProductionRoot, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <TextBlock Text="Archivo de maestros" />
+            <TextBlock Text="{Binding ArchiveStatus.Text}" Foreground="{Binding ArchiveStatus.Tone, Converter={StaticResource ToneBrush}}" Style="{StaticResource Muted}" />
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Archive" />
+              <TextBox Text="{Binding ArchiveRoot, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <Button Content="Guardar rutas del universo" Style="{StaticResource Primary}" Command="{Binding DataContext.SaveSettings, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.SaveSettings.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" IsEnabled="{Binding SettingsReadable}" />
+            <Expander Header="Archivo de configuración local">
+              <TextBlock Text="{Binding SettingsLocation}" Style="{StaticResource Technical}" />
+            </Expander>
+            <TextBlock Text="{Binding Error.Message}" Foreground="{StaticResource ErrorBrush}" />
+          </StackPanel>
+        </c:RobTitledFrame>
+        <StackPanel Grid.Column="1">
+          <c:RobTitledFrame Header="CATÁLOGO">
+            <StackPanel>
+              <TextBlock Text="{Binding Explorer.Context.Storage.CatalogPath}" Style="{StaticResource Technical}" />
+              <TextBlock Text="{Binding Explorer.CatalogStatus}" Style="{StaticResource Muted}" Margin="0,12,0,0" />
+              <TextBlock Text="Se crea mediante Producción. Un catálogo ausente o corrupto no se reconstruye automáticamente." Style="{StaticResource Muted}" Margin="0,12,0,0" />
+            </StackPanel>
+          </c:RobTitledFrame>
+          <c:RobTitledFrame Header="GIT">
+            <StackPanel>
+              <TextBlock Text="{Binding Explorer.ProductionRoot}" Style="{StaticResource Technical}" />
+              <Button Content="Consultar estado y recibos" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Git" />
+              <TextBlock Text="Configuración Git del repositorio y remoto: inspección explícita." Style="{StaticResource Muted}" />
+            </StackPanel>
+          </c:RobTitledFrame>
+          <c:RobTitledFrame Header="ARCHIVO">
+            <StackPanel>
+              <TextBlock Text="{Binding Explorer.ArchiveRoot}" Style="{StaticResource Technical}" />
+              <TextBlock Text="Maestros inmutables y copias locales. Core valida límites y evidencia física." Style="{StaticResource Muted}" Margin="0,12,0,0" />
+            </StackPanel>
+          </c:RobTitledFrame>
+        </StackPanel>
+      </Grid>
+      <c:RobTitledFrame Header="APLICACIÓN">
+        <StackPanel>
+          <CheckBox Content="Minimizar a la bandeja durante esta sesión" IsChecked="{Binding DataContext.MinimizeToTray, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <TextBlock Text="El auditor de producción de Fase 7 usa configuración de entorno explícita. Sin auditor real no se habilita publicar. RoDo conversación llegará en Fase 15." Style="{StaticResource Muted}" />
+        </StackPanel>
+      </c:RobTitledFrame>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

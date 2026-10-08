@@ -1,0 +1,65 @@
+<UserControl x:Class="NAP.App.Views.DashboardView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <UniformGrid Columns="4">
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="ASSETS CATALOGADOS" Style="{StaticResource Muted}" />
+            <TextBlock Text="{Binding Assets}" Style="{StaticResource Metric}" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="PAQUETES EN INBOX" Style="{StaticResource Muted}" />
+            <TextBlock Text="{Binding InboxCount}" Style="{StaticResource Metric}" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="JOBS ABIERTOS" Style="{StaticResource Muted}" />
+            <TextBlock Text="{Binding ActiveJobs}" Style="{StaticResource Metric}" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="BACKUPS VERIFICADOS" Style="{StaticResource Muted}" />
+            <TextBlock Text="{Binding BackupCount}" Style="{StaticResource Metric}" />
+          </StackPanel>
+        </Border>
+      </UniformGrid>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*" />
+          <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <c:RobTitledFrame Header="UNIVERSO">
+          <StackPanel>
+            <TextBlock Text="{Binding OperationalStatus}" Style="{StaticResource Heading}" />
+            <TextBlock Text="Empieza por el Inbox, revisa el catálogo o consulta tus copias locales." Style="{StaticResource Muted}" Margin="0,12,0,24" />
+            <WrapPanel>
+              <Button Content="Abrir Producción" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Producción" />
+              <Button Content="Explorar assets" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Catálogo" />
+              <Button Content="Estado Git" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Git" />
+            </WrapPanel>
+          </StackPanel>
+        </c:RobTitledFrame>
+        <c:RobTitledFrame Header="OBJETIVOS" Grid.Column="1">
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding Objectives}" ItemTemplate="{StaticResource ObjectiveCard}" />
+            <Button Content="Ver cobertura y objetivos" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Objetivos" />
+          </StackPanel>
+        </c:RobTitledFrame>
+      </Grid>
+      <c:RobTitledFrame Header="INCIDENCIAS">
+        <StackPanel>
+          <ItemsControl ItemsSource="{Binding Notices}" ItemTemplate="{StaticResource Notice}" />
+          <TextBlock Text="Las incidencias mostradas proceden de la última lectura. Los datos no disponibles aparecen como —." Style="{StaticResource Muted}" />
+        </StackPanel>
+      </c:RobTitledFrame>
+      <UniformGrid Columns="2">
+        <Button Content="Copias locales · Backups" Style="{StaticResource ActionTile}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Backups" />
+        <Button Content="Checkpoints y recibos · Historial" Style="{StaticResource ActionTile}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Historial" />
+      </UniformGrid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

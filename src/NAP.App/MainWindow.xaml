@@ -1,372 +1,168 @@
-<Window x:Class="NAP.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NAP.App.Controls" Title="NAP — Nexus Asset Platform" WindowState="Maximized" Width="1440" Height="900" MinWidth="1200" MinHeight="700">
-  <Window.Resources>
-    <Style x:Key="Section" TargetType="Grid">
-      <Setter Property="Visibility" Value="Collapsed" />
-    </Style>
-    <Style x:Key="CatalogSection" TargetType="Grid" BasedOn="{StaticResource Section}">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding Section}" Value="Catálogo">
-          <Setter Property="Visibility" Value="Visible" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="StatisticsSection" TargetType="Grid" BasedOn="{StaticResource Section}">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding Section}" Value="Estadísticas">
-          <Setter Property="Visibility" Value="Visible" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="SettingsSection" TargetType="Grid" BasedOn="{StaticResource Section}">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding Section}" Value="Ajustes">
-          <Setter Property="Visibility" Value="Visible" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <DataTemplate x:Key="FacetChoice">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding Value}" Foreground="{StaticResource BackgroundBrush}" />
-        <TextBlock Text="{Binding TraitType, StringFormat=' · {0}'}" Foreground="{StaticResource BackgroundBrush}" />
-      </StackPanel>
-    </DataTemplate>
-  </Window.Resources>
+<Window x:Class="NAP.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls" Title="NAP — Nexus Asset Platform" Style="{StaticResource {x:Type Window}}" WindowState="Maximized" Width="1440" Height="900" MinWidth="1200" MinHeight="700">
   <Grid Margin="{StaticResource SpaceLarge}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    <Grid>
+    <Grid Margin="0,0,0,24">
       <Grid.ColumnDefinitions>
         <ColumnDefinition />
-        <ColumnDefinition Width="300" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="260" />
       </Grid.ColumnDefinitions>
       <StackPanel>
-        <TextBlock Text="NAP" Style="{StaticResource Heading}" />
-        <TextBlock Text="NEXUS ASSET PLATFORM · EXPLORADOR VISUAL" Style="{StaticResource Muted}" />
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="NAP" FontSize="32" FontWeight="Bold" />
+          <TextBlock Text="NEXUS ASSET PLATFORM" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="18,0,0,0" />
+        </StackPanel>
+        <TextBlock Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" Margin="0,4,0,0" />
       </StackPanel>
-      <StackPanel Grid.Column="1">
-        <TextBlock Text="Universo activo" Style="{StaticResource Muted}" />
-        <ComboBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedUniverse}" DisplayMemberPath="DisplayName" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
+        <Button Content="Git" Command="{Binding Navigate}" CommandParameter="Git" />
+        <Button Content="Bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />
+      </StackPanel>
+      <StackPanel Grid.Column="2">
+        <TextBlock Text="UNIVERSO ACTIVO" Style="{StaticResource Muted}" />
+        <Border x:Name="SingleUniverse" Background="{StaticResource DeepBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{StaticResource Stroke}" CornerRadius="{StaticResource Radius}" Padding="14,12" Margin="0,6,0,0">
+          <Border.Style>
+            <Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasSingleUniverse}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style>
+          </Border.Style>
+          <TextBlock Text="{Binding UniverseLabel}" />
+        </Border>
+        <ComboBox x:Name="UniverseSelector" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedUniverse}" DisplayMemberPath="DisplayName" IsEnabled="{Binding CanChangeContext}">
+          <ComboBox.Style>
+            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasUniverseSelector}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style>
+          </ComboBox.Style>
+        </ComboBox>
       </StackPanel>
     </Grid>
-    <Border Grid.Row="1">
-      <StackPanel>
-        <TextBlock Text="{Binding Error.Message}" Foreground="{StaticResource ErrorBrush}" />
-        <Expander Header="Diagnóstico técnico">
-          <TextBlock Text="{Binding Error.Code, TargetNullValue='Sin incidencias'}" />
-        </Expander>
-      </StackPanel>
-      <Border.Style>
-        <Style TargetType="Border" BasedOn="{StaticResource Card}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
-              <Setter Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </Border.Style>
-    </Border>
-    <Grid Grid.Row="2" Margin="0,16,0,0">
+    <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="160" />
-        <ColumnDefinition Width="16" />
+        <ColumnDefinition Width="{StaticResource SidebarWidth}" />
+        <ColumnDefinition Width="24" />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="{StaticResource SpaceSmall}">
+      <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="12,20">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Bottom" Text="Áreas atenuadas: futuras fases" Margin="{StaticResource Space}" Style="{StaticResource Muted}" />
-          <ItemsControl ItemsSource="{Binding Navigation}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Button Content="{Binding Name}" IsEnabled="{Binding Enabled}" Style="{StaticResource Navigation}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
+          <TextBlock DockPanel.Dock="Bottom" Text="RobDev · NAP v1" Style="{StaticResource Muted}" Margin="16,20,0,0" />
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Navigation}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Style="{StaticResource Navigation}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}">
+                    <StackPanel Orientation="Horizontal">
+                      <TextBlock Text="{Binding Glyph}" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource IconSize}" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                      <TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                    </StackPanel>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
         </DockPanel>
       </Border>
-      <Grid Grid.Column="2" Style="{StaticResource CatalogSection}">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="220" />
-          <ColumnDefinition />
-          <ColumnDefinition Width="360" />
-        </Grid.ColumnDefinitions>
-        <Border Style="{StaticResource Card}">
-          <DockPanel>
-            <StackPanel DockPanel.Dock="Top">
-              <TextBlock Text="Filtros exactos · AND" FontWeight="SemiBold" />
-              <TextBlock Text="Asset ID" />
-              <TextBox Text="{Binding AssetId, UpdateSourceTrigger=PropertyChanged}" />
-              <TextBlock Text="Tipo" />
-              <ComboBox ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetType}" />
-              <TextBlock Text="Perfil de producción" />
-              <ComboBox ItemsSource="{Binding ProductionProfiles}" SelectedItem="{Binding ProductionProfile}" />
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Bottom">
-              <Button Content="Aplicar / actualizar" Command="{Binding ApplyFilters}" />
-              <Button Content="Restablecer" Command="{Binding ResetFilters}" />
-              <TextBlock Text="Vacío = sin filtro. Una elección por dimensión; todas las condiciones deben coincidir." Style="{StaticResource Muted}" />
-            </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-              <ItemsControl ItemsSource="{Binding Facets}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate>
-                    <StackPanel>
-                      <TextBlock Text="{Binding Dimension}" />
-                      <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Selected}" ItemTemplate="{StaticResource FacetChoice}" />
-                    </StackPanel>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-            </ScrollViewer>
-          </DockPanel>
-        </Border>
-        <Grid Grid.Column="1">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-          </Grid.RowDefinitions>
-          <TextBlock Text="Catálogo" Style="{StaticResource Heading}" Margin="{StaticResource Space}" />
-          <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <controls:VirtualizingTilePanel />
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <Border Style="{StaticResource Card}">
-                  <Grid>
-                    <Grid.RowDefinitions>
-                      <RowDefinition />
-                      <RowDefinition Height="Auto" />
-                      <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <controls:ThumbnailView />
-                    <TextBlock Grid.Row="1" Text="{Binding Title}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,8,0,4" ToolTip="{Binding Title}" />
-                    <TextBlock Grid.Row="2" Text="{Binding Subtitle}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource Muted}" />
-                  </Grid>
-                </Border>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-        </Grid>
-        <Border Grid.Column="2" Style="{StaticResource Card}">
-          <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-              <TextBlock Text="Ficha del asset" Style="{StaticResource Heading}" />
-              <TextBlock Text="{Binding DetailState}" Style="{StaticResource Muted}" />
-              <TextBlock Text="{Binding DetailError.Message}" Foreground="{StaticResource ErrorBrush}" />
-              <TextBlock Text="{Binding Detail.AssetKey.AssetId, TargetNullValue='Selecciona un asset'}" FontWeight="SemiBold" />
-              <controls:ThumbnailView DataContext="{Binding Preview}" Height="240" Margin="0,12" />
-              <TextBlock Text="{Binding Detail.AssetType}" />
-              <TextBlock Text="{Binding Detail.ProductionProfile}" Style="{StaticResource Muted}" />
-              <TextBlock Text="Clasificación" FontWeight="SemiBold" Margin="0,12,0,6" />
-              <ItemsControl ItemsSource="{Binding Detail.Classification}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate>
-                    <TextBlock>
-                      <Run Text="{Binding Mode=OneWay, Path=Key}" />
-                      <Run Text=": " />
-                      <Run Text="{Binding Mode=OneWay, Path=Value}" />
-                    </TextBlock>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-              <TextBlock Text="Identidad visual" FontWeight="SemiBold" Margin="0,12,0,6" />
-              <ItemsControl ItemsSource="{Binding Detail.Traits}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate>
-                    <TextBlock>
-                      <Run Text="{Binding Mode=OneWay, Path=Key}" />
-                      <Run Text=": " />
-                      <Run Text="{Binding Mode=OneWay, Path=Value}" />
-                      <Run Text="{Binding Mode=OneWay, Path=Type, StringFormat=' ({0})'}" />
-                    </TextBlock>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-              <TextBlock Text="Estado catalogado" FontWeight="SemiBold" Margin="0,12,0,6" />
-              <TextBlock Text="{Binding Detail.Lifecycle, TargetNullValue='Sin datos'}" />
-              <TextBlock Text="{Binding Detail.AuditState, TargetNullValue='Auditoría no disponible'}" />
-              <Expander Header="Documentos originales">
-                <ItemsControl ItemsSource="{Binding Documents}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                      <Expander Header="{Binding Role}">
-                        <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="400" VerticalScrollBarVisibility="Auto" />
-                      </Expander>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </Expander>
-              <Expander Header="Datos técnicos, archivos y SHA-256">
-                <StackPanel>
-                  <TextBlock Text="{Binding Detail.AssetKey}" />
-                  <TextBlock Text="Archive (relativa)" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Detail.ArchiveRelativeDirectory}" />
-                  <TextBlock Text="Producción (relativa)" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Detail.ProductionRelativeDirectory}" />
-                  <TextBlock Text="Master · bytes / SHA-256" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Detail.MasterSizeBytes}" />
-                  <TextBlock Text="{Binding Detail.MasterDigest.Hex}" FontSize="11" />
-                  <TextBlock Text="Producción · bytes / SHA-256" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Detail.ProductionSizeBytes}" />
-                  <TextBlock Text="{Binding Detail.ProductionDigest.Hex}" FontSize="11" />
-                  <ItemsControl ItemsSource="{Binding Detail.Files}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate>
-                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,8">
-                          <StackPanel>
-                            <TextBlock Text="{Binding RelativePath}" />
-                            <TextBlock>
-                              <Run Text="{Binding Mode=OneWay, Path=Location}" />
-                              <Run Text=" · " />
-                              <Run Text="{Binding Mode=OneWay, Path=Role}" />
-                              <Run Text=" · " />
-                              <Run Text="{Binding Mode=OneWay, Path=Kind}" />
-                            </TextBlock>
-                            <TextBlock Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}" />
-                            <TextBlock Text="{Binding Digest.Hex}" FontSize="11" />
-                          </StackPanel>
-                        </Border>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                  <TextBlock Text="{Binding DetailError.Code}" />
-                </StackPanel>
-              </Expander>
-            </StackPanel>
-          </ScrollViewer>
-        </Border>
-      </Grid>
-      <Grid Grid.Column="2" Style="{StaticResource StatisticsSection}">
+      <Grid Grid.Column="2">
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
+          <RowDefinition>
+            <RowDefinition.Style>
+              <Style TargetType="RowDefinition">
+                <Setter Property="Height" Value="Auto" />
+                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="Height" Value="0.28*" /></DataTrigger></Style.Triggers>
+              </Style>
+            </RowDefinition.Style>
+          </RowDefinition>
           <RowDefinition Height="Auto" />
           <RowDefinition />
-          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Estadísticas visuales" Style="{StaticResource Heading}" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-          <Border Style="{StaticResource Card}" MinWidth="220">
-            <StackPanel>
-              <TextBlock Text="Assets · filtros activos" />
-              <TextBlock Text="{Binding Statistics.TotalAssets, TargetNullValue='Sin datos', StringFormat='{}{0:N0}'}" Style="{StaticResource Heading}" />
-            </StackPanel>
-          </Border>
-          <Border Style="{StaticResource Card}" MinWidth="220">
-            <StackPanel>
-              <TextBlock Text="Tipos presentes" />
-              <TextBlock Text="{Binding Statistics.AssetTypes.Count, TargetNullValue='Sin datos'}" Style="{StaticResource Heading}" />
-            </StackPanel>
-          </Border>
-          <Border Style="{StaticResource Card}" MinWidth="220">
-            <StackPanel>
-              <TextBlock Text="Perfiles presentes" />
-              <TextBlock Text="{Binding Statistics.ProductionProfiles.Count, TargetNullValue='Sin datos'}" Style="{StaticResource Heading}" />
-            </StackPanel>
-          </Border>
-        </StackPanel>
-        <Grid Grid.Row="2">
+        <Grid x:Name="PageHeader">
+          <Grid.Style>
+            <Style TargetType="Grid">
+              <Setter Property="Margin" Value="0,0,0,20" />
+              <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="Margin" Value="0,0,0,8" /></DataTrigger></Style.Triggers>
+            </Style>
+          </Grid.Style>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
             <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
-          <Border Style="{StaticResource Card}">
-            <DockPanel>
-              <TextBlock DockPanel.Dock="Top" Text="Distribución factual · porcentaje de assets del conjunto filtrado" Margin="0,0,0,12" />
-              <ListBox ItemsSource="{Binding Distributions}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                  <DataTemplate>
-                    <StackPanel Margin="0,8">
-                      <TextBlock>
-                        <Run Text="{Binding Mode=OneWay, Path=Dimension}" />
-                        <Run Text=" · " />
-                        <Run Text="{Binding Mode=OneWay, Path=Value}" />
-                        <Run Text="{Binding Mode=OneWay, Path=ScalarType, StringFormat=' ({0})'}" />
-                      </TextBlock>
-                      <TextBlock Text="{Binding Count, StringFormat='{}{0:N0} assets'}" Style="{StaticResource Muted}" />
-                      <ProgressBar Maximum="100" Value="{Binding Percent, Mode=OneWay}" />
-                    </StackPanel>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
-            </DockPanel>
-          </Border>
-          <Border Grid.Column="1" Style="{StaticResource Card}">
-            <ScrollViewer>
-              <StackPanel>
-                <TextBlock Text="Cobertura de objetivos" FontWeight="SemiBold" />
-                <TextBlock Text="Sin objetivos catalogados">
-                  <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
-                      <Setter Property="Visibility" Value="Collapsed" />
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding Planning.Objectives.Count}" Value="0">
-                          <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                      </Style.Triggers>
-                    </Style>
-                  </TextBlock.Style>
-                </TextBlock>
-                <ItemsControl ItemsSource="{Binding Planning.Objectives}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                      <StackPanel Margin="0,12">
-                        <TextBlock Text="{Binding Objective.Name}" />
-                        <TextBlock>
-                          <Run Text="{Binding Mode=OneWay, Path=Coverage.ActualCount}" />
-                          <Run Text=" / " />
-                          <Run Text="{Binding Mode=OneWay, Path=Coverage.TargetCount}" />
-                        </TextBlock>
-                        <ProgressBar Maximum="1" Value="{Binding Coverage.CompletionRatio, Mode=OneWay}" />
-                        <TextBlock Text="{Binding Coverage.Remaining, StringFormat='Pendientes: {0}'}" Style="{StaticResource Muted}" />
-                      </StackPanel>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </StackPanel>
-            </ScrollViewer>
-          </Border>
-        </Grid>
-        <TextBlock Grid.Row="3" Text="Datos del catálogo actual. Cobertura: filtro propio de cada objetivo. Sin tendencias temporales ni valoraciones creativas." Style="{StaticResource Muted}" Margin="{StaticResource Space}" />
-      </Grid>
-      <Grid Grid.Column="2" Style="{StaticResource SettingsSection}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-          <StackPanel MaxWidth="1000" HorizontalAlignment="Left">
-            <TextBlock Text="Configuración local del universo" Style="{StaticResource Heading}" />
-            <TextBlock Text="Selecciona tres carpetas existentes e independientes. NAP recordará las rutas en este equipo; no buscará carpetas ni creará repositorios o archivos de catálogo." Style="{StaticResource Muted}" />
-            <Border Style="{StaticResource Card}">
-              <StackPanel>
-                <TextBlock Text="WorkspaceRoot · estado, catálogo y caché locales" />
-                <DockPanel>
-                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Workspace" />
-                  <TextBox Text="{Binding WorkspaceRoot, UpdateSourceTrigger=PropertyChanged}" />
-                </DockPanel>
-                <TextBlock Text="ProductionRoot · producción de solo lectura" />
-                <DockPanel>
-                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Production" />
-                  <TextBox Text="{Binding ProductionRoot, UpdateSourceTrigger=PropertyChanged}" />
-                </DockPanel>
-                <TextBlock Text="ArchiveRoot · maestros de solo lectura" />
-                <DockPanel>
-                  <Button DockPanel.Dock="Right" Content="Elegir…" Command="{Binding Browse}" CommandParameter="Archive" />
-                  <TextBox Text="{Binding ArchiveRoot, UpdateSourceTrigger=PropertyChanged}" />
-                </DockPanel>
-                <Button Content="Guardar configuración y abrir catálogo" Command="{Binding SaveSettings}" IsEnabled="{Binding SettingsReadable}" HorizontalAlignment="Left" />
-                <Expander Header="Ubicación de la configuración local">
-                  <TextBlock Text="{Binding SettingsLocation}" />
-                </Expander>
-              </StackPanel>
-            </Border>
-            <TextBlock Text="El catálogo debe haber sido creado por el pipeline o por las operaciones explícitas existentes. El explorador no importa, reconstruye ni repara assets." Style="{StaticResource Muted}" />
+          <StackPanel>
+            <TextBlock x:Name="PageTitle" Text="{Binding CurrentPage.Name}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource Heading}">
+                  <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="HorizontalAlignment" Value="Left" /></DataTrigger></Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding CurrentPage.Description}" Style="{StaticResource Muted}" Margin="0,6,0,0" />
           </StackPanel>
-        </ScrollViewer>
+          <StackPanel x:Name="PageActions" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel.Style>
+              <Style TargetType="StackPanel">
+                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="VerticalAlignment" Value="Top" /></DataTrigger></Style.Triggers>
+              </Style>
+            </StackPanel.Style>
+            <Button Content="Actualizar" Command="{Binding Refresh}" ToolTip="{Binding Refresh.DisabledReason}" />
+            <Button Content="Cancelar lectura" Command="{Binding CancelRead}">
+              <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource Secondary}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CurrentPage.State}" Value="Loading">
+                      <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Button.Style>
+            </Button>
+          </StackPanel>
+          <c:RodoMascot x:Name="HeaderMascot" Grid.ColumnSpan="2" MaxWidth="300" MaxHeight="300" Margin="0,4" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" AutomationProperties.Name="RoDo">
+            <c:RodoMascot.Style>
+              <Style TargetType="c:RodoMascot">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers>
+              </Style>
+            </c:RodoMascot.Style>
+          </c:RodoMascot>
+        </Grid>
+        <StackPanel Grid.Row="1">
+          <TextBlock Text="{Binding CurrentPage.Status}" Margin="0,0,0,16">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CurrentPage.State}" Value="Ready">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding CurrentPage.State}" Value="Reserved">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding CurrentPage.State}" Value="Stopped">
+                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <ContentControl Content="{Binding CurrentPage.Notice}" ContentTemplate="{StaticResource Notice}">
+            <ContentControl.Style>
+              <Style TargetType="ContentControl">
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CurrentPage.Notice}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </ContentControl.Style>
+          </ContentControl>
+        </StackPanel>
+        <ContentControl Grid.Row="2" IsEnabled="{Binding CanChangeContext}" Content="{Binding CurrentPage}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
       </Grid>
     </Grid>
-    <TextBlock Grid.Row="3" Text="{Binding StatusText}" Margin="0,12,0,0" Style="{StaticResource Muted}" />
+    <Border Grid.Row="2" BorderBrush="{StaticResource CardBrush}" BorderThickness="0,1,0,0" Margin="0,16,0,0" Padding="0,12,0,0">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Right" Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" />
+        <TextBlock Text="{Binding StatusText}" Style="{StaticResource Muted}" />
+      </DockPanel>
+    </Border>
   </Grid>
 </Window>

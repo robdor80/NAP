@@ -1,0 +1,91 @@
+<UserControl x:Class="NAP.App.Views.StatisticsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NAP.App.Controls">
+  <UserControl.Resources>
+    <DataTemplate x:Key="FacetChoice">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding Value}" />
+        <TextBlock Text="{Binding TraitType, StringFormat=' · {0}'}" Style="{StaticResource Muted}" />
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid DataContext="{Binding Explorer}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="1" Orientation="Horizontal">
+      <Border Style="{StaticResource Card}" MinWidth="220">
+        <StackPanel>
+          <TextBlock Text="Assets · filtros activos" />
+          <TextBlock Text="{Binding StatisticsAssets}" Style="{StaticResource Heading}" />
+        </StackPanel>
+      </Border>
+      <Border Style="{StaticResource Card}" MinWidth="220">
+        <StackPanel>
+          <TextBlock Text="Tipos presentes" />
+          <TextBlock Text="{Binding StatisticsTypes}" Style="{StaticResource Heading}" />
+        </StackPanel>
+      </Border>
+      <Border Style="{StaticResource Card}" MinWidth="220">
+        <StackPanel>
+          <TextBlock Text="Perfiles presentes" />
+          <TextBlock Text="{Binding StatisticsProfiles}" Style="{StaticResource Heading}" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Border Style="{StaticResource Card}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="Distribución factual · porcentaje de assets del conjunto filtrado" Margin="0,0,0,12" />
+          <TextBlock DockPanel.Dock="Top" Text="{Binding DistributionEmptyMessage}" Style="{StaticResource EmptyState}" />
+          <ListBox ItemsSource="{Binding Distributions}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Margin="0,8">
+                  <TextBlock>
+                    <Run Text="{Binding Mode=OneWay, Path=Dimension}" />
+                    <Run Text=" · " />
+                    <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                    <Run Text="{Binding Mode=OneWay, Path=ScalarTypeLabel}" />
+                  </TextBlock>
+                  <TextBlock Text="{Binding Count, StringFormat='{}{0:N0} assets'}" Style="{StaticResource Muted}" />
+                  <ProgressBar Maximum="100" Value="{Binding Percent, Mode=OneWay}" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+      <Border Grid.Column="1" Style="{StaticResource Card}">
+        <ScrollViewer>
+          <StackPanel>
+            <TextBlock Text="Cobertura de objetivos" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding CoverageEmptyMessage}" Style="{StaticResource EmptyState}" />
+            <ItemsControl ItemsSource="{Binding Planning.Objectives}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,12">
+                    <TextBlock Text="{Binding Objective.Name}" />
+                    <TextBlock>
+                      <Run Text="{Binding Mode=OneWay, Path=Coverage.ActualCount}" />
+                      <Run Text=" / " />
+                      <Run Text="{Binding Mode=OneWay, Path=Coverage.TargetCount}" />
+                    </TextBlock>
+                    <ProgressBar Maximum="1" Value="{Binding Coverage.CompletionRatio, Mode=OneWay}" />
+                    <TextBlock Text="{Binding Coverage.Remaining, StringFormat='Pendientes: {0}'}" Style="{StaticResource Muted}" />
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+    </Grid>
+    <TextBlock Grid.Row="3" Text="Datos del catálogo actual. Cobertura: filtro propio de cada objetivo. Sin tendencias temporales ni valoraciones creativas." Style="{StaticResource Muted}" Margin="{StaticResource Space}" />
+  </Grid>
+</UserControl>
