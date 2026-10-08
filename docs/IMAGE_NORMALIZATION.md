@@ -104,6 +104,8 @@ aprobación visible. La corrección de perfil y la normalización requieren deci
 distintas. Rechazo/cancelación nunca aprueban un candidato ni autorizan producción.
 La comparación permite zoom y desplazamiento independiente; los paneles del Inbox
 y de decisión tienen scroll para conservar acceso a los controles en ventanas pequeñas.
+Un cambio explícito de universo posee una sola lectura final: el evento terminal
+del Explorer no reemplaza `LastRefresh` ni cancela la lectura que el caller espera.
 El caller de la API debe aportar `ImageNormalizationAuthorization` que atestigua
 la decisión humana sobre ID y digest exactos de la propuesta; no hay aprobación
 predeterminada ni autenticación de personas a través de esa API local.

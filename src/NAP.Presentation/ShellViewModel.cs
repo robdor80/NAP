@@ -15,8 +15,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private readonly List<UiAsyncCommand> _commands = [];
     private readonly CancellationTokenSource _lifetime = new();
     private CancellationTokenSource? _read;
-    private long _generation;
-    private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing;
+    private long _generation, _universeSwitchSequence;
+    private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
     private ProfessionalPage _current;
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
@@ -168,7 +168,17 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
     public bool HasSingleUniverse => Profiles.Count == 1;
     public bool HasUniverseSelector => Profiles.Count > 1;
-    public UniverseProfile? SelectedUniverse { get => Explorer.SelectedUniverse; set { if (!_disposed && !IsExecuting) { Explorer.SelectedUniverse = value; LastRefresh = RefreshAfterSwitchAsync(); } } }
+    public UniverseProfile? SelectedUniverse
+    {
+        get => Explorer.SelectedUniverse;
+        set
+        {
+            if (_disposed || IsExecuting) return;
+            var sequence = ++_universeSwitchSequence; _switchingUniverse = true;
+            try { Explorer.SelectedUniverse = value; LastRefresh = RefreshAfterSwitchAsync(Explorer.UniverseChangeTask, sequence); }
+            catch { if (sequence == _universeSwitchSequence) _switchingUniverse = false; throw; }
+        }
+    }
     public string UniverseLabel => SelectedUniverse?.DisplayName ?? "Sin universo";
     public ProfessionalPage CurrentPage { get => _current; private set { Set(ref _current, value); StatusChanged(); } }
     public bool IsExecuting { get => _executing; private set { Set(ref _executing, value); Notify(nameof(CanChangeContext)); StatusChanged(); RefreshCommands(); } }
@@ -201,7 +211,12 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
     { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
-    private async Task RefreshAfterSwitchAsync() { await Explorer.UniverseChangeTask; if (!_disposed && !IsExecuting) { _scopePending = false; await RefreshCurrentAsync(); } }
+    private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
+    {
+        try { await switching; }
+        finally { if (sequence == _universeSwitchSequence) { _scopePending = false; _switchingUniverse = false; } }
+        if (!_disposed && !IsExecuting && sequence == _universeSwitchSequence) await RefreshCurrentAsync();
+    }
     public void NavigateTo(string name)
     {
         if (!Navigate.CanExecute(name)) return; Activate(Pages.Single(p => p.Name == name)); LastRefresh = RefreshCurrentAsync();
@@ -325,7 +340,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel));
             _scopePending = true;
         }
-        if (e.PropertyName == nameof(ExplorerViewModel.State) && _scopePending && !_initializing && !IsExecuting && Explorer.State != ExplorerState.Loading)
+        // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.
+        if (e.PropertyName == nameof(ExplorerViewModel.State) && !_switchingUniverse && _scopePending && !_initializing && !IsExecuting && Explorer.State != ExplorerState.Loading)
         { _scopePending = false; LastRefresh = RefreshCurrentAsync(); }
         RefreshCommands();
     }
