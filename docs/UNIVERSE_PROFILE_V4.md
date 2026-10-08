@@ -125,13 +125,16 @@ PNG validado con PngMasterValidator.
 
 ## Configuración real y pruebas
 
-El [perfil Nimroel](../config/universes/nimroel/profile.json) migra solo
-schema_version 3 → 4 y añade el objeto mostrado a portrait + portrait_npc.
+El [perfil Nimroel](../config/universes/nimroel/profile.json) migró en 5.4 de
+schema_version 3 → 4 añadiendo el objeto mostrado a portrait + portrait_npc.
 Clasificación, package files y routing siguen intactos. 768×960 Q90 ahora vive
 en config, con source role master; MaxInputPixels llega en runtime.
-**Nimroel Scene sigue SIN perfil canónico**, resolución, ratio, quality,
-production_profile, clasificación o routing. La capacidad técnica Scene de 5.3
-no declara ese canon.
+Ahora añade una regla independiente **scene + scene_cartography**: maestro PNG
+16:10 exacto, WebP 1600×1000 Q90, culture/location obligatorias y realm/region
+opcionales; ruta `scenes/cartography/<culture>/<location>/<asset_id>/`.
+Se reutilizan los contratos v4 y el motor existente sin cambiar schemas ni Core.
+**scene_narrative sigue sin habilitarse**. Véase
+[protocolo cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md).
 
 El [fixture v4](../test-data/phase5/universe-profile-v4/profile.json) pertenece a
 test_universe: image_asset + image_profile declara source_image, 1200×800 Q87;

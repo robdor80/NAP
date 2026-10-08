@@ -166,14 +166,14 @@ public sealed class UniverseProfileV4LoaderTests
     }
 
     [Fact]
-    public void RealNimroelOnlyAddsV4ConversionAndKeepsClassificationFilesAndRouting()
+    public void RealNimroelPreservesPortraitV4ConversionClassificationFilesAndRouting()
     {
         var json = JsonNode.Parse(File.ReadAllText(UniverseProfileLoaderTests.ConfigPath))!.AsObject();
         Assert.Equal(4, json["schema_version"]!.GetValue<int>());
         var profile = Load(json);
         Assert.Equal("nimroel", profile.Id.Value);
         Assert.Equal("Nimroel", profile.DisplayName);
-        var rule = Assert.Single(profile.AssetRules);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         Assert.Equal("portrait", rule.AssetType);
         Assert.Equal("portrait_npc", rule.ProductionProfile);
         Assert.Equal(new[] { "culture", "realm", "region", "location", "role", "sex" }, profile.ClassificationDimensions);
@@ -187,7 +187,7 @@ public sealed class UniverseProfileV4LoaderTests
         Assert.Equal(new string?[] { "portraits", "culture", "location", "role", "sex", null }, rule.Routing!.Segments.Select(s => s.Value));
         Assert.Equal(new ImageConversionRule(ImageConversionKind.PngToWebp, "master", 768, 960, 90), rule.Conversion);
         Assert.DoesNotContain("max_input_pixels", json.ToJsonString());
-        Assert.DoesNotContain(profile.AssetRules, r => r.AssetType == "scene");
+        Assert.Contains(profile.AssetRules, r => r.AssetType == "scene" && r.ProductionProfile == "scene_cartography");
     }
 
     private static JsonObject Config() => JsonNode.Parse(File.ReadAllText(FixturePath))!.AsObject();

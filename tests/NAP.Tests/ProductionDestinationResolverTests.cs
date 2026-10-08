@@ -64,7 +64,7 @@ public sealed class ProductionDestinationResolverTests
     public void RealNimroelPolicyUsesClassificationWithoutAssetIdInferenceOrLegacyCasing(string assetId, string role, string sex)
     {
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
-        var package = Package(Assert.Single(profile.AssetRules), NimroelClassification(role, sex), assetId, profile.Id.Value);
+        var package = Package(Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc"), NimroelClassification(role, sex), assetId, profile.Id.Value);
         var destination = _resolver.Resolve(package, Repository(universe: profile.Id.Value));
         Assert.Equal($"portraits/norgard/treskal/{role}/{sex}/{assetId}", destination.RelativeDirectory);
         Assert.DoesNotContain("children/boy", destination.RelativeDirectory);
@@ -81,7 +81,7 @@ public sealed class ProductionDestinationResolverTests
     [InlineData(true, true)]
     public void OptionalRealmAndRegionDoNotAffectNimroelRouting(bool realm, bool region)
     {
-        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules);
+        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var classification = NimroelClassification();
         var baseline = _resolver.Resolve(Package(rule, classification), Repository());
         if (realm) classification.Add("realm", "example_realm");

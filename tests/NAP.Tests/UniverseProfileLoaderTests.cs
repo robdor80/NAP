@@ -13,13 +13,14 @@ public sealed class UniverseProfileLoaderTests
     internal static string HistoricalV2ConfigPath => Path.Combine(AppContext.BaseDirectory, "test-data", "phase2", "universe-profile-v2", "profile.json");
 
     [Fact]
-    public void NimroelFile_LoadsExactlyTheCurrentRule()
+    public void NimroelFile_LoadsCurrentRulesAndPreservesPortrait()
     {
         var profile = UniverseProfileLoader.Load(ConfigPath);
         Assert.Equal(new UniverseId("nimroel"), profile.Id);
         Assert.Equal("Nimroel", profile.DisplayName);
         Assert.Equal(new[] { "culture", "realm", "region", "location", "role", "sex" }, profile.ClassificationDimensions);
-        var rule = Assert.Single(profile.AssetRules);
+        Assert.Equal(2, profile.AssetRules.Count);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         Assert.True(profile.TryGetAssetRule("portrait", "portrait_npc", out var found));
         Assert.Same(rule, found);
         Assert.Equal(profile.ClassificationDimensions, rule.AllowedClassification);

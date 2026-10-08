@@ -32,6 +32,76 @@
         "output_height": 960,
         "webp_quality": 90
       }
+    },
+    {
+      "asset_type": "scene",
+      "production_profile": "scene_cartography",
+      "allowed_classification": [
+        "culture",
+        "realm",
+        "region",
+        "location"
+      ],
+      "required_classification": [
+        "culture",
+        "location"
+      ],
+      "package_files": [
+        {
+          "role": "master",
+          "suffix": "",
+          "extension": ".png",
+          "required": true,
+          "content_validator": "png_master"
+        },
+        {
+          "role": "prompt",
+          "suffix": "_prompt",
+          "extension": ".md",
+          "required": true,
+          "content_validator": null
+        },
+        {
+          "role": "info",
+          "suffix": "_info",
+          "extension": ".md",
+          "required": true,
+          "content_validator": null
+        },
+        {
+          "role": "visual_identity",
+          "suffix": "_visual_identity",
+          "extension": ".json",
+          "required": true,
+          "content_validator": null
+        }
+      ],
+      "routing": {
+        "segments": [
+          {
+            "literal": "scenes"
+          },
+          {
+            "literal": "cartography"
+          },
+          {
+            "classification": "culture"
+          },
+          {
+            "classification": "location"
+          },
+          {
+            "asset_id": true
+          }
+        ]
+      },
+      "conversion": {
+        "kind": "png_to_webp",
+        "source_role": "master",
+        "output_width": 1600,
+        "output_height": 1000,
+        "webp_quality": 90
+      }
     }
   ]
 }

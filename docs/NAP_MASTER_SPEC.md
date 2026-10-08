@@ -234,7 +234,7 @@ cambios en [Universe Profile v3](UNIVERSE_PROFILE_V3.md) y
 [Universe Profile v4](UNIVERSE_PROFILE_V4.md), vigente para Nimroel desde 5.4.
 No hay requisito universal de PNG, prompt, info ni Visual Identity.
 
-El perfil Nimroel actual, únicamente portrait + portrait_npc, exige:
+Las reglas Nimroel actuales, portrait + portrait_npc y scene + scene_cartography, exigen:
 
 ``` text
 <asset_id>.png
@@ -303,8 +303,9 @@ El primer perfil real,
 [Nimroel](../config/universes/nimroel/profile.json), usa Profile v4 desde 5.4,
 tras migrar a v3 en 3.5,
 y registra culture/realm/
-region/location/role/sex y únicamente portrait + portrait_npc: requiere
-culture/location/role/sex y permite realm/region como opcionales.
+region/location/role/sex. Portrait + portrait_npc requiere culture/location/role/sex;
+scene + scene_cartography requiere culture/location. Ambas permiten realm/region
+como opcionales; cartografía no admite role/sex.
 `UniverseAssetRule.ValidateClassification` devuelve dimensiones faltantes
 y no permitidas sin validar vocabularios de valores. Esos nombres no son
 conceptos especiales del Core universal. No se inventan otras reglas.
@@ -550,7 +551,9 @@ ni reabrir Fase 4.
 
 ## Scenes
 
-Se definirá un perfil específico posteriormente.
+El perfil específico [scene_cartography](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md)
+declara PNG maestro 16:10 exacto → WebP 1600×1000 Q90 y routing
+`scenes/cartography/<culture>/<location>/<asset_id>/`. No activa scene_narrative.
 
 **Estado real de 5.3 — Scene HECHO:** settings explícitos y contratos Scene propios:
 PNG → PngMasterValidator → pixel safety → exact requested ratio → decode PNG
@@ -560,13 +563,14 @@ comprueba metadata/settings, contenedor, decode WebP real y dimensiones.
 WebpContainerValidator internal comparte exclusivamente RIFF/WEBP, longitud
 total y límites/padding de chunks con Portrait, sin parser VP8 completo.
 
-Scene conversion capability exists, but no canonical Nimroel Scene production profile has been defined yet.
+Scene conversion capability supports the configured Nimroel scene_cartography profile.
 
-NO EXISTE TODAVÍA perfil canónico Nimroel Scene: no se han decidido resolución,
-proporción, quality, production_profile, routing o clasificación. Ejemplos técnicos
-1920×1080 → 1280×720 Q88 y 1500×1000 → 900×600 Q93 no son canon de Nimroel.
-5.4 migra únicamente Portrait a Profile v4; no añade Scene ni su canon.
-Sin escrituras, ampliación de ProcessingPlan o hashes.
+El perfil cartográfico se configura independientemente del narrativo, todavía
+no habilitado. Ejemplos técnicos 1920×1080 → 1280×720 Q88 y
+1500×1000 → 900×600 Q93 no son reglas de cartografía de Nimroel.
+La migración histórica 5.4 afectó solo a Portrait; la regla cartográfica posterior
+reutiliza Profile v4 sin modificar el runtime.
+El conversor por sí solo no escribe archivos, amplía ProcessingPlan ni calcula hashes.
 5.4 HECHO; 5.5 — No recorte silencioso HECHO. Véase
 [SCENE_CONVERSION.md](SCENE_CONVERSION.md).
 

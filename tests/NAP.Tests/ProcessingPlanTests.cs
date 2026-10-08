@@ -241,7 +241,7 @@ public sealed class ProcessingPlanTests
     {
         const string assetId = "portrait_treskal_farmer_male_002";
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
-        var rule = Assert.Single(profile.AssetRules);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var classification = new Dictionary<string, string>
         {
             ["culture"] = "norgard", ["location"] = "treskal", ["role"] = "farmer", ["sex"] = "male",

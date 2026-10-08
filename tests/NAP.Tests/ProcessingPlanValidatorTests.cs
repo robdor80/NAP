@@ -349,7 +349,7 @@ public sealed class ProcessingPlanValidatorTests
     {
         const string assetId = "portrait_treskal_farmer_male_040";
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
-        var rule = Assert.Single(profile.AssetRules);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var inputs = Path.Combine(Root, "missing_inputs");
         var manifest = new AssetManifestV2
         {

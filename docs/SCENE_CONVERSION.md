@@ -165,7 +165,10 @@ fidelidad visual o quality efectiva desde el bitstream. Los contratos públicos
 Scene/Portrait conservan sus contratos públicos separados. Desde
 [5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), la declaración y resolución son
 genéricas por asset rule, sin converter genérico público ni ejecución automática.
-Nimroel sigue sin regla Scene ni decisiones canónicas de producción.
+Nimroel declara ahora **scene + scene_cartography**, con PNG 16:10 exacto y
+WebP 1600×1000 Q90; [protocolo cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md).
+La regla narrativa sigue sin habilitarse; los fixtures 16:9 y 3:2 anteriores
+son ejemplos técnicos genéricos, no perfiles cartográficos ni canon de Nimroel.
 Fase 5 HECHA; 5.4 — Perfiles genéricos HECHO,
 [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza frame completo,
 sin crop/pad/BoxPad/letterbox/distorsión. Ratio exacto + Stretch + ausencia de
