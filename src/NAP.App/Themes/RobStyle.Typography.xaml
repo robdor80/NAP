@@ -1,0 +1,31 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="RobStyle.Colors.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <Style TargetType="Window">
+    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+    <Setter Property="FontFamily" Value="Segoe UI" />
+    <Setter Property="FontSize" Value="{StaticResource BodySize}" />
+  </Style>
+  <Style TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style x:Key="Muted" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    <Setter Property="FontSize" Value="{StaticResource CaptionSize}" />
+  </Style>
+  <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Setter Property="FontSize" Value="{StaticResource TitleSize}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style x:Key="Metric" TargetType="TextBlock" BasedOn="{StaticResource Heading}">
+    <Setter Property="FontSize" Value="{StaticResource MetricSize}" />
+    <Setter Property="Margin" Value="0,8,0,0" />
+  </Style>
+  <Style x:Key="Technical" TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+    <Setter Property="FontFamily" Value="Consolas" />
+    <Setter Property="FontSize" Value="{StaticResource TechnicalSize}" />
+  </Style>
+</ResourceDictionary>

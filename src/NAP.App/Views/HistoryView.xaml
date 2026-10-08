@@ -1,0 +1,41 @@
+<UserControl x:Class="NAP.App.Views.HistoryView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <c:RobTitledFrame Header="CHECKPOINTS">
+      <DockPanel><TextBlock DockPanel.Dock="Top" Text="{Binding EmptyJobs}" Style="{StaticResource EmptyState}" /><ListBox ItemsSource="{Binding Jobs}" ItemTemplate="{StaticResource PipelineJob}" /></DockPanel>
+    </c:RobTitledFrame>
+    <c:RobTitledFrame Header="RECIBOS GIT" Grid.Column="1">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding EmptyReceipts}" Style="{StaticResource EmptyState}" />
+        <StackPanel DockPanel.Dock="Bottom">
+          <Button Content="Revisar operación Git" Style="{StaticResource Secondary}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Git" />
+        </StackPanel>
+        <ListBox ItemsSource="{Binding Receipts}" ItemTemplate="{StaticResource Receipt}" />
+      </DockPanel>
+    </c:RobTitledFrame>
+    <c:RobTitledFrame Header="ACTIVIDAD DE ESTA SESIÓN" Grid.Row="1" Grid.ColumnSpan="2">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding EmptyActivity}" Style="{StaticResource EmptyState}" />
+        <TextBlock DockPanel.Dock="Bottom" Text="Horas de observación de esta sesión. No reconstruyen eventos ni fechas ausentes en los journals." Style="{StaticResource Muted}" />
+        <ListBox ItemsSource="{Binding Activities}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel>
+                <TextBlock Text="{Binding Message}" Foreground="{Binding Tone, Converter={StaticResource ToneBrush}}" />
+                <TextBlock Text="{Binding ObservedUtc, StringFormat='Observado: {0:HH:mm:ss} UTC'}" Style="{StaticResource Muted}" />
+                <TextBlock Text="{Binding Code}" Style="{StaticResource Technical}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </c:RobTitledFrame>
+  </Grid>
+</UserControl>

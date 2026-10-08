@@ -1,0 +1,43 @@
+<UserControl x:Class="NAP.App.Views.ObjectivesView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*" />
+      <ColumnDefinition Width="2*" />
+    </Grid.ColumnDefinitions>
+    <c:RobTitledFrame Header="COBERTURA">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding EmptyMessage}" Style="{StaticResource EmptyState}" />
+        <StackPanel DockPanel.Dock="Bottom">
+          <Expander Header="Campañas catalogadas">
+            <ItemsControl ItemsSource="{Binding Campaigns}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,8">
+                    <TextBlock Text="{Binding Campaign.Name}" />
+                    <TextBlock Text="{Binding Objectives.Count, StringFormat='Objetivos: {0}'}" Style="{StaticResource Muted}" />
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Expander>
+        </StackPanel>
+        <ListBox ItemsSource="{Binding Objectives}" ItemTemplate="{StaticResource ObjectiveCard}" />
+      </DockPanel>
+    </c:RobTitledFrame>
+    <c:RobTitledFrame Header="GUARDAR OBJETIVO" Grid.Column="1">
+      <ScrollViewer>
+        <StackPanel>
+          <TextBlock Text="Usa los filtros activos del catálogo para medir un conjunto concreto." Style="{StaticResource Muted}" />
+          <TextBlock Text="Identificador" Margin="0,16,0,0" />
+          <TextBox Text="{Binding ObjectiveId, UpdateSourceTrigger=PropertyChanged}" />
+          <TextBlock Text="Nombre" />
+          <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+          <TextBlock Text="Número de assets objetivo" />
+          <TextBox Text="{Binding Target, UpdateSourceTrigger=PropertyChanged}" />
+          <Button Content="Guardar objetivo" Style="{StaticResource Primary}" Command="{Binding DataContext.SaveObjective, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.SaveObjective.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <TextBlock Text="Guardar escribe una definición explícita en el catálogo; no genera assets." Style="{StaticResource Muted}" />
+        </StackPanel>
+      </ScrollViewer>
+    </c:RobTitledFrame>
+  </Grid>
+</UserControl>

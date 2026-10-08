@@ -1,0 +1,22 @@
+<UserControl x:Class="NAP.App.Views.RodoView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <c:RobTitledFrame x:Name="AvailabilityFrame" Header="RODO" BorderBrush="{StaticResource AiBrush}" Padding="24,28,24,16">
+      <StackPanel>
+        <TextBlock Text="{Binding Availability}" FontSize="{StaticResource TitleSize}" Foreground="{StaticResource AiBrush}" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding Explanation}" Style="{StaticResource Muted}" Margin="0,12,0,0" />
+      </StackPanel>
+    </c:RobTitledFrame>
+    <Border x:Name="ConversationPanel" Grid.Row="1" Style="{StaticResource Card}" Margin="0,8,16,16" Padding="8">
+      <ItemsControl ItemsSource="{Binding Conversations}" VerticalAlignment="Bottom" />
+    </Border>
+    <StackPanel Grid.Row="2">
+      <TextBox IsEnabled="False" Text="" MinHeight="44" ToolTip="{Binding Availability}" ToolTipService.ShowOnDisabled="True" />
+      <Button Content="Enviar a RoDo" IsEnabled="{Binding CanSend}" ToolTip="{Binding Availability}" BorderBrush="{StaticResource AiBrush}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Grid>
+</UserControl>

@@ -3,10 +3,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /></ItemGroup>
-  <ItemGroup><Content Include="../../config/universes/nimroel/profile.json" Link="config/universes/nimroel/profile.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><Using Remove="System.Windows.Forms" /><Using Remove="System.Drawing" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /><ProjectReference Include="../NAP.AI/NAP.AI.csproj" /></ItemGroup>
+  <ItemGroup><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><Resource Include="Assets/RoDo/rodo_v0_1.png" /></ItemGroup>
 </Project>

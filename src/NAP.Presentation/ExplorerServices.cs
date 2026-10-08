@@ -40,6 +40,7 @@ public sealed record ExplorerError(string Message, string Code)
 {
     public static ExplorerError From(Exception error)
     {
+        if (error is UniverseProfileStoreException profile) return new(profile.Message, profile.Code);
         var issues = error switch { CatalogException e => e.Issues, ProductionStorageException e => e.Issues, ArchiveStorageException e => e.Issues, _ => null };
         var code = issues?.Issues.FirstOrDefault(i => i.StopsProcessing)?.Code ?? (error is UnauthorizedAccessException ? "access_denied" : "explorer_invalid_or_unavailable");
         var message = code.Contains("missing", StringComparison.Ordinal) ? "El catálogo o una carpeta configurada no está disponible. Revisa Ajustes." :

@@ -1,0 +1,179 @@
+<UserControl x:Class="NAP.App.Views.CatalogView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NAP.App.Controls">
+  <UserControl.Resources>
+    <DataTemplate x:Key="FacetChoice">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding Value}" />
+        <TextBlock Text="{Binding TraitType, StringFormat=' · {0}'}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding TraitType}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid DataContext="{Binding Explorer}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="280" />
+    </Grid.ColumnDefinitions>
+    <controls:RobTitledFrame Header="FILTROS">
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <TextBlock Text="Filtros exactos · AND" Style="{StaticResource Muted}" Margin="0,0,0,12" />
+          <TextBlock Text="Asset ID" />
+          <TextBox Text="{Binding AssetId, UpdateSourceTrigger=PropertyChanged}" />
+          <TextBlock Text="Tipo" />
+          <ComboBox ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetType}" />
+          <TextBlock Text="Perfil de producción" />
+          <ComboBox ItemsSource="{Binding ProductionProfiles}" SelectedItem="{Binding ProductionProfile}" />
+          <ItemsControl ItemsSource="{Binding Facets}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <TextBlock Text="{Binding Dimension}" />
+                  <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Selected}" ItemTemplate="{StaticResource FacetChoice}" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <Button Content="Aplicar / actualizar" Command="{Binding ApplyFilters}" Style="{StaticResource Primary}" />
+          <Button Content="Restablecer" Command="{Binding ResetFilters}" />
+          <TextBlock Text="Vacío = sin filtro. Las condiciones deben coincidir." Style="{StaticResource Muted}" />
+        </StackPanel>
+      </ScrollViewer>
+    </controls:RobTitledFrame>
+    <Grid Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <controls:VirtualizingTilePanel />
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border Style="{StaticResource Card}">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <controls:ThumbnailView />
+                <TextBlock Grid.Row="1" Text="{Binding Title}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,8,0,4" ToolTip="{Binding Title}" />
+                <TextBlock Grid.Row="2" Text="{Binding Subtitle}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource Muted}" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      <TextBlock Grid.Row="1" Text="{Binding CatalogEmptyMessage}" Style="{StaticResource EmptyState}" Margin="24,16" IsHitTestVisible="False" />
+    </Grid>
+    <controls:RobTitledFrame Grid.Column="2" Header="FICHA" Padding="20,28,20,20">
+      <Grid>
+        <StackPanel>
+          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding Detail}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers><Setter Property="Visibility" Value="Collapsed" /></Style></StackPanel.Style>
+          <TextBlock Text="{Binding DetailTitle}" Style="{StaticResource Heading}" />
+          <TextBlock Text="{Binding DetailMessage}" Style="{StaticResource EmptyState}" />
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <ScrollViewer.Style><Style TargetType="ScrollViewer"><Style.Triggers><DataTrigger Binding="{Binding Detail}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
+        <StackPanel>
+          <TextBlock Text="Ficha del asset" Style="{StaticResource Heading}" />
+          <TextBlock Text="{Binding DetailStatusText}" Style="{StaticResource Muted}" />
+          <TextBlock Text="{Binding DetailError.Message}" Foreground="{StaticResource ErrorBrush}" />
+          <TextBlock Text="{Binding Detail.AssetKey.AssetId, TargetNullValue='Selecciona un asset'}" FontWeight="SemiBold" />
+          <controls:ThumbnailView DataContext="{Binding Preview}" Height="240" Margin="0,12" />
+          <TextBlock Text="{Binding Detail.AssetType}" />
+          <TextBlock Text="{Binding Detail.ProductionProfile}" Style="{StaticResource Muted}" />
+          <TextBlock Text="Clasificación" FontWeight="SemiBold" Margin="0,12,0,6" />
+          <ItemsControl ItemsSource="{Binding Detail.Classification}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                  <Run Text="{Binding Mode=OneWay, Path=Key}" />
+                  <Run Text=": " />
+                  <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                </TextBlock>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Text="Identidad visual" FontWeight="SemiBold" Margin="0,12,0,6" />
+          <ItemsControl ItemsSource="{Binding Detail.Traits}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                  <Run Text="{Binding Mode=OneWay, Path=Key}" />
+                  <Run Text=": " />
+                  <Run Text="{Binding Mode=OneWay, Path=Value}" />
+                  <Run Text="{Binding Mode=OneWay, Path=Type, StringFormat=' ({0})'}" />
+                </TextBlock>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Text="Estado catalogado" FontWeight="SemiBold" Margin="0,12,0,6" />
+          <TextBlock Text="{Binding Detail.Lifecycle, TargetNullValue='Sin datos'}" />
+          <TextBlock Text="{Binding Detail.AuditState, TargetNullValue='Auditoría no disponible'}" />
+          <Expander Header="Documentos originales">
+            <ItemsControl ItemsSource="{Binding Documents}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Expander Header="{Binding Role}">
+                    <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="400" VerticalScrollBarVisibility="Auto" />
+                  </Expander>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Expander>
+          <Expander Header="Datos técnicos, archivos y SHA-256">
+            <StackPanel>
+              <TextBlock Text="{Binding Detail.AssetKey}" />
+              <TextBlock Text="Archivo (relativa)" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Detail.ArchiveRelativeDirectory}" />
+              <TextBlock Text="Producción (relativa)" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Detail.ProductionRelativeDirectory}" />
+              <TextBlock Text="Maestro · bytes / SHA-256" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Detail.MasterSizeBytes}" />
+              <TextBlock Text="{Binding Detail.MasterDigest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+              <TextBlock Text="Producción · bytes / SHA-256" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Detail.ProductionSizeBytes}" />
+              <TextBlock Text="{Binding Detail.ProductionDigest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+              <ItemsControl ItemsSource="{Binding Detail.Files}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,8">
+                      <StackPanel>
+                        <TextBlock Text="{Binding RelativePath}" />
+                        <TextBlock>
+                          <Run Text="{Binding Mode=OneWay, Path=Location}" />
+                          <Run Text=" · " />
+                          <Run Text="{Binding Mode=OneWay, Path=Role}" />
+                          <Run Text=" · " />
+                          <Run Text="{Binding Mode=OneWay, Path=Kind}" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}" />
+                        <TextBlock Text="{Binding Digest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <TextBlock Text="{Binding DetailError.Code}" />
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+        </ScrollViewer>
+      </Grid>
+    </controls:RobTitledFrame>
+  </Grid>
+</UserControl>

@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib">
+  <!-- RobGitTheme.kt, pinned d6aabd9e82a4a65d0d46c03a7864cd3e1ca3c37a. Shared RobDev tokens. -->
+  <Color x:Key="Petroleum">#05131A</Color>
+  <Color x:Key="PetroleumDark">#040F15</Color>
+  <Color x:Key="PetroleumDeep">#020B10</Color>
+  <Color x:Key="PetroleumLight">#0B202B</Color>
+  <Color x:Key="Ice">#EAF6F8</Color>
+  <Color x:Key="IceMuted">#B8D6DB</Color>
+  <Color x:Key="Success">#9ED9C2</Color>
+  <Color x:Key="Warning">#F1CF8A</Color>
+  <Color x:Key="Error">#FFB4AB</Color>
+  <Color x:Key="AI">#C8C4FF</Color>
+  <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource Petroleum}" />
+  <SolidColorBrush x:Key="PanelBrush" Color="{StaticResource PetroleumDark}" />
+  <SolidColorBrush x:Key="CardBrush" Color="{StaticResource PetroleumLight}" />
+  <SolidColorBrush x:Key="DeepBrush" Color="{StaticResource PetroleumDeep}" />
+  <SolidColorBrush x:Key="TextBrush" Color="{StaticResource Ice}" />
+  <SolidColorBrush x:Key="MutedBrush" Color="{StaticResource IceMuted}" />
+  <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource Ice}" />
+  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Ice}" />
+  <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource Success}" />
+  <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource Warning}" />
+  <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error}" />
+  <SolidColorBrush x:Key="AiBrush" Color="{StaticResource AI}" />
+  <CornerRadius x:Key="Radius">18</CornerRadius>
+  <Thickness x:Key="Stroke">1</Thickness>
+  <Thickness x:Key="SpaceSmall">8</Thickness>
+  <Thickness x:Key="Space">16</Thickness>
+  <Thickness x:Key="SpaceLarge">24</Thickness>
+  <Thickness x:Key="FramePadding">24,28,24,24</Thickness>
+  <s:Double x:Key="CornerSize">18</s:Double>
+  <s:Double x:Key="FrameTitleInset">42</s:Double>
+  <s:Double x:Key="FrameTitleGap">8</s:Double>
+  <GridLength x:Key="SidebarWidth">176</GridLength>
+  <s:Double x:Key="TileWidth">220</s:Double>
+  <s:Double x:Key="TileHeight">260</s:Double>
+  <s:Double x:Key="RestElevation">5</s:Double>
+  <s:Double x:Key="PressedElevation">1</s:Double>
+  <s:Double x:Key="DisabledContentOpacity">0.42</s:Double>
+  <s:Double x:Key="DisabledBorderOpacity">0.6</s:Double>
+  <s:Double x:Key="BodySize">14</s:Double>
+  <s:Double x:Key="CaptionSize">12</s:Double>
+  <s:Double x:Key="TitleSize">26</s:Double>
+  <s:Double x:Key="CompactTitleSize">22</s:Double>
+  <s:Double x:Key="MetricSize">36</s:Double>
+  <s:Double x:Key="TechnicalSize">11</s:Double>
+  <s:Double x:Key="IconSize">18</s:Double>
+  <Duration x:Key="QuickTransition">0:0:0.10</Duration>
+  <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="14" ShadowDepth="{StaticResource RestElevation}" Opacity="0.25" />
+</ResourceDictionary>

@@ -4,7 +4,7 @@
 **Nombre oficial:** Nexus Asset Platform\
 **Origen histórico:** Nimroel Asset Pipeline\
 **Repositorio:** `robdor80/NAP`\
-**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Routing solo podrá consumir ValidatedAssetPackage.\
+**Estado actual verificado:** Fase 0, Fase 1 (1.1–1.6) y Fase 2 (2.1–2.8) HECHAS. 2.8.1 — Package Contract v1 + Universe Profile v2 y 2.8.2 — Package Semantic Validator completos. Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Routing solo podrá consumir ValidatedAssetPackage.\
 **Plataforma principal:** Windows 11, C# / .NET 8\
 **Equipo objetivo principal:** MSI Raider GE78 HX 14V\
 **Propósito de este documento:** trasladar a una nueva conversación
@@ -617,7 +617,7 @@ fronteras validadas y el destino recibido como base inmutable, sin re-routing.
 4.2 — Dry Run renderiza esos hechos de forma humana y determinista.
 4.3 — Plan Validation contrasta el destino con un snapshot materializado,
 sin I/O ni source revalidation. El report limpio es point-in-time y no autoriza
-escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+escritura. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 Véanse [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md) y
 [PROCESSING_PLAN.md](PROCESSING_PLAN.md).
 Los ejemplos siguientes corresponden a Nimroel.
@@ -1349,7 +1349,7 @@ ProcessingPlan v1 es completo respecto a las fronteras implementadas y todavía
 no es un execution graph completo. No inventa archive destination, conversión,
 final production output, hashes ni execution steps. Las operaciones se añadirán
 cuando existan sus contratos. Fase 4 HECHA dentro del alcance v1; 4.1–4.4 HECHOS.
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Véase
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Véase
 [PROCESSING_PLAN.md](PROCESSING_PLAN.md).
 
 **Estado real de 4.2 — Dry Run HECHO:** DryRunTextRenderer.Render(ProcessingPlan)
@@ -1370,7 +1370,7 @@ Un destino existente sigue causando STOP en Plan Validation. 6.2 ya distingue
 contenido e idempotencia semántica por pares, sin integrarse en ese validator ni
 autorizar reutilización o sobrescritura. No revalida sources ni lee contents. Un report limpio es
 point-in-time y no autoriza escritura; la frontera de Production Storage debe
-garantizar de nuevo las condiciones físicas. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Véase
+garantizar de nuevo las condiciones físicas. 4.4 — Logs HECHO: resumen textual privacy-safe. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Véase
 [PLAN_VALIDATION.md](PLAN_VALIDATION.md).
 
 **Estado real de 4.4 — Logs HECHO:** PlanLogTextRenderer proyecta ProcessingPlan
@@ -1447,7 +1447,7 @@ UniverseAssetKey conserva UniverseId + AssetId; UniverseContext sigue explícito
 JobId por sí solo no crea modelo Job, SQLite o ejecución. Desde 6.4 existe
 un journal mínimo de estados, sin ProcessingJob/orquestador. ProcessingPlan y
 renderers siguen sin JobId/JobState.
-**6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.**
+**6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.**
 
 **6.4 — Estados persistentes HECHO:** JobState fija nueve valores explícitos
 0..8 y estos tokens persistentes uppercase, sin enum numérico en JSON:
@@ -1512,7 +1512,7 @@ la causa histórica del cierre o sus efectos físicos. Fase 8 ya conserva el
 paquete maestro en ArchiveRoot con recuperación incremental propia; no consume
 ni avanza journals. Fase 9 añade reanudación idempotente en AssetExecutionCoordinator.
 Snapshot point-in-time, sin lease/lock ni autorización de ejecución. Véase
-[JOB_RECOVERY.md](JOB_RECOVERY.md). Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+[JOB_RECOVERY.md](JOB_RECOVERY.md). Fase 6 HECHA; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ------------------------------------------------------------------------
 
@@ -2047,7 +2047,7 @@ Si se formatea el MSI:
 
 ## Estado actual del desarrollo
 
-La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 HECHA:** 2.8 — Package Semantic Validation completo. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator HECHO:** loader Manifest v2 estricto, validación read-only del envelope/contexto/rule/archivos y ValidatedAssetPackage inmutable. Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md). Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Routing solo podrá consumir ValidatedAssetPackage.
+La Fase 0.1 (repositorio), 0.2 (solución .NET 8), 0.3 (primer ejecutable), 0.4 (tests) y 0.5 (estrategia Git + CI) están presentes en el repositorio actual. **Fase 1 (1.1–1.6) completa:** Inbox → Detection → Readiness → Staging → Safe Extraction, probada de extremo a extremo con un paquete legítimo. **2.1 — Manifest v1 formalizado:** contrato, JSON Schema y documentación. **2.2 — Modelo C# implementado:** AssetManifestV1 con serialización System.Text.Json y classification extensible, sin normalización ni validación semántica. **2.3 — Naming v1 implementado:** reglas de forma, coherencia de prefijo y nombres canónicos. **2.4 — Validación PNG estructural implementada:** firma, IHDR, orden esencial, CRC de chunks y proporción exacta, sin decodificación de píxeles ni resolución de perfiles. **2.5 — Errores controlados implementados:** NapIssue con códigos estables, Severity y Disposition independientes, adaptadores de resultados locales y report inmutable; sin PackageValidator. Véase [CONTROLLED_ISSUES.md](CONTROLLED_ISSUES.md). **2.6.1 — Core Universe Scope implementado:** identidad fuerte de universo/asset, perfil mínimo, registry y storage/context inmutables. **2.6.2 implementado:** Manifest v2 universal, perfil Nimroel declarativo, loader genérico, reglas de clasificación, universe match y aislamiento léxico de raíces. **2.6 — Multi-Universe Foundation HECHO.** Véase [MULTI_UNIVERSE_ARCHITECTURE.md](MULTI_UNIVERSE_ARCHITECTURE.md). **2.7 — ZIP deliberadamente incorrectos para tests HECHO:** inventario, 74 casos nuevos, invariantes de filesystem, NapIssueMapper real y corrección mínima de apertura de cabeceras locales truncadas. Véase [ADVERSARIAL_ZIP_TESTS.md](ADVERSARIAL_ZIP_TESTS.md). **Fase 2 HECHA:** 2.8 — Package Semantic Validation completo. **2.8.1 HECHO:** Package Contract v1 genérico, Profile v2 y loader v1/v2, con Nimroel migrado declarativamente y Profile v1 histórico intacto. Véase [PACKAGE_CONTRACT_V1.md](PACKAGE_CONTRACT_V1.md) y [UNIVERSE_PROFILE_V2.md](UNIVERSE_PROFILE_V2.md). **2.8.2 — Package Semantic Validator HECHO:** loader Manifest v2 estricto, validación read-only del envelope/contexto/rule/archivos y ValidatedAssetPackage inmutable. Véase [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md). Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Routing solo podrá consumir ValidatedAssetPackage.
 
 # 55. Hoja de ruta acordada
 
@@ -2196,7 +2196,7 @@ metadata/paths por role, con manifest separado. Véase
 [PACKAGE_SEMANTIC_VALIDATION.md](PACKAGE_SEMANTIC_VALIDATION.md).
 
 **Fase 2 HECHA. Fase 3 — Routing y repo HECHA (3.1–3.6 HECHOS). Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1.
-4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS; Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Routing solo podrá consumir
+4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS; Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Routing solo podrá consumir
 ValidatedAssetPackage.** No se implementa resolución de routing, conversiones, hashes, Visual
 Identity schema ni migración de Manifest v1 en este capítulo.
 
@@ -2241,7 +2241,7 @@ histórica. 3.2 no resuelve destinos; 3.6 añade el cálculo puro.
 4.1 — ProcessingPlan añade la base inmutable y 4.2 la renderiza sin I/O.
 4.3 — Plan Validation interpreta la estructura materializada; 4.4 — Logs produce
 un resumen textual privacy-safe. Fase 4 HECHA dentro del alcance v1;
-Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 3.3 — Routing Contract v1
 
@@ -2322,7 +2322,7 @@ no autoriza escribirlo. Véase [DESTINATION_RESOLVER.md](DESTINATION_RESOLVER.md
 
 ## FASE 4 --- PLAN / Dry Run
 
-**HECHA dentro del alcance v1.** 4.1–4.4 HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+**HECHA dentro del alcance v1.** 4.1–4.4 HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 4.1 — ProcessingPlan
 
@@ -2363,7 +2363,7 @@ Un report limpio es point-in-time y no autoriza escritura. Véase
 
 ## FASE 5 --- Conversión
 
-**HECHA.** 5.1–5.5 HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+**HECHA.** 5.1–5.5 HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 5.1 — Portrait PNG → WebP
 
@@ -2408,7 +2408,7 @@ campos nuevos u orquestación. Véase [NO_SILENT_CROP.md](NO_SILENT_CROP.md).
 ## FASE 6 --- Integridad
 
 **HECHA.** 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO;
-6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO. Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 6.1
 
@@ -2531,7 +2531,7 @@ transiciones JobState o ejecución global.
 **HECHA (9.1–9.4) — Production Storage + Verified Completion.** El Core
 completa el MVP de producción desde ZIP validado hasta COMPLETED con archivo
 original preservado y outputs físicamente verificados. Véase
-[PRODUCTION_STORAGE.md](PRODUCTION_STORAGE.md). Fase 10 integra SQLite antes de COMPLETED sin modificar el writer; Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+[PRODUCTION_STORAGE.md](PRODUCTION_STORAGE.md). Fase 10 integra SQLite antes de COMPLETED sin modificar el writer; Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 9.1
 
@@ -2570,7 +2570,7 @@ ownership durable; final sin recibo o ausente tras registrarse exige STOP.
 
 **HECHA (10.1–10.7).** Catálogo por universo e índice operativo reconstruible.
 Véase [SQLITE_CATALOG.md](SQLITE_CATALOG.md) y su DDL v1 completo.
-Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional.
+Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ### 10.1
 
@@ -2709,7 +2709,7 @@ Snapshot repo — **HECHO**. Bytes del working tree incluidos dirty/untracked/ig
 
 Git bundle — **HECHO**. Historia/refs locales mediante bundle --all + verify, HEAD/dirty observados, allowlist privada de procesos acotados sin writes del repo ni red.
 
-Contrato completo: [BACKUPS.md](BACKUPS.md). Sin nuevos NuGet, sin cambios de schema SQLite v1, sin scheduler/API TeraBox/UI profesional. Fase 13 dispone ahora de su frontera operativa separada; siguiente: Fase 14 — UI profesional.
+Contrato completo: [BACKUPS.md](BACKUPS.md). Sin nuevos NuGet, sin cambios de schema SQLite v1, sin scheduler/API TeraBox/UI profesional. Fase 13 dispone ahora de su frontera operativa separada; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual.
 
 ------------------------------------------------------------------------
 
@@ -2741,80 +2741,130 @@ Push — **HECHO**. Acción explícita separada desde commit/receipt propio, fas
 
 ## FASE 14 --- UI profesional
 
+**14.1–14.11 funcionales; primera revisión física aprobó RobStyle. Pasada final pendiente de segunda revisión física en el MSI.**
+La fase no se declara cerrada automáticamente. Contrato y validación: [PROFESSIONAL_UI.md](PROFESSIONAL_UI.md).
+RobStyle adopta el canon RobGit d6aabd9e82a4a65d0d46c03a7864cd3e1ca3c37a:
+paleta Petroleum/Ice, radio 18, stroke 1, espaciado 16/padding 24, frames con trazo
+superior interrumpido geométricamente y botones de elevación 5→1.
+
 ### 14.1
 
-Ventana principal.
+Ventana maximizada, header con cápsula estática para un universo/selector para varios, nueve destinos de sidebar,
+Git integrado y status bar. MainWindow compone Views independientes; Presentation portable.
 
 ### 14.2
 
-Dashboard.
+Dashboard factual: catálogo, Inbox, jobs, cobertura de objetivos, backups e incidencias.
+Datos no disponibles con —, sin contadores supuestos.
 
 ### 14.3
 
-Inbox/Pipeline.
+Inbox/Producción con descubrimiento, staging/extracción, validadores y planes Core reales,
+auditor existente de Fase 7 y Coordinator hasta COMPLETED tras confirmación.
+Stepper del checkpoint registrado, sin cronología fabricada ni auto-resume.
 
 ### 14.4
 
-Catálogo.
+Catálogo con paginación/LRU/recycling, miniaturas diferidas, filtros AND, ficha,
+documentos originales, traits y clasificación de Fase 11 preservados. Ficha sin selección
+y catálogo no disponible con textos humanos; ficha vacía sin scrollbar.
 
 ### 14.5
 
-Objetivos.
+Objetivos con cobertura real, barras semánticas, campañas catalogadas y guardado
+explícito de definiciones utilizando los filtros actuales del catálogo.
 
 ### 14.6
 
-Estadísticas.
+Estadísticas actuales por dimensiones reales, sin tendencias inventadas ni charting NuGet.
+Métricas desconocidas —; estados vacíos distinguen datos válidos de configuración/STOP.
 
 ### 14.7
 
-Errores/Historial.
+Errores/Historial: STOP, códigos plegables, checkpoints, recibos y actividad observada
+en esta sesión. No se reconstruyen fechas inexistentes en los journals.
 
 ### 14.8
 
-Ajustes.
+Ajustes por frames: universos, almacenamiento, catálogo, Git, Archivo y aplicación.
+UniverseProfileStore reutiliza los loaders/contratos v1–v4, con perfiles incluidos read-only
+y perfiles importados bajo %LOCALAPPDATA%\NAP\universes\<universe_id>\profile.json.
+Validación previa, archivos normales de hasta 1 MiB, discovery de un nivel y 128 entradas
+por raíz, ID canónico único, incidencias de corrupción visibles sin sustituir Nimroel,
+temporal/Flush/publicación sin overwrite. Rechaza reparse/symlinks, checkout y solapamiento
+con cualquiera de las tres raíces; también se comprueba antes de guardar settings.
+El perfil persiste y se incorpora al selector sin recompilar; el usuario configura sus
+tres raíces independientes. No se crean raíces ni catálogo automáticamente.
+Indicadores verdes solo tras validación física; editar rutas los invalida. Settings
+corruptos permanecen visibles, sin sobrescritura. Contrato: PROFESSIONAL_UI.md.
 
 ### 14.9
 
-Backups.
+Backups reales de Fase 12, histórico verificado, creación explícita, restore con
+safety backup/preservación forense y retención Plan→Confirm→Execute.
 
 ### 14.10
 
-Bandeja sistema.
+Bandeja nativa Windows: ocultar/restaurar, navegar y salir. Minimizar a bandeja es
+opt-in por sesión; menús sin acciones de producción o Git.
 
 ### 14.11
 
-RoDo.
+RoDo visual/preparación: identidad AI #C8C4FF, historial vacío y composer deshabilitado.
+«RoDo estará disponible en la Fase 15.» Mascota oficial rodo_v0_1.webp del commit RobGit
+fijado, derivada a PNG RGBA 1024×1024 con píxeles/transparencia idénticos; procedencia en
+src/NAP.App/Assets/RoDo/PROVENANCE.md. Tamaño adaptable y flotación WPF −3↔+3,
+2.1 s, AutoReverse, easing y cleanup de clocks al ocultar/unload. Sin codec WebP externo,
+timers, IA nueva ni conversación simulada. Tooltips reales también en controles disabled.
 
-**Nota:** aunque esta fase represente el pulido completo, se quiere
-introducir un shell RobStyle mucho antes.
+No cambia Core/AI/Cli, NuGet ni schemas de Fases 0–13. UniverseContext explícito,
+I/O fuera del Dispatcher, generación/cancelación/dispose y confirmaciones concretas.
+No auto-repair/overwrite/delete/restore/commit/push. Build y pruebas preceden a la
+revisión visual humana; no commit/push/merge/PR sin autorización.
 
 ------------------------------------------------------------------------
 
-## FASE 15 --- Instalador y distribución
+## FASE 15 --- IA / RoDo
 
-### 15.1
+Reservada para el sistema IA/RoDo: conversación real, contexto autorizado del universo
+y comportamiento proactivo bajo un contrato propio. La auditoría de operaciones de
+Fase 7 sigue separada. No implementada en Fase 14.
+
+------------------------------------------------------------------------
+
+## FASE 16 --- Instalador y distribución
+
+### 16.1
 
 Publicación x64.
 
-### 15.2
+### 16.2
 
 Icono.
 
-### 15.3
+### 16.3
 
 Inno Setup.
 
-### 15.4
+### 16.4
 
 Desinstalador.
 
-### 15.5
+### 16.5
 
 GitHub Release.
 
-### 15.6
+### 16.6
 
 Backup TeraBox.
+
+------------------------------------------------------------------------
+
+## FASE 17 --- Documentación técnica y handover
+
+Reservada, no implementada en Fase 14. Incluirá arquitectura final, documentación
+técnica, DEVELOPER_ONBOARDING.md, build/test/CI, extensión a nuevos universos,
+seguridad, mantenimiento, diagnóstico y handover.
 
 ------------------------------------------------------------------------
 
@@ -2839,7 +2889,7 @@ formalmente la hoja de ruta.
 
 # 57. Próximo trabajo previsto
 
-La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. 2.8.2 — Package Semantic Validator HECHO. Fase 2 completa.** Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; siguiente: Fase 14 — UI profesional. Routing solo podrá consumir ValidatedAssetPackage. La política canónica existe como configuración y 3.6 calcula directorios sin I/O ni escrituras, usando la regla retenida por el package validado. Resolver un destino no autoriza escribirlo. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
+La Fase 1 está completa; Manifest v1 está formalizado en 2.1, su modelo C# implementado en 2.2, Naming v1 definido e implementado en 2.3 y la inspección estructural PNG implementada en 2.4. El lenguaje común de incidencias controladas está implementado en 2.5, sin acoplar los componentes existentes ni crear PackageValidator. La base de universo explícito está implementada en **2.6.1 — Core Universe Scope**, conservando Manifest v1 y los componentes existentes. **2.6.2 — Manifest v2 + Nimroel profile configuration está HECHO**, con reglas de clasificación fuera del schema universal y detección pura de storage overlap antes de futuras escrituras. **2.6 — Multi-Universe Foundation completo. 2.7 — auditoría adversarial ZIP HECHO. 2.8.1 — Package Contract v1 + Universe Profile v2 HECHO. 2.8.2 — Package Semantic Validator HECHO. Fase 2 completa.** Fase 3 — Routing y repo HECHA. 3.1 — Production Repository Boundary, 3.2 — Repository Scanner, 3.3 — Routing Contract v1, 3.4 — Structural Change Detection, 3.5 — Nimroel Historical Structure Audit + Canonical Routing Policy y 3.6 — Destination Resolver HECHOS. Fase 4 — PLAN / Dry Run HECHA dentro del alcance v1. 4.1 — ProcessingPlan, 4.2 — Dry Run, 4.3 — Plan Validation y 4.4 — Logs HECHOS. Fase 5 — Conversión HECHA. 5.1 — Portrait, 5.2 — Validar salida Portrait, 5.3 — Scene, 5.4 — Perfiles genéricos y 5.5 — No recorte silencioso HECHOS. Fase 6 — Integridad HECHA; 6.1 — SHA-256 HECHO; 6.2 — Duplicados HECHO; 6.3 — Job ID HECHO; 6.4 — Estados HECHO; 6.5 — Recuperación tras fallo HECHO; Fase 7 — Auditor IA HECHA (7.1–7.5); Fase 8 — TeraBox / Archive Storage HECHA (8.1–8.6); Fase 9 — Production Storage + Verified Completion HECHA (9.1–9.4); Fase 10 — SQLite HECHA (10.1–10.7); Fase 11 — Explorador visual HECHA (11.0–11.5); Fase 12 — Backups HECHA (12.1–12.6); Fase 13 — Git del repo de producción HECHA; Fase 14 — UI profesional: implementación funcional pendiente de revisión visual. Routing solo podrá consumir ValidatedAssetPackage. La política canónica existe como configuración y 3.6 calcula directorios sin I/O ni escrituras, usando la regla retenida por el package validado. Resolver un destino no autoriza escribirlo. Debe partir de los contratos vigentes, comprobando el estado real del repositorio antes de afirmar su contenido.
 
 # 58. Decisiones que NO deben olvidarse
 
