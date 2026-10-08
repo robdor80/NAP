@@ -229,7 +229,7 @@ public sealed class PlanLogTextRendererTests
             Classification = new() { ["culture"] = "norgard", ["location"] = "treskal", ["role"] = "farmer", ["sex"] = "male" }
         };
         var package = Construct<ValidatedAssetPackage>(new UniverseAssetKey(profile.Id, AssetId), "SECRET_PACKAGE_ROOT",
-            "SECRET_MANIFEST", manifest, Assert.Single(profile.AssetRules), new Dictionary<string, string>());
+            "SECRET_MANIFEST", manifest, Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc"), new Dictionary<string, string>());
         var destination = new ProductionDestinationResolver().Resolve(package, repository);
         return (new ProcessingPlanBuilder().Build(package, repository, destination), repository);
     }

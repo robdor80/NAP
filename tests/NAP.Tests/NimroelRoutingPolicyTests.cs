@@ -7,7 +7,7 @@ namespace NAP.Tests;
 public sealed class NimroelRoutingPolicyTests
 {
     [Fact]
-    public void RealNimroelProfileIsV4AndLoadsItsSinglePortraitRule()
+    public void RealNimroelProfileIsV4AndLoadsItsPortraitRule()
     {
         var json = Read(UniverseProfileLoaderTests.ConfigPath);
         Assert.Equal(4, json["schema_version"]!.GetValue<int>());
@@ -16,7 +16,7 @@ public sealed class NimroelRoutingPolicyTests
         Assert.Equal(new UniverseId("nimroel"), profile.Id);
         Assert.Equal(new[] { "culture", "realm", "region", "location", "role", "sex" }, profile.ClassificationDimensions);
 
-        var rule = Assert.Single(profile.AssetRules);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         Assert.Equal("portrait", rule.AssetType);
         Assert.Equal("portrait_npc", rule.ProductionProfile);
         Assert.Equal(profile.ClassificationDimensions, rule.AllowedClassification);
@@ -26,7 +26,7 @@ public sealed class NimroelRoutingPolicyTests
     [Fact]
     public void RealNimroelProfilePreservesTheHistoricalV2PackageFilesExactly()
     {
-        var current = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules);
+        var current = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var historical = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.HistoricalV2ConfigPath).AssetRules);
 
         Assert.Equal(
@@ -37,7 +37,7 @@ public sealed class NimroelRoutingPolicyTests
     [Fact]
     public void RealNimroelRoutingHasTheSixCanonicalSegmentsInOrder()
     {
-        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules);
+        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var routing = Assert.IsType<AssetRoutingRule>(rule.Routing);
 
         Assert.Equal(
@@ -56,7 +56,7 @@ public sealed class NimroelRoutingPolicyTests
     [Fact]
     public void CanonicalRoutingExcludesOptionalDimensionsAndUsesOnlyRequiredClassifications()
     {
-        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules);
+        var rule = Assert.Single(UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath).AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var dimensions = rule.Routing!.Segments
             .Where(segment => segment.Kind == AssetRouteSegmentKind.Classification)
             .Select(segment => segment.Value!)
@@ -71,7 +71,7 @@ public sealed class NimroelRoutingPolicyTests
     [Fact]
     public void RoutingConfigurationContainsNoCasingOrMappingMechanism()
     {
-        var routing = Assert.Single(Read(UniverseProfileLoaderTests.ConfigPath)["asset_rules"]!.AsArray())!["routing"]!.AsObject();
+        var routing = Assert.Single(Read(UniverseProfileLoaderTests.ConfigPath)["asset_rules"]!.AsArray(), r => r!["asset_type"]!.GetValue<string>() == "portrait" && r["production_profile"]!.GetValue<string>() == "portrait_npc")!["routing"]!.AsObject();
 
         Assert.Equal(new[] { "segments" }, routing.Select(property => property.Key));
         Assert.All(routing["segments"]!.AsArray(), segment =>

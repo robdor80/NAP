@@ -240,7 +240,7 @@ public sealed class DryRunTextRendererTests
     public void RealNimroelPipelineRendersMetadataAndResolvedPolicyWithoutLegacyInference(string assetId, string role, string sex)
     {
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
-        var rule = Assert.Single(profile.AssetRules);
+        var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         var root = Path.Combine(Path.GetTempPath(), "nap-renderer-tests", "production");
         var packageRoot = Path.Combine(Path.GetTempPath(), "nap-renderer-tests", "package");
         var classification = new Dictionary<string, string>
