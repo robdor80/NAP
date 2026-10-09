@@ -1,5 +1,9 @@
 # Scene Conversion — Fase 5 · Capítulo 5.3
 
+La [normalización técnica](IMAGE_NORMALIZATION.md) prepara derivaciones PNG con
+aprobación humana antes del circuito normal. No modifica Scene conversion ni sus
+comprobaciones de ratio exacto, frame completo y ausencia de crop/pad/distorsión.
+
 **Fase 4 HECHA dentro del alcance v1. Fase 5 — Conversión HECHA.
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
 5.4 — Perfiles genéricos HECHO. 5.5 — No recorte silencioso HECHO.**

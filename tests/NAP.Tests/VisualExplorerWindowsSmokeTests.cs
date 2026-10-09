@@ -13,6 +13,19 @@ public sealed class VisualExplorerWindowsFactAttribute : FactAttribute
 public sealed class VisualExplorerWindowsSmokeTests
 {
     [VisualExplorerWindowsFact]
+    public async Task SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate()
+    {
+        using var f = new ImageNormalizationTestFixture(1586, 992, narrative: true);
+        new AssetCatalog(f.Context).Initialize();
+        var settings = new LocalUniverseSettingsStore(Path.Combine(f.Root, "smoke-settings.json")); settings.Save([f.Context.Storage]);
+        var original = File.ReadAllBytes(f.ZipPath);
+        using var result = await Run(settings.SettingsPath, Environment.GetEnvironmentVariable("NAP_NORMALIZATION_SMOKE_OUTPUT"), normalizationProfile: "scene_cartography");
+        Assert.Equal(2, result.RootElement.GetProperty("normalizationChecks").GetInt32());
+        Assert.Equal(0, result.RootElement.GetProperty("bindingErrors").GetInt32());
+        Assert.Equal(original, File.ReadAllBytes(f.ZipPath)); Assert.Empty(f.Service.Scan().Recorded);
+        Assert.Empty(Directory.GetFileSystemEntries(f.Context.Storage.ProductionRoot)); Assert.Empty(Directory.GetFileSystemEntries(f.Context.Storage.ArchiveRoot));
+    }
+    [VisualExplorerWindowsFact]
     public async Task RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender()
     {
         using var f = new CatalogTestFixture(nimroel: true);
@@ -48,7 +61,7 @@ public sealed class VisualExplorerWindowsSmokeTests
         Assert.Equal(0, result.RootElement.GetProperty("bindingErrors").GetInt32()); Assert.False(File.Exists(settings));
         Assert.Equal(File.ReadAllBytes(profile), File.ReadAllBytes(Path.Combine(f.Root, "installed-profiles", "terra", "profile.json")));
     }
-    private static async Task<JsonDocument> Run(string settings, string? outputDirectory = null, string? importSource = null)
+    private static async Task<JsonDocument> Run(string settings, string? outputDirectory = null, string? importSource = null, string? normalizationProfile = null)
     {
         var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../"));
         var app = Path.Combine(root, "src/NAP.App/bin/Release/net8.0-windows/NAP.App.dll"); Assert.True(File.Exists(app), "Build NAP.sln Release before the Windows smoke tests.");
@@ -56,6 +69,7 @@ public sealed class VisualExplorerWindowsSmokeTests
         start.ArgumentList.Add(app); start.ArgumentList.Add("--smoke-test"); start.ArgumentList.Add("--settings=" + settings);
         start.ArgumentList.Add("--profiles-root=" + Path.Combine(Path.GetDirectoryName(settings)!, "installed-profiles"));
         if (importSource is not null) start.ArgumentList.Add("--smoke-import-profile=" + importSource);
+        if (normalizationProfile is not null) start.ArgumentList.Add("--smoke-normalization-profile=" + normalizationProfile);
         if (outputDirectory is not null) start.ArgumentList.Add("--smoke-output=" + outputDirectory);
         using var process = Process.Start(start)!; var output = process.StandardOutput.ReadToEndAsync(); var errors = process.StandardError.ReadToEndAsync();
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(45));

@@ -68,6 +68,25 @@ public sealed class ProfessionalUiTests
             Assert.Null(shell.Dashboard.Notice); Assert.Equal(b.Context.Id, shell.Dashboard.Snapshot!.UniverseId);
         }
     }
+    [Fact] public async Task UniverseSwitchOwnsOneRefreshAndLastRefreshWaitsForThatRead()
+    {
+        using var f = new CatalogTestFixture(universe: "alpha"); using var b = new CatalogTestFixture(universe: "beta"); f.Catalog.Initialize(); b.Catalog.Initialize();
+        var (shell, proxy, _) = Create(f, b); using (shell)
+        {
+            await shell.InitializeAsync(); var snapshot = await proxy.Inner.DashboardAsync(b.Context, default);
+            var entered = Gate<bool>(); var read = Gate<DashboardSnapshot>(); var calls = 0;
+            proxy.Overrides[nameof(IProfessionalUiService.DashboardAsync)] = args =>
+            {
+                if (((UniverseContext)args[0]!).Id != b.Context.Id) throw new InvalidOperationException("Unexpected old-universe refresh.");
+                Interlocked.Increment(ref calls); entered.TrySetResult(true); return read.Task;
+            };
+            shell.SelectedUniverse = b.Context.Profile; var refresh = shell.LastRefresh;
+            await shell.Explorer.UniverseChangeTask; await entered.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            read.SetResult(snapshot); await refresh.WaitAsync(TimeSpan.FromSeconds(10));
+            Assert.Same(refresh, shell.LastRefresh); Assert.Equal(1, calls);
+            Assert.Equal(UiPageState.Ready, shell.Dashboard.State); Assert.Equal(b.Context.Id, shell.Dashboard.Snapshot!.UniverseId);
+        }
+    }
     [Fact] public async Task DisposeDuringPendingMutationDoesNotPublishActivityIntoDisposedPages()
     {
         using var f = new CatalogTestFixture(); f.Catalog.Initialize(); var (shell, proxy, _) = Create(f);

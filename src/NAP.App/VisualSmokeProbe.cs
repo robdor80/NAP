@@ -11,7 +11,7 @@ namespace NAP.App;
 /// <summary>Explicit diagnostic mode, no fabricated asset data. Synthetic integers exercise layout only.</summary>
 internal static class VisualSmokeProbe
 {
-    internal static async Task RunAsync(MainWindow window, ExplorerViewModel vm, ShellViewModel shell, BindingDiagnostics diagnostics, string? output, bool importProfile = false)
+    internal static async Task RunAsync(MainWindow window, ExplorerViewModel vm, ShellViewModel shell, BindingDiagnostics diagnostics, string? output, bool importProfile = false, string? normalizationProfile = null)
     {
         shell.NavigateTo("Catálogo"); await shell.LastRefresh;
         await RenderAsync(window);
@@ -43,6 +43,16 @@ internal static class VisualSmokeProbe
             await vm.ResetFilters.ExecuteAsync();
             if (vm.Assets?.Count != originalCount) throw new InvalidOperationException("Smoke reset failed.");
         }
+        var normalizationChecks = 0;
+        if (normalizationProfile is not null)
+        {
+            shell.NavigateTo("Producción"); await shell.LastRefresh;
+            shell.Pipeline.SelectedCandidate = shell.Pipeline.Candidates.Single();
+            shell.Pipeline.NormalizationTarget = shell.Pipeline.NormalizationProfiles.Single(p => p.ProductionProfile == normalizationProfile);
+            await shell.PrepareNormalization.ExecuteAsync();
+            if (shell.Pipeline.Normalization is null || shell.Pipeline.Prepared is not null || shell.ExecutePackage.CanExecute(null))
+                throw new InvalidOperationException("Normalization preview bypassed a human or production gate.");
+        }
         var pages = 0; var mascotChecks = 0; var tooltipChecks = 0; RodoMascot? lastMascot = null;
         foreach (var size in new[] { (1200d, 700d), (2560d, 1600d) })
         {
@@ -55,6 +65,28 @@ internal static class VisualSmokeProbe
                 shell.NavigateTo(page.Name); await shell.LastRefresh; await RenderAsync(window, new Size(size.Item1, size.Item2)); pages++;
                 if (lastMascot is not null && lastMascot.IsAnimating) throw new InvalidOperationException("RoDo animation survives view unload.");
                 lastMascot = null;
+                if (page == shell.Pipeline && normalizationProfile is not null)
+                {
+                    var view = Find<Views.PipelineView>(window) ?? throw new InvalidOperationException("Production view missing.");
+                    foreach (var name in new[] { "NormalizationOriginal", "NormalizationCandidate" })
+                    {
+                        var preview = (Image)view.FindName(name);
+                        if (preview.Source is not BitmapSource { IsFrozen: true } || !preview.IsVisible || preview.ActualWidth <= 0 || preview.ActualHeight <= 0)
+                            throw new InvalidOperationException("Normalization comparison image did not render.");
+                    }
+                    if (!shell.ApproveNormalization.CanExecute(null) || !shell.RejectNormalization.CanExecute(null) || shell.ExecutePackage.CanExecute(null))
+                        throw new InvalidOperationException("Normalization approval/rejection controls are incorrect.");
+                    foreach (var (scrollName, buttonName) in new[] { ("NormalizationInboxScroll", "CancelNormalizationButton"), ("NormalizationProductionScroll", "RejectNormalizationButton") })
+                    {
+                        var scroll = (ScrollViewer)view.FindName(scrollName); var button = (Button)view.FindName(buttonName);
+                        button.BringIntoView(); await RenderAsync(window, new Size(size.Item1, size.Item2));
+                        var bounds = button.TransformToAncestor(scroll).TransformBounds(new Rect(0, 0, button.ActualWidth, button.ActualHeight));
+                        if (bounds.Top < -1 || bounds.Bottom > scroll.ActualHeight + 1)
+                            throw new InvalidOperationException("Normalization controls cannot be reached by scrolling.");
+                        scroll.ScrollToTop(); await RenderAsync(window, new Size(size.Item1, size.Item2));
+                    }
+                    normalizationChecks++;
+                }
                 if (page == shell.Rodo)
                 {
                     lastMascot = Find<RodoMascot>(window) ?? throw new InvalidOperationException("RoDo mascot missing.");
@@ -136,7 +168,7 @@ internal static class VisualSmokeProbe
         if (diagnostics.Errors != 0) throw new InvalidOperationException($"WPF binding errors: {diagnostics.Errors}.");
         if (window.Background is not SolidColorBrush background || background.Color != (Color)ColorConverter.ConvertFromString("#05131A")) throw new InvalidOperationException("Canonical window surface is missing.");
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { wpf = "rendered", width = (int)window.ActualWidth, height = (int)window.ActualHeight, pages, bindingErrors = diagnostics.Errors, tray = "restored", viewports = new[] { "1200x700", "2560x1600" },
-            state = vm.State.ToString(), assets = originalCount, documents, virtualItems = 30000, realizedBefore = before, realizedAfter = after, selectorMode, importedProfile = importProfile, universeCount = shell.Profiles.Count, mascotChecks, tooltipChecks, mascotAnimationReleased = true }));
+            state = vm.State.ToString(), assets = originalCount, documents, virtualItems = 30000, realizedBefore = before, realizedAfter = after, selectorMode, importedProfile = importProfile, universeCount = shell.Profiles.Count, mascotChecks, tooltipChecks, normalizationChecks, mascotAnimationReleased = true }));
     }
     private static IEnumerable<T> FindAll<T>(DependencyObject node) where T : DependencyObject
     {

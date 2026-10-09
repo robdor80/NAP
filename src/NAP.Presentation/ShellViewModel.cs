@@ -8,19 +8,23 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
 {
     private readonly IProfessionalUiService _service;
     private readonly IUserConfirmation _confirmation;
+    private readonly IImageNormalizationUiService _normalization;
+    private CancellationTokenSource? _normalizationPreparation;
     private readonly IUniverseProfileStore? _profilesStore;
     private readonly IProfileFilePicker? _profilePicker;
     private readonly List<UiAsyncCommand> _commands = [];
     private readonly CancellationTokenSource _lifetime = new();
     private CancellationTokenSource? _read;
-    private long _generation;
-    private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing;
+    private long _generation, _universeSwitchSequence;
+    private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
     private ProfessionalPage _current;
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
-        IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null)
+        IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
+        IImageNormalizationUiService? normalization = null)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
+        _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
@@ -57,6 +61,48 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         CancelRead = new(_ => { _read?.Cancel(); if (CurrentPage == Catalog || CurrentPage == Statistics) Explorer.CancelRead(); CurrentPage.State = Context is null ? UiPageState.Unconfigured : UiPageState.Cancelled; StatusChanged(); }, _ => !_disposed && !IsExecuting && CurrentPage.State == UiPageState.Loading);
         PreparePackage = Command(() => ActionAsync(async (c, ct) =>
         { var candidate = Pipeline.SelectedCandidate!; Pipeline.Prepared = null; Pipeline.Audit = null; var value = await _service.PrepareAsync(c, candidate, ct); if (!Active(c)) return; if (value.Context != c) throw new InvalidDataException("Prepared context mismatch."); Pipeline.Prepared = value; Record(c, "Paquete preparado hasta PLANNED", UiTone.Neutral); }), () => Writable(Pipeline) && Pipeline.SelectedCandidate is not null);
+        CancelNormalization = new(_ => _normalizationPreparation?.Cancel(), _ => !_disposed && _normalizationPreparation is not null);
+        PrepareNormalization = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var candidate = Pipeline.SelectedCandidate!; var target = Pipeline.NormalizationTarget;
+            var policy = NormalizationPolicy(); Pipeline.Normalization = null; Pipeline.Prepared = null; Pipeline.Audit = null;
+            using var source = CancellationTokenSource.CreateLinkedTokenSource(ct); _normalizationPreparation = source; CancelNormalization.Refresh();
+            try
+            {
+                var proposal = await _normalization.PrepareAsync(c, candidate, target?.ProductionProfile, policy, source.Token);
+                if (!Active(c) || source.IsCancellationRequested || Pipeline.SelectedCandidate != candidate) return;
+                if (proposal.AssetKey.UniverseId != c.Id || proposal.SourcePath != candidate.FullPath) throw new InvalidDataException("Normalization evidence scope mismatch.");
+                Pipeline.Normalization = new(proposal); Record(c, "Vista previa preparada; sin autorización de producción", UiTone.Neutral);
+            }
+            finally { _normalizationPreparation = null; CancelNormalization.Refresh(); }
+        }), () => NormalizationAvailable() && Pipeline.SelectedCandidate is not null && NormalizationPolicyValid());
+        ApproveNormalization = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var review = Pipeline.Normalization!; var proposal = review.Proposal; var metadata = false;
+            if (proposal.RequiresMetadataApproval)
+                metadata = await Confirm(c, "Autorizar corrección del perfil", "Solo el production_profile del manifest del candidato cambiará. El ZIP original conserva su manifest.", [proposal.AssetKey.AssetId, review.ProfileChange], ct);
+            var approved = (!proposal.RequiresMetadataApproval || metadata) &&
+                await Confirm(c, "Aprobar normalización técnica", "Crea un candidato independiente. No autoriza auditoría ni publicación. Puedes rechazar si los bordes presentan artefactos.",
+                    [proposal.AssetKey.AssetId, review.Summary, review.Margins, review.Method, review.OriginalHash, review.CandidateHash], ct);
+            if (!Active(c) || Pipeline.Normalization != review || ct.IsCancellationRequested) return;
+            var result = await _normalization.DecideAsync(c, proposal, new(proposal.OperationId, proposal.EvidenceSha256, approved, metadata), ct);
+            if (!Active(c)) return; Pipeline.Normalization = null; Pipeline.SelectedNormalizedCandidate = new(result);
+            Record(c, approved ? "Decisión de normalización registrada; candidato requiere circuito normal" : "Normalización rechazada; no se generó candidato definitivo", approved ? UiTone.Success : UiTone.Neutral);
+        }), () => NormalizationAvailable() && Pipeline.Normalization is not null);
+        RejectNormalization = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var proposal = Pipeline.Normalization!.Proposal;
+            var result = await _normalization.DecideAsync(c, proposal, new(proposal.OperationId, proposal.EvidenceSha256, false), ct);
+            if (!Active(c)) return; Pipeline.Normalization = null; Pipeline.SelectedNormalizedCandidate = new(result);
+            Record(c, "Normalización rechazada; original conservado", UiTone.Neutral);
+        }), () => NormalizationAvailable() && Pipeline.Normalization is not null);
+        PrepareNormalizedCandidate = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var candidate = Pipeline.SelectedNormalizedCandidate!.Result; Pipeline.Prepared = null; Pipeline.Audit = null;
+            var prepared = await _service.PrepareNormalizedAsync(c, candidate, ct);
+            if (!Active(c)) return; if (prepared.Context != c) throw new InvalidDataException("Prepared candidate scope mismatch.");
+            Pipeline.Prepared = prepared; Record(c, "Candidato validado hasta PLANNED; auditoría PASS pendiente", UiTone.Neutral);
+        }), () => Writable(Pipeline) && Pipeline.SelectedNormalizedCandidate?.Result.Receipt is { Decision: "Approved", IsPackage: true });
         AuditPackage = Command(() => ActionAsync(async (c, ct) =>
         { var audit = await _service.AuditAsync(c, Pipeline.Prepared!, ct); if (!Active(c)) return; Pipeline.Audit = audit; Record(c, "Auditoría: " + audit.Decision, audit.Passed ? UiTone.Success : audit.ShouldStop ? UiTone.Error : UiTone.Warning); }), () => Writable(Pipeline) && Pipeline.Prepared is not null && _service.AuditAvailable);
         ExecutePackage = Command(() => ActionAsync(async (c, ct) =>
@@ -122,7 +168,17 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
     public bool HasSingleUniverse => Profiles.Count == 1;
     public bool HasUniverseSelector => Profiles.Count > 1;
-    public UniverseProfile? SelectedUniverse { get => Explorer.SelectedUniverse; set { if (!_disposed && !IsExecuting) { Explorer.SelectedUniverse = value; LastRefresh = RefreshAfterSwitchAsync(); } } }
+    public UniverseProfile? SelectedUniverse
+    {
+        get => Explorer.SelectedUniverse;
+        set
+        {
+            if (_disposed || IsExecuting) return;
+            var sequence = ++_universeSwitchSequence; _switchingUniverse = true;
+            try { Explorer.SelectedUniverse = value; LastRefresh = RefreshAfterSwitchAsync(Explorer.UniverseChangeTask, sequence); }
+            catch { if (sequence == _universeSwitchSequence) _switchingUniverse = false; throw; }
+        }
+    }
     public string UniverseLabel => SelectedUniverse?.DisplayName ?? "Sin universo";
     public ProfessionalPage CurrentPage { get => _current; private set { Set(ref _current, value); StatusChanged(); } }
     public bool IsExecuting { get => _executing; private set { Set(ref _executing, value); Notify(nameof(CanChangeContext)); StatusChanged(); RefreshCommands(); } }
@@ -136,6 +192,11 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand SaveSettings { get; }
     public UiAsyncCommand ImportProfile { get; }
     public UiAsyncCommand PreparePackage { get; }
+    public UiAsyncCommand PrepareNormalization { get; }
+    public RelayCommand CancelNormalization { get; }
+    public UiAsyncCommand ApproveNormalization { get; }
+    public UiAsyncCommand RejectNormalization { get; }
+    public UiAsyncCommand PrepareNormalizedCandidate { get; }
     public UiAsyncCommand AuditPackage { get; }
     public UiAsyncCommand ExecutePackage { get; }
     public UiAsyncCommand SaveObjective { get; }
@@ -150,7 +211,12 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
     { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
-    private async Task RefreshAfterSwitchAsync() { await Explorer.UniverseChangeTask; if (!_disposed && !IsExecuting) { _scopePending = false; await RefreshCurrentAsync(); } }
+    private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
+    {
+        try { await switching; }
+        finally { if (sequence == _universeSwitchSequence) { _scopePending = false; _switchingUniverse = false; } }
+        if (!_disposed && !IsExecuting && sequence == _universeSwitchSequence) await RefreshCurrentAsync();
+    }
     public void NavigateTo(string name)
     {
         if (!Navigate.CanExecute(name)) return; Activate(Pages.Single(p => p.Name == name)); LastRefresh = RefreshCurrentAsync();
@@ -167,6 +233,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (!Explorer.SettingsReadable) return "La configuración local no se puede leer. Revisa el diagnóstico; no se sobrescribirá.";
         if (command == SaveSettings) return SelectedUniverse is null ? "Selecciona primero un universo." : "Completa las tres raíces con rutas absolutas existentes.";
         if (Context is null) return Explorer.Error is null ? "Configura primero las raíces del universo." : "Las raíces configuradas no están disponibles o no son seguras. Revisa Ajustes.";
+        if (command == PrepareNormalization) return !NormalizationPolicyValid() ? "Los límites deben estar entre 0 y 5 %, con hasta dos decimales." : "Selecciona un ZIP del Inbox; los perfiles incompatibles requieren selección explícita.";
+        if (command == ApproveNormalization || command == RejectNormalization) return "Prepara y compara primero la vista previa de normalización.";
+        if (command == PrepareNormalizedCandidate) return "Selecciona un ZIP candidato aprobado y verificado; una vista previa o rechazo no sirve para producción.";
         var page = command == SaveObjective ? (ProfessionalPage)Objectives : command == CreateBackup || command == RestoreBackup || command == RetainBackups ? Backups : command == PreparePackage || command == AuditPackage || command == ExecutePackage ? Pipeline : Git;
         if (page.State == UiPageState.Loading) return "Espera a que termine la lectura del universo.";
         if (page.State == UiPageState.Stopped) return "Lectura detenida. Revisa el diagnóstico antes de reintentar.";
@@ -184,6 +253,17 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private void ApplyProfiles(UniverseProfilesSnapshot snapshot)
     { Settings.InstalledProfiles = snapshot.Installed; Replace(Settings.ProfileIssues, snapshot.Issues); }
     private bool Writable(ProfessionalPage page) => Context is not null && !IsExecuting && page.State is UiPageState.Ready or UiPageState.Empty;
+    private bool NormalizationAvailable() => Context is not null && !IsExecuting && Pipeline.State is not (UiPageState.Loading or UiPageState.Unconfigured);
+    private ImageNormalizationPolicy NormalizationPolicy() => new() { MaxAddedAreaBasisPoints = Growth(Pipeline.NormalizationAreaLimit), MaxAxisGrowthBasisPoints = Growth(Pipeline.NormalizationAxisLimit) };
+    private bool NormalizationPolicyValid() { try { NormalizationPolicy(); return true; } catch (FormatException) { return false; } }
+    private static int Growth(string value)
+    {
+        value = value.Trim().Replace(',', '.');
+        if (!System.Text.RegularExpressions.Regex.IsMatch(value, @"^\d{1,2}(\.\d{1,2})?$") ||
+            !decimal.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var percent) || percent > 5)
+            throw new FormatException("Growth must be 0–5 percent with at most two decimal places.");
+        return (int)(percent * 100);
+    }
     private async Task ActionAsync(Func<UniverseContext, CancellationToken, Task> action)
     {
         var context = Context ?? throw new InvalidOperationException("No active context."); _read?.Cancel(); ++_generation; IsExecuting = true;
@@ -220,9 +300,22 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             else if (page == Pipeline || page == History)
             {
                 var value = await _service.PipelineAsync(context, source.Token); if (!Current()) return; CheckPipeline(value, context);
-                if (page == Pipeline) { Replace(Pipeline.Candidates, value.Candidates); Replace(Pipeline.Jobs, value.Jobs); }
+                if (page == Pipeline)
+                {
+                    if (!Pipeline.Candidates.SequenceEqual(value.Candidates)) Replace(Pipeline.Candidates, value.Candidates);
+                    Replace(Pipeline.Jobs, value.Jobs);
+                    var profiles = context.Profile.AssetRules.Where(r => r.Conversion is not null).Select(r => new ImageNormalizationProfileChoice(r.AssetType, r.ProductionProfile)).ToArray();
+                    if (!Pipeline.NormalizationProfiles.SequenceEqual(profiles)) Replace(Pipeline.NormalizationProfiles, profiles);
+                    var recovery = await _normalization.ReadAsync(context, source.Token); if (!Current()) return;
+                    var selected = Pipeline.SelectedNormalizedCandidate?.Result.DirectoryPath;
+                    foreach (var item in recovery.Recorded) if (item.Receipt.UniverseId != context.Id.Value) throw new InvalidDataException("Normalization history scope mismatch.");
+                    Replace(Pipeline.NormalizationHistory, recovery.Recorded.Select(r => new ImageNormalizationRecordedCandidate(r)));
+                    Pipeline.SelectedNormalizedCandidate = Pipeline.NormalizationHistory.FirstOrDefault(r => r.Result.DirectoryPath == selected);
+                    if (recovery.Problems.Count != 0 || recovery.IncompleteDirectories.Count != 0)
+                        Pipeline.Notice = new("Hay operaciones de normalización incompletas o inválidas; requieren revisión explícita. No se reanudarán ni publicarán automáticamente.", "normalization_recovery_review", UiTone.Warning);
+                }
                 else { var receipts = await _service.ReceiptsAsync(context, source.Token); if (!Current()) return; CheckReceipts(receipts, context); Replace(History.Jobs, value.Jobs); Replace(History.Receipts, receipts); }
-                page.Notice = value.Notices.FirstOrDefault(n => n.Tone == UiTone.Error) ?? value.Notices.FirstOrDefault(); page.State = value.Notices.Any(n => n.Tone == UiTone.Error) ? UiPageState.Stopped : value.Jobs.Count + value.Candidates.Count == 0 ? UiPageState.Empty : UiPageState.Ready;
+                page.Notice = value.Notices.FirstOrDefault(n => n.Tone == UiTone.Error) ?? value.Notices.FirstOrDefault() ?? page.Notice; page.State = value.Notices.Any(n => n.Tone == UiTone.Error) ? UiPageState.Stopped : value.Jobs.Count + value.Candidates.Count == 0 ? UiPageState.Empty : UiPageState.Ready;
             }
             else if (page == Objectives)
             { var value = await _service.PlanningAsync(context, source.Token); if (!Current()) return; CheckPlanning(value, context); Replace(Objectives.Objectives, value.Objectives.Select(o => new ObjectiveCard(o))); Replace(Objectives.Campaigns, value.Campaigns); page.State = value.Objectives.Count == 0 ? UiPageState.Empty : UiPageState.Ready; }
@@ -247,7 +340,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel));
             _scopePending = true;
         }
-        if (e.PropertyName == nameof(ExplorerViewModel.State) && _scopePending && !_initializing && !IsExecuting && Explorer.State != ExplorerState.Loading)
+        // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.
+        if (e.PropertyName == nameof(ExplorerViewModel.State) && !_switchingUniverse && _scopePending && !_initializing && !IsExecuting && Explorer.State != ExplorerState.Loading)
         { _scopePending = false; LastRefresh = RefreshCurrentAsync(); }
         RefreshCommands();
     }
@@ -270,5 +364,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; _lifetime.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); }
+    { if (_disposed) return; _disposed = true; _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }
