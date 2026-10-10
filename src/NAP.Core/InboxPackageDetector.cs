@@ -22,12 +22,16 @@ public sealed class InboxPackageDetector
             throw new DirectoryNotFoundException($"Inbox directory does not exist: '{normalizedPath}'.");
         }
 
-        return Directory.EnumerateFiles(normalizedPath, "*", SearchOption.TopDirectoryOnly)
-            .Where(path => string.Equals(Path.GetExtension(path), ".zip", StringComparison.OrdinalIgnoreCase))
-            .Select(path => new InboxPackageCandidate(Path.GetFileName(path), path))
+        return Enumerate(normalizedPath)
             .OrderBy(candidate => candidate.FileName, StringComparer.OrdinalIgnoreCase)
             .ThenBy(candidate => candidate.FileName, StringComparer.Ordinal)
             .ThenBy(candidate => candidate.FullPath, StringComparer.Ordinal)
             .ToArray();
     }
+
+    // Streaming reconciliation avoids materializing an entire Inbox in the monitor's pending queue.
+    internal IEnumerable<InboxPackageCandidate> Enumerate(string normalizedPath) =>
+        Directory.EnumerateFiles(normalizedPath, "*", SearchOption.TopDirectoryOnly)
+            .Where(path => string.Equals(Path.GetExtension(path), ".zip", StringComparison.OrdinalIgnoreCase))
+            .Select(path => new InboxPackageCandidate(Path.GetFileName(path), path));
 }

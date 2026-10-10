@@ -7,8 +7,10 @@ namespace NAP.Core;
 public sealed partial class AutomationQueueStore : IAutomationQueueStore, IAutomationPolicyStore, IAutomationEvidenceStore
 {
     private readonly UniverseStorageConfig _roots;
+    private Sha256Digest? _validatedDatabaseHash;
     internal Action<string>? BeforeCommit { get; set; }
     public UniverseId UniverseId => _roots.UniverseId;
+    public UniverseStorageConfig Storage => _roots;
     public string DatabasePath => AutomationQueueBoundary.DatabasePath(_roots);
     public AutomationQueueStore(UniverseStorageConfig roots)
     { _roots = AutomationQueueBoundary.Guard(() => { ArgumentNullException.ThrowIfNull(roots); LocalUniverseSettingsStore.ValidateStructure([roots]); return roots; }); }
@@ -55,10 +57,24 @@ public sealed partial class AutomationQueueStore : IAutomationQueueStore, IAutom
         try
         {
             Validate(db);
-            AutomationQueueBoundary.Guard(() => { ValidateData(db); return 0; }, true);
+            // Cache only an exact, fully validated byte identity, never mtime/size. Every changed
+            // database (including our commits and external corruption) requires deep validation.
+            // The existing I/O mutex spans open, hashing, validation and the operation.
+            var hash = DatabaseHash();
+            if (_validatedDatabaseHash != hash)
+            {
+                AutomationQueueBoundary.Guard(() => { ValidateData(db); return 0; }, true);
+                if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Automation database changed during validation.");
+                _validatedDatabaseHash = hash;
+            }
             return db;
         }
         catch { db.Dispose(); throw; }
+    }
+    private Sha256Digest DatabaseHash()
+    {
+        using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        return new Sha256Hasher().Compute(input);
     }
     private ExecutionMutex AcquireIo()
     { try { return ExecutionMutex.Acquire("AutomationQueueIO", _roots.StateRoot); } catch (IOException e) { throw new AutomationException(AutomationError.Busy, "Another queue operation is active.", e); } }
