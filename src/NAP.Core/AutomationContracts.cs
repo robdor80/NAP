@@ -1,7 +1,7 @@
 namespace NAP.Core;
 
 public enum QueueState { Observed, WaitingStable, Queued, Running, RetryScheduled, NeedsReview, Rejected, Completed, Duplicate, MissingSource }
-public enum QueueIncident { None, UniverseMismatch, ProfileUnknown, RatioUnsupported, NormalizationLimitExceeded, ExceptionDecisionRequired, AssetCollision, ReservationOccupied, MissingSource, InterruptedClaim, InvalidEvidence, RetryExhausted }
+public enum QueueIncident { None, UniverseMismatch, ProfileUnknown, RatioUnsupported, NormalizationLimitExceeded, ExceptionDecisionRequired, AssetCollision, ReservationOccupied, MissingSource, InterruptedClaim, InvalidEvidence, RetryExhausted, InvalidZip, UnsafeZip, InvalidManifest, AdmissionInterrupted, SourceChanged, ResourceLimit, StorageUnavailable }
 public enum QueueStage { Observation, Admission, Preparation, Normalization, Audit, Execution, Verification, Catalog, Review }
 public enum QueueEventCode { Observed, Transitioned, Claimed, ClaimInterrupted, AttemptCreated, AttemptClosed, AssetReserved, ReservationReleased, EvidenceRecorded, StageRecorded }
 public enum QueueEventResult { Recorded, Waiting, Succeeded, Rejected, ReviewRequired }

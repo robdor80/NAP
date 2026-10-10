@@ -84,7 +84,7 @@ public sealed class InboxPackageStager
             await using (var source = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             await using (var partial = new FileStream(partialPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             {
-                await source.CopyToAsync(partial, cancellationToken);
+                await CopyBytesAsync(source, partial, long.MaxValue, cancellationToken);
                 await partial.FlushAsync(cancellationToken);
                 copiedLength = partial.Length;
 
@@ -146,6 +146,34 @@ public sealed class InboxPackageStager
         if (string.Equals(sourcePath, destinationPath, comparison))
         {
             throw new InvalidOperationException("The staging destination must not be the source file.");
+        }
+    }
+
+    // Admission owns and keeps the source handle open across hashing and copying. The public manual
+    // API retains its readiness contract; this adapter removes its separate-handle race.
+    internal static async Task StageSnapshotAsync(Stream source, string destination, long maxBytes, CancellationToken token)
+    {
+        var partial = destination + "." + Guid.NewGuid().ToString("N") + ".partial";
+        var created = false;
+        try
+        {
+            await using (var output = new FileStream(partial, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+            {
+                created = true;
+                await CopyBytesAsync(source, output, maxBytes, token);
+                await output.FlushAsync(token); output.Flush(true);
+            }
+            token.ThrowIfCancellationRequested(); File.Move(partial, destination, overwrite: false);
+        }
+        finally { if (created && File.Exists(partial)) File.Delete(partial); } // only this invocation's CreateNew temporary
+    }
+    private static async Task CopyBytesAsync(Stream source, Stream output, long maxBytes, CancellationToken token)
+    {
+        var buffer = new byte[81920]; long bytes = 0; int count;
+        while ((count = await source.ReadAsync(buffer, token)) != 0)
+        {
+            if (count > maxBytes - bytes) throw new InvalidDataException("Snapshot exceeds its byte budget.");
+            bytes += count; await output.WriteAsync(buffer.AsMemory(0, count), token);
         }
     }
 }
