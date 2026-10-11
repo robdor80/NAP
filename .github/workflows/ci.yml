@@ -32,3 +32,58 @@ jobs:
 
       - name: Test
         run: dotnet test NAP.sln --configuration Release --no-build
+
+  windows-wpf:
+    name: Windows WPF smoke tests (4 required)
+    runs-on: windows-2022
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Diagnose Windows desktop environment
+        shell: pwsh
+        run: |
+          dotnet --info
+          $runtimes = dotnet --list-runtimes
+          $runtimes
+          if (-not ($runtimes -match '^Microsoft.WindowsDesktop.App 8\.')) {
+            throw 'The .NET 8 Windows Desktop runtime is required to execute the WPF subprocesses.'
+          }
+          Write-Host "UserInteractive=$([Environment]::UserInteractive); SessionId=$((Get-Process -Id $PID).SessionId)"
+          Write-Host 'The existing tests will open WPF windows and render them; compilation alone is not success.'
+
+      - name: Restore
+        run: dotnet restore NAP.sln
+
+      - name: Build Release including WPF application
+        run: dotnet build NAP.sln --configuration Release --no-restore
+
+      - name: Execute the four Windows WPF tests
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj
+          --configuration Release --no-build --no-restore
+          --filter "FullyQualifiedName~NAP.Tests.VisualExplorerWindowsSmokeTests"
+          --results-directory artifacts/windows-wpf
+          --logger "trx;LogFileName=windows-wpf.trx"
+          --logger "console;verbosity=detailed"
+
+      - name: Require all four tests to execute and pass
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Assert-WpfTestResults.ps1 -ResultsPath artifacts/windows-wpf/windows-wpf.trx
+
+      - name: Preserve Windows WPF results even on failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-wpf-results
+          path: artifacts/windows-wpf/
+          if-no-files-found: warn
+          retention-days: 14

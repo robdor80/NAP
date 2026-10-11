@@ -32,7 +32,7 @@ public interface IProfessionalUiService
 public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IProfessionalUiService
 {
     public bool AuditAvailable => auditor is not null;
-    public const long MaxInputPixels = 64_000_000;
+    public const long MaxInputPixels = PackagePreparationService.MaxInputPixels;
     private static Task<T> Run<T>(UniverseContext c, CancellationToken ct, Func<T> operation) => Task.Run(() =>
     { ct.ThrowIfCancellationRequested(); LocalUniverseSettingsStore.ValidateAvailable(c.Storage); return operation(); }, ct);
     private static PipelineSnapshot Pipeline(UniverseContext c)
@@ -99,31 +99,12 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
         var job = JobId.Create(); var store = new JobStateStore(c); store.Create(job); store.Transition(job, JobState.Staged);
         var extracted = new StagedPackageExtractor().ExtractAsync(staged.FinalStagedPath, extraction, ct).GetAwaiter().GetResult();
         if (extracted.Status != StagedPackageExtractionStatus.Extracted) throw new InvalidDataException("ZIP extraction rejected or collided.");
-        var validated = new PackageSemanticValidator().Validate(extracted.FinalPath!, c);
-        if (validated.Issues.ShouldStop) throw new UiStoppedException(validated.Issues);
-        if (validated.Package is null) throw new InvalidDataException("Package semantic validation stopped.");
-        var conversion = new ImageConversionResolver().Resolve(validated.Package, MaxInputPixels);
-        if (conversion is not null)
+        try
         {
-            var png = new PngMasterValidator().Validate(conversion.SourcePath);
-            var geometry = new ImageConversionGeometryValidator().Validate(png.ImageInfo!, conversion);
-            if (geometry.ShouldStop) throw new UiStoppedException(geometry);
+            var result = new PackagePreparationService().PrepareManual(c, job, extracted.FinalPath!);
+            return new(c, job, result.Package, result.Processing, result.Archive, result.Validation);
         }
-        store.Transition(job, JobState.Validated);
-        var repositoryValidation = new ProductionRepositoryValidator().Validate(c);
-        if (repositoryValidation.Issues.ShouldStop) throw new UiStoppedException(repositoryValidation.Issues);
-        var repository = repositoryValidation.Repository ?? throw new InvalidDataException("Production repository unavailable.");
-        var package = validated.Package; var destination = new ProductionDestinationResolver().Resolve(package, repository);
-        var processing = new ProcessingPlanBuilder().Build(package, repository, destination);
-        var scan = new ProductionRepositoryScanner().Scan(repository);
-        if (scan.Issues.ShouldStop) throw new UiStoppedException(scan.Issues);
-        var snapshot = scan.Snapshot ?? throw new InvalidDataException("Production snapshot stopped.");
-        var issues = new ProcessingPlanValidator().Validate(processing, snapshot);
-        if (issues.ShouldStop) throw new UiStoppedException(issues);
-        var archive = new ArchiveMasterPlanner(c).Plan(package, processing);
-        if (archive.Issues.ShouldStop) throw new UiStoppedException(archive.Issues);
-        store.Transition(job, JobState.Planned);
-        return new(c, job, package, processing, archive, issues);
+        catch (PackagePreparationStoppedException stopped) { throw new UiStoppedException(stopped.Issues); }
     }
     public async Task<AiAuditReport> AuditAsync(UniverseContext c, PreparedPipelineAsset prepared, CancellationToken ct)
     {

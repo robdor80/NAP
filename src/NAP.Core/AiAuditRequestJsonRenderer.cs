@@ -13,7 +13,7 @@ public sealed class AiAuditRequestJsonRenderer
         using (var writer = new Utf8JsonWriter(output))
         {
             writer.WriteStartObject();
-            writer.WriteNumber("schema_version", 1);
+            writer.WriteNumber("schema_version", request.WorkflowEvidenceJson is null ? 1 : 2);
             writer.WriteString("universe_id", request.AssetKey.UniverseId.Value);
             writer.WriteString("asset_id", request.AssetKey.AssetId);
             writer.WriteString("asset_type", request.AssetType);
@@ -49,6 +49,11 @@ public sealed class AiAuditRequestJsonRenderer
                 writer.WriteEndObject();
             }
             writer.WriteEndArray();
+            if (request.WorkflowEvidenceJson is not null)
+            {
+                writer.WritePropertyName("workflow_evidence");
+                using var evidence = JsonDocument.Parse(request.WorkflowEvidenceJson); evidence.RootElement.WriteTo(writer);
+            }
             writer.WriteEndObject();
             writer.Flush();
         }
