@@ -42,9 +42,19 @@ public sealed record AutomationAuthorization(string AuthorizationId, UniverseId 
 public sealed record StoredAutomationPolicy(AutomationPolicyDefinition Definition, PolicyReference Reference,
     AutomationPolicyState State, AutomationAuthorization? Authorization, long Revision)
 {
-    /// <summary>Phase 1 never grants execution authority, even if an authorization reference is recorded.</summary>
+    /// <summary>Neither Disabled nor PreparationOnly grants any productive execution authority.</summary>
     [System.Text.Json.Serialization.JsonIgnore]
     public bool IsExecutionAuthorized => false;
+
+    /// <summary>Explicit authority for pre-production only, bound to the immutable policy and its roots.
+    /// Admit covers preparation of admitted packages; Normalize and Audit require their own operation bits.
+    /// This capability does not compose a host or authorize productive claims/publication.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsPreparationAuthorized => State == AutomationPolicyState.PreparationOnly &&
+        Authorization is { } grant && grant.UniverseId == Definition.Roots.UniverseId &&
+        grant.Policy == Reference && Reference == Definition.Reference &&
+        Definition.Operations.HasFlag(AutomationOperations.Admit) &&
+        (Definition.Operations & ~(AutomationOperations.Admit | AutomationOperations.Normalize | AutomationOperations.Audit)) == 0;
 }
 public sealed record NormalizationAuthority(NormalizationAuthorityKind Kind, string AuthorizationId, string Actor,
     DateTimeOffset Utc, PolicyReference? Policy);

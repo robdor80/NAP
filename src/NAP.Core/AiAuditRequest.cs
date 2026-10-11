@@ -43,4 +43,5 @@ public sealed class AiAuditRequest
     public IReadOnlyList<string> InputRoles { get; }
     public string DestinationRelativeDirectory { get; }
     public IReadOnlyList<AiAuditIssueFact> ValidationIssues { get; }
+    internal string? WorkflowEvidenceJson { get; init; }
 }

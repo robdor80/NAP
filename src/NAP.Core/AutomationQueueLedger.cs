@@ -37,7 +37,11 @@ public sealed partial class AutomationQueueStore
         if (state == AutomationPolicyState.Enabled) throw new AutomationException(AutomationError.Disabled, "Phase 1 cannot enable automation.");
         var prior = Policy(db, tx, reference); PolicyRevision(prior, revision);
         if (prior.State == AutomationPolicyState.Revoked || prior.State == state) throw new AutomationException(AutomationError.IllegalTransition, "Revocation is terminal; unchanged policy state is not a transition.");
-        var value = prior with { State = state, Revision = revision + 1 }; SavePolicyRow(db, tx, value); return value;
+        var value = prior with { State = state, Revision = revision + 1 };
+        if (state == AutomationPolicyState.PreparationOnly &&
+            (!value.IsPreparationAuthorized || CurrentPolicy(db, tx).Reference != reference))
+            throw new AutomationException(AutomationError.PolicyMismatch, "PreparationOnly requires the current exact authorized policy, Admit, and exclusively pre-production operations.");
+        SavePolicyRow(db, tx, value); return value;
     });
     private static void PolicyRevision(StoredAutomationPolicy policy, long revision) { if (policy.Revision != revision) throw new AutomationException(AutomationError.RevisionConflict, "Policy revision is stale."); }
     private static void InsertPolicy(SqliteConnection db, SqliteTransaction tx, StoredAutomationPolicy value)

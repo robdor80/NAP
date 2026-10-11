@@ -13,7 +13,7 @@ public sealed partial class AutomationQueueStore
         var attempt = BindAttempt(db, tx, lineage.ItemId, lineage.AttemptId, lineage.UniverseId);
         if (attempt.JobId != lineage.JobId || item.Zip.Hash != lineage.OriginalZip.Hash || item.Zip.SizeBytes != lineage.OriginalZip.SizeBytes)
             throw AutomationValidation.Invalid("Lineage must bind the original observation and preassigned Job.");
-        var rule = (attempt.Profile ?? throw AutomationValidation.Invalid("Normalization requires a resolved complete rule.")).ValidateAndGetRule();
+        var rule = LineageRule(db, tx, attempt, lineage, currentDecision: true);
         if (rule.AssetType != lineage.Parameters.AssetType || rule.ProductionProfile != lineage.Parameters.ProductionProfile ||
             !lineage.Parameters.Ratio.Matches(rule.Conversion!.OutputWidth, rule.Conversion.OutputHeight)) throw AutomationValidation.Invalid("Lineage parameters do not match the frozen attempt rule.");
         if (lineage.Authority.Kind == NormalizationAuthorityKind.AuthorizedPolicy)
@@ -85,6 +85,8 @@ public sealed partial class AutomationQueueStore
             AutomationValidation.Defined(value.State);
             if (value.State == AutomationPolicyState.Enabled || value.Reference != value.Definition.Reference || rows.GetString(0) != value.Reference.Hash.Hex || rows.GetString(1) != value.Reference.PolicyId || rows.GetInt32(2) != value.Reference.Version || value.Revision < 0) throw AutomationValidation.Corrupt("Policy payload or phase-1 activation state is inconsistent.");
             if (value.Authorization is { } a) { AutomationValidation.Scope(UniverseId, a.UniverseId); AutomationValidation.Utc(a.AuthorizedUtc); AutomationValidation.Text(a.Actor); AutomationValidation.Text(a.AuthorizationId); if (a.Policy != value.Reference) throw AutomationValidation.Corrupt("Authorization hash/scope mismatch."); }
+            if (value.State == AutomationPolicyState.PreparationOnly && !value.IsPreparationAuthorized)
+                throw AutomationValidation.Corrupt("PreparationOnly lacks exact, exclusively pre-production authority.");
             policies.Add(value.Reference.Hash.Hex, value);
         }
         foreach (var policy in policies.Values)
@@ -95,7 +97,14 @@ public sealed partial class AutomationQueueStore
             foreach (var entry in history)
             {
                 AutomationValidation.Defined(entry.State);
+                if (entry.Authorization is { } authorization)
+                {
+                    AutomationValidation.Scope(UniverseId, authorization.UniverseId); AutomationValidation.Utc(authorization.AuthorizedUtc);
+                    AutomationValidation.Text(authorization.Actor); AutomationValidation.Text(authorization.AuthorizationId);
+                    if (authorization.Policy != entry.Reference) throw AutomationValidation.Corrupt("Historical authorization scope mismatch.");
+                }
                 if (entry.Reference != policy.Reference || entry.Definition.Reference != policy.Reference || entry.Revision != (previous?.Revision ?? -1) + 1 || entry.State == AutomationPolicyState.Enabled ||
+                    entry.State == AutomationPolicyState.PreparationOnly && !entry.IsPreparationAuthorized ||
                     previous is null && (entry.State != AutomationPolicyState.Disabled || entry.Authorization is not null) ||
                     previous is not null && (previous.State == AutomationPolicyState.Revoked || previous.Authorization is not null && entry.Authorization != previous.Authorization))
                     throw AutomationValidation.Corrupt("Policy history contains incompatible authority/state changes.");
@@ -193,7 +202,7 @@ public sealed partial class AutomationQueueStore
                 previousLineage[value.OperationId] = value;
                 (id, version, item, attempt, universe) = (value.OperationId, value.Version, value.ItemId, value.AttemptId, value.UniverseId);
                 if (!attempts.TryGetValue(attempt.Value, out var a) || a.JobId != value.JobId || value.OriginalZip.Hash != items[item.Value].Zip.Hash || value.OriginalZip.SizeBytes != items[item.Value].Zip.SizeBytes) throw AutomationValidation.Corrupt("Lineage identity mismatch.");
-                var rule = (a.Profile ?? throw AutomationValidation.Corrupt("Lineage has no resolved rule.")).ValidateAndGetRule();
+                var rule = LineageRule(db, null, a, value, currentDecision: false);
                 if (rule.AssetType != value.Parameters.AssetType || rule.ProductionProfile != value.Parameters.ProductionProfile || !value.Parameters.Ratio.Matches(rule.Conversion!.OutputWidth, rule.Conversion.OutputHeight)) throw AutomationValidation.Corrupt("Lineage rule parameters mismatch.");
                 if (value.Authority.Policy is { } p)
                 {
@@ -216,5 +225,17 @@ public sealed partial class AutomationQueueStore
             if (rows.GetString(0) != id || rows.GetInt32(1) != version || rows.GetString(2) != item.Value || rows.GetString(3) != attempt.Value || !items.ContainsKey(item.Value) || !attempts.TryGetValue(attempt.Value, out var bound) || bound.ItemId != item || version != versions.GetValueOrDefault(id) + 1) throw AutomationValidation.Corrupt("Evidence version or workflow binding mismatch.");
             versions[id] = version;
         }
+    }
+    private static UniverseAssetRule LineageRule(SqliteConnection db, SqliteTransaction? tx, WorkflowAttempt attempt,
+        NormalizationLineage lineage, bool currentDecision)
+    {
+        var baseline = (attempt.Profile ?? throw AutomationValidation.Invalid("Normalization requires a resolved complete rule.")).ValidateAndGetRule();
+        if (lineage.Authority.Kind != NormalizationAuthorityKind.HumanDecision || !lineage.Authority.AuthorizationId.StartsWith("decision_", StringComparison.Ordinal)) return baseline;
+        var decisions = Payloads<ExceptionalConfigurationDecision>(db, tx, "SELECT payload FROM decisions WHERE decision_id=$i ORDER BY version", "$i", lineage.Authority.AuthorizationId);
+        var approved = currentDecision ? decisions.LastOrDefault() : decisions.LastOrDefault(d => d.State == ExceptionalDecisionState.Approved && d.Actor == lineage.Authority.Actor && d.Utc == lineage.Authority.Utc);
+        if (approved is not { State: ExceptionalDecisionState.Approved, Scope: ExceptionalScope.SingleAsset } || approved.ItemId != attempt.ItemId || approved.AttemptId != attempt.Id ||
+            approved.Actor != lineage.Authority.Actor || approved.Utc != lineage.Authority.Utc || approved.EffectiveRule.AssetType != baseline.AssetType)
+            throw AutomationValidation.Invalid("Exceptional lineage requires its exact approved single-asset decision.");
+        return approved.EffectiveRule.ValidateAndGetRule();
     }
 }

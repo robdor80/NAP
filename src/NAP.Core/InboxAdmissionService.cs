@@ -225,6 +225,19 @@ public sealed class InboxAdmissionService
     {
         var item = _queue.Get(id); return _evidence.Load(item, _queue.GetAttempt(item.ActiveAttempt ?? throw AutomationValidation.Invalid("No admission attempt.")));
     }
+    /// <summary>Read-only hand-off: only a bound final receipt and exact snapshot/inventory are preparable.</summary>
+    public AdmissionReceipt VerifyAdmitted(QueueItemId id)
+    {
+        ScopeBoundary(); var item = _queue.Get(id);
+        var attempt = _queue.GetAttempt(item.ActiveAttempt ?? throw AutomationValidation.Invalid("No admission attempt."));
+        AdmissionReceipt receipt;
+        try { receipt = _evidence.Load(item, attempt); }
+        catch (AutomationException e) when (e.Code is AutomationError.CorruptStore or AutomationError.InvalidContract)
+        { throw new InvalidDataException("The individual admission receipt is corrupt.", e); }
+        if (receipt.Checkpoint != AdmissionCheckpoint.Admitted || receipt.DeclaredUniverse != _context.Id.Value)
+            throw new InvalidDataException("Preparation requires a finalized, same-universe admission.");
+        _evidence.Verify(receipt, attempt, _options); return receipt;
+    }
     private InboxAdmissionResult Reject(AutomationQueueOwner owner, AdmissionReceipt receipt, InboxAdmissionCode code, QueueIncident incident, bool review = false)
     {
         _evidence.Advance(owner, receipt, review ? AdmissionCheckpoint.NeedsReview : AdmissionCheckpoint.Rejected, code: code);
