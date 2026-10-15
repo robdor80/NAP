@@ -3,6 +3,27 @@ using System.Text.Json;
 using System.Reflection;
 using NAP.Core;
 
+if (args.Length == 2 && args[0] == "catalog-session" && args[1] is "observe" or "reusable")
+{
+    var lab = Path.Combine(Path.GetTempPath(), "nap-catalog-session-" + Guid.NewGuid().ToString("N"));
+    var roots = new UniverseStorageConfig(new("stamp_lab"), Path.Combine(lab, "workspace"), Path.Combine(lab, "production"), Path.Combine(lab, "archive"));
+    foreach (var directory in new[] { roots.WorkspaceRoot, roots.ProductionRoot, roots.ArchiveRoot }) Directory.CreateDirectory(directory);
+    var context = new UniverseContext(new UniverseProfile(roots.UniverseId, "Synthetic stamp lab"), roots);
+    new AssetCatalog(context).Initialize();
+    var type = typeof(AssetCatalog).Assembly.GetType("NAP.Core.CatalogFileStamp")!;
+    var stamp = type.GetMethod("Capture", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [roots.CatalogPath])!;
+    var reusable = (bool)type.GetProperty("CanReuse", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(stamp)!;
+    if (args[1] == "reusable" && !reusable) throw new InvalidOperationException("A per-file change sequence is required for this session test.");
+    var reader = new CatalogExplorerReader(context); reader.Page(); reader.Page();
+    var count = (int)typeof(CatalogExplorerReader).GetProperty("StrongValidationCount", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(reader)!;
+    if (count != (reusable ? 1 : 2)) throw new InvalidOperationException("Unsafe session validation reuse.");
+    File.WriteAllText(roots.CatalogPath, "synthetic corruption"); var corrupt = File.ReadAllBytes(roots.CatalogPath);
+    try { reader.Page(); throw new InvalidOperationException("Corruption was accepted."); } catch (CatalogException) { }
+    if (!File.ReadAllBytes(roots.CatalogPath).SequenceEqual(corrupt)) throw new InvalidOperationException("Corruption was modified.");
+    Console.WriteLine(JsonSerializer.Serialize(new { CanReuse = reusable, StrongValidations = count, CorruptionRejected = true }));
+    return 0;
+}
+
 if (args.Length == 5 && args[0] == "queue-owner")
 {
     var roots = new UniverseStorageConfig(new UniverseId(args[1]), args[2], args[3], args[4]);
