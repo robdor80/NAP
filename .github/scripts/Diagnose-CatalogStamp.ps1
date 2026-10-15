@@ -10,15 +10,15 @@ foreach ($parent in @($env:RUNNER_TEMP, (Join-Path $env:USERPROFILE 'AppData/Loc
     $path = Join-Path $lab 'synthetic.db'
     $bytes = [byte[]]::new(8192)
     [IO.File]::WriteAllBytes($path, $bytes)
-    $before = $capture.Invoke($null, @($path))
+    $before = $capture.Invoke($null, [object[]]@([string]$path))
     $time = [IO.File]::GetLastWriteTimeUtc($path)
     [IO.File]::WriteAllBytes($path, $bytes)
     [IO.File]::SetLastWriteTimeUtc($path, $time)
-    $same = $capture.Invoke($null, @($path))
+    $same = $capture.Invoke($null, [object[]]@([string]$path))
     $bytes[4096] = 255
     [IO.File]::WriteAllBytes($path, $bytes)
     [IO.File]::SetLastWriteTimeUtc($path, $time)
-    $changed = $capture.Invoke($null, @($path))
+    $changed = $capture.Invoke($null, [object[]]@([string]$path))
     $drive = [IO.DriveInfo]::new($path)
     $observations += [pscustomobject]@{ Path=$path; Format=$drive.DriveFormat; DriveType=$drive.DriveType.ToString(); Before=$before; SameBytesRewritten=$same; BodyChanged=$changed }
 }
