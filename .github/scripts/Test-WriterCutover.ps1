@@ -64,14 +64,13 @@ try {
     }
     foreach ($directory in @($data,$startup)) { Set-LabAccess $directory $true $true }
     $file = Join-Path $data 'legacy-write-probe'
-    [IO.File]::WriteAllText($file,'synthetic baseline')
-    if (-not $IsWindows) { & chmod 666 -- $file; if ($LASTEXITCODE -ne 0) { throw 'Baseline permissions unavailable.' } }
     $baseline = Old-Write $file
     if ($baseline.Code -ne 0 -or $baseline.Output -ne 'WROTE') { throw ('Old-role baseline failed: ' + $baseline.Error) }
-    # The old process has exited: no live write handles survive the cutover. Existing paths/data are retained.
-    [IO.File]::WriteAllText($file,'preserved synthetic asset')
     $launch = Join-Path $startup 'legacy-write-probe'
-    [IO.File]::WriteAllText($launch,('protocol=2;binary_sha256=' + (Get-FileHash -LiteralPath $publicProbe -Algorithm SHA256).Hash))
+    $baselineLaunch = Old-Write $launch
+    if ($baselineLaunch.Code -ne 0 -or $baselineLaunch.Output -ne 'WROTE') { throw ('Old-role startup baseline failed: ' + $baselineLaunch.Error) }
+    # Both old processes have exited. They created/own the existing files; ownership must
+    # also transfer or that owner could restore its own permissions after the ACL change.
     $beforeData = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash
     $beforeLaunch = (Get-FileHash -LiteralPath $launch -Algorithm SHA256).Hash
     foreach ($directory in @($data,$startup)) { Set-LabAccess $directory $false }
@@ -81,11 +80,17 @@ try {
         foreach ($path in @($file,$launch)) {
             $acl = Get-Acl -LiteralPath $path
             $acl.SetAccessRuleProtection($false,$false)
+            $acl.SetOwner([Security.Principal.WindowsIdentity]::GetCurrent().User)
             foreach ($rule in @($acl.Access | Where-Object { -not $_.IsInherited })) { [void]$acl.RemoveAccessRuleSpecific($rule) }
             Set-Acl -LiteralPath $path -AclObject $acl
         }
     } else {
-        foreach ($path in @($file,$launch)) { & chmod 600 -- $path; if ($LASTEXITCODE -ne 0) { throw 'File access barrier unavailable.' } }
+        $writerUid = (& id -u | Out-String).Trim(); $writerGid = (& id -g | Out-String).Trim()
+        foreach ($path in @($file,$launch)) {
+            & sudo -n chown ($writerUid + ':' + $writerGid) -- $path
+            if ($LASTEXITCODE -ne 0) { throw 'Existing ownership could not transfer.' }
+            & chmod 600 -- $path; if ($LASTEXITCODE -ne 0) { throw 'File access barrier unavailable.' }
+        }
     }
     foreach ($scope in @('AutomationOwner','Job','Production','Catalog')) {
         $start=[Diagnostics.ProcessStartInfo]::new($dotnet)
@@ -112,7 +117,7 @@ try {
     $report=[pscustomobject]@{
         Lab=$lab; WriterIdentity=$writerIdentity; OldIdentity=$oldIdentity
         CoreSha256=(Get-FileHash -LiteralPath (Join-Path ([IO.Path]::GetDirectoryName($probe)) 'NAP.Core.dll') -Algorithm SHA256).Hash
-        BaselineOldWriteSucceeded=$true; OldProcessesDrainedBeforeCutover=$true; Observations=$results
+        BaselineOldWriteSucceeded=$true; OldProcessesDrainedBeforeCutover=$true; ExistingOwnershipTransferred=$true; Observations=$results
         Limitation='Synthetic access/startup-file barrier; does not configure or attest the real MSI or its launch policy.'
     }
     $destination=[IO.Path]::GetFullPath($OutputPath)
