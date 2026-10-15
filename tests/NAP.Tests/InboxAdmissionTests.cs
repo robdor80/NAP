@@ -200,6 +200,43 @@ public sealed class InboxAdmissionTests(ITestOutputHelper output)
         Assert.Equal(files.Length, Directory.EnumerateFiles(f.Roots.StagingRoot, "*", SearchOption.AllDirectories).Count()); f.AssertUntouched();
     }
     [Fact]
+    public void WindowsQuotaAncestorPinsPreventReplacementUntilTheirHandlesClose()
+    {
+        if (!OperatingSystem.IsWindows()) return;
+        using var f = new Fixture(); var root = Path.Combine(f.Roots.StagingRoot, "retained"); Directory.CreateDirectory(root);
+        var renamed = root + "-renamed";
+        var type = typeof(AutomationQueueStore).Assembly.GetType("NAP.Core.WindowsInventoryDirectories")!;
+        using (var pinned = (IDisposable)type.GetMethod("PinAncestors", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [root])!)
+        {
+            Assert.Throws<IOException>(() => Directory.Move(root, renamed)); Assert.True(Directory.Exists(root)); Assert.False(Directory.Exists(renamed));
+            Assert.Throws<IOException>(() => Directory.Move(f.Roots.StagingRoot, f.Roots.StagingRoot + "-renamed"));
+        }
+        Directory.Move(root, renamed); Directory.Move(renamed, root); // Prove handles were released, not a permanent path failure.
+    }
+    [Fact]
+    public async Task RetainedInventoryRejectsLinkedBranchesWithoutReadingOrChangingTheirTargets()
+    {
+        using var f = new Fixture(); var retained = Path.Combine(f.Roots.StagingRoot, "automation-admission"); Directory.CreateDirectory(retained);
+        var link = Path.Combine(retained, "foreign-branch");
+        if (OperatingSystem.IsWindows())
+        {
+            var start = new ProcessStartInfo("cmd.exe") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
+            foreach (var argument in new[] { "/c", "mklink", "/J", link, f.Roots.ProductionRoot }) start.ArgumentList.Add(argument);
+            using var process = Process.Start(start)!;
+            var stdout = process.StandardOutput.ReadToEndAsync(); var stderr = process.StandardError.ReadToEndAsync();
+            await process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(10));
+            Assert.True(process.ExitCode == 0, await stdout + await stderr);
+        }
+        else Directory.CreateSymbolicLink(link, f.Roots.ProductionRoot);
+        try
+        {
+            using var owner = f.Queue.AcquireOwner();
+            Assert.Equal(AutomationError.UnsafePath, Assert.Throws<AutomationException>(() => f.Service.Admit(owner, f.Zip("linked-retention.zip"))).Code);
+            f.AssertUntouched();
+        }
+        finally { Directory.Delete(link); }
+    }
+    [Fact]
     public void FreshParallelRetainedAccountingIncludesEveryBranchAndPreservesItsBytes()
     {
         foreach (var fits in new[] { false, true })
