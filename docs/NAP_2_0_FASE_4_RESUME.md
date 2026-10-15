@@ -1,5 +1,15 @@
 # Punto seguro de pausa — Fase 4
 
+**Reanudado el 2026-10-15.** El checkpoint ya se incorporó a la rama de la PR mediante `63c6dff` y recibió las correcciones y pruebas posteriores. No repetir el cherry-pick del paso 3 de esta nota histórica. Consultar el estado actual en `NAP_2_0_FASE_4_EXECUTION_RECOVERY.md`, la evidencia v2 y `NAP_2_0_FASE_4_CUTOVER.md`. La decisión de actualización obligatoria sigue autorizada; su aplicación al equipo real no se ha realizado.
+
+## Estado actual al cerrar la reanudación
+
+Código publicado hasta **`7fc39bd5ab4d6d60023716f27da90169d88acccd`**; matriz [38774561085](https://github.com/robdor80/NAP/actions/runs/38774561085) completamente verde: Windows 3.716/3.716; Linux 3.712 aprobadas y solo cuatro WPF omitidas; WPF independiente 4/4; exclusión histórica 4/4, procesos 19/19 y RecoveryPush 29/29 por plataforma. Local: Fase 4 80/80, cuatro volúmenes 4/4, readiness 10/10 y build Release correcto. Los commits posteriores de consolidación documental no cambian el código validado. PR #46 continúa abierta en Draft, sin merge.
+
+No quedan builds ni testhosts locales de este trabajo ejecutándose. Para continuar: ejecutar primero pwd/rama/status, leer el cierre del informe y el procedimiento de corte. **No repetir la implementación ni recuperar de nuevo el WIP.** El trabajo pendiente es operativo: inventariar las rutas/identidades/arranque reales, preparar la intervención Windows y aplicar/verificar la barrera externa antes de cualquier uso real. Comunicar previamente cualquier intervención de permisos/arranque del MSI. Mantener producción desactivada: notificar una intervención no concede autorización productiva. Revisar también los avisos de dependencia consignados en el informe. La Fase 4 sigue sin certificación para despliegue hasta acreditar esas condiciones.
+
+## Checkpoint histórico al apagar — los pasos siguientes ya no son la cola de trabajo actual
+
 Pausa solicitada por el responsable para apagar el ordenador, 2026-10-15, aproximadamente 14:20 Europe/Madrid. **Fase 4 NO certificada. PR #46 abierta en Draft. Sin merge ni producción real.**
 
 ## Trabajo guardado
@@ -31,7 +41,7 @@ No se han modificado permisos ni arranque del MSI, ni se ha aplicado una barrera
 
 El peer añade core-hold/core-try/core-race mediante el Core real y legacy-write para ensayos sintéticos de denegación. Hay un helper de procesos y cableado inicial en el csproj de tests. **Faltan su revisión y validación, la integración con los tests y el contrato efectivo de despliegue.** El caché Windows del prototipo crea ACL privadas si se ejecuta: antes de ensayarlo localmente, revisar el alcance y respetar el aviso previo sobre intervención Windows; preferir CI desechable para los ensayos de permisos. Hasta esta pausa solo se compiló ese código, no se ejecutó esa creación de ACL.
 
-## Orden exacto para retomar
+## Orden previsto al pausar (histórico; checkpoint ya integrado)
 
 1. Ejecutar `pwd`, `git branch --show-current`, `git status --short` y comunicar carpeta/rama/cambios antes de trabajar. Leer este documento y los dos informes. No empezar otra fase ni reautorizar la decisión ya aceptada.
 2. Consultar el estado final del run `38731153045` y de la CI documental posterior; descargar/consolidar Windows completo. Los artifacts locales anteriores están en `artifacts/phase4/` (ignorados); la evidencia permanente está en docs y GitHub.

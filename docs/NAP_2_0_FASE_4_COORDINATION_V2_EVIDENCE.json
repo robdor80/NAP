@@ -1,0 +1,315 @@
+{
+  "SourceCommit": "7fc39bd5ab4d6d60023716f27da90169d88acccd",
+  "Run": "https://github.com/robdor80/NAP/actions/runs/38774561085",
+  "RealHostCutoverApplied": false,
+  "RealStartupPolicyAttested": false,
+  "Platforms": [
+    {
+      "Platform": "windows",
+      "PowerShell": "7.6.6",
+      "PowerShellRuntime": ".NET 10.0.12",
+      "OperatingSystem": "Microsoft Windows 10.0.20348",
+      "Runtimes": [
+        {
+          "Runtime": "8.0.31",
+          "Framework": ".NET 8.0.31",
+          "RuntimeIdentifier": "win-x64"
+        },
+        {
+          "Runtime": "8.0.32",
+          "Framework": ".NET 8.0.32",
+          "RuntimeIdentifier": "win-x64"
+        }
+      ],
+      "Git": "git version 2.56.0.windows.2",
+      "DotnetInfo": ".NET SDK:\r\n Version:           10.0.401\r\n Commit:            e34a38d2ae\r\n Workload version:  10.0.400-manifests.63b36e85\r\n MSBuild version:   18.9.11+e34a38d2a\r\n\r\nRuntime Environment:\r\n OS Name:     Windows\r\n OS Version:  10.0.20348\r\n OS Platform: Windows\r\n RID:         win-x64\r\n Base Path:   C:\\Program Files\\dotnet\\sdk\\10.0.401\\\r\n\r\n.NET workloads installed:\r\n [maui-windows]\r\n   Installation Source: VS 17.14.37710.0\r\n   Manifest Version:    10.0.0/10.0.100\r\n   Manifest Path:       C:\\Program Files\\dotnet\\sdk-manifests\\10.0.100\\microsoft.net.sdk.maui\\10.0.0\\WorkloadManifest.json\r\n   Install Type:        FileBased\r\n\r\n [maccatalyst]\r\n   Installation Source: VS 17.14.37710.0\r\n   Manifest Version:    26.0.11017/10.0.100\r\n   Manifest Path:       C:\\Program Files\\dotnet\\sdk-manifests\\10.0.100\\microsoft.net.sdk.maccatalyst\\26.0.11017\\WorkloadManifest.json\r\n   Install Type:        FileBased\r\n\r\n [ios]\r\n   Installation Source: VS 17.14.37710.0\r\n   Manifest Version:    26.0.11017/10.0.100\r\n   Manifest Path:       C:\\Program Files\\dotnet\\sdk-manifests\\10.0.100\\microsoft.net.sdk.ios\\26.0.11017\\WorkloadManifest.json\r\n   Install Type:        FileBased\r\n\r\n [android]\r\n   Installation Source: VS 17.14.37710.0\r\n   Manifest Version:    36.1.2/10.0.100\r\n   Manifest Path:       C:\\Program Files\\dotnet\\sdk-manifests\\10.0.100\\microsoft.net.sdk.android\\36.1.2\\WorkloadManifest.json\r\n   Install Type:        FileBased\r\n\r\n [wasm-tools]\r\n   Installation Source: VS 17.14.37710.0\r\n   Manifest Version:    10.0.112/10.0.100\r\n   Manifest Path:       C:\\Program Files\\dotnet\\sdk-manifests\\10.0.100\\microsoft.net.workload.mono.toolchain.current\\10.0.112\\WorkloadManifest.json\r\n   Install Type:        FileBased\r\n\r\nConfigured to use workload sets when installing new manifests.\r\nNo workload sets are installed. Run \"dotnet workload restore\" to install a workload set.\r\n\r\nHost:\r\n  Version:      10.0.13\r\n  Architecture: x64\r\n  Commit:       4099f83977\r\n\r\n.NET SDKs installed:\r\n  8.0.131 [C:\\Program Files\\dotnet\\sdk]\r\n  8.0.206 [C:\\Program Files\\dotnet\\sdk]\r\n  8.0.319 [C:\\Program Files\\dotnet\\sdk]\r\n  8.0.425 [C:\\Program Files\\dotnet\\sdk]\r\n  8.0.426 [C:\\Program Files\\dotnet\\sdk]\r\n  9.0.121 [C:\\Program Files\\dotnet\\sdk]\r\n  9.0.205 [C:\\Program Files\\dotnet\\sdk]\r\n  9.0.318 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.112 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.204 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.303 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.401 [C:\\Program Files\\dotnet\\sdk]\r\n\r\n.NET runtimes installed:\r\n  Microsoft.AspNetCore.App 6.0.46 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 8.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 8.0.22 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 8.0.32 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 9.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 9.0.20 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 10.0.8 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.NETCore.App 6.0.46 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 8.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 8.0.22 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 8.0.32 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 9.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 9.0.20 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.8 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.WindowsDesktop.App 8.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 8.0.22 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 8.0.32 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 9.0.6 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 9.0.20 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 10.0.8 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n\r\nOther architectures found:\r\n  x86   [C:\\Program Files (x86)\\dotnet]\r\n    registered at [HKLM\\SOFTWARE\\dotnet\\Setup\\InstalledVersions\\x86\\InstallLocation]\r\n\r\nEnvironment variables:\r\n  DOTNET_MULTILEVEL_LOOKUP                 [0]\r\n  DOTNET_NOLOGO                            [1]\r\n  DOTNET_ROOT                              [C:\\Program Files\\dotnet]\r\n  DOTNET_SKIP_FIRST_TIME_EXPERIENCE        [1]\r\n\r\nglobal.json file:\r\n  Not found\r\n\r\nLearn more:\r\n  https://aka.ms/dotnet/info\r\n\r\nDownload .NET:\r\n  https://aka.ms/dotnet/download\r\n",
+      "Cutover": {
+        "Lab": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\nap-cutover-70b91123e86c43d4a196cbf4fb8a1333",
+        "WriterIdentity": "S-1-5-21-3213014087-2684668049-2838998412-500",
+        "OldIdentity": "S-1-5-21-3213014087-2684668049-2838998412-1003",
+        "CoreSha256": "52DC6433B951E49C897D37B0C4AE80712CD301D72875AA1D54F262422B1A5B82",
+        "BaselineOldWriteSucceeded": true,
+        "OldProcessesDrainedBeforeCutover": true,
+        "ExistingOwnershipTransferred": true,
+        "Observations": [
+          {
+            "Scope": "AutomationOwner",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Job",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Production",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Catalog",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          }
+        ],
+        "Limitation": "Synthetic access/startup-file barrier; does not configure or attest the real MSI or its launch policy."
+      },
+      "Tests": [
+        {
+          "Trx": "original-mutex-tests.trx",
+          "Total": 4,
+          "Passed": 4,
+          "Failed": 0,
+          "NotExecuted": 0
+        },
+        {
+          "Trx": "core-process-tests.trx",
+          "Total": 19,
+          "Passed": 19,
+          "Failed": 0,
+          "NotExecuted": 0
+        },
+        {
+          "Trx": "git-recovery-tests.trx",
+          "Total": 29,
+          "Passed": 29,
+          "Failed": 0,
+          "NotExecuted": 0
+        }
+      ],
+      "FullRegression": {
+        "Total": 3716,
+        "Passed": 3716,
+        "Failed": 0,
+        "NotExecuted": 0,
+        "SkippedTests": [],
+        "Start": "2026-10-15T17:08:00.1264222+00:00",
+        "Finish": "2026-10-15T17:25:44.3129325+00:00",
+        "Duration": "00:17:44.1865103",
+        "TrxSha256": "ED9D39441A14D7C23C3329DA7D4B49350938A02F121E0256A3F4524FD3C4EF37",
+        "Phase4SpecificPassed": 80,
+        "Volumes": [
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1)",
+            "Outcome": "Passed",
+            "Duration": "00:00:01.1626894"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 10)",
+            "Outcome": "Passed",
+            "Duration": "00:00:03.1794335"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 100)",
+            "Outcome": "Passed",
+            "Duration": "00:00:27.0570333"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1000)",
+            "Outcome": "Passed",
+            "Duration": "00:16:52.6201229"
+          }
+        ]
+      }
+    },
+    {
+      "Platform": "linux",
+      "PowerShell": "7.6.6",
+      "PowerShellRuntime": ".NET 10.0.12",
+      "OperatingSystem": "Ubuntu 24.04.5 LTS",
+      "Runtimes": [
+        {
+          "Runtime": "8.0.31",
+          "Framework": ".NET 8.0.31",
+          "RuntimeIdentifier": "linux-x64"
+        },
+        {
+          "Runtime": "8.0.32",
+          "Framework": ".NET 8.0.32",
+          "RuntimeIdentifier": "linux-x64"
+        }
+      ],
+      "Git": "git version 2.55.0",
+      "DotnetInfo": ".NET SDK:\n Version:           10.0.401\n Commit:            e34a38d2ae\n Workload version:  10.0.400-manifests.63b36e85\n MSBuild version:   18.9.11+e34a38d2a\n\nRuntime Environment:\n OS Name:     ubuntu\n OS Version:  24.04\n OS Platform: Linux\n RID:         linux-x64\n Base Path:   /usr/share/dotnet/sdk/10.0.401/\n\n.NET workloads installed:\nThere are no installed workloads to display.\nConfigured to use workload sets when installing new manifests.\nNo workload sets are installed. Run \"dotnet workload restore\" to install a workload set.\n\nHost:\n  Version:      10.0.13\n  Architecture: x64\n  Commit:       4099f83977\n\n.NET SDKs installed:\n  8.0.131 [/usr/share/dotnet/sdk]\n  8.0.206 [/usr/share/dotnet/sdk]\n  8.0.319 [/usr/share/dotnet/sdk]\n  8.0.425 [/usr/share/dotnet/sdk]\n  8.0.426 [/usr/share/dotnet/sdk]\n  9.0.121 [/usr/share/dotnet/sdk]\n  9.0.205 [/usr/share/dotnet/sdk]\n  9.0.318 [/usr/share/dotnet/sdk]\n  10.0.112 [/usr/share/dotnet/sdk]\n  10.0.204 [/usr/share/dotnet/sdk]\n  10.0.303 [/usr/share/dotnet/sdk]\n  10.0.401 [/usr/share/dotnet/sdk]\n\n.NET runtimes installed:\n  Microsoft.AspNetCore.App 8.0.6 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 8.0.22 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 8.0.31 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 8.0.32 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 9.0.6 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 9.0.20 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.8 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.11 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.12 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.NETCore.App 8.0.6 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 8.0.22 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 8.0.31 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 8.0.32 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 9.0.6 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 9.0.20 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.8 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.11 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.12 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.13 [/usr/share/dotnet/shared/Microsoft.NETCore.App]\n\nOther architectures found:\n  None\n\nEnvironment variables:\n  DOTNET_MULTILEVEL_LOOKUP                 [0]\n  DOTNET_NOLOGO                            [1]\n  DOTNET_ROOT                              [/usr/share/dotnet]\n  DOTNET_SKIP_FIRST_TIME_EXPERIENCE        [1]\n\nglobal.json file:\n  Not found\n\nLearn more:\n  https://aka.ms/dotnet/info\n\nDownload .NET:\n  https://aka.ms/dotnet/download\n",
+      "Cutover": {
+        "Lab": "/tmp/nap-cutover-102e95b07cce4f5eb121fccd7dc17ae5",
+        "WriterIdentity": "1001",
+        "OldIdentity": "65534",
+        "CoreSha256": "2CD3FA308EB65AE0D299F7947A4151F36B0271330E8B39761465359D2C35259D",
+        "BaselineOldWriteSucceeded": true,
+        "OldProcessesDrainedBeforeCutover": true,
+        "ExistingOwnershipTransferred": true,
+        "Observations": [
+          {
+            "Scope": "AutomationOwner",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Job",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Production",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          },
+          {
+            "Scope": "Catalog",
+            "OldRuntime": "8.0.31",
+            "NewRuntime": "8.0.32",
+            "OldWritesDenied": true,
+            "StartupMutationDenied": true,
+            "ExistingHashesPreserved": true
+          }
+        ],
+        "Limitation": "Synthetic access/startup-file barrier; does not configure or attest the real MSI or its launch policy."
+      },
+      "Tests": [
+        {
+          "Trx": "original-mutex-tests.trx",
+          "Total": 4,
+          "Passed": 4,
+          "Failed": 0,
+          "NotExecuted": 0
+        },
+        {
+          "Trx": "core-process-tests.trx",
+          "Total": 19,
+          "Passed": 19,
+          "Failed": 0,
+          "NotExecuted": 0
+        },
+        {
+          "Trx": "git-recovery-tests.trx",
+          "Total": 29,
+          "Passed": 29,
+          "Failed": 0,
+          "NotExecuted": 0
+        }
+      ],
+      "FullRegression": {
+        "Total": 3716,
+        "Passed": 3712,
+        "Failed": 0,
+        "NotExecuted": 4,
+        "SkippedTests": [
+          "NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender",
+          "NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate",
+          "NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings",
+          "NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings"
+        ],
+        "Start": "2026-10-15T17:07:12.3364185+00:00",
+        "Finish": "2026-10-15T17:20:34.3902921+00:00",
+        "Duration": "00:13:22.0538736",
+        "TrxSha256": "AB554A825A8909DEA5E13E7729E2EB7922EBFEAA491CDA68ABF17A793711A854",
+        "Phase4SpecificPassed": 80,
+        "Volumes": [
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1)",
+            "Outcome": "Passed",
+            "Duration": "00:00:00.1518174"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 10)",
+            "Outcome": "Passed",
+            "Duration": "00:00:00.9070695"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 100)",
+            "Outcome": "Passed",
+            "Duration": "00:00:14.1685257"
+          },
+          {
+            "Test": "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1000)",
+            "Outcome": "Passed",
+            "Duration": "00:11:56.5203221"
+          }
+        ]
+      }
+    }
+  ],
+  "Notes": [
+    "The tests load the actual Core v2 binary and require equality with the test Core hash.",
+    "The POSIX duplicated-description assertion executes on Linux; Windows does not execute POSIX calls.",
+    "Cutover proves synthetic access and startup-file mutation denial, not a real service/code-integrity launch policy.",
+    "The native directory pin assertion executes on Windows; Linux keeps the original full path checks."
+  ],
+  "Wpf": {
+    "StrictIdentityGatePassed": true,
+    "Results": [
+      {
+        "testName": "NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings",
+        "outcome": "Passed"
+      },
+      {
+        "testName": "NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate",
+        "outcome": "Passed"
+      },
+      {
+        "testName": "NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender",
+        "outcome": "Passed"
+      },
+      {
+        "testName": "NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings",
+        "outcome": "Passed"
+      }
+    ],
+    "TrxSha256": "EE6C33F339185C27E1C6EE0F7718F2070EE1BEB337FA5C7CA05C052B18598097"
+  },
+  "WindowsCatalogVolume": {
+    "Before": {
+      "CanReuse": false,
+      "StrongValidations": 2,
+      "CorruptionRejected": true
+    },
+    "After": {
+      "CanReuse": true,
+      "StrongValidations": 1,
+      "CorruptionRejected": true
+    },
+    "PreparedOnlyOnDisposableNonSystemRunnerVolume": true
+  },
+  "LegacyWindowsPowerShell": {
+    "Version": "5.1.20348.5622",
+    "CLR": "4.0.30319.42000"
+  },
+  "LocalFinal": {
+    "Phase4CasesPassed": 80,
+    "Phase4CasesDuration": "00:04:15",
+    "ReadinessCasesPassed": 10,
+    "ReadinessDuration": "00:00:00.124",
+    "ReleaseBuildErrors": 0,
+    "ReleaseBuildWarnings": 0,
+    "ReleaseBuildDuration": "00:00:03.15",
+    "VolumeSourceCommit": "9a43b36ee6af72802a4e1a324c00e9e3027023df",
+    "VolumeCasesPassed": 4,
+    "VolumeSuiteDuration": "00:20:26",
+    "ThousandZipAdmissionSeconds": 1116.606,
+    "ThousandZipCaseDuration": "00:19:38.6020554",
+    "SampledWholeProcessWorkingSetPeakBytes": 180838400
+  }
+}

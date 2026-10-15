@@ -91,15 +91,18 @@ paginación normal de esa sesión no repite ambas verificaciones globales por p�
 
 Antes y después de cada operación se observa el archivo de forma acotada: tamaño,
 fechas y **solo los 100 bytes de cabecera SQLite**, más identidad física y tiempo
-de cambio obtenidos del sistema. Windows utiliza volumen/FileId128/ChangeTime;
+de cambio obtenidos del sistema. Windows utiliza volumen/FileId128/ChangeTime y
+el USN por archivo (ChangeTime puede coincidir entre escrituras o restaurarse);
 Linux utiliza dispositivo/inode/ctime con nanosegundos mediante statx. Así se
 detectan reemplazos incluso de bytes idénticos y escrituras que restauren LastWriteTime,
 sin hash de DB, watchers ni recorrido de documentos. Referencias del contrato:
 [cabecera SQLite](https://sqlite.org/fileformat.html),
 [Windows FileId](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info),
 [Windows ChangeTime](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_basic_info),
+[Windows file USN](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_read_file_usn_data),
 [Linux statx UAPI](https://github.com/torvalds/linux/blob/master/include/uapi/linux/stat.h).
-Si el sistema/filesystem no proporciona esos metadatos nativos, se desactiva la
+Si el sistema/filesystem no proporciona esos metadatos nativos (incluido un USN
+válido y positivo en Windows), se desactiva la
 reutilización y cada operación valida fuertemente; no se presume una identidad
 fiable usando solo tamaño/mtime. Un cambio durante la consulta da STOP y descarta
 el resultado. Corrupción, universo/schema incompatible y errores SQLite siguen
