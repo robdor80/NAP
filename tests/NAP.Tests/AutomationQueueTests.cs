@@ -162,7 +162,7 @@ public sealed class AutomationQueueTests
         Assert.Equal(AutomationPolicyState.Disabled, initial.State); Assert.False(initial.IsExecutionAuthorized); Assert.Empty(initial.Definition.Normalization);
         var definition = f.Policy(); var saved = f.Store.SavePolicy(owner, definition); Assert.Equal(definition.Reference, saved.Reference);
         Assert.Equal(300, saved.Definition.Normalization[0].Limits.MaxAddedAreaBasisPoints); Assert.Equal(100, saved.Definition.Normalization[0].Limits.MaxAxisGrowthBasisPoints);
-        Error(AutomationError.Disabled, () => f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Enabled));
+        Error(AutomationError.PolicyMismatch, () => f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Enabled));
         var grant = new AutomationAuthorization("grant_one", f.Id, saved.Reference, "synthetic_owner", DateTimeOffset.UtcNow);
         saved = f.Store.RecordAuthorization(owner, saved.Reference, saved.Revision, grant); Assert.False(saved.IsExecutionAuthorized);
         saved = f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Paused);

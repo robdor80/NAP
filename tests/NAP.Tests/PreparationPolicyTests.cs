@@ -32,7 +32,7 @@ public sealed class PreparationPolicyTests
         Assert.False(new AutomationQueueStore(f.Roots).CurrentPolicy().IsPreparationAuthorized);
         Assert.Equal(AutomationError.IllegalTransition, Assert.Throws<AutomationException>(() =>
             f.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.PreparationOnly)).Code);
-        Assert.Equal(AutomationError.Disabled, Assert.Throws<AutomationException>(() =>
+        Assert.Equal(AutomationError.IllegalTransition, Assert.Throws<AutomationException>(() =>
             f.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.Enabled)).Code);
         f.AssertUntouched();
     }

@@ -83,7 +83,9 @@ public sealed partial class AutomationQueueStore
         {
             var value = AutomationJson.Decode<StoredAutomationPolicy>(rows.GetString(3)); AutomationValidation.Policy(value.Definition, _roots);
             AutomationValidation.Defined(value.State);
-            if (value.State == AutomationPolicyState.Enabled || value.Reference != value.Definition.Reference || rows.GetString(0) != value.Reference.Hash.Hex || rows.GetString(1) != value.Reference.PolicyId || rows.GetInt32(2) != value.Reference.Version || value.Revision < 0) throw AutomationValidation.Corrupt("Policy payload or phase-1 activation state is inconsistent.");
+            if (value.Reference != value.Definition.Reference || rows.GetString(0) != value.Reference.Hash.Hex || rows.GetString(1) != value.Reference.PolicyId || rows.GetInt32(2) != value.Reference.Version || value.Revision < 0) throw AutomationValidation.Corrupt("Policy payload is inconsistent.");
+            if (value.State == AutomationPolicyState.Enabled && !value.IsExecutionAuthorized)
+                throw AutomationValidation.Corrupt("Enabled lacks exact productive authority.");
             if (value.Authorization is { } a) { AutomationValidation.Scope(UniverseId, a.UniverseId); AutomationValidation.Utc(a.AuthorizedUtc); AutomationValidation.Text(a.Actor); AutomationValidation.Text(a.AuthorizationId); if (a.Policy != value.Reference) throw AutomationValidation.Corrupt("Authorization hash/scope mismatch."); }
             if (value.State == AutomationPolicyState.PreparationOnly && !value.IsPreparationAuthorized)
                 throw AutomationValidation.Corrupt("PreparationOnly lacks exact, exclusively pre-production authority.");
@@ -103,7 +105,8 @@ public sealed partial class AutomationQueueStore
                     AutomationValidation.Text(authorization.Actor); AutomationValidation.Text(authorization.AuthorizationId);
                     if (authorization.Policy != entry.Reference) throw AutomationValidation.Corrupt("Historical authorization scope mismatch.");
                 }
-                if (entry.Reference != policy.Reference || entry.Definition.Reference != policy.Reference || entry.Revision != (previous?.Revision ?? -1) + 1 || entry.State == AutomationPolicyState.Enabled ||
+                if (entry.Reference != policy.Reference || entry.Definition.Reference != policy.Reference || entry.Revision != (previous?.Revision ?? -1) + 1 ||
+                    entry.State == AutomationPolicyState.Enabled && !entry.IsExecutionAuthorized ||
                     entry.State == AutomationPolicyState.PreparationOnly && !entry.IsPreparationAuthorized ||
                     previous is null && (entry.State != AutomationPolicyState.Disabled || entry.Authorization is not null) ||
                     previous is not null && (previous.State == AutomationPolicyState.Revoked || previous.Authorization is not null && entry.Authorization != previous.Authorization))

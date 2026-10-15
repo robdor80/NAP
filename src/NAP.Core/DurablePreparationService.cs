@@ -230,7 +230,7 @@ public sealed partial class DurablePreparationService
         Classification = package.Manifest.Classification.OrderBy(p => p.Key, StringComparer.Ordinal),
         Files = files.Where(f => f.RelativePath != Path.GetFileName(package.ManifestPath)).OrderBy(f => f.RelativePath, StringComparer.Ordinal)
     });
-    private bool AllowsDuplicateMaster(StoredAutomationPolicy policy) => policy.IsPreparationAuthorized &&
+    private bool AllowsDuplicateMaster(StoredAutomationPolicy policy) => policy.IsPreproductionAuthorized &&
         policy.Authorization is { } authority && _state.Grant(policy.Reference) is { AllowDuplicateMasters: true } grant &&
         grant.Policy == policy.Reference && grant.PolicyAuthorizationId == authority.AuthorizationId && grant.Actor == authority.Actor;
     private static string EngineIdentity => "preparation-v1|" + Environment.Version + "|" + System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier + "|" +

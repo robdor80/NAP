@@ -34,10 +34,12 @@ public sealed partial class AutomationQueueStore
     public StoredAutomationPolicy SetPolicyState(AutomationQueueOwner owner, PolicyReference reference, long revision, AutomationPolicyState state) => Write(owner, (db, tx) =>
     {
         AutomationValidation.Defined(state);
-        if (state == AutomationPolicyState.Enabled) throw new AutomationException(AutomationError.Disabled, "Phase 1 cannot enable automation.");
         var prior = Policy(db, tx, reference); PolicyRevision(prior, revision);
         if (prior.State == AutomationPolicyState.Revoked || prior.State == state) throw new AutomationException(AutomationError.IllegalTransition, "Revocation is terminal; unchanged policy state is not a transition.");
         var value = prior with { State = state, Revision = revision + 1 };
+        if (state == AutomationPolicyState.Enabled &&
+            (!value.IsExecutionAuthorized || CurrentPolicy(db, tx).Reference != reference))
+            throw new AutomationException(AutomationError.PolicyMismatch, "Enabled requires the current exact authorized policy and all execution operations.");
         if (state == AutomationPolicyState.PreparationOnly &&
             (!value.IsPreparationAuthorized || CurrentPolicy(db, tx).Reference != reference))
             throw new AutomationException(AutomationError.PolicyMismatch, "PreparationOnly requires the current exact authorized policy, Admit, and exclusively pre-production operations.");

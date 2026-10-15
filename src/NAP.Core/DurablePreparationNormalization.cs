@@ -10,7 +10,7 @@ public sealed partial class DurablePreparationService
     {
         if (record.ExceptionalDecisionId is not null)
             return AuthorityCurrent(record, policy) ? record.Parameters : null;
-        if (!policy.IsPreparationAuthorized || policy.Authorization is null || _queue.CurrentPolicy().Reference != policy.Reference ||
+        if (!policy.IsPreproductionAuthorized || policy.Authorization is null || _queue.CurrentPolicy().Reference != policy.Reference ||
             !policy.Definition.Operations.HasFlag(AutomationOperations.Normalize)) return null;
         var rule = record.EffectiveProfile.ValidateAndGetRule();
         return policy.Definition.Normalization.SingleOrDefault(p => p.AssetType == rule.AssetType && p.ProductionProfile == rule.ProductionProfile &&
@@ -20,7 +20,7 @@ public sealed partial class DurablePreparationService
     {
         if (record.Authority is not { } authority || record.Parameters is null) return false;
         if (authority.Kind == NormalizationAuthorityKind.AuthorizedPolicy)
-            return policy.IsPreparationAuthorized && policy.Authorization is { } grant && authority.Policy == policy.Reference &&
+            return policy.IsPreproductionAuthorized && policy.Authorization is { } grant && authority.Policy == policy.Reference &&
                 grant.AuthorizationId == authority.AuthorizationId && grant.Actor == authority.Actor && grant.AuthorizedUtc == authority.Utc &&
                 policy.Definition.Operations.HasFlag(AutomationOperations.Normalize) && record.Parameters.OperationallyValidated &&
                 policy.Definition.Normalization.Any(p => AutomationJson.Encode(p) == AutomationJson.Encode(record.Parameters));
