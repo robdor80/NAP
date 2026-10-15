@@ -55,7 +55,7 @@ public sealed class AssetExecutionCoordinator
         var productionPlan = new ProductionAssetPlanner(_context).Plan(package, processingPlan, archive, maxInputPixels, jobId);
         control?.After("production-plan");
         var executor = new ProductionAssetExecutor(_context);
-        var production = executor.ExecuteCoordinated(productionPlan, auditReport, coordination, control);
+        var production = executor.ExecuteControlled(productionPlan, auditReport, coordination, control);
         if (state == JobState.Audited) { Transition(JobState.Executed); state = JobState.Executed; }
         executor.VerifyCoordinated(productionPlan, coordination);
         if (state == JobState.Executed) { Transition(JobState.Verified); state = JobState.Verified; }

@@ -118,8 +118,12 @@ public sealed class PreparationStateStore
     private static SqliteConnection Connect(string path, SqliteOpenMode mode)
     {
         var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = mode, Pooling = false, DefaultTimeout = 2 }.ToString());
-        db.Open(); Execute(db, null, "PRAGMA foreign_keys=ON"); Execute(db, null, "PRAGMA journal_mode=DELETE");
-        Execute(db, null, "PRAGMA synchronous=FULL"); Execute(db, null, "PRAGMA temp_store=MEMORY"); return db;
+        try
+        {
+            db.Open(); Execute(db, null, "PRAGMA foreign_keys=ON"); Execute(db, null, "PRAGMA journal_mode=DELETE");
+            Execute(db, null, "PRAGMA synchronous=FULL"); Execute(db, null, "PRAGMA temp_store=MEMORY"); return db;
+        }
+        catch { db.Dispose(); throw; }
     }
     private void Check(SqliteConnection db)
     {

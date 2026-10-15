@@ -31,7 +31,16 @@ jobs:
         run: dotnet build NAP.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test NAP.sln --configuration Release --no-build
+        run: dotnet test NAP.sln --configuration Release --no-build --results-directory artifacts/linux-tests --logger "trx;LogFileName=linux-regression.trx"
+
+      - name: Preserve Linux regression results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-regression-results
+          path: artifacts/linux-tests/
+          if-no-files-found: warn
+          retention-days: 14
 
   windows-wpf:
     name: Windows WPF smoke tests (4 required)

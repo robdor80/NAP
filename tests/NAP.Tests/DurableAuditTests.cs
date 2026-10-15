@@ -23,7 +23,7 @@ public sealed class DurableAuditTests
         var client = new Client(_ => Task.FromResult(Report()));
         Assert.Equal(PreparationCode.PolicyInactive, f.Service.Audit(owner, a.ItemId!, client).Code); Assert.Equal(0, client.Calls);
         Assert.Empty(f.Service.State.Get(a.ItemId!)!.Calls); Assert.Equal(policy.Reference, new PreparationStateStore(f.Roots).Grant(policy.Reference)!.Policy);
-        Assert.Equal(AutomationError.Disabled, Assert.Throws<AutomationException>(() => f.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.Enabled)).Code);
+        Assert.Equal(AutomationError.PolicyMismatch, Assert.Throws<AutomationException>(() => f.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.Enabled)).Code);
         f.AssertUntouched();
     }
     [Fact]

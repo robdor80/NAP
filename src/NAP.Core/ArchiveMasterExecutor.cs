@@ -39,7 +39,7 @@ public sealed class ArchiveMasterExecutor
         foreach (var file in current.FilesToCopy)
         {
             control?.Before("archive-file:" + file.FileName);
-            CopyFile(file, control);
+            CopyFileControlled(file, control);
             control?.After("archive-file:" + file.FileName);
         }
         foreach (var file in current.Files)
@@ -61,7 +61,9 @@ public sealed class ArchiveMasterExecutor
         return new ArchiveMasterResult(current, current.Action == ArchiveMasterAction.CopyAndIndex ? ArchiveMasterOutcome.Copied : ArchiveMasterOutcome.IndexedExisting);
     }
 
-    private void CopyFile(ArchiveMasterFile file, WorkflowExecutionControl? control)
+    private void CopyFile(ArchiveMasterFile file) => CopyFileControlled(file, null);
+
+    private void CopyFileControlled(ArchiveMasterFile file, WorkflowExecutionControl? control)
     {
         ArchiveRootValidator.Require(_context);
         ArchiveMasterPlanner.VerifyFile(file.SourcePath, file, NapIssueCodes.ArchiveSourceChanged);
@@ -74,10 +76,12 @@ public sealed class ArchiveMasterExecutor
             source.CopyTo(output);
             output.Flush(flushToDisk: true);
         }
-        PublishFile(temp, file, control);
+        PublishFileControlled(temp, file, control);
     }
 
-    private void PublishFile(string temp, ArchiveMasterFile file, WorkflowExecutionControl? control)
+    private void PublishFile(string temp, ArchiveMasterFile file) => PublishFileControlled(temp, file, null);
+
+    private void PublishFileControlled(string temp, ArchiveMasterFile file, WorkflowExecutionControl? control)
     {
         ArchiveRootValidator.Require(_context);
         if (!ArchivePaths.Same(Path.GetDirectoryName(temp)!, Path.GetDirectoryName(file.DestinationPath)!))

@@ -37,7 +37,9 @@ public sealed class DurableExecutionTests
         Assert.Equal(QueueState.Completed, f.Queue.Get(a.ItemId!).State);
         var asset = new AssetCatalog(f.Context).Get("portrait_example_001"); Assert.NotNull(asset); Assert.Equal("PASS", asset.AuditState);
         var before = Inventory(f.Roots.ArchiveRoot, f.Roots.ProductionRoot, f.Roots.CatalogPath);
+        var revision = execution.State.Get(a.ItemId!)!.Revision;
         Assert.Equal(DurableExecutionCode.Completed, new DurableExecutionService(f.Context, new(f.Roots)).Execute(owner, a.ItemId!).Code);
+        Assert.Equal(revision, execution.State.Get(a.ItemId!)!.Revision);
         Assert.Equal(before, Inventory(f.Roots.ArchiveRoot, f.Roots.ProductionRoot, f.Roots.CatalogPath));
         Assert.Equal(received, File.ReadAllBytes(zip)); Assert.Equal(1, client.Calls);
         Assert.Equal("unrelated synthetic sentinel", File.ReadAllText(Path.Combine(f.Roots.ArchiveRoot, "foreign.txt")));

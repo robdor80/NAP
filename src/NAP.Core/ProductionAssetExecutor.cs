@@ -13,8 +13,11 @@ public sealed class ProductionAssetExecutor
         return ExecuteCoordinated(plan, auditReport, jobLease);
     }
 
-    internal ProductionAssetResult ExecuteCoordinated(ProductionAssetPlan plan, AiAuditReport auditReport, ExecutionMutex? jobLease,
-        WorkflowExecutionControl? control = null)
+    internal ProductionAssetResult ExecuteCoordinated(ProductionAssetPlan plan, AiAuditReport auditReport, ExecutionMutex? jobLease)
+        => ExecuteControlled(plan, auditReport, jobLease, null);
+
+    internal ProductionAssetResult ExecuteControlled(ProductionAssetPlan plan, AiAuditReport auditReport, ExecutionMutex? jobLease,
+        WorkflowExecutionControl? control)
     {
         ArgumentNullException.ThrowIfNull(plan); RequirePass(auditReport);
         if (plan.JobId is not null) jobLease!.Require("Job", _context.Storage.StateRoot, plan.JobId.Value);
@@ -35,7 +38,7 @@ public sealed class ProductionAssetExecutor
         foreach (var file in current.FilesToWrite)
         {
             control?.Before("production-file:" + file.FileName);
-            WriteFile(current, file, control);
+            WriteFileControlled(current, file, control);
             evidence?.Record(file, jobLease!);
             control?.After("production-file:" + file.FileName);
         }
@@ -74,7 +77,9 @@ public sealed class ProductionAssetExecutor
             throw new ArgumentException("The production plan belongs to another context.", nameof(plan));
     }
 
-    private void WriteFile(ProductionAssetPlan plan, ProductionAssetFile file, WorkflowExecutionControl? control)
+    private void WriteFile(ProductionAssetPlan plan, ProductionAssetFile file) => WriteFileControlled(plan, file, null);
+
+    private void WriteFileControlled(ProductionAssetPlan plan, ProductionAssetFile file, WorkflowExecutionControl? control)
     {
         ProductionPaths.Destination(_context, plan.RelativeDirectory);
         new ProductionAssetPlanner(_context).VerifySources(plan);
@@ -91,10 +96,12 @@ public sealed class ProductionAssetExecutor
             }
             output.Flush(flushToDisk: true);
         }
-        PublishFile(plan, file, temp, control);
+        PublishFileControlled(plan, file, temp, control);
     }
 
-    private void PublishFile(ProductionAssetPlan plan, ProductionAssetFile file, string temp, WorkflowExecutionControl? control)
+    private void PublishFile(ProductionAssetPlan plan, ProductionAssetFile file, string temp) => PublishFileControlled(plan, file, temp, null);
+
+    private void PublishFileControlled(ProductionAssetPlan plan, ProductionAssetFile file, string temp, WorkflowExecutionControl? control)
     {
         ProductionPaths.Destination(_context, plan.RelativeDirectory);
         if (!ProductionPaths.Same(Path.GetDirectoryName(temp)!, plan.DestinationDirectory) || !ProductionAssetPlanner.IsOwnTemp(plan, Path.GetFileName(temp)))

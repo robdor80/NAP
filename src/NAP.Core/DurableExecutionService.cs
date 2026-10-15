@@ -81,7 +81,8 @@ public sealed class DurableExecutionService
             Progress(QueueStage.Verification);
             VerifyCatalog(effective, handoff, result);
             After("catalog-verified"); Progress(QueueStage.Catalog);
-            record = State.Save(owner, record with { Completed = true, Diagnostic = null }, record.Revision);
+            if (!record.Completed || record.Diagnostic is not null)
+                record = State.Save(owner, record with { Completed = true, Diagnostic = null }, record.Revision);
             Checkpoint?.Invoke("execution-completed");
             item = _queue.Get(id);
             if (item.State != QueueState.Completed)
