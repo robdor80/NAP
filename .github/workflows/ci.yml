@@ -12,6 +12,44 @@ permissions:
   contents: read
 
 jobs:
+  coordination-diagnostics:
+    name: Coordination diagnostics (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.425
+            8.0.426
+      - name: Build diagnostic peer
+        run: dotnet build tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj -c Release
+      - name: Record exact runtimes and independent-process observations
+        shell: pwsh
+        run: >-
+          ./.github/scripts/Diagnose-Coordination.ps1
+          -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
+          -RuntimeVersions '8.0.31,8.0.32'
+          -OutputPath artifacts/coordination/observations.json
+      - name: Reproduce the four original coordination assertions
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
+          --filter "FullyQualifiedName~SeparateProcessObservesExclusiveNamedOwnerMutex|FullyQualifiedName~SystemNamedMutexCoordinatesIndependentProcess|FullyQualifiedName~CatalogMutexCoordinatesAnotherProcessWithoutLockFiles"
+          --results-directory artifacts/coordination
+          --logger "trx;LogFileName=original-mutex-tests.trx"
+      - name: Preserve diagnostic evidence including failures
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordination-${{ matrix.os }}
+          path: artifacts/coordination/
+          retention-days: 14
+
   build:
     runs-on: ubuntu-latest
 
