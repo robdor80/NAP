@@ -26,6 +26,28 @@ Primera tanda P4.1 Windows: 71 aprobadas, 4 fallidas al intentar crear symlinks 
 
 P4.1 políticas: 28/28 aprobadas (`phase4-p41-policy.trx`). Los resultados focalizados se solapan y no se suman.
 
+## P4.3 — Reconciliación por evidencia
+
+La reapertura usa el owner exclusivo de un epoch nuevo. Tras verificar binding, handoff, reserva, journal y outputs, se transfiere solo el claim Running obsoleto mediante CAS y evento ClaimRecovered. No se usa TTL, no se compite con otro owner y no se adquiere un segundo mutex Job alrededor del coordinador. Un journal avanzado necesita su intención previa del ledger. Un claim sin evidencia válida se aparca.
+
+| Ventana | Recuperación |
+| --- | --- |
+| Antes/después del intent de ejecución o claim | Mismo item/intento/Job; no nueva preparación ni auditoría. |
+| Antes del copy de archivo, o después de su receipt | Completar únicamente ficheros faltantes; verificar cada final propio. |
+| Temporal de archivo o rename sin receipt de fichero | NeedsReview; conservar bytes y temporales. |
+| Índice publicado, receipt de índice pendiente | Revalidar índice y todos los recibos propios de fichero; no adoptar archivo ajeno. |
+| Antes/después de conversión o receipt inicial de producción | Reconstruir plan con perfil/motor idénticos; publicación pendiente conserva sus límites. |
+| WebP/final publicado sin receipt productivo nativo | NeedsReview, incluso con hash igual. |
+| Receipt nativo de fichero productivo publicado | Revalidar mismo Job/snapshot y escribir solo faltantes. |
+| AUDITED/EXECUTED/VERIFIED con intención propia | Revalidación nativa y continuación del mismo journal. |
+| Commit catálogo con journal VERIFIED | Insert-or-verify de los mismos hechos, después COMPLETED. |
+| Job COMPLETED y cola Running | Verificar archivo, producción y catálogo; cerrar cola sin repetir efectos productivos. |
+| COMPLETED con fichero/entrada de catálogo ausente o alterada | Evento CompletedInconsistent y NeedsReview, journal conservado COMPLETED; sin rebuild. |
+
+CompletedInconsistent es una API interna restringida de diagnóstico, no una transición genérica que reabra ejecución. La cola no sustituye a la evidencia del ledger. Cambios en roots, índice compartido o bases compartidas bloquean el universo; daños individuales se aíslan. Una pausa/revocación en una frontera deja los efectos ya publicados y residuos intactos, con revisión explícita.
+
+Primera tanda P4.3: 49/49 aprobadas en Windows (3 min 34 s, `phase4-p43.trx`): 30 cortes recuperables, 7 ambiguos conservados, 3 corrupciones de COMPLETED, rollback del primer intent y 8 casos P4.2. Los cuatro smoke WPF existentes pasaron 4/4 (13 s) y el gate Assert-WpfTestResults confirmó las cuatro identidades. Revalidación final tras reforzar boundaries y presupuesto de conversión en curso.
+
 ## Límites conservados
 
 Sin assets reales, claves IA reales, watcher, scheduler, UI, Git productivo, retención, adopción de perfiles ni merge a main. StateRoot conserva originales y lineage; no constituye un backup externo certificado. La configuración real permanece apagada.

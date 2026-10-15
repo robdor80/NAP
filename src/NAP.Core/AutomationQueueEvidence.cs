@@ -175,9 +175,13 @@ public sealed partial class AutomationQueueStore
             lastEvents.TryGetValue(value.ItemId.Value, out var prior);
             if (rows.GetString(0) != value.ItemId.Value || rows.GetInt64(1) != value.Sequence || value.Sequence != (prior?.Sequence ?? 0) + 1 || value.AttemptId is { } aid && (!attempts.TryGetValue(aid.Value, out var a) || a.ItemId != value.ItemId)) throw AutomationValidation.Corrupt("Event sequence or attempt binding mismatch.");
             if (prior is null && (value.Code != QueueEventCode.Observed || value.State != QueueState.Observed) ||
-                prior is not null && value.State != prior.State && !QueueTransitions.CanTransition(prior.State, value.State) ||
+                prior is not null && value.State != prior.State && !QueueTransitions.CanTransition(prior.State, value.State) &&
+                    !(prior.State == QueueState.Completed && value.State == QueueState.NeedsReview && value.Code == QueueEventCode.CompletedInconsistent && value.Incident == QueueIncident.InvalidEvidence) ||
                 prior is not null && value.State == prior.State && value.Code is QueueEventCode.Transitioned or QueueEventCode.Claimed or QueueEventCode.ClaimInterrupted)
                 throw AutomationValidation.Corrupt("Event history contains illegal queue transitions.");
+            if (value.Code == QueueEventCode.ClaimRecovered && (prior?.State != QueueState.Running || value.State != QueueState.Running) ||
+                value.Code == QueueEventCode.CompletedInconsistent && (prior?.State != QueueState.Completed || value.State != QueueState.NeedsReview || value.Incident != QueueIncident.InvalidEvidence))
+                throw AutomationValidation.Corrupt("Execution recovery event has incompatible states.");
             lastEvents[value.ItemId.Value] = value;
         }
         foreach (var item in items.Values) if (!lastEvents.TryGetValue(item.Id.Value, out var last) || last.State != item.State || last.Incident != item.Incident || last.Sequence != item.Revision + 1) throw AutomationValidation.Corrupt("Queue transition/event ledger diverged.");

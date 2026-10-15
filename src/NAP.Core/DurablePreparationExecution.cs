@@ -46,7 +46,12 @@ public sealed partial class DurablePreparationService
         var reservation = _queue.GetReservation(package.AssetKey);
         if (reservation is null || reservation.ItemId != id || reservation.AttemptId != r.AttemptId || reservation.JobId != r.JobId || reservation.ContentHash != r.SemanticHash)
             throw new InvalidDataException("The exact asset reservation is required.");
-        Decode(new ImageConversionResolver().Resolve(package, PackagePreparationService.MaxInputPixels)!.SourcePath, policy.Definition.Resources.MaxMemoryBytes);
+        var conversion = new ImageConversionResolver().Resolve(package, PackagePreparationService.MaxInputPixels)!;
+        Decode(conversion.SourcePath, policy.Definition.Resources.MaxMemoryBytes);
+        var info = new PngMasterValidator().Validate(conversion.SourcePath).ImageInfo!;
+        var conversionMemory = checked(32L * 1024 * 1024 + 16L * info.Width * info.Height +
+            16L * conversion.OutputWidth * conversion.OutputHeight + EffectiveFiles(r, admitted.Files).Sum(f => f.SizeBytes));
+        if (conversionMemory > policy.Definition.Resources.MaxMemoryBytes) throw new InvalidDataException("Conversion exceeds the frozen resource budget.");
         var repositoryResult = new ProductionRepositoryValidator().Validate(effective);
         if (repositoryResult.Issues.ShouldStop || repositoryResult.Repository is not { } repository) throw new InvalidDataException("Production root invalid.");
         var processing = new ProcessingPlanBuilder().Build(package, repository, new ProductionDestinationResolver().Resolve(package, repository));
