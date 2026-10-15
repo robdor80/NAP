@@ -268,6 +268,19 @@ public sealed class AutomationQueueTests
         Assert.Throws<AutomationException>(() => new AutomationQueueStore(f.Roots).List()); Assert.Equal(bytes, File.ReadAllBytes(f.Store.DatabasePath));
     }
     [Fact]
+    public void ExactByteValidationCacheRejectsSchemaMutationEvenWithPreservedSizeAndTimestamp()
+    {
+        using var f = new Fixture(); using (f.Store.AcquireOwner()) { }
+        f.Store.List(); // Populate the validated image cache of this exact store instance.
+        var time = File.GetLastWriteTimeUtc(f.Store.DatabasePath); var size = new FileInfo(f.Store.DatabasePath).Length;
+        using (var db = f.Raw()) { using var cmd = db.CreateCommand(); cmd.CommandText = "PRAGMA user_version=99"; cmd.ExecuteNonQuery(); }
+        File.SetLastWriteTimeUtc(f.Store.DatabasePath, time);
+        Assert.Equal(size, new FileInfo(f.Store.DatabasePath).Length);
+        var changed = File.ReadAllBytes(f.Store.DatabasePath);
+        Error(AutomationError.UnsupportedSchema, () => f.Store.List());
+        Assert.Equal(changed, File.ReadAllBytes(f.Store.DatabasePath));
+    }
+    [Fact]
     public void InvalidDatabaseBytesFailClosed()
     {
         using var f = new Fixture(); using (f.Store.AcquireOwner()) { }
