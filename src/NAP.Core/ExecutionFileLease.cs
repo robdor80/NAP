@@ -88,10 +88,13 @@ internal sealed class ExecutionFileLease : IDisposable
 
     private static string PrivateDirectory()
     {
+        if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture is not (Architecture.X64 or Architecture.Arm64))
+            throw new IOException("The execution lock ABI supports Linux x64 and arm64 only.");
         string path;
         if (OperatingSystem.IsWindows())
         {
-            var owner = WindowsIdentity.GetCurrent().User ?? throw new IOException("Execution coordination requires a user identity.");
+            using var identity = WindowsIdentity.GetCurrent();
+            var owner = identity.User ?? throw new IOException("Execution coordination requires a user identity.");
             var common = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             if (string.IsNullOrWhiteSpace(common)) throw new IOException("The machine coordination directory is unavailable.");
             path = Path.Combine(common, "NAP-coordination-v2-" + owner.Value);
@@ -126,6 +129,7 @@ internal sealed class ExecutionFileLease : IDisposable
                 throw new IOException("The execution coordination directory is not private.");
         }
         else throw new IOException("Execution coordination supports only Windows and Linux.");
+        if (new DriveInfo(path).DriveType == DriveType.Network) throw new IOException("Execution coordination requires local storage.");
         return path;
     }
 

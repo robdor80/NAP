@@ -106,7 +106,15 @@ try {
             $owner.Dispose()
         }
     }
-    $report=[pscustomobject]@{ Lab=$lab; BaselineOldWriteSucceeded=$true; OldProcessesDrainedBeforeCutover=$true; Observations=$results; Limitation='Synthetic access/startup-file barrier; does not configure or attest the real MSI or its launch policy.' }
+    $writerIdentity = if ($IsWindows) { [Security.Principal.WindowsIdentity]::GetCurrent().User.Value } else { (& id -u | Out-String).Trim() }
+    $oldIdentity = if ($IsWindows) { $oldSid.Value } else { (& sudo -n -u nobody -- id -u | Out-String).Trim() }
+    if ($writerIdentity -eq $oldIdentity) { throw 'The cutover requires distinct writer identities.' }
+    $report=[pscustomobject]@{
+        Lab=$lab; WriterIdentity=$writerIdentity; OldIdentity=$oldIdentity
+        CoreSha256=(Get-FileHash -LiteralPath (Join-Path ([IO.Path]::GetDirectoryName($probe)) 'NAP.Core.dll') -Algorithm SHA256).Hash
+        BaselineOldWriteSucceeded=$true; OldProcessesDrainedBeforeCutover=$true; Observations=$results
+        Limitation='Synthetic access/startup-file barrier; does not configure or attest the real MSI or its launch policy.'
+    }
     $destination=[IO.Path]::GetFullPath($OutputPath)
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
     $report | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $destination -Encoding utf8

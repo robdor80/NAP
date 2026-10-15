@@ -5,13 +5,15 @@ namespace NAP.Tests;
 
 internal static class CoordinationTestPeer
 {
-    internal static Process Start(string mode, string scope, string root, string identity = "", string? runtime = null)
+    internal static Process Start(string mode, string scope, string root, string identity = "", string? runtime = null, string? environmentRoot = null)
     {
         var info = new ProcessStartInfo("dotnet") { UseShellExecute = false, CreateNoWindow = true,
             RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true };
         if (runtime is not null) { info.ArgumentList.Add("--fx-version"); info.ArgumentList.Add(runtime); }
         info.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, "coordination-peer", "NAP.CoordinationProbe.dll"));
         foreach (var part in new[] { mode, scope, root, identity }) info.ArgumentList.Add(part);
+        if (environmentRoot is not null)
+            foreach (var key in new[] { "HOME", "XDG_RUNTIME_DIR", "XDG_DATA_HOME", "TMPDIR" }) info.Environment[key] = environmentRoot;
         return Process.Start(info)!;
     }
     internal static void Ready(Process process, string signal = "LOCKED") =>

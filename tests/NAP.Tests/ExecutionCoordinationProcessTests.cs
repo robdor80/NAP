@@ -36,6 +36,27 @@ public sealed class ExecutionCoordinationProcessTests
         Assert.Equal(0, CoordinationTestPeer.Exit(contender));
     }
 
+    [Theory]
+    [InlineData("AutomationOwner")] [InlineData("Job")] [InlineData("Production")] [InlineData("Catalog")]
+    public void RuntimeDirectoryEnvironmentOverridesCannotForkTheCoordinationNamespace(string scope)
+    {
+        var root = SyntheticRoot(); var environmentRoot = SyntheticRoot();
+        if (OperatingSystem.IsWindows()) Directory.CreateDirectory(environmentRoot);
+        else Directory.CreateDirectory(environmentRoot, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        using (var before = CoordinationTestPeer.Start("core-try", scope, root, runtime: Runtimes[^1], environmentRoot: environmentRoot))
+            Assert.Equal(0, CoordinationTestPeer.Exit(before)); // The altered runtime environment must be usable.
+        using var owner = CoordinationTestPeer.Start("core-hold", scope, root, runtime: Runtimes[0]);
+        try
+        {
+            CoordinationTestPeer.Ready(owner);
+            using var contender = CoordinationTestPeer.Start("core-try", scope, root, runtime: Runtimes[^1], environmentRoot: environmentRoot);
+            Assert.Equal(10, CoordinationTestPeer.Exit(contender));
+        }
+        finally { CoordinationTestPeer.Release(owner); }
+        using var after = CoordinationTestPeer.Start("core-try", scope, root, runtime: Runtimes[^1], environmentRoot: environmentRoot);
+        Assert.Equal(0, CoordinationTestPeer.Exit(after));
+    }
+
     [Fact]
     public async Task QueueOwnerDeathAdvancesDurableFencingEpochAndDoesNotLoseEvidence()
     {
