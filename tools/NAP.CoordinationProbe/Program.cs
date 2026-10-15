@@ -1,6 +1,17 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Reflection;
+using NAP.Core;
+
+if (args.Length == 5 && args[0] == "queue-owner")
+{
+    var roots = new UniverseStorageConfig(new UniverseId(args[1]), args[2], args[3], args[4]);
+    // Only synthetic workspaces supplied explicitly by the test driver are allowed.
+    var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+    if (!Path.GetFullPath(roots.WorkspaceRoot).StartsWith(temporary, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) return 64;
+    using var owner = new AutomationQueueStore(roots).AcquireOwner();
+    Console.WriteLine(owner.Epoch); Console.Out.Flush(); Console.ReadLine(); return 0;
+}
 
 if (args.Length == 4 && args[0] is "core-hold" or "core-try" or "core-race")
 {
@@ -27,7 +38,7 @@ if (args.Length == 2 && args[0] == "legacy-write")
     catch (UnauthorizedAccessException) { Console.WriteLine("DENIED"); return 11; }
 }
 
-// Diagnostic-only peer; does not load NAP, configuration, assets, journals or a database.
+// The raw primitive modes do not open NAP configuration, assets, journals or a database.
 if (args.Length == 1 && args[0] == "info")
 {
     Console.WriteLine(JsonSerializer.Serialize(new { Runtime = Environment.Version.ToString(),

@@ -85,15 +85,8 @@ public sealed class CatalogConcurrencyTests
     [Fact]
     public async Task CatalogMutexCoordinatesAnotherProcessWithoutLockFiles()
     {
-        using var f = new CatalogTestFixture(); var canonical = Path.TrimEndingDirectorySeparator(Path.GetFullPath(f.Context.Storage.StateRoot));
-        if (OperatingSystem.IsWindows()) canonical = canonical.ToUpperInvariant();
-        using var bytes = new MemoryStream(Encoding.UTF8.GetBytes(canonical + "\nAssetCatalog.db"));
-        var name = "NAP.Execution.Catalog." + new Sha256Hasher().Compute(bytes).Hex;
-        var script = "$m=[System.Threading.Mutex]::new($false,'" + name + "'); if (!$m.WaitOne(0)) {exit 2}; try {[Console]::WriteLine('LOCKED'); [Console]::Out.Flush(); [Console]::ReadLine() | Out-Null} finally {$m.ReleaseMutex(); $m.Dispose()}";
-        var start = new ProcessStartInfo { FileName = OperatingSystem.IsWindows() ? "powershell.exe" : "pwsh", UseShellExecute = false, CreateNoWindow = true,
-            RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true };
-        start.ArgumentList.Add("-NoProfile"); start.ArgumentList.Add("-NonInteractive"); start.ArgumentList.Add("-EncodedCommand"); start.ArgumentList.Add(Convert.ToBase64String(Encoding.Unicode.GetBytes(script)));
-        using var process = Process.Start(start)!;
+        using var f = new CatalogTestFixture();
+        using var process = CoordinationTestPeer.Start("core-hold", "Catalog", f.Context.Storage.StateRoot, "AssetCatalog.db");
         try
         {
             Assert.Equal("LOCKED", await process.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(10)));

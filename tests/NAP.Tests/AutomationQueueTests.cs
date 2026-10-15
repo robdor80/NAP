@@ -136,12 +136,10 @@ public sealed class AutomationQueueTests
     public void SeparateProcessObservesExclusiveNamedOwnerMutex()
     {
         using var f = new Fixture(); using var owner = f.Store.AcquireOwner();
-        var root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(f.Roots.StateRoot)); if (OperatingSystem.IsWindows()) root = root.ToUpperInvariant();
-        var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(root + "\n"))).ToLowerInvariant();
-        var script = "$m=[Threading.Mutex]::new($false,'NAP.Execution.AutomationOwner." + hash + "'); if($m.WaitOne(0)){ $m.ReleaseMutex(); exit 10 }; $m.Dispose(); exit 0";
-        var start = new ProcessStartInfo("pwsh") { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
-        start.ArgumentList.Add("-NoProfile"); start.ArgumentList.Add("-Command"); start.ArgumentList.Add(script);
-        using var process = Process.Start(start)!; Assert.True(process.WaitForExit(10000)); Assert.Equal(0, process.ExitCode);
+        var before = ArchiveTestFixture.Snapshot(f.Root);
+        using var process = CoordinationTestPeer.Start("core-try", "AutomationOwner", f.Roots.StateRoot);
+        Assert.Equal(10, CoordinationTestPeer.Exit(process));
+        ArchiveTestFixture.AssertSnapshot(before, f.Root);
     }
     [Fact]
     public void ReservationAndAttemptReleaseAreExplicitAndOnlyStoppedWorkCanRelease()

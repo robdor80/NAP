@@ -25,10 +25,9 @@
 
   <Target Name="CopyCoordinationPeer" AfterTargets="Build">
     <ItemGroup>
-      <CoordinationPeer Include="..\..\tools\NAP.CoordinationProbe\bin\$(Configuration)\net8.0\NAP.CoordinationProbe.*" />
-      <CoordinationPeer Include="$(TargetDir)NAP.Core.dll" />
+      <CoordinationPeer Include="..\..\tools\NAP.CoordinationProbe\bin\$(Configuration)\net8.0\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="@(CoordinationPeer)" DestinationFolder="$(TargetDir)coordination-peer" />
+    <Copy SourceFiles="@(CoordinationPeer)" DestinationFiles="@(CoordinationPeer->'$(TargetDir)coordination-peer\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
   <ItemGroup>
