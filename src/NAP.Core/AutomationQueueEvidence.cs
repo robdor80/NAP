@@ -149,9 +149,10 @@ public sealed partial class AutomationQueueStore
             if (value.ParentId is { } parent && (!attempts.TryGetValue(parent.Value, out var prior) || prior.ItemId != value.ItemId || prior.Status != AttemptStatus.Closed || prior.Number != value.Number - 1) || value.Number > 1 && value.ParentId is null || value.Number == 1 && value.ParentId is not null) throw AutomationValidation.Corrupt("Attempt lineage mismatch.");
             attempts.Add(value.Id.Value, value);
         }
+        var attemptCounts = attempts.Values.GroupBy(a => a.ItemId).ToDictionary(g => g.Key, g => g.Count());
         foreach (var item in items.Values)
         {
-            if (item.AttemptCount != attempts.Values.Count(a => a.ItemId == item.Id) || item.ActiveAttempt is { } id && (!attempts.TryGetValue(id.Value, out var attempt) || attempt.Status != AttemptStatus.Active || attempt.ItemId != item.Id)) throw AutomationValidation.Corrupt("Item/attempt relationship mismatch.");
+            if (item.AttemptCount != attemptCounts.GetValueOrDefault(item.Id) || item.ActiveAttempt is { } id && (!attempts.TryGetValue(id.Value, out var attempt) || attempt.Status != AttemptStatus.Active || attempt.ItemId != item.Id)) throw AutomationValidation.Corrupt("Item/attempt relationship mismatch.");
         }
         var reservations = new Dictionary<string, AssetReservation>();
         using (var cmd = Command(db, null, "SELECT asset_id,item_id,attempt_id,content_hash,payload FROM reservations"))
