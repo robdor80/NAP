@@ -42,6 +42,13 @@ jobs:
           --filter "FullyQualifiedName~SeparateProcessObservesExclusiveNamedOwnerMutex|FullyQualifiedName~SystemNamedMutexCoordinatesIndependentProcess|FullyQualifiedName~CatalogMutexCoordinatesAnotherProcessWithoutLockFiles"
           --results-directory artifacts/coordination
           --logger "trx;LogFileName=original-mutex-tests.trx"
+      - name: Verify Git fixture recovery and frozen snapshots independently
+        if: ${{ always() }}
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
+          --filter "FullyQualifiedName~GitProductionRecoveryPushTests"
+          --results-directory artifacts/coordination
+          --logger "trx;LogFileName=git-recovery-tests.trx"
       - name: Preserve diagnostic evidence including failures
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -78,6 +85,39 @@ jobs:
           name: linux-regression-results
           path: artifacts/linux-tests/
           if-no-files-found: warn
+          retention-days: 14
+
+  windows-regression:
+    name: Windows complete regression
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Record exact test environment
+        shell: pwsh
+        run: |
+          dotnet --info
+          $PSVersionTable
+          git --version
+          powershell.exe -NoProfile -NonInteractive -Command '$PSVersionTable; [Environment]::Version'
+      - name: Restore
+        run: dotnet restore NAP.sln
+      - name: Build
+        run: dotnet build NAP.sln -c Release --no-restore
+      - name: Run complete suite including volume and WPF
+        run: >-
+          dotnet test NAP.sln -c Release --no-build --no-restore
+          --results-directory artifacts/windows-regression
+          --logger "trx;LogFileName=windows-regression.trx"
+      - name: Preserve complete Windows results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-regression-results
+          path: artifacts/windows-regression/
           retention-days: 14
 
   windows-wpf:

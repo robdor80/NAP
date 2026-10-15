@@ -33,16 +33,20 @@ try {
     }
     foreach ($owner in $versions) {
       foreach ($scope in @('AutomationOwner','Job','Production','Catalog')) {
-        foreach ($mode in @('mutex','file')) {
-            $identity = if ($mode -eq 'mutex') { 'NAP.Execution.' + $scope + '.' + [guid]::NewGuid().ToString('N') } else { Join-Path $root 'probe.lock' }
-            $held = Start-Peer $owner @('hold', $mode, $identity)
+        foreach ($mode in @('mutex','file','dual')) {
+            $identity = if ($mode -ne 'file') { 'NAP.Execution.' + $scope + '.' + [guid]::NewGuid().ToString('N') } else { Join-Path $root 'probe.lock' }
+            $ownerArguments = @('hold', $mode, $identity)
+            if ($mode -eq 'dual') { $ownerArguments += (Join-Path $root 'probe.lock') }
+            $held = Start-Peer $owner $ownerArguments
             try {
                 $ready = $held.StandardOutput.ReadLineAsync().WaitAsync([TimeSpan]::FromSeconds(10)).GetAwaiter().GetResult()
                 if ($ready -ne 'LOCKED') { throw ('Owner did not acquire: ' + $held.StandardError.ReadToEnd()) }
                 foreach ($contender in $versions) {
-                    $attempt = Invoke-Peer $contender @('try', $mode, $identity)
+                    $contenderMode = if ($mode -eq 'dual') { 'mutex' } else { $mode }
+                    $attempt = Invoke-Peer $contender @('try', $contenderMode, $identity)
                     if ($attempt.Code -notin @(0,10)) { throw ('Contender failed: ' + $attempt.Error) }
-                    $results += [pscustomobject]@{ Scope=$scope; Mode=$mode; Owner=$owner; Contender=$contender; Excluded=($attempt.Code -eq 10) }
+                    $observationMode = if ($mode -eq 'dual') { 'dual-vs-legacy-mutex' } else { $mode }
+                    $results += [pscustomobject]@{ Scope=$scope; Mode=$observationMode; Owner=$owner; Contender=$contender; Excluded=($attempt.Code -eq 10) }
                 }
                 if ($mode -eq 'mutex') {
                     $other = [Threading.Mutex]::new($false, $identity)
@@ -51,12 +55,6 @@ try {
                         $results += [pscustomobject]@{ Scope=$scope; Mode='mutex'; Owner=$owner; Contender='PowerShell'; Excluded=(-not $acquired) }
                         if ($acquired) { $other.ReleaseMutex() }
                     } finally { $other.Dispose() }
-                }
-                else {
-                    # A legacy client knows only its mutex; an added file guard cannot make it cooperate.
-                    $legacy = Invoke-Peer $owner @('try','mutex',('NAP.Diagnostic.Legacy.' + [guid]::NewGuid().ToString('N')))
-                    if ($legacy.Code -ne 0) { throw 'Unexpected legacy probe error.' }
-                    $results += [pscustomobject]@{ Scope=$scope; Mode='file-vs-legacy-mutex'; Owner=$owner; Contender=$owner; Excluded=($legacy.Code -eq 10) }
                 }
             } finally {
                 if (-not $held.HasExited) { $held.StandardInput.WriteLine('release'); $held.StandardInput.Flush() }
