@@ -114,8 +114,8 @@ internal sealed class ExecutionFileLease : IDisposable
         }
         else if (OperatingSystem.IsLinux())
         {
-            // Fixed machine location and effective uid: HOME/TMPDIR/XDG overrides cannot fork the namespace.
-            path = "/tmp/NAP-coordination-v2-" + EffectiveUid().ToString(System.Globalization.CultureInfo.InvariantCulture);
+            // Account database, not HOME/TMPDIR/XDG; persistent storage is not subject to /tmp cleanup.
+            path = Path.Combine(AccountHome(), ".nap-coordination-v2");
             CheckComponents(path);
             Directory.CreateDirectory(path, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             CheckComponents(path);
@@ -140,6 +140,20 @@ internal sealed class ExecutionFileLease : IDisposable
         }
     }
 
+    private static string AccountHome()
+    {
+        var buffer = Marshal.AllocHGlobal(65536);
+        try
+        {
+            var error = Account(EffectiveUid(), out var value, buffer, 65536, out var found);
+            if (error != 0 || found == IntPtr.Zero) throw Failure(error);
+            var home = Marshal.PtrToStringUTF8(value.Home);
+            if (string.IsNullOrEmpty(home) || !Path.IsPathFullyQualified(home)) throw new IOException("The writer account has no absolute home directory.");
+            return home;
+        }
+        finally { Marshal.FreeHGlobal(buffer); }
+    }
+
     private static IOException Failure(int error) => new("The execution file lock is occupied or unavailable.", new Win32Exception(error));
     public void Dispose() { if (_disposed) return; _handle.Dispose(); _disposed = true; } // Never unlink a lease file.
     private readonly record struct FileIdentity(uint DeviceMajor, uint DeviceMinor, ulong Inode);
@@ -160,6 +174,13 @@ internal sealed class ExecutionFileLease : IDisposable
     {
         public uint Attributes, CreationLow, CreationHigh, AccessLow, AccessHigh, WriteLow, WriteHigh, Volume, SizeHigh, SizeLow, Links, IndexHigh, IndexLow;
     }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct Passwd
+    {
+        public IntPtr Name, Password;
+        public uint Uid, Gid;
+        public IntPtr Gecos, Home, Shell;
+    }
     [DllImport("kernel32.dll", EntryPoint = "CreateFileW", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern SafeFileHandle CreateFile(string path, uint access, uint share, IntPtr security, uint creation, uint flags, IntPtr template);
     [DllImport("kernel32.dll", EntryPoint = "GetFileInformationByHandle", SetLastError = true)]
@@ -167,6 +188,7 @@ internal sealed class ExecutionFileLease : IDisposable
     [DllImport("libc", EntryPoint = "open", SetLastError = true)] private static extern int Open([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mode);
     [DllImport("libc", EntryPoint = "flock", SetLastError = true)] private static extern int Flock(SafeFileHandle fd, int operation);
     [DllImport("libc", EntryPoint = "geteuid")] private static extern uint EffectiveUid();
+    [DllImport("libc", EntryPoint = "getpwuid_r")] private static extern int Account(uint uid, out Passwd value, IntPtr buffer, nuint size, out IntPtr found);
     [DllImport("libc", EntryPoint = "statx", SetLastError = true)] private static extern int StatPath(int fd, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mask, out Stat value);
     [DllImport("libc", EntryPoint = "statx", SetLastError = true)] private static extern int StatHandle(SafeFileHandle fd, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mask, out Stat value);
 }
