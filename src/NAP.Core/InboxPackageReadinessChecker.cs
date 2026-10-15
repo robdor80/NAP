@@ -6,6 +6,7 @@ namespace NAP.Core;
 public sealed class InboxPackageReadinessChecker
 {
     private readonly InboxPackageReadinessOptions _options;
+    internal TimeProvider Clock { get; set; } = TimeProvider.System;
 
     /// <summary>
     /// Creates a readiness checker with the default sampling options.
@@ -75,7 +76,7 @@ public sealed class InboxPackageReadinessChecker
 
             if (sampleIndex < _options.RequiredSamples - 1)
             {
-                await Task.Delay(_options.SampleInterval, cancellationToken);
+                await Task.Delay(_options.SampleInterval, Clock, cancellationToken);
             }
         }
 
