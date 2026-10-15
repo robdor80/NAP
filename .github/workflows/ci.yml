@@ -110,6 +110,14 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
+      - name: Use runner workspace disk for disposable test fixtures
+        shell: pwsh
+        run: |
+          $fixtureTemp = Join-Path $env:RUNNER_TEMP 'nap-fixtures'
+          [IO.Directory]::CreateDirectory($fixtureTemp) | Out-Null
+          "TEMP=$fixtureTemp" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "TMP=$fixtureTemp" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Synthetic fixtures: $fixtureTemp; DriveType=$([IO.DriveInfo]::new($fixtureTemp).DriveType)"
       - name: Record exact test environment
         shell: pwsh
         run: |
