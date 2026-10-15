@@ -2,6 +2,8 @@
 
 Rama: `codex/nap-2-fase-4-execution-recovery`. Inicio de implementación: 2026-10-15.
 
+**Estado final de esta entrega: P4.1–P4.4 implementados en commits separados; certificación de la fase BLOQUEADA.** La PR #46 permanece Draft y no debe fusionarse ni habilitar universos reales. Linux CI presenta cinco fallos anteriores que no se han ocultado. Cuatro afectan a la garantía de exclusión entre procesos y requieren resolver el contrato de coordinación frente al cambio de runtime descrito al final. La implementación y sus 80 pruebas nuevas no equivalen a aceptación integral de la fase.
+
 ## P4.1 — Autorización
 
 `Enabled` es una transición explícita CAS de la política vigente, con autorización exacta de universo, versión, hash, actor y raíces. Exige `Admit|Audit|Archive|Produce|Register`; `Normalize` continúa separado. Una definición, autorización o PASS aislados no activan nada. `Disabled` sigue siendo el default; `PreparationOnly` rechaza cualquier permiso productivo. Pausa suspende capacidades; revocación es terminal. Una versión nueva no hereda autoridad.
@@ -64,7 +66,35 @@ Entorno local: Windows x64, SDK 10.0.400, runtime .NET 8.0.8 y Windows Desktop 8
 
 Los cinco casos existentes de symlinks de AutomationQueueTests/InboxAdmissionTests fallan en esta sesión por falta de privilegio de creación. Se reprodujeron los mismos cinco fallos en una exportación aislada de `dbdadc4`, anterior a la implementación, conservada solo como artifact ignorado. No se desactivan ni se cambian esas pruebas, ni se modifican privilegios del equipo.
 
-Regresión amplia local inicial: 3.679 aprobadas, 8 fallidas, 0 omitidas, 3.687 total, 5 min 51 s (`phase4-windows-regression-final.trx`). Cinco fallos son los symlinks preexistentes reproducidos en la base; los otros tres fueron dos teardowns de junctions sintéticas y la expectativa histórica Disabled/PolicyMismatch. Corregidos estos últimos, la tanda de correcciones y compatibilidad anterior pasa **170/170**, 0 fallidas/omitidas, en 59 s (`phase4-corrections-final.trx`). Incluye las 24 pruebas nuevas de integridad y dos recorridos de completado repetido. Build Release posterior: 0 errores/advertencias, 2,56 s. Resultados consolidados finales y CI pendientes de publicación; no se declaran aprobados por anticipado.
+Regresión amplia local inicial: 3.679 aprobadas, 8 fallidas, 0 omitidas, 3.687 total, 5 min 51 s (`phase4-windows-regression-final.trx`). Cinco fallos son los symlinks preexistentes reproducidos en la base; los otros tres fueron dos teardowns de junctions sintéticas y la expectativa histórica Disabled/PolicyMismatch. Corregidos estos últimos, la tanda de correcciones y compatibilidad anterior pasa **170/170**, 0 fallidas/omitidas, en 59 s (`phase4-corrections-final.trx`). Incluye las 24 pruebas nuevas de integridad y dos recorridos de completado repetido. Build Release posterior: 0 errores/advertencias, 2,56 s. Esta tanda precede a la consolidación siguiente.
+
+### Consolidación medida sobre e8bdaff
+
+Regresión Windows final sin AdmissionVolume: **3.682 aprobadas, 5 fallidas, 0 omitidas; 3.687 total**, 5 min 25 s (`phase4-windows-consolidated.trx`). Los cinco fallos son exclusivamente los symlinks reproducidos en la base; no quedan fallos nuevos. Las **80 pruebas nuevas de Fase 4 pasan 80/80**, incluidos los reparse points mediante junctions y la revisión de completados, y los cuatro WPF pasan también dentro de esta regresión. No se presenta esta ejecución como verde por omitir sus cinco fallos.
+
+[Actions 38725426350](https://github.com/robdor80/NAP/actions/runs/38725426350), commit `e8bdaff8e05a6e9c18e13bc6e63e2efbc8a574a4`: Windows/WPF remoto aprobado. TRX descargado y gate de identidades vuelto a ejecutar: **4 aprobadas, 0 fallidas, 0 omitidas**, sin sustituir pruebas por build. El build remoto registra 0 errores y **5 advertencias NuGet preexistentes de ImageSharp 3.1.12 (2 NU1902 y 3 NU1903)**. Se conserva la dependencia anterior; resolver sus avisos requiere una entrega de dependencias con su propia validación.
+
+Linux completo: **3.682 aprobadas, 5 fallidas, 4 omitidas; 3.691 total**, 20 min 44 s. Las cuatro omisiones son exclusivamente WPF, ejecutados realmente en su job Windows. Las **80 pruebas nuevas pasan 80/80 también en Linux**. Pasan AdmissionVolume de 1/10/100/1.000 ZIP: duraciones de caso de 0,150 s / 1,052 s / 21,267 s / 18 min 52,033 s. No se confunde admisión de volumen con throughput de ejecución productiva. Los artifacts Linux y Windows conservan TRX durante 14 días. CI global **fallida**, no certificada.
+
+## Bloqueo de certificación y decisión del responsable
+
+| Fallo Linux | Evidencia |
+| --- | --- |
+| AutomationQueueTests.SeparateProcessObservesExclusiveNamedOwnerMutex | El proceso PowerShell independiente adquiere un nombre que debía estar ocupado (exit 10 frente a 0). |
+| AssetExecutionCoordinatorTests.SystemNamedMutexCoordinatesIndependentProcess, Job y Production | No se produce el rechazo por mutex ocupado esperado en ambos scopes. |
+| CatalogConcurrencyTests.CatalogMutexCoordinatesAnotherProcessWithoutLockFiles | No se produce CatalogBusy ante el proceso externo que anuncia LOCKED. |
+| GitProductionRecoveryPushTests.PushRequiresExactLocalCommitAndFrozenRepository, head | El snapshot detecta desaparición de `.git/objects/maintenance.lock`. La causa del cambio no está confirmada; el fixture lanza commits Git y el proceso Core ya desactiva auto maintenance. No se modifica Git productivo en esta fase. |
+
+Microsoft publicó el 14 de octubre de 2026 un [cambio incompatible de mutex con nombre en Unix](https://github.com/dotnet/docs/issues/56396), desde .NET 8.0.32 / 9.0.21 / 10.0.13: cambia el ámbito por defecto y la ubicación de almacenamiento por motivos de seguridad. El runner instaló SDK **8.0.426**, mientras que los cuatro tests de coordinación usan un proceso PowerShell externo con su propio runtime. Esta combinación y los cuatro síntomas son compatibles con namespaces diferentes entre runtimes; la versión exacta de PowerShell no fue registrada y la atribución definitiva requiere una reproducción controlada. No se afirma que dos procesos NAP del mismo runtime hayan sido reproducidos fallando.
+
+El contrato existente basa AutomationOwner, Job, Production y Catalog en nombres de Mutex del CLR. Ya no es válido dar por demostrada la exclusión entre versiones de runtime solo por igualdad del nombre. Cambiar las pruebas a otro peer sin resolver el ámbito soportado estrecharía la garantía; activar `System.Threading.Mutex.UnsafeDefaultMutexScopeGlobal` recuperaría un comportamiento expresamente marcado inseguro. No se han aplicado esas alternativas ni relajado assertions.
+
+Se detiene la modificación de coordinación, conforme a la instrucción del responsable de parar ante decisiones arquitectónicas o reducción de garantías. Alternativas para decidir:
+
+1. **Recomendada: aprobar una revisión acotada de la coordinación entre procesos**, independiente de cambios de namespace del CLR, con ownership de ámbito definido, locks del sistema de archivos controlados, rechazo de reparse, orden de locks, fencing/CAS y transición segura entre versiones. Requiere revisar el contrato de Fases 1–3 y probar procesos reales, runtimes mezclados, crash/abandonment y ausencia de doble writer. No basta añadir un lock a un único adaptador.
+2. **Definir soporte operativo limitado a runtimes homogéneos y compatibles**, con despliegue/upgrade coordinado y rechazo verificable de combinaciones no soportadas antes de cualquier ejecución. Después probar procesos NAP reales y alinear los fixtures con ese contrato. No equivale a mantener soporte implícito de runtimes mezclados ni autoriza simplemente omitir los tests fallidos.
+
+En ambos casos queda por aislar y corregir el quinto fallo del fixture Git y repetir regresión Linux completa y cuatro WPF. No se declara fase aceptada ni se integra en main mientras quede esta decisión y validación abierta.
 
 Comandos de verificación:
 
