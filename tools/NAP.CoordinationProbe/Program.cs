@@ -1,5 +1,31 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Reflection;
+
+if (args.Length == 4 && args[0] is "core-hold" or "core-try" or "core-race")
+{
+    if (args[0] == "core-race") { Console.WriteLine("READY"); Console.Out.Flush(); Console.ReadLine(); }
+    IDisposable coreLease;
+    try
+    {
+        var type = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "NAP.Core.dll")).GetType("NAP.Core.ExecutionMutex")!;
+        coreLease = (IDisposable)type.GetMethod("Acquire", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, args[1..])!;
+    }
+    catch (TargetInvocationException error) when (error.InnerException is IOException)
+    { Console.WriteLine("BUSY"); return 10; }
+    using (coreLease)
+        if (args[0] != "core-try") { Console.WriteLine("LOCKED"); Console.Out.Flush(); Console.ReadLine(); }
+    return 0;
+}
+if (args.Length == 2 && args[0] == "legacy-write")
+{
+    var path = Path.GetFullPath(args[1]);
+    var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+    if (!path.StartsWith(temporary, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
+        Path.GetFileName(path) != "legacy-write-probe") return 64;
+    try { File.WriteAllText(path, "legacy writer\n"); Console.WriteLine("WROTE"); return 0; }
+    catch (UnauthorizedAccessException) { Console.WriteLine("DENIED"); return 11; }
+}
 
 // Diagnostic-only peer; does not load NAP, configuration, assets, journals or a database.
 if (args.Length == 1 && args[0] == "info")
