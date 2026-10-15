@@ -129,6 +129,9 @@ jobs:
         run: dotnet restore NAP.sln
       - name: Build
         run: dotnet build NAP.sln -c Release --no-restore
+      - name: Diagnose bounded catalog stamps on both disposable Windows volumes
+        shell: pwsh
+        run: ./.github/scripts/Diagnose-CatalogStamp.ps1 -CorePath src/NAP.Core/bin/Release/net8.0/NAP.Core.dll
       - name: Run complete suite including volume and WPF
         run: >-
           dotnet test NAP.sln -c Release --no-build --no-restore
