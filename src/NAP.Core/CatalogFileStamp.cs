@@ -23,7 +23,16 @@ internal sealed record CatalogFileStamp(long Length, long Creation, long LastWri
             if (OperatingSystem.IsWindows())
             {
                 if (!WindowsIdentity(handle, 18, out var id, 24) || !WindowsBasic(handle, 0, out var basic, 40)) return null;
-                return new(id.Volume, id.Low, id.High, basic.Change, 0, basic.Write, 0);
+                // Timestamps can coincide on fast writes and may be restored. A per-file USN is
+                // a bounded monotonic change observation; unsupported/disabled journals forbid reuse.
+                var record = new byte[4096];
+                if (!WindowsUsn(handle, 0x900eb, IntPtr.Zero, 0, record, (uint)record.Length, out var read, IntPtr.Zero)) return null;
+                var major = BitConverter.ToUInt16(record, 4);
+                var offset = major switch { 2 => 24, 3 => 40, _ => -1 };
+                if (offset < 0 || read < offset + sizeof(long) || BitConverter.ToUInt32(record, 0) > read) return null;
+                var sequence = BitConverter.ToInt64(record, offset);
+                if (sequence <= 0) return null;
+                return new(id.Volume, id.Low, id.High, basic.Change, 0, basic.Write, 0, sequence);
             }
             if (OperatingSystem.IsLinux())
             {
@@ -58,7 +67,11 @@ internal sealed record CatalogFileStamp(long Length, long Creation, long LastWri
     [DllImport("kernel32.dll", EntryPoint = "GetFileInformationByHandleEx", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool WindowsBasic(SafeFileHandle handle, int kind, out WindowsInfo information, uint size);
+    [DllImport("kernel32.dll", EntryPoint = "DeviceIoControl", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool WindowsUsn(SafeFileHandle handle, uint code, IntPtr input, uint inputSize,
+        byte[] output, uint outputSize, out uint returned, IntPtr overlapped);
     [DllImport("libc", EntryPoint = "statx", SetLastError = true)]
     private static extern int LinuxStatx(int fd, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mask, out LinuxInfo information);
 }
-internal sealed record CatalogNativeStamp(ulong Device, ulong IdLow, ulong IdHigh, long Change, uint ChangeNanos, long Write, uint WriteNanos);
+internal sealed record CatalogNativeStamp(ulong Device, ulong IdLow, ulong IdHigh, long Change, uint ChangeNanos, long Write, uint WriteNanos, long WindowsUsn = 0);
