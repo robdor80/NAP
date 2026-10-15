@@ -65,7 +65,8 @@ internal sealed class GitProductionFixture : IDisposable
         var full = Path.GetFullPath(root); var temp = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
         Assert.StartsWith(temp, full, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
         var info = new ProcessStartInfo("git") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
-        foreach (var a in new[] { "-c", "core.autocrlf=false", "-c", "commit.gpgSign=false", "-c", "core.hooksPath=/dev/null", "-C", root }.Concat(args)) info.ArgumentList.Add(a);
+        // A detached maintenance process can outlive Git and mutate a frozen filesystem snapshot.
+        foreach (var a in new[] { "-c", "core.autocrlf=false", "-c", "commit.gpgSign=false", "-c", "core.hooksPath=/dev/null", "-c", "gc.auto=0", "-c", "maintenance.auto=false", "-C", root }.Concat(args)) info.ArgumentList.Add(a);
         foreach (var key in info.Environment.Keys.Where(k => k.StartsWith("GIT_", StringComparison.OrdinalIgnoreCase)).ToArray()) info.Environment.Remove(key);
         info.Environment["GIT_CONFIG_NOSYSTEM"] = "1"; info.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
         info.Environment["GIT_TERMINAL_PROMPT"] = "0"; info.Environment["GIT_ALLOW_PROTOCOL"] = "file";
