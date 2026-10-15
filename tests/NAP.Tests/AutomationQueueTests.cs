@@ -268,6 +268,22 @@ public sealed class AutomationQueueTests
         Assert.Throws<AutomationException>(() => new AutomationQueueStore(f.Roots).List()); Assert.Equal(bytes, File.ReadAllBytes(f.Store.DatabasePath));
     }
     [Fact]
+    public void WarmPayloadCacheStillRejectsChangedIndexesPayloadsAndMissingEvents()
+    {
+        foreach (var mutation in new[] {
+            "UPDATE items SET revision=revision+1",
+            "UPDATE items SET payload=replace(payload,'Observed','Rejected')",
+            "DELETE FROM events" })
+        {
+            using var f = new Fixture(); using (var owner = f.Store.AcquireOwner()) f.Observe(owner);
+            Assert.Single(f.Store.List()); // Reuse this very store and its parsed values after external corruption.
+            using (var db = f.Raw()) { using var cmd = db.CreateCommand(); cmd.CommandText = mutation; cmd.ExecuteNonQuery(); }
+            var changed = File.ReadAllBytes(f.Store.DatabasePath);
+            Error(AutomationError.CorruptStore, () => f.Store.List());
+            Assert.Equal(changed, File.ReadAllBytes(f.Store.DatabasePath));
+        }
+    }
+    [Fact]
     public void ExactByteValidationCacheRejectsSchemaMutationEvenWithPreservedSizeAndTimestamp()
     {
         using var f = new Fixture(); using (f.Store.AcquireOwner()) { }

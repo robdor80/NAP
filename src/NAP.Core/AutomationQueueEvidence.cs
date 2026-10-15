@@ -5,6 +5,7 @@ namespace NAP.Core;
 
 public sealed partial class AutomationQueueStore
 {
+    private readonly QueueValidationPayloadCache _validationPayloads = new();
     public NormalizationLineage RecordLineage(AutomationQueueOwner owner, long itemRevision, NormalizationLineage lineage, QueueClaim? claim = null) => Write(owner, (db, tx) =>
     {
         AutomationValidation.Lineage(lineage); var item = Item(db, tx, lineage.ItemId); Revision(item, itemRevision);
@@ -126,7 +127,7 @@ public sealed partial class AutomationQueueStore
         using (var cmd = Command(db, null, "SELECT id,zip_hash,state,revision,batch_id,policy_hash,payload FROM items"))
         using (var rows = cmd.ExecuteReader()) while (rows.Read())
         {
-            var value = AutomationJson.Decode<QueueItem>(rows.GetString(6)); AutomationValidation.Scope(UniverseId, value.UniverseId); AutomationValidation.Zip(value.Zip); AutomationValidation.Defined(value.State); AutomationValidation.Defined(value.Incident); AutomationValidation.Utc(value.CreatedUtc); AutomationValidation.Utc(value.UpdatedUtc);
+            var value = _validationPayloads.Decode<QueueItem>(rows.GetString(6)); AutomationValidation.Scope(UniverseId, value.UniverseId); AutomationValidation.Zip(value.Zip); AutomationValidation.Defined(value.State); AutomationValidation.Defined(value.Incident); AutomationValidation.Utc(value.CreatedUtc); AutomationValidation.Utc(value.UpdatedUtc);
             if (rows.GetString(0) != value.Id.Value || rows.GetString(1) != value.Zip.Hash.Hex || rows.GetString(2) != value.State.ToString() || rows.GetInt64(3) != value.Revision || (rows.IsDBNull(4) ? null : rows.GetString(4)) != value.BatchId?.Value || rows.GetString(5) != value.Policy.Hash.Hex || !policies.TryGetValue(value.Policy.Hash.Hex, out var policy) || policy.Reference != value.Policy || value.Revision < 0 || value.AttemptCount < 0 || value.RetryCount < 0 || value.UpdatedUtc < value.CreatedUtc)
                 throw AutomationValidation.Corrupt("Queue item metadata/policy mismatch.");
             if (!ProductionPaths.Same(Path.GetDirectoryName(value.SourcePath)!, _roots.InboxRoot) || !ProductionPaths.SafeSegment(Path.GetFileName(value.SourcePath)) || !string.Equals(Path.GetExtension(value.SourcePath), ".zip", StringComparison.OrdinalIgnoreCase)) throw AutomationValidation.Corrupt("Observation source scope mismatch.");
@@ -143,7 +144,7 @@ public sealed partial class AutomationQueueStore
         using (var cmd = Command(db, null, "SELECT id,item_id,job_id,number,status,payload FROM attempts ORDER BY number"))
         using (var rows = cmd.ExecuteReader()) while (rows.Read())
         {
-            var value = AutomationJson.Decode<WorkflowAttempt>(rows.GetString(5)); AutomationValidation.Scope(UniverseId, value.UniverseId); if (value.Profile is not null) { value.Profile.ValidateAndGetRule(); AutomationValidation.Scope(UniverseId, value.Profile.UniverseId); } AutomationValidation.Utc(value.CreatedUtc); AutomationValidation.Defined(value.Status); AutomationValidation.Relative(value.StagingRelativePath); AutomationValidation.Relative(value.ExtractionRelativePath);
+            var value = _validationPayloads.Decode<WorkflowAttempt>(rows.GetString(5)); AutomationValidation.Scope(UniverseId, value.UniverseId); if (value.Profile is not null) { value.Profile.ValidateAndGetRule(); AutomationValidation.Scope(UniverseId, value.Profile.UniverseId); } AutomationValidation.Utc(value.CreatedUtc); AutomationValidation.Defined(value.Status); AutomationValidation.Relative(value.StagingRelativePath); AutomationValidation.Relative(value.ExtractionRelativePath);
             if (rows.GetString(0) != value.Id.Value || rows.GetString(1) != value.ItemId.Value || rows.GetString(2) != value.JobId.Value || rows.GetInt32(3) != value.Number || rows.GetString(4) != value.Status.ToString() || !items.TryGetValue(value.ItemId.Value, out var item) || value.Number > item.AttemptCount || value.Status == AttemptStatus.Active && item.ActiveAttempt != value.Id)
                 throw AutomationValidation.Corrupt("Attempt identity/checkpoint mismatch.");
             if (value.ParentId is { } parent && (!attempts.TryGetValue(parent.Value, out var prior) || prior.ItemId != value.ItemId || prior.Status != AttemptStatus.Closed || prior.Number != value.Number - 1) || value.Number > 1 && value.ParentId is null || value.Number == 1 && value.ParentId is not null) throw AutomationValidation.Corrupt("Attempt lineage mismatch.");
@@ -165,14 +166,14 @@ public sealed partial class AutomationQueueStore
         using (var cmd = Command(db, null, "SELECT item_id,source_path,batch_id,payload FROM observations"))
         using (var rows = cmd.ExecuteReader()) while (rows.Read())
         {
-            var value = AutomationJson.Decode<QueueObservation>(rows.GetString(3)); AutomationValidation.Utc(value.ObservedUtc);
+            var value = _validationPayloads.Decode<QueueObservation>(rows.GetString(3)); AutomationValidation.Utc(value.ObservedUtc);
             if (rows.GetString(0) != value.ItemId.Value || rows.GetString(1) != value.SourcePath || (rows.IsDBNull(2) ? null : rows.GetString(2)) != value.BatchId?.Value || !items.ContainsKey(value.ItemId.Value) || !ProductionPaths.Same(Path.GetDirectoryName(value.SourcePath)!, _roots.InboxRoot) || !string.Equals(Path.GetExtension(value.SourcePath), ".zip", StringComparison.OrdinalIgnoreCase)) throw AutomationValidation.Corrupt("Observation mismatch.");
         }
         var lastEvents = new Dictionary<string, QueueEvent>();
         using (var cmd = Command(db, null, "SELECT item_id,sequence,payload FROM events ORDER BY item_id,sequence"))
         using (var rows = cmd.ExecuteReader()) while (rows.Read())
         {
-            var value = AutomationJson.Decode<QueueEvent>(rows.GetString(2)); AutomationValidation.Utc(value.Utc); AutomationValidation.Defined(value.Code); AutomationValidation.Defined(value.Result); AutomationValidation.Defined(value.Stage); AutomationValidation.Defined(value.State); AutomationValidation.Defined(value.Incident);
+            var value = _validationPayloads.Decode<QueueEvent>(rows.GetString(2)); AutomationValidation.Utc(value.Utc); AutomationValidation.Defined(value.Code); AutomationValidation.Defined(value.Result); AutomationValidation.Defined(value.Stage); AutomationValidation.Defined(value.State); AutomationValidation.Defined(value.Incident);
             lastEvents.TryGetValue(value.ItemId.Value, out var prior);
             if (rows.GetString(0) != value.ItemId.Value || rows.GetInt64(1) != value.Sequence || value.Sequence != (prior?.Sequence ?? 0) + 1 || value.AttemptId is { } aid && (!attempts.TryGetValue(aid.Value, out var a) || a.ItemId != value.ItemId)) throw AutomationValidation.Corrupt("Event sequence or attempt binding mismatch.");
             if (prior is null && (value.Code != QueueEventCode.Observed || value.State != QueueState.Observed) ||
