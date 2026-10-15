@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using NAP.Core;
 using Xunit;
 
@@ -199,6 +201,14 @@ public sealed class ExecutionCoordinationProcessTests
             File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupWrite);
             Assert.Throws<IOException>(() => Acquire("Job", root, ""));
             File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        }
+        else
+        {
+            var security = new FileInfo(path).GetAccessControl();
+            var foreign = new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.Read, AccessControlType.Allow);
+            security.AddAccessRule(foreign); new FileInfo(path).SetAccessControl(security);
+            try { Assert.Throws<IOException>(() => Acquire("Job", root, "")); }
+            finally { security.RemoveAccessRuleSpecific(foreign); new FileInfo(path).SetAccessControl(security); }
         }
         using var restored = Acquire("Job", root, "");
     }

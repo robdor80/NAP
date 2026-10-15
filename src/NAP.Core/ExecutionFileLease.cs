@@ -56,13 +56,25 @@ internal sealed class ExecutionFileLease : IDisposable
             if (StatPath(-100, path, 0x100, 0x7ff, out var value) != 0) throw Failure(Marshal.GetLastPInvokeError());
             if (Regular(value) != expected) throw new IOException("The execution lock path was replaced.");
         }
-        else
+        else if (OperatingSystem.IsWindows())
         {
             // Share-none prevents replacement of the held file; inspect the path without following reparse points.
             var attributes = File.GetAttributes(path);
             if ((attributes & (FileAttributes.ReparsePoint | FileAttributes.Directory | FileAttributes.Device)) != 0)
                 throw new IOException("The execution lock path is not an ordinary file.");
+            using var identity = WindowsIdentity.GetCurrent();
+            var owner = identity.User!;
+            var system = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null);
+            var administrators = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+            var security = new FileInfo(path).GetAccessControl(AccessControlSections.Owner | AccessControlSections.Access);
+            var fileOwner = security.GetOwner(typeof(SecurityIdentifier));
+            if (!owner.Equals(fileOwner) && !system.Equals(fileOwner) && !administrators.Equals(fileOwner))
+                throw new IOException("The execution lock has an untrusted owner.");
+            foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                if (rule.AccessControlType != AccessControlType.Allow || (!rule.IdentityReference.Equals(owner) && !rule.IdentityReference.Equals(system)))
+                    throw new IOException("The execution lock ACL is not private.");
         }
+        else throw new IOException("Execution coordination supports only Windows and Linux.");
     }
 
     private static FileIdentity Inspect(SafeFileHandle handle)
