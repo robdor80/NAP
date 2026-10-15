@@ -51,7 +51,7 @@ internal static class BackupTestSupport
         // Keep temporary fixture repositories deterministic without writing repository configuration.
         foreach (var arg in new[] { "-c", "maintenance.auto=false", "-c", "gc.auto=0", "-C", root }.Concat(args)) info.ArgumentList.Add(arg);
         info.Environment["GIT_CONFIG_NOSYSTEM"] = "1";
-        info.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
+        info.Environment["GIT_CONFIG_GLOBAL"] = "/dev/null";
         info.Environment["GIT_TERMINAL_PROMPT"] = "0";
         using var p = Process.Start(info)!; var output = p.StandardOutput.ReadToEndAsync(); var errors = p.StandardError.ReadToEndAsync();
         Assert.True(p.WaitForExit(30000)); Task.WaitAll(output, errors); Assert.True(p.ExitCode == 0, errors.Result); return output.Result.Trim();

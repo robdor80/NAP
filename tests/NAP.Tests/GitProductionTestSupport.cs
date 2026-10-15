@@ -68,7 +68,7 @@ internal sealed class GitProductionFixture : IDisposable
         // A detached maintenance process can outlive Git and mutate a frozen filesystem snapshot.
         foreach (var a in new[] { "-c", "core.autocrlf=false", "-c", "commit.gpgSign=false", "-c", "core.hooksPath=/dev/null", "-c", "gc.auto=0", "-c", "maintenance.auto=false", "-C", root }.Concat(args)) info.ArgumentList.Add(a);
         foreach (var key in info.Environment.Keys.Where(k => k.StartsWith("GIT_", StringComparison.OrdinalIgnoreCase)).ToArray()) info.Environment.Remove(key);
-        info.Environment["GIT_CONFIG_NOSYSTEM"] = "1"; info.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
+        info.Environment["GIT_CONFIG_NOSYSTEM"] = "1"; info.Environment["GIT_CONFIG_GLOBAL"] = "/dev/null";
         info.Environment["GIT_TERMINAL_PROMPT"] = "0"; info.Environment["GIT_ALLOW_PROTOCOL"] = "file";
         using var p = Process.Start(info)!; var output = p.StandardOutput.ReadToEndAsync(); var errors = p.StandardError.ReadToEndAsync();
         if (!p.WaitForExit(30000)) { p.Kill(true); Assert.Fail("Test Git timed out."); }
