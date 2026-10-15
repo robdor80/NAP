@@ -200,6 +200,26 @@ public sealed class InboxAdmissionTests(ITestOutputHelper output)
         Assert.Equal(files.Length, Directory.EnumerateFiles(f.Roots.StagingRoot, "*", SearchOption.AllDirectories).Count()); f.AssertUntouched();
     }
     [Fact]
+    public void FreshParallelRetainedAccountingIncludesEveryBranchAndPreservesItsBytes()
+    {
+        foreach (var fits in new[] { false, true })
+        {
+            using var f = new Fixture();
+            var retained = Path.Combine(f.Roots.StagingRoot, "automation-admission");
+            for (var i = 0; i < 32; i++)
+            {
+                var branch = Path.Combine(retained, "branch_" + i, "nested"); Directory.CreateDirectory(branch);
+                File.WriteAllBytes(Path.Combine(branch, "sentinel"), new byte[1024]);
+            }
+            var before = Directory.EnumerateFiles(retained, "*", SearchOption.AllDirectories).ToDictionary(p => p, p => File.ReadAllBytes(p));
+            var service = new InboxAdmissionService(f.Context, f.Queue, Fixture.Fast with { MaxRetainedBytes = fits ? 65536 : 16384 });
+            using var owner = f.Queue.AcquireOwner();
+            Assert.Equal(fits ? InboxAdmissionCode.Admitted : InboxAdmissionCode.ResourceLimit, service.Admit(owner, f.Zip("quota.zip")).Code);
+            foreach (var pair in before) Assert.Equal(pair.Value, File.ReadAllBytes(pair.Key));
+            f.AssertUntouched();
+        }
+    }
+    [Fact]
     public void DiskBudgetAndSimulatedFullDiskStopOnlyTheirCandidates()
     {
         using var f = new Fixture(); using var owner = f.Queue.AcquireOwner(); var source = f.Zip("space.zip");
