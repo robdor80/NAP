@@ -29,14 +29,16 @@ internal sealed class ExecutionFileLease : IDisposable
             handle = new SafeFileHandle((IntPtr)Open(path, 2 | 0x40 | 0x800 | 0x20000 | 0x80000, 0x180), true);
         else throw new IOException("Execution coordination supports only Windows and Linux.");
         if (handle.IsInvalid) { var error = Marshal.GetLastPInvokeError(); handle.Dispose(); throw Failure(error); }
+        var locked = false;
         try
         {
             var identity = Inspect(handle);
             if (OperatingSystem.IsLinux() && Flock(handle, 2 | 4) != 0) throw Failure(Marshal.GetLastPInvokeError());
+            locked = true;
             RequirePath(path, identity);
             return new ExecutionFileLease(handle, path, identity);
         }
-        catch { handle.Dispose(); throw; }
+        catch { if (locked && OperatingSystem.IsLinux()) Flock(handle, 8); handle.Dispose(); throw; }
     }
 
     internal void Require()
@@ -155,7 +157,14 @@ internal sealed class ExecutionFileLease : IDisposable
     }
 
     private static IOException Failure(int error) => new("The execution file lock is occupied or unavailable.", new Win32Exception(error));
-    public void Dispose() { if (_disposed) return; _handle.Dispose(); _disposed = true; } // Never unlink a lease file.
+    public void Dispose()
+    {
+        if (_disposed) return;
+        // flock belongs to the open-file description. A concurrent fork can retain a duplicate
+        // briefly before exec closes CLOEXEC descriptors; close alone would leave a false Busy.
+        try { if (OperatingSystem.IsLinux() && Flock(_handle, 8) != 0) throw Failure(Marshal.GetLastPInvokeError()); }
+        finally { _handle.Dispose(); _disposed = true; }
+    } // Never unlink a lease file.
     private readonly record struct FileIdentity(uint DeviceMajor, uint DeviceMinor, ulong Inode);
     [StructLayout(LayoutKind.Explicit, Size = 256)]
     private struct Stat

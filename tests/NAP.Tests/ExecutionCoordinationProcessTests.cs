@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 using NAP.Core;
 using Xunit;
 
@@ -18,6 +20,20 @@ public sealed class ExecutionCoordinationProcessTests
         var expected = SHA256.HashData(File.ReadAllBytes(typeof(AssetCatalog).Assembly.Location));
         var actual = SHA256.HashData(File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "coordination-peer", "NAP.Core.dll")));
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void ReleaseUnlocksTheDescriptionEvenWhenAForkStyleDuplicateIsStillOpen()
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        var root = SyntheticRoot(); var held = Acquire("Production", root, "");
+        var file = MutexType.GetField("_file", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(held)!;
+        var handle = (SafeFileHandle)file.GetType().GetField("_handle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(file)!;
+        var clone = Duplicate(handle); Assert.True(clone >= 0);
+        using var inherited = new SafeFileHandle((IntPtr)clone, true);
+        held.Dispose();
+        using var contender = CoordinationTestPeer.Start("core-try", "Production", root);
+        Assert.Equal(0, CoordinationTestPeer.Exit(contender));
     }
 
     [Fact]
@@ -183,4 +199,5 @@ public sealed class ExecutionCoordinationProcessTests
         var type = typeof(AssetCatalog).Assembly.GetType("NAP.Core.ExecutionFileLease")!;
         return (string)Invoke(type.GetMethod("PathFor", BindingFlags.Static | BindingFlags.NonPublic)!, null, [name])!;
     }
+    [DllImport("libc", EntryPoint = "dup", SetLastError = true)] private static extern int Duplicate(SafeFileHandle handle);
 }
