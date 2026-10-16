@@ -10,6 +10,15 @@ public enum AdmissionCheckpoint { Intent, SnapshotReady, ExtractionReady, Journa
 public sealed record InboxAdmissionResult(UniverseId UniverseId, string SourcePath, InboxAdmissionCode Code,
     QueueItemId? ItemId = null, JobId? JobId = null, string? DeclaredUniverse = null);
 public sealed record AdmissionFile(string RelativePath, Sha256Digest Hash, long SizeBytes);
+public sealed class InboxReadinessObservation
+{
+    public string SourcePath { get; }
+    internal InboxPackageReadinessResult Result { get; }
+    internal long? Length { get; }
+    internal DateTime? ModifiedUtc { get; }
+    internal InboxReadinessObservation(string source, InboxPackageReadinessResult result, long? length, DateTime? modifiedUtc)
+    { SourcePath = source; Result = result; Length = length; ModifiedUtc = modifiedUtc; }
+}
 public sealed record AdmissionReceipt(int Version, QueueItemId ItemId, WorkflowAttemptId AttemptId, JobId JobId,
     UniverseId UniverseId, QueueZipIdentity Zip, string SourcePath, string SnapshotRelativePath,
     string ExtractionRelativePath, AdmissionCheckpoint Checkpoint, DateTimeOffset Utc, Sha256Digest? PreviousHash,

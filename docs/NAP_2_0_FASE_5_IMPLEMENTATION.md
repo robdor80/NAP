@@ -15,3 +15,9 @@ Validation: `AutomationRuntimeTests`, Windows x64/.NET runtime 8.0.8, **3/3 pass
 Independent versioned SQLite control store, exact roots/profile binding, paused/stopped defaults, durable sessions, CAS commands, idempotent receipts, inhibition history and item cancellations. No workflow permission is inferred from control state. Unknown artifacts/schema, missing bindings and corrupt history fail closed without cleanup. IO is short and separate from universe ownership; transaction rollback leaves the command replayable.
 
 Validation: runtime+control **6/6 passed**; additional rollback and updated control tests **4/4 passed** (`p52-final.trx`, `p52-rollback.trx`; overlapping totals are not summed). Baseline historical selection: **94 passed / 4 failed / 0 skipped**, all four failures are inability to create symlinks (`phase5-baseline.trx`), before workflow refactors. No tests or system permissions were weakened. P5.3–P5.10 pending.
+
+## P5.3 — staged admission
+
+Read-only async readiness observations leave the owner available. Owner-thread continuation rejects changed samples and retains all fresh hash/CRC/source/snapshot checks. Legacy Admit uses the same implementation. Batch observation binding and idempotent batch creation preserve queue schema v1. Fresh retention readers accept cancellation and always drain/dispose before returning.
+
+Validation: staged admission **2/2 passed** (`p53-staged.trx`, normal output tree); admission selection **43 passed / 1 failed** (existing symlink privilege). An isolated-output broad name filter also selected a historical pinned-image test whose repository-relative fixture lookup is incompatible with that output path (**14 passed / 1 failed**); this is retained as a failed invocation, not software acceptance. Subsequent historical runs use the normal build layout. P5.4–P5.10 pending.

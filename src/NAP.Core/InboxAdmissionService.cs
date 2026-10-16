@@ -19,6 +19,40 @@ public sealed class InboxAdmissionService
         _evidence = new(context, queue);
     }
     public InboxAdmissionResult Admit(AutomationQueueOwner owner, string sourcePath, CancellationToken token = default)
+        => AdmitCore(owner, sourcePath, () => new InboxPackageReadinessChecker(new()
+            { RequiredSamples = _options.StabilitySamples, SampleInterval = _options.SampleInterval })
+            .CheckAsync(new(Path.GetFileName(sourcePath), sourcePath), token).GetAwaiter().GetResult(), null, token);
+
+    /// <summary>Read-only scheduling observation. It owns no queue, stream or filesystem capability.</summary>
+    public async Task<InboxReadinessObservation> ProbeAsync(string sourcePath, CancellationToken token = default)
+    {
+        var source = Path.GetFullPath(sourcePath);
+        if (!ProductionPaths.Same(Path.GetDirectoryName(source)!, _context.Storage.InboxRoot)) throw AutomationValidation.Invalid("Probe must stay in this Inbox.");
+        InboxPackageReadinessResult result;
+        try
+        {
+            ProductionPaths.CheckPath(source, NapIssueCodes.PackageStructureInvalid);
+            result = await new InboxPackageReadinessChecker(new() { RequiredSamples = _options.StabilitySamples, SampleInterval = _options.SampleInterval })
+                .CheckAsync(new(Path.GetFileName(source), source), token).ConfigureAwait(false);
+            var file = new FileInfo(source);
+            return new(source, result, file.Exists ? file.Length : null, file.Exists ? file.LastWriteTimeUtc : null);
+        }
+        catch (ProductionStorageException) { return new(source, new(InboxPackageReadinessStatus.InUse), null, null); }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException)
+        { return new(source, new(InboxPackageReadinessStatus.InUse), null, null); }
+    }
+
+    /// <summary>Continue on the owner's thread; readiness never replaces current source/hash/CRC checks.</summary>
+    public InboxAdmissionResult AdmitReady(AutomationQueueOwner owner, InboxReadinessObservation observation,
+        QueueBatchId? batch = null, CancellationToken token = default) => AdmitCore(owner, observation.SourcePath, () =>
+        {
+            var file = new FileInfo(observation.SourcePath);
+            return file.Exists && file.Length == observation.Length && file.LastWriteTimeUtc == observation.ModifiedUtc
+                ? observation.Result : new(InboxPackageReadinessStatus.Changing);
+        }, batch, token);
+
+    private InboxAdmissionResult AdmitCore(AutomationQueueOwner owner, string sourcePath,
+        Func<InboxPackageReadinessResult> checkReadiness, QueueBatchId? batch, CancellationToken token)
     {
         owner.Require(_context.Storage.StateRoot); ScopeBoundary(); token.ThrowIfCancellationRequested();
         var source = Path.GetFullPath(sourcePath);
@@ -31,8 +65,7 @@ public sealed class InboxAdmissionService
         InboxPackageReadinessResult readiness;
         try
         {
-            readiness = new InboxPackageReadinessChecker(new() { RequiredSamples = _options.StabilitySamples, SampleInterval = _options.SampleInterval })
-                .CheckAsync(new(Path.GetFileName(source), source), token).GetAwaiter().GetResult();
+            readiness = checkReadiness();
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException) { return Result(source, InboxAdmissionCode.InUse); }
         if (!readiness.IsReady) return Result(source, readiness.Status == InboxPackageReadinessStatus.Missing ? InboxAdmissionCode.MissingSource :
@@ -47,7 +80,7 @@ public sealed class InboxAdmissionService
             if (size > _options.MaxZipBytes) return Result(source, InboxAdmissionCode.ResourceLimit);
             var modified = File.GetLastWriteTimeUtc(source); var hash = new Sha256Hasher().Compute(input);
             if (input.Length != size || modified != File.GetLastWriteTimeUtc(source)) return Result(source, InboxAdmissionCode.SourceChanged);
-            item = _queue.Observe(owner, _context.Id, source, new(hash, size)); Checkpoint?.Invoke("observation-recorded");
+            item = _queue.Observe(owner, _context.Id, source, new(hash, size), batch); Checkpoint?.Invoke("observation-recorded");
             if (item.ActiveAttempt is not null) return Resume(owner, item, token);
             if (item.State == QueueState.MissingSource) item = _queue.Transition(owner, item.Id, item.Revision, QueueState.WaitingStable);
             if (item.State is not (QueueState.Observed or QueueState.WaitingStable or QueueState.Queued)) return Result(source, InboxAdmissionCode.AlreadyKnown, item);
@@ -60,7 +93,7 @@ public sealed class InboxAdmissionService
                 return Result(source, InboxAdmissionCode.IncompleteZip, item);
             }
             catch (RejectedPackageException) { return Park(owner, item, InboxAdmissionCode.UnsafeZip, QueueIncident.UnsafeZip, true); }
-            if (!HasCapacity(input)) return Park(owner, item, InboxAdmissionCode.ResourceLimit, QueueIncident.ResourceLimit);
+            if (!HasCapacity(input, token)) return Park(owner, item, InboxAdmissionCode.ResourceLimit, QueueIncident.ResourceLimit);
             input.Position = 0;
             if (new Sha256Hasher().Compute(input) != hash || input.Length != size) return Park(owner, item, InboxAdmissionCode.SourceChanged, QueueIncident.SourceChanged);
             if (item.State != QueueState.Queued) item = _queue.Transition(owner, item.Id, item.Revision, QueueState.Queued);
@@ -148,7 +181,7 @@ public sealed class InboxAdmissionService
                     item = _queue.Transition(owner, item.Id, item.Revision, QueueState.WaitingStable);
                     item = _queue.Transition(owner, item.Id, item.Revision, QueueState.Queued);
                 }
-                if (!HasCapacity(source)) return Park(owner, _queue.Get(item.Id), InboxAdmissionCode.ResourceLimit, QueueIncident.ResourceLimit);
+                if (!HasCapacity(source, token)) return Park(owner, _queue.Get(item.Id), InboxAdmissionCode.ResourceLimit, QueueIncident.ResourceLimit);
                 InboxAdmissionEvidence.EnsureParents(Path.Combine(operation, "snapshot"), _context.Storage.StagingRoot);
                 Checkpoint?.Invoke("snapshot-starting"); source.Position = 0;
                 InboxPackageStager.StageSnapshotAsync(source, _evidence.SnapshotPath(attempt), _options.MaxZipBytes, token).GetAwaiter().GetResult();
@@ -265,19 +298,20 @@ public sealed class InboxAdmissionService
         InboxAdmissionEvidence.DirectoryBoundary(_context.Storage.InboxRoot);
         InboxAdmissionEvidence.DirectoryBoundary(_context.Storage.StagingRoot, true);
     }
-    private bool HasCapacity(Stream source)
+    private bool HasCapacity(Stream source, CancellationToken token)
     {
-        try { return HasCapacityCore(source); }
+        try { return HasCapacityCore(source, token); }
         catch (ProductionStorageException e)
         { throw new AutomationException(AutomationError.UnsafePath, "Shared admission storage cannot be safely accounted for.", e); }
     }
-    private bool HasCapacityCore(Stream source)
+    private bool HasCapacityCore(Stream source, CancellationToken token)
     {
         source.Position = 0; long declared = 0;
         using (var archive = new ZipArchive(source, ZipArchiveMode.Read, leaveOpen: true))
         {
             foreach (var entry in archive.Entries)
             {
+                token.ThrowIfCancellationRequested();
                 if (entry.Length > _options.Extraction.MaxEntryBytes || entry.Length > _options.Extraction.MaxTotalBytes - declared) return false;
                 declared += entry.Length;
             }
@@ -285,7 +319,7 @@ public sealed class InboxAdmissionService
         var bytesNeeded = checked(source.Length + declared);
         if (bytesNeeded > _options.MaxRetainedBytes) return false;
         var directory = Path.Combine(_context.Storage.StagingRoot, "automation-admission");
-        if (!RetainedAdmissionInventory.Fits(directory, _options.MaxRetainedBytes - bytesNeeded)) return false;
+        if (!RetainedAdmissionInventory.Fits(directory, _options.MaxRetainedBytes - bytesNeeded, token)) return false;
         return new DriveInfo(_context.Storage.WorkspaceRoot).AvailableFreeSpace >= _options.MinFreeBytes + bytesNeeded;
     }
 }
