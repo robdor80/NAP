@@ -1,101 +1,66 @@
 # NAP 2.0 — continuidad de Fase 5
 
-Estado actual: **P5.10 REANUDADA por autorización expresa de 2026-10-16; aceptación final en curso.** Las correcciones dirigidas están verificadas; la regresión completa Release, incluyendo ambos grupos de volumen, aún no ha terminado. No se declara aceptación integral ni se ha creado todavía la Draft PR. No se ha modificado main ni realizado merge.
+## PARADA SEGURA POR CUOTA — 2026-10-17, Europe/Madrid
 
-Actualización 2026-10-17: commit de estabilización `1a049c0` publicado. Regresión posterior de software/presentación **3766/3771, cinco fallos de privilegio symlink, cero omisiones**, con **22/22** escenarios nuevos de recuperación aprobados. Cierre WPF/diagnóstico de parada **6/6**. La presentación indica explícitamente la parada durable no confirmada; smoke ya no lee claves del entorno. El Core y el scheduler no han cambiado desde `1a049c0`; la regresión completa Release y sus volúmenes siguen en ejecución. Pendiente registrar los resultados reales de 100/1000 antes de cerrar el informe y crear la Draft PR.
+**Desarrollo suspendido por orden expresa del usuario. P5.10 sigue PARCIAL y sin aceptación integral. No iniciar desarrollo ni más pruebas hasta nueva autorización.** No se ha creado PR, realizado merge, modificado main ni activado producción.
 
-Actualización posterior de escalabilidad: el lote completo de 100 alcanza 100/100 con el scheduler corregido, pero tarda 1839,5 s; la admisión histórica de 1000 agota 20 minutos bajo carga. Se está validando una optimización adicional del Core: hashes frescos de bytes de los sidecars y pruebas de validación pura vinculadas al contenido completo de cada historial. Cache global de pruebas limitada a 8 MiB/4096 entradas; caché de parsing de cola global, 32 MiB de texto/32768 entradas, sin sustituir validaciones de campos/relaciones. Validación dirigida 139/139; adversarial 7/7 con tamaño/mtime conservados; cola/admisión 93/98, solo cinco symlinks sin privilegio. **La regresión completa posterior a esta optimización está en marcha**; las cifras anteriores son históricas y no certifican todavía este último Core.
+### Repositorio y conservación
 
-La verificación inicial encontró la rama local/remota limpia y coincidente en `20106c7f876ff488ea362bd6f709b643c3b63b5e`, y main aún en `cd7532f011eea8a72e89848234b259f1f5293e15`. **GitHub informa main SIN protección (`protected=false`, reglas efectivas vacías, endpoint de protección 404).** Se conserva esta discrepancia sin cambiar la configuración de GitHub; necesita resolución antes de cualquier futura fusión.
+- Repositorio `robdor80/NAP`, workspace `C:\Users\andro\Documents\GitHub\NAP`, origin `https://github.com/robdor80/NAP.git`.
+- Rama `codex/nap-2-fase-5-automation-host`. Verificación inicial limpia, local/remoto en `20106c7f876ff488ea362bd6f709b643c3b63b5e`.
+- Último commit de código: **`4549c48d07017a5a97f9f77a4df711d14763e8cb`**, publicado y coincidente con GitHub antes de guardar este informe. Anteriores: `1a049c0290539b9d6e84544df28301792bf2e623` (recuperación/scheduler/bridge) y `8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a` (WPF/diagnóstico de parada).
+- El commit de parada introduce este informe, manifests actualizados y archivo de evidencia. Su SHA se obtiene con `git log -1`; la confirmación final comunica su coincidencia remota. No se atribuye ese SHA a los binarios ya probados.
+- Main continúa en `cd7532f011eea8a72e89848234b259f1f5293e15`. **GitHub informa `protected=false` y reglas efectivas `[]`**, confirmado de nuevo al parar. La protección no se cambió; resolver antes de cualquier futura fusión.
+- Los fuentes, pruebas y decisiones están versionados. Los TRX completos, métricas JSON y PNG retenidos se conservan también en `docs/evidence/NAP_2_0_FASE_5_QUOTA_STOP_20261017.zip`, con inventario/hash en `NAP_2_0_FASE_5_QUOTA_STOP_EVIDENCE.json`. Los originales locales siguen en `artifacts/phase5` (ignorados). No incluye launch configs, claves ni credenciales.
 
-Avance verificable: reproducción y corrección de pérdida de una admisión diferida durante recepción HTTP (2 de 3 ZIP antes, 3 de 3 después); prioridad de continuación de Jobs preparados/respuestas aceptadas; pinning de caché por identidad, presupuestos del bridge y rutas largas de retención. Selección Host/Batch/aceptación 12/12; rutas manuales remotas ampliadas 4/4. La regresión amplia intermedia ejecutó 3768: 3760 pasan, 5 fallan por privilegio symlink y 3 por una expectativa nueva incorrecta sobre `Completed`, ya corregida según el contrato de Fase 4. Los trece fallos históricos restantes se han cotejado individualmente como Passed en ese TRX. Se exige la regresión final posterior a las últimas correcciones.
+### Estado P5.1–P5.10
 
-Los primeros lotes end-to-end de 1 y 10 pasan; 100 y 1000 fallaron el límite de cinco minutos sin nuevos completados antes de las correcciones del scheduler. No se consideran resueltos hasta terminar la repetición. Sus métricas y fallos se conservan. CUTOVER sigue prohibido: su ensayo heredado con cuentas/ACL se conserva en un workflow manual de confirmación explícita, sin ejecutarlo al abrir esta PR ni durante P5.10.
+| Bloque | Estado al parar |
+|---|---|
+| P5.1 | Owner dedicado/mailbox implementados; exclusión y recuperación probadas específicamente. Aceptación transversal pendiente. |
+| P5.2 | Control durable/CAS/receipts y autorizaciones implementados; pausa/cancelación/reinicio cubiertos. Aceptación transversal pendiente. |
+| P5.3 | Admisión asíncrona implementada; corregida pérdida de observación diferida. Volumen 1000 no aceptado. |
+| P5.4 | Auditoría durable/transport separado implementados; respuestas tardías, timeout y presupuesto incierto cubiertos específicamente. |
+| P5.5 | Scheduler multiuniverso implementado; prioridad de continuación corregida. Escalabilidad/fairness de lotes grandes pendientes. |
+| P5.6 | Suspensión y recuperación implementadas; 22/22 escenarios de reinicio/corrupción pasan incluso en la última regresión parcial. |
+| P5.7 | Captura/proyecciones durables implementadas; backpressure corregido. Cierre bajo volumen prolongado pendiente. |
+| P5.8 | Host separado/IPC autenticado implementados; laboratorio del mismo principal. Servicio/identidades/ACL reservados a CUTOVER. |
+| P5.9 | WPF remoto y rutas manuales implementados y probados; diagnóstico de stop durable no confirmado visible. |
+| P5.10 | **PARCIAL**: correcciones y pruebas ampliadas conservadas; fallos de almacenamiento/volumen y regresión integral final pendientes. |
 
-## Histórico de la parada original en 20106c7 — no es el estado actual
+Implementado no equivale a aceptación integral. Los contratos y CUTOVER de Fase 4 fueron leídos y conservados; no se repiten bloques anteriores sin defecto demostrado.
 
-La parada original por cuota fue levantada por la orden de reanudación. El registro siguiente conserva el punto de partida y las garantías pendientes entonces; el log de implementación y el manifest de evidencia registran las ejecuciones posteriores.
+### Últimos cambios y pruebas efectivamente realizadas
 
-## Repositorio y conservación
+- Kill/restart determinista sobre los mismos sidecars sintéticos: JobId/AttemptId, originales, receipts, journal/cola, resultado IA bound/unbound, autorizaciones persistidas o de sesión, pausa/cancelación/revocación y Completed inconsistente. Las inyecciones matan exclusivamente el proceso hijo del fixture; nunca sustituyen la parada normal.
+- Scheduler conserva admisión diferida también al cosechar HTTP y prioriza la continuación durable del Job. Mantiene gates, round-robin y exclusión global pesada/HTTP.
+- Presupuestos de buffers ocultos/handles del bridge, liberación de tareas completadas, caché temporal limitada con pinning por identidad y eliminación segura por handle; pinning Windows admite rutas largas. PNG sintéticos únicos más allá de 256 seeds.
+- Manual remoto: preparación/auditoría/ejecución, catálogo/documentos/objetivos/estadísticas, thumbnails, normalización, backup/restore/retención y recuperación/retry/push Git solo contra bare local desechable. Selección final **4/4**.
+- WPF y parada no persistida: **6/6**, render real y cero errores de binding registrados; smoke no lee claves del entorno. Regresión software/presentación anterior a la optimización: **3771 ejecutadas, 3766 pasan, 5 symlinks fallan, 0 omitidas**.
+- Última optimización de Core: hashes frescos de bytes completos del sidecar y pruebas de validación pura vinculadas a cada historial/raíces. Cache de pruebas global 8 MiB/4096; parsing de cola global 32 MiB de texto/32768 entradas. No cachea autoridad ni observaciones del filesystem. Dirigidas **139/139**, adversariales **7/7**, cola/admisión **93/98**, solo cinco fallos de privilegio symlink. Su aceptación integral sigue pendiente.
+- Histórico de intentos fallidos y correcciones: `NAP_2_0_FASE_5_IMPLEMENTATION.md`. No sumar selecciones superpuestas. Advisories históricos ImageSharp no resueltos; build incremental con cero avisos no los certifica.
 
-- Repositorio: `C:\Users\andro\Documents\GitHub\NAP`; origin: `https://github.com/robdor80/NAP.git`.
-- Rama: `codex/nap-2-fase-5-automation-host`.
-- Base: `cd7532f011eea8a72e89848234b259f1f5293e15`, merge PR #46; origin/main seguía en ese SHA al consultar el remoto durante la parada.
-- Último bloque completo previamente registrado: `98cbca5` (P5.9). El commit de conservación posterior contiene las correcciones parciales P5.10 y este informe; su SHA se entrega en la confirmación final y se obtiene con `git log -1`.
-- Durante la inspección no quedaban procesos dotnet/testhost/AutomationHost/WPF en ejecución; no hubo que forzar una parada pendiente. No se iniciaron nuevas pruebas tras la orden.
-- Los universos y Git remotos utilizados por las pruebas son sintéticos, temporales y aislados. No se activó producción, instalaron servicios, cambiaron cuentas/ACL ni modificaron archivos reales de Nimroel.
-- La publicación será un push normal de la rama, sin force. El resultado verificable y SHA remoto se comunican al finalizar; este texto no presume éxito remoto antes de comprobarlo.
+### Regresiones y fallos de volumen que NO están resueltos
 
-## Bloques y nivel de validación
+1. Regresión completa **Release anterior a la optimización**, finalizada antes de la parada: `artifacts/phase5/final/p510-final-complete-regression.trx`, **3779 ejecutadas, 3772 pasan / 7 fallan / 0 omitidas**. Fallan cinco symlinks por privilegio, admisión histórica de 1000 por timeout de 20 minutos y host de 1000 por `NeedsReview/StorageUnavailable` tras 48 completados. El host de 100 sí pasó: 100/100 en 1839,5 s de medición, pico privado 115,4 MiB, 386 handles, 22 hilos. Es evidencia del Core anterior, no del último.
+2. Regresión completa optimizada **INTERRUMPIDA POR ORDEN DE CUOTA**: `p510-final-optimized-complete.trx`, counters parciales **3759 ejecutadas, 3753 pasan / 6 fallan / 0 omitidas**. VSTest registra serie anulada; `notExecuted=0` NO significa cobertura completa. Cuatro symlinks fallaron antes de parar; el quinto no se certifica en esa ejecución. Los 22 casos de recuperación registrados pasan.
+3. En esa última ejecución, host 1 y 10 pasan. Host **100 falla realmente**: 36 completados, `NeedsReview/StorageUnavailable`, medición 376,65 s, pico privado 65.716.224 bytes. No es un fallo de privilegio symlink ni se presume causa ambiental. La explicación interna original de la excepción aún no está capturada.
+4. Host **1000 optimizado interrumpido voluntariamente**: último muestreo 12 completados en 86,41 s; cierre autenticado confirmado Stopped y posterior interrupción del testhost. Su `Process has exited` procede de la parada ordenada; no demuestra un defecto nuevo ni un éxito del lote. La serie quedó anulada, sin certificar admisión 1000 ni regresión final completa.
+5. Los primeros fallos de progress timeout de 100/1000 se conservan. No se declaran resueltos por el éxito histórico de un lote 100 ni por pruebas dirigidas.
+6. Los **13 fallos históricos de software** se cotejan individualmente como Passed en la regresión completa Release conservada; **5/5 fallos de symlinks** continúan Failed. `NAP_2_0_FASE_5_REGRESSION_COMPARISON.json` identifica pruebas y hashes. Al recopilar evidencia se corrigió el uso accidental de la variable automática PowerShell `$Matches`; el cotejo regenerado confirma 13 Passed/5 Failed, sin blancos.
 
-| Bloque | Implementación conservada | Evidencia y pendiente |
-|---|---|---|
-| P5.1 | Hilo propietario por universo y mailbox acotado; drenaje en hilo original. | 3/3 inicial; últimos cambios de retry/dispose incluidos en selección final 8/8. Aceptación global pendiente. |
-| P5.2 | Control durable versionado independiente, CAS, receipts idempotentes, sesiones/grants y cancelaciones. | 6/6 y 4/4 dirigidas; reinicio real y matriz completa de autorización pendientes. |
-| P5.3 | Observación asíncrona de readiness y continuación con validaciones originales en owner. | 2/2 nuevas; selección histórica 43/44, fallo de privilegio symlink. Volumen pendiente. |
-| P5.4 | Intención/auditoría/transporte/completado separados usando el pipeline original. Timeout conserva incertidumbre remota y presupuesto. | 53/53 y selección final 5/5; caída prolongada y concurrencia integrada pendientes. |
-| P5.5 | Host, scheduler multiuniverso, aislamiento, un permiso pesado y una auditoría, límites conservadores. | 3/3; alternancia/backpressure añadidos en P5.10 con selección final 8/8, sin ensayo de carga/fairness prolongado. |
-| P5.6 | Suspensión en fronteras durables seguras; mismo claim/Job y control persistido. | 9/9 y control 7/7; matar/reiniciar proceso, cancelación durable end-to-end y resultados remotos ambiguos pendientes. |
-| P5.7 | Captura de lotes durable, reconciliación y proyecciones paginadas. | 5/5 tras corregir starvation de recepción HTTP. Recuperación real con corte de proceso pendiente. |
-| P5.8 | Ejecutable independiente y named pipes autenticados, tipados, versionados y acotados. | 2/2 protocolo y build correcto; identidad distinta/instalación protegida son requisitos futuros de CUTOVER, no certificados. |
-| P5.9 | WPF remoto, operaciones manuales centralizadas, referencias opacas y proyecciones sin autoridad. | 84/84 selección amplia; 5/5 final incluyendo host/WPF reales y rutas manuales. Cambios posteriores CurrentControl/availability requieren repetir integración WPF. |
-| P5.10 | PARCIAL: correcciones de regresión y del scheduler; callback de laboratorio para futuras inyecciones. | 101/101 y 8/8 dirigidas. Sin regresión completa final, ensayos de interrupción/volumen completos, aceptación ni PR. |
+### Parada de procesos y seguridad
 
-“Implementado” no equivale a aceptación integral: P5.1–P5.9 tienen commits y pruebas específicas; todas las garantías transversales dependen todavía de P5.10.
+Se capturó el estado parcial por IPC de solo lectura. Después, el host del laboratorio `nap-host-9db5c7e1b45548aa89255993e13e69ef` devolvió **Stopped para ambos universos, sin diagnóstico de fallo de persistencia**, mediante ShutdownHost autenticado; se verificó su salida. Solo entonces se interrumpió el testhost propio P510Review (PID observado 15348, padre 12224), para impedir más trabajo. El runner salió con código 1/serie anulada y produjo TRX. Se cerraron los build servers. La comprobación posterior no encontró host, WPF ni test runner de NAP activos.
 
-## Código y archivos
+No hubo producción/CUTOVER, cambios de servicios/cuentas/permisos Windows ni acceso de pruebas a originales reales de Nimroel. Las cuentas/ACL del antiguo ensayo CUTOVER quedaron en workflow manual con autorización booleana explícita; no se despachó. No se creará PR durante esta parada.
 
-Inventario completo de archivos de implementación respecto a la base en `NAP_2_0_FASE_5_CHANGED_FILES.txt`. Componentes principales:
+Los fixtures limpian normalmente sus universos sintéticos al terminar; no se promete conservar los sidecars de casos ya eliminados. Se conservan fuentes, TRX, métricas, capturas y respuesta de parada. No queda operación Git de merge/rebase/cherry-pick pendiente según la comprobación final.
 
-- Core: `AutomationUniverseRuntime`, `AutomationHost`, `AutomationHostControlStore`, `AutomationRuntimeStateStore`, `AutomationProtocol`, `AutomationHostLaunchConfiguration`, `AutomationManualAccess`, `AutomationReadViews`, `DurableAuditDispatch`, `WorkflowRunControl`.
-- Pipeline original adaptado: admisión e inventario retenido, preparación/auditoría/ejecución durable, queue ledger y ownership; coordinador, publicación archive/production, catálogo, backups/restore/retention, Git, normalización y miniaturas. No se pretende crear otro pipeline de reglas.
-- Presentación: `UniverseOperationDispatcher`, `AutomationDesktopBridge`, `RemoteDesktopService`, `AutomationControlViewModel`, servicios manuales/modelos, Explorer/Shell/normalización.
-- Proceso: proyecto `src/NAP.AutomationHost`, añadido a solución y compilación de tests.
-- WPF: App/MainWindow/Tray y `AutomationSmokeProbe`, conexión explícita por configuración de laboratorio sin fallback local.
-- Tests: familias AutomationRuntime/HostControl/AdmissionStage/AuditStage/Host/Suspension/Batch/Protocol/Desktop/Wpf; fixture de proceso y adaptación de fixtures sintéticos y helper de reflexión.
+### Punto exacto de reanudación — requiere nueva autorización
 
-La parada conserva 23 archivos fuente/de pruebas con cambios pendientes respecto a P5.9, más documentación de continuidad. Son correcciones parciales autorizadas, no una entrega P5.10 terminada.
-
-## Pruebas reales y evidencia
-
-Registro detallado por bloque: `NAP_2_0_FASE_5_IMPLEMENTATION.md`. Manifest de todas las ejecuciones TRX existentes, incluidos intentos fallidos, contadores/fechas/hashes/nombres de fallos: `NAP_2_0_FASE_5_TEST_EVIDENCE.json`. No sumar selecciones superpuestas como pruebas únicas.
-
-- Baseline seleccionado antes de refactors: 98 ejecutadas, 94 pasan / 4 fallan por privilegio de symlinks.
-- Última regresión amplia, previa a correcciones P5.10, sin volumen: **3742 ejecutadas, 3724 pasan / 18 fallan / 0 omitidas**, 5 min 38 s. TRX: `artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx`.
-- Cinco de esos fallos son symlinks (tres LinkedBoundaryArtifacts, LinkedQueueDirectoryAndWalArtifacts, SymlinkZipAndSymlinkStaging). No se consideran superados por inferencia.
-- Trece fallos restantes: excepciones de dominio/IOException históricas en producción, catálogo y backup; helper con dos constructores no públicos; consulta externa durante arranque del host; deadline funcional 30 s con carga paralela. Cambios aplicados, selección de corrección **101/101** pasada. La selección incluye las familias ProductionSafety, ProductionConversionBoundary, BackupSafety, CatalogConcurrency, Host y Runtime.
-- Último test ya finalizado al recibir la parada: Host/Runtime/Batch **8/8**; confirma compilación y esa selección tras los últimos cambios. No equivale a verificar controles WPF ni recuperación tras muerte de proceso.
-- P5.9: **84/84** selección amplia; final **5/5** desktop/WPF, con proceso host separado, cierre de cliente dejando host vivo, backups/restore, normalización y commit/push solo contra bare local sintético. PNG WPF inspeccionado visualmente.
-- Builds Release previos correctos. Se observaron cinco avisos históricos NU1902/NU1903 de ImageSharp 3.1.12 en restauraciones; no se actualizaron dependencias. Build incremental con cero avisos no implica resolución de advisories.
-- Se conservan también ejecuciones fallidas y sus diagnósticos, descritos en el log. No se ha repetido la batería completa tras las correcciones. No hay resultados nuevos de volumen, CI remoto o certificación CUTOVER.
-
-Los TRX completos y PNG están en `artifacts/phase5` (ignorados por Git) y permanecen en este workspace. GitHub conserva el código, informes y manifest; **no los binarios/artefactos completos de pruebas**. El manifest permite identificarlos por hash si se trasladan más adelante.
-
-## Pendientes, riesgos y límites
-
-1. No está verificada globalmente la ausencia de duplicados de Jobs/publicaciones/respuestas tras caída de proceso. Hay mecanismos y pruebas de fronteras in-process; faltan escenarios reales de kill/restart con mismo Job y receipts.
-2. El callback `AutomationHostOptions.LaboratoryCheckpoint` es scaffolding: no está conectado a launch configuration/Program ni existen las nuevas pruebas de kill. La verificación inicial de Completed requiere pruebas dirigidas de corrupción, política y suspensión sin reparación automática.
-3. Ensayar reinicio automático solo con autorización persistida aún válida; pausa/cancelación durable, control revocado, desconexión y respuesta IA tardía/timeout. Nunca interpretar timeout como cancelación remota confirmada ni reintentar ciegamente un efecto incierto.
-4. Ensayos de fairness bajo bloqueo HTTP, permiso único manual/automático, fallos aislados y límites de backlog/memoria/disco pendientes; los límites configurados no están certificados mediante volumen prolongado.
-5. Canal de laboratorio restringido al mismo principal Windows. Identidad definitiva, servicio, ACL y canal entre identidades distintas quedan sin autorización y pendientes de CUTOVER.
-6. Revisar presupuestos en bytes de objetos retenidos por handles del bridge (hay límites de cantidad/buffers, sin caracterización completa de memoria) y seguridad del borrado del cache temporal del cliente ante reparse/reemplazo de ancestros.
-7. Revisar diagnóstico de stop con fallo de persistencia y resultado remoto aún desconocido; preservar drenaje, nunca introducir kill como sustituto de parada pendiente.
-8. Repetir WPF tras CurrentControl y disponibilidad de botones. Revisar que el smoke antiguo tampoco cargue claves reales de entorno; la ruta remota explícita de laboratorio ya evita settings/credenciales reales.
-9. Cinco pruebas symlink sin privilegio: pendientes en entorno autorizado adecuado; no cambiar permisos del equipo para hacerlas pasar. Advisories ImageSharp históricos pendientes de evaluación, fuera de una afirmación de aceptación completa.
-10. Generador sintético actual repite patrón después de 256 seeds; antes de probar 1000 masters únicos ajustar fixture conservando contratos y evitando falsos MasterDuplicate. Ningún generador nuevo implementado todavía.
-
-## Punto exacto de reanudación — requiere nueva autorización
-
-Primero comprobar rama/estado limpio, commit conservado, igualdad con rama GitHub y cambios posteriores de main. Leer este informe, log y manifest; no repetir pruebas dirigidas ya superadas salvo cambios o necesidad de integración.
-
-**Siguiente tarea concreta:** completar exclusivamente la aceptación P5.10 pendiente empezando por pruebas deterministas de interrupción del proceso en laboratorio. Conectar la inyección de checkpoint de pruebas a la configuración explícita de laboratorio, extender `AutomationHostProcessFixture` para reiniciar sobre los mismos sidecars, y comprobar mismo Job, conservación de originales/receipts y Completed o NeedsReview según la frontera. La muerte deliberada es solo inyección de fallo de un fixture sintético, nunca mecanismo de cierre del host.
-
-Después: matriz de pausa/cancelación/reinicio/autoridad; bloqueo y timeout HTTP entre universos; cargas 1/10/100 y 1000 con métricas reales de memoria/disco/tiempo; regresión histórica y volumen disponible; WPF; revisión de riesgos arriba; informe de aceptación honesto y Draft PR solo al terminar técnicamente lo autorizado. No considerar pendientes como superados; no fusionar ni activar producción.
-
-Comando de la última selección (ya terminada; no repetir al pausar):
-
-```powershell
-dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-restore --filter 'FullyQualifiedName~AutomationHostTests|FullyQualifiedName~AutomationRuntimeTests|FullyQualifiedName~AutomationBatchTests' --logger 'trx;LogFileName=p510-scheduler-corrections.trx' --results-directory artifacts/phase5/p510
-```
-
-Tras la orden de parada solo se inspeccionó el estado, se recopiló evidencia y se conservó trabajo. No hay nuevas funcionalidades ni pruebas extensas iniciadas por la parada.
+1. Verificar rama/HEAD remoto, árbol limpio y main/protección; leer continuidad, implementación, manifests, comparación y evidencia de parada. El código a diagnosticar está en `4549c48`, más la corrección del script de evidencia del commit de parada. No repetir las selecciones ya superadas sin cambios que lo justifiquen.
+2. **Primera operación técnica recomendada:** reproducir y capturar la excepción interna que acaba en `StorageUnavailable` en `DurablePreparationService.Prepare` (catch IOException/UnauthorizedAccessException) con 40–60 o 100 masters sintéticos, conservando sidecars antes del teardown. Revisar el item en revisión y su checkpoint/receipts. No se ha demostrado todavía si el origen es lock, path, IO u otra condición; no inferirlo ni relajar gates/deadlines.
+3. Corregir solo el defecto demostrado y ejecutar su regresión correspondiente. Revisar por separado el timeout real de admisión 1000. No hay aceptación de lotes 100/1000 con el último Core.
+4. Completar volumen 1/10/100/1000 con métricas CPU/memoria/disco/handles/hilos/ledgers, fairness, ownership y ausencia de duplicados; después regresión completa tras las últimas correcciones y WPF/manual pertinente. No elevar timeouts para fabricar resultados positivos.
+5. Actualizar evidencia y publicar commits validados. Crear Draft PR hacia main únicamente cuando la nueva orden de reanudación lo autorice y el cierre técnico esté documentado con sus limitaciones. No merge/producción sin aprobación. Identidad definitiva, instalación, cuentas/ACL y CUTOVER permanecen fuera de autorización.

@@ -1,11 +1,13 @@
 .github/workflows/ci.yml
 .github/workflows/cutover-laboratory.yml
+docs/evidence/NAP_2_0_FASE_5_QUOTA_STOP_20261017.zip
 docs/NAP_2_0_FASE_4_CUTOVER.md
 docs/NAP_2_0_FASE_5_BUILD_PROVENANCE.json
 docs/NAP_2_0_FASE_5_CHANGED_FILES.txt
 docs/NAP_2_0_FASE_5_CONTINUITY.md
 docs/NAP_2_0_FASE_5_IMPLEMENTATION.md
 docs/NAP_2_0_FASE_5_PREFLIGHT.json
+docs/NAP_2_0_FASE_5_QUOTA_STOP_EVIDENCE.json
 docs/NAP_2_0_FASE_5_REGRESSION_COMPARISON.json
 docs/NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json
 docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json

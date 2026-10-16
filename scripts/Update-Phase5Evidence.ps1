@@ -11,6 +11,8 @@ $entries = @(Get-ChildItem -LiteralPath $artifactRoot -Filter '*.trx' -Recurse |
         sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
         start = [string]$report.TestRun.Times.start
         finish = [string]$report.TestRun.Times.finish
+        runOutcome = [string]$report.TestRun.ResultSummary.outcome
+        runMessages = @($report.TestRun.ResultSummary.RunInfos.RunInfo | ForEach-Object { [string]$_.Text })
         total = [int]$counters.total
         passed = [int]$counters.passed
         failed = [int]$counters.failed
@@ -31,12 +33,12 @@ if ((Test-Path -LiteralPath $baseline) -and (Test-Path -LiteralPath $comparisonP
     [xml]$current = [IO.File]::ReadAllText($comparisonPath)
     $compared = @($previous.TestRun.Results.UnitTestResult | Where-Object outcome -eq 'Failed' | ForEach-Object {
         $prior = $_
-        $matches = @($current.TestRun.Results.UnitTestResult | Where-Object { $_.testName -ceq $prior.testName })
+        $taskMatchedTests = @($current.TestRun.Results.UnitTestResult | Where-Object { $_.testName -ceq $prior.testName })
         [ordered]@{
             test = [string]$prior.testName
             previousClassification = if ([string]$prior.Output.ErrorInfo.Message -match 'privilegio requerido|required privilege') { 'EnvironmentSymlinkPrivilege' } else { 'Software' }
-            currentOutcome = if ($matches.Count -eq 1) { [string]$matches[0].outcome } elseif ($matches.Count -eq 0) { 'Missing' } else { 'Ambiguous' }
-            currentMessage = if ($matches.Count -eq 1 -and $matches[0].outcome -eq 'Failed') { [string]$matches[0].Output.ErrorInfo.Message } else { $null }
+            currentOutcome = if ($taskMatchedTests.Count -eq 1) { [string]$taskMatchedTests[0].outcome } elseif ($taskMatchedTests.Count -eq 0) { 'Missing' } else { 'Ambiguous' }
+            currentMessage = if ($taskMatchedTests.Count -eq 1 -and $taskMatchedTests[0].outcome -eq 'Failed') { [string]$taskMatchedTests[0].Output.ErrorInfo.Message } else { $null }
         }
     })
     [ordered]@{

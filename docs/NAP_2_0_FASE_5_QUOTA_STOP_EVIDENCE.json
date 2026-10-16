@@ -1,0 +1,675 @@
+{
+  "recordedUtc": "2026-10-16T22:41:07.7529137+00:00",
+  "reason": "Explicit user quota-stop order. Development and tests suspended pending new authorization.",
+  "repository": "robdor80/NAP",
+  "branch": "codex/nap-2-fase-5-automation-host",
+  "lastCodeCommit": "4549c48d07017a5a97f9f77a4df711d14763e8cb",
+  "mainSha": "cd7532f011eea8a72e89848234b259f1f5293e15",
+  "mainProtected": false,
+  "mainEffectiveRules": [],
+  "sourceWasCleanBeforeConservation": true,
+  "archive": {
+    "file": "docs/evidence/NAP_2_0_FASE_5_QUOTA_STOP_20261017.zip",
+    "bytes": 5316877,
+    "sha256": "0dd13addb803ab496386d9c2b5f4c2df2d802198d85766d3d319013e09c8ae77",
+    "entriesVerifiedBySha256": true,
+    "files": [
+      {
+        "file": "artifacts/phase5/baseline/phase5-baseline.trx",
+        "bytes": 144344,
+        "sha256": "6d3a7cbb47aeee914c31e0100d39e80ca2197d34b8d9b01115f23284b849abda"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-final-complete-regression.trx",
+        "bytes": 5783390,
+        "sha256": "96cfbd827da0335eb611ae2fce18b5a88b814f319a9d0fedeff24ed1f84f252a"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-final-optimized-complete.trx",
+        "bytes": 5568640,
+        "sha256": "f9b0535d2a64a3701b1ea61ac4ddc522bf1d20814d5f28a0dde4b4d54c153463"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-final-ui-and-software-regression.trx",
+        "bytes": 5304808,
+        "sha256": "a10c050105f137a21a1a73ec5048bbb6ddf3dd16a7dbccbad880c023ee188010"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-final-wpf-and-stop.trx",
+        "bytes": 10007,
+        "sha256": "9d17f93955171a1535e8a8013157268d477f822bbc22ef00243aef45054dc1f0"
+      },
+      {
+        "file": "artifacts/phase5/p51/p51.trx",
+        "bytes": 5762,
+        "sha256": "657952e1fc3928f4989e57bb5825cdfae29878756b3cd3a0b98a590d42702b78"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-acceptance-v3.trx",
+        "bytes": 257924,
+        "sha256": "aba4d5207b1af28a7353253242e3133f20f82b266780e202c12edf9761fe43bd"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-backpressure-fix.trx",
+        "bytes": 15195,
+        "sha256": "3b743fef2a7995741e4cbf15fee4fffc73441f30e8e7337275d5c1c9c340204d"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-backpressure-reproducer.trx",
+        "bytes": 4680,
+        "sha256": "5fa9d577126bfbaa3dd973d91909975411ba4bee0cab7f462cf81bc793ec99f7"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-budgets-cache-http.trx",
+        "bytes": 5849,
+        "sha256": "cf3a9c9d02f5faa494f7e0cce9c7c19ac37cab17379f88a46ba061a3978af1e6"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-compatibility-corrections.trx",
+        "bytes": 138741,
+        "sha256": "314fafce9c731b981cd7d6624815ac4afa76919a7b355814e6287289c291e2a0"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-continuation-fix.trx",
+        "bytes": 17909,
+        "sha256": "9504b8e4ced54e4dc72b0bc41ab8465f43203455e252cef279f5b74b3aec9694"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-final-directed.trx",
+        "bytes": 27101,
+        "sha256": "5986d5f6f3418f37ccee849ea5e5b3b9dc081a24d09c3c80acfad9f8a7fb533e"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial-v2.trx",
+        "bytes": 12186,
+        "sha256": "48109e51286f6dd4c668156c9beea6de04f1206a32daeb2c521132910cc53c79"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial.trx",
+        "bytes": 14150,
+        "sha256": "1703f9278db423b90c4ae023c5778e3bad1600b3337ce41915cd43b185ff1846"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-ledger-proof-initial.trx",
+        "bytes": 195598,
+        "sha256": "eab0d9677d4817c43fd15ebb6a22bc6abae8f5b103d4ec9d42d423ccac2c897b"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-longpaths-and-priority-reproducer.trx",
+        "bytes": 4670,
+        "sha256": "479d97047c456bcc26bcc2db3c0c1342b327b13efcc0da0c8545da071b57eb58"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-longpaths-and-priority-v2.trx",
+        "bytes": 6840,
+        "sha256": "f50ac1a7139cb8388e1f50f432e894652f4faa95b55b8c5a28790f95af792eb9"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-manual-routes-final.trx",
+        "bytes": 7113,
+        "sha256": "1fa43819eb8061fb659a4d5603b135b9d9f44c7170f592ac9a300cff317c3880"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v2.trx",
+        "bytes": 2991,
+        "sha256": "20afac08e7d4b8671764312ccf460ac50dd5fd5dd55b9c9681c0cc9200689665"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v3.trx",
+        "bytes": 4670,
+        "sha256": "adb6b856f2617fea7e862365a5d00814f4773778b134db05b595625a9c545b10"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v4.trx",
+        "bytes": 4670,
+        "sha256": "ecec740f8cedb1222125a1cdc5b407ff668ff209706415e1183bee855247cf83"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v5.trx",
+        "bytes": 2991,
+        "sha256": "b161602ce9cdb4eafb9e5ccd67eeacbd275235c27f504007bd371eaf8a3db8fb"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v6.trx",
+        "bytes": 4758,
+        "sha256": "4823f66f5e995d4e9a3c34f13c4db661fd842bae3f481b151da4b6db0ece4a23"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v7.trx",
+        "bytes": 4817,
+        "sha256": "77d52a6a6470b2fd4e429f8aa03efb2ca4df4495e0cafe1383f96db7a95e41c7"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer-v8.trx",
+        "bytes": 6480,
+        "sha256": "a7a2522d1772e3361aaf5d90367cc25de8aeb9882507ac0ec653415f71213129"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-priority-reproducer.trx",
+        "bytes": 4980,
+        "sha256": "20d234c5abf1732b4de435c4bfb3eefb697db5346e06ede466776fe36e609116"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-process-recovery-v2.trx",
+        "bytes": 74963,
+        "sha256": "535fe05ac17150a51b2e69da1f568c85f28cf65c3e0badee686afe1259d1d2f6"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-process-recovery.trx",
+        "bytes": 103192,
+        "sha256": "a498c3fa184926b1bc27bea2ee560cabf476b4a07c7954a77aa435873f2551d4"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-queue-cache-safety.trx",
+        "bytes": 146727,
+        "sha256": "fa31aa43312c450e0ecd8c98757ff61edab04fb6e9c52389f372179db63c92c8"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-review-regression.trx",
+        "bytes": 5306580,
+        "sha256": "03cf1bb4a836a2bc6f3c9e9da3d687884ede0ee30de2911ae8b8767e687dc8f4"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-scheduler-corrections.trx",
+        "bytes": 12319,
+        "sha256": "01dfe13e57678f04f2083f8b06a1b78a2d2be9ea4029ccf17534fb145477b1f1"
+      },
+      {
+        "file": "artifacts/phase5/p510/p510-stop-diagnostic-wpf-control.trx",
+        "bytes": 8473,
+        "sha256": "5eed5eef05f3bf864229a18f44444adfe693f5b45cc614bf1d8c00eaaf0855e5"
+      },
+      {
+        "file": "artifacts/phase5/p52/p52-final.trx",
+        "bytes": 9839,
+        "sha256": "46897e82a5c579f43cc019c66245a723f77266821871ee88fd3a54c5b6c507cd"
+      },
+      {
+        "file": "artifacts/phase5/p52/p52-rollback.trx",
+        "bytes": 7066,
+        "sha256": "4e070d52a4cfb86a05486be419d91782911f5bfdbfcb8e616e1e87e392d615e9"
+      },
+      {
+        "file": "artifacts/phase5/p52/p52.trx",
+        "bytes": 14706,
+        "sha256": "ce8788f14ae8fc3add908e9c0a1302bb2b60140b4e4b1bec94f42a5cbc07d4ac"
+      },
+      {
+        "file": "artifacts/phase5/p53/p53-final.trx",
+        "bytes": 26798,
+        "sha256": "8396ebb2b405bf023b499b3e6b6b9f3645a512bfebdf187834e5760926ef1114"
+      },
+      {
+        "file": "artifacts/phase5/p53/p53-staged.trx",
+        "bytes": 4333,
+        "sha256": "dc05f779857b181b13fb1b0b86fe48b41b91310d0d3bc42986136b08bc779c07"
+      },
+      {
+        "file": "artifacts/phase5/p53/p53.trx",
+        "bytes": 65090,
+        "sha256": "b26bf7d1942911ce02e5f3e1b0730a55185b1e738652cfe0bc420a0cf8c35e93"
+      },
+      {
+        "file": "artifacts/phase5/p54/p54-shared-transport.trx",
+        "bytes": 8280,
+        "sha256": "ad0951ace4e24acfe2df054c93a9264181ba868f45b3db5df10689dbd64b49db"
+      },
+      {
+        "file": "artifacts/phase5/p54/p54.trx",
+        "bytes": 74624,
+        "sha256": "f956954e38fc1d01ab7b128f528f33d66a30162e6811cd156a9c6ad352291aba"
+      },
+      {
+        "file": "artifacts/phase5/p55/p55.trx",
+        "bytes": 5606,
+        "sha256": "a0cc9bc87842b9f7fd77b5a8c6a8a26ede584c723ed875962318a4cf72b2574c"
+      },
+      {
+        "file": "artifacts/phase5/p56/p56-control-final.trx",
+        "bytes": 10935,
+        "sha256": "1f9790acfb62f5cee4fcda6dba0ce33d70e6b68c42a2bbc112ed3901467f1abd"
+      },
+      {
+        "file": "artifacts/phase5/p56/p56.trx",
+        "bytes": 14188,
+        "sha256": "29293bf1e696e51d2ce86d9d7a1c4d8a0f849ac93e9990d2d22cd994a0739d98"
+      },
+      {
+        "file": "artifacts/phase5/p57/p57-diagnosis.trx",
+        "bytes": 5054,
+        "sha256": "d585b6f1c58e58c4b863e6ad8399355c67d21b0773715188aaf81391b0387fe7"
+      },
+      {
+        "file": "artifacts/phase5/p57/p57-final.trx",
+        "bytes": 8266,
+        "sha256": "d491c1c15b3b7f0180cb7114a2635549bc19fb6adf19f367092c762e34eadcf4"
+      },
+      {
+        "file": "artifacts/phase5/p57/p57.trx",
+        "bytes": 6843,
+        "sha256": "eaca21dbba45076a7b84ef3dfc4e50a396b18c0effcbdf89e0dce281425d7b48"
+      },
+      {
+        "file": "artifacts/phase5/p58/p58-final.trx",
+        "bytes": 4351,
+        "sha256": "aeaaaef5742c07e6f692b793a18a71e0bcbd0985b2004e527046a0bbf34a616a"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-desktop-final.trx",
+        "bytes": 4396,
+        "sha256": "cbf878f6d53329647b506780a15f5b813fbedcc74e77ae655843f8fdefeffcc2"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-desktop-thumbnails.trx",
+        "bytes": 32200,
+        "sha256": "1dacd8aef1ad960561a3f9ea9f8e580d7895a12d3e00b752b56ad80e252dab96"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-desktop.trx",
+        "bytes": 13066,
+        "sha256": "9b0ee085b7351cbdc13b90198fcf889f6624ad3cade8fd0ebcd526d59b9b73be"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-diagnosis.trx",
+        "bytes": 8680,
+        "sha256": "49c82e637ad1d12cc9569d71994ae7452de4f9b4795635e141a99993021e77ca"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-final.trx",
+        "bytes": 8494,
+        "sha256": "bb7b71d588d2143b1fd971a1cda1be0acf66046d4bd70562d06cdafef4bd15d3"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-manual-complete.trx",
+        "bytes": 10946,
+        "sha256": "9ee9cd34959fd4a20ccb336d52741795fed98dafa1843d50224ab06f07cd564b"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-ownership.trx",
+        "bytes": 47959,
+        "sha256": "5f7af859274bbb08ead083c429a0dd4d91c34ca2d3106c487124d24540cd42b8"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-regression.trx",
+        "bytes": 114506,
+        "sha256": "ef59338bf599ac7d4243f7d4403ea7f6a62222126f0d09b539dbd51a9f6ca7ac"
+      },
+      {
+        "file": "artifacts/phase5/p59/p59-remote-wpf.trx",
+        "bytes": 5777,
+        "sha256": "67581d82ee649d5dd74f5acd376427c1c6a5073a7d1eced5e938182032443abd"
+      },
+      {
+        "file": "artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx",
+        "bytes": 5285047,
+        "sha256": "6f4f4fdba272a577a89f7d3b5d343e5402f24eb5901a4292c8f5a6e60d6a1d91"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1-211503.json",
+        "bytes": 2949,
+        "sha256": "41c04ebcd4e9207c4454b4c19d1aa7448b9293c11e6f049e70d22d453c92f2a8"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1-214856.json",
+        "bytes": 7286,
+        "sha256": "5740b0c2e3d98f76b038499040075db29de510bba531c86710d4744159b08656"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1-222751.json",
+        "bytes": 7283,
+        "sha256": "9bfd8b46bbd1eb9104af1b4e75c0deb1d2bda8de21bd779188309a991981129d"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-10-211609.json",
+        "bytes": 10123,
+        "sha256": "58e109763dd3335389d918d7db061a5870cfb35440f596ca0570d567a646c136"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-10-215153.json",
+        "bytes": 38005,
+        "sha256": "7eeb4caec671e1da7f5257159078bb1d2bc4f48d92b65aa953e8072123e81330"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-10-223038.json",
+        "bytes": 32164,
+        "sha256": "53eb85082610e196a0eefad94c5480bf844ec698dc5c10abce9d0298ce8937bc"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-100-212254.json",
+        "bytes": 21485,
+        "sha256": "5fa3918237622325b9e5e5bda0058c92d26bb5ddee36d1fa465a0230ca971ce2"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-100-222235.json",
+        "bytes": 166825,
+        "sha256": "f30ce20cd90b8088a83da8b534c28ce9adc1240d4748837d0e47ace9eadb3be5"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-100-223659.json",
+        "bytes": 50736,
+        "sha256": "4591a54d3ad2d0c4dceb22e78d0426268efcff81d9adb671a1e6ab55e26c64a1"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1000-213356.json",
+        "bytes": 33867,
+        "sha256": "7a63936bb28aa17621a2b4d53e7e6c3b4e13c7e077fa3627b61a7cd284d75ddc"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1000-223356.json",
+        "bytes": 69639,
+        "sha256": "597f9ed44770ec19c3726492f372ef288fdb45fc8f25cd68f59127c9dc5399ba"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1000-223830.json",
+        "bytes": 14364,
+        "sha256": "03ef3b85ea1db5aee7be92914335df43cdf64ba58c3fc7e9c3fe710a5489060b"
+      },
+      {
+        "file": "artifacts/phase5/wpf/remote-shell/automation-wpf.png",
+        "bytes": 123724,
+        "sha256": "1c4d02ee97aa13d1c7d6ae615632855d1ed51d3acd0db46e242364cc68bd95af"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-quota-stop-status.json",
+        "bytes": 6474,
+        "sha256": "b62f7c3a2ab0992ff251452bd29e4feb7afc30e3e7eb5c771452099ea64bdf4f"
+      },
+      {
+        "file": "artifacts/phase5/final/p510-quota-stop-response.json",
+        "bytes": 552,
+        "sha256": "36793104d81eea438b1af038d8646217c4c77d52ec63b98fe6b2e141c88423dd"
+      }
+    ]
+  },
+  "completedEarlierRelease": {
+    "file": "artifacts/phase5/final/p510-final-complete-regression.trx",
+    "total": 3779,
+    "passed": 3772,
+    "failed": 7,
+    "symlinkPrivilegeFailures": 5,
+    "realUnresolvedVolumeFailures": 2,
+    "sourcePredatesLatestCoreOptimization": true
+  },
+  "interruptedLatestOptimized": {
+    "file": "artifacts/phase5/final/p510-final-optimized-complete.trx",
+    "explicitlyInterrupted": true,
+    "fullRegressionCompleted": false,
+    "partialTotal": 3759,
+    "partialPassed": 3753,
+    "partialFailed": 6,
+    "recordedSymlinkPrivilegeFailures": 4,
+    "realHost100StorageFailure": true,
+    "host100CompletedBeforeFailure": 36,
+    "host1000LastSampleCompleted": 12,
+    "host1000FailureAfterOrderedShutdown": "Process has exited",
+    "processRecoveryRecordedPassed": 22,
+    "note": "VSTest generic testhost-crash/blocked message follows the intentional quota-stop interruption, not an unexplained spontaneous crash."
+  },
+  "shutdownStatus": {
+    "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+    "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+    "State": "Stopped",
+    "Universes": [
+      {
+        "UniverseId": {
+          "Value": "alpha_universe"
+        },
+        "State": "Stopped",
+        "Turns": 49,
+        "PendingCandidates": 3,
+        "Stage": "stopped",
+        "Diagnostic": null,
+        "BatchId": {
+          "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+        }
+      },
+      {
+        "UniverseId": {
+          "Value": "beta_universe"
+        },
+        "State": "Stopped",
+        "Turns": 50,
+        "PendingCandidates": 3,
+        "Stage": "stopped",
+        "Diagnostic": null,
+        "BatchId": {
+          "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+        }
+      }
+    ],
+    "Diagnostic": null
+  },
+  "liveSnapshotBeforeStop": {
+    "observedUtc": "2026-10-17T00:38:24.0508008+02:00",
+    "status": {
+      "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+      "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+      "State": "Running",
+      "Universes": [
+        {
+          "UniverseId": {
+            "Value": "alpha_universe"
+          },
+          "State": "Running",
+          "Turns": 46,
+          "PendingCandidates": 3,
+          "Stage": "admission",
+          "Diagnostic": null,
+          "BatchId": {
+            "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+          }
+        },
+        {
+          "UniverseId": {
+            "Value": "beta_universe"
+          },
+          "State": "Running",
+          "Turns": 46,
+          "PendingCandidates": 3,
+          "Stage": "audit-response",
+          "Diagnostic": null,
+          "BatchId": {
+            "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+          }
+        }
+      ],
+      "Diagnostic": null
+    },
+    "universes": [
+      {
+        "universe": "alpha_universe",
+        "items": 20,
+        "revisionSum": 258.0,
+        "states": [
+          {
+            "Name": "Completed",
+            "Count": 6
+          },
+          {
+            "Name": "Queued",
+            "Count": 14
+          }
+        ],
+        "sampledItem": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2",
+        "latestEvents": [
+          {
+            "ItemId": {
+              "Value": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2"
+            },
+            "Sequence": 14,
+            "Utc": "2026-10-17T00:38:18.1322152+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_05f6dda018244f929a4d6b6c1496dce1"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2"
+            },
+            "Sequence": 15,
+            "Utc": "2026-10-17T00:38:18.1765146+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_05f6dda018244f929a4d6b6c1496dce1"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2"
+            },
+            "Sequence": 16,
+            "Utc": "2026-10-17T00:38:18.2268212+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_05f6dda018244f929a4d6b6c1496dce1"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2"
+            },
+            "Sequence": 17,
+            "Utc": "2026-10-17T00:38:18.2862579+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_05f6dda018244f929a4d6b6c1496dce1"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_a0ac8f5310dc4c2ca60df282dd2b01c2"
+            },
+            "Sequence": 18,
+            "Utc": "2026-10-17T00:38:18.329861+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_05f6dda018244f929a4d6b6c1496dce1"
+            }
+          }
+        ]
+      },
+      {
+        "universe": "beta_universe",
+        "items": 20,
+        "revisionSum": 258.0,
+        "states": [
+          {
+            "Name": "Completed",
+            "Count": 6
+          },
+          {
+            "Name": "Queued",
+            "Count": 14
+          }
+        ],
+        "sampledItem": "queue_00ec534517894a798ae14af890b883d6",
+        "latestEvents": [
+          {
+            "ItemId": {
+              "Value": "queue_00ec534517894a798ae14af890b883d6"
+            },
+            "Sequence": 14,
+            "Utc": "2026-10-17T00:37:18.5792332+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_9570bce93f374d698609871bedb14162"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_00ec534517894a798ae14af890b883d6"
+            },
+            "Sequence": 15,
+            "Utc": "2026-10-17T00:37:18.6271412+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_9570bce93f374d698609871bedb14162"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_00ec534517894a798ae14af890b883d6"
+            },
+            "Sequence": 16,
+            "Utc": "2026-10-17T00:37:18.6806876+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_9570bce93f374d698609871bedb14162"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_00ec534517894a798ae14af890b883d6"
+            },
+            "Sequence": 17,
+            "Utc": "2026-10-17T00:37:18.7490196+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_9570bce93f374d698609871bedb14162"
+            }
+          },
+          {
+            "ItemId": {
+              "Value": "queue_00ec534517894a798ae14af890b883d6"
+            },
+            "Sequence": 18,
+            "Utc": "2026-10-17T00:37:18.8242577+02:00",
+            "Stage": "Preparation",
+            "Code": "StageRecorded",
+            "Result": "Recorded",
+            "State": "Queued",
+            "Incident": "None",
+            "AttemptId": {
+              "Value": "attempt_9570bce93f374d698609871bedb14162"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "ownedNapProcessesRemaining": [],
+  "gitOperationsPending": [],
+  "productionActivated": false,
+  "realNimroelFilesModified": false,
+  "cutoverExecuted": false,
+  "windowsAccountsPermissionsOrServicesChanged": false,
+  "pullRequestCreated": false,
+  "nextOperation": "After new authorization: capture original IO/access exception behind late preparation StorageUnavailable with preserved synthetic sidecars; then diagnose admission 1000 and repeat affected/final acceptance without weakening gates."
+}

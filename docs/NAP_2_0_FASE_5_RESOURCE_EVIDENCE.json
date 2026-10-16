@@ -9770,6 +9770,1725 @@
     }
   },
   {
+    "file": "artifacts/phase5/p510/metrics/automation-100-223659.json",
+    "sha256": "4591a54d3ad2d0c4dceb22e78d0426268efcff81d9adb671a1e6ab55e26c64a1",
+    "measurement": {
+      "count": 100,
+      "total": 36,
+      "elapsedSeconds": 376.6523754,
+      "peakWorking": 123727872,
+      "peakPrivate": 65716224,
+      "peakHandles": 395,
+      "peakThreads": 23,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 28.0614952,
+      "firstCompleted": [
+        13.3278726,
+        23.177053
+      ],
+      "io": {
+        "ReadOperations": 8394426,
+        "WriteOperations": 102065,
+        "OtherOperations": 12088172,
+        "ReadBytes": 33071913084,
+        "WriteBytes": 193134388,
+        "OtherBytes": 292779718
+      },
+      "samples": [
+        {
+          "seconds": 0.2620603,
+          "completed": 0,
+          "workingBytes": 54603776,
+          "privateBytes": 20357120,
+          "handles": 342,
+          "threads": 20,
+          "cpuSeconds": 0.203125,
+          "completedByUniverse": [
+            0,
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 23.1770541,
+          "completed": 2,
+          "workingBytes": 102776832,
+          "privateBytes": 49197056,
+          "handles": 356,
+          "threads": 21,
+          "cpuSeconds": 18.78125,
+          "completedByUniverse": [
+            1,
+            1
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 7,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 9,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 35.8649596,
+          "completed": 3,
+          "workingBytes": 109699072,
+          "privateBytes": 52817920,
+          "handles": 364,
+          "threads": 21,
+          "cpuSeconds": 30.0625,
+          "completedByUniverse": [
+            2,
+            1
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 14,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 15,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 46.1775162,
+          "completed": 4,
+          "workingBytes": 106979328,
+          "privateBytes": 49541120,
+          "handles": 365,
+          "threads": 19,
+          "cpuSeconds": 38.90625,
+          "completedByUniverse": [
+            2,
+            2
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 18,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 19,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 57.1140223,
+          "completed": 5,
+          "workingBytes": 105615360,
+          "privateBytes": 48078848,
+          "handles": 394,
+          "threads": 19,
+          "cpuSeconds": 48.265625,
+          "completedByUniverse": [
+            3,
+            2
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 22,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 22,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 67.6150253,
+          "completed": 6,
+          "workingBytes": 107483136,
+          "privateBytes": 49782784,
+          "handles": 367,
+          "threads": 20,
+          "cpuSeconds": 58.109375,
+          "completedByUniverse": [
+            3,
+            3
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 28,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 27,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 78.3410749,
+          "completed": 7,
+          "workingBytes": 112275456,
+          "privateBytes": 55214080,
+          "handles": 368,
+          "threads": 20,
+          "cpuSeconds": 64.984375,
+          "completedByUniverse": [
+            4,
+            3
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 29,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 29,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 88.6202578,
+          "completed": 8,
+          "workingBytes": 110239744,
+          "privateBytes": 53153792,
+          "handles": 369,
+          "threads": 19,
+          "cpuSeconds": 71.765625,
+          "completedByUniverse": [
+            4,
+            4
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 32,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 33,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 107.4864485,
+          "completed": 10,
+          "workingBytes": 115068928,
+          "privateBytes": 57577472,
+          "handles": 360,
+          "threads": 18,
+          "cpuSeconds": 86.453125,
+          "completedByUniverse": [
+            5,
+            5
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 37,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 37,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 118.4049002,
+          "completed": 11,
+          "workingBytes": 108019712,
+          "privateBytes": 50221056,
+          "handles": 361,
+          "threads": 18,
+          "cpuSeconds": 94.484375,
+          "completedByUniverse": [
+            6,
+            5
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 42,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 43,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 135.5479444,
+          "completed": 13,
+          "workingBytes": 107606016,
+          "privateBytes": 49713152,
+          "handles": 361,
+          "threads": 18,
+          "cpuSeconds": 107.875,
+          "completedByUniverse": [
+            7,
+            6
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 49,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 49,
+                "PendingCandidates": 3,
+                "Stage": "preparation",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 145.9536477,
+          "completed": 14,
+          "workingBytes": 114745344,
+          "privateBytes": 57171968,
+          "handles": 364,
+          "threads": 19,
+          "cpuSeconds": 116.0625,
+          "completedByUniverse": [
+            7,
+            7
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 56,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 55,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 162.2822882,
+          "completed": 16,
+          "workingBytes": 111558656,
+          "privateBytes": 53694464,
+          "handles": 368,
+          "threads": 19,
+          "cpuSeconds": 128.78125,
+          "completedByUniverse": [
+            8,
+            8
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 60,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 60,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 177.2216988,
+          "completed": 17,
+          "workingBytes": 114274304,
+          "privateBytes": 56397824,
+          "handles": 369,
+          "threads": 19,
+          "cpuSeconds": 139.15625,
+          "completedByUniverse": [
+            9,
+            8
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 63,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 64,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 188.7489455,
+          "completed": 18,
+          "workingBytes": 110972928,
+          "privateBytes": 53084160,
+          "handles": 365,
+          "threads": 19,
+          "cpuSeconds": 149.25,
+          "completedByUniverse": [
+            9,
+            9
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 68,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 69,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 200.7896287,
+          "completed": 19,
+          "workingBytes": 113442816,
+          "privateBytes": 55562240,
+          "handles": 361,
+          "threads": 18,
+          "cpuSeconds": 155.734375,
+          "completedByUniverse": [
+            10,
+            9
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 70,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 71,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 211.8260983,
+          "completed": 20,
+          "workingBytes": 111603712,
+          "privateBytes": 53174272,
+          "handles": 361,
+          "threads": 20,
+          "cpuSeconds": 164.078125,
+          "completedByUniverse": [
+            10,
+            10
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 76,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 76,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 229.2244906,
+          "completed": 22,
+          "workingBytes": 114044928,
+          "privateBytes": 56414208,
+          "handles": 363,
+          "threads": 20,
+          "cpuSeconds": 175.875,
+          "completedByUniverse": [
+            11,
+            11
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 79,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 79,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 245.5651671,
+          "completed": 24,
+          "workingBytes": 113049600,
+          "privateBytes": 54734848,
+          "handles": 365,
+          "threads": 17,
+          "cpuSeconds": 188.46875,
+          "completedByUniverse": [
+            12,
+            12
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 88,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 88,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 256.0192005,
+          "completed": 25,
+          "workingBytes": 115089408,
+          "privateBytes": 57397248,
+          "handles": 365,
+          "threads": 17,
+          "cpuSeconds": 195.515625,
+          "completedByUniverse": [
+            13,
+            12
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 92,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 93,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 266.5798342,
+          "completed": 26,
+          "workingBytes": 114028544,
+          "privateBytes": 55828480,
+          "handles": 366,
+          "threads": 18,
+          "cpuSeconds": 202.859375,
+          "completedByUniverse": [
+            13,
+            13
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 95,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 95,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 287.4325067,
+          "completed": 28,
+          "workingBytes": 113389568,
+          "privateBytes": 54870016,
+          "handles": 367,
+          "threads": 19,
+          "cpuSeconds": 220.984375,
+          "completedByUniverse": [
+            14,
+            14
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 100,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 100,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 299.9509213,
+          "completed": 29,
+          "workingBytes": 114298880,
+          "privateBytes": 55767040,
+          "handles": 364,
+          "threads": 19,
+          "cpuSeconds": 231.9375,
+          "completedByUniverse": [
+            15,
+            14
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 105,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 106,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 311.824999,
+          "completed": 30,
+          "workingBytes": 116228096,
+          "privateBytes": 58015744,
+          "handles": 395,
+          "threads": 21,
+          "cpuSeconds": 242.578125,
+          "completedByUniverse": [
+            15,
+            15
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 110,
+                "PendingCandidates": 3,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_521e64eac73041e2b328509523bab9a7"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 110,
+                "PendingCandidates": 3,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_0da22fb58ff74a2189b691e9a1ef3eee"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 325.9878972,
+          "completed": 32,
+          "workingBytes": 117796864,
+          "privateBytes": 58871808,
+          "handles": 368,
+          "threads": 22,
+          "cpuSeconds": 254.453125,
+          "completedByUniverse": [
+            16,
+            16
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 117,
+                "PendingCandidates": 0,
+                "Stage": "batch-closed",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 117,
+                "PendingCandidates": 0,
+                "Stage": "batch-closed",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 343.4241837,
+          "completed": 34,
+          "workingBytes": 117555200,
+          "privateBytes": 58724352,
+          "handles": 361,
+          "threads": 20,
+          "cpuSeconds": 267.234375,
+          "completedByUniverse": [
+            17,
+            17
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 120,
+                "PendingCandidates": 0,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 121,
+                "PendingCandidates": 0,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 354.2346664,
+          "completed": 35,
+          "workingBytes": 117940224,
+          "privateBytes": 59072512,
+          "handles": 363,
+          "threads": 19,
+          "cpuSeconds": 275.125,
+          "completedByUniverse": [
+            17,
+            18
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 122,
+                "PendingCandidates": 0,
+                "Stage": "preparation",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 126,
+                "PendingCandidates": 0,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 365.4255375,
+          "completed": 36,
+          "workingBytes": 116764672,
+          "privateBytes": 57622528,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 282.984375,
+          "completedByUniverse": [
+            18,
+            18
+          ],
+          "status": {
+            "InstallationId": "installation_957faf5ccb674458863e15ddad9634ee",
+            "SessionId": "session_d00986bd7b0b45f6b6a9e3cb91dd7060",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 126,
+                "PendingCandidates": 0,
+                "Stage": "execution",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 129,
+                "PendingCandidates": 0,
+                "Stage": "audit",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.2620714,
+          "files": 112,
+          "bytes": 554466,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 60.3074009,
+          "files": 429,
+          "bytes": 3361683,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 253952
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 253952
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 462848
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 569344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 606208
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 577536
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 120.5345842,
+          "files": 682,
+          "bytes": 5730360,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 348160
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 348160
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1011712
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1179648
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1032192
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 180.6760982,
+          "files": 956,
+          "bytes": 8224690,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 151552
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 151552
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 446464
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 446464
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1597440
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1462272
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1753088
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1495040
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 245.5651771,
+          "files": 1226,
+          "bytes": 10832456,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 536576
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 540672
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1916928
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2330624
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1949696
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 305.7939147,
+          "files": 1486,
+          "bytes": 13171387,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 176128
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 184320
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 626688
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 622592
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2801664
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2375680
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2908160
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2408448
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 365.955921,
+          "files": 1659,
+          "bytes": 15973712,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 704512
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 692224
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3473408
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3129344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3481600
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2949120
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 376.4809875,
+          "files": 1679,
+          "bytes": 16416399,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 708608
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 708608
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3665920
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3129344
+            },
+            {
+              "path": "nap-preparation-d53b4f1705a94ef2bd8f6d969b048e3f\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3481600
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3133440
+            },
+            {
+              "path": "nap-preparation-e78f07fa1e464ed9944072b1bf063908\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     "file": "artifacts/phase5/p510/metrics/automation-1000-213356.json",
     "sha256": "7a63936bb28aa17621a2b4d53e7e6c3b4e13c7e077fa3627b61a7cd284d75ddc",
     "measurement": {
@@ -10830,6 +12549,2807 @@
             },
             {
               "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-1000-223356.json",
+    "sha256": "597f9ed44770ec19c3726492f372ef288fdb45fc8f25cd68f59127c9dc5399ba",
+    "measurement": {
+      "count": 1000,
+      "total": 48,
+      "elapsedSeconds": 671.8472181,
+      "peakWorking": 151097344,
+      "peakPrivate": 93073408,
+      "peakHandles": 405,
+      "peakThreads": 23,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 76.4632013,
+      "firstCompleted": [
+        10.7482458,
+        11.3135746
+      ],
+      "io": {
+        "ReadOperations": 11933144,
+        "WriteOperations": 133747,
+        "OtherOperations": 16290283,
+        "ReadBytes": 46742844810,
+        "WriteBytes": 253989030,
+        "OtherBytes": 440324344
+      },
+      "samples": [
+        {
+          "seconds": 0.1452565,
+          "completed": 0,
+          "workingBytes": 55185408,
+          "privateBytes": 20713472,
+          "handles": 319,
+          "threads": 20,
+          "cpuSeconds": 0.21875,
+          "completedByUniverse": [
+            0,
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": null,
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 11.3135761,
+          "completed": 2,
+          "workingBytes": 100749312,
+          "privateBytes": 47071232,
+          "handles": 333,
+          "threads": 21,
+          "cpuSeconds": 11.296875,
+          "completedByUniverse": [
+            1,
+            1
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 9,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 9,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 23.6419675,
+          "completed": 4,
+          "workingBytes": 113418240,
+          "privateBytes": 56213504,
+          "handles": 339,
+          "threads": 22,
+          "cpuSeconds": 22.609375,
+          "completedByUniverse": [
+            2,
+            2
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 18,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 18,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 36.1775918,
+          "completed": 6,
+          "workingBytes": 108920832,
+          "privateBytes": 51900416,
+          "handles": 341,
+          "threads": 20,
+          "cpuSeconds": 33.640625,
+          "completedByUniverse": [
+            3,
+            3
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 25,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 25,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 48.6025907,
+          "completed": 8,
+          "workingBytes": 113635328,
+          "privateBytes": 56999936,
+          "handles": 343,
+          "threads": 20,
+          "cpuSeconds": 44.984375,
+          "completedByUniverse": [
+            4,
+            4
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 32,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 32,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 61.2878286,
+          "completed": 10,
+          "workingBytes": 113377280,
+          "privateBytes": 55590912,
+          "handles": 339,
+          "threads": 19,
+          "cpuSeconds": 57.328125,
+          "completedByUniverse": [
+            5,
+            5
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 39,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 39,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 78.1215539,
+          "completed": 12,
+          "workingBytes": 114151424,
+          "privateBytes": 56426496,
+          "handles": 344,
+          "threads": 19,
+          "cpuSeconds": 72.03125,
+          "completedByUniverse": [
+            6,
+            6
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 46,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 46,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 94.1112767,
+          "completed": 14,
+          "workingBytes": 112427008,
+          "privateBytes": 54517760,
+          "handles": 343,
+          "threads": 18,
+          "cpuSeconds": 86.328125,
+          "completedByUniverse": [
+            7,
+            7
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 53,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 53,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 109.6233639,
+          "completed": 16,
+          "workingBytes": 116273152,
+          "privateBytes": 58388480,
+          "handles": 345,
+          "threads": 19,
+          "cpuSeconds": 99.796875,
+          "completedByUniverse": [
+            8,
+            8
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 60,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 60,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 124.852832,
+          "completed": 18,
+          "workingBytes": 119541760,
+          "privateBytes": 61333504,
+          "handles": 344,
+          "threads": 18,
+          "cpuSeconds": 114.546875,
+          "completedByUniverse": [
+            9,
+            9
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 67,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 67,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 141.0799789,
+          "completed": 20,
+          "workingBytes": 127770624,
+          "privateBytes": 70344704,
+          "handles": 343,
+          "threads": 18,
+          "cpuSeconds": 129.421875,
+          "completedByUniverse": [
+            10,
+            10
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 74,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 73,
+                "PendingCandidates": 3,
+                "Stage": "preparation",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 151.5465134,
+          "completed": 21,
+          "workingBytes": 121806848,
+          "privateBytes": 64344064,
+          "handles": 342,
+          "threads": 18,
+          "cpuSeconds": 139.234375,
+          "completedByUniverse": [
+            10,
+            11
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 78,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 77,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 169.7104302,
+          "completed": 22,
+          "workingBytes": 120442880,
+          "privateBytes": 62636032,
+          "handles": 347,
+          "threads": 19,
+          "cpuSeconds": 150.8125,
+          "completedByUniverse": [
+            11,
+            11
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 81,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 81,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 180.3279481,
+          "completed": 23,
+          "workingBytes": 123461632,
+          "privateBytes": 65126400,
+          "handles": 343,
+          "threads": 18,
+          "cpuSeconds": 160.703125,
+          "completedByUniverse": [
+            11,
+            12
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 85,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 84,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 191.6464972,
+          "completed": 24,
+          "workingBytes": 123957248,
+          "privateBytes": 65798144,
+          "handles": 335,
+          "threads": 18,
+          "cpuSeconds": 170.109375,
+          "completedByUniverse": [
+            12,
+            12
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 88,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 88,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 202.1225153,
+          "completed": 25,
+          "workingBytes": 126279680,
+          "privateBytes": 68386816,
+          "handles": 339,
+          "threads": 19,
+          "cpuSeconds": 180.5,
+          "completedByUniverse": [
+            12,
+            13
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 95,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 93,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 219.7815164,
+          "completed": 27,
+          "workingBytes": 124481536,
+          "privateBytes": 66490368,
+          "handles": 336,
+          "threads": 18,
+          "cpuSeconds": 196.078125,
+          "completedByUniverse": [
+            13,
+            14
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 99,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 98,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 230.6158795,
+          "completed": 28,
+          "workingBytes": 129753088,
+          "privateBytes": 71770112,
+          "handles": 339,
+          "threads": 19,
+          "cpuSeconds": 206.59375,
+          "completedByUniverse": [
+            14,
+            14
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 102,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 102,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 242.1666434,
+          "completed": 29,
+          "workingBytes": 129826816,
+          "privateBytes": 71852032,
+          "handles": 341,
+          "threads": 18,
+          "cpuSeconds": 218.28125,
+          "completedByUniverse": [
+            14,
+            15
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 106,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 107,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 260.4693136,
+          "completed": 31,
+          "workingBytes": 131690496,
+          "privateBytes": 73449472,
+          "handles": 343,
+          "threads": 18,
+          "cpuSeconds": 235.234375,
+          "completedByUniverse": [
+            15,
+            16
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 113,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 112,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 271.4938517,
+          "completed": 32,
+          "workingBytes": 134279168,
+          "privateBytes": 75452416,
+          "handles": 340,
+          "threads": 17,
+          "cpuSeconds": 246.1875,
+          "completedByUniverse": [
+            16,
+            16
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 116,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 116,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 290.2125835,
+          "completed": 33,
+          "workingBytes": 130842624,
+          "privateBytes": 71876608,
+          "handles": 339,
+          "threads": 19,
+          "cpuSeconds": 259.84375,
+          "completedByUniverse": [
+            16,
+            17
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 120,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 119,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 332.5912895,
+          "completed": 34,
+          "workingBytes": 129122304,
+          "privateBytes": 70799360,
+          "handles": 349,
+          "threads": 23,
+          "cpuSeconds": 286.09375,
+          "completedByUniverse": [
+            17,
+            17
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 123,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 123,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 366.6757854,
+          "completed": 35,
+          "workingBytes": 132370432,
+          "privateBytes": 73965568,
+          "handles": 353,
+          "threads": 20,
+          "cpuSeconds": 309.359375,
+          "completedByUniverse": [
+            17,
+            18
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 127,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 126,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 400.2545625,
+          "completed": 36,
+          "workingBytes": 134148096,
+          "privateBytes": 75051008,
+          "handles": 369,
+          "threads": 23,
+          "cpuSeconds": 333.6875,
+          "completedByUniverse": [
+            18,
+            18
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 130,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 130,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 429.5661156,
+          "completed": 37,
+          "workingBytes": 133099520,
+          "privateBytes": 74088448,
+          "handles": 351,
+          "threads": 17,
+          "cpuSeconds": 353.671875,
+          "completedByUniverse": [
+            18,
+            19
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 134,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 133,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 455.0298849,
+          "completed": 38,
+          "workingBytes": 132808704,
+          "privateBytes": 73990144,
+          "handles": 360,
+          "threads": 20,
+          "cpuSeconds": 375.65625,
+          "completedByUniverse": [
+            19,
+            19
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 137,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 137,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 479.2239449,
+          "completed": 39,
+          "workingBytes": 135307264,
+          "privateBytes": 76677120,
+          "handles": 363,
+          "threads": 17,
+          "cpuSeconds": 393.03125,
+          "completedByUniverse": [
+            19,
+            20
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 141,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 140,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 503.6833159,
+          "completed": 40,
+          "workingBytes": 136011776,
+          "privateBytes": 77271040,
+          "handles": 342,
+          "threads": 19,
+          "cpuSeconds": 414.4375,
+          "completedByUniverse": [
+            20,
+            20
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 144,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 144,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 523.1307112,
+          "completed": 41,
+          "workingBytes": 135757824,
+          "privateBytes": 77512704,
+          "handles": 340,
+          "threads": 18,
+          "cpuSeconds": 433.078125,
+          "completedByUniverse": [
+            20,
+            21
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 148,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 147,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 544.9916295,
+          "completed": 42,
+          "workingBytes": 137732096,
+          "privateBytes": 79138816,
+          "handles": 342,
+          "threads": 17,
+          "cpuSeconds": 455.0625,
+          "completedByUniverse": [
+            21,
+            21
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 151,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 151,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 567.0667295,
+          "completed": 43,
+          "workingBytes": 137924608,
+          "privateBytes": 79405056,
+          "handles": 347,
+          "threads": 19,
+          "cpuSeconds": 471.765625,
+          "completedByUniverse": [
+            21,
+            22
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 155,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 154,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 588.2175713,
+          "completed": 44,
+          "workingBytes": 138776576,
+          "privateBytes": 80019456,
+          "handles": 351,
+          "threads": 19,
+          "cpuSeconds": 491.265625,
+          "completedByUniverse": [
+            22,
+            22
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 158,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 158,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 606.7706913,
+          "completed": 45,
+          "workingBytes": 139493376,
+          "privateBytes": 80371712,
+          "handles": 345,
+          "threads": 17,
+          "cpuSeconds": 507.140625,
+          "completedByUniverse": [
+            22,
+            23
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 162,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 161,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 625.4510558,
+          "completed": 46,
+          "workingBytes": 139829248,
+          "privateBytes": 80846848,
+          "handles": 343,
+          "threads": 19,
+          "cpuSeconds": 524.40625,
+          "completedByUniverse": [
+            23,
+            23
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 165,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 165,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 645.4670473,
+          "completed": 47,
+          "workingBytes": 144654336,
+          "privateBytes": 85663744,
+          "handles": 349,
+          "threads": 20,
+          "cpuSeconds": 540.890625,
+          "completedByUniverse": [
+            23,
+            24
+          ],
+          "status": {
+            "InstallationId": "installation_7f2673d61246480c8f0ad51c6b9cccb6",
+            "SessionId": "session_75e3a58b421542538111794b6c303e25",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 169,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_d40b9d889d594727ac554a598cb16f56"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 168,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1a8016742cd542c68ae47021845fa099"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.1452638,
+          "files": 1013,
+          "bytes": 1241406,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 61.2878378,
+          "files": 1521,
+          "bytes": 5860474,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 323584
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 319488
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 880640
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 892928
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 124.8528402,
+          "files": 1873,
+          "bytes": 9105402,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 151552
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 151552
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 450560
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 446464
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1748992
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1495040
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1748992
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1490944
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 185.1164176,
+          "files": 2122,
+          "bytes": 11361937,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 536576
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 540672
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2207744
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1949696
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2330624
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1912832
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 245.3460302,
+          "files": 2386,
+          "bytes": 13837305,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 176128
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 184320
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 626688
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 626688
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2797568
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2408448
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2908160
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2371584
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 332.5912997,
+          "files": 2576,
+          "bytes": 15620901,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 692224
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 684032
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3284992
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2711552
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3289088
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2711552
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 400.2545722,
+          "files": 2665,
+          "bytes": 16465225,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 733184
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 729088
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3473408
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2863104
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3477504
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2863104
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 460.8694332,
+          "files": 2779,
+          "bytes": 17418305,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 786432
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 761856
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3665920
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3088384
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3678208
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3055616
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 523.130722,
+          "files": 2875,
+          "bytes": 18428465,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 192512
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 811008
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 798720
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3854336
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3239936
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4050944
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3207168
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 588.2175795,
+          "files": 3017,
+          "bytes": 19698405,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 856064
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 851968
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4239360
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3473408
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4239360
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3473408
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 648.6618591,
+          "files": 3165,
+          "bytes": 21007881,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 204800
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 208896
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 909312
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 913408
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4431872
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3756032
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4624384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3674112
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 671.4568324,
+          "files": 3197,
+          "bytes": 21302410,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\AssetCatalog.db",
+              "bytes": 208896
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\AssetCatalog.db",
+              "bytes": 208896
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 913408
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 921600
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4628480
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3776512
+            },
+            {
+              "path": "nap-preparation-1bebe682adcd43d795ecff4c22eed50c\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4624384
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3751936
+            },
+            {
+              "path": "nap-preparation-366d4176c96740939b0e98cc4023bbc8\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-1000-223830.json",
+    "sha256": "03ef3b85ea1db5aee7be92914335df43cdf64ba58c3fc7e9c3fe710a5489060b",
+    "measurement": {
+      "count": 1000,
+      "total": 12,
+      "elapsedSeconds": 86.4105863,
+      "peakWorking": 115314688,
+      "peakPrivate": 58159104,
+      "peakHandles": 395,
+      "peakThreads": 21,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 14.2469887,
+      "firstCompleted": [
+        10.3244281,
+        13.3659953
+      ],
+      "io": null,
+      "samples": [
+        {
+          "seconds": 0.1954071,
+          "completed": 0,
+          "workingBytes": 54665216,
+          "privateBytes": 20455424,
+          "handles": 340,
+          "threads": 20,
+          "cpuSeconds": 0.203125,
+          "completedByUniverse": [
+            0,
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 13.3659963,
+          "completed": 2,
+          "workingBytes": 103919616,
+          "privateBytes": 49364992,
+          "handles": 356,
+          "threads": 21,
+          "cpuSeconds": 12.4375,
+          "completedByUniverse": [
+            1,
+            1
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 9,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 9,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 27.612986,
+          "completed": 4,
+          "workingBytes": 109477888,
+          "privateBytes": 52809728,
+          "handles": 355,
+          "threads": 21,
+          "cpuSeconds": 23.296875,
+          "completedByUniverse": [
+            2,
+            2
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 16,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 17,
+                "PendingCandidates": 2,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 40.1870988,
+          "completed": 6,
+          "workingBytes": 102936576,
+          "privateBytes": 45600768,
+          "handles": 357,
+          "threads": 19,
+          "cpuSeconds": 32.984375,
+          "completedByUniverse": [
+            3,
+            3
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 25,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 25,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 54.0110234,
+          "completed": 8,
+          "workingBytes": 105639936,
+          "privateBytes": 48422912,
+          "handles": 361,
+          "threads": 20,
+          "cpuSeconds": 44.484375,
+          "completedByUniverse": [
+            4,
+            4
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 32,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 32,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 67.1330984,
+          "completed": 10,
+          "workingBytes": 115118080,
+          "privateBytes": 58077184,
+          "handles": 358,
+          "threads": 18,
+          "cpuSeconds": 55.65625,
+          "completedByUniverse": [
+            5,
+            5
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 39,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 39,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 79.8644306,
+          "completed": 12,
+          "workingBytes": 113770496,
+          "privateBytes": 56061952,
+          "handles": 359,
+          "threads": 19,
+          "cpuSeconds": 67.640625,
+          "completedByUniverse": [
+            6,
+            6
+          ],
+          "status": {
+            "InstallationId": "installation_012c037c4def455799dafa3adf62a218",
+            "SessionId": "session_e1f1c28cfb8d494b8fc64d7b73f53771",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 46,
+                "PendingCandidates": 3,
+                "Stage": "admission",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_7f9051f84b2c449ab491579e8f9e87a3"
+                }
+              },
+              {
+                "UniverseId": {
+                  "Value": "beta_universe"
+                },
+                "State": 2,
+                "Turns": 46,
+                "PendingCandidates": 3,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_ed854319d95f4821b42c4ef1771e1ed6"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.1954149,
+          "files": 1013,
+          "bytes": 1241406,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 60.3808958,
+          "files": 1467,
+          "bytes": 5381458,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 303104
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 294912
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 798720
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 786432
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 962560
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 806912
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 86.2443798,
+          "files": 1642,
+          "bytes": 6970993,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 73728
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 380928
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 360448
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1179648
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1089536
+            },
+            {
+              "path": "nap-preparation-6b41a6fb68dc477c8580a65db8c53ee9\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1306624
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1110016
+            },
+            {
+              "path": "nap-preparation-bdbe45e92098446685f8c42c22f84422\\workspace\\state\\automation\\runtime\\RuntimeState.db",
               "bytes": 16384
             }
           ]

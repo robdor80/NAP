@@ -1,5 +1,5 @@
 {
-  "observedUtc": "2026-10-16T22:07:53.6847075+00:00",
+  "observedUtc": "2026-10-17T00:07:53.6847075+02:00",
   "note": "Observed binaries while the complete Release regression is running; source changes were subsequently committed. Configuration and embedded build revision differ; do not infer a single exact-head invocation from this record.",
   "sourceStabilizationCommit": "1a049c0290539b9d6e84544df28301792bf2e623",
   "currentSourceCommit": "8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a",
@@ -44,5 +44,37 @@
       "sha256": "ec3db35c7deb626f0b66254c60e045bd8f3d373c930d0f7413c01aa8d7e67054",
       "productVersion": "1.0.0+1a049c0290539b9d6e84544df28301792bf2e623"
     }
-  ]
+  ],
+  "quotaStopObservation": {
+    "observedUtc": "2026-10-16T22:41:08.0697503+00:00",
+    "sourceCommit": "4549c48d07017a5a97f9f77a4df711d14763e8cb",
+    "note": "Existing binaries observed without rebuilding at quota stop. The latest complete invocation was intentionally aborted. Embedded source revision metadata reflects the build context; code changes were subsequently committed.",
+    "assemblies": [
+      {
+        "file": "src/NAP.Core/bin/P510Review/net8.0/NAP.Core.dll",
+        "sha256": "42aaa747f2ba6638bafe554550557db715b50a64ce33f8ccec4821e8265eebc0",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.AutomationHost/bin/P510Review/net8.0/NAP.AutomationHost.dll",
+        "sha256": "7d4743983364c289bf4acfa182b0a730fda30bc68fb2d575be62aaf8ed4e86ca",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.Presentation/bin/P510Review/net8.0/NAP.Presentation.dll",
+        "sha256": "5ffed890d929fa0aa43088f477b50826156f4590b924c0ad92a9327d1d1b3629",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.App/bin/P510Review/net8.0-windows/NAP.App.dll",
+        "sha256": "7fc2d17b371483378ed735b4632a762835403eefdcd433d5bb11a36a566cf319",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "tests/NAP.Tests/bin/P510Review/net8.0/NAP.Tests.dll",
+        "sha256": "394c5e0111b9b78a1571e48b7354dba559167ecaa3855ff2d881eb2f9ca70e4a",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      }
+    ]
+  }
 }
