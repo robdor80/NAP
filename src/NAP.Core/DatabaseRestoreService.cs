@@ -36,6 +36,8 @@ public sealed class DatabaseRestoreService
     });
     public DatabaseRestoreResult Execute(UniverseContext context, DatabaseRestorePlan plan) => BackupStorage.Run(() =>
     {
+        AutomationReadViews.RequireNative(plan);
+        using var access = AutomationManualAccess.Enter(context);
         ArgumentNullException.ThrowIfNull(plan);
         using var archive = BackupStorage.Archive(context, true); using var catalog = CatalogBoundary.Acquire(context);
         CheckPlan(context, plan);

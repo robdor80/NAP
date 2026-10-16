@@ -8,6 +8,7 @@ public sealed class ProductionAssetExecutor
 
     public ProductionAssetResult Execute(ProductionAssetPlan plan, AiAuditReport auditReport)
     {
+        using var access = AutomationManualAccess.Enter(_context);
         ArgumentNullException.ThrowIfNull(plan); RequirePass(auditReport);
         using var jobLease = plan.JobId is null ? null : ExecutionMutex.Acquire("Job", _context.Storage.StateRoot, plan.JobId.Value);
         return ExecuteCoordinated(plan, auditReport, jobLease);

@@ -1,3 +1,4 @@
+using System.Text.Json;
 namespace NAP.Core;
 
 public enum GitChangeKind { Added, Modified, Deleted, Renamed, Copied, Untracked, Conflicted, TypeChanged }
@@ -114,6 +115,13 @@ public sealed class GitOperationReceipt
 
 public sealed class GitCommitResult
 {
+    internal GitCommitResult(System.Text.Json.JsonElement e, System.Text.Json.JsonSerializerOptions o)
+    {
+        OperationId = e.GetProperty(nameof(OperationId)).Deserialize<GitOperationId>(o)!; UniverseId = e.GetProperty(nameof(UniverseId)).Deserialize<UniverseId>(o)!;
+        OldHead = e.GetProperty(nameof(OldHead)).GetString()!; CommitSha = e.GetProperty(nameof(CommitSha)).GetString()!;
+        Branch = e.GetProperty(nameof(Branch)).GetString()!; CommittedPaths = e.GetProperty(nameof(CommittedPaths)).Deserialize<string[]>(o)!;
+        Message = e.GetProperty(nameof(Message)).GetString()!; RepositoryBinding = "";
+    }
     internal GitCommitResult(GitOperationReceipt receipt)
     { OperationId = receipt.OperationId; UniverseId = receipt.UniverseId; OldHead = receipt.BaseHead; CommitSha = receipt.CommitSha!;
       Branch = receipt.Branch; CommittedPaths = receipt.Plan.Selection.Paths; Message = receipt.Plan.Message; RepositoryBinding = receipt.Plan.Status.RepositoryBinding; }

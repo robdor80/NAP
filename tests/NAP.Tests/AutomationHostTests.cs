@@ -17,7 +17,14 @@ public sealed class AutomationHostTests
         { Directory.CreateDirectory(Control); A = new("alpha_universe", parent: Root); B = new("beta_universe", parent: Root); }
         internal static StoredAutomationPolicy Enable(PreparationTestFixture fixture)
         { using var owner = fixture.Queue.AcquireOwner(); return DurableExecutionTests.Enable(fixture, owner); }
-        public void Dispose() { A.Dispose(); B.Dispose(); Directory.Delete(Root, true); }
+        public void Dispose()
+        {
+            var full = Path.GetFullPath(Root); var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+            if (!full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase) || !Path.GetFileName(full).StartsWith("nap-host-", StringComparison.Ordinal)) throw new InvalidOperationException("Invalid host fixture cleanup root.");
+            A.Dispose(); B.Dispose();
+            foreach (var file in Directory.EnumerateFiles(full, "*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = FileAttributes.ReparsePoint })) File.SetAttributes(file, FileAttributes.Normal);
+            Directory.Delete(full, true);
+        }
     }
 
     internal static async Task Until(Func<bool> condition, AutomationHost host, int seconds = 30)

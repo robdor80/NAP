@@ -98,7 +98,14 @@ internal sealed class PreparationTestFixture : IDisposable
         Assert.DoesNotContain(Directory.EnumerateFiles(Roots.ProductionRoot, "*", SearchOption.AllDirectories), p => p.EndsWith(".webp", StringComparison.Ordinal));
         Assert.False(Queue.CurrentPolicy().IsExecutionAuthorized);
     }
-    public void Dispose() => Directory.Delete(Root, true);
+    public void Dispose()
+    {
+        var full = Path.GetFullPath(Root); var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+        if (!full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase) || !Path.GetFileName(full).StartsWith("nap-preparation-", StringComparison.Ordinal)) throw new InvalidOperationException("Invalid fixture cleanup root.");
+        foreach (var file in Directory.EnumerateFiles(full, "*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = FileAttributes.ReparsePoint }))
+            File.SetAttributes(file, FileAttributes.Normal);
+        Directory.Delete(full, true);
+    }
     internal sealed class TestClock : TimeProvider
     {
         private DateTimeOffset _now = DateTimeOffset.UtcNow;

@@ -6,6 +6,7 @@ namespace NAP.Presentation;
 /// <summary>Desktop session. Scope/generation protect every result; mutations retain their typed Core plans and explicit confirmation.</summary>
 public sealed class ShellViewModel : ObservableObject, IDisposable
 {
+    public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
     private readonly IUserConfirmation _confirmation;
     private readonly IImageNormalizationUiService _normalization;
@@ -21,9 +22,10 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
+        Automation = automation;
         _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
@@ -41,7 +43,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             _scopePending = false;
             if (Explorer.Error is { } error) { Settings.Notice = new(error.Message, error.Code, UiTone.Error); Settings.State = UiPageState.Stopped; }
             else await RefreshCurrentAsync();
-        }, () => !IsExecuting && Explorer.SettingsReadable && SelectedUniverse is not null && new[] { Explorer.WorkspaceRoot, Explorer.ProductionRoot, Explorer.ArchiveRoot }.All(Path.IsPathFullyQualified));
+        }, () => !IsExecuting && !Explorer.SettingsManagedByHost && Explorer.SettingsReadable && SelectedUniverse is not null && new[] { Explorer.WorkspaceRoot, Explorer.ProductionRoot, Explorer.ArchiveRoot }.All(Path.IsPathFullyQualified));
         ImportProfile = Command(async () =>
         {
             var path = _profilePicker!.Pick(); if (path is null) return;
@@ -210,7 +212,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand PushGit { get; }
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
-    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
+    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); if (Automation is not null) await Automation.RefreshAsync(); }
     private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
     {
         try { await switching; }

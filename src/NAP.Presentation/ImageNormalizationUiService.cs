@@ -9,22 +9,24 @@ public interface IImageNormalizationUiService
     Task<ImageNormalizationRecoverySnapshot> ReadAsync(UniverseContext context, CancellationToken cancellation);
 }
 
-public sealed class ImageNormalizationUiService : IImageNormalizationUiService
+public sealed class ImageNormalizationUiService(IUniverseOperationDispatcher? dispatcher = null) : IImageNormalizationUiService
 {
+    private Task<T> Run<T>(UniverseContext c, Func<T> operation, CancellationToken ct) =>
+        (dispatcher ?? LocalUniverseOperationDispatcher.Instance).RunAsync(c, operation, ct);
     public Task<ImageNormalizationProposal> PrepareAsync(UniverseContext context, InboxPackageCandidate candidate, string? targetProfile,
-        ImageNormalizationPolicy policy, CancellationToken cancellation) => Task.Run(async () =>
+        ImageNormalizationPolicy policy, CancellationToken cancellation) => Run(context, () =>
     {
         var path = Path.GetFullPath(candidate.FullPath);
         if (!string.Equals(Path.GetDirectoryName(path), context.Storage.InboxRoot, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
             Path.GetFileName(path) != candidate.FileName)
             throw new InvalidDataException("Normalization must use the selected ordinary ZIP in this universe's Inbox.");
-        return await new ImageNormalizationService(context, policy).PreparePackageAsync(path, targetProfile, cancellation).ConfigureAwait(false);
+        return new ImageNormalizationService(context, policy).PreparePackageAsync(path, targetProfile, cancellation).GetAwaiter().GetResult();
     }, cancellation);
 
     public Task<ImageNormalizationResult> DecideAsync(UniverseContext context, ImageNormalizationProposal proposal,
-        ImageNormalizationAuthorization authorization, CancellationToken cancellation) => Task.Run(() =>
+        ImageNormalizationAuthorization authorization, CancellationToken cancellation) => Run(context, () =>
         new ImageNormalizationService(context, proposal.Policy).Decide(proposal, authorization, cancellation), cancellation);
-    public Task<ImageNormalizationRecoverySnapshot> ReadAsync(UniverseContext context, CancellationToken cancellation) => Task.Run(() =>
+    public Task<ImageNormalizationRecoverySnapshot> ReadAsync(UniverseContext context, CancellationToken cancellation) => Run(context, () =>
     { cancellation.ThrowIfCancellationRequested(); var result = new ImageNormalizationService(context).Scan(); cancellation.ThrowIfCancellationRequested(); return result; }, cancellation);
 }
 

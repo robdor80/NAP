@@ -8,6 +8,7 @@ public sealed class RepositorySnapshotService
     internal Action<string>? Observer { get; set; }
     public BackupHistoryEntry Create(UniverseContext context) => BackupStorage.Run(() =>
     {
+        using var access = AutomationManualAccess.Enter(context);
         using var production = BackupStorage.Production(context);
         var source = context.Storage.ProductionRoot; var before = BackupTree.Capture(source, true);
         Observer?.Invoke("source_captured");

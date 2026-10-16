@@ -8,7 +8,10 @@ public sealed class AssetExecutionCoordinator
 
     public AssetExecutionResult Execute(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processingPlan,
         ArchiveMasterPlan archivePlan, AiAuditReport auditReport, long maxInputPixels)
-        => ExecuteControlled(jobId, package, processingPlan, archivePlan, auditReport, maxInputPixels, null);
+    {
+        using var access = AutomationManualAccess.Enter(_context);
+        return ExecuteControlled(jobId, package, processingPlan, archivePlan, auditReport, maxInputPixels, null);
+    }
 
     internal AssetExecutionResult ExecuteControlled(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processingPlan,
         ArchiveMasterPlan archivePlan, AiAuditReport auditReport, long maxInputPixels, WorkflowExecutionControl? control)

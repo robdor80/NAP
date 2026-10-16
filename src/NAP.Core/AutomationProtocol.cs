@@ -14,7 +14,7 @@ public enum AutomationOperation
     Dashboard, Pipeline, Prepare, PrepareNormalized, Audit, Execute, Planning, SaveObjective, Backups,
     Backup, PlanRestore, Restore, PlanRetention, Retain, InspectGit, GitReceipts, PlanCommit, Commit,
     RecoverGit, RetryCommit, Push, CatalogPage, CatalogDetail, Statistics, Thumbnail,
-    NormalizationPrepare, NormalizationDecide, NormalizationRead
+    NormalizationPrepare, NormalizationDecide, NormalizationRead, ReadBlobChunk, CurrentPolicy, ShutdownHost, ReleaseBlob
 }
 public sealed record AutomationRequest(int Version, string RequestId, AutomationOperation Operation,
     string? UniverseId, JsonElement Payload);
@@ -23,6 +23,12 @@ public sealed record AutomationConnection(string PipeName, string KeyBase64);
 public sealed record AutomationActivation(PolicyReference Policy, bool ResumeOnRestart);
 public sealed record AutomationPageRequest(int Offset = 0, int Limit = 100);
 public sealed record AutomationItemRequest(string ItemId);
+public sealed record AutomationBlobRead(string BlobId, int Offset, int Count);
+public sealed record AutomationBlob(string BlobId, int Length, string Sha256);
+public sealed class AutomationRemoteOperationException(string code, IReadOnlyList<NapIssue> issues) : Exception("Host operation stopped: " + code)
+{
+    public NapIssueReport Issues { get; } = new(issues);
+}
 
 public static class AutomationProtocol
 {
@@ -100,8 +106,13 @@ public sealed class AutomationHostClient
     {
         var request = new AutomationRequest(1, requestId ?? "command_" + Guid.NewGuid().ToString("N"), operation, universe, AutomationProtocol.Payload(payload));
         var response = await SendAsync(request, cancellation).ConfigureAwait(false);
-        if (!response.Succeeded) throw new AutomationException(Enum.TryParse<AutomationError>(response.Error, out var code) ? code : AutomationError.InvalidContract,
-            "Host operation failed: " + response.Error); return response.Payload;
+        if (!response.Succeeded)
+        {
+            if (response.Payload.ValueKind == JsonValueKind.Array)
+                throw new AutomationRemoteOperationException(response.Error ?? "host_stopped", AutomationProtocol.Read<NapIssue[]>(response.Payload));
+            throw new AutomationException(Enum.TryParse<AutomationError>(response.Error, out var code) ? code : AutomationError.InvalidContract, "Host operation failed: " + response.Error);
+        }
+        return response.Payload;
     }
 }
 
@@ -168,7 +179,15 @@ public sealed class AutomationPipeServer : IAsyncDisposable
                 AutomationResponse response;
                 try { response = new(1, request.RequestId, true, null, await _handler(request, principal).ConfigureAwait(false)); }
                 catch (Exception error)
-                { response = new(1, request.RequestId, false, error is AutomationException a ? a.Code.ToString() : error.GetType().Name, AutomationProtocol.Payload<object?>(null)); }
+                {
+                    var report = error switch
+                    {
+                        AutomationRemoteOperationException r => r.Issues, CatalogException r => r.Issues, ProductionStorageException r => r.Issues,
+                        ArchiveStorageException r => r.Issues, BackupException r => r.Issues, GitProductionException r => r.Issues, _ => null
+                    };
+                    response = new(1, request.RequestId, false, error is AutomationException a ? a.Code.ToString() : error.GetType().Name,
+                        report is null ? AutomationProtocol.Payload<object?>(null) : AutomationProtocol.Payload(report.Issues.ToArray()));
+                }
                 // Once accepted, the operation is drained even if the client disconnects or server shutdown is requested.
                 using var replyDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(5));
                 await AutomationProtocol.WriteAsync(pipe, response, replyDeadline.Token).ConfigureAwait(false);

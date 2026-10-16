@@ -29,12 +29,15 @@ public interface IProfessionalUiService
 }
 
 /// <summary>Typed Core adapters. Heavy work runs away from the UI; no repair, implicit initialization or inferred evidence.</summary>
-public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IProfessionalUiService
+public sealed class ProfessionalUiService(IAiAuditClient? auditor = null, IUniverseOperationDispatcher? dispatcher = null,
+    GitProductionService? gitService = null, GitProductionInspector? gitInspector = null) : IProfessionalUiService
 {
+    private readonly GitProductionService _git = gitService ?? new();
+    private readonly GitProductionInspector _gitInspector = gitInspector ?? new();
     public bool AuditAvailable => auditor is not null;
     public const long MaxInputPixels = PackagePreparationService.MaxInputPixels;
-    private static Task<T> Run<T>(UniverseContext c, CancellationToken ct, Func<T> operation) => Task.Run(() =>
-    { ct.ThrowIfCancellationRequested(); LocalUniverseSettingsStore.ValidateAvailable(c.Storage); return operation(); }, ct);
+    private Task<T> Run<T>(UniverseContext c, CancellationToken ct, Func<T> operation)
+        => (dispatcher ?? LocalUniverseOperationDispatcher.Instance).RunAsync(c, operation, ct);
     private static PipelineSnapshot Pipeline(UniverseContext c)
     {
         var recovery = new JobRecoveryScanner(c).Scan();
@@ -65,14 +68,14 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
     public Task<DatabaseRestoreResult> RestoreAsync(UniverseContext c, DatabaseRestorePlan plan, CancellationToken ct) => Run(c, ct, () => new DatabaseRestoreService().Execute(c, plan));
     public Task<BackupRetentionPlan> PlanRetentionAsync(UniverseContext c, BackupRetentionPolicy policy, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Plan(c, policy));
     public Task<BackupRetentionResult> RetainAsync(UniverseContext c, BackupRetentionPlan plan, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Execute(c, plan));
-    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => new GitProductionInspector().Inspect(c));
+    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => _gitInspector.Inspect(c));
     public Task<IReadOnlyList<GitOperationReceipt>> ReceiptsAsync(UniverseContext c, CancellationToken ct) => Run<IReadOnlyList<GitOperationReceipt>>(c, ct, () =>
-    { var service = new GitProductionService(); return service.ListOperations(c).Select(id => service.ReadReceipt(c, id)).ToArray(); });
-    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => new GitProductionService().PrepareCommit(c, results, subject));
-    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => new GitProductionService().Commit(c, plan));
-    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitProductionService().Recover(c, id));
-    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitProductionService().RetryCommit(c, id));
-    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitProductionService().Push(c, id));
+    { return _git.ListOperations(c).Select(id => _git.ReadReceipt(c, id)).ToArray(); });
+    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => _git.PrepareCommit(c, results, subject));
+    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => _git.Commit(c, plan));
+    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.Recover(c, id));
+    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.RetryCommit(c, id));
+    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.Push(c, id));
 
     public Task<PreparedPipelineAsset> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, CancellationToken ct) => Run<PreparedPipelineAsset>(c, ct, () =>
     {
@@ -115,7 +118,7 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null) : IPro
     public Task<ProductionAssetResult> ExecuteAsync(UniverseContext c, PreparedPipelineAsset prepared, AiAuditReport audit, CancellationToken ct) => Run(c, ct, () =>
     { RequireScope(c, prepared); if (!audit.Passed) throw new InvalidOperationException("Only a real PASS can execute."); return new AssetExecutionCoordinator(c).Execute(prepared.JobId, prepared.Package, prepared.Processing, prepared.Archive, audit, MaxInputPixels).Production; });
     private static void RequireScope(UniverseContext c, PreparedPipelineAsset prepared)
-    { if (c != prepared.Context) throw new InvalidOperationException("Prepared evidence belongs to another context."); }
+    { if (c != prepared.Context || prepared.IsRemoteProjection) throw new InvalidOperationException("Prepared evidence belongs to another context or is only a remote read projection."); }
     private static string WorkspacePath(UniverseContext c, string folder)
     {
         var path = Path.Combine(c.Storage.WorkspaceRoot, folder);

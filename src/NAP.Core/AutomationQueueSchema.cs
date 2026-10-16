@@ -61,13 +61,14 @@ public sealed class AutomationQueueOwner : IDisposable
     private bool _disposed;
     internal string Root { get; }
     public long Epoch { get; }
-    internal AutomationQueueOwner(ExecutionMutex lease, string root, long epoch) { _lease = lease; Root = root; Epoch = epoch; }
+    internal AutomationQueueOwner(ExecutionMutex lease, string root, long epoch)
+    { _lease = lease; Root = root; Epoch = epoch; AutomationManualAccess.Register(this, root); }
     internal void Require(string root)
     {
         if (_disposed || _thread != Environment.CurrentManagedThreadId || !ProductionPaths.Same(root, Root)) throw new AutomationException(AutomationError.InvalidClaim, "A live owner on its acquiring thread is required.");
         _lease.Require("AutomationOwner", Root);
     }
-    public void Dispose() { if (_disposed) return; Require(Root); _lease.Dispose(); _disposed = true; }
+    public void Dispose() { if (_disposed) return; Require(Root); _lease.Dispose(); _disposed = true; AutomationManualAccess.Unregister(this, Root); }
 }
 
 internal static class AutomationQueueBoundary

@@ -1,9 +1,21 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace NAP.Core;
 
 public sealed class ImageNormalizationProposal
 {
+    internal ImageNormalizationProposal(UniverseContext context, System.Text.Json.JsonElement e, System.Text.Json.JsonSerializerOptions o)
+    {
+        Context = context; OperationId = e.GetProperty(nameof(OperationId)).GetString()!; EvidenceSha256 = e.GetProperty(nameof(EvidenceSha256)).GetString()!;
+        SourcePath = e.GetProperty(nameof(SourcePath)).GetString()!; SourceSha256 = e.GetProperty(nameof(SourceSha256)).GetString()!;
+        AssetKey = e.GetProperty(nameof(AssetKey)).Deserialize<UniverseAssetKey>(o)!; AssetType = e.GetProperty(nameof(AssetType)).GetString()!;
+        OriginalProfile = e.GetProperty(nameof(OriginalProfile)).GetString()!; TargetProfile = e.GetProperty(nameof(TargetProfile)).GetString()!;
+        Conversion = e.GetProperty(nameof(Conversion)).Deserialize<ImageConversionRule>(o)!; Policy = e.GetProperty(nameof(Policy)).Deserialize<ImageNormalizationPolicy>(o)!;
+        Preview = e.GetProperty(nameof(Preview)).Deserialize<ImageNormalizationPreview>(o)!;
+        OriginalPngFileName = e.GetProperty(nameof(OriginalPngFileName)).GetString()!; CandidatePngFileName = e.GetProperty(nameof(CandidatePngFileName)).GetString()!;
+        Files = e.GetProperty(nameof(IsPackage)).GetBoolean() ? new() : null;
+    }
     internal ImageNormalizationProposal(UniverseContext context, string source, string digest, string assetId, string assetType,
         string originalProfile, UniverseAssetRule rule, ImageNormalizationPolicy policy, ImageNormalizationPreview preview,
         Dictionary<string, byte[]>? packageFiles)

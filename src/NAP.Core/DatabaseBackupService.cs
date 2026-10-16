@@ -9,6 +9,7 @@ public sealed class DatabaseBackupService
     internal Action<string>? Observer { get; set; }
     public BackupHistoryEntry Create(UniverseContext context) => BackupStorage.Run(() =>
     {
+        using var access = AutomationManualAccess.Enter(context);
         using var archive = BackupStorage.Archive(context, true);
         using var catalog = CatalogBoundary.Acquire(context);
         return CreateLocked(context, archive, catalog, DatabaseBackupPurpose.Manual);

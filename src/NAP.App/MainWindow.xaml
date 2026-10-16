@@ -160,7 +160,16 @@
     </Grid>
     <Border Grid.Row="2" BorderBrush="{StaticResource CardBrush}" BorderThickness="0,1,0,0" Margin="0,16,0,0" Padding="0,12,0,0">
       <DockPanel>
-        <TextBlock DockPanel.Dock="Right" Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" />
+        <ContentControl DockPanel.Dock="Right" Content="{Binding Automation}">
+          <ContentControl.ContentTemplate><DataTemplate>
+            <StackPanel><TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" TextWrapping="Wrap" MaxWidth="720" />
+              <StackPanel Orientation="Horizontal"><Button Content="Host" Command="{Binding Refresh}" /><Button Content="Activar universo" Command="{Binding Activate}" />
+                <Button Content="Pausar" Command="{Binding Pause}" /><Button Content="Reanudar" Command="{Binding Resume}" /><Button Content="Detener host" Command="{Binding Stop}" /></StackPanel>
+            </StackPanel>
+          </DataTemplate></ContentControl.ContentTemplate>
+          <ContentControl.Style><Style TargetType="ContentControl"><Setter Property="Visibility" Value="Visible" /><Style.Triggers><DataTrigger Binding="{Binding Automation}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></ContentControl.Style>
+        </ContentControl>
+        <TextBlock DockPanel.Dock="Right" Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" Margin="12,0" />
         <TextBlock Text="{Binding StatusText}" Style="{StaticResource Muted}" />
       </DockPanel>
     </Border>

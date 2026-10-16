@@ -93,6 +93,61 @@ public sealed partial class AutomationHost : IAsyncDisposable
         return await slot.Runtime.InvokeAsync(query, cancellation).ConfigureAwait(false);
     }
 
+    public async Task<T> RunManualAsync<T>(UniverseId universe, Func<AutomationUniverseScope, T> operation, CancellationToken cancellation = default)
+    {
+        await Started.ConfigureAwait(false); var slot = Find(universe);
+        await _heavy.WaitAsync(cancellation).ConfigureAwait(false);
+        try
+        {
+            return await slot.Runtime!.InvokeAsync(s =>
+            {
+                lock (_controlsGate)
+                {
+                    var control = Controls.Read(universe);
+                    if (!control.Paused && !control.Stopped) throw new AutomationException(AutomationError.Busy, "Pause this universe before an explicit manual mutation.");
+                }
+                for (var offset = 0; ; offset += 100)
+                {
+                    var page = s.Queue.List(offset, 100);
+                    if (page.Any(i => i.State == QueueState.Running)) throw new AutomationException(AutomationError.Busy, "A suspended execution must be resolved before maintenance.");
+                    if (page.Count < 100) break;
+                }
+                return operation(s);
+            }, cancellation).ConfigureAwait(false);
+        }
+        finally { _heavy.Release(); }
+    }
+
+    public async Task<T> QueryHeavyAsync<T>(UniverseId universe, Func<AutomationUniverseScope, T> operation, CancellationToken cancellation = default)
+    {
+        await _heavy.WaitAsync(cancellation).ConfigureAwait(false);
+        try { return await QueryAsync(universe, operation, cancellation).ConfigureAwait(false); }
+        finally { _heavy.Release(); }
+    }
+
+    public async Task<T> RunManualAuditAsync<T>(UniverseId universe, Func<Task<T>> operation, CancellationToken cancellation = default)
+    {
+        while (Interlocked.CompareExchange(ref _auditReserved, 1, 0) != 0)
+        { if (_stopping) throw new AutomationException(AutomationError.Busy, "Host is stopping before manual HTTP dispatch."); await Task.Delay(25, cancellation).ConfigureAwait(false); }
+        Task<T>? remote = null;
+        try
+        {
+            lock (_controlsGate)
+            {
+                var control = Controls.Read(universe);
+                if (!control.Paused && !control.Stopped) throw new AutomationException(AutomationError.Busy, "Pause the universe before manual audit.");
+            }
+            remote = operation();
+            return await remote.WaitAsync(TimeSpan.FromSeconds(60), cancellation).ConfigureAwait(false);
+        }
+        finally
+        {
+            if (remote is null || remote.IsCompleted) Interlocked.Exchange(ref _auditReserved, 0);
+            else _ = remote.ContinueWith(t => { _ = t.Exception; Interlocked.Exchange(ref _auditReserved, 0); }, CancellationToken.None,
+                TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+        }
+    }
+
     public Task<IReadOnlyList<AutomationBatchProjection>> BatchesAsync(UniverseId universe, int offset = 0, int limit = 100,
         CancellationToken cancellation = default) => QueryAsync<IReadOnlyList<AutomationBatchProjection>>(universe, s =>
             new AutomationRuntimeStateStore(s.Context).List(s.Owner, offset, limit).Select(c =>
@@ -336,7 +391,9 @@ public sealed partial class AutomationHost : IAsyncDisposable
             return new Step("audit-response");
         });
         _dispatch = null; _auditSlot = null;
-        Interlocked.Exchange(ref _auditReserved, 0);
+        if (outcome.RemoteCompletion.IsCompleted) Interlocked.Exchange(ref _auditReserved, 0);
+        else _ = outcome.RemoteCompletion.ContinueWith(t => { _ = t.Exception; Interlocked.Exchange(ref _auditReserved, 0); }, CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
     }
 
     private void EnsureWatcher(Slot slot)
