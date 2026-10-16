@@ -12,6 +12,9 @@ public sealed class ArchiveMasterExecutor
     }
 
     public ArchiveMasterResult Execute(ArchiveMasterPlan plan, AiAuditReport auditReport)
+        => ExecuteControlled(plan, auditReport, null);
+
+    internal ArchiveMasterResult ExecuteControlled(ArchiveMasterPlan plan, AiAuditReport auditReport, WorkflowExecutionControl? control)
     {
         ArgumentNullException.ThrowIfNull(plan);
         ArgumentNullException.ThrowIfNull(auditReport);
@@ -27,12 +30,18 @@ public sealed class ArchiveMasterExecutor
         var index = store.Load();
         var current = new ArchiveMasterPlanner(_context).Revalidate(plan, index);
         if (current.Issues.ShouldStop) throw new ArchiveStorageException(current.Issues);
+        control?.VerifyArchiveOwnership(current);
         if (current.Action == ArchiveMasterAction.AlreadyArchived)
             return new ArchiveMasterResult(current, ArchiveMasterOutcome.AlreadyArchived);
 
-        archiveLock.EnableWrites();
+        control?.Before("archive-start"); archiveLock.EnableWrites();
         if (current.FilesToCopy.Count > 0) ArchivePaths.EnsureDirectory(_context, current.DestinationDirectory);
-        foreach (var file in current.FilesToCopy) CopyFile(file);
+        foreach (var file in current.FilesToCopy)
+        {
+            control?.Before("archive-file:" + file.FileName);
+            CopyFileControlled(file, control);
+            control?.After("archive-file:" + file.FileName);
+        }
         foreach (var file in current.Files)
         {
             ArchiveRootValidator.Require(_context);
@@ -46,11 +55,15 @@ public sealed class ArchiveMasterExecutor
             throw ArchiveStorageException.Stop(NapIssueCodes.ArchiveIndexInconsistent, "The index changed while the archive lock was held.", store.IndexPath);
         var entry = new ArchiveMasterIndexEntry(current.AssetKey.AssetId, current.AssetType, current.MasterDigest,
             current.MasterSizeBytes, current.RelativeDirectory, true);
+        control?.Before("archive-index");
         store.Publish(new ArchiveMasterIndex(_context.Id, index.Entries.Append(entry)), archiveLock);
+        control?.After("archive-index");
         return new ArchiveMasterResult(current, current.Action == ArchiveMasterAction.CopyAndIndex ? ArchiveMasterOutcome.Copied : ArchiveMasterOutcome.IndexedExisting);
     }
 
-    private void CopyFile(ArchiveMasterFile file)
+    private void CopyFile(ArchiveMasterFile file) => CopyFileControlled(file, null);
+
+    private void CopyFileControlled(ArchiveMasterFile file, WorkflowExecutionControl? control)
     {
         ArchiveRootValidator.Require(_context);
         ArchiveMasterPlanner.VerifyFile(file.SourcePath, file, NapIssueCodes.ArchiveSourceChanged);
@@ -63,10 +76,12 @@ public sealed class ArchiveMasterExecutor
             source.CopyTo(output);
             output.Flush(flushToDisk: true);
         }
-        PublishFile(temp, file);
+        PublishFileControlled(temp, file, control);
     }
 
-    private void PublishFile(string temp, ArchiveMasterFile file)
+    private void PublishFile(string temp, ArchiveMasterFile file) => PublishFileControlled(temp, file, null);
+
+    private void PublishFileControlled(string temp, ArchiveMasterFile file, WorkflowExecutionControl? control)
     {
         ArchiveRootValidator.Require(_context);
         if (!ArchivePaths.Same(Path.GetDirectoryName(temp)!, Path.GetDirectoryName(file.DestinationPath)!))
@@ -75,12 +90,14 @@ public sealed class ArchiveMasterExecutor
         ArchiveMasterPlanner.VerifyFile(file.SourcePath, file, NapIssueCodes.ArchiveSourceChanged);
         if (ArchivePaths.FileExists(file.DestinationPath))
             throw ArchiveStorageException.Stop(NapIssueCodes.ArchiveFileCollision, "A final file appeared while copying.", file.DestinationPath);
+        control?.Before("archive-publish:" + file.FileName);
         try { File.Move(temp, file.DestinationPath, overwrite: false); }
         catch (IOException ex) when (ArchivePaths.Attributes(file.DestinationPath) is not null)
         {
             throw ArchiveStorageException.Stop(NapIssueCodes.ArchiveFileCollision, "The final file cannot be overwritten.", file.DestinationPath, ex);
         }
         ArchiveMasterPlanner.VerifyFile(file.DestinationPath, file, NapIssueCodes.ArchiveVerificationFailed);
+        control?.After("archive-publish:" + file.FileName);
     }
 
     private static bool SameIndex(ArchiveMasterIndex first, ArchiveMasterIndex second) =>

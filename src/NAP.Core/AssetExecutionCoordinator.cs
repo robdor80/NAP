@@ -8,6 +8,10 @@ public sealed class AssetExecutionCoordinator
 
     public AssetExecutionResult Execute(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processingPlan,
         ArchiveMasterPlan archivePlan, AiAuditReport auditReport, long maxInputPixels)
+        => ExecuteControlled(jobId, package, processingPlan, archivePlan, auditReport, maxInputPixels, null);
+
+    internal AssetExecutionResult ExecuteControlled(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processingPlan,
+        ArchiveMasterPlan archivePlan, AiAuditReport auditReport, long maxInputPixels, WorkflowExecutionControl? control)
     {
         ArgumentNullException.ThrowIfNull(jobId); ArgumentNullException.ThrowIfNull(package);
         ArgumentNullException.ThrowIfNull(processingPlan); ArgumentNullException.ThrowIfNull(archivePlan);
@@ -23,7 +27,11 @@ public sealed class AssetExecutionCoordinator
         var state = store.Load(jobId).State;
         if (state is JobState.Detected or JobState.Staged or JobState.Validated or JobState.Failed)
             throw new InvalidOperationException("Only PLANNED, AUDITED, EXECUTED, VERIFIED or a coherent COMPLETED Job may execute.");
-        if (state == JobState.Completed) return VerifyCompleted(jobId, package, processingPlan, maxInputPixels, coordination);
+        if (state == JobState.Completed)
+        {
+            control?.VerifyArchiveOwnership(archivePlan);
+            return VerifyCompleted(jobId, package, processingPlan, maxInputPixels, coordination);
+        }
 
         ProductionStorageRootValidator.Require(_context);
         ProductionPaths.Resolve(_context.Storage.ProductionRoot, processingPlan.ProductionDestination.RelativeDirectory);
@@ -42,22 +50,31 @@ public sealed class AssetExecutionCoordinator
             ProductionAssetPlanner.RequireFreshDestination(_context, processingPlan.ProductionDestination.RelativeDirectory);
             Transition(JobState.Audited); state = JobState.Audited;
         }
-        var archive = new ArchiveMasterExecutor(_context).Execute(archivePlan, auditReport);
+        var archive = new ArchiveMasterExecutor(_context).ExecuteControlled(archivePlan, auditReport, control);
+        control?.Before("production-plan");
         var productionPlan = new ProductionAssetPlanner(_context).Plan(package, processingPlan, archive, maxInputPixels, jobId);
+        control?.After("production-plan");
         var executor = new ProductionAssetExecutor(_context);
-        var production = executor.ExecuteCoordinated(productionPlan, auditReport, coordination);
+        var production = executor.ExecuteControlled(productionPlan, auditReport, coordination, control);
         if (state == JobState.Audited) { Transition(JobState.Executed); state = JobState.Executed; }
         executor.VerifyCoordinated(productionPlan, coordination);
         if (state == JobState.Executed) { Transition(JobState.Verified); state = JobState.Verified; }
         executor.VerifyCoordinated(productionPlan, coordination);
+        control?.After("physical-verification");
         if (state == JobState.Verified)
         {
+            control?.Before("catalog-register");
             new AssetCatalog(_context).RegisterVerified(package, processingPlan, archive, production, auditReport);
+            control?.After("catalog-register");
             Transition(JobState.Completed);
         }
         return new AssetExecutionResult(jobId, archive, production);
 
-        void Transition(JobState next) { RequireJournal(jobId); store.Transition(jobId, next); }
+        void Transition(JobState next)
+        {
+            control?.Before("journal-" + next); RequireJournal(jobId); store.Transition(jobId, next);
+            control?.After("journal-" + next);
+        }
     }
 
     private AssetExecutionResult VerifyCompleted(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processing, long maxInputPixels, ExecutionMutex coordination)

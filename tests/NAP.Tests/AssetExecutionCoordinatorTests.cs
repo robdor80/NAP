@@ -179,14 +179,7 @@ public sealed class AssetExecutionCoordinatorTests
     {
         using var f = new ProductionTestFixture(); var plan = f.Plan(); var job = f.Job();
         var root = scope == "Production" ? f.Context.Storage.ProductionRoot : f.Context.Storage.StateRoot;
-        var canonical = Path.TrimEndingDirectorySeparator(Path.GetFullPath(root)); if (OperatingSystem.IsWindows()) canonical = canonical.ToUpperInvariant();
-        using var input = new MemoryStream(Encoding.UTF8.GetBytes(canonical + "\n" + (scope == "Job" ? job.Value : "")));
-        var name = "NAP.Execution." + scope + "." + new Sha256Hasher().Compute(input).Hex;
-        var script = "$m=[System.Threading.Mutex]::new($false,'" + name + "'); if (!$m.WaitOne(0)) {exit 2}; try {[Console]::WriteLine('LOCKED'); [Console]::Out.Flush(); [Console]::ReadLine() | Out-Null} finally {$m.ReleaseMutex(); $m.Dispose()}";
-        var start = new ProcessStartInfo { FileName = OperatingSystem.IsWindows() ? "powershell.exe" : "pwsh", UseShellExecute = false,
-            CreateNoWindow = true, RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true };
-        start.ArgumentList.Add("-NoProfile"); start.ArgumentList.Add("-NonInteractive"); start.ArgumentList.Add("-EncodedCommand"); start.ArgumentList.Add(Convert.ToBase64String(Encoding.Unicode.GetBytes(script)));
-        using var process = Process.Start(start)!;
+        using var process = CoordinationTestPeer.Start("core-hold", scope, root, scope == "Job" ? job.Value : "");
         try
         {
             var ready = await process.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(10)); Assert.Equal("LOCKED", ready);

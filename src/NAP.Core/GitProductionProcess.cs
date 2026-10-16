@@ -87,7 +87,8 @@ internal sealed class GitProductionProcess
         if (AllowLocalTestTransport)
         {
             start.Environment["GIT_CONFIG_NOSYSTEM"] = "1";
-            start.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
+            // Git handles /dev/null on Windows too; recent versions reject the device name NUL here.
+            start.Environment["GIT_CONFIG_GLOBAL"] = "/dev/null";
         }
         start.Environment["GCM_INTERACTIVE"] = "never";
         start.Environment["GIT_ASKPASS"] = ""; start.Environment["SSH_ASKPASS"] = ""; start.Environment["SSH_ASKPASS_REQUIRE"] = "never";

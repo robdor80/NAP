@@ -17,10 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\NAP.CoordinationProbe\NAP.CoordinationProbe.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\NAP.Core\NAP.Core.csproj" />
     <ProjectReference Include="..\..\src\NAP.AI\NAP.AI.csproj" />
     <ProjectReference Include="..\..\src\NAP.Presentation\NAP.Presentation.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyCoordinationPeer" AfterTargets="Build">
+    <ItemGroup>
+      <CoordinationPeer Include="..\..\tools\NAP.CoordinationProbe\bin\$(Configuration)\net8.0\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(CoordinationPeer)" DestinationFiles="@(CoordinationPeer->'$(TargetDir)coordination-peer\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 
   <ItemGroup>
     <Content Include="..\..\config\universes\nimroel\profile.json"

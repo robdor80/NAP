@@ -1,0 +1,869 @@
+{
+  "Commit": "426c976002eb56e31c8b83f35d16d302809ff13a",
+  "Run": "https://github.com/robdor80/NAP/actions/runs/38730539826",
+  "Platforms": [
+    {
+      "Platform": "linux",
+      "OperatingSystem": "Ubuntu 24.04.5 LTS",
+      "PowerShell": "7.6.6",
+      "PowerShellRuntime": ".NET 10.0.12",
+      "GitVersion": "git version 2.55.0",
+      "Runtimes": [
+        {
+          "Runtime": "8.0.31",
+          "Framework": ".NET 8.0.31",
+          "RuntimeIdentifier": "linux-x64"
+        },
+        {
+          "Runtime": "8.0.32",
+          "Framework": ".NET 8.0.32",
+          "RuntimeIdentifier": "linux-x64"
+        }
+      ],
+      "Observations": [
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": false
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": false
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": false
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": false
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": false
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": false
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        }
+      ]
+    },
+    {
+      "Platform": "windows",
+      "OperatingSystem": "Microsoft Windows 10.0.20348",
+      "PowerShell": "7.6.6",
+      "PowerShellRuntime": ".NET 10.0.12",
+      "GitVersion": "git version 2.56.0.windows.1",
+      "Runtimes": [
+        {
+          "Runtime": "8.0.31",
+          "Framework": ".NET 8.0.31",
+          "RuntimeIdentifier": "win-x64"
+        },
+        {
+          "Runtime": "8.0.32",
+          "Framework": ".NET 8.0.32",
+          "RuntimeIdentifier": "win-x64"
+        }
+      ],
+      "Observations": [
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.31",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.31",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "AutomationOwner",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Job",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Production",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "mutex",
+          "Owner": "8.0.32",
+          "Contender": "PowerShell",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "file",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.31",
+          "Excluded": true
+        },
+        {
+          "Scope": "Catalog",
+          "Mode": "dual-vs-legacy-mutex",
+          "Owner": "8.0.32",
+          "Contender": "8.0.32",
+          "Excluded": true
+        }
+      ]
+    }
+  ],
+  "GitMaintenanceLocal": {
+    "GitVersion": "git version 2.52.0.windows.1",
+    "Method": "Independent Git commits in two synthetic temporary repositories; GIT_TRACE2_EVENT and FileSystemWatcher on .git/objects/maintenance.lock",
+    "Trace": [
+      {
+        "Mode": "baseline",
+        "Children": [
+          "git maintenance run --auto --no-quiet --detach"
+        ]
+      },
+      {
+        "Mode": "isolated",
+        "Children": []
+      }
+    ],
+    "FileEvents": [
+      {
+        "Mode": "baseline",
+        "Events": [
+          {
+            "Change": "Created",
+            "File": "maintenance.lock",
+            "Time": "2026-10-15T12:08:30.1603806Z"
+          },
+          {
+            "Change": "Deleted",
+            "File": "maintenance.lock",
+            "Time": "2026-10-15T12:08:30.1605691Z"
+          }
+        ]
+      },
+      {
+        "Mode": "isolated",
+        "Events": []
+      }
+    ]
+  }
+}

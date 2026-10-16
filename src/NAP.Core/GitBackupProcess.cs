@@ -27,7 +27,8 @@ internal sealed class GitBackupProcess
             start.ArgumentList.Add(value);
         foreach (var key in start.Environment.Keys.Where(k => k.StartsWith("GIT_", StringComparison.OrdinalIgnoreCase)).ToArray()) start.Environment.Remove(key);
         start.Environment["GIT_TERMINAL_PROMPT"] = "0"; start.Environment["GIT_OPTIONAL_LOCKS"] = "0";
-        start.Environment["GIT_CONFIG_NOSYSTEM"] = "1"; start.Environment["GIT_CONFIG_GLOBAL"] = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
+        // Keep global configuration disabled on Git for Windows, which also understands /dev/null.
+        start.Environment["GIT_CONFIG_NOSYSTEM"] = "1"; start.Environment["GIT_CONFIG_GLOBAL"] = "/dev/null";
         start.Environment["GIT_NO_REPLACE_OBJECTS"] = "1"; start.Environment["GIT_NO_LAZY_FETCH"] = "1";
         start.Environment["GIT_ALLOW_PROTOCOL"] = ""; // Even an accidental object lookup cannot use a transport.
         using var process = new Process { StartInfo = start };

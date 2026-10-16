@@ -51,10 +51,12 @@ public sealed class InboxPackageReadinessCheckerTests
 
         try
         {
-            var changeTask = AppendAfterDelayAsync(filePath, TimeSpan.FromMilliseconds(50));
-
-            var result = await CreateChecker(TimeSpan.FromMilliseconds(200)).CheckAsync(CreateCandidate(filePath));
-            await changeTask;
+            var clock = new SampleClock(); var checker = CreateChecker(TimeSpan.FromMilliseconds(200)); SetClock(checker, clock);
+            var checking = checker.CheckAsync(CreateCandidate(filePath));
+            Assert.False(checking.IsCompleted); // The first real filesystem sample has completed.
+            File.AppendAllText(filePath, " more");
+            clock.Advance();
+            var result = await checking.WaitAsync(TimeSpan.FromSeconds(10));
 
             Assert.Equal(InboxPackageReadinessStatus.Changing, result.Status);
         }
@@ -73,13 +75,12 @@ public sealed class InboxPackageReadinessCheckerTests
 
         try
         {
-            var changeTask = SetLastWriteTimeAfterDelayAsync(
-                filePath,
-                originalLastWriteTime.AddMinutes(1),
-                TimeSpan.FromMilliseconds(50));
-
-            var result = await CreateChecker(TimeSpan.FromMilliseconds(200)).CheckAsync(CreateCandidate(filePath));
-            await changeTask;
+            var clock = new SampleClock(); var checker = CreateChecker(TimeSpan.FromMilliseconds(200)); SetClock(checker, clock);
+            var checking = checker.CheckAsync(CreateCandidate(filePath));
+            Assert.False(checking.IsCompleted);
+            File.SetLastWriteTimeUtc(filePath, originalLastWriteTime.AddMinutes(1));
+            clock.Advance();
+            var result = await checking.WaitAsync(TimeSpan.FromSeconds(10));
 
             Assert.Equal(InboxPackageReadinessStatus.Changing, result.Status);
         }
@@ -206,16 +207,25 @@ public sealed class InboxPackageReadinessCheckerTests
         return filePath;
     }
 
-    private static async Task AppendAfterDelayAsync(string filePath, TimeSpan delay)
+    private static void SetClock(InboxPackageReadinessChecker checker, TimeProvider clock) =>
+        typeof(InboxPackageReadinessChecker).GetProperty("Clock", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(checker, clock);
+    private sealed class SampleClock : TimeProvider
     {
-        await Task.Delay(delay);
-        await File.AppendAllTextAsync(filePath, " more");
-    }
-
-    private static async Task SetLastWriteTimeAfterDelayAsync(string filePath, DateTime value, TimeSpan delay)
-    {
-        await Task.Delay(delay);
-        File.SetLastWriteTimeUtc(filePath, value);
+        private SampleTimer? _timer;
+        public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
+        {
+            Assert.Equal(TimeSpan.FromMilliseconds(200), dueTime); Assert.Equal(Timeout.InfiniteTimeSpan, period);
+            Assert.Null(_timer); return _timer = new(callback, state);
+        }
+        public void Advance() => (_timer ?? throw new InvalidOperationException("No sample delay was scheduled.")).Fire();
+        private sealed class SampleTimer(TimerCallback callback, object? state) : ITimer
+        {
+            private int _disposed;
+            internal void Fire() { if (Volatile.Read(ref _disposed) == 0) callback(state); }
+            public bool Change(TimeSpan dueTime, TimeSpan period) => throw new NotSupportedException("One-shot test clock.");
+            public void Dispose() => Interlocked.Exchange(ref _disposed, 1);
+            public ValueTask DisposeAsync() { Dispose(); return ValueTask.CompletedTask; }
+        }
     }
 
     private static void DeleteTemporaryDirectory(string path)

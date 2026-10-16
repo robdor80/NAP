@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 using Microsoft.Data.Sqlite;
 using NAP.Core;
 using NAP.Presentation;
@@ -74,6 +76,34 @@ public sealed class CatalogExplorerSessionTests
         File.WriteAllBytes(path, bytes); File.SetLastWriteTimeUtc(path, time);
         Assert.Empty(reader.Page().Items); Assert.Equal(2, Count(reader));
     }
+    [Fact]
+    public void WindowsSessionInvalidatesEvenWhenAllBasicTimesAreRestored()
+    {
+        if (!OperatingSystem.IsWindows()) return;
+        using var f = new CatalogTestFixture(); f.Catalog.Initialize();
+        var reader = new CatalogExplorerReader(f.Context); reader.Page();
+        var path = f.Catalog.CatalogPath;
+        BasicInfo original;
+        using (var file = File.OpenHandle(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+            Assert.True(GetBasic(file, 0, out original, 40));
+        File.WriteAllBytes(path, File.ReadAllBytes(path));
+        using (var file = File.OpenHandle(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete))
+            Assert.True(SetBasic(file, 0, ref original, 40));
+        using (var file = File.OpenHandle(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+        {
+            Assert.True(GetBasic(file, 0, out var restored, 40));
+            Assert.Equal(original.Change, restored.Change); Assert.Equal(original.Write, restored.Write);
+        }
+        Assert.Empty(reader.Page().Items); Assert.Equal(2, Count(reader));
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct BasicInfo { public long Creation, Access, Write, Change; public uint Attributes; }
+    [DllImport("kernel32.dll", EntryPoint = "GetFileInformationByHandleEx", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetBasic(SafeFileHandle handle, int kind, out BasicInfo information, uint size);
+    [DllImport("kernel32.dll", EntryPoint = "SetFileInformationByHandle", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool SetBasic(SafeFileHandle handle, int kind, ref BasicInfo information, uint size);
     [Fact]
     public void WarmSessionRejectsReplacementFromAnotherUniverse()
     {

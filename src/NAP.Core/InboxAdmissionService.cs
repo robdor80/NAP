@@ -284,19 +284,8 @@ public sealed class InboxAdmissionService
         }
         var bytesNeeded = checked(source.Length + declared);
         if (bytesNeeded > _options.MaxRetainedBytes) return false;
-        var directory = Path.Combine(_context.Storage.StagingRoot, "automation-admission"); long retained = 0; int count = 0;
-        var pending = new Stack<string>(); if (Directory.Exists(directory)) pending.Push(directory);
-        while (pending.TryPop(out var path))
-        {
-            InboxAdmissionEvidence.DirectoryBoundary(path);
-            foreach (var entry in Directory.EnumerateFileSystemEntries(path))
-            {
-                if (++count > 100000) return false;
-                var a = ProductionPaths.CheckPath(entry, NapIssueCodes.PackageStructureInvalid)!.Value;
-                if ((a & FileAttributes.Directory) != 0) pending.Push(entry);
-                else { retained = checked(retained + new FileInfo(entry).Length); if (retained > _options.MaxRetainedBytes - bytesNeeded) return false; }
-            }
-        }
+        var directory = Path.Combine(_context.Storage.StagingRoot, "automation-admission");
+        if (!RetainedAdmissionInventory.Fits(directory, _options.MaxRetainedBytes - bytesNeeded)) return false;
         return new DriveInfo(_context.Storage.WorkspaceRoot).AvailableFreeSpace >= _options.MinFreeBytes + bytesNeeded;
     }
 }

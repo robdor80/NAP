@@ -1,0 +1,101 @@
+using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Reflection;
+using NAP.Core;
+
+if (args.Length == 2 && args[0] == "catalog-session" && args[1] is "observe" or "reusable")
+{
+    var lab = Path.Combine(Path.GetTempPath(), "nap-catalog-session-" + Guid.NewGuid().ToString("N"));
+    var roots = new UniverseStorageConfig(new("stamp_lab"), Path.Combine(lab, "workspace"), Path.Combine(lab, "production"), Path.Combine(lab, "archive"));
+    foreach (var directory in new[] { roots.WorkspaceRoot, roots.ProductionRoot, roots.ArchiveRoot }) Directory.CreateDirectory(directory);
+    var context = new UniverseContext(new UniverseProfile(roots.UniverseId, "Synthetic stamp lab"), roots);
+    new AssetCatalog(context).Initialize();
+    var type = typeof(AssetCatalog).Assembly.GetType("NAP.Core.CatalogFileStamp")!;
+    var stamp = type.GetMethod("Capture", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [roots.CatalogPath])!;
+    var reusable = (bool)type.GetProperty("CanReuse", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(stamp)!;
+    if (args[1] == "reusable" && !reusable) throw new InvalidOperationException("A per-file change sequence is required for this session test.");
+    var reader = new CatalogExplorerReader(context); reader.Page(); reader.Page();
+    var count = (int)typeof(CatalogExplorerReader).GetProperty("StrongValidationCount", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(reader)!;
+    if (count != (reusable ? 1 : 2)) throw new InvalidOperationException("Unsafe session validation reuse.");
+    File.WriteAllText(roots.CatalogPath, "synthetic corruption"); var corrupt = File.ReadAllBytes(roots.CatalogPath);
+    try { reader.Page(); throw new InvalidOperationException("Corruption was accepted."); } catch (CatalogException) { }
+    if (!File.ReadAllBytes(roots.CatalogPath).SequenceEqual(corrupt)) throw new InvalidOperationException("Corruption was modified.");
+    Console.WriteLine(JsonSerializer.Serialize(new { CanReuse = reusable, StrongValidations = count, CorruptionRejected = true }));
+    return 0;
+}
+
+if (args.Length == 5 && args[0] == "queue-owner")
+{
+    var roots = new UniverseStorageConfig(new UniverseId(args[1]), args[2], args[3], args[4]);
+    // Only synthetic workspaces supplied explicitly by the test driver are allowed.
+    var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+    if (!Path.GetFullPath(roots.WorkspaceRoot).StartsWith(temporary, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) return 64;
+    using var owner = new AutomationQueueStore(roots).AcquireOwner();
+    Console.WriteLine(owner.Epoch); Console.Out.Flush(); Console.ReadLine(); return 0;
+}
+
+if (args.Length == 4 && args[0] is "core-hold" or "core-try" or "core-race")
+{
+    if (args[0] == "core-race") { Console.WriteLine("READY"); Console.Out.Flush(); Console.ReadLine(); }
+    IDisposable coreLease;
+    try
+    {
+        var type = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "NAP.Core.dll")).GetType("NAP.Core.ExecutionMutex")!;
+        coreLease = (IDisposable)type.GetMethod("Acquire", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, args[1..])!;
+    }
+    catch (TargetInvocationException error) when (error.InnerException is IOException)
+    { Console.WriteLine("BUSY"); return 10; }
+    using (coreLease)
+        if (args[0] != "core-try") { Console.WriteLine("LOCKED"); Console.Out.Flush(); Console.ReadLine(); }
+    return 0;
+}
+if (args.Length == 2 && args[0] == "legacy-write")
+{
+    var path = Path.GetFullPath(args[1]);
+    var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+    if (!path.StartsWith(temporary, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
+        Path.GetFileName(path) != "legacy-write-probe") return 64;
+    try { File.WriteAllText(path, "legacy writer\n"); Console.WriteLine("WROTE"); return 0; }
+    catch (UnauthorizedAccessException) { Console.WriteLine("DENIED"); return 11; }
+}
+
+// The raw primitive modes do not open NAP configuration, assets, journals or a database.
+if (args.Length == 1 && args[0] == "info")
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { Runtime = Environment.Version.ToString(),
+        Framework = RuntimeInformation.FrameworkDescription, RuntimeIdentifier = RuntimeInformation.RuntimeIdentifier }));
+    return 0;
+}
+if (args.Length < 3 || args[0] is not ("hold" or "try") || args[1] is not ("mutex" or "file" or "dual") ||
+    args.Length != (args[1] == "dual" ? 4 : 3)) return 64;
+IDisposable? lease = null;
+IDisposable? fileLease = null;
+try
+{
+    if (args[1] is "mutex" or "dual")
+    {
+        var mutex = new Mutex(false, args[2]);
+        bool held;
+        try { held = mutex.WaitOne(0); } catch (AbandonedMutexException) { held = true; }
+        if (!held) { mutex.Dispose(); return 10; }
+        lease = new MutexLease(mutex);
+    }
+    if (args[1] is "file" or "dual")
+    {
+        // The driver owns this newly-created temporary directory. Never use real NAP roots.
+        var path = Path.GetFullPath(args[^1]);
+        var temp = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+        if (!path.StartsWith(temp, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
+            !Path.GetFileName(path).Equals("probe.lock", StringComparison.Ordinal)) return 64;
+        try { fileLease = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None); }
+        catch (IOException) { return 10; }
+    }
+    if (args[0] == "hold") { Console.WriteLine("LOCKED"); Console.Out.Flush(); Console.ReadLine(); }
+    return 0;
+}
+finally { fileLease?.Dispose(); lease?.Dispose(); }
+
+sealed class MutexLease(Mutex value) : IDisposable
+{
+    public void Dispose() { value.ReleaseMutex(); value.Dispose(); }
+}

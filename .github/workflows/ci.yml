@@ -12,6 +12,65 @@ permissions:
   contents: read
 
 jobs:
+  coordination-diagnostics:
+    name: Coordination diagnostics (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.425
+            8.0.426
+      - name: Build diagnostic peer
+        run: dotnet build tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj -c Release
+      - name: Record exact runtimes and independent-process observations
+        shell: pwsh
+        run: >-
+          ./.github/scripts/Diagnose-Coordination.ps1
+          -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
+          -RuntimeVersions '8.0.31,8.0.32'
+          -OutputPath artifacts/coordination/observations.json
+      - name: Verify four original exclusion assertions using the deployed protocol
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
+          --filter "FullyQualifiedName~SeparateProcessObservesExclusiveNamedOwnerMutex|FullyQualifiedName~SystemNamedMutexCoordinatesIndependentProcess|FullyQualifiedName~CatalogMutexCoordinatesAnotherProcessWithoutLockFiles"
+          --results-directory artifacts/coordination
+          --logger "trx;LogFileName=original-mutex-tests.trx"
+      - name: Require Core process races, mixed runtimes and owner death recovery
+        env:
+          NAP_COORDINATION_RUNTIMES: '8.0.31,8.0.32'
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build
+          --filter "FullyQualifiedName~ExecutionCoordinationProcessTests"
+          --results-directory artifacts/coordination
+          --logger "trx;LogFileName=core-process-tests.trx"
+      - name: Verify synthetic old-role access and startup mutation are denied after cutover
+        shell: pwsh
+        run: >-
+          ./.github/scripts/Test-WriterCutover.ps1
+          -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
+          -OutputPath artifacts/coordination/cutover.json
+      - name: Verify Git fixture recovery and frozen snapshots independently
+        if: ${{ always() }}
+        run: >-
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
+          --filter "FullyQualifiedName~GitProductionRecoveryPushTests"
+          --results-directory artifacts/coordination
+          --logger "trx;LogFileName=git-recovery-tests.trx"
+      - name: Preserve diagnostic evidence including failures
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordination-${{ matrix.os }}
+          path: artifacts/coordination/
+          retention-days: 14
+
   build:
     runs-on: ubuntu-latest
 
@@ -31,7 +90,63 @@ jobs:
         run: dotnet build NAP.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test NAP.sln --configuration Release --no-build
+        run: dotnet test NAP.sln --configuration Release --no-build --results-directory artifacts/linux-tests --logger "trx;LogFileName=linux-regression.trx"
+
+      - name: Preserve Linux regression results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-regression-results
+          path: artifacts/linux-tests/
+          if-no-files-found: warn
+          retention-days: 14
+
+  windows-regression:
+    name: Windows complete regression
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Use runner workspace disk for disposable test fixtures
+        shell: pwsh
+        run: |
+          $fixtureTemp = Join-Path $env:RUNNER_TEMP 'nap-fixtures'
+          [IO.Directory]::CreateDirectory($fixtureTemp) | Out-Null
+          "TEMP=$fixtureTemp" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "TMP=$fixtureTemp" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Synthetic fixtures: $fixtureTemp; DriveType=$([IO.DriveInfo]::new($fixtureTemp).DriveType)"
+      - name: Record exact test environment
+        shell: pwsh
+        run: |
+          dotnet --info
+          $PSVersionTable
+          git --version
+          powershell.exe -NoProfile -NonInteractive -Command '$PSVersionTable; [Environment]::Version'
+      - name: Restore
+        run: dotnet restore NAP.sln
+      - name: Build
+        run: dotnet build NAP.sln -c Release --no-restore
+      - name: Verify fail-closed fallback then prepare the disposable USN session volume
+        shell: pwsh
+        run: ./.github/scripts/Prepare-CatalogSessionVolume.ps1 -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
+      - name: Diagnose bounded catalog stamps on both disposable Windows volumes
+        shell: pwsh
+        run: ./.github/scripts/Diagnose-CatalogStamp.ps1 -CorePath src/NAP.Core/bin/Release/net8.0/NAP.Core.dll
+      - name: Run complete suite including volume and WPF
+        run: >-
+          dotnet test NAP.sln -c Release --no-build --no-restore
+          --results-directory artifacts/windows-regression
+          --logger "trx;LogFileName=windows-regression.trx"
+      - name: Preserve complete Windows results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-regression-results
+          path: artifacts/windows-regression/
+          retention-days: 14
 
   windows-wpf:
     name: Windows WPF smoke tests (4 required)

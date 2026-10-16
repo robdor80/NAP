@@ -44,7 +44,16 @@ public sealed record StoredAutomationPolicy(AutomationPolicyDefinition Definitio
 {
     /// <summary>Neither Disabled nor PreparationOnly grants any productive execution authority.</summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public bool IsExecutionAuthorized => false;
+    public bool IsExecutionAuthorized => State == AutomationPolicyState.Enabled &&
+        Authorization is { } grant && grant.UniverseId == Definition.Roots.UniverseId &&
+        grant.Policy == Reference && Reference == Definition.Reference &&
+        (Definition.Operations & ExecutionOperations) == ExecutionOperations;
+
+    public const AutomationOperations ExecutionOperations = AutomationOperations.Admit | AutomationOperations.Audit |
+        AutomationOperations.Archive | AutomationOperations.Produce | AutomationOperations.Register;
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsPreproductionAuthorized => IsPreparationAuthorized || IsExecutionAuthorized;
 
     /// <summary>Explicit authority for pre-production only, bound to the immutable policy and its roots.
     /// Admit covers preparation of admitted packages; Normalize and Audit require their own operation bits.

@@ -56,13 +56,13 @@ public sealed partial class AutomationQueueStore : IAutomationQueueStore, IAutom
         var db = AutomationQueueBoundary.Connect(DatabasePath, write);
         try
         {
-            Validate(db);
             // Cache only an exact, fully validated byte identity, never mtime/size. Every changed
             // database (including our commits and external corruption) requires deep validation.
             // The existing I/O mutex spans open, hashing, validation and the operation.
             var hash = DatabaseHash();
             if (_validatedDatabaseHash != hash)
             {
+                Validate(db);
                 AutomationQueueBoundary.Guard(() => { ValidateData(db); return 0; }, true);
                 if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Automation database changed during validation.");
                 _validatedDatabaseHash = hash;

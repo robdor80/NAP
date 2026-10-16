@@ -12,7 +12,7 @@ public sealed partial class DurablePreparationService
         if (prepared.Code != PreparationCode.Planned) return prepared; // STOP precedes every provider invocation
         var record = GetRecord(itemId)!; var item = _queue.Get(itemId); var policy = _queue.GetPolicy(item.Policy);
         var grant = _state.Grant(policy.Reference);
-        if (!policy.IsPreparationAuthorized || policy.Authorization is null || !policy.Definition.Operations.HasFlag(AutomationOperations.Audit))
+        if (!policy.IsPreproductionAuthorized || policy.Authorization is null || !policy.Definition.Operations.HasFlag(AutomationOperations.Audit))
             return Park(owner, item, record, PreparationCode.PolicyInactive);
         if (grant is null || grant.PolicyAuthorizationId != policy.Authorization.AuthorizationId || grant.Actor != policy.Authorization.Actor ||
             client.ProviderId != grant.ProviderId || client.ModelId != grant.ModelId)
@@ -88,7 +88,7 @@ public sealed partial class DurablePreparationService
             var fresh = Prepare(owner, record.ItemId);
             if (fresh.Code != PreparationCode.Planned) return fresh;
             var policy = _queue.GetPolicy(record.Policy);
-            if (!policy.IsPreparationAuthorized || policy.Authorization is not { } authorization ||
+            if (!policy.IsPreproductionAuthorized || policy.Authorization is not { } authorization ||
                 !policy.Definition.Operations.HasFlag(AutomationOperations.Audit) || _queue.CurrentPolicy().Reference != record.Policy ||
                 authorization.AuthorizationId != grant.PolicyAuthorizationId || authorization.Actor != grant.Actor)
                 return Park(owner, _queue.Get(record.ItemId), record, PreparationCode.PolicyInactive);

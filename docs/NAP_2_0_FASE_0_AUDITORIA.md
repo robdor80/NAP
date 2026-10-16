@@ -279,6 +279,8 @@ Reusar `PrepareCommit` con outputs verificables reconstruidos desde Jobs COMPLET
 
 Cada fase debe tener cambios acotados, documento de contrato, pruebas propias y revisión independiente; no activar un camino incompleto en producción. Sus números corresponden a NAP 2.0, no a las fases históricas 1–17. La implementación empieza únicamente tras autorización posterior.
 
+**Adenda de secuencia — 2026-10-16:** la [decisión de aceptación de Fase 4](NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md) distingue implementación validada/revisión de software y certificación operativa del MSI. La dependencia de Fase 5 sobre Fases 1–4 se satisface con la base de software aceptada; puede desarrollarse y ensayarse en universos sintéticos aislados mientras el corte real sigue pendiente. Antes de usar cualquier raíz real sigue siendo obligatorio el contrato de despliegue. La sustitución definitiva será un único producto en este repositorio, con distribución protegida independiente; estudiar nuevas raíces no aprueba migrarlas ni cambiar permisos generales. Fase 5 debe resolver identidad/arranque y relación UI-host; la instalación productiva prevista en Fase 7 exige certificación y autorización separadas.
+
 ### Fase 1 — Contratos, política y cola durable
 
 - **Objetivo:** establecer identidad, estados y persistencia antes de procesar nada.

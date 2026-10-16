@@ -1,0 +1,54 @@
+# Coordinación v2 — contrato de despliegue y transición segura
+
+El responsable autorizó actualización obligatoria de todos los escritores, con parada y control externo de permisos y arranque. Se conservan rutas, datos, assets, journals y evidencias. Esta entrega implementa y ensaya el protocolo; **no aplica la transición al equipo Windows ni activa producción real**.
+
+## Separación entre aceptación de software y despliegue — 2026-10-16
+
+La [decisión de aceptación de software](NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md) permite cerrar P4.1–P4.4 y coordinación v2 tras revisión del código y continuar Fase 5 con universos sintéticos aislados, manteniendo pendiente la certificación operativa del MSI. Este contrato sigue siendo obligatorio antes de usar raíces reales; aplazar el despliegue hasta la aceptación integral de Fase 7 no exime de ninguna barrera ni autoriza un piloto productivo previo.
+
+La dirección preferida es una única instalación protegida fuera del desarrollo y estudiar raíces independientes protegidas, sin modificar permisos generales de Documents/GitHub/Codex/Godot. **No hay migración aprobada.** Si se elige cambiar raíces, se necesita un contrato de migración aprobado que trate bindings/evidencias y complemente o sustituya expresamente la secuencia sin movimiento descrita aquí. No se presenta esa alternativa como un corte ya implementado o certificado. La autorización histórica de actualización obligatoria no concede permiso para intervenir ahora en cuentas, servicios, permisos, configuración o datos del MSI.
+
+## Ámbito que debe imponerse antes de usar las raíces existentes
+
+Todos los escritores de unas raíces deben usar protocolo v2 y **una misma identidad de sistema dedicada**. Los lectores que adquieren los mismos leases deben ejecutarse bajo esa identidad o consultar mediante el servicio de esa identidad; otra cuenta tendría un directorio de coordinación distinto. La identidad antigua pierde capacidad de escritura; los binarios anteriores no pueden arrancar con la identidad nueva. Ni un marker, ni la igualdad del nombre CLR, ni un proceso aparentemente ausente demuestran esta condición.
+
+El contrato es local a un host/sistema operativo: todos los participantes deben usar las mismas rutas absolutas configuradas y ver el mismo directorio físico de coordinación. No se acredita exclusión repartiendo escritores entre contenedores, montajes o cachés independientes, aunque coincidan sus rutas textuales o uid. La matriz Windows/Linux valida cada plataforma por separado.
+
+La identidad de escritor es una frontera externa al CLR. En Windows, una cuenta o identidad de servicio dedicada, sin inicio de sesión interactivo para los usuarios antiguos, con credenciales protegidas y un punto de arranque administrado. En Linux, una cuenta dedicada sin acceso interactivo, con credenciales y unidad/punto de arranque administrados. El responsable del despliegue fija el ejecutable y todas sus DLL por hash o por política de integridad de código; protege el directorio publicado y la configuración de arranque contra escritura por las identidades anteriores. Permitir `dotnet` pero aceptar cualquier DLL aportada por el usuario **no constituye** una restricción de versión.
+
+Las raíces de cada universo solo conceden escritura a esa identidad nueva y a la autoridad administrativa de recuperación. Hay que retirar ACL/permisos antiguos de directorios **y archivos existentes**, incluidos temporales, journals, SQLite y evidencia. También hay que transferir ownership cuando el propietario anterior pudiera volver a concederse permisos. Conservar los bytes y las rutas; comparar inventario/hash antes y después. Comprobar enlaces/hardlinks y permisos heredados: proteger únicamente el directorio superior no basta. Ningún proceso antiguo privilegiado puede quedar ejecutándose ni disponer de un mecanismo de reinicio elevado.
+
+La cadena de padres también debe impedir que la identidad anterior renombre, elimine o sustituya las raíces protegidas o cambie sus permisos. Si una ruta depende de un padre aún controlado por esa identidad, la barrera no está demostrada aunque el archivo final deniegue escritura. El laboratorio usa un padre del escritor nuevo sin escritura para el rol antiguo; esto debe revisarse expresamente en las rutas reales antes de intervenir.
+
+Administradores/root pueden cambiar permisos, binarios y evidencias: no se promete protección contra una autoridad administrativa que deshaga deliberadamente la barrera. El contrato exige que esa autoridad mantenga la política. La biblioteca no administra cuentas, servicios, credenciales, ACL de assets ni políticas de arranque; tampoco puede revocar retroactivamente un descriptor que otro proceso ya abrió.
+
+## Secuencia de corte obligatoria, sin movimiento de datos
+
+1. Mantener las políticas reales `Disabled`/pausadas. Inventariar todas las identidades, ejecutables y puntos de arranque capaces de escribir: aplicación manual, CLI, servicios, tareas, backups y utilidades. Preparar backup externo y el inventario de evidencia conforme al procedimiento operativo existente.
+2. Deshabilitar el arranque antiguo y drenar/parar todos sus procesos. Verificar que no quedan operaciones ni handles de escritura. Si no puede demostrarse, realizar un reinicio controlado con el arranque antiguo ya deshabilitado. Cambiar una ACL mientras subsiste un handle antiguo no revoca ese acceso.
+3. Crear/configurar la identidad nueva y el arranque protegido del código publicado. Retirar los accesos antiguos en las mismas raíces y archivos, y transferir ownership necesario. Aplicar el cambio bajo administración con producción parada. **Esta intervención Windows debe explicarse previamente al responsable; no está realizada por esta PR.**
+4. Desde cada identidad antigua, intentar apertura de escritura sobre sentinels preparados, sin modificar assets: debe denegarse. Desde esa identidad, intentar sustituir el binario/configuración de arranque o lanzar una versión antigua como escritor nuevo: debe denegarse. Verificar también tareas/servicios y credenciales. Si una identidad privilegiada antigua sigue pudiendo arrancar/escribir, el corte no está demostrado.
+5. Verificar hashes, bindings, rutas, catálogo, journals, SQLite/sidecars y evidencias preservadas. No adoptar temporales/finales ambiguos ni reparar `COMPLETED`. Probar un universo sintético con dos procesos de la distribución publicada y con los runtimes soportados; exigir un solo owner y fencing/CAS coherente después de terminarlo abruptamente.
+6. Registrar identidad, hashes de distribución y configuración de arranque, permisos/ownership efectivos, retirada de mecanismos antiguos, drenaje/reinicio, resultados de denegación e inventario sin cambios. Solo entonces valorar una autorización productiva real separada. Esta fase no concede esa autorización ni habilita un host.
+
+No hay rollback en caliente a un escritor antiguo. Ante fallo, detener el arranque nuevo y mantener las raíces sin escritura. Un rollback de distribución exige repetir parada, exclusión de procesos y pruebas de barrera; no restaurar bytes/catálogos/journals indiscriminadamente.
+
+## Protocolo de bloqueo
+
+`ExecutionMutex` conserva nombres y APIs internos y añade `ExecutionFileLease` a todos sus scopes, incluidos AutomationOwner, Job, Production, Catalog y los IO existentes. La exclusión entre versiones nuevas depende de CreateFileW con share-none en Windows y flock no bloqueante en Linux. El mutex CLR anterior es una guarda adicional, nunca una prueba de compatibilidad entre namespaces Unix.
+
+Los ficheros son vacíos, privados, de un solo enlace y persistentes: **no se borran, renombran ni sustituyen al liberar**. La guarda conserva el handle y comprueba tipo, identidad, enlaces y permisos/rutas. Un fichero ajeno, no vacío, enlazado o con identidad no válida bloquea sin truncado ni limpieza. El nombre incluye scope y SHA-256 de raíz canónica/identidad; se mantienen no reentrancia y afinidad de hilo.
+
+Windows usa un directorio por SID bajo ProgramData, creado con ACL privada para ese SID y SYSTEM. Linux usa `.nap-coordination-v2` bajo el home obtenido de la base de cuentas para el euid, con 0700 y leases 0600. No usa HOME, XDG ni TMPDIR para resolver la ubicación; tampoco `/tmp`, para evitar su limpieza automática. La configuración de identidad/home/ProgramData se mantiene estable durante la vida de los escritores. No se permite ejecutar dos identidades de escritor sobre las mismas raíces: cada una tendría su directorio de coordinación, por lo que **la barrera externa de acceso único es obligatoria**.
+
+El kernel libera los handles al morir el proceso. En liberación normal POSIX se ejecuta LOCK_UN antes de close: una copia de la descripción de fichero retenida durante fork no debe prolongar falsamente Busy hasta exec. No se usa TTL ni se roba un lock vivo. Los ficheros persistentes no son recibos de ownership productivo; fencing/claims/CAS y los ledgers continúan verificando la evidencia del mismo workflow.
+
+## Qué ensaya CI y qué no acredita
+
+La suite conserva las cuatro assertions de exclusión, snapshot sin efectos y retry. Tras la actualización obligatoria, su peer carga el Core v2 real. La matriz adicional fuerza runtimes 8.0.31/8.0.32, compite antes de liberar, mata al propietario, reabre, verifica epochs durables y rechaza enlaces, hardlinks y contenido ajeno. Una prueba compara el hash del Core del peer con el Core bajo test para detectar binarios obsoletos.
+
+`Test-WriterCutover.ps1` se niega a ejecutarse fuera de GitHub Actions. En runners desechables crea exclusivamente identidades/raíces sintéticas; primero demuestra una escritura desde el rol antiguo, espera su salida, retira acceso y comprueba que el rol antiguo no puede modificar ni el archivo preservado ni el archivo de arranque mientras el Core nuevo sostiene cada uno de los cuatro scopes. Comprueba hashes sin cambios. En Windows elimina la cuenta temporal al finalizar; conserva los fixtures como evidencia del runner.
+
+Ese ensayo acredita **denegación de acceso y de modificación del archivo de arranque en el escenario sintético**. No instala ni ensaya una política WDAC/AppLocker, un servicio de producción, credenciales reales o el arranque del equipo del usuario. No demuestra por sí solo que un binario antiguo no pueda iniciarse como la identidad nueva en ese equipo. La evidencia anterior de que un cliente antiguo sin barrera elude el fichero se conserva; no se oculta cambiando su runtime.
+
+La certificación de despliegue real permanece pendiente hasta completar y revisar la secuencia anterior. Los resultados de software, CI y sus límites se consignan en `NAP_2_0_FASE_4_EXECUTION_RECOVERY.md`; pasar la matriz sintética no autoriza producción.

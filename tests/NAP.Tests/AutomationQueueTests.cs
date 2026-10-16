@@ -136,12 +136,10 @@ public sealed class AutomationQueueTests
     public void SeparateProcessObservesExclusiveNamedOwnerMutex()
     {
         using var f = new Fixture(); using var owner = f.Store.AcquireOwner();
-        var root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(f.Roots.StateRoot)); if (OperatingSystem.IsWindows()) root = root.ToUpperInvariant();
-        var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(root + "\n"))).ToLowerInvariant();
-        var script = "$m=[Threading.Mutex]::new($false,'NAP.Execution.AutomationOwner." + hash + "'); if($m.WaitOne(0)){ $m.ReleaseMutex(); exit 10 }; $m.Dispose(); exit 0";
-        var start = new ProcessStartInfo("pwsh") { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
-        start.ArgumentList.Add("-NoProfile"); start.ArgumentList.Add("-Command"); start.ArgumentList.Add(script);
-        using var process = Process.Start(start)!; Assert.True(process.WaitForExit(10000)); Assert.Equal(0, process.ExitCode);
+        var before = ArchiveTestFixture.Snapshot(f.Root);
+        using var process = CoordinationTestPeer.Start("core-try", "AutomationOwner", f.Roots.StateRoot);
+        Assert.Equal(10, CoordinationTestPeer.Exit(process));
+        ArchiveTestFixture.AssertSnapshot(before, f.Root);
     }
     [Fact]
     public void ReservationAndAttemptReleaseAreExplicitAndOnlyStoppedWorkCanRelease()
@@ -162,7 +160,7 @@ public sealed class AutomationQueueTests
         Assert.Equal(AutomationPolicyState.Disabled, initial.State); Assert.False(initial.IsExecutionAuthorized); Assert.Empty(initial.Definition.Normalization);
         var definition = f.Policy(); var saved = f.Store.SavePolicy(owner, definition); Assert.Equal(definition.Reference, saved.Reference);
         Assert.Equal(300, saved.Definition.Normalization[0].Limits.MaxAddedAreaBasisPoints); Assert.Equal(100, saved.Definition.Normalization[0].Limits.MaxAxisGrowthBasisPoints);
-        Error(AutomationError.Disabled, () => f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Enabled));
+        Error(AutomationError.PolicyMismatch, () => f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Enabled));
         var grant = new AutomationAuthorization("grant_one", f.Id, saved.Reference, "synthetic_owner", DateTimeOffset.UtcNow);
         saved = f.Store.RecordAuthorization(owner, saved.Reference, saved.Revision, grant); Assert.False(saved.IsExecutionAuthorized);
         saved = f.Store.SetPolicyState(owner, saved.Reference, saved.Revision, AutomationPolicyState.Paused);
@@ -268,6 +266,35 @@ public sealed class AutomationQueueTests
         }
         var bytes = File.ReadAllBytes(f.Store.DatabasePath);
         Assert.Throws<AutomationException>(() => new AutomationQueueStore(f.Roots).List()); Assert.Equal(bytes, File.ReadAllBytes(f.Store.DatabasePath));
+    }
+    [Fact]
+    public void WarmPayloadCacheStillRejectsChangedIndexesPayloadsAndMissingEvents()
+    {
+        foreach (var mutation in new[] {
+            "UPDATE items SET revision=revision+1",
+            "UPDATE items SET payload=replace(payload,'Observed','Rejected')",
+            "DELETE FROM events" })
+        {
+            using var f = new Fixture(); using (var owner = f.Store.AcquireOwner()) f.Observe(owner);
+            Assert.Single(f.Store.List()); // Reuse this very store and its parsed values after external corruption.
+            using (var db = f.Raw()) { using var cmd = db.CreateCommand(); cmd.CommandText = mutation; cmd.ExecuteNonQuery(); }
+            var changed = File.ReadAllBytes(f.Store.DatabasePath);
+            Error(AutomationError.CorruptStore, () => f.Store.List());
+            Assert.Equal(changed, File.ReadAllBytes(f.Store.DatabasePath));
+        }
+    }
+    [Fact]
+    public void ExactByteValidationCacheRejectsSchemaMutationEvenWithPreservedSizeAndTimestamp()
+    {
+        using var f = new Fixture(); using (f.Store.AcquireOwner()) { }
+        f.Store.List(); // Populate the validated image cache of this exact store instance.
+        var time = File.GetLastWriteTimeUtc(f.Store.DatabasePath); var size = new FileInfo(f.Store.DatabasePath).Length;
+        using (var db = f.Raw()) { using var cmd = db.CreateCommand(); cmd.CommandText = "PRAGMA user_version=99"; cmd.ExecuteNonQuery(); }
+        File.SetLastWriteTimeUtc(f.Store.DatabasePath, time);
+        Assert.Equal(size, new FileInfo(f.Store.DatabasePath).Length);
+        var changed = File.ReadAllBytes(f.Store.DatabasePath);
+        Error(AutomationError.UnsupportedSchema, () => f.Store.List());
+        Assert.Equal(changed, File.ReadAllBytes(f.Store.DatabasePath));
     }
     [Fact]
     public void InvalidDatabaseBytesFailClosed()
