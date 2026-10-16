@@ -10,7 +10,7 @@ namespace NAP.Tests;
 
 internal sealed class PreparationTestFixture : IDisposable
 {
-    internal readonly string Root = Path.Combine(Path.GetTempPath(), "nap-preparation-" + Guid.NewGuid().ToString("N"));
+    internal readonly string Root;
     internal UniverseStorageConfig Roots { get; }
     internal UniverseContext Context { get; }
     internal AutomationQueueStore Queue { get; }
@@ -18,8 +18,9 @@ internal sealed class PreparationTestFixture : IDisposable
     internal readonly TestClock Clock = new();
     private Dictionary<string, string> _foreign = [];
     internal static readonly InboxAdmissionOptions Fast = new() { StabilitySamples = 2, SampleInterval = TimeSpan.Zero, MinFreeBytes = 0 };
-    internal PreparationTestFixture(string universe = "test_universe", string assetType = "portrait", string profile = "portrait_npc", int width = 40, int height = 50)
+    internal PreparationTestFixture(string universe = "test_universe", string assetType = "portrait", string profile = "portrait_npc", int width = 40, int height = 50, string? parent = null)
     {
+        Root = Path.Combine(parent ?? Path.GetTempPath(), "nap-preparation-" + Guid.NewGuid().ToString("N"));
         Roots = new(new(universe), Path.Combine(Root, "workspace"), Path.Combine(Root, "production"), Path.Combine(Root, "archive"));
         foreach (var path in new[] { Roots.WorkspaceRoot, Roots.InboxRoot, Roots.StagingRoot, Roots.ProductionRoot, Roots.ArchiveRoot }) Directory.CreateDirectory(path);
         var json = JsonSerializer.Serialize(new

@@ -27,3 +27,9 @@ Validation: staged admission **2/2 passed** (`p53-staged.trx`, normal output tre
 The existing audit implementation is factored into BeginAudit (intent/budget), HTTP-only transport and owner-thread Complete/Fail. The synchronous public API delegates to those same stages. Completion binds epoch/item/attempt/Job/request/snapshot/grant/provider/model and rejects late/duplicate completion. A paused host may retain ResponseReady without publishing PASS. Late transport faults are observed without ledger callbacks; timeout explicitly leaves remote completion unknown and does not refund budget.
 
 Validation: existing durable audit + staged tests **53/53 passed** (`p54.trx`); final shared-transport and revocation checks **5/5 passed** (`p54-shared-transport.trx`), no skips. P5.5–P5.10 pending.
+
+## P5.5 — host scheduler
+
+Explicit laboratory-only composition requires all roots under a generated `TEMP/nap-host-*` container; it cannot load real user settings. Controller instance lease, dedicated owners, bounded streaming discovery/probes, round-robin scheduling, policy-bound activation, one heavy operation and one reserved HTTP slot, preparation retry scheduling and individual scope blocking. Prior-session activation resumes only with its explicit persisted flag. Quota allocations divide the host retained budget across universes/admission/preservation. No arbitrary production mode is provided in this phase.
+
+Validation: host startup/authority, two-universe same-AssetId execution with sentinels, competing deployment and laboratory-root rejection **3/3 passed** (`p55.trx`, 12 s). Cooperative execution suspension, durable stop and remaining integration are P5.6 onward, not claimed here.
