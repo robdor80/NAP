@@ -2,6 +2,12 @@
 
 El responsable autorizó actualización obligatoria de todos los escritores, con parada y control externo de permisos y arranque. Se conservan rutas, datos, assets, journals y evidencias. Esta entrega implementa y ensaya el protocolo; **no aplica la transición al equipo Windows ni activa producción real**.
 
+## Separación entre aceptación de software y despliegue — 2026-10-16
+
+La [decisión de aceptación de software](NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md) permite cerrar P4.1–P4.4 y coordinación v2 tras revisión del código y continuar Fase 5 con universos sintéticos aislados, manteniendo pendiente la certificación operativa del MSI. Este contrato sigue siendo obligatorio antes de usar raíces reales; aplazar el despliegue hasta la aceptación integral de Fase 7 no exime de ninguna barrera ni autoriza un piloto productivo previo.
+
+La dirección preferida es una única instalación protegida fuera del desarrollo y estudiar raíces independientes protegidas, sin modificar permisos generales de Documents/GitHub/Codex/Godot. **No hay migración aprobada.** Si se elige cambiar raíces, se necesita un contrato de migración aprobado que trate bindings/evidencias y complemente o sustituya expresamente la secuencia sin movimiento descrita aquí. No se presenta esa alternativa como un corte ya implementado o certificado. La autorización histórica de actualización obligatoria no concede permiso para intervenir ahora en cuentas, servicios, permisos, configuración o datos del MSI.
+
 ## Ámbito que debe imponerse antes de usar las raíces existentes
 
 Todos los escritores de unas raíces deben usar protocolo v2 y **una misma identidad de sistema dedicada**. Los lectores que adquieren los mismos leases deben ejecutarse bajo esa identidad o consultar mediante el servicio de esa identidad; otra cuenta tendría un directorio de coordinación distinto. La identidad antigua pierde capacidad de escritura; los binarios anteriores no pueden arrancar con la identidad nueva. Ni un marker, ni la igualdad del nombre CLR, ni un proceso aparentemente ausente demuestran esta condición.

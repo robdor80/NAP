@@ -5,6 +5,8 @@ Repositorio: `robdor80/NAP`. Base: `main` posterior a la PR #45 (Fase 3 fusionad
 
 > **Estado:** Fase 4 iniciada y alcance delimitado. Este documento es un contrato de trabajo; **no acredita implementación, compilación ni pruebas**. La automatización productiva debe permanecer inactiva hasta que exista código revisado, ensayos satisfactorios y autorización real explícita.
 
+> **Actualización de estado — 2026-10-16:** el texto anterior conserva el inicio histórico. El [informe de ejecución](NAP_2_0_FASE_4_EXECUTION_RECOVERY.md) acredita la implementación y validación posteriores. La [decisión de aceptación](NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md) separa el cierre de software, sujeto a revisión final de PR #46, de la certificación operativa pendiente del MSI; permite continuar Fase 5 en aislamiento. La preparación inicial de la PR en borrador no impide pasar ahora a revisión final por instrucción del responsable. Ninguna de estas transiciones autoriza merge ni producción real.
+
 ## 1. Objetivo y frontera
 
 Ejecutar **un** QueueItem admitido, preparado y auditado con PASS auténtico hasta `COMPLETED` usando el **mismo** `QueueItemId / WorkflowAttemptId / JobId`, y reconciliar cortes únicamente cuando las evidencias y el ownership de ese mismo workflow lo permitan. No reescribir motores productivos ya existentes.
