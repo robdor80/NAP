@@ -1,6 +1,6 @@
 namespace NAP.Core;
 
-public enum DurableExecutionCode { Completed, NeedsReview }
+public enum DurableExecutionCode { Completed, NeedsReview, Suspended }
 public sealed record DurableExecutionResult(QueueItemId ItemId, WorkflowAttemptId AttemptId, JobId JobId,
     DurableExecutionCode Code, string? Diagnostic = null);
 
@@ -21,6 +21,9 @@ public sealed class DurableExecutionService
     }
 
     public DurableExecutionResult Execute(AutomationQueueOwner owner, QueueItemId id)
+        => Execute(owner, id, null);
+
+    public DurableExecutionResult Execute(AutomationQueueOwner owner, QueueItemId id, WorkflowRunControl? control)
     {
         owner.Require(_context.Storage.StateRoot); SharedBoundary();
         var item = _queue.Get(id); var attempt = _queue.GetAttempt(item.ActiveAttempt ?? throw AutomationValidation.Invalid("Execution requires its active attempt."));
@@ -32,6 +35,7 @@ public sealed class DurableExecutionService
         QueueClaim? claim = null;
         try
         {
+            control?.Check(id, "execution-start");
             RequireAuthority(item);
             var jobState = new JobStateStore(_context).Load(attempt.JobId).State;
             if (record is null && (item.State != QueueState.Queued || jobState != JobState.Planned))
@@ -100,6 +104,8 @@ public sealed class DurableExecutionService
             }
             void Before(string effect)
             {
+                if (!effect.StartsWith("archive-publish:", StringComparison.Ordinal) && !effect.StartsWith("production-publish:", StringComparison.Ordinal))
+                    control?.Check(id, "before:" + effect);
                 owner.Require(_context.Storage.StateRoot); SharedBoundary(); RequireAuthority(_queue.Get(id));
                 if (!record.Intents.Contains(effect)) record = State.Save(owner, record with { Intents = record.Intents.Append(effect).ToArray() }, record.Revision);
                 Checkpoint?.Invoke("before:" + effect);
@@ -114,6 +120,9 @@ public sealed class DurableExecutionService
                 Checkpoint?.Invoke("effect:" + effect);
                 if (!record.Receipts.Contains(effect)) record = State.Save(owner, record with { Receipts = record.Receipts.Append(effect).ToArray() }, record.Revision);
                 Checkpoint?.Invoke("after:" + effect);
+                // The inner publish callback precedes native outer-file ownership. Never suspend there.
+                if (!effect.StartsWith("archive-publish:", StringComparison.Ordinal) && !effect.StartsWith("production-publish:", StringComparison.Ordinal))
+                    control?.Check(id, "after:" + effect);
             }
             void VerifyArchive(ArchiveMasterPlan plan)
             {
@@ -130,6 +139,8 @@ public sealed class DurableExecutionService
                             throw new InvalidDataException("Ambiguous archive temporary or unknown entry requires review.");
             }
         }
+        catch (WorkflowSuspendedException suspended)
+        { return new(id, attempt.Id, attempt.JobId, DurableExecutionCode.Suspended, suspended.Message); }
         catch (Exception e) when (e is InvalidDataException or PackagePreparationStoppedException or ProductionStorageException or
             ArchiveStorageException or CatalogException or IOException or UnauthorizedAccessException or System.Text.Json.JsonException)
         {

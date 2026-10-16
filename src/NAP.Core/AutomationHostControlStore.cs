@@ -66,6 +66,17 @@ public sealed class AutomationHostControlStore
     });
     public string InstallationId => Access(false, db => (string)Scalar(db, null, "SELECT installation FROM metadata WHERE id=1")!);
     public AutomationHostControl Read(UniverseId universe) => Access(false, db => Current(db, null, universe));
+    internal AutomationHostControl? Replay(string id, UniverseId universe, AutomationControlAction action,
+        AutomationHostGrant? grant, QueueItemId? item) => Access(false, db =>
+    {
+        AutomationValidation.Id(id, "command_");
+        var json = (string?)Scalar(db, null, "SELECT payload FROM commands WHERE id=$i", "$i", id);
+        if (json is null) return null;
+        var receipt = AutomationJson.Decode<AutomationControlReceipt>(json); var prior = receipt.Command;
+        if (prior.UniverseId != universe || prior.Action != action || prior.ItemId != item || AutomationJson.Encode(prior.Grant) != AutomationJson.Encode(grant))
+            throw AutomationValidation.Invalid("Command replay changed its meaning.");
+        return receipt.Result;
+    });
 
     public AutomationHostControl Apply(AutomationControlCommand command) => Access(false, db =>
     {

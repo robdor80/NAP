@@ -33,3 +33,9 @@ Validation: existing durable audit + staged tests **53/53 passed** (`p54.trx`); 
 Explicit laboratory-only composition requires all roots under a generated `TEMP/nap-host-*` container; it cannot load real user settings. Controller instance lease, dedicated owners, bounded streaming discovery/probes, round-robin scheduling, policy-bound activation, one heavy operation and one reserved HTTP slot, preparation retry scheduling and individual scope blocking. Prior-session activation resumes only with its explicit persisted flag. Quota allocations divide the host retained budget across universes/admission/preservation. No arbitrary production mode is provided in this phase.
 
 Validation: host startup/authority, two-universe same-AssetId execution with sentinels, competing deployment and laboratory-root rejection **3/3 passed** (`p55.trx`, 12 s). Cooperative execution suspension, durable stop and remaining integration are P5.6 onward, not claimed here.
+
+## P5.6 — suspension and recovery boundaries
+
+WorkflowRunControl inhibits only at complete admission/preparation receipts and outer execution-file/journal/catalog boundaries. Inner rename/publication callbacks cannot suspend before native ownership is recorded. Suspended execution retains Running/claim and returns a distinct result; resumption revalidates the same Job. Host stop persists per-universe Stop before draining, with a separate diagnostic if persistence fails; it never kills an owner. Control command replay preserves its original meaning across sessions without rolling current state back.
+
+Validation: suspension after archive file/index, production native receipt, catalog commit and COMPLETED journal; original preservation/resume; host regressions **9/9 passed** (`p56.trx`, 28 s). Actual process-kill recovery, durable host cancellation and automatic-restart conditions will also be exercised in P5.10. No power-loss certification is implied.

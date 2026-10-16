@@ -25,6 +25,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         internal InboxAdmissionService? Admission;
         internal DurablePreparationService? Preparation;
         internal DurableExecutionService? Execution;
+        internal WorkflowRunControl? RunControl;
         internal Task<Step>? Work;
         internal FileSystemWatcher? Watcher;
         internal IEnumerator<InboxPackageCandidate>? Scan;
@@ -115,6 +116,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         lock (_controlsGate)
         {
             if (_stopping) throw new InvalidOperationException("Host is stopping.");
+            if (id is not null && Controls.Replay(id, universe, action, grant, item) is { } replay) return replay;
             var previous = Controls.Read(universe);
             var command = new AutomationControlCommand(id ?? "command_" + Guid.NewGuid().ToString("N"), universe,
                 previous.Revision, action, SessionId, grant, item);
@@ -162,6 +164,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var admission = _options.Admission with { MaxRetainedBytes = Math.Min(_options.Admission.MaxRetainedBytes, _options.MaxRetainedBytes / _slots.Length / 2) };
                 slot.Admission = new(slot.Context, new(slot.Context.Storage), admission);
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
+                slot.RunControl = new((item, _) => !Allowed(slot, item));
+                slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
             }
             _started.TrySetResult();
             while (!_stopping)
@@ -285,7 +289,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 slot.Preparation!.Prepare(scope.Owner, item.Id); return new("preparation");
             }
             if (item.State == QueueState.Running || record.AuditState == DurableAuditState.Pass && policy.IsExecutionAuthorized)
-            { slot.Execution!.Execute(scope.Owner, item.Id); return new("execution"); }
+            { var result = slot.Execution!.Execute(scope.Owner, item.Id, slot.RunControl); return new(result.Code == DurableExecutionCode.Suspended ? "suspended" : "execution"); }
             if (record.RetryAtUtc > DateTimeOffset.UtcNow || record.AuditState == DurableAuditState.Pass) continue;
             if (_auditor is null) return new("audit-unconfigured");
             if (_remote is { IsCompleted: false } || Interlocked.CompareExchange(ref _auditReserved, 1, 0) != 0) continue;
@@ -333,7 +337,22 @@ public sealed partial class AutomationHost : IAsyncDisposable
     private static string Code(Exception error) => error is AutomationException automation ? automation.Code.ToString() : error.GetType().Name;
 
     public void RequestStop()
-    { _stopping = true; lock (_gate) _state = AutomationHostState.Stopping; _transportStop.Cancel(); _wake.Set(); }
+    {
+        Exception? failure = null;
+        lock (_controlsGate)
+        {
+            if (_stopping) return;
+            try
+            {
+                if (_session is not null)
+                    foreach (var slot in _slots) Change(slot.Context.Id, AutomationControlAction.Stop, null);
+            }
+            catch (Exception error) { failure = error; }
+            finally { _stopping = true; }
+        }
+        lock (_gate) { _state = AutomationHostState.Stopping; if (failure is not null) _diagnostic = "stop_not_persisted:" + Code(failure); }
+        _transportStop.Cancel(); _wake.Set();
+    }
     public async ValueTask DisposeAsync()
     { RequestStop(); await Completion.ConfigureAwait(false); }
 }

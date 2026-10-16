@@ -11,6 +11,7 @@ public sealed class InboxAdmissionService
     private readonly InboxAdmissionOptions _options;
     private readonly InboxAdmissionEvidence _evidence;
     internal Action<string>? Checkpoint { get; set; }
+    public WorkflowRunControl? RunControl { get; set; }
     public InboxAdmissionService(UniverseContext context, AutomationQueueStore queue, InboxAdmissionOptions? options = null)
     {
         _context = context; _queue = queue; _options = options ?? new(); _options.Validate();
@@ -103,6 +104,7 @@ public sealed class InboxAdmissionService
             var receipt = _evidence.Start(owner, item, attempt); Checkpoint?.Invoke("intent-recorded");
             return Continue(owner, item, attempt, receipt, token, input);
         }
+        catch (WorkflowSuspendedException) { return Result(source, InboxAdmissionCode.WaitingStable, item); }
         catch (OperationCanceledException) { throw; }
         catch (AutomationException) { throw; } // integrity/CAS/ownership failures are scope failures, never isolated success
         catch (Exception e) when (e is IOException or InvalidDataException or UnauthorizedAccessException or ProductionStorageException)
@@ -151,6 +153,7 @@ public sealed class InboxAdmissionService
                 return Park(owner, item, receipt.Code, receipt.Code == InboxAdmissionCode.UniverseMismatch ? QueueIncident.UniverseMismatch : QueueIncident.InvalidEvidence, receipt.Checkpoint == AdmissionCheckpoint.Rejected);
             return Continue(owner, item, attempt, receipt, token);
         }
+        catch (WorkflowSuspendedException) { return Result(item.SourcePath, InboxAdmissionCode.WaitingStable, item); }
         catch (OperationCanceledException) { throw; }
         catch (Exception e) when (e is IOException or InvalidDataException or UnauthorizedAccessException or ProductionStorageException or JsonException)
         { return Park(owner, _queue.Get(item.Id), InboxAdmissionCode.AmbiguousEvidence, QueueIncident.InvalidEvidence); }
@@ -191,6 +194,7 @@ public sealed class InboxAdmissionService
                 ProductionPaths.Verify(item.SourcePath, item.Zip.Hash, item.Zip.SizeBytes, NapIssueCodes.PackageStructureInvalid);
                 ProductionPaths.Verify(_evidence.SnapshotPath(attempt), item.Zip.Hash, item.Zip.SizeBytes, NapIssueCodes.PackageStructureInvalid);
                 receipt = _evidence.Advance(owner, receipt, AdmissionCheckpoint.SnapshotReady); Checkpoint?.Invoke("snapshot-recorded");
+                RunControl?.Check(item.Id, "snapshot-recorded");
             }
             finally { opened?.Dispose(); }
         }
@@ -221,6 +225,7 @@ public sealed class InboxAdmissionService
             receipt = _evidence.Advance(owner, receipt, AdmissionCheckpoint.ExtractionReady, files, manifest.UniverseId, manifest.AssetId,
                 Path.GetRelativePath(_context.Storage.StagingRoot, canonical).Replace(Path.DirectorySeparatorChar, '/'));
             Checkpoint?.Invoke("extraction-recorded");
+            RunControl?.Check(item.Id, "extraction-recorded");
         }
         if (receipt.DeclaredUniverse != _context.Id.Value) return Reject(owner, receipt, InboxAdmissionCode.UniverseMismatch, QueueIncident.UniverseMismatch);
         // Only the envelope is checked here; package files/PNG/geometry/plans belong to Phase 3.
