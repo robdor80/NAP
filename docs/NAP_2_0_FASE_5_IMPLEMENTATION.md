@@ -21,3 +21,9 @@ Validation: runtime+control **6/6 passed**; additional rollback and updated cont
 Read-only async readiness observations leave the owner available. Owner-thread continuation rejects changed samples and retains all fresh hash/CRC/source/snapshot checks. Legacy Admit uses the same implementation. Batch observation binding and idempotent batch creation preserve queue schema v1. Fresh retention readers accept cancellation and always drain/dispose before returning.
 
 Validation: staged admission **2/2 passed** (`p53-staged.trx`, normal output tree); admission selection **43 passed / 1 failed** (existing symlink privilege). An isolated-output broad name filter also selected a historical pinned-image test whose repository-relative fixture lookup is incompatible with that output path (**14 passed / 1 failed**); this is retained as a failed invocation, not software acceptance. Subsequent historical runs use the normal build layout. P5.4–P5.10 pending.
+
+## P5.4 — asynchronous audit transport
+
+The existing audit implementation is factored into BeginAudit (intent/budget), HTTP-only transport and owner-thread Complete/Fail. The synchronous public API delegates to those same stages. Completion binds epoch/item/attempt/Job/request/snapshot/grant/provider/model and rejects late/duplicate completion. A paused host may retain ResponseReady without publishing PASS. Late transport faults are observed without ledger callbacks; timeout explicitly leaves remote completion unknown and does not refund budget.
+
+Validation: existing durable audit + staged tests **53/53 passed** (`p54.trx`); final shared-transport and revocation checks **5/5 passed** (`p54-shared-transport.trx`), no skips. P5.5–P5.10 pending.
