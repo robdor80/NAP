@@ -1,0 +1,2485 @@
+[
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-1-211503.json",
+    "sha256": "41c04ebcd4e9207c4454b4c19d1aa7448b9293c11e6f049e70d22d453c92f2a8",
+    "measurement": {
+      "count": 1,
+      "total": 1,
+      "elapsedSeconds": 6.5018009,
+      "peakWorking": 82792448,
+      "peakPrivate": 40050688,
+      "peakHandles": 340,
+      "peakThreads": 19,
+      "maxPending": 0,
+      "maximumProgressGapSeconds": 6.153906,
+      "firstCompleted": [
+        6.1539043
+      ],
+      "io": {
+        "ReadOperations": 51557,
+        "WriteOperations": 2184,
+        "OtherOperations": 263214,
+        "ReadBytes": 185885517,
+        "WriteBytes": 4286925,
+        "OtherBytes": 3636136
+      },
+      "samples": [
+        {
+          "seconds": 0.1524986,
+          "completed": 0,
+          "workingBytes": 51855360,
+          "privateBytes": 17551360,
+          "handles": 330,
+          "threads": 19,
+          "cpuSeconds": 0.15625
+        },
+        {
+          "seconds": 1.0909725,
+          "completed": 0,
+          "workingBytes": 70811648,
+          "privateBytes": 32669696,
+          "handles": 335,
+          "threads": 19,
+          "cpuSeconds": 0.90625
+        },
+        {
+          "seconds": 6.1539075,
+          "completed": 1,
+          "workingBytes": 82792448,
+          "privateBytes": 40050688,
+          "handles": 339,
+          "threads": 19,
+          "cpuSeconds": 5.09375
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.1525586,
+          "files": 10,
+          "bytes": 253960,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 40960
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 6.498407,
+          "files": 39,
+          "bytes": 791789,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 217088
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-eb6ca4790c494ea982368ee228bd0f8d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-1-214856.json",
+    "sha256": "5740b0c2e3d98f76b038499040075db29de510bba531c86710d4744159b08656",
+    "measurement": {
+      "count": 1,
+      "total": 1,
+      "elapsedSeconds": 21.7058071,
+      "peakWorking": 88952832,
+      "peakPrivate": 41021440,
+      "peakHandles": 325,
+      "peakThreads": 21,
+      "maxPending": 0,
+      "maximumProgressGapSeconds": 21.2179471,
+      "firstCompleted": [
+        21.2179441
+      ],
+      "io": {
+        "ReadOperations": 51727,
+        "WriteOperations": 2220,
+        "OtherOperations": 264063,
+        "ReadBytes": 186412502,
+        "WriteBytes": 4293150,
+        "OtherBytes": 3651496
+      },
+      "samples": [
+        {
+          "seconds": 0.8019312,
+          "completed": 0,
+          "workingBytes": 51707904,
+          "privateBytes": 17293312,
+          "handles": 306,
+          "threads": 19,
+          "cpuSeconds": 0.234375,
+          "completedByUniverse": [
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 0,
+                "PendingCandidates": 0,
+                "Stage": "paused",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 1.5169217,
+          "completed": 0,
+          "workingBytes": 61419520,
+          "privateBytes": 24363008,
+          "handles": 316,
+          "threads": 20,
+          "cpuSeconds": 0.65625,
+          "completedByUniverse": [
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 1,
+                "PendingCandidates": 0,
+                "Stage": "batch-open",
+                "Diagnostic": null,
+                "BatchId": {
+                  "Value": "batch_1c68102eb9f04bb2bca69f54a1a1d2c7"
+                }
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 3.797924,
+          "completed": 0,
+          "workingBytes": 70656000,
+          "privateBytes": 31895552,
+          "handles": 319,
+          "threads": 21,
+          "cpuSeconds": 1.890625,
+          "completedByUniverse": [
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 3,
+                "PendingCandidates": 0,
+                "Stage": "batch-closed",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 4.7259275,
+          "completed": 0,
+          "workingBytes": 87957504,
+          "privateBytes": 40652800,
+          "handles": 323,
+          "threads": 21,
+          "cpuSeconds": 2.5625,
+          "completedByUniverse": [
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 4,
+                "PendingCandidates": 0,
+                "Stage": "preparation",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 5.567064,
+          "completed": 0,
+          "workingBytes": 88203264,
+          "privateBytes": 40525824,
+          "handles": 323,
+          "threads": 21,
+          "cpuSeconds": 3.125,
+          "completedByUniverse": [
+            0
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 6,
+                "PendingCandidates": 0,
+                "Stage": "idle",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        },
+        {
+          "seconds": 21.2179495,
+          "completed": 1,
+          "workingBytes": 88952832,
+          "privateBytes": 40910848,
+          "handles": 325,
+          "threads": 21,
+          "cpuSeconds": 13.421875,
+          "completedByUniverse": [
+            1
+          ],
+          "status": {
+            "InstallationId": "installation_49643ea5d9b047b7bdf2ad714fb27e28",
+            "SessionId": "session_5fc12546068140ae95936937cb5522ca",
+            "State": 2,
+            "Universes": [
+              {
+                "UniverseId": {
+                  "Value": "alpha_universe"
+                },
+                "State": 2,
+                "Turns": 7,
+                "PendingCandidates": 0,
+                "Stage": "audit-response",
+                "Diagnostic": null,
+                "BatchId": null
+              }
+            ],
+            "Diagnostic": null
+          }
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.8021264,
+          "files": 10,
+          "bytes": 253940,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 40960
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 21.6841983,
+          "files": 39,
+          "bytes": 791769,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 217088
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-790795dea8a34d68a2b75fc877c3dd64\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-10-211609.json",
+    "sha256": "58e109763dd3335389d918d7db061a5870cfb35440f596ca0570d567a646c136",
+    "measurement": {
+      "count": 10,
+      "total": 10,
+      "elapsedSeconds": 65.1516357,
+      "peakWorking": 114356224,
+      "peakPrivate": 58208256,
+      "peakHandles": 361,
+      "peakThreads": 22,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 29.4467361,
+      "firstCompleted": [
+        11.1099104,
+        19.3427401
+      ],
+      "io": {
+        "ReadOperations": 761892,
+        "WriteOperations": 20517,
+        "OtherOperations": 2725992,
+        "ReadBytes": 2831034104,
+        "WriteBytes": 39907610,
+        "OtherBytes": 42398564
+      },
+      "samples": [
+        {
+          "seconds": 2.1036909,
+          "completed": 0,
+          "workingBytes": 56156160,
+          "privateBytes": 21184512,
+          "handles": 341,
+          "threads": 20,
+          "cpuSeconds": 0.21875
+        },
+        {
+          "seconds": 4.0548775,
+          "completed": 0,
+          "workingBytes": 76341248,
+          "privateBytes": 37113856,
+          "handles": 349,
+          "threads": 21,
+          "cpuSeconds": 2.265625
+        },
+        {
+          "seconds": 5.1072247,
+          "completed": 0,
+          "workingBytes": 87781376,
+          "privateBytes": 42635264,
+          "handles": 355,
+          "threads": 21,
+          "cpuSeconds": 3.828125
+        },
+        {
+          "seconds": 6.8112747,
+          "completed": 0,
+          "workingBytes": 88961024,
+          "privateBytes": 43606016,
+          "handles": 352,
+          "threads": 21,
+          "cpuSeconds": 5.625
+        },
+        {
+          "seconds": 12.8907059,
+          "completed": 1,
+          "workingBytes": 95211520,
+          "privateBytes": 44408832,
+          "handles": 357,
+          "threads": 21,
+          "cpuSeconds": 10.390625
+        },
+        {
+          "seconds": 13.6039991,
+          "completed": 1,
+          "workingBytes": 108191744,
+          "privateBytes": 52621312,
+          "handles": 353,
+          "threads": 21,
+          "cpuSeconds": 11.28125
+        },
+        {
+          "seconds": 14.2721474,
+          "completed": 1,
+          "workingBytes": 108306432,
+          "privateBytes": 52682752,
+          "handles": 352,
+          "threads": 21,
+          "cpuSeconds": 11.765625
+        },
+        {
+          "seconds": 15.200115,
+          "completed": 1,
+          "workingBytes": 113901568,
+          "privateBytes": 58208256,
+          "handles": 354,
+          "threads": 21,
+          "cpuSeconds": 12.65625
+        },
+        {
+          "seconds": 19.342742,
+          "completed": 2,
+          "workingBytes": 108683264,
+          "privateBytes": 52842496,
+          "handles": 354,
+          "threads": 21,
+          "cpuSeconds": 16.171875
+        },
+        {
+          "seconds": 25.0724963,
+          "completed": 3,
+          "workingBytes": 114356224,
+          "privateBytes": 58032128,
+          "handles": 356,
+          "threads": 21,
+          "cpuSeconds": 20.390625
+        },
+        {
+          "seconds": 26.0239767,
+          "completed": 3,
+          "workingBytes": 112713728,
+          "privateBytes": 56270848,
+          "handles": 360,
+          "threads": 22,
+          "cpuSeconds": 21.265625
+        },
+        {
+          "seconds": 26.6793108,
+          "completed": 3,
+          "workingBytes": 112201728,
+          "privateBytes": 55414784,
+          "handles": 356,
+          "threads": 22,
+          "cpuSeconds": 21.71875
+        },
+        {
+          "seconds": 27.6634871,
+          "completed": 3,
+          "workingBytes": 112431104,
+          "privateBytes": 56406016,
+          "handles": 355,
+          "threads": 22,
+          "cpuSeconds": 22.328125
+        },
+        {
+          "seconds": 32.4670763,
+          "completed": 4,
+          "workingBytes": 109043712,
+          "privateBytes": 52637696,
+          "handles": 359,
+          "threads": 22,
+          "cpuSeconds": 26.109375
+        },
+        {
+          "seconds": 36.8454283,
+          "completed": 5,
+          "workingBytes": 105840640,
+          "privateBytes": 48951296,
+          "handles": 359,
+          "threads": 20,
+          "cpuSeconds": 29.859375
+        },
+        {
+          "seconds": 42.3861392,
+          "completed": 6,
+          "workingBytes": 109068288,
+          "privateBytes": 51986432,
+          "handles": 360,
+          "threads": 20,
+          "cpuSeconds": 34.296875
+        },
+        {
+          "seconds": 43.462222,
+          "completed": 6,
+          "workingBytes": 107692032,
+          "privateBytes": 50393088,
+          "handles": 355,
+          "threads": 20,
+          "cpuSeconds": 34.765625
+        },
+        {
+          "seconds": 49.770049,
+          "completed": 7,
+          "workingBytes": 107044864,
+          "privateBytes": 49553408,
+          "handles": 357,
+          "threads": 20,
+          "cpuSeconds": 39.703125
+        },
+        {
+          "seconds": 54.5192301,
+          "completed": 8,
+          "workingBytes": 111747072,
+          "privateBytes": 54108160,
+          "handles": 354,
+          "threads": 19,
+          "cpuSeconds": 43.71875
+        },
+        {
+          "seconds": 59.4610404,
+          "completed": 9,
+          "workingBytes": 111104000,
+          "privateBytes": 54112256,
+          "handles": 357,
+          "threads": 19,
+          "cpuSeconds": 47.75
+        },
+        {
+          "seconds": 64.4958018,
+          "completed": 10,
+          "workingBytes": 107655168,
+          "privateBytes": 50053120,
+          "handles": 355,
+          "threads": 18,
+          "cpuSeconds": 51.65625
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 2.1037323,
+          "files": 22,
+          "bytes": 488164,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 64.4958103,
+          "files": 270,
+          "bytes": 4546688,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 225280
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 225280
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 802816
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 806912
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 65.1247336,
+          "files": 271,
+          "bytes": 4563642,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 73728
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 225280
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 225280
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 802816
+            },
+            {
+              "path": "nap-preparation-2278291fc98e42928ea3e5567fd4b1ef\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 987136
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 806912
+            },
+            {
+              "path": "nap-preparation-67256bfc88c143e68d77aa6f75b61809\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-100-212254.json",
+    "sha256": "5fa3918237622325b9e5e5bda0058c92d26bb5ddee36d1fa465a0230ca971ce2",
+    "measurement": {
+      "count": 100,
+      "total": 11,
+      "elapsedSeconds": 404.4350019,
+      "peakWorking": 146550784,
+      "peakPrivate": 88059904,
+      "peakHandles": 403,
+      "peakThreads": 23,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 58.0832269,
+      "firstCompleted": [
+        21.1302005,
+        10.7215118
+      ],
+      "io": {
+        "ReadOperations": 5322249,
+        "WriteOperations": 102764,
+        "OtherOperations": 10317660,
+        "ReadBytes": 20709695059,
+        "WriteBytes": 195122628,
+        "OtherBytes": 222284604
+      },
+      "samples": [
+        {
+          "seconds": 0.1473522,
+          "completed": 0,
+          "workingBytes": 54968320,
+          "privateBytes": 20656128,
+          "handles": 342,
+          "threads": 20,
+          "cpuSeconds": 0.125
+        },
+        {
+          "seconds": 10.7215133,
+          "completed": 1,
+          "workingBytes": 104824832,
+          "privateBytes": 50528256,
+          "handles": 362,
+          "threads": 22,
+          "cpuSeconds": 11.546875
+        },
+        {
+          "seconds": 21.3799056,
+          "completed": 3,
+          "workingBytes": 113700864,
+          "privateBytes": 56414208,
+          "handles": 362,
+          "threads": 22,
+          "cpuSeconds": 21.328125
+        },
+        {
+          "seconds": 33.3228021,
+          "completed": 4,
+          "workingBytes": 109355008,
+          "privateBytes": 53071872,
+          "handles": 366,
+          "threads": 21,
+          "cpuSeconds": 30.1875
+        },
+        {
+          "seconds": 44.9311575,
+          "completed": 6,
+          "workingBytes": 115453952,
+          "privateBytes": 58396672,
+          "handles": 363,
+          "threads": 20,
+          "cpuSeconds": 40.765625
+        },
+        {
+          "seconds": 60.3258012,
+          "completed": 7,
+          "workingBytes": 112201728,
+          "privateBytes": 54714368,
+          "handles": 367,
+          "threads": 21,
+          "cpuSeconds": 55.15625
+        },
+        {
+          "seconds": 75.0171346,
+          "completed": 9,
+          "workingBytes": 114020352,
+          "privateBytes": 56549376,
+          "handles": 371,
+          "threads": 20,
+          "cpuSeconds": 67.109375
+        },
+        {
+          "seconds": 89.3618531,
+          "completed": 11,
+          "workingBytes": 118341632,
+          "privateBytes": 60596224,
+          "handles": 368,
+          "threads": 20,
+          "cpuSeconds": 80.296875
+        },
+        {
+          "seconds": 104.0107198,
+          "completed": 13,
+          "workingBytes": 120930304,
+          "privateBytes": 63205376,
+          "handles": 369,
+          "threads": 18,
+          "cpuSeconds": 94.125
+        },
+        {
+          "seconds": 115.7564807,
+          "completed": 13,
+          "workingBytes": 125595648,
+          "privateBytes": 68390912,
+          "handles": 368,
+          "threads": 21,
+          "cpuSeconds": 106.296875
+        },
+        {
+          "seconds": 128.7542032,
+          "completed": 13,
+          "workingBytes": 118484992,
+          "privateBytes": 60280832,
+          "handles": 364,
+          "threads": 20,
+          "cpuSeconds": 117.390625
+        },
+        {
+          "seconds": 144.7823933,
+          "completed": 14,
+          "workingBytes": 123957248,
+          "privateBytes": 66379776,
+          "handles": 367,
+          "threads": 18,
+          "cpuSeconds": 130.34375
+        },
+        {
+          "seconds": 161.4271634,
+          "completed": 16,
+          "workingBytes": 125083648,
+          "privateBytes": 66838528,
+          "handles": 368,
+          "threads": 18,
+          "cpuSeconds": 145.65625
+        },
+        {
+          "seconds": 187.8351912,
+          "completed": 17,
+          "workingBytes": 125149184,
+          "privateBytes": 67063808,
+          "handles": 372,
+          "threads": 20,
+          "cpuSeconds": 161.25
+        },
+        {
+          "seconds": 220.8620156,
+          "completed": 18,
+          "workingBytes": 123924480,
+          "privateBytes": 65728512,
+          "handles": 370,
+          "threads": 17,
+          "cpuSeconds": 179.078125
+        },
+        {
+          "seconds": 234.2859137,
+          "completed": 18,
+          "workingBytes": 133505024,
+          "privateBytes": 75419648,
+          "handles": 368,
+          "threads": 18,
+          "cpuSeconds": 192.65625
+        },
+        {
+          "seconds": 247.6754458,
+          "completed": 18,
+          "workingBytes": 140726272,
+          "privateBytes": 83279872,
+          "handles": 372,
+          "threads": 19,
+          "cpuSeconds": 204.078125
+        },
+        {
+          "seconds": 260.7305871,
+          "completed": 18,
+          "workingBytes": 137408512,
+          "privateBytes": 79519744,
+          "handles": 360,
+          "threads": 20,
+          "cpuSeconds": 216.5
+        },
+        {
+          "seconds": 274.9929593,
+          "completed": 18,
+          "workingBytes": 144969728,
+          "privateBytes": 86716416,
+          "handles": 380,
+          "threads": 19,
+          "cpuSeconds": 230.640625
+        },
+        {
+          "seconds": 287.0664603,
+          "completed": 18,
+          "workingBytes": 137510912,
+          "privateBytes": 79339520,
+          "handles": 357,
+          "threads": 17,
+          "cpuSeconds": 240.125
+        },
+        {
+          "seconds": 300.6767406,
+          "completed": 18,
+          "workingBytes": 137818112,
+          "privateBytes": 79716352,
+          "handles": 359,
+          "threads": 17,
+          "cpuSeconds": 247.203125
+        },
+        {
+          "seconds": 314.4793475,
+          "completed": 18,
+          "workingBytes": 142868480,
+          "privateBytes": 83972096,
+          "handles": 363,
+          "threads": 20,
+          "cpuSeconds": 257.21875
+        },
+        {
+          "seconds": 327.2428904,
+          "completed": 18,
+          "workingBytes": 138194944,
+          "privateBytes": 79761408,
+          "handles": 359,
+          "threads": 20,
+          "cpuSeconds": 267.125
+        },
+        {
+          "seconds": 341.7088603,
+          "completed": 18,
+          "workingBytes": 138014720,
+          "privateBytes": 79425536,
+          "handles": 359,
+          "threads": 19,
+          "cpuSeconds": 279.078125
+        },
+        {
+          "seconds": 354.6646135,
+          "completed": 18,
+          "workingBytes": 138043392,
+          "privateBytes": 79192064,
+          "handles": 362,
+          "threads": 20,
+          "cpuSeconds": 288.59375
+        },
+        {
+          "seconds": 367.5977489,
+          "completed": 18,
+          "workingBytes": 139157504,
+          "privateBytes": 80297984,
+          "handles": 382,
+          "threads": 20,
+          "cpuSeconds": 298.03125
+        },
+        {
+          "seconds": 379.1030946,
+          "completed": 18,
+          "workingBytes": 138080256,
+          "privateBytes": 79552512,
+          "handles": 360,
+          "threads": 20,
+          "cpuSeconds": 307.640625
+        },
+        {
+          "seconds": 391.3101115,
+          "completed": 18,
+          "workingBytes": 141590528,
+          "privateBytes": 83099648,
+          "handles": 355,
+          "threads": 19,
+          "cpuSeconds": 317.453125
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.14736,
+          "files": 112,
+          "bytes": 554481,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 60.3258099,
+          "files": 720,
+          "bytes": 5677919,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 385024
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 380928
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 606208
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1335296
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 798720
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1327104
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 120.5320316,
+          "files": 1102,
+          "bytes": 8837955,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 524288
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 548864
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1179648
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2097152
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2011136
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 187.8352029,
+          "files": 1344,
+          "bytes": 10854621,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 151552
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 610304
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 638976
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1941504
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2392064
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2625536
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 248.475313,
+          "files": 1488,
+          "bytes": 11965576,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 671744
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 684032
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2129920
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2707456
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3018752
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 309.1879175,
+          "files": 1613,
+          "bytes": 13490987,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 741376
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 745472
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2129920
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3227648
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3817472
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 369.4538811,
+          "files": 1713,
+          "bytes": 15112452,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 806912
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 831488
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2129920
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3833856
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 4636672
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 404.2316005,
+          "files": 1768,
+          "bytes": 16083108,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 847872
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 872448
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2129920
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 4251648
+            },
+            {
+              "path": "nap-preparation-175a24a6b7ae48a3b30c745a0537a005\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 5083136
+            },
+            {
+              "path": "nap-preparation-4b72eb7d83304d19970d58dd338890fc\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "file": "artifacts/phase5/p510/metrics/automation-1000-213356.json",
+    "sha256": "7a63936bb28aa17621a2b4d53e7e6c3b4e13c7e077fa3627b61a7cd284d75ddc",
+    "measurement": {
+      "count": 1000,
+      "total": 21,
+      "elapsedSeconds": 657.6458799,
+      "peakWorking": 204849152,
+      "peakPrivate": 146452480,
+      "peakHandles": 420,
+      "peakThreads": 25,
+      "maxPending": 3,
+      "maximumProgressGapSeconds": 263.9441898,
+      "firstCompleted": [
+        10.9250539,
+        26.7052022
+      ],
+      "io": {
+        "ReadOperations": 19387955,
+        "WriteOperations": 192111,
+        "OtherOperations": 22267989,
+        "ReadBytes": 76846403382,
+        "WriteBytes": 368569641,
+        "OtherBytes": 649251646
+      },
+      "samples": [
+        {
+          "seconds": 0.166366,
+          "completed": 0,
+          "workingBytes": 55164928,
+          "privateBytes": 20832256,
+          "handles": 343,
+          "threads": 20,
+          "cpuSeconds": 0.234375
+        },
+        {
+          "seconds": 11.2349816,
+          "completed": 1,
+          "workingBytes": 103641088,
+          "privateBytes": 49774592,
+          "handles": 356,
+          "threads": 21,
+          "cpuSeconds": 11.84375
+        },
+        {
+          "seconds": 26.7052035,
+          "completed": 3,
+          "workingBytes": 114434048,
+          "privateBytes": 58167296,
+          "handles": 356,
+          "threads": 21,
+          "cpuSeconds": 25.421875
+        },
+        {
+          "seconds": 41.8461175,
+          "completed": 4,
+          "workingBytes": 114700288,
+          "privateBytes": 58368000,
+          "handles": 361,
+          "threads": 20,
+          "cpuSeconds": 39.5
+        },
+        {
+          "seconds": 55.4234682,
+          "completed": 6,
+          "workingBytes": 114012160,
+          "privateBytes": 56848384,
+          "handles": 356,
+          "threads": 19,
+          "cpuSeconds": 50.59375
+        },
+        {
+          "seconds": 68.6287928,
+          "completed": 7,
+          "workingBytes": 111366144,
+          "privateBytes": 54349824,
+          "handles": 358,
+          "threads": 19,
+          "cpuSeconds": 64.109375
+        },
+        {
+          "seconds": 84.6623357,
+          "completed": 9,
+          "workingBytes": 118743040,
+          "privateBytes": 61448192,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 77.421875
+        },
+        {
+          "seconds": 100.0660606,
+          "completed": 11,
+          "workingBytes": 118976512,
+          "privateBytes": 61501440,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 91.296875
+        },
+        {
+          "seconds": 113.3555176,
+          "completed": 13,
+          "workingBytes": 119902208,
+          "privateBytes": 62464000,
+          "handles": 363,
+          "threads": 19,
+          "cpuSeconds": 103.78125
+        },
+        {
+          "seconds": 125.2751211,
+          "completed": 13,
+          "workingBytes": 125796352,
+          "privateBytes": 67883008,
+          "handles": 358,
+          "threads": 19,
+          "cpuSeconds": 116.5625
+        },
+        {
+          "seconds": 137.9029555,
+          "completed": 13,
+          "workingBytes": 120537088,
+          "privateBytes": 62738432,
+          "handles": 363,
+          "threads": 19,
+          "cpuSeconds": 127.390625
+        },
+        {
+          "seconds": 148.792327,
+          "completed": 14,
+          "workingBytes": 120815616,
+          "privateBytes": 63127552,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 137.390625
+        },
+        {
+          "seconds": 165.4832117,
+          "completed": 16,
+          "workingBytes": 129314816,
+          "privateBytes": 71766016,
+          "handles": 363,
+          "threads": 18,
+          "cpuSeconds": 152.734375
+        },
+        {
+          "seconds": 181.3050614,
+          "completed": 18,
+          "workingBytes": 128491520,
+          "privateBytes": 71671808,
+          "handles": 367,
+          "threads": 19,
+          "cpuSeconds": 167.75
+        },
+        {
+          "seconds": 192.0152041,
+          "completed": 18,
+          "workingBytes": 130023424,
+          "privateBytes": 72683520,
+          "handles": 362,
+          "threads": 20,
+          "cpuSeconds": 182.34375
+        },
+        {
+          "seconds": 203.369551,
+          "completed": 18,
+          "workingBytes": 138375168,
+          "privateBytes": 80248832,
+          "handles": 363,
+          "threads": 20,
+          "cpuSeconds": 197.65625
+        },
+        {
+          "seconds": 218.0154726,
+          "completed": 18,
+          "workingBytes": 143151104,
+          "privateBytes": 85577728,
+          "handles": 364,
+          "threads": 19,
+          "cpuSeconds": 212.9375
+        },
+        {
+          "seconds": 230.6954676,
+          "completed": 18,
+          "workingBytes": 145784832,
+          "privateBytes": 87363584,
+          "handles": 359,
+          "threads": 19,
+          "cpuSeconds": 224.59375
+        },
+        {
+          "seconds": 242.756839,
+          "completed": 18,
+          "workingBytes": 145694720,
+          "privateBytes": 88371200,
+          "handles": 369,
+          "threads": 21,
+          "cpuSeconds": 236.671875
+        },
+        {
+          "seconds": 255.7894776,
+          "completed": 18,
+          "workingBytes": 141025280,
+          "privateBytes": 82698240,
+          "handles": 361,
+          "threads": 18,
+          "cpuSeconds": 249.140625
+        },
+        {
+          "seconds": 265.9450851,
+          "completed": 18,
+          "workingBytes": 140951552,
+          "privateBytes": 82612224,
+          "handles": 359,
+          "threads": 18,
+          "cpuSeconds": 259.765625
+        },
+        {
+          "seconds": 280.2520579,
+          "completed": 18,
+          "workingBytes": 142635008,
+          "privateBytes": 84967424,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 273.765625
+        },
+        {
+          "seconds": 293.6891214,
+          "completed": 18,
+          "workingBytes": 152014848,
+          "privateBytes": 93544448,
+          "handles": 361,
+          "threads": 20,
+          "cpuSeconds": 287.109375
+        },
+        {
+          "seconds": 307.7630318,
+          "completed": 18,
+          "workingBytes": 157986816,
+          "privateBytes": 100573184,
+          "handles": 366,
+          "threads": 22,
+          "cpuSeconds": 301.5
+        },
+        {
+          "seconds": 321.4182193,
+          "completed": 18,
+          "workingBytes": 165007360,
+          "privateBytes": 107835392,
+          "handles": 366,
+          "threads": 23,
+          "cpuSeconds": 316.203125
+        },
+        {
+          "seconds": 332.0731273,
+          "completed": 18,
+          "workingBytes": 168333312,
+          "privateBytes": 111427584,
+          "handles": 376,
+          "threads": 25,
+          "cpuSeconds": 328.8125
+        },
+        {
+          "seconds": 351.7555881,
+          "completed": 19,
+          "workingBytes": 173187072,
+          "privateBytes": 115884032,
+          "handles": 371,
+          "threads": 24,
+          "cpuSeconds": 349.78125
+        },
+        {
+          "seconds": 363.013298,
+          "completed": 19,
+          "workingBytes": 174927872,
+          "privateBytes": 116473856,
+          "handles": 363,
+          "threads": 22,
+          "cpuSeconds": 363.484375
+        },
+        {
+          "seconds": 377.9268814,
+          "completed": 20,
+          "workingBytes": 173944832,
+          "privateBytes": 115875840,
+          "handles": 370,
+          "threads": 23,
+          "cpuSeconds": 379.65625
+        },
+        {
+          "seconds": 390.2010551,
+          "completed": 21,
+          "workingBytes": 171880448,
+          "privateBytes": 113979392,
+          "handles": 365,
+          "threads": 22,
+          "cpuSeconds": 392.078125
+        },
+        {
+          "seconds": 401.7346426,
+          "completed": 22,
+          "workingBytes": 179437568,
+          "privateBytes": 121794560,
+          "handles": 361,
+          "threads": 21,
+          "cpuSeconds": 403.953125
+        },
+        {
+          "seconds": 413.1832963,
+          "completed": 23,
+          "workingBytes": 180215808,
+          "privateBytes": 122363904,
+          "handles": 360,
+          "threads": 19,
+          "cpuSeconds": 415.75
+        },
+        {
+          "seconds": 428.1663664,
+          "completed": 24,
+          "workingBytes": 182382592,
+          "privateBytes": 124297216,
+          "handles": 366,
+          "threads": 20,
+          "cpuSeconds": 433.515625
+        },
+        {
+          "seconds": 441.2741551,
+          "completed": 25,
+          "workingBytes": 181276672,
+          "privateBytes": 123375616,
+          "handles": 361,
+          "threads": 18,
+          "cpuSeconds": 447.296875
+        },
+        {
+          "seconds": 453.8510777,
+          "completed": 26,
+          "workingBytes": 180162560,
+          "privateBytes": 122134528,
+          "handles": 359,
+          "threads": 18,
+          "cpuSeconds": 459.984375
+        },
+        {
+          "seconds": 466.5182525,
+          "completed": 27,
+          "workingBytes": 178454528,
+          "privateBytes": 119906304,
+          "handles": 356,
+          "threads": 18,
+          "cpuSeconds": 473.265625
+        },
+        {
+          "seconds": 479.2202963,
+          "completed": 28,
+          "workingBytes": 182956032,
+          "privateBytes": 124489728,
+          "handles": 359,
+          "threads": 18,
+          "cpuSeconds": 486.109375
+        },
+        {
+          "seconds": 494.0064947,
+          "completed": 29,
+          "workingBytes": 185356288,
+          "privateBytes": 126869504,
+          "handles": 361,
+          "threads": 19,
+          "cpuSeconds": 501.640625
+        },
+        {
+          "seconds": 506.9690409,
+          "completed": 30,
+          "workingBytes": 182145024,
+          "privateBytes": 123940864,
+          "handles": 359,
+          "threads": 18,
+          "cpuSeconds": 514.96875
+        },
+        {
+          "seconds": 520.722064,
+          "completed": 31,
+          "workingBytes": 191406080,
+          "privateBytes": 133165056,
+          "handles": 363,
+          "threads": 19,
+          "cpuSeconds": 529.015625
+        },
+        {
+          "seconds": 534.1119354,
+          "completed": 32,
+          "workingBytes": 189579264,
+          "privateBytes": 131371008,
+          "handles": 362,
+          "threads": 19,
+          "cpuSeconds": 542.71875
+        },
+        {
+          "seconds": 547.6002327,
+          "completed": 33,
+          "workingBytes": 187473920,
+          "privateBytes": 128856064,
+          "handles": 359,
+          "threads": 18,
+          "cpuSeconds": 556.796875
+        },
+        {
+          "seconds": 558.7887332,
+          "completed": 33,
+          "workingBytes": 196616192,
+          "privateBytes": 138416128,
+          "handles": 369,
+          "threads": 21,
+          "cpuSeconds": 575.40625
+        },
+        {
+          "seconds": 573.3834197,
+          "completed": 33,
+          "workingBytes": 191156224,
+          "privateBytes": 132481024,
+          "handles": 365,
+          "threads": 20,
+          "cpuSeconds": 595.578125
+        },
+        {
+          "seconds": 586.6953162,
+          "completed": 33,
+          "workingBytes": 191631360,
+          "privateBytes": 132841472,
+          "handles": 369,
+          "threads": 22,
+          "cpuSeconds": 612.515625
+        },
+        {
+          "seconds": 597.0796206,
+          "completed": 33,
+          "workingBytes": 194932736,
+          "privateBytes": 136343552,
+          "handles": 366,
+          "threads": 21,
+          "cpuSeconds": 625.453125
+        },
+        {
+          "seconds": 611.2365232,
+          "completed": 33,
+          "workingBytes": 193277952,
+          "privateBytes": 134303744,
+          "handles": 361,
+          "threads": 22,
+          "cpuSeconds": 643.234375
+        },
+        {
+          "seconds": 624.2949972,
+          "completed": 33,
+          "workingBytes": 195710976,
+          "privateBytes": 137232384,
+          "handles": 363,
+          "threads": 22,
+          "cpuSeconds": 655.8125
+        },
+        {
+          "seconds": 638.9241067,
+          "completed": 33,
+          "workingBytes": 196579328,
+          "privateBytes": 138297344,
+          "handles": 366,
+          "threads": 23,
+          "cpuSeconds": 669.5625
+        }
+      ],
+      "disk": [
+        {
+          "seconds": 0.1663751,
+          "files": 1013,
+          "bytes": 1266035,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 49152
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 60.468569,
+          "files": 1559,
+          "bytes": 5841923,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 131072
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 368640
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 360448
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 417792
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1253376
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 798720
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1146880
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 120.7861786,
+          "files": 1917,
+          "bytes": 8921406,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 139264
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 475136
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 503808
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1179648
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1863680
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 1810432
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 181.3050687,
+          "files": 2263,
+          "bytes": 11801815,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 614400
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 651264
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2138112
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2383872
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 2682880
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 242.7568461,
+          "files": 2827,
+          "bytes": 15709734,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 897024
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 864256
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2138112
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 3874816
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 4210688
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 303.0012602,
+          "files": 3217,
+          "bytes": 18236619,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 155648
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1077248
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1048576
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2138112
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 4808704
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 5177344
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 363.2749525,
+          "files": 3592,
+          "bytes": 20939174,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 143360
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1236992
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1257472
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 5713920
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 1368064
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6139904
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 428.1663745,
+          "files": 3779,
+          "bytes": 22885969,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1294336
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1339392
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6258688
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2330624
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6295552
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 488.5518123,
+          "files": 3913,
+          "bytes": 24331710,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 188416
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1347584
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1376256
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6615040
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 3219456
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6295552
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 549.1895575,
+          "files": 4062,
+          "bytes": 25788122,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1380352
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1437696
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 7004160
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4050944
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 6328320
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 611.2365294,
+          "files": 4358,
+          "bytes": 28348865,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1511424
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1544192
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 8056832
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4050944
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 7385088
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        },
+        {
+          "seconds": 657.1367978,
+          "files": 4428,
+          "bytes": 29374657,
+          "ledgers": [
+            {
+              "path": "control\\HostControl.db",
+              "bytes": 57344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\AssetCatalog.db",
+              "bytes": 163840
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\AssetCatalog.db",
+              "bytes": 196608
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1564672
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\AutomationQueue.db",
+              "bytes": 1593344
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 2334720
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 8503296
+            },
+            {
+              "path": "nap-preparation-671c91e828f3478988676f2d5b20831d\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\execution\\ExecutionLedger.db",
+              "bytes": 4050944
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\preparation\\PreparationLedger.db",
+              "bytes": 7827456
+            },
+            {
+              "path": "nap-preparation-d5c8524f69b044b0b5f03a9a349f7579\\workspace\\state\\automation\\runtime\\RuntimeState.db",
+              "bytes": 16384
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

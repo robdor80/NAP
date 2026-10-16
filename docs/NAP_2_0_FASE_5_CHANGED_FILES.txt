@@ -1,5 +1,14 @@
-NAP.sln
+.github/workflows/ci.yml
+.github/workflows/cutover-laboratory.yml
+docs/NAP_2_0_FASE_4_CUTOVER.md
+docs/NAP_2_0_FASE_5_CHANGED_FILES.txt
+docs/NAP_2_0_FASE_5_CONTINUITY.md
 docs/NAP_2_0_FASE_5_IMPLEMENTATION.md
+docs/NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json
+docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json
+NAP.sln
+scripts/Read-Phase5LaboratoryHost.ps1
+scripts/Update-Phase5Evidence.ps1
 src/NAP.App/App.xaml.cs
 src/NAP.App/AutomationSmokeProbe.cs
 src/NAP.App/MainWindow.xaml
@@ -33,6 +42,7 @@ src/NAP.Core/GitBundleService.cs
 src/NAP.Core/GitProductionModels.cs
 src/NAP.Core/GitProductionSafety.cs
 src/NAP.Core/GitProductionService.cs
+src/NAP.Core/ImageNormalizationEngine.cs
 src/NAP.Core/ImageNormalizationModels.cs
 src/NAP.Core/ImageNormalizationService.cs
 src/NAP.Core/InboxAdmissionContracts.cs
@@ -43,9 +53,11 @@ src/NAP.Core/ProductionAssetResult.cs
 src/NAP.Core/ProductionThumbnailCache.cs
 src/NAP.Core/RepositorySnapshotService.cs
 src/NAP.Core/RetainedAdmissionInventory.cs
+src/NAP.Core/WindowsInventoryDirectories.cs
 src/NAP.Core/WorkflowRunControl.cs
 src/NAP.Presentation/AutomationControlViewModel.cs
 src/NAP.Presentation/AutomationDesktopBridge.cs
+src/NAP.Presentation/AutomationThumbnailCache.cs
 src/NAP.Presentation/ExplorerViewModel.cs
 src/NAP.Presentation/ImageNormalizationUiService.cs
 src/NAP.Presentation/ProfessionalUiModels.cs
@@ -54,6 +66,7 @@ src/NAP.Presentation/RemoteDesktopService.cs
 src/NAP.Presentation/ShellViewModel.cs
 src/NAP.Presentation/UniverseOperationDispatcher.cs
 tests/NAP.Tests/AiAuditTestData.cs
+tests/NAP.Tests/AutomationAcceptanceTests.cs
 tests/NAP.Tests/AutomationAdmissionStageTests.cs
 tests/NAP.Tests/AutomationAuditStageTests.cs
 tests/NAP.Tests/AutomationBatchTests.cs
@@ -61,9 +74,12 @@ tests/NAP.Tests/AutomationDesktopTests.cs
 tests/NAP.Tests/AutomationHostControlTests.cs
 tests/NAP.Tests/AutomationHostProcessFixture.cs
 tests/NAP.Tests/AutomationHostTests.cs
+tests/NAP.Tests/AutomationProcessRecoveryTests.cs
 tests/NAP.Tests/AutomationProtocolTests.cs
 tests/NAP.Tests/AutomationRuntimeTests.cs
 tests/NAP.Tests/AutomationSuspensionTests.cs
+tests/NAP.Tests/AutomationVolumeTests.cs
 tests/NAP.Tests/AutomationWpfTests.cs
 tests/NAP.Tests/NAP.Tests.csproj
 tests/NAP.Tests/PreparationTestFixture.cs
+tests/NAP.Tests/VisualExplorerWindowsSmokeTests.cs

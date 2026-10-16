@@ -17,6 +17,7 @@ public sealed class ImageNormalizationPreview
     public byte[] GetOriginalPng() => (byte[])_original.Clone();
     public byte[] GetCandidatePng() => (byte[])_candidate.Clone();
     internal ReadOnlySpan<byte> Candidate => _candidate;
+    internal long RetainedBufferBytes => _original.LongLength + _candidate.LongLength;
 }
 
 /// <summary>Read-only preparation, integer geometry and nearest-edge extension; never resamples or writes a source.</summary>

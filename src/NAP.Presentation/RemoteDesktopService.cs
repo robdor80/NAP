@@ -9,7 +9,7 @@ namespace NAP.Presentation;
 public sealed record AutomationThumbnailView(byte[] Bytes, int Width, int Height, bool CacheHit);
 public sealed class RemoteDesktopService(AutomationHostClient client, bool auditAvailable) : IProfessionalUiService, IExplorerService, IImageNormalizationUiService, IDisposable
 {
-    private readonly string _cache = Path.Combine(Path.GetTempPath(), "nap-host-client-" + Guid.NewGuid().ToString("N"));
+    private readonly AutomationThumbnailCache _cache = new();
     private sealed record Reference(string SessionId, string Value, UniverseId Universe);
     private readonly ConditionalWeakTable<object, Reference> _references = new();
     public bool AuditAvailable => auditAvailable;
@@ -77,9 +77,7 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
     {
         var view = await Call<AutomationThumbnailView>(c, AutomationOperation.Thumbnail, asset, ct).ConfigureAwait(false);
         if (view.Bytes.Length > 2 * 1024 * 1024 || view.Width is < 1 or > 320 || view.Height is < 1 or > 320) throw new InvalidDataException("Invalid thumbnail view.");
-        Directory.CreateDirectory(_cache); var path = Path.Combine(_cache, Convert.ToHexString(SHA256.HashData(view.Bytes)) + ".png");
-        try { using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.Read); file.Write(view.Bytes); }
-        catch (IOException) when (File.Exists(path)) { }
+        var path = _cache.Write(view.Bytes);
         return new(path, view.Width, view.Height, view.CacheHit);
     }
     public Task<ImageNormalizationProposal> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, string? targetProfile, ImageNormalizationPolicy policy, CancellationToken ct) =>
@@ -89,7 +87,6 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
     public Task<ImageNormalizationRecoverySnapshot> ReadAsync(UniverseContext c, CancellationToken ct) => Call<ImageNormalizationRecoverySnapshot>(c, AutomationOperation.NormalizationRead, new { }, ct);
     public void Dispose()
     {
-        if (Directory.Exists(_cache)) foreach (var file in Directory.EnumerateFiles(_cache, "*.png")) File.Delete(file);
-        if (Directory.Exists(_cache)) Directory.Delete(_cache);
+        _cache.Dispose();
     }
 }

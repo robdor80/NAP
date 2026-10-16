@@ -50,12 +50,6 @@ jobs:
           --filter "FullyQualifiedName~ExecutionCoordinationProcessTests"
           --results-directory artifacts/coordination
           --logger "trx;LogFileName=core-process-tests.trx"
-      - name: Verify synthetic old-role access and startup mutation are denied after cutover
-        shell: pwsh
-        run: >-
-          ./.github/scripts/Test-WriterCutover.ps1
-          -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
-          -OutputPath artifacts/coordination/cutover.json
       - name: Verify Git fixture recovery and frozen snapshots independently
         if: ${{ always() }}
         run: >-
@@ -104,7 +98,7 @@ jobs:
   windows-regression:
     name: Windows complete regression
     runs-on: windows-2022
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v6
@@ -145,7 +139,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-regression-results
-          path: artifacts/windows-regression/
+          path: |
+            artifacts/windows-regression/
+            artifacts/phase5/
           retention-days: 14
 
   windows-wpf:

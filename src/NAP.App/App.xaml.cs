@@ -46,7 +46,7 @@ public partial class App : Application
             IAiAuditClient? auditor = null;
             var key = Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY");
             var model = Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL");
-            if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(model))
+            if (!smoke && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(model))
                 auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
             var importSource = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-import-profile=", StringComparison.Ordinal))?[23..] : null;
             var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot);

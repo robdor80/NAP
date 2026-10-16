@@ -49,6 +49,8 @@ public sealed class ImageNormalizationProposal
     public ImageNormalizationPolicy Policy { get; }
     public ImageNormalizationPreview Preview { get; }
     public bool IsPackage => Files is not null;
+    [System.Text.Json.Serialization.JsonIgnore]
+    public long RetainedBufferBytes => Preview.RetainedBufferBytes + (Files?.Values.Sum(bytes => bytes.LongLength) ?? 0);
     public bool RequiresMetadataApproval => OriginalProfile != TargetProfile;
 }
 

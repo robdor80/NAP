@@ -1,6 +1,16 @@
-# NAP 2.0 — continuidad de Fase 5, parada de 2026-10-16
+# NAP 2.0 — continuidad de Fase 5
 
-Estado: PAUSADA por orden expresa del usuario por límite de cuota. No reanudar desarrollo ni pruebas hasta nueva autorización. La fase está incompleta: no crear PR final ni declarar aceptación. No hay PR existente según la consulta realizada durante la parada. No se ha modificado main ni realizado merge.
+Estado actual: **P5.10 REANUDADA por autorización expresa de 2026-10-16; aceptación final en curso.** Las correcciones dirigidas están verificadas; la regresión completa Release, incluyendo ambos grupos de volumen, aún no ha terminado. No se declara aceptación integral ni se ha creado todavía la Draft PR. No se ha modificado main ni realizado merge.
+
+La verificación inicial encontró la rama local/remota limpia y coincidente en `20106c7f876ff488ea362bd6f709b643c3b63b5e`, y main aún en `cd7532f011eea8a72e89848234b259f1f5293e15`. **GitHub informa main SIN protección (`protected=false`, reglas efectivas vacías, endpoint de protección 404).** Se conserva esta discrepancia sin cambiar la configuración de GitHub; necesita resolución antes de cualquier futura fusión.
+
+Avance verificable: reproducción y corrección de pérdida de una admisión diferida durante recepción HTTP (2 de 3 ZIP antes, 3 de 3 después); prioridad de continuación de Jobs preparados/respuestas aceptadas; pinning de caché por identidad, presupuestos del bridge y rutas largas de retención. Selección Host/Batch/aceptación 12/12; rutas manuales remotas ampliadas 4/4. La regresión amplia intermedia ejecutó 3768: 3760 pasan, 5 fallan por privilegio symlink y 3 por una expectativa nueva incorrecta sobre `Completed`, ya corregida según el contrato de Fase 4. Los trece fallos históricos restantes se han cotejado individualmente como Passed en ese TRX. Se exige la regresión final posterior a las últimas correcciones.
+
+Los primeros lotes end-to-end de 1 y 10 pasan; 100 y 1000 fallaron el límite de cinco minutos sin nuevos completados antes de las correcciones del scheduler. No se consideran resueltos hasta terminar la repetición. Sus métricas y fallos se conservan. CUTOVER sigue prohibido: su ensayo heredado con cuentas/ACL se conserva en un workflow manual de confirmación explícita, sin ejecutarlo al abrir esta PR ni durante P5.10.
+
+## Histórico de la parada original en 20106c7 — no es el estado actual
+
+La parada original por cuota fue levantada por la orden de reanudación. El registro siguiente conserva el punto de partida y las garantías pendientes entonces; el log de implementación y el manifest de evidencia registran las ejecuciones posteriores.
 
 ## Repositorio y conservación
 

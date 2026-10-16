@@ -29,9 +29,22 @@ public sealed class AutomationDesktopTests
         var status = await proxy.InspectGitAsync(c, CancellationToken.None); Assert.False(status.IsClean);
         var plan = await proxy.PlanCommitAsync(c, [production], "Synthetic explicit publish", CancellationToken.None);
         Assert.NotEmpty(plan.Selection.Paths); Assert.Throws<InvalidOperationException>(() => AutomationReadViews.RequireNative(plan));
-        var commit = await proxy.CommitAsync(c, plan, CancellationToken.None); Assert.NotEmpty(commit.CommitSha);
+        var observer = typeof(GitProductionService).GetProperty("Observer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+        observer.SetValue(git, (Action<string>)(point => { if (point == "prepared") throw new InvalidOperationException("synthetic manual interruption"); }));
+        var interrupted = await Assert.ThrowsAsync<AutomationRemoteOperationException>(() => proxy.CommitAsync(c, plan, CancellationToken.None));
+        Assert.Contains(interrupted.Issues.Issues, i => i.Code == NapIssueCodes.GitIoFailed);
+        observer.SetValue(git, null);
+        var pending = Assert.Single(await proxy.ReceiptsAsync(c, CancellationToken.None)); Assert.Equal(GitReceiptState.Prepared, pending.State);
+        Assert.Equal(GitReceiptState.Prepared, (await proxy.RecoverAsync(c, pending.OperationId, CancellationToken.None)).State);
+        var commit = await proxy.RetryCommitAsync(c, pending.OperationId, CancellationToken.None); Assert.NotEmpty(commit.CommitSha);
         var receipts = await proxy.ReceiptsAsync(c, CancellationToken.None); Assert.Single(receipts); Assert.Equal(commit.OperationId, receipts.Single().OperationId);
         var pushed = await proxy.PushAsync(c, commit.OperationId, CancellationToken.None); Assert.Equal(GitPushOutcome.Pushed, pushed.Outcome);
+        Assert.Equal(commit.CommitSha, (await proxy.RecoverAsync(c, commit.OperationId, CancellationToken.None)).CommitSha);
+        Assert.Equal("2", GitProductionFixture.Run(c.Storage.ProductionRoot, "rev-list", "--count", "HEAD"));
+        await proxy.BackupAsync(c, BackupKind.RepositorySnapshot, CancellationToken.None);
+        await proxy.BackupAsync(c, BackupKind.GitBundle, CancellationToken.None);
+        var history = await proxy.BackupsAsync(c, CancellationToken.None);
+        Assert.Contains(history.Entries, e => e.Kind == BackupKind.RepositorySnapshot); Assert.Contains(history.Entries, e => e.Kind == BackupKind.GitBundle);
     }
 
     [Fact]
@@ -59,7 +72,7 @@ public sealed class AutomationDesktopTests
         var bridge = new AutomationDesktopBridge(host, [f.A.Context], Path.Combine(f.Root, "desktop-requests"), audit);
         var connection = new AutomationConnection("nap-desktop-" + Guid.NewGuid().ToString("N"), Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
         await using var server = new AutomationPipeServer(connection, bridge.HandleAsync);
-        var proxy = new RemoteDesktopService(new(connection), true); var c = f.A.Context;
+        using var proxy = new RemoteDesktopService(new(connection), true); var c = f.A.Context;
         await Assert.ThrowsAsync<AutomationException>(() => new ProfessionalUiService(audit).PrepareAsync(c, new(Path.GetFileName(path), path), CancellationToken.None));
         var prepared = await proxy.PrepareAsync(c, new(Path.GetFileName(path), path), CancellationToken.None);
         Assert.Contains("portrait_example_001", prepared.Summary);
@@ -68,6 +81,10 @@ public sealed class AutomationDesktopTests
         Assert.Equal("portrait_example_001", result.AssetKey.AssetId);
         Assert.Throws<InvalidOperationException>(() => AutomationReadViews.RequireNative(result));
         var page = await proxy.PageAsync(c, new(), 0, 10, CancellationToken.None); Assert.Equal(1, page.TotalCount);
+        var thumbnail = await proxy.ThumbnailAsync(c, page.Items.Single(), CancellationToken.None);
+        Assert.True(File.Exists(thumbnail.CachePath));
+        var cached = await proxy.ThumbnailAsync(c, page.Items.Single(), CancellationToken.None);
+        Assert.Equal(thumbnail.CachePath, cached.CachePath); Assert.True(cached.CacheHit);
         var detail = await proxy.DetailAsync(c, result.AssetKey.AssetId, CancellationToken.None); Assert.NotNull(detail); Assert.NotEmpty(detail.Documents);
         await proxy.SaveObjectiveAsync(c, new(c.Id, "synthetic_objective", "Synthetic target", new(), 3), CancellationToken.None);
         var planning = await proxy.PlanningAsync(c, CancellationToken.None); Assert.Single(planning.Objectives);
@@ -76,6 +93,13 @@ public sealed class AutomationDesktopTests
         var restore = await proxy.PlanRestoreAsync(c, backup.BackupId, CancellationToken.None);
         Assert.Throws<InvalidOperationException>(() => AutomationReadViews.RequireNative(restore));
         Assert.True((await proxy.RestoreAsync(c, restore, CancellationToken.None)).Restored);
+        var newest = await proxy.BackupAsync(c, BackupKind.Database, CancellationToken.None);
+        var retention = await proxy.PlanRetentionAsync(c, new(1), CancellationToken.None);
+        Assert.NotEmpty((await proxy.RetainAsync(c, retention, CancellationToken.None)).DeletedBackupIds);
+        Assert.Equal(newest.BackupId, Assert.Single((await proxy.BackupsAsync(c, CancellationToken.None)).Entries).BackupId);
+        Assert.Equal(1, (await proxy.StatisticsAsync(c, new(), CancellationToken.None)).TotalAssets);
+        Assert.NotNull(await proxy.DashboardAsync(c, CancellationToken.None));
+        proxy.Dispose(); if (OperatingSystem.IsWindows()) Assert.False(File.Exists(thumbnail.CachePath));
         Assert.Equal(1, audit.Calls);
     }
 

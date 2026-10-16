@@ -15,8 +15,12 @@ public sealed class AutomationHostTests
             Admission = PreparationTestFixture.Fast with { MaxPendingCandidates = 3, RescanInterval = TimeSpan.FromHours(1) } };
         internal Fixture()
         { Directory.CreateDirectory(Control); A = new("alpha_universe", parent: Root); B = new("beta_universe", parent: Root); }
-        internal static StoredAutomationPolicy Enable(PreparationTestFixture fixture)
-        { using var owner = fixture.Queue.AcquireOwner(); return DurableExecutionTests.Enable(fixture, owner); }
+        internal static StoredAutomationPolicy Enable(PreparationTestFixture fixture, int requests = 10)
+        {
+            using var owner = fixture.Queue.AcquireOwner();
+            var policy = fixture.Policy(owner, requests: requests, cost: requests, operations: StoredAutomationPolicy.ExecutionOperations);
+            return fixture.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.Enabled);
+        }
         public void Dispose()
         {
             var full = Path.GetFullPath(Root); var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;

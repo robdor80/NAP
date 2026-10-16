@@ -29,6 +29,10 @@ public sealed class AutomationDesktopBridge
     private readonly string _requestDirectory;
     private readonly ConcurrentDictionary<string, (UniverseId Universe, byte[] Bytes)> _blobs = new();
     private long _blobBytes;
+    private long _handleBytes;
+    private int _recordedRequests;
+    private readonly object _handleGate = new();
+    public const long MaximumHandleBytes = 128L * 1024 * 1024;
 
     public AutomationDesktopBridge(AutomationHost host, IEnumerable<UniverseContext> contexts, string requestDirectory, IAiAuditClient? auditor = null,
         GitProductionService? git = null, GitProductionInspector? gitInspector = null)
@@ -41,6 +45,7 @@ public sealed class AutomationDesktopBridge
             Path.GetFileName(_requestDirectory) != "desktop-requests") throw new ArgumentException("Desktop request storage must be the explicit laboratory sibling.");
         Directory.CreateDirectory(_requestDirectory);
         if ((File.GetAttributes(_requestDirectory) & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException("Request storage cannot be linked.");
+        _recordedRequests = Directory.EnumerateFiles(_requestDirectory, "command_*.json").Take(4097).Count();
     }
 
     private T Get<T>(UniverseContext context, string reference) where T : class
@@ -54,8 +59,17 @@ public sealed class AutomationDesktopBridge
         string? reference = null;
         if (retain && value is not null)
         {
-            if (_handles.Count >= 128) throw new AutomationException(AutomationError.Busy, "Desktop handle budget exhausted; finish or reconnect the session.");
-            reference = "view_" + Guid.NewGuid().ToString("N"); _handles[reference] = new(context.Id, value, parent);
+            // Native normalization proposals retain package/preview byte arrays absent from their JSON view.
+            // Charge them exactly, plus a conservative metadata allowance. Other native plans contain
+            // metadata only; four times UTF-8 bounds their strings, collection entries and object overhead.
+            var metadata = JsonSerializer.SerializeToUtf8Bytes(value, value.GetType(), AutomationReadViews.Json(context)).LongLength;
+            var retained = checked(4096 + metadata * 4 + (value is ImageNormalizationProposal proposal ? proposal.RetainedBufferBytes : 0));
+            lock (_handleGate)
+            {
+                if (_handles.Count >= 128 || retained > MaximumHandleBytes - _handleBytes)
+                    throw new AutomationException(AutomationError.Busy, "Desktop retained-object budget exhausted; restart the host after draining.");
+                reference = "view_" + Guid.NewGuid().ToString("N"); _handles[reference] = new(context.Id, value, parent); _handleBytes += retained;
+            }
         }
         var projection = value is PreparedPipelineAsset prepared ? new { prepared.JobId, prepared.Summary } : value;
         var payload = JsonSerializer.SerializeToElement(projection, projection?.GetType() ?? typeof(object), AutomationReadViews.Json(context));
@@ -87,7 +101,6 @@ public sealed class AutomationDesktopBridge
         if (request.Operation is AutomationOperation.Activate or AutomationOperation.Pause or AutomationOperation.Resume or AutomationOperation.StopUniverse or AutomationOperation.CancelItem or AutomationOperation.ResumeItem)
             return DispatchAsync(request); // these use the control ledger's durable replay, including across sessions
         if (IsRead(request.Operation)) return DispatchAsync(request);
-        if (_requests.Count >= 4096 && !_requests.ContainsKey(request.RequestId)) throw new AutomationException(AutomationError.Busy, "Desktop command budget exhausted.");
         // Lazy avoids invoking a mutation twice when two matching requests arrive concurrently.
         return DeduplicateAsync(request, principal);
     }
@@ -110,10 +123,16 @@ public sealed class AutomationDesktopBridge
                 if (prior.RootElement.TryGetProperty("Response", out var response)) return Task.FromResult(response.Clone());
                 throw new AutomationException(AutomationError.InvalidClaim, "Previous manual outcome is unknown; inspect its native evidence before another explicit operation.");
             }
+            if (_recordedRequests >= 4096 || _requests.Count >= 32)
+                throw new AutomationException(AutomationError.Busy, "Desktop durable/in-flight command budget exhausted.");
             using (var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             { JsonSerializer.Serialize(file, new { SchemaVersion = 1, Fingerprint = fingerprint }); file.Flush(true); }
+            _recordedRequests++;
             var pending = ExecuteRecordedAsync(request, fingerprint, path);
-            _requests[request.RequestId] = pending; return pending;
+            _requests[request.RequestId] = pending;
+            _ = pending.ContinueWith(t => { _ = t.Exception; lock (_requestGate) _requests.TryRemove(request.RequestId, out _); },
+                CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
+            return pending;
         }
     }
 

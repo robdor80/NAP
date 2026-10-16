@@ -45,6 +45,8 @@ El kernel libera los handles al morir el proceso. En liberación normal POSIX se
 
 ## Qué ensaya CI y qué no acredita
 
+Actualización de Fase 5 (2026-10-16): las pruebas que crean identidades o cambian ACL se conservan sin alterar en `cutover-laboratory.yml`, exclusivamente por `workflow_dispatch` y con confirmación booleana explícita. Abrir una PR ya no ejecuta ese ensayo de CUTOVER. La autorización de P5.10 prohíbe ejecutarlo y no se ha lanzado. Las matrices automáticas conservan exclusión, runtimes, muerte de owner y regresión de software; no certifican cuentas/ACL. La evidencia histórica citada abajo sigue siendo histórica y la barrera operativa continúa pendiente.
+
 La suite conserva las cuatro assertions de exclusión, snapshot sin efectos y retry. Tras la actualización obligatoria, su peer carga el Core v2 real. La matriz adicional fuerza runtimes 8.0.31/8.0.32, compite antes de liberar, mata al propietario, reabre, verifica epochs durables y rechaza enlaces, hardlinks y contenido ajeno. Una prueba compara el hash del Core del peer con el Core bajo test para detectar binarios obsoletos.
 
 `Test-WriterCutover.ps1` se niega a ejecutarse fuera de GitHub Actions. En runners desechables crea exclusivamente identidades/raíces sintéticas; primero demuestra una escritura desde el rol antiguo, espera su salida, retira acceso y comprueba que el rol antiguo no puede modificar ni el archivo preservado ni el archivo de arranque mientras el Core nuevo sostiene cada uno de los cuatro scopes. Comprueba hashes sin cambios. En Windows elimina la cuenta temporal al finalizar; conserva los fixtures como evidencia del runner.

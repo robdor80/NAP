@@ -1,0 +1,45 @@
+name: Explicit synthetic CUTOVER certification
+
+# Account/ACL changes are outside software-only acceptance. Merely opening a PR
+# must never authorize this lab. The unchanged Phase 4 assertions remain here.
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_synthetic_account_and_acl_changes:
+        description: Explicitly authorize account and ACL changes on disposable synthetic runners
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-cutover:
+    if: ${{ inputs.authorize_synthetic_account_and_acl_changes == true }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Build diagnostic peer
+        run: dotnet build tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj -c Release
+      - name: Require the unchanged Phase 4 synthetic identity and preservation assertions
+        shell: pwsh
+        run: >-
+          ./.github/scripts/Test-WriterCutover.ps1
+          -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
+          -OutputPath artifacts/coordination/cutover.json
+      - name: Preserve certification evidence including failures
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: explicit-cutover-${{ matrix.os }}
+          path: artifacts/coordination/
+          retention-days: 14

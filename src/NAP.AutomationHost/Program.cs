@@ -10,7 +10,18 @@ try
     using var document = JsonDocument.Parse(File.ReadAllBytes(info.FullName));
     var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
     var auditor = config.SyntheticAudit ? new SyntheticAuditor() : null;
-    await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot }, auditor);
+    var checkpointReached = 0;
+    await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
+        Admission = config.Admission ?? new(),
+        LaboratoryCheckpoint = (_, item, boundary) =>
+        {
+            if (boundary != config.LaboratoryCheckpoint || Interlocked.Exchange(ref checkpointReached, 1) != 0) return;
+            // Only an explicitly configured TEMP laboratory can reach this injection. The fixture kills
+            // this process after observing the durable boundary; this is never a shutdown mechanism.
+            Console.WriteLine("NAP laboratory checkpoint: " + item.Value + ":" + boundary);
+            Console.Out.Flush();
+            Thread.Sleep(Timeout.Infinite);
+        } }, auditor);
     await host.Started;
     var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(config.LaboratoryRoot, "desktop-requests"), auditor);
     await using var server = new AutomationPipeServer(config.Connection, bridge.HandleAsync);

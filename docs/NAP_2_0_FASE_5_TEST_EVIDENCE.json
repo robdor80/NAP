@@ -27,6 +27,60 @@
     "failedTests": []
   },
   {
+    "file": "artifacts/phase5/p510/p510-acceptance-v3.trx",
+    "sha256": "aba4d5207b1af28a7353253242e3133f20f82b266780e202c12edf9761fe43bd",
+    "start": "2026-10-16T23:14:55.7319846+02:00",
+    "finish": "2026-10-16T23:34:00.5843771+02:00",
+    "total": 33,
+    "passed": 26,
+    "failed": 7,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100)",
+      "NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\")",
+      "NAP.Tests.AutomationAcceptanceTests.BridgeAccountsHiddenNormalizationBuffersAndRejectsBeforeRetainingBeyondBudget",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\")",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-backpressure-fix.trx",
+    "sha256": "3b743fef2a7995741e4cbf15fee4fffc73441f30e8e7337275d5c1c9c340204d",
+    "start": "2026-10-16T23:27:20.2832686+02:00",
+    "finish": "2026-10-16T23:27:37.7019361+02:00",
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-backpressure-reproducer.trx",
+    "sha256": "5fa9d577126bfbaa3dd973d91909975411ba4bee0cab7f462cf81bc793ec99f7",
+    "start": "2026-10-16T23:26:35.5887948+02:00",
+    "finish": "2026-10-16T23:26:43.1292424+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.AuditHarvestCannotDropAdmissionDeferredByBackpressure"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-budgets-cache-http.trx",
+    "sha256": "cf3a9c9d02f5faa494f7e0cce9c7c19ac37cab17379f88a46ba061a3978af1e6",
+    "start": "2026-10-16T23:17:38.1941846+02:00",
+    "finish": "2026-10-16T23:17:50.9411890+02:00",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/p510/p510-compatibility-corrections.trx",
     "sha256": "314fafce9c731b981cd7d6624815ac4afa76919a7b355814e6287289c291e2a0",
     "start": "2026-10-16T13:34:58.8264830+02:00",
@@ -36,6 +90,235 @@
     "failed": 0,
     "notExecuted": 0,
     "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-continuation-fix.trx",
+    "sha256": "9504b8e4ced54e4dc72b0bc41ab8465f43203455e252cef279f5b74b3aec9694",
+    "start": "2026-10-16T23:42:37.8909276+02:00",
+    "finish": "2026-10-16T23:44:09.4751669+02:00",
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-final-directed.trx",
+    "sha256": "5986d5f6f3418f37ccee849ea5e5b3b9dc081a24d09c3c80acfad9f8a7fb533e",
+    "start": "2026-10-16T23:45:48.8629356+02:00",
+    "finish": "2026-10-16T23:47:19.4190621+02:00",
+    "total": 16,
+    "passed": 15,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-longpaths-and-priority-reproducer.trx",
+    "sha256": "479d97047c456bcc26bcc2db3c0c1342b327b13efcc0da0c8545da071b57eb58",
+    "start": "2026-10-16T23:37:30.5407604+02:00",
+    "finish": "2026-10-16T23:38:22.1889481+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-longpaths-and-priority-v2.trx",
+    "sha256": "f50ac1a7139cb8388e1f50f432e894652f4faa95b55b8c5a28790f95af792eb9",
+    "start": "2026-10-16T23:39:35.3984799+02:00",
+    "finish": "2026-10-16T23:41:54.9734167+02:00",
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-manual-routes-final.trx",
+    "sha256": "1fa43819eb8061fb659a4d5603b135b9d9f44c7170f592ac9a300cff317c3880",
+    "start": "2026-10-16T23:47:52.5157044+02:00",
+    "finish": "2026-10-16T23:48:09.4548941+02:00",
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v2.trx",
+    "sha256": "20afac08e7d4b8671764312ccf460ac50dd5fd5dd55b9c9681c0cc9200689665",
+    "start": "2026-10-16T23:30:12.0011934+02:00",
+    "finish": "2026-10-16T23:30:16.9218999+02:00",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v3.trx",
+    "sha256": "adb6b856f2617fea7e862365a5d00814f4773778b134db05b595625a9c545b10",
+    "start": "2026-10-16T23:31:05.0495531+02:00",
+    "finish": "2026-10-16T23:31:37.4568529+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v4.trx",
+    "sha256": "ecec740f8cedb1222125a1cdc5b407ff668ff209706415e1183bee855247cf83",
+    "start": "2026-10-16T23:32:11.0588563+02:00",
+    "finish": "2026-10-16T23:34:04.2301825+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v5.trx",
+    "sha256": "b161602ce9cdb4eafb9e5ccd67eeacbd275235c27f504007bd371eaf8a3db8fb",
+    "start": "2026-10-16T23:34:17.1143875+02:00",
+    "finish": "2026-10-16T23:34:30.2288899+02:00",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v6.trx",
+    "sha256": "4823f66f5e995d4e9a3c34f13c4db661fd842bae3f481b151da4b6db0ece4a23",
+    "start": "2026-10-16T23:35:41.1878962+02:00",
+    "finish": "2026-10-16T23:35:42.7007910+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v7.trx",
+    "sha256": "77d52a6a6470b2fd4e429f8aa03efb2ca4df4495e0cafe1383f96db7a95e41c7",
+    "start": "2026-10-16T23:36:17.6334126+02:00",
+    "finish": "2026-10-16T23:36:19.1954256+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v8.trx",
+    "sha256": "a7a2522d1772e3361aaf5d90367cc25de8aeb9882507ac0ec653415f71213129",
+    "start": "2026-10-16T23:36:56.1692222+02:00",
+    "finish": "2026-10-16T23:36:57.6768619+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer.trx",
+    "sha256": "20d234c5abf1732b4de435c4bfb3eefb697db5346e06ede466776fe36e609116",
+    "start": "2026-10-16T23:29:25.6390622+02:00",
+    "finish": "2026-10-16T23:29:34.6662779+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-process-recovery-v2.trx",
+    "sha256": "535fe05ac17150a51b2e69da1f568c85f28cf65c3e0badee686afe1259d1d2f6",
+    "start": "2026-10-16T23:09:32.8267186+02:00",
+    "finish": "2026-10-16T23:14:35.2928057+02:00",
+    "total": 16,
+    "passed": 7,
+    "failed": 9,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-process-recovery.trx",
+    "sha256": "a498c3fa184926b1bc27bea2ee560cabf476b4a07c7954a77aa435873f2551d4",
+    "start": "2026-10-16T23:07:04.8734358+02:00",
+    "finish": "2026-10-16T23:09:23.1472083+02:00",
+    "total": 16,
+    "passed": 1,
+    "failed": 15,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"extraction-recorded\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"session\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"original-preserved\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"pause\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"snapshot-recorded\", recoverable: True)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-review-regression.trx",
+    "sha256": "03cf1bb4a836a2bc6f3c9e9da3d687884ede0ee30de2911ae8b8767e687dc8f4",
+    "start": "2026-10-16T23:18:55.0406966+02:00",
+    "finish": "2026-10-16T23:25:02.3750159+02:00",
+    "total": 3768,
+    "passed": 3760,
+    "failed": 8,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\")"
+    ]
   },
   {
     "file": "artifacts/phase5/p510/p510-scheduler-corrections.trx",

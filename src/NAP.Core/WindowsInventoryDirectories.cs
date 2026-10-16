@@ -31,7 +31,12 @@ internal sealed class WindowsInventoryDirectories : IDisposable
         // FILE_LIST_DIRECTORY | FILE_READ_ATTRIBUTES; share read/write but NOT delete; OPEN_EXISTING.
         // Attribute-only opens do not participate in delete sharing and cannot protect this walk.
         // BACKUP_SEMANTICS | OPEN_REPARSE_POINT. Handles are read-only and not inheritable.
-        var handle = CreateFile(path, 0x81, 3, IntPtr.Zero, 3, 0x02200000, IntPtr.Zero);
+        // Managed directory enumeration already supports long paths. Native opens must use
+        // the same path even when the calling apphost lacks a longPathAware manifest.
+        var full = Path.GetFullPath(path);
+        var native = full.StartsWith(@"\\?\", StringComparison.Ordinal) ? full :
+            full.StartsWith(@"\\", StringComparison.Ordinal) ? @"\\?\UNC\" + full[2..] : @"\\?\" + full;
+        var handle = CreateFile(native, 0x81, 3, IntPtr.Zero, 3, 0x02200000, IntPtr.Zero);
         if (handle.IsInvalid) { var error = Marshal.GetLastPInvokeError(); handle.Dispose(); throw Failure(error); }
         try
         {

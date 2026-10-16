@@ -39,6 +39,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         internal bool InitialRecovery = true, RecoveryEndReached, PreferWorkflow;
         internal DateTimeOffset NextWorkflow;
         internal QueueItemId? CurrentItem;
+        internal QueueItemId? PriorityItem;
         internal readonly Queue<QueueItem> Items = new();
         internal QueueBatchId? Batch;
         internal volatile bool ScanRequested = true;
@@ -246,6 +247,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
                 slot.RunControl = new((item, boundary) => { _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); return !Allowed(slot, item); });
                 slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
+                slot.Preparation.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };
                 slot.Execution.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };
                 slot.RuntimeState = new(slot.Context);
             }
@@ -297,9 +299,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             if (!work.IsCompleted) { if (!Allowed(slot)) Set(slot, AutomationHostState.Pausing, "draining"); return; }
             slot.Work = null; var result = work.GetAwaiter().GetResult();
-            if (result.DeferredAdmission is { } deferred) slot.Probes.Enqueue(Task.FromResult(deferred));
-            if (result.Stage == "idle") slot.NextWorkflow = DateTimeOffset.UtcNow + _options.IdleInterval;
-            Set(slot, Allowed(slot) ? AutomationHostState.Running : AutomationHostState.Paused, result.Stage, increment: true);
+            CollectStep(slot, result);
             if (result.Dispatch is { } dispatch)
             {
                 _dispatch = dispatch; _auditSlot = slot;
@@ -335,7 +335,11 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 for (var offset = 0; ; offset += 100)
                 {
                     var page = s.Queue.List(offset, 100); pending += page.Count(i => i.State is QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled);
-                    if (pending >= limit) return new Step("admission-backpressure", DeferredAdmission: observation);
+                    if (pending >= limit)
+                    {
+                        _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, page[0].Id, "admission-backpressure");
+                        return new Step("admission-backpressure", DeferredAdmission: observation);
+                    }
                     if (page.Count < 100) break;
                 }
                 slot.Admission!.AdmitReady(s.Owner, observation, slot.Batch); return new Step("admission");
@@ -345,7 +349,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             slot.Work = slot.Runtime.InvokeAsync(s => { slot.RuntimeState!.CloseCapture(s.Owner, s.Queue, batch); return new Step("batch-closed"); }); slot.Batch = null; return;
         }
-        if (DateTimeOffset.UtcNow < slot.NextWorkflow || !_heavy.Wait(0)) return;
+        if ((slot.PriorityItem is null && DateTimeOffset.UtcNow < slot.NextWorkflow) || !_heavy.Wait(0)) return;
         slot.PreferWorkflow = false; int entered = 0, released = 0;
         void Release() { if (Interlocked.Exchange(ref released, 1) == 0) _heavy.Release(); }
         slot.Work = slot.Runtime.InvokeAsync(s =>
@@ -358,9 +362,25 @@ public sealed partial class AutomationHost : IAsyncDisposable
             TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
     }
 
+    private void CollectStep(Slot slot, Step result)
+    {
+        if (result.DeferredAdmission is { } deferred) slot.Probes.Enqueue(Task.FromResult(deferred));
+        if (result.Stage == "idle") slot.NextWorkflow = DateTimeOffset.UtcNow + _options.IdleInterval;
+        Set(slot, Allowed(slot) ? AutomationHostState.Running : AutomationHostState.Paused, result.Stage, increment: true);
+    }
+
     private Step WorkflowStep(Slot slot, AutomationUniverseScope scope)
     {
         if (!Allowed(slot)) return new("paused"); RequireGrant(slot, scope);
+        if (slot.PriorityItem is { } priority)
+        {
+            // A continuation is a scheduling hint only. Read its current durable state and
+            // pass all normal gates below; never make a prepared/PASS item wait for the tail
+            // of a growing capture before its next authorized boundary.
+            slot.PriorityItem = null;
+            var remaining = slot.Items.Where(i => i.Id != priority).ToArray(); slot.Items.Clear();
+            slot.Items.Enqueue(scope.Queue.Get(priority)); foreach (var item in remaining) slot.Items.Enqueue(item);
+        }
         if (slot.Items.Count == 0)
         {
             if (slot.RecoveryEndReached) slot.InitialRecovery = false;
@@ -395,7 +415,9 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var capacity = _options.MaxRetainedBytes / _slots.Length / 2;
                 if (!RetainedAdmissionInventory.Fits(Path.Combine(scope.Context.Storage.StateRoot, "automation"), Math.Max(0, capacity - policy.Definition.Resources.MaxStagingBytes)))
                     return new("storage-wait");
-                slot.Preparation!.Prepare(scope.Owner, item.Id); return new("preparation");
+                var prepared = slot.Preparation!.Prepare(scope.Owner, item.Id);
+                if (prepared.Code == PreparationCode.Planned) slot.PriorityItem = item.Id;
+                return new("preparation");
             }
             if (item.State == QueueState.Running || record.AuditState == DurableAuditState.Pass && policy.IsExecutionAuthorized)
             { var result = slot.Execution!.Execute(scope.Owner, item.Id, slot.RunControl); return new(result.Code == DurableExecutionCode.Suspended ? "suspended" : "execution"); }
@@ -406,10 +428,12 @@ public sealed partial class AutomationHost : IAsyncDisposable
             {
                 var step = slot.Preparation!.BeginAudit(scope.Owner, item.Id, _auditor.ProviderId, _auditor.ModelId);
                 if (step.Dispatch is null) Interlocked.Exchange(ref _auditReserved, 0);
+                if (step.Result.Code == PreparationCode.AuditPass) slot.PriorityItem = item.Id;
                 return new("audit", step.Dispatch);
             }
             catch { Interlocked.Exchange(ref _auditReserved, 0); throw; }
         }
+        if (slot.CurrentItem is { } idleItem) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, idleItem, "workflow-idle");
         return new("idle");
     }
 
@@ -419,8 +443,9 @@ public sealed partial class AutomationHost : IAsyncDisposable
         if (_auditSlot.Work is { } prior)
         {
             _auditSlot.Work = null;
-            var completed = prior.GetAwaiter().GetResult();
-            Set(_auditSlot, Allowed(_auditSlot) ? AutomationHostState.Running : AutomationHostState.Paused, completed.Stage, increment: true);
+            // Harvesting a response may also collect an admission turn. Preserve its deferred
+            // observation exactly as Tick does; dropping it loses a member of this capture cohort.
+            CollectStep(_auditSlot, prior.GetAwaiter().GetResult());
         }
         var outcome = _http.GetAwaiter().GetResult(); var slot = _auditSlot!; var dispatch = _dispatch!;
         _http = null; _remote = outcome.RemoteCompletion;
@@ -428,7 +453,11 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             if (outcome.Cancelled) return new Step("audit-remote-unknown");
             if (outcome.Failure is { } failure) slot.Preparation!.FailAudit(s.Owner, dispatch, failure);
-            else slot.Preparation!.CompleteAudit(s.Owner, dispatch, outcome.Report!, Allowed(slot, dispatch.ItemId));
+            else
+            {
+                var response = slot.Preparation!.CompleteAudit(s.Owner, dispatch, outcome.Report!, Allowed(slot, dispatch.ItemId));
+                if (response.Code == PreparationCode.AuditPass) slot.PriorityItem = dispatch.ItemId;
+            }
             return new Step("audit-response");
         });
         _dispatch = null; _auditSlot = null;
