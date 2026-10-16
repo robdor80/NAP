@@ -144,6 +144,41 @@
     ]
   },
   {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial-v2.trx",
+    "sha256": "48109e51286f6dd4c668156c9beea6de04f1206a32daeb2c521132910cc53c79",
+    "start": "2026-10-17T00:23:53.3458556+02:00",
+    "finish": "2026-10-17T00:24:15.3135753+02:00",
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial.trx",
+    "sha256": "1703f9278db423b90c4ae023c5778e3bad1600b3337ce41915cd43b185ff1846",
+    "start": "2026-10-17T00:20:43.8560670+02:00",
+    "finish": "2026-10-17T00:21:06.9975481+02:00",
+    "total": 7,
+    "passed": 6,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.LedgerValidationProofTests.WarmProofRejectsChangedBytesEvenWithIdenticalLengthTimestampAndSelfConsistentAnchors(execution: False, corruption: \"domain\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-initial.trx",
+    "sha256": "eab0d9677d4817c43fd15ebb6a22bc6abae8f5b103d4ec9d42d423ccac2c897b",
+    "start": "2026-10-17T00:16:43.6582571+02:00",
+    "finish": "2026-10-17T00:20:11.1819139+02:00",
+    "total": 139,
+    "passed": 139,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/p510/p510-longpaths-and-priority-reproducer.trx",
     "sha256": "479d97047c456bcc26bcc2db3c0c1342b327b13efcc0da0c8545da071b57eb58",
     "start": "2026-10-16T23:37:30.5407604+02:00",
@@ -326,6 +361,23 @@
       "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False)",
       "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"pause\")",
       "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"snapshot-recorded\", recoverable: True)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-queue-cache-safety.trx",
+    "sha256": "fa31aa43312c450e0ecd8c98757ff61edab04fb6e9c52389f372179db63c92c8",
+    "start": "2026-10-17T00:25:11.6717347+02:00",
+    "finish": "2026-10-17T00:25:49.9101070+02:00",
+    "total": 98,
+    "passed": 93,
+    "failed": 5,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")"
     ]
   },
   {
