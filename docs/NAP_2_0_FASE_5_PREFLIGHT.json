@@ -1,0 +1,25 @@
+{
+  "recordedUtc": "2026-10-16T21:59:45.6894420+00:00",
+  "repository": "robdor80/NAP",
+  "branch": "codex/nap-2-fase-5-automation-host",
+  "initialHead": "20106c7f876ff488ea362bd6f709b643c3b63b5e",
+  "initialRemoteHead": "20106c7f876ff488ea362bd6f709b643c3b63b5e",
+  "initialWorktreeClean": true,
+  "mainSha": "cd7532f011eea8a72e89848234b259f1f5293e15",
+  "mainProtected": false,
+  "mainEffectiveRules": [],
+  "protectionEndpointObservedStatus": 404,
+  "branchProtectionSettingsChanged": false,
+  "realHostCutoverApplied": false,
+  "serviceInstalled": false,
+  "windowsAccountOrPermissionChangesApplied": false,
+  "productionActivated": false,
+  "contractsRead": [
+    "docs/NAP_2_0_FASE_5_CONTINUITY.md",
+    "docs/NAP_2_0_FASE_5_IMPLEMENTATION.md",
+    "docs/NAP_2_0_FASE_5_CHANGED_FILES.txt",
+    "docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json",
+    "docs/NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md",
+    "docs/NAP_2_0_FASE_4_CUTOVER.md"
+  ]
+}

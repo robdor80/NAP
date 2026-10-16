@@ -9,6 +9,8 @@ namespace NAP.Tests;
 
 public sealed class AutomationAcceptanceTests(ITestOutputHelper output)
 {
+    private sealed class Confirm : IUserConfirmation
+    { public Task<bool> ConfirmAsync(UiConfirmation confirmation, CancellationToken cancellation) => Task.FromResult(true); }
     [VisualExplorerWindowsFact]
     public void RetentionPinsLongPathsWithoutDependingOnTheCallerManifest()
     {
@@ -62,11 +64,17 @@ public sealed class AutomationAcceptanceTests(ITestOutputHelper output)
         using var f = new AutomationHostTests.Fixture(); var policy = AutomationHostTests.Fixture.Enable(f.A);
         await using var host = new AutomationHost(f.Control, [f.A.Context], f.Options); await host.Started;
         await host.ActivateAsync(f.A.Context.Id, policy.Reference, true);
+        var bridge = new AutomationDesktopBridge(host, [f.A.Context], Path.Combine(f.Root, "desktop-requests"));
+        var connection = new AutomationConnection("nap-stop-" + Guid.NewGuid().ToString("N"),
+            Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32)));
+        await using var server = new AutomationPipeServer(connection, bridge.HandleAsync);
+        var controls = new AutomationControlViewModel(new(connection), () => f.A.Context, new Confirm());
         var seam = typeof(AutomationHostControlStore).GetProperty("BeforeCommit", BindingFlags.Instance | BindingFlags.NonPublic)!;
         seam.SetValue(host.Controls, (Action)(() => throw new IOException("synthetic persistence failure")));
-        host.RequestStop(); await host.Completion.WaitAsync(TimeSpan.FromSeconds(10));
+        await controls.Stop.ExecuteAsync(); await host.Completion.WaitAsync(TimeSpan.FromSeconds(10));
         Assert.Equal(AutomationHostState.Stopped, host.Snapshot().State);
         Assert.StartsWith("stop_not_persisted:", host.Snapshot().Diagnostic);
+        Assert.Contains("parada durable sin confirmar", controls.Status); Assert.Contains("stop_not_persisted:", controls.Status);
         seam.SetValue(host.Controls, null);
         Assert.False(host.ReadControl(f.A.Context.Id).Stopped); // no durable-stop success is invented
         Assert.Empty(Directory.EnumerateFiles(f.A.Roots.ProductionRoot, "*.webp", SearchOption.AllDirectories));

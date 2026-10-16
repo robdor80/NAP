@@ -16,6 +16,34 @@
     ]
   },
   {
+    "file": "artifacts/phase5/final/p510-final-ui-and-software-regression.trx",
+    "sha256": "a10c050105f137a21a1a73ec5048bbb6ddf3dd16a7dbccbad880c023ee188010",
+    "start": "2026-10-16T23:55:31.1775989+02:00",
+    "finish": "2026-10-17T00:03:00.8536849+02:00",
+    "total": 3771,
+    "passed": 3766,
+    "failed": 5,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/final/p510-final-wpf-and-stop.trx",
+    "sha256": "9d17f93955171a1535e8a8013157268d477f822bbc22ef00243aef45054dc1f0",
+    "start": "2026-10-17T00:04:44.9041231+02:00",
+    "finish": "2026-10-17T00:04:55.9321259+02:00",
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/p51/p51.trx",
     "sha256": "657952e1fc3928f4989e57bb5825cdfae29878756b3cd3a0b98a590d42702b78",
     "start": "2026-10-16T12:33:07.3402383+02:00",
@@ -327,6 +355,17 @@
     "finish": "2026-10-16T13:36:56.3469068+02:00",
     "total": 8,
     "passed": 8,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-stop-diagnostic-wpf-control.trx",
+    "sha256": "5eed5eef05f3bf864229a18f44444adfe693f5b45cc614bf1d8c00eaaf0855e5",
+    "start": "2026-10-16T23:53:10.5722409+02:00",
+    "finish": "2026-10-16T23:53:32.7803979+02:00",
+    "total": 5,
+    "passed": 5,
     "failed": 0,
     "notExecuted": 0,
     "failedTests": []

@@ -30,7 +30,7 @@ public sealed class AutomationControlViewModel : ObservableObject
     {
         var value = await _client.CallAsync(AutomationOperation.Status, null, new { });
         var snapshot = AutomationProtocol.Read<AutomationHostSnapshot>(value);
-        Status = "AutomationHost · " + snapshot.State + " · " + string.Join(" · ", snapshot.Universes.Select(s => s.UniverseId.Value + ": " + s.State + (s.Diagnostic is null ? "" : " (" + s.Diagnostic + ")")));
+        Status = HostStatus(snapshot) + " · " + string.Join(" · ", snapshot.Universes.Select(s => s.UniverseId.Value + ": " + s.State + (s.Diagnostic is null ? "" : " (" + s.Diagnostic + ")")));
         if (_context() is { } c)
         {
             _policy = AutomationProtocol.Read<StoredAutomationPolicy>(await _client.CallAsync(AutomationOperation.CurrentPolicy, c.Id.Value, new { }));
@@ -58,6 +58,10 @@ public sealed class AutomationControlViewModel : ObservableObject
         if (!await _confirmation.ConfirmAsync(new("Detener automatización", "AutomationHost persistirá la parada y drenará sus operaciones. Un cierre pendiente no se forzará. La interfaz podrá permanecer abierta.", c.Id, []), CancellationToken.None)) return;
         Status = "AutomationHost · parada pendiente";
         var reply = await _client.CallAsync(AutomationOperation.ShutdownHost, null, new { });
-        var snapshot = AutomationProtocol.Read<AutomationHostSnapshot>(reply); Status = "AutomationHost · " + snapshot.State;
+        var snapshot = AutomationProtocol.Read<AutomationHostSnapshot>(reply); Status = HostStatus(snapshot);
     }
+    private static string HostStatus(AutomationHostSnapshot snapshot) => "AutomationHost · " + snapshot.State +
+        (snapshot.Diagnostic is null ? "" : snapshot.Diagnostic.StartsWith("stop_not_persisted:", StringComparison.Ordinal)
+            ? " · parada durable sin confirmar; revisar antes de reiniciar (" + snapshot.Diagnostic + ")"
+            : " · " + snapshot.Diagnostic);
 }
