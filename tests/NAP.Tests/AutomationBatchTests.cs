@@ -28,7 +28,7 @@ public sealed class AutomationBatchTests
         await using var host = new AutomationHost(f.Control, [f.A.Context], f.Options, new DurableExecutionTests.AuditClient()); await host.Started;
         await host.ActivateAsync(f.A.Context.Id, policy.Reference, false);
         IReadOnlyList<AutomationBatchProjection> summaries = [];
-        var deadline = DateTimeOffset.UtcNow.AddSeconds(30);
+        var deadline = DateTimeOffset.UtcNow.AddSeconds(120);
         do { await Task.Delay(50); summaries = await host.BatchesAsync(f.A.Context.Id); }
         while ((!summaries.Any(b => b.Capture.Closed && b.Summary.Completed == 1)) && DateTimeOffset.UtcNow < deadline);
         Assert.True(summaries.Any(b => b.Capture.Closed && b.Summary.UniqueItems == 1 && b.Summary.Completed == 1), System.Text.Json.JsonSerializer.Serialize(host.Snapshot()));

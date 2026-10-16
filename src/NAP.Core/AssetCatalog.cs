@@ -11,7 +11,7 @@ public sealed class AssetCatalog
     public UniverseId UniverseId => _context.Id;
     public void Initialize() => Run(() =>
     {
-        using var access = AutomationManualAccess.Enter(_context);
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         using var lease = CatalogBoundary.Acquire(_context);
         CatalogBoundary.Paths(_context, createState: true);
         if (CatalogBoundary.Regular(CatalogPath)) { using var existing = CatalogBoundary.Open(_context, false); return 0; }
@@ -22,7 +22,7 @@ public sealed class AssetCatalog
     public bool RegisterVerified(ValidatedAssetPackage package, ProcessingPlan processing, ArchiveMasterResult archive, ProductionAssetResult production, AiAuditReport? auditReport = null) => Run(() =>
     {
         AutomationReadViews.RequireNative(production);
-        using var access = AutomationManualAccess.Enter(_context);
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         if (auditReport is not null) ProductionAssetExecutor.RequirePass(auditReport);
         using var sources = CatalogSourceLease.Acquire(_context);
         var snapshot = new CatalogAssetReader(_context).FromVerified(package, processing, archive, production);
@@ -32,7 +32,7 @@ public sealed class AssetCatalog
 
     internal int RegisterSnapshots(IReadOnlyList<CatalogAssetSnapshot> assets) => Run(() =>
     {
-        using var access = AutomationManualAccess.Enter(_context);
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         using var lease = CatalogBoundary.Acquire(_context); CatalogBoundary.Paths(_context, createState: true);
         if (assets.Any(a => a.AssetKey.UniverseId != _context.Id)) throw CatalogException.Stop(NapIssueCodes.CatalogWrongUniverse, "Snapshots belong to another universe.");
         Revalidate(assets);
@@ -59,7 +59,7 @@ public sealed class AssetCatalog
     internal T Read<T>(Func<SqliteConnection, T> operation) => Run(() =>
     { using var lease = CatalogBoundary.Acquire(_context); using var connection = CatalogBoundary.Open(_context, false); return operation(connection); });
     private T Write<T>(Func<SqliteConnection, T> operation) => Run(() =>
-    { using var access = AutomationManualAccess.Enter(_context); using var lease = CatalogBoundary.Acquire(_context); using var connection = CatalogBoundary.Open(_context, true); return operation(connection); });
+    { using var access = AutomationManualAccess.EnterLegacy(_context); using var lease = CatalogBoundary.Acquire(_context); using var connection = CatalogBoundary.Open(_context, true); return operation(connection); });
     private void RequireUniverse(UniverseId universe)
     { if (universe != _context.Id) throw CatalogException.Stop(NapIssueCodes.CatalogWrongUniverse, "Operational data belongs to another universe."); }
     private void Revalidate(IReadOnlyList<CatalogAssetSnapshot> assets)
@@ -92,6 +92,8 @@ public sealed class AssetCatalog
     internal static T Run<T>(Func<T> operation)
     {
         try { return operation(); }
+        catch (IOException error) when (error.InnerException is AutomationException { Code: AutomationError.Busy })
+        { throw CatalogException.Stop(NapIssueCodes.CatalogBusy, "The universe automation owner is occupied.", inner: error); }
         catch (SqliteException ex) { throw CatalogSql.Error(ex); }
         catch (Exception ex) when (ex is ProductionStorageException or FormatException or ArgumentException or InvalidOperationException)
         { throw CatalogException.Stop(NapIssueCodes.CatalogInvalid, "Catalog invariants or controlled paths are invalid.", inner: ex); }

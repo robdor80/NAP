@@ -28,4 +28,10 @@ public static class AutomationManualAccess
         try { var lease = ExecutionMutex.Acquire("AutomationOwner", context.Storage.StateRoot); _manual = lease; _manualRoot = context.Storage.StateRoot; return new Owned(lease); }
         catch (IOException error) { throw new AutomationException(AutomationError.Busy, "AutomationHost owns this universe; use its authenticated channel.", error); }
     }
+    internal static IDisposable EnterLegacy(UniverseContext context)
+    {
+        try { return Enter(context); }
+        catch (AutomationException error) when (error.Code == AutomationError.Busy)
+        { throw new IOException("The universe automation owner is occupied.", error); }
+    }
 }

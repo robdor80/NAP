@@ -72,7 +72,7 @@ public sealed class AutomationDesktopBridge
     private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
-        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob;
+        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl;
 
     public async Task<JsonElement> HandleAsync(AutomationRequest request, string principal)
     {
@@ -149,6 +149,7 @@ public sealed class AutomationDesktopBridge
                     Interlocked.Add(ref _blobBytes, -removed.Bytes.Length);
                 return AutomationProtocol.Payload(true);
             case AutomationOperation.CurrentPolicy: return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.CurrentPolicy()));
+            case AutomationOperation.CurrentControl: return AutomationProtocol.Payload(_host.ReadControl(id));
             case AutomationOperation.ReadBlobChunk:
                 var read = Arg<AutomationBlobRead>();
                 if (!_blobs.TryGetValue(read.BlobId, out var blob) || blob.Universe != id || read.Offset < 0 || read.Count is < 1 or > 65536 || read.Offset > blob.Bytes.Length - read.Count)

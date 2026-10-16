@@ -9,6 +9,7 @@ public sealed class AutomationControlViewModel : ObservableObject
     private readonly IUserConfirmation _confirmation;
     private string _status = "AutomationHost · conectando";
     private StoredAutomationPolicy? _policy;
+    private AutomationHostControl? _control;
     public string Status { get => _status; private set => Set(ref _status, value); }
     public UiAsyncCommand Refresh { get; }
     public UiAsyncCommand Activate { get; }
@@ -21,8 +22,8 @@ public sealed class AutomationControlViewModel : ObservableObject
         void Failed(Exception error) => Status = "AutomationHost · " + (error is AutomationException a ? a.Code.ToString() : "desconectado o detenido; estado sin confirmar");
         Refresh = new(RefreshAsync, () => true, Failed);
         Activate = new(ActivateAsync, () => _context() is not null && _policy?.IsPreproductionAuthorized == true, Failed);
-        Pause = new(() => Change(AutomationOperation.Pause), () => _context() is not null, Failed);
-        Resume = new(() => Change(AutomationOperation.Resume), () => _context() is not null, Failed);
+        Pause = new(() => Change(AutomationOperation.Pause), () => _context() is not null && _control is { Grant: not null, Paused: false, Stopped: false }, Failed);
+        Resume = new(() => Change(AutomationOperation.Resume), () => _context() is not null && _policy?.IsPreproductionAuthorized == true && _control is { Grant: not null, Paused: true }, Failed);
         Stop = new(StopAsync, () => true, Failed);
     }
     public async Task RefreshAsync()
@@ -31,7 +32,10 @@ public sealed class AutomationControlViewModel : ObservableObject
         var snapshot = AutomationProtocol.Read<AutomationHostSnapshot>(value);
         Status = "AutomationHost · " + snapshot.State + " · " + string.Join(" · ", snapshot.Universes.Select(s => s.UniverseId.Value + ": " + s.State + (s.Diagnostic is null ? "" : " (" + s.Diagnostic + ")")));
         if (_context() is { } c)
+        {
             _policy = AutomationProtocol.Read<StoredAutomationPolicy>(await _client.CallAsync(AutomationOperation.CurrentPolicy, c.Id.Value, new { }));
+            _control = AutomationProtocol.Read<AutomationHostControl>(await _client.CallAsync(AutomationOperation.CurrentControl, c.Id.Value, new { }));
+        }
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh();
     }
     private async Task Change(AutomationOperation operation)

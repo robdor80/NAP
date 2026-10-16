@@ -14,7 +14,7 @@ public enum AutomationOperation
     Dashboard, Pipeline, Prepare, PrepareNormalized, Audit, Execute, Planning, SaveObjective, Backups,
     Backup, PlanRestore, Restore, PlanRetention, Retain, InspectGit, GitReceipts, PlanCommit, Commit,
     RecoverGit, RetryCommit, Push, CatalogPage, CatalogDetail, Statistics, Thumbnail,
-    NormalizationPrepare, NormalizationDecide, NormalizationRead, ReadBlobChunk, CurrentPolicy, ShutdownHost, ReleaseBlob
+    NormalizationPrepare, NormalizationDecide, NormalizationRead, ReadBlobChunk, CurrentPolicy, ShutdownHost, ReleaseBlob, CurrentControl
 }
 public sealed record AutomationRequest(int Version, string RequestId, AutomationOperation Operation,
     string? UniverseId, JsonElement Payload);

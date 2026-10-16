@@ -9,7 +9,7 @@ public sealed class AssetExecutionCoordinator
     public AssetExecutionResult Execute(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processingPlan,
         ArchiveMasterPlan archivePlan, AiAuditReport auditReport, long maxInputPixels)
     {
-        using var access = AutomationManualAccess.Enter(_context);
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         return ExecuteControlled(jobId, package, processingPlan, archivePlan, auditReport, maxInputPixels, null);
     }
 

@@ -8,7 +8,7 @@ public sealed class GitBundleService
     internal Action<string>? Observer { get; set; }
     public BackupHistoryEntry Create(UniverseContext context) => BackupStorage.Run(() =>
     {
-        using var access = AutomationManualAccess.Enter(context);
+        using var access = AutomationManualAccess.EnterLegacy(context);
         using var production = BackupStorage.Production(context);
         var root = Path.TrimEndingDirectorySeparator(context.Storage.ProductionRoot); var metadata = Path.Combine(root, ".git");
         // Reject external configuration before even invoking read-only discovery in a standalone root.

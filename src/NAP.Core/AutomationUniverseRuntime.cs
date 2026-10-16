@@ -13,6 +13,7 @@ public sealed class AutomationUniverseRuntime : IAsyncDisposable
     private readonly Thread _thread;
     private readonly object _gate = new();
     private bool _closing;
+    private int _released;
     public UniverseContext Context { get; }
     public Task Started => _started.Task;
     public Task Completion => _stopped.Task;
@@ -48,7 +49,7 @@ public sealed class AutomationUniverseRuntime : IAsyncDisposable
         try
         {
             var queue = new AutomationQueueStore(Context.Storage);
-            using var owner = queue.AcquireOwner();
+            using var owner = AcquireWithBoundedRetry(queue);
             var scope = new AutomationUniverseScope(Context, queue, owner);
             _started.TrySetResult();
             foreach (var action in _mailbox.GetConsumingEnumerable()) action.Execute(scope);
@@ -63,10 +64,22 @@ public sealed class AutomationUniverseRuntime : IAsyncDisposable
         }
     }
 
+    private AutomationQueueOwner AcquireWithBoundedRetry(AutomationQueueStore queue)
+    {
+        var elapsed = System.Diagnostics.Stopwatch.StartNew();
+        while (true)
+        {
+            try { return queue.AcquireOwner(); }
+            catch (AutomationException error) when (error.Code == AutomationError.Busy && elapsed.Elapsed < TimeSpan.FromSeconds(1))
+            { Thread.Sleep(10); }
+        }
+    }
+
     public async ValueTask DisposeAsync()
     {
-        lock (_gate) { _closing = true; _mailbox.CompleteAdding(); }
-        await Completion.ConfigureAwait(false); // Never abandon a live owner on a timeout.
+        lock (_gate) { if (!_closing) { _closing = true; _mailbox.CompleteAdding(); } }
+        try { await Completion.ConfigureAwait(false); } // Never abandon a live owner on a timeout.
+        finally { if (Interlocked.Exchange(ref _released, 1) == 0) _mailbox.Dispose(); }
     }
 }
 

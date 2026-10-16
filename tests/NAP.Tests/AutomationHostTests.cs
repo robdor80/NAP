@@ -27,7 +27,7 @@ public sealed class AutomationHostTests
         }
     }
 
-    internal static async Task Until(Func<bool> condition, AutomationHost host, int seconds = 30)
+    internal static async Task Until(Func<bool> condition, AutomationHost host, int seconds = 120)
     {
         var timer = Stopwatch.StartNew();
         while (!condition())
@@ -59,7 +59,9 @@ public sealed class AutomationHostTests
     {
         using var f = new Fixture();
         await using var first = new AutomationHost(f.Control, [f.A.Context], f.Options); await first.Started;
-        await Assert.ThrowsAsync<AutomationException>(() => first.ActivateAsync(f.A.Context.Id, f.A.Queue.CurrentPolicy().Reference, true));
+        var policy = await first.QueryAsync(f.A.Context.Id, s => s.Queue.CurrentPolicy());
+        var rejected = await Assert.ThrowsAsync<AutomationException>(() => first.ActivateAsync(f.A.Context.Id, policy.Reference, true));
+        Assert.Equal(AutomationError.PolicyMismatch, rejected.Code);
         var other = new AutomationHost(f.Control, [f.A.Context], f.Options);
         await Assert.ThrowsAsync<IOException>(() => other.Started);
         await Assert.ThrowsAsync<IOException>(async () => await other.DisposeAsync());

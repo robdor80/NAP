@@ -8,6 +8,9 @@ public sealed record AutomationHostOptions
     public long MaxMemoryBytes { get; init; } = 512L * 1024 * 1024;
     public long MaxRetainedBytes { get; init; } = 4L * 1024 * 1024 * 1024;
     public int PageSize { get; init; } = 32;
+    public TimeSpan IdleInterval { get; init; } = TimeSpan.FromMilliseconds(250);
+    [System.Text.Json.Serialization.JsonIgnore]
+    public Action<UniverseId, QueueItemId, string>? LaboratoryCheckpoint { get; init; }
 }
 public sealed record AutomationUniverseStatus(UniverseId UniverseId, AutomationHostState State, long Turns,
     int PendingCandidates, string? Stage, string? Diagnostic, QueueBatchId? BatchId);
@@ -33,12 +36,15 @@ public sealed partial class AutomationHost : IAsyncDisposable
         internal readonly Queue<Task<InboxReadinessObservation>> Probes = new();
         internal DateTimeOffset NextScan;
         internal int Offset;
+        internal bool InitialRecovery = true, RecoveryEndReached, PreferWorkflow;
+        internal DateTimeOffset NextWorkflow;
+        internal QueueItemId? CurrentItem;
         internal readonly Queue<QueueItem> Items = new();
         internal QueueBatchId? Batch;
-        internal bool ScanRequested = true;
+        internal volatile bool ScanRequested = true;
         internal AutomationUniverseStatus Status = new(context.Id, AutomationHostState.Starting, 0, 0, null, null, null);
     }
-    private sealed record Step(string Stage, DurableAuditDispatch? Dispatch = null);
+    private sealed record Step(string Stage, DurableAuditDispatch? Dispatch = null, InboxReadinessObservation? DeferredAdmission = null);
     private readonly string _root;
     private readonly AutomationHostOptions _options;
     private readonly Slot[] _slots;
@@ -61,6 +67,10 @@ public sealed partial class AutomationHost : IAsyncDisposable
     private string? _diagnostic, _installation, _session;
     private int _turn;
     private int _auditReserved;
+    private readonly object _signalGate = new();
+    private bool _signalsClosed;
+    private int _released;
+    private void Signal() { lock (_signalGate) if (!_signalsClosed) _wake.Set(); }
     public Task Started => _started.Task;
     public Task Completion => _stopped.Task;
     public AutomationHostControlStore Controls { get; }
@@ -77,6 +87,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         InboxAdmissionEvidence.DirectoryBoundary(lab); InboxAdmissionEvidence.DirectoryBoundary(_root);
         _slots = contexts.Select(c => new Slot(c)).ToArray();
         if (_slots.Length is < 1 or > 64 || options.PageSize is < 1 or > 1000 || options.MaxMemoryBytes < 1 || options.MaxRetainedBytes < 1 ||
+            options.IdleInterval < TimeSpan.FromMilliseconds(25) || options.IdleInterval > TimeSpan.FromSeconds(30) ||
             _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }.Any(r => !ProductionPaths.Within(lab, r))))
             throw AutomationValidation.Invalid("All host roots and budgets must belong to the isolated laboratory.");
         options.Admission.Validate();
@@ -86,6 +97,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
 
     public AutomationHostSnapshot Snapshot()
     { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic); }
+    public AutomationHostControl ReadControl(UniverseId universe)
+    { _ = Find(universe); lock (_controlsGate) return Controls.Read(universe); }
 
     public async Task<T> QueryAsync<T>(UniverseId universe, Func<AutomationUniverseScope, T> query, CancellationToken cancellation = default)
     {
@@ -187,7 +200,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
             var previous = Controls.Read(universe);
             var command = new AutomationControlCommand(id ?? "command_" + Guid.NewGuid().ToString("N"), universe,
                 previous.Revision, action, SessionId, grant, item);
-            var current = Controls.Apply(command); _controls[universe] = current; _wake.Set(); return current;
+            var current = Controls.Apply(command); _controls[universe] = current; Signal(); return current;
         }
     }
 
@@ -231,8 +244,9 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var admission = _options.Admission with { MaxRetainedBytes = Math.Min(_options.Admission.MaxRetainedBytes, _options.MaxRetainedBytes / _slots.Length / 2) };
                 slot.Admission = new(slot.Context, new(slot.Context.Storage), admission);
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
-                slot.RunControl = new((item, _) => !Allowed(slot, item));
+                slot.RunControl = new((item, boundary) => { _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); return !Allowed(slot, item); });
                 slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
+                slot.Execution.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };
                 slot.RuntimeState = new(slot.Context);
             }
             _started.TrySetResult();
@@ -247,7 +261,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 }
                 _turn = (_turn + 1) % _slots.Length;
                 lock (_gate) _state = _slots.Any(s => s.Status.State == AutomationHostState.Running) ? AutomationHostState.Running :
-                    _slots.Any(s => s.Status.State is AutomationHostState.Blocked or AutomationHostState.Degraded) ? AutomationHostState.Degraded : AutomationHostState.Paused;
+                    _slots.Any(s => s.Status.State is AutomationHostState.Blocked or AutomationHostState.Degraded) ? AutomationHostState.Degraded :
+                    _slots.All(s => s.Status.State == AutomationHostState.Disabled) ? AutomationHostState.Disabled : AutomationHostState.Paused;
                 _wake.WaitOne(25);
             }
         }
@@ -268,7 +283,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 if (_http is not null) _ = _http.GetAwaiter().GetResult();
             }
             catch (Exception error) { fatal ??= error; }
-            instance?.Dispose();
+            try { instance?.Dispose(); } catch (Exception error) { fatal ??= error; }
             lock (_gate) { if (fatal is null) _state = AutomationHostState.Stopped; else { _state = AutomationHostState.Blocked; _diagnostic = Code(fatal); } }
             if (fatal is null) _stopped.TrySetResult(); else _stopped.TrySetException(fatal);
         }
@@ -282,6 +297,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             if (!work.IsCompleted) { if (!Allowed(slot)) Set(slot, AutomationHostState.Pausing, "draining"); return; }
             slot.Work = null; var result = work.GetAwaiter().GetResult();
+            if (result.DeferredAdmission is { } deferred) slot.Probes.Enqueue(Task.FromResult(deferred));
+            if (result.Stage == "idle") slot.NextWorkflow = DateTimeOffset.UtcNow + _options.IdleInterval;
             Set(slot, Allowed(slot) ? AutomationHostState.Running : AutomationHostState.Paused, result.Stage, increment: true);
             if (result.Dispatch is { } dispatch)
             {
@@ -289,7 +306,11 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 _http = AutomationAuditTransport.SendAsync(dispatch, _auditor!, _transportStop.Token);
             }
         }
-        if (!Allowed(slot)) { Set(slot, AutomationHostState.Paused, "paused"); return; }
+        if (!Allowed(slot))
+        {
+            lock (_controlsGate) Set(slot, _controls[slot.Context.Id].Grant is null ? AutomationHostState.Disabled : AutomationHostState.Paused, "paused");
+            return;
+        }
         Set(slot, AutomationHostState.Running, slot.Status.Stage);
         EnsureWatcher(slot);
         if (slot.Batch is null && (slot.ScanRequested || DateTimeOffset.UtcNow >= slot.NextScan))
@@ -304,25 +325,37 @@ public sealed partial class AutomationHost : IAsyncDisposable
             if (!slot.Scan.MoveNext()) { slot.Scan.Dispose(); slot.Scan = null; break; }
             slot.Probes.Enqueue(slot.Admission!.ProbeAsync(slot.Scan.Current.FullPath, _transportStop.Token));
         }
-        if (slot.Probes.TryPeek(out var probe) && probe.IsCompleted)
+        if (!slot.PreferWorkflow && slot.Probes.TryPeek(out var probe) && probe.IsCompleted)
         {
             slot.Probes.Dequeue(); var observation = probe.GetAwaiter().GetResult();
             slot.Work = slot.Runtime.InvokeAsync(s =>
             {
                 if (!Allowed(slot)) return new Step("paused"); RequireGrant(slot, s);
+                var limit = s.Queue.CurrentPolicy().Definition.Resources.MaxPendingItems; int pending = 0;
+                for (var offset = 0; ; offset += 100)
+                {
+                    var page = s.Queue.List(offset, 100); pending += page.Count(i => i.State is QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled);
+                    if (pending >= limit) return new Step("admission-backpressure", DeferredAdmission: observation);
+                    if (page.Count < 100) break;
+                }
                 slot.Admission!.AdmitReady(s.Owner, observation, slot.Batch); return new Step("admission");
-            }); return;
+            }); slot.PreferWorkflow = true; return;
         }
         if (slot.Batch is { } batch && slot.Scan is null && slot.Probes.Count == 0 && slot.Status.Stage != "batch-open")
         {
             slot.Work = slot.Runtime.InvokeAsync(s => { slot.RuntimeState!.CloseCapture(s.Owner, s.Queue, batch); return new Step("batch-closed"); }); slot.Batch = null; return;
         }
-        if (!_heavy.Wait(0)) return;
+        if (DateTimeOffset.UtcNow < slot.NextWorkflow || !_heavy.Wait(0)) return;
+        slot.PreferWorkflow = false; int entered = 0, released = 0;
+        void Release() { if (Interlocked.Exchange(ref released, 1) == 0) _heavy.Release(); }
         slot.Work = slot.Runtime.InvokeAsync(s =>
         {
+            Interlocked.Exchange(ref entered, 1);
             try { return WorkflowStep(slot, s); }
-            finally { _heavy.Release(); }
+            finally { Release(); }
         });
+        _ = slot.Work.ContinueWith(_ => { if (Volatile.Read(ref entered) == 0) Release(); Signal(); }, CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
     }
 
     private Step WorkflowStep(Slot slot, AutomationUniverseScope scope)
@@ -330,13 +363,21 @@ public sealed partial class AutomationHost : IAsyncDisposable
         if (!Allowed(slot)) return new("paused"); RequireGrant(slot, scope);
         if (slot.Items.Count == 0)
         {
+            if (slot.RecoveryEndReached) slot.InitialRecovery = false;
             var page = scope.Queue.List(slot.Offset, _options.PageSize); slot.Offset += page.Count;
-            if (page.Count < _options.PageSize) slot.Offset = 0;
+            if (page.Count < _options.PageSize) { slot.Offset = 0; slot.RecoveryEndReached = true; }
             foreach (var candidate in page) slot.Items.Enqueue(candidate);
         }
         while (slot.Items.TryDequeue(out var queued))
         {
             var item = scope.Queue.Get(queued.Id);
+            slot.CurrentItem = item.Id;
+            if (slot.InitialRecovery && item.State == QueueState.Completed && Allowed(slot, item.Id) && scope.Queue.GetPolicy(item.Policy).IsExecutionAuthorized)
+            {
+                var verified = slot.Execution!.Execute(scope.Owner, item.Id, slot.RunControl);
+                if (verified.Code == DurableExecutionCode.Suspended) slot.Items.Enqueue(item);
+                return new("verify-completed");
+            }
             if (!Allowed(slot, item.Id) || item.State is not (QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled or QueueState.MissingSource)) continue;
             if (_dispatch?.ItemId == item.Id && _dispatch.UniverseId == slot.Context.Id) continue;
             if (item.State == QueueState.RetryScheduled)
@@ -401,9 +442,9 @@ public sealed partial class AutomationHost : IAsyncDisposable
         if (slot.Watcher is not null) return;
         InboxAdmissionEvidence.DirectoryBoundary(slot.Context.Storage.InboxRoot);
         var watcher = new FileSystemWatcher(slot.Context.Storage.InboxRoot) { IncludeSubdirectories = false, Filter = "*", NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite };
-        void Signal() { slot.ScanRequested = true; _wake.Set(); }
-        watcher.Created += (_, _) => Signal(); watcher.Changed += (_, _) => Signal(); watcher.Deleted += (_, _) => Signal();
-        watcher.Renamed += (_, _) => Signal(); watcher.Error += (_, _) => Signal(); watcher.EnableRaisingEvents = true; slot.Watcher = watcher;
+        void Changed() { slot.ScanRequested = true; Signal(); }
+        watcher.Created += (_, _) => Changed(); watcher.Changed += (_, _) => Changed(); watcher.Deleted += (_, _) => Changed();
+        watcher.Renamed += (_, _) => Changed(); watcher.Error += (_, _) => Changed(); watcher.EnableRaisingEvents = true; slot.Watcher = watcher;
     }
 
     private void Set(Slot slot, AutomationHostState state, string? stage, string? diagnostic = null, bool increment = false)
@@ -427,10 +468,18 @@ public sealed partial class AutomationHost : IAsyncDisposable
             finally { _stopping = true; }
         }
         lock (_gate) { _state = AutomationHostState.Stopping; if (failure is not null) _diagnostic = "stop_not_persisted:" + Code(failure); }
-        _transportStop.Cancel(); _wake.Set();
+        _transportStop.Cancel(); Signal();
     }
     public async ValueTask DisposeAsync()
-    { RequestStop(); await Completion.ConfigureAwait(false); }
+    {
+        RequestStop();
+        try { await Completion.ConfigureAwait(false); }
+        finally
+        {
+            if (Interlocked.Exchange(ref _released, 1) == 0)
+            { lock (_signalGate) { _signalsClosed = true; _wake.Dispose(); } _transportStop.Dispose(); }
+        }
+    }
 }
 
 internal static class AutomationHostPolicyBudget

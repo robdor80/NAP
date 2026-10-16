@@ -1,0 +1,365 @@
+[
+  {
+    "file": "artifacts/phase5/baseline/phase5-baseline.trx",
+    "sha256": "6d3a7cbb47aeee914c31e0100d39e80ca2197d34b8d9b01115f23284b849abda",
+    "start": "2026-10-16T12:30:50.6026209+02:00",
+    "finish": "2026-10-16T12:34:05.4666347+02:00",
+    "total": 98,
+    "passed": 94,
+    "failed": 4,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p51/p51.trx",
+    "sha256": "657952e1fc3928f4989e57bb5825cdfae29878756b3cd3a0b98a590d42702b78",
+    "start": "2026-10-16T12:33:07.3402383+02:00",
+    "finish": "2026-10-16T12:33:11.2358163+02:00",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-compatibility-corrections.trx",
+    "sha256": "314fafce9c731b981cd7d6624815ac4afa76919a7b355814e6287289c291e2a0",
+    "start": "2026-10-16T13:34:58.8264830+02:00",
+    "finish": "2026-10-16T13:35:12.4905004+02:00",
+    "total": 101,
+    "passed": 101,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-scheduler-corrections.trx",
+    "sha256": "01dfe13e57678f04f2083f8b06a1b78a2d2be9ea4029ccf17534fb145477b1f1",
+    "start": "2026-10-16T13:36:45.7887361+02:00",
+    "finish": "2026-10-16T13:36:56.3469068+02:00",
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52-final.trx",
+    "sha256": "46897e82a5c579f43cc019c66245a723f77266821871ee88fd3a54c5b6c507cd",
+    "start": "2026-10-16T12:35:13.3773038+02:00",
+    "finish": "2026-10-16T12:35:15.2716295+02:00",
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52-rollback.trx",
+    "sha256": "4e070d52a4cfb86a05486be419d91782911f5bfdbfcb8e616e1e87e392d615e9",
+    "start": "2026-10-16T12:35:38.5174012+02:00",
+    "finish": "2026-10-16T12:35:39.8859430+02:00",
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52.trx",
+    "sha256": "ce8788f14ae8fc3add908e9c0a1302bb2b60140b4e4b1bec94f42a5cbc07d4ac",
+    "start": "2026-10-16T12:34:48.9918232+02:00",
+    "finish": "2026-10-16T12:34:50.8562321+02:00",
+    "total": 6,
+    "passed": 4,
+    "failed": 2,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationHostControlTests.CorruptControlIsPreservedAndStorageCannotOverlapUniverse",
+      "NAP.Tests.AutomationHostControlTests.PauseSurvivesReopenAndCommandReplayCannotChangeMeaning"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p53/p53-final.trx",
+    "sha256": "8396ebb2b405bf023b499b3e6b6b9f3645a512bfebdf187834e5760926ef1114",
+    "start": "2026-10-16T12:37:54.5210652+02:00",
+    "finish": "2026-10-16T12:37:56.2813376+02:00",
+    "total": 15,
+    "passed": 14,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.UniverseProfileImportTests.RodoPresentationPngPreservesPinnedDimensionsTransparencyAndDecodedPixels"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p53/p53-staged.trx",
+    "sha256": "dc05f779857b181b13fb1b0b86fe48b41b91310d0d3bc42986136b08bc779c07",
+    "start": "2026-10-16T12:38:05.1677154+02:00",
+    "finish": "2026-10-16T12:38:07.0951748+02:00",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p53/p53.trx",
+    "sha256": "b26bf7d1942911ce02e5f3e1b0730a55185b1e738652cfe0bc420a0cf8c35e93",
+    "start": "2026-10-16T12:36:50.7161076+02:00",
+    "finish": "2026-10-16T12:37:24.0076363+02:00",
+    "total": 44,
+    "passed": 43,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p54/p54-shared-transport.trx",
+    "sha256": "ad0951ace4e24acfe2df054c93a9264181ba868f45b3db5df10689dbd64b49db",
+    "start": "2026-10-16T12:41:13.1478109+02:00",
+    "finish": "2026-10-16T12:41:19.3895910+02:00",
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p54/p54.trx",
+    "sha256": "f956954e38fc1d01ab7b128f528f33d66a30162e6811cd156a9c6ad352291aba",
+    "start": "2026-10-16T12:39:21.9519817+02:00",
+    "finish": "2026-10-16T12:40:43.4840557+02:00",
+    "total": 53,
+    "passed": 53,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p55/p55.trx",
+    "sha256": "a0cc9bc87842b9f7fd77b5a8c6a8a26ede584c723ed875962318a4cf72b2574c",
+    "start": "2026-10-16T12:45:09.3385315+02:00",
+    "finish": "2026-10-16T12:45:22.7131202+02:00",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p56/p56-control-final.trx",
+    "sha256": "1f9790acfb62f5cee4fcda6dba0ce33d70e6b68c42a2bbc112ed3901467f1abd",
+    "start": "2026-10-16T12:48:04.8433428+02:00",
+    "finish": "2026-10-16T12:48:15.4803253+02:00",
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p56/p56.trx",
+    "sha256": "29293bf1e696e51d2ce86d9d7a1c4d8a0f849ac93e9990d2d22cd994a0739d98",
+    "start": "2026-10-16T12:46:53.7692449+02:00",
+    "finish": "2026-10-16T12:47:23.4999869+02:00",
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p57/p57-diagnosis.trx",
+    "sha256": "d585b6f1c58e58c4b863e6ad8399355c67d21b0773715188aaf81391b0387fe7",
+    "start": "2026-10-16T12:51:41.9024625+02:00",
+    "finish": "2026-10-16T12:52:13.5412351+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p57/p57-final.trx",
+    "sha256": "d491c1c15b3b7f0180cb7114a2635549bc19fb6adf19f367092c762e34eadcf4",
+    "start": "2026-10-16T12:52:19.2785673+02:00",
+    "finish": "2026-10-16T12:52:29.4582413+02:00",
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p57/p57.trx",
+    "sha256": "eaca21dbba45076a7b84ef3dfc4e50a396b18c0effcbdf89e0dce281425d7b48",
+    "start": "2026-10-16T12:49:53.4830894+02:00",
+    "finish": "2026-10-16T12:50:25.2615057+02:00",
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p58/p58-final.trx",
+    "sha256": "aeaaaef5742c07e6f692b793a18a71e0bcbd0985b2004e527046a0bbf34a616a",
+    "start": "2026-10-16T12:56:14.6537772+02:00",
+    "finish": "2026-10-16T12:56:15.8686553+02:00",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop-final.trx",
+    "sha256": "cbf878f6d53329647b506780a15f5b813fbedcc74e77ae655843f8fdefeffcc2",
+    "start": "2026-10-16T13:05:34.3125880+02:00",
+    "finish": "2026-10-16T13:05:38.9952651+02:00",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop-thumbnails.trx",
+    "sha256": "1dacd8aef1ad960561a3f9ea9f8e580d7895a12d3e00b752b56ad80e252dab96",
+    "start": "2026-10-16T13:11:15.7801406+02:00",
+    "finish": "2026-10-16T13:11:33.8890041+02:00",
+    "total": 23,
+    "passed": 23,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop.trx",
+    "sha256": "9b0ee085b7351cbdc13b90198fcf889f6624ad3cade8fd0ebcd526d59b9b73be",
+    "start": "2026-10-16T13:04:54.6269880+02:00",
+    "finish": "2026-10-16T13:04:58.5728111+02:00",
+    "total": 2,
+    "passed": 0,
+    "failed": 2,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteManualPipelineKeepsNativeAuthorityInHostAndPreservesBackupFunctions",
+      "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-diagnosis.trx",
+    "sha256": "49c82e637ad1d12cc9569d71994ae7452de4f9b4795635e141a99993021e77ca",
+    "start": "2026-10-16T13:05:20.3991838+02:00",
+    "finish": "2026-10-16T13:05:22.8744651+02:00",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-final.trx",
+    "sha256": "bb7b71d588d2143b1fd971a1cda1be0acf66046d4bd70562d06cdafef4bd15d3",
+    "start": "2026-10-16T13:19:46.9731677+02:00",
+    "finish": "2026-10-16T13:20:00.8221613+02:00",
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-manual-complete.trx",
+    "sha256": "9ee9cd34959fd4a20ccb336d52741795fed98dafa1843d50224ab06f07cd564b",
+    "start": "2026-10-16T13:18:37.4474837+02:00",
+    "finish": "2026-10-16T13:18:51.5785485+02:00",
+    "total": 5,
+    "passed": 4,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-ownership.trx",
+    "sha256": "5f7af859274bbb08ead083c429a0dd4d91c34ca2d3106c487124d24540cd42b8",
+    "start": "2026-10-16T13:07:56.0055911+02:00",
+    "finish": "2026-10-16T13:08:18.0736793+02:00",
+    "total": 31,
+    "passed": 30,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.ProductionThumbnailTests.GridAndDetailCanRequestSameMissingThumbnailConcurrently"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-regression.trx",
+    "sha256": "ef59338bf599ac7d4243f7d4403ea7f6a62222126f0d09b539dbd51a9f6ca7ac",
+    "start": "2026-10-16T13:13:34.9773336+02:00",
+    "finish": "2026-10-16T13:14:14.0642543+02:00",
+    "total": 84,
+    "passed": 84,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-remote-wpf.trx",
+    "sha256": "67581d82ee649d5dd74f5acd376427c1c6a5073a7d1eced5e938182032443abd",
+    "start": "2026-10-16T13:16:39.3410636+02:00",
+    "finish": "2026-10-16T13:16:44.4754080+02:00",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx",
+    "sha256": "6f4f4fdba272a577a89f7d3b5d343e5402f24eb5901a4292c8f5a6e60d6a1d91",
+    "start": "2026-10-16T13:23:02.3154502+02:00",
+    "finish": "2026-10-16T13:28:41.6888412+02:00",
+    "total": 3742,
+    "passed": 3724,
+    "failed": 18,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+      "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+      "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+      "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+      "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+      "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+      "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+      "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+      "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+      "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter"
+    ]
+  }
+]
