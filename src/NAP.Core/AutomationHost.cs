@@ -26,6 +26,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         internal DurablePreparationService? Preparation;
         internal DurableExecutionService? Execution;
         internal WorkflowRunControl? RunControl;
+        internal AutomationRuntimeStateStore? RuntimeState;
         internal Task<Step>? Work;
         internal FileSystemWatcher? Watcher;
         internal IEnumerator<InboxPackageCandidate>? Scan;
@@ -85,6 +86,17 @@ public sealed partial class AutomationHost : IAsyncDisposable
 
     public AutomationHostSnapshot Snapshot()
     { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic); }
+
+    public async Task<T> QueryAsync<T>(UniverseId universe, Func<AutomationUniverseScope, T> query, CancellationToken cancellation = default)
+    {
+        await Started.ConfigureAwait(false); var slot = Find(universe); await slot.Runtime!.Started.ConfigureAwait(false);
+        return await slot.Runtime.InvokeAsync(query, cancellation).ConfigureAwait(false);
+    }
+
+    public Task<IReadOnlyList<AutomationBatchProjection>> BatchesAsync(UniverseId universe, int offset = 0, int limit = 100,
+        CancellationToken cancellation = default) => QueryAsync<IReadOnlyList<AutomationBatchProjection>>(universe, s =>
+            new AutomationRuntimeStateStore(s.Context).List(s.Owner, offset, limit).Select(c =>
+                new AutomationBatchProjection(c, s.Queue.BatchSummary(c.BatchId))).ToArray(), cancellation);
 
     public async Task<AutomationHostControl> ActivateAsync(UniverseId universe, PolicyReference policy, bool resumeOnRestart,
         string? commandId = null, CancellationToken cancellation = default)
@@ -166,6 +178,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
                 slot.RunControl = new((item, _) => !Allowed(slot, item));
                 slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
+                slot.RuntimeState = new(slot.Context);
             }
             _started.TrySetResult();
             while (!_stopping)
@@ -227,7 +240,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         if (slot.Batch is null && (slot.ScanRequested || DateTimeOffset.UtcNow >= slot.NextScan))
         {
             slot.ScanRequested = false; slot.NextScan = DateTimeOffset.UtcNow + _options.Admission.RescanInterval;
-            slot.Work = slot.Runtime.InvokeAsync(s => { RequireGrant(slot, s); slot.Batch = s.Queue.CreateBatch(s.Owner).Id; return new Step("batch-open"); }); return;
+            slot.Work = slot.Runtime.InvokeAsync(s => { RequireGrant(slot, s); slot.Batch = slot.RuntimeState!.OpenCapture(s.Owner, s.Queue, SessionId); return new Step("batch-open"); }); return;
         }
         if (slot.Batch is not null && slot.Scan is null && slot.Probes.Count == 0 && slot.Status.Stage == "batch-open")
             slot.Scan = new InboxPackageDetector().Enumerate(slot.Context.Storage.InboxRoot).GetEnumerator();
@@ -247,7 +260,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         }
         if (slot.Batch is { } batch && slot.Scan is null && slot.Probes.Count == 0 && slot.Status.Stage != "batch-open")
         {
-            slot.Work = slot.Runtime.InvokeAsync(s => { s.Queue.CloseBatch(s.Owner, batch); return new Step("batch-closed"); }); slot.Batch = null; return;
+            slot.Work = slot.Runtime.InvokeAsync(s => { slot.RuntimeState!.CloseCapture(s.Owner, s.Queue, batch); return new Step("batch-closed"); }); slot.Batch = null; return;
         }
         if (!_heavy.Wait(0)) return;
         slot.Work = slot.Runtime.InvokeAsync(s =>
@@ -306,7 +319,13 @@ public sealed partial class AutomationHost : IAsyncDisposable
 
     private void HarvestAudit()
     {
-        if (_http is null || !_http.IsCompleted || _auditSlot!.Work is not null) return;
+        if (_http is null || !_http.IsCompleted || _auditSlot!.Work is { IsCompleted: false }) return;
+        if (_auditSlot.Work is { } prior)
+        {
+            _auditSlot.Work = null;
+            var completed = prior.GetAwaiter().GetResult();
+            Set(_auditSlot, Allowed(_auditSlot) ? AutomationHostState.Running : AutomationHostState.Paused, completed.Stage, increment: true);
+        }
         var outcome = _http.GetAwaiter().GetResult(); var slot = _auditSlot!; var dispatch = _dispatch!;
         _http = null; _remote = outcome.RemoteCompletion;
         slot.Work = slot.Runtime!.InvokeAsync(s =>

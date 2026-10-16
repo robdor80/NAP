@@ -39,3 +39,9 @@ Validation: host startup/authority, two-universe same-AssetId execution with sen
 WorkflowRunControl inhibits only at complete admission/preparation receipts and outer execution-file/journal/catalog boundaries. Inner rename/publication callbacks cannot suspend before native ownership is recorded. Suspended execution retains Running/claim and returns a distinct result; resumption revalidates the same Job. Host stop persists per-universe Stop before draining, with a separate diagnostic if persistence fails; it never kills an owner. Control command replay preserves its original meaning across sessions without rolling current state back.
 
 Validation: suspension after archive file/index, production native receipt, catalog commit and COMPLETED journal; original preservation/resume; host regressions **9/9 passed** (`p56.trx`, 28 s). Actual process-kill recovery, durable host cancellation and automatic-restart conditions will also be exercised in P5.10. No power-loss certification is implied.
+
+## P5.7 — durable capture and projections
+
+Versioned per-universe RuntimeState store records cohort intent before idempotent queue creation. A restart reuses the open cohort; queue-close/runtime-close interruptions reconcile without inventing another processing attempt. Read projections report current durable outcomes for closed cohorts and are paginated. Capture validation streams its rows.
+
+The first end-to-end summary test exposed a scheduler defect: an already-completed idle turn could indefinitely postpone accepting an HTTP response in a single-universe host. The controller now collects that completed turn before accepting the response. The failed runs remain in `p57.trx` and `p57-diagnosis.trx`. Final batch+host tests **5/5 passed** (`p57-final.trx`, 9 s), including closed-cohort COMPLETED evidence. P5.8–P5.10 pending.
