@@ -23,6 +23,22 @@
     ]
   },
   {
+    "file": "artifacts/phase5/cloud-resume/admission1000-baseline.trx",
+    "sha256": "ca50a667d8426ac46d1d39c5b820162b6fb723760a7ea3343928d336898b7e16",
+    "start": "2026-10-18T07:15:31.5256898+00:00",
+    "finish": "2026-10-18T07:31:21.9338755+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/cloud-resume/authority-and-storage.trx",
     "sha256": "aaaacd267bfb7d1a2bae42b7690efcfceab3a5afae743117fd0610a7fe4520ec",
     "start": "2026-10-18T07:23:41.6497611+00:00",
@@ -50,6 +66,28 @@
     "total": 9,
     "executed": 9,
     "passed": 9,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/portable-regression.trx",
+    "sha256": "8c99ce996d3f3f5fbdf223a419b2e408738e8d05715a3dcd0392a41f95989a62",
+    "start": "2026-10-18T07:19:18.8607162+00:00",
+    "finish": "2026-10-18T07:28:52.6030630+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:02:58.91]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:03:15.24]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]",
+      "[xUnit.net 00:03:33.26]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]"
+    ],
+    "total": 3780,
+    "executed": 3773,
+    "passed": 3773,
     "failed": 0,
     "notExecuted": 0,
     "failedTests": []
