@@ -35,6 +35,7 @@ public sealed class AutomationVolumeTests(ITestOutputHelper output)
             await f.Client.CallAsync(AutomationOperation.Activate, fixtures[n].Context.Id.Value, new AutomationActivation(policies[n].Reference, false));
         var total = 0; var nextSample = TimeSpan.Zero; var nextDisk = TimeSpan.Zero;
         IoCounters? io = null;
+        IReadOnlyDictionary<string, ulong>? linuxIo = null;
         try
         {
             while (total < count)
@@ -84,6 +85,7 @@ public sealed class AutomationVolumeTests(ITestOutputHelper output)
             Assert.True(peakPrivate < 1024L * 1024 * 1024, $"Host private bytes {peakPrivate}");
             Assert.True(peakHandles < 2048); Assert.True(peakThreads < 128);
             if (OperatingSystem.IsWindows() && GetProcessIoCounters(process.Handle, out var counters)) io = counters;
+            linuxIo = ReadLinuxIo(process);
             await f.StopAsync();
             foreach (var universe in fixtures)
             {
@@ -99,14 +101,29 @@ public sealed class AutomationVolumeTests(ITestOutputHelper output)
         finally
         {
             total = previous.Sum(); // an assertion may interrupt the per-universe accumulation
+            if (total < count) await f.PreserveFailureAsync();
             if (!process.HasExited && OperatingSystem.IsWindows() && GetProcessIoCounters(process.Handle, out var counters)) io = counters;
+            if (!process.HasExited) linuxIo = ReadLinuxIo(process);
             disk.Add(Disk(f, timer.Elapsed.TotalSeconds));
             var evidence = new { count, total, elapsedSeconds = timer.Elapsed.TotalSeconds, peakWorking, peakPrivate, peakHandles, peakThreads,
-                maxPending, maximumProgressGapSeconds = maximumProgressGap.TotalSeconds, firstCompleted, io, samples, disk };
+                maxPending, maximumProgressGapSeconds = maximumProgressGap.TotalSeconds, firstCompleted, io, linuxIo, samples, disk };
             var json = JsonSerializer.Serialize(evidence, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true });
             var directory = Path.Combine(AutomationHostProcessFixture.Repository, "artifacts/phase5/p510/metrics"); Directory.CreateDirectory(directory);
             File.WriteAllText(Path.Combine(directory, $"automation-{count}-{DateTime.UtcNow:HHmmss}.json"), json); output.WriteLine(json);
         }
+    }
+
+    private static IReadOnlyDictionary<string, ulong>? ReadLinuxIo(Process process)
+    {
+        if (!OperatingSystem.IsLinux()) return null;
+        try
+        {
+            var allowed = new HashSet<string>(["rchar", "wchar", "syscr", "syscw", "read_bytes", "write_bytes", "cancelled_write_bytes"], StringComparer.Ordinal);
+            return File.ReadAllLines($"/proc/{process.Id}/io").Select(line => line.Split(':', 2))
+                .Where(parts => parts.Length == 2 && allowed.Contains(parts[0]))
+                .ToDictionary(parts => parts[0], parts => ulong.Parse(parts[1].Trim()), StringComparer.Ordinal);
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException) { return null; }
     }
 
     private static object Disk(AutomationHostProcessFixture f, double seconds)

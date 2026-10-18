@@ -21,6 +21,7 @@ public sealed partial class DurablePreparationService
     private readonly PackagePreparationService _preparation = new();
     private readonly TimeProvider _clock;
     internal Action<string>? Checkpoint { get; set; }
+    internal Action<QueueItemId, Exception>? StorageFailure { get; set; }
     public WorkflowRunControl? RunControl { get; set; }
     public DurablePreparationService(UniverseContext context, AutomationQueueStore queue, TimeProvider? clock = null)
     {
@@ -193,7 +194,12 @@ public sealed partial class DurablePreparationService
         catch (Exception e) when (e is InvalidDataException or JsonException or ProductionStorageException or ArchiveStorageException)
         { return Park(owner, _queue.Get(id), record, PreparationCode.EvidenceChanged); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-        { return Park(owner, _queue.Get(id), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, id, record, e); }
+    }
+    private PreparationResult ParkStorageFailure(AutomationQueueOwner owner, QueueItemId id, PreparationRecord? record, Exception error)
+    {
+        StorageFailure?.Invoke(id, error);
+        return Park(owner, _queue.Get(id), record, PreparationCode.StorageUnavailable);
     }
     private PreparationRecord? GetRecord(QueueItemId id)
     { try { return _state.Get(id); } catch (AutomationException e) when (e.Code == AutomationError.Missing) { return null; } }

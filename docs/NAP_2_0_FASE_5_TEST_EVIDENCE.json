@@ -23,6 +23,103 @@
     ]
   },
   {
+    "file": "artifacts/phase5/cloud-resume/authority-and-storage.trx",
+    "sha256": "aaaacd267bfb7d1a2bae42b7690efcfceab3a5afae743117fd0610a7fe4520ec",
+    "start": "2026-10-18T07:23:41.6497611+00:00",
+    "finish": "2026-10-18T07:25:27.8732204+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 59,
+    "executed": 59,
+    "passed": 59,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/diagnostics-and-proof.trx",
+    "sha256": "99cdd6d8c05c7de154c13931c5823868ad3dbd370d58a423da7d62f41015fbb2",
+    "start": "2026-10-18T07:18:01.4597339+00:00",
+    "finish": "2026-10-18T07:18:19.0089232+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 9,
+    "executed": 9,
+    "passed": 9,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/shared-proof-and-authority.trx",
+    "sha256": "0c5d42ab35db62a481978614d25c3181341b2858cb65abbb2ae86b8cc88dadb8",
+    "start": "2026-10-18T07:26:08.0986458+00:00",
+    "finish": "2026-10-18T07:27:42.6913243+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 60,
+    "executed": 60,
+    "passed": 60,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/symlinks.trx",
+    "sha256": "3aefddcb3444ec510867545b174e7fb837b1861c9aa02997c420811565098af1",
+    "start": "2026-10-18T07:13:35.2473577+00:00",
+    "finish": "2026-10-18T07:13:38.8117163+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/volume100-diagnostic-v2.trx",
+    "sha256": "8997b8fdaad63fa1d898fe30865c59c2a8e33bff800b26bfe0cb54d961a56383",
+    "start": "2026-10-18T07:13:24.7033197+00:00",
+    "finish": "2026-10-18T07:23:57.1077012+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/volume100-diagnostic.trx",
+    "sha256": "a02c6746182139d883c13908d62a5fee66d32b6d794f977645c4e45d882960f3",
+    "start": "2026-10-18T07:13:08.5492548+00:00",
+    "finish": "2026-10-18T07:13:10.4515057+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.06] NAP.Tests: Exception filtering tests: Incorrect format for TestCaseFilter Error: Missing '('. Specify the correct format and try again. Note that the incorrect format can lead to no test getting executed.",
+      "No test matches the given testcase filter `FullyQualifiedName~AutomationVolumeTests&DisplayName~count: 100)` in /workspace/NAP/tests/NAP.Tests/bin/Release/net8.0/NAP.Tests.dll"
+    ],
+    "total": 0,
+    "executed": 0,
+    "passed": 0,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/final/p510-final-complete-regression.trx",
     "sha256": "96cfbd827da0335eb611ae2fce18b5a88b814f319a9d0fedeff24ed1f84f252a",
     "start": "2026-10-16T23:48:29.7816377+02:00",

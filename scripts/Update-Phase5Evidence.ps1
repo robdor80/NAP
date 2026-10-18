@@ -3,6 +3,7 @@ param([string]$RepositoryRoot = (Split-Path $PSScriptRoot -Parent),
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath($RepositoryRoot)
 $artifactRoot = Join-Path $taskRoot 'artifacts/phase5'
+$manifestPath = Join-Path $taskRoot 'docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json'
 $entries = @(Get-ChildItem -LiteralPath $artifactRoot -Filter '*.trx' -Recurse | Sort-Object FullName | ForEach-Object {
     [xml]$report = [IO.File]::ReadAllText($_.FullName)
     $counters = $report.TestRun.ResultSummary.Counters
@@ -14,6 +15,7 @@ $entries = @(Get-ChildItem -LiteralPath $artifactRoot -Filter '*.trx' -Recurse |
         runOutcome = [string]$report.TestRun.ResultSummary.outcome
         runMessages = @($report.TestRun.ResultSummary.RunInfos.RunInfo | ForEach-Object { [string]$_.Text })
         total = [int]$counters.total
+        executed = [int]$counters.executed
         passed = [int]$counters.passed
         failed = [int]$counters.failed
         notExecuted = [int]$counters.notExecuted
@@ -21,7 +23,22 @@ $entries = @(Get-ChildItem -LiteralPath $artifactRoot -Filter '*.trx' -Recurse |
     }
 })
 if ($entries.Count -eq 0) { throw 'No retained Phase 5 TRX evidence was found.' }
-$entries | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath (Join-Path $taskRoot 'docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json') -Encoding utf8NoBOM
+# A recovered cloud checkout may retain older raw runs only in the committed evidence ZIP.
+# Index new files without erasing those verified historical records or relabeling their outcomes.
+$indexed = [Collections.Generic.Dictionary[string,object]]::new([StringComparer]::Ordinal)
+if (Test-Path -LiteralPath $manifestPath) {
+    $storedManifest = [Text.Json.JsonDocument]::Parse([IO.File]::ReadAllText($manifestPath))
+    try {
+        foreach ($element in $storedManifest.RootElement.EnumerateArray()) {
+            $entry = $element.GetRawText() | ConvertFrom-Json -AsHashtable
+            # PowerShell 7.4 converts ISO strings to DateTime and changes their original offset.
+            foreach ($name in @('start', 'finish')) { $entry[$name] = $element.GetProperty($name).GetString() }
+            $indexed[$entry.file] = $entry
+        }
+    } finally { $storedManifest.Dispose() }
+}
+foreach ($entry in $entries) { $indexed[$entry.file] = $entry }
+$indexed.Values | Sort-Object { $_.file } | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath $manifestPath -Encoding utf8NoBOM
 $baseline = Join-Path $taskRoot 'artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx'
 $comparisonPath = Join-Path $taskRoot $ComparisonTrx
 if (-not (Test-Path -LiteralPath $comparisonPath)) {
@@ -58,10 +75,16 @@ if (Test-Path -LiteralPath $metricRoot) {
             measurement = ([IO.File]::ReadAllText($_.FullName) | ConvertFrom-Json)
         }
     })
-    ConvertTo-Json -InputObject $metrics -Depth 25 | Set-Content -LiteralPath (Join-Path $taskRoot 'docs/NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json') -Encoding utf8NoBOM
+    $metricPath = Join-Path $taskRoot 'docs/NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json'
+    $indexedMetrics = [Collections.Generic.Dictionary[string,object]]::new([StringComparer]::Ordinal)
+    if (Test-Path -LiteralPath $metricPath) {
+        foreach ($entry in @([IO.File]::ReadAllText($metricPath) | ConvertFrom-Json -AsHashtable)) { $indexedMetrics[$entry.file] = $entry }
+    }
+    foreach ($entry in $metrics) { $indexedMetrics[$entry.file] = $entry }
+    ConvertTo-Json -InputObject @($indexedMetrics.Values | Sort-Object { $_.file }) -Depth 25 | Set-Content -LiteralPath $metricPath -Encoding utf8NoBOM
 }
 $changed = @(git -C $taskRoot diff --name-only cd7532f011eea8a72e89848234b259f1f5293e15)
 if ($LASTEXITCODE -ne 0) { throw 'Cannot inventory changes against the Phase 4 baseline.' }
 $untracked = @(git -C $taskRoot ls-files --others --exclude-standard)
 @($changed + $untracked) | Sort-Object -Unique | Set-Content -LiteralPath (Join-Path $taskRoot 'docs/NAP_2_0_FASE_5_CHANGED_FILES.txt') -Encoding utf8NoBOM
-Write-Output "Indexed $($entries.Count) retained TRX runs. Overlapping selections are not additive."
+Write-Output "Indexed $($entries.Count) current TRX runs; retained $($indexed.Count) total records. Overlapping selections are not additive."

@@ -11,6 +11,8 @@ public sealed record AutomationHostOptions
     public TimeSpan IdleInterval { get; init; } = TimeSpan.FromMilliseconds(250);
     [System.Text.Json.Serialization.JsonIgnore]
     public Action<UniverseId, QueueItemId, string>? LaboratoryCheckpoint { get; init; }
+    [System.Text.Json.Serialization.JsonIgnore]
+    public Action<UniverseId, QueueItemId, Exception>? LaboratoryStorageFailure { get; init; }
 }
 public sealed record AutomationUniverseStatus(UniverseId UniverseId, AutomationHostState State, long Turns,
     int PendingCandidates, string? Stage, string? Diagnostic, QueueBatchId? BatchId);
@@ -245,6 +247,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var admission = _options.Admission with { MaxRetainedBytes = Math.Min(_options.Admission.MaxRetainedBytes, _options.MaxRetainedBytes / _slots.Length / 2) };
                 slot.Admission = new(slot.Context, new(slot.Context.Storage), admission);
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
+                slot.Preparation.StorageFailure = (item, error) => _options.LaboratoryStorageFailure?.Invoke(slot.Context.Id, item, error);
                 slot.RunControl = new((item, boundary) => { _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); return !Allowed(slot, item); });
                 slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
                 slot.Preparation.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };

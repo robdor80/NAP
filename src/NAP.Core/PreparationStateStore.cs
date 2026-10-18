@@ -122,8 +122,13 @@ public sealed class PreparationStateStore
                 var roots = AutomationJson.Encode(_roots); var hash = DatabaseHash();
                 if (_validatedDatabaseHash != hash || _validatedRoots != roots)
                 {
-                    Check(db);
-                    if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Preparation ledger changed during validation.");
+                    var scope = LedgerValidationProof.Scope(DatabasePath, roots);
+                    if (!LedgerValidationProof.Matches(scope, ":database:", hash.Hex))
+                    {
+                        Check(db);
+                        if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Preparation ledger changed during validation.");
+                        LedgerValidationProof.Remember(scope, ":database:", hash.Hex);
+                    }
                     _validatedDatabaseHash = hash; _validatedRoots = roots;
                 }
                 return db;

@@ -55,6 +55,20 @@ internal sealed class AutomationHostProcessFixture : IAsyncDisposable
         Assert.Equal(AutomationHostState.Stopped, AutomationProtocol.Read<AutomationHostSnapshot>(result).State);
         await Process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(20)); Assert.Equal(0, Process.ExitCode);
     }
+    internal async Task PreserveFailureAsync()
+    {
+        // Drain before copying SQLite sidecars. Never archive launch.json: it holds the pipe key.
+        await StopAsync();
+        var directory = Path.Combine(Repository, "artifacts/phase5/cloud-resume/failures", Path.GetFileName(Files.Root));
+        Directory.CreateDirectory(directory);
+        foreach (var path in Directory.EnumerateFiles(Files.Root, "*", SearchOption.AllDirectories))
+        {
+            if (path == ConfigurationPath) continue;
+            var destination = Path.Combine(directory, Path.GetRelativePath(Files.Root, path));
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!); File.Copy(path, destination, false);
+        }
+        if (Errors is not null) File.WriteAllText(Path.Combine(directory, "host.stderr.log"), await Errors);
+    }
     public async ValueTask DisposeAsync()
     {
         try { if (!_faultInjection) await StopAsync(); }

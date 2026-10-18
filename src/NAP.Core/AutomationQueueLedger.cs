@@ -5,6 +5,15 @@ namespace NAP.Core;
 
 public sealed partial class AutomationQueueStore
 {
+    // One fresh, fully validated IO scope for facts used at the same workflow boundary.
+    // No connection/transaction/authority escapes the read or survives to the next boundary.
+    internal (QueueItem Item, WorkflowAttempt Attempt, StoredAutomationPolicy Policy, StoredAutomationPolicy Current) ReadWorkflow(QueueItemId id)
+        => Read(db =>
+        {
+            var item = Item(db, null, id);
+            var attempt = Attempt(db, null, item.ActiveAttempt ?? throw new InvalidDataException("Missing active workflow attempt."));
+            return (item, attempt, Policy(db, null, item.Policy), CurrentPolicy(db, null));
+        });
     public StoredAutomationPolicy CurrentPolicy() => Read(db => CurrentPolicy(db, null));
     public IReadOnlyList<StoredAutomationPolicy> PolicyHistory(PolicyReference reference) => Read(db => { Policy(db, null, reference); return Payloads<StoredAutomationPolicy>(db, null, "SELECT payload FROM policy_history WHERE policy_hash=$h ORDER BY revision", "$h", reference.Hash.Hex); });
     public StoredAutomationPolicy GetPolicy(PolicyReference reference) => Read(db => Policy(db, null, reference));

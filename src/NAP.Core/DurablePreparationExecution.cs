@@ -10,14 +10,15 @@ public sealed partial class DurablePreparationService
     internal ExecutionHandoff VerifyExecution(QueueItemId id, bool recovery)
     {
         AutomationQueueBoundary.Paths(_context.Storage, false);
-        var item = _queue.Get(id); var r = _state.Get(id) ?? throw new InvalidDataException("Missing preparation evidence.");
-        var policy = _queue.GetPolicy(item.Policy); var attempt = _queue.GetAttempt(item.ActiveAttempt ?? throw new InvalidDataException("Missing attempt."));
+        var workflow = _queue.ReadWorkflow(id);
+        var item = workflow.Item; var policy = workflow.Policy; var attempt = workflow.Attempt;
+        var r = _state.Get(id) ?? throw new InvalidDataException("Missing preparation evidence.");
         if (item.State is not (QueueState.Queued or QueueState.Running or QueueState.Completed) ||
             r.Checkpoint != PreparationCheckpoint.Planned || r.AuditState != DurableAuditState.Pass || r.Code != PreparationCode.AuditPass ||
             r.ItemId != item.Id || r.AttemptId != attempt.Id || r.JobId != attempt.JobId || r.Policy != item.Policy ||
             r.AdmissionHash != attempt.ExpectedEvidence || attempt.Profile != r.BaseProfile || r.DuplicateOf is not null ||
             r.BaseProfile.ProfileJson != UniverseProfileSnapshotRenderer.Render(_context.Profile) || r.Snapshot is null ||
-            !policy.IsExecutionAuthorized || _queue.CurrentPolicy().Reference != item.Policy)
+            !policy.IsExecutionAuthorized || workflow.Current.Reference != item.Policy)
             throw new InvalidDataException("Execution scope, preparation, profile or authority changed.");
         var admitted = _admission.VerifyAdmitted(id);
         var originalZip = ProductionPaths.Resolve(_context.Storage.StagingRoot, admitted.SnapshotRelativePath);

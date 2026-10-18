@@ -21,5 +21,36 @@
     "docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json",
     "docs/NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md",
     "docs/NAP_2_0_FASE_4_CUTOVER.md"
-  ]
+  ],
+  "cloudResume": {
+    "recordedUtc": "2026-10-18T07:29:05.191497+00:00",
+    "repository": "robdor80/NAP",
+    "initialBranch": "work",
+    "initialHead": "cd7532f011eea8a72e89848234b259f1f5293e15",
+    "initialWorktreeClean": true,
+    "recoveredBranch": "codex/nap-2-fase-5-automation-host",
+    "initialRemoteHead": "63a50cc6e381221f66caa68bc28632545e2d338a",
+    "recoveredHead": "63a50cc6e381221f66caa68bc28632545e2d338a",
+    "laterRemoteCommitsAtRecovery": 0,
+    "mainSha": "cd7532f011eea8a72e89848234b259f1f5293e15",
+    "mainProtected": false,
+    "readOnlyGithubAccessVerified": true,
+    "historicalArchiveEntriesSha256Verified": 73,
+    "historicalTrxRecords": 58,
+    "sdk": "8.0.426",
+    "runtime": "8.0.32",
+    "os": "Linux x64",
+    "realHostCutoverApplied": false,
+    "serviceInstalled": false,
+    "accountOrPermissionChangesApplied": false,
+    "productionActivated": false,
+    "contractsRead": [
+      "docs/NAP_2_0_FASE_5_CONTINUITY.md",
+      "docs/NAP_2_0_FASE_5_IMPLEMENTATION.md",
+      "docs/NAP_2_0_FASE_5_CHANGED_FILES.txt",
+      "docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json",
+      "docs/NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md",
+      "docs/NAP_2_0_FASE_4_CUTOVER.md"
+    ]
+  }
 }

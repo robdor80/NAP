@@ -100,7 +100,7 @@ public sealed partial class DurablePreparationService
         catch (Exception e) when (e is ArgumentException or InvalidDataException)
         { return AuditFailure(owner, record, new(AiAuditErrorKind.InvalidResponse, "Audit report was inconsistent.")); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or ProductionStorageException)
-        { return Park(owner, _queue.Get(dispatch.ItemId), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, dispatch.ItemId, record, e); }
     }
 
     public PreparationResult FailAudit(AutomationQueueOwner owner, DurableAuditDispatch dispatch, AiAuditClientException failure)
@@ -159,7 +159,7 @@ public sealed partial class DurablePreparationService
         catch (Exception e) when (e is InvalidDataException or ArgumentException or ProductionStorageException or System.Text.Json.JsonException)
         { return Park(owner, _queue.Get(record.ItemId), record, PreparationCode.EvidenceChanged); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-        { return Park(owner, _queue.Get(record.ItemId), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, record.ItemId, record, e); }
     }
     private PreparationResult AuditFailure(AutomationQueueOwner owner, PreparationRecord record, AiAuditClientException failure)
     {

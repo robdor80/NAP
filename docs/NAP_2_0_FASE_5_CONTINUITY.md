@@ -1,5 +1,19 @@
 # NAP 2.0 — continuidad de Fase 5
 
+## REANUDACIÓN CLOUD — 2026-10-18, Europe/Madrid (en curso)
+
+La nueva autorización expresa del responsable levanta la parada de cuota únicamente para continuar P5.10 en universos sintéticos. Se mantiene prohibido producción, CUTOVER, cambios de cuentas/permisos/servicios y merge.
+
+- Comandos y lectura GitHub verificados. Checkout inicial limpio en `work`, SHA de main `cd7532f011eea8a72e89848234b259f1f5293e15`; recuperada la rama existente `codex/nap-2-fase-5-automation-host` exactamente en `63a50cc6e381221f66caa68bc28632545e2d338a`, sin commits posteriores al recuperar. Main remoto conserva la misma SHA; GitHub sigue informando `protected=false`. No se cambió su configuración.
+- Leídos los seis documentos exigidos, inventario y manifests adicionales. Verificados SHA-256 del archivo histórico y sus **73 entradas**; contiene **58 TRX**, no 73 ejecuciones independientes. Los resultados anteriores siguen siendo históricos.
+- Runtime cloud Linux x64: SDK .NET 8.0.426/runtime 8.0.32 y PowerShell 7.4.13. Sin servicios/proveedor real. Las cinco pruebas históricas de symlinks se ejecutaron y pasaron **5/5** aquí; no se extrapola a permisos Windows.
+- Primer lote separado de 100, sobre el Core recuperado con diagnóstico añadido: **100/100**, 628,49 s, dos universos, máximo 3 candidatos, 45,80 s de mayor intervalo de progreso. Pico RSS 302.485.504 bytes/privado 423.600.128 bytes, 138 handles, 24 hilos. No reprodujo `StorageUnavailable`; no demuestra una corrección del fallo Windows. Evidencia `artifacts/phase5/cloud-resume/volume100-diagnostic-v2.trx` y métrica `automation-100-072355.json`.
+- Diagnóstico original de IO preservado exclusivamente por callback del laboratorio y stderr; los fallos del fixture de volumen drenan y conservan sidecars sin copiar `launch.json` ni su clave IPC. Se cubren preservación y publicación de respuesta IA sin crear intentos alternativos ni convertir el fallo en éxito.
+- Optimizaciones en validación: regla inmutable por identidad débil; lectura conjunta de hechos de una frontera; pruebas de DB completa compartidas entre stores únicamente por SHA-256 fresco, ruta y raíces exactas. No hay aprobación automática de bytes escritos, autoridad cacheada ni cambios de schemas/gates. Pruebas de corrupción y regresión finales siguen en curso.
+- Dirigidas iniciales 9/9; siguiente selección de autoridad/ejecución/diagnóstico 59/59. Son selecciones superpuestas y versiones intermedias; no sustituyen la regresión final. Admisión 1000, recuperación y regresión transversal siguen ejecutándose. Las pruebas Windows/WPF y el fallo Windows de IO no están certificados por esta máquina.
+
+**Estado actual: P5.10 aún no aceptado.** El cierre final actualizará esta sección y conservará las invocaciones fallidas y resultados pendientes. No se ha creado PR ni publicado este nuevo cierre todavía.
+
 ## PARADA SEGURA POR CUOTA — 2026-10-17, Europe/Madrid
 
 **Desarrollo suspendido por orden expresa del usuario. P5.10 sigue PARCIAL y sin aceptación integral. No iniciar desarrollo ni más pruebas hasta nueva autorización.** No se ha creado PR, realizado merge, modificado main ni activado producción.

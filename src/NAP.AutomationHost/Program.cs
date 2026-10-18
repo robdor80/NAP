@@ -11,8 +11,18 @@ try
     var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
     var auditor = config.SyntheticAudit ? new SyntheticAuditor() : null;
     var checkpointReached = 0;
+    var storageFailures = 0;
     await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
         Admission = config.Admission ?? new(),
+        LaboratoryStorageFailure = (universe, item, error) =>
+        {
+            // This executable validates temporary synthetic laboratory roots before starting.
+            // Keep the original stack/HResult here, never in a public IPC projection or receipt.
+            if (Interlocked.Increment(ref storageFailures) > 16) return;
+            var detail = error.ToString();
+            try { Console.Error.WriteLine($"preparation_storage_unavailable:{universe.Value}:{item.Value}:0x{error.HResult:X8}:{detail[..Math.Min(detail.Length, 65536)]}"); }
+            catch (IOException) { /* A broken diagnostic stream must not prevent durable parking. */ }
+        },
         LaboratoryCheckpoint = (_, item, boundary) =>
         {
             if (boundary != config.LaboratoryCheckpoint || Interlocked.Exchange(ref checkpointReached, 1) != 0) return;

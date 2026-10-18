@@ -9,6 +9,9 @@ namespace NAP.Core;
 /// observations or returned model objects. Every lookup fingerprints all indexed fields and every
 /// history row freshly under the caller's IO lease. A miss executes the original full validator.
 /// Global accounting bounds all stores/universes together, including long scope strings.</summary>
+// The reserved :database: item records complete schema/domain validation of an exact
+// freshly hashed DB under its native IO lease and exact roots. Sharing it across store
+// instances avoids revalidating identical bytes; no write pre-approves its own result.
 internal static class LedgerValidationProof
 {
     private const int MaximumEntries = 4096;

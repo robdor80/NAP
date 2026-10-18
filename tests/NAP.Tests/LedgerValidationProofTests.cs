@@ -26,11 +26,17 @@ public sealed class LedgerValidationProofTests
         else Assert.Equal(PreparationCode.Planned, f.Service.Prepare(owner, item.ItemId!).Code);
         var database = execution ? execute.State.DatabasePath : f.Service.State.DatabasePath;
         void Read() { if (execution) _ = execute.State.Get(item.ItemId!); else _ = f.Service.State.Get(item.ItemId!); }
+        void ReadFreshStore()
+        {
+            if (execution) _ = new ExecutionStateStore(f.Roots).Get(item.ItemId!);
+            else _ = new PreparationStateStore(f.Roots).Get(item.ItemId!);
+        }
         // Reserve free pages before warming the proof so SQL cell relocation during the
         // later fault injection cannot grow the file and accidentally make size a signal.
         using (var db = Open(database)) Execute(db,
             "CREATE TABLE fault_reserve(bytes BLOB); INSERT INTO fault_reserve VALUES(zeroblob(262144)); DROP TABLE fault_reserve;");
         Read(); Read(); // exercise both a validated ledger and its unchanged-byte fast path
+        ReadFreshStore(); ReadFreshStore(); // complete-byte proofs shared by separate store instances
         var originalLength = new FileInfo(database).Length; var originalStamp = File.GetLastWriteTimeUtc(database);
         var outside = DurableExecutionTests.Inventory(f.Roots.InboxRoot, f.Roots.ArchiveRoot, f.Roots.ProductionRoot);
         using (var db = Open(database))
@@ -54,6 +60,23 @@ public sealed class LedgerValidationProofTests
         Assert.Equal(originalLength, new FileInfo(database).Length);
         File.SetLastWriteTimeUtc(database, originalStamp); Assert.Equal(originalStamp, File.GetLastWriteTimeUtc(database));
         Assert.Throws<AutomationException>(Read); Assert.Throws<AutomationException>(Read);
+        Assert.Throws<AutomationException>(ReadFreshStore); Assert.Throws<AutomationException>(ReadFreshStore);
+        Assert.Equal(outside, DurableExecutionTests.Inventory(f.Roots.InboxRoot, f.Roots.ArchiveRoot, f.Roots.ProductionRoot));
+    }
+
+    [Fact]
+    public void FreshQueueStoreRejectsChangedIndexedFieldsAfterWarmingTheSharedByteProof()
+    {
+        using var f = new PreparationTestFixture();
+        QueueItemId id;
+        using (var owner = f.Queue.AcquireOwner()) id = f.Admit(owner).ItemId!;
+        _ = f.Queue.List(); _ = new AutomationQueueStore(f.Roots).List();
+        var length = new FileInfo(f.Queue.DatabasePath).Length; var stamp = File.GetLastWriteTimeUtc(f.Queue.DatabasePath);
+        var outside = DurableExecutionTests.Inventory(f.Roots.InboxRoot, f.Roots.ArchiveRoot, f.Roots.ProductionRoot);
+        using (var db = Open(f.Queue.DatabasePath)) Execute(db, "UPDATE items SET revision=revision+1 WHERE id=$i", ("$i", id.Value));
+        Assert.Equal(length, new FileInfo(f.Queue.DatabasePath).Length); File.SetLastWriteTimeUtc(f.Queue.DatabasePath, stamp);
+        Assert.Throws<AutomationException>(() => new AutomationQueueStore(f.Roots).Get(id));
+        Assert.Throws<AutomationException>(() => f.Queue.Get(id));
         Assert.Equal(outside, DurableExecutionTests.Inventory(f.Roots.InboxRoot, f.Roots.ArchiveRoot, f.Roots.ProductionRoot));
     }
 

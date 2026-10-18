@@ -174,8 +174,8 @@ public sealed class DurableExecutionService
 
     private void RequireAuthority(QueueItem item)
     {
-        var policy = _queue.GetPolicy(item.Policy);
-        if (!policy.IsExecutionAuthorized || _queue.CurrentPolicy().Reference != item.Policy ||
+        var facts = _queue.ReadWorkflow(item.Id); var policy = facts.Policy;
+        if (facts.Item.Policy != item.Policy || !policy.IsExecutionAuthorized || facts.Current.Reference != item.Policy ||
             !AutomationValidation.SameRoots(policy.Definition.Roots, _context.Storage))
             throw new InvalidDataException("Productive authority is not current and exact.");
     }
