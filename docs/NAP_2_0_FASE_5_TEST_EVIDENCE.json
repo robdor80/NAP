@@ -55,6 +55,56 @@
     "failedTests": []
   },
   {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-and-stop-safety-v2.trx",
+    "sha256": "c7bed9179e66fdbea3b3a6bbfb9ee660f9d053087f8b7e7612293d8f925835fd",
+    "start": "2026-10-18T07:46:33.3481750+00:00",
+    "finish": "2026-10-18T07:46:46.9707647+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 34,
+    "executed": 34,
+    "passed": 34,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-and-stop-safety.trx",
+    "sha256": "4fc2c81893f2b523218f0e00b37c5d7c04e040f8894207f7c4f93b79ac267d4c",
+    "start": "2026-10-18T07:45:08.1136603+00:00",
+    "finish": "2026-10-18T07:45:20.3835900+00:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:08.62]     NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal [FAIL]"
+    ],
+    "total": 34,
+    "executed": 34,
+    "passed": 33,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-safety.trx",
+    "sha256": "fa3028b453e3883ce230253bcc4d77ac94693ad6479b0a79cf979005481c02f7",
+    "start": "2026-10-18T07:44:07.1741607+00:00",
+    "finish": "2026-10-18T07:44:24.3837283+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 33,
+    "executed": 33,
+    "passed": 33,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/cloud-resume/diagnostics-and-proof.trx",
     "sha256": "99cdd6d8c05c7de154c13931c5823868ad3dbd370d58a423da7d62f41015fbb2",
     "start": "2026-10-18T07:18:01.4597339+00:00",
@@ -69,6 +119,34 @@
     "failed": 0,
     "notExecuted": 0,
     "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/final-buffered-complete.trx",
+    "sha256": "a1c232d285bb52b61527c4543b753a993b82907d687d87df45d85c51a175929f",
+    "start": "2026-10-18T07:49:38.7261826+00:00",
+    "finish": "2026-10-18T08:05:19.2050317+00:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:16.24]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:00:36.91]     NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal [FAIL]",
+      "[xUnit.net 00:00:39.40]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]",
+      "[xUnit.net 00:01:45.40]     NAP.Tests.AutomationProcessRecoveryTests.UnboundRemoteOutcomeSurvivesRestartWithoutRefundOrUnauthorizedSecondCall(boundary: \"audit-response-received\") [FAIL]",
+      "[xUnit.net 00:06:14.61]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:06:19.50]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]",
+      "The active test run was aborted. Reason: Test host process crashed"
+    ],
+    "total": 3764,
+    "executed": 3757,
+    "passed": 3755,
+    "failed": 2,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal",
+      "NAP.Tests.AutomationProcessRecoveryTests.UnboundRemoteOutcomeSurvivesRestartWithoutRefundOrUnauthorizedSecondCall(boundary: \"audit-response-received\")"
+    ]
   },
   {
     "file": "artifacts/phase5/cloud-resume/portable-regression.trx",
@@ -93,6 +171,22 @@
     "failedTests": []
   },
   {
+    "file": "artifacts/phase5/cloud-resume/recovery-and-stop-final.trx",
+    "sha256": "3de249be1ac20bfb0be6b9db93ca6b65df10379a5a218f8fcd06c805071ed7f0",
+    "start": "2026-10-18T07:59:07.3851904+00:00",
+    "finish": "2026-10-18T08:04:50.1299243+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 26,
+    "executed": 26,
+    "passed": 26,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
     "file": "artifacts/phase5/cloud-resume/shared-proof-and-authority.trx",
     "sha256": "0c5d42ab35db62a481978614d25c3181341b2858cb65abbb2ae86b8cc88dadb8",
     "start": "2026-10-18T07:26:08.0986458+00:00",
@@ -104,6 +198,70 @@
     "total": 60,
     "executed": 60,
     "passed": 60,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-1.trx",
+    "sha256": "3c85c1d9e0dcc3c2921263aeed6d3cadc1bc4b22781361b2ebf2853ced338eec",
+    "start": "2026-10-18T07:53:53.2790034+00:00",
+    "finish": "2026-10-18T07:53:58.1298821+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-2.trx",
+    "sha256": "83a53a51a686027c3f559b7e6d17d2574f5fba0a77a416d20735d2d247a2b749",
+    "start": "2026-10-18T07:53:59.2956383+00:00",
+    "finish": "2026-10-18T07:54:03.3639423+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-3.trx",
+    "sha256": "d255009d8678ec218a8422a08725e872234bd36dbac95d6b1119d1872ce7cee7",
+    "start": "2026-10-18T07:54:05.1712719+00:00",
+    "finish": "2026-10-18T07:54:09.0308566+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race.trx",
+    "sha256": "7b2b461fb43c67dd197672f561ec6e4776ebcbfb5dfc5ea4883c367513835ac2",
+    "start": "2026-10-18T07:52:27.1820114+00:00",
+    "finish": "2026-10-18T07:52:31.2336291+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
     "failed": 0,
     "notExecuted": 0,
     "failedTests": []

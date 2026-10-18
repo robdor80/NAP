@@ -1,9 +1,13 @@
 .github/workflows/ci.yml
 .github/workflows/cutover-laboratory.yml
+docs/evidence/NAP_2_0_FASE_5_CLOUD_PROGRESS_20261018.zip
+docs/evidence/NAP_2_0_FASE_5_CLOUD_STOP_20261018.zip
 docs/evidence/NAP_2_0_FASE_5_QUOTA_STOP_20261017.zip
 docs/NAP_2_0_FASE_4_CUTOVER.md
 docs/NAP_2_0_FASE_5_BUILD_PROVENANCE.json
 docs/NAP_2_0_FASE_5_CHANGED_FILES.txt
+docs/NAP_2_0_FASE_5_CLOUD_PROGRESS_EVIDENCE.json
+docs/NAP_2_0_FASE_5_CLOUD_STOP_EVIDENCE.json
 docs/NAP_2_0_FASE_5_CONTINUITY.md
 docs/NAP_2_0_FASE_5_IMPLEMENTATION.md
 docs/NAP_2_0_FASE_5_PREFLIGHT.json
@@ -65,6 +69,7 @@ src/NAP.Core/ProductionThumbnailCache.cs
 src/NAP.Core/QueueValidationPayloadCache.cs
 src/NAP.Core/RepositorySnapshotService.cs
 src/NAP.Core/RetainedAdmissionInventory.cs
+src/NAP.Core/Sha256Hasher.cs
 src/NAP.Core/WindowsInventoryDirectories.cs
 src/NAP.Core/WorkflowRunControl.cs
 src/NAP.Presentation/AutomationControlViewModel.cs
@@ -96,4 +101,5 @@ tests/NAP.Tests/LedgerValidationProofTests.cs
 tests/NAP.Tests/NAP.Tests.csproj
 tests/NAP.Tests/PreparationStorageDiagnosticsTests.cs
 tests/NAP.Tests/PreparationTestFixture.cs
+tests/NAP.Tests/Sha256HasherTests.cs
 tests/NAP.Tests/VisualExplorerWindowsSmokeTests.cs

@@ -1,5 +1,58 @@
 # NAP 2.0 — continuidad de Fase 5
 
+## PARADA CONTROLADA VIGENTE — 2026-10-18, UTC
+
+**Desarrollo suspendido por orden expresa del usuario. P5.10 PARCIAL, sin aceptación integral. No continuar código ni pruebas hasta nueva autorización.** Esta sección sustituye las indicaciones de trabajo en curso que se conservan debajo como historial. La breve autorización intermedia de reanudación fue revocada; no se inició ninguna prueba ni desarrollo entre ambas órdenes.
+
+### Estado, commits y decisión del responsable
+
+- Rama existente `codex/nap-2-fase-5-automation-host`, repositorio `robdor80/NAP`. Recuperación inicial verificada exactamente en `63a50cc6e381221f66caa68bc28632545e2d338a`. Main permanece en `cd7532f011eea8a72e89848234b259f1f5293e15`; no se alteraron configuración, producción, CUTOVER, servicios, cuentas, permisos ni archivos reales de Nimroel.
+- Último commit publicado antes de esta conservación: `836ba1a02b38df2b999bfc9beb7ed98eaeb0bcf7`. El trabajo parcial de polling se conserva en `b9ddeba`; el commit documental posterior contiene este cierre y su SHA se obtiene con `git log -1`. La comprobación final de publicación comunica su coincidencia con origin; no se atribuye ese commit a binarios anteriores.
+- Decisión explícita recibida: **conservar el contrato actual y auditar P5.10 parcial**. No está autorizado reemplazar validación global por validación incremental autenticada. Se conservan hashes frescos completos, ownership, originales, receipts y gates existentes.
+
+| Bloque | Estado exacto al parar |
+|---|---|
+| P5.1 | Owner/mailbox implementados; pruebas específicas conservadas. Aceptación transversal final pendiente. |
+| P5.2 | Control durable/CAS/receipts, pausa/cancelación/reinicio implementados y cubiertos específicamente. |
+| P5.3 | Admisión asíncrona implementada; admisión sintética 1000 pasó en versión intermedia. Última versión no certificada a 1000. |
+| P5.4 | Auditoría/transport, resultados inciertos, timeout y respuestas tardías implementados; recuperación específica conservada. |
+| P5.5 | Scheduler multiuniverso, continuación durable y exclusiones implementados; lotes 1/10/100 completados. Fairness/recursos finales de 1000 pendientes. |
+| P5.6 | Recuperación implementada; 22/22 escenarios pasan en la última selección completada, con la salvedad de versión del fixture indicada abajo. |
+| P5.7 | Proyecciones/backpressure implementados; aceptación prolongada y cierre bajo 1000 pendientes. |
+| P5.8 | Host/IPC autenticado implementados; laboratorio sintético del mismo principal. Instalación/ACL/identidades reales fuera de alcance. |
+| P5.9 | WPF remoto y operaciones manuales implementados; rutas manuales portables verificadas. Nueva ejecución WPF real pendiente en Windows. |
+| P5.10 | **PARCIAL**: diagnóstico y optimizaciones conservados; regresión final y 1000 sin aceptación, causa histórica StorageUnavailable no demostrada. |
+
+### Última tarea completada y trabajo interrumpido
+
+Última selección terminada antes de la parada: `recovery-and-stop-final.trx`, **26/26** (22 recuperación y 4 diagnóstico de almacenamiento). Sus binarios FixtureReview incluían un filtro de reintento de consultas más amplio que el fuente final; el último estrechamiento a `IOException` con `SocketError.ConnectionReset` no se compiló/ejecutó después por orden de parada. No se certifica el HEAD final mediante esa selección.
+
+Regresión Release más reciente, aplicación `37578e2`, **INTERRUMPIDA por la parada**: `final-buffered-complete.trx`, **3764 resultados registrados: 3755 Passed / 2 Failed / 7 omitidos**; counters `executed=3757`, serie anulada en mensajes. `notExecuted=0` no significa cobertura completa. Los dos fallos registrados se conservan: cleanup externo con ConnectionReset (corregido posteriormente en `836ba1a`, caso aislado y tres repeticiones superadas), y QueuePage de recuperación `audit-response-received` con reset durante handshake (sin causa exacta demostrada; estabilización parcial de polling conservada). No se borran ni reclasifican como éxitos.
+
+La regresión portable anterior terminó: **3773 Passed / 0 Failed / 7 omitidos**, total 3780; versión intermedia, no aceptación del último código. Las cinco pruebas históricas de symlinks se ejecutaron aquí y pasaron **5/5 Linux**, sin cambios de privilegios. No certifican Windows. Contrato de schema: **436 comprobaciones superadas**. Selecciones dirigidas y repeticiones se conservan individualmente; no sumar ejecuciones superpuestas.
+
+Volumen sobre aplicación `37578e2`: 1/1 en 6,12 s, 10/10 en 28,91 s, **100/100 en 628,56 s**, pico privado 402.964.480 bytes/RSS 290.095.104 bytes, 139 handles, 23 hilos, mayor intervalo de progreso 35,55 s. Se observaron 197.659.925.710 bytes lógicos leídos y 24.200.903 lecturas: persiste coste de validación completa. La admisión separada de 1000 pasó antes en 878,23 s de admisión (15m48s de caso completo); no equivale al procesamiento host de 1000 ni a una prueba final del HEAD.
+
+El host de 1000 fue drenado mediante **ShutdownHost autenticado**, Stopped en ambos universos, diagnóstico nulo y salida de proceso verificada. Se copiaron sus sidecars antes de terminar el testhost: **52 Completed (26 por universo), 115 Queued; resto de entradas aún no admitidas**. No hay aceptación de 1000 ni fallo StorageUnavailable nuevo demostrado en ese lote. El testhost se suspendió para impedir nuevos casos durante el drenaje y después se terminó; el runner registra aborto como crash de testhost, consecuencia de esta parada deliberada. La selección paralela de recuperación ya había terminado normalmente.
+
+### Cambios y evidencias conservados
+
+Se conservan diagnóstico interno de IO del laboratorio (sin exponer claves en IPC/receipts), copias sintéticas al fallar volumen, lecturas de hechos agrupadas, caché débil de perfiles inmutables y pruebas de ledger vinculadas a ruta/raíces/SHA-256 fresco completo dentro del presupuesto original. El buffer de hashing de 128 KiB reduce lecturas pequeñas sin saltar bytes ni cambiar autoridad. El benchmark aislado de 64 MiB confirma hashes idénticos y aproximadamente 16.387 frente a 515 lecturas; no demuestra escalabilidad de 1000. Cleanup del fixture exige salida real con código 0 y el test verifica stop durable por separado. La estabilización parcial solo reintenta Status/QueuePage hasta dos veces, autenticando de nuevo dentro del mismo límite de 20 s; nunca reproduce mutaciones ni extiende su deadline.
+
+- Archivo histórico de 73 entradas y progreso cloud de 33 entradas conservados sin sustitución.
+- Nuevo archivo `docs/evidence/NAP_2_0_FASE_5_CLOUD_STOP_20261018.zip`, inventario/hash por entrada en `docs/NAP_2_0_FASE_5_CLOUD_STOP_EVIDENCE.json`: TRX, logs, métricas, fuente del probe, procedencia de binarios, respuestas de parada y sidecars sintéticos. Excluye launch configs y claves IPC. Las trazas crudas del profiler quedan solo locales ignoradas con hashes; su resumen CPU sí se publica. No se promete conservar sidecars ya eliminados por teardown de casos anteriores.
+- `NAP_2_0_FASE_5_TEST_EVIDENCE.json` y `NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json` incorporan nuevas entradas sin eliminar las históricas. `NAP_2_0_FASE_5_CHANGED_FILES.txt` contiene el inventario frente a main. La conservación parcial final modifica dos fixtures, continuidad, implementación, manifests e inventario; el archivo nuevo conserva los datos generados.
+- Todos los hosts/test runners propios terminaron y se cerraron build servers. No PR, merge, force-push, reset destructivo ni eliminación de ramas. Comprobación final de árbol limpio, ausencia de operación Git incompleta y sincronía remota tras publicar.
+
+### Pendientes y punto exacto de continuación
+
+1. **Primera acción tras nueva autorización:** verificar branch/HEAD remoto y árbol, leer este cierre y el manifest de parada; compilar el fuente conservado y validar el filtro final estrecho de polling y cleanup. No repetir análisis o versiones ya documentadas sin un cambio que lo justifique.
+2. Revisar por separado los dos resets documentados. El polling es solo una mejora del fixture, no una explicación demostrada de la causa del reset ni una corrección del StorageUnavailable histórico.
+3. StorageUnavailable histórico Windows no se reprodujo en los lotes Linux 100; causa pendiente de captura de excepción en ese entorno. Los logs de laboratorio ya permiten conservarla. No atribuirlo automáticamente al entorno ni relajar permisos, integridad o receipts.
+4. Conservar el contrato global por decisión del responsable. Ensayo final de admisión/procesamiento 1000, fairness/ownership/deduplicación/recursos y regresión completa siguen pendientes. Coste de lectura de DB completa limita escalabilidad; no elevar límites para fabricar aceptación.
+5. Validación real Windows/WPF y dos casos nativos de pinning/cache pendientes: las siete omisiones Linux no son éxitos. Los resultados Windows anteriores son históricos. Advisories existentes ImageSharp 3.1.12 pendientes, no resueltos por este trabajo.
+6. Actualizar aceptación con resultados reales y preparar Draft PR solo cuando se reautorice el trabajo y corresponda al cierre. **Ahora detenerse por completo.** No fusionar ni activar producción.
+
 ## REANUDACIÓN CLOUD — 2026-10-18, Europe/Madrid (en curso)
 
 La nueva autorización expresa del responsable levanta la parada de cuota únicamente para continuar P5.10 en universos sintéticos. Se mantiene prohibido producción, CUTOVER, cambios de cuentas/permisos/servicios y merge.
