@@ -15,6 +15,7 @@ internal sealed class AutomationHostProcessFixture : IAsyncDisposable
     internal Process? Process;
     internal Task<string>? Errors;
     private bool _faultInjection;
+    private int _readRetries;
     internal static string Repository => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../"));
     internal static string BuildConfiguration => Directory.GetParent(Path.TrimEndingDirectorySeparator(AppContext.BaseDirectory))!.Name;
     internal async Task StartAsync(string? checkpoint = null, bool bothUniverses = false, bool fastAdmission = false)
@@ -44,8 +45,29 @@ internal sealed class AutomationHostProcessFixture : IAsyncDisposable
     }
     internal async Task<AutomationHostSnapshot> SnapshotAsync()
     {
+        return AutomationProtocol.Read<AutomationHostSnapshot>(await ReadAsync(AutomationOperation.Status, null, new { }));
+    }
+    internal async Task<JsonElement> ReadAsync<T>(AutomationOperation operation, string? universe, T payload)
+    {
+        if (operation is not (AutomationOperation.Status or AutomationOperation.QueuePage)) throw new InvalidOperationException("Only read-only polling may be retried.");
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(20));
-        return AutomationProtocol.Read<AutomationHostSnapshot>(await Client.CallAsync(AutomationOperation.Status, null, new { }, deadline.Token));
+        for (var attempt = 0; ; attempt++)
+        {
+            try { return await Client.CallAsync(operation, universe, payload, deadline.Token); }
+            catch (IOException error) when (attempt < 2 && Process is { HasExited: false } &&
+                error.InnerException is System.Net.Sockets.SocketException { SocketErrorCode: System.Net.Sockets.SocketError.ConnectionReset })
+            {
+                // Queries may lose a local connection while restarting/under concurrent load.
+                // Every retry authenticates again; no mutation or unknown effect is replayed.
+                if (Interlocked.Increment(ref _readRetries) <= 16)
+                {
+                    var directory = Path.Combine(Repository, "artifacts/phase5/cloud-resume/read-retries"); Directory.CreateDirectory(directory);
+                    File.AppendAllText(Path.Combine(directory, Path.GetFileName(Files.Root) + ".log"),
+                        $"{DateTimeOffset.UtcNow:O} {operation} {error.GetType().Name} 0x{error.HResult:X8}\n");
+                }
+                await Task.Delay(50, deadline.Token);
+            }
+        }
     }
     internal async Task StopAsync()
     {

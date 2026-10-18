@@ -21,7 +21,7 @@ public sealed class AutomationProcessRecoveryTests
 
     private static async Task<bool> Reached(AutomationHostProcessFixture f, QueueState state)
     {
-        var payload = await f.Client.CallAsync(AutomationOperation.QueuePage, f.Files.A.Context.Id.Value, new AutomationPageRequest());
+        var payload = await f.ReadAsync(AutomationOperation.QueuePage, f.Files.A.Context.Id.Value, new AutomationPageRequest());
         var current = AutomationProtocol.Read<QueueItem[]>(payload).Single();
         if (current.State is QueueState.Completed or QueueState.NeedsReview or QueueState.Rejected)
             Assert.True(current.State == state, payload.GetRawText());
@@ -166,7 +166,7 @@ public sealed class AutomationProcessRecoveryTests
             Assert.Equal(QueueIncident.None, current.Incident);
             await f.Client.CallAsync(AutomationOperation.Resume, f.Files.A.Context.Id.Value, new { });
         }
-        await Until(f, async () => AutomationProtocol.Read<QueueItem[]>(await f.Client.CallAsync(AutomationOperation.QueuePage,
+        await Until(f, async () => AutomationProtocol.Read<QueueItem[]>(await f.ReadAsync(AutomationOperation.QueuePage,
             f.Files.A.Context.Id.Value, new AutomationPageRequest())).Single().Incident == QueueIncident.InvalidEvidence);
         await f.StopAsync();
         var final = f.Files.A.Queue.Get(item.Id); Assert.Equal(QueueState.NeedsReview, final.State); Assert.Equal(1, final.AttemptCount);
