@@ -36,6 +36,7 @@ public sealed class AutomationVolumeTests(ITestOutputHelper output)
         var total = 0; var nextSample = TimeSpan.Zero; var nextDisk = TimeSpan.Zero;
         IoCounters? io = null;
         IReadOnlyDictionary<string, ulong>? linuxIo = null;
+        var accepted = false;
         try
         {
             while (total < count)
@@ -97,11 +98,16 @@ public sealed class AutomationVolumeTests(ITestOutputHelper output)
                 Assert.Equal(all.Count, Directory.EnumerateFiles(universe.Roots.ProductionRoot, "*.webp", SearchOption.AllDirectories).Count());
                 Assert.Equal(all.Count, new AssetCatalog(universe.Context).Query().Count);
             }
+            accepted = true;
         }
         finally
         {
             total = previous.Sum(); // an assertion may interrupt the per-universe accumulation
-            if (total < count) await f.PreserveFailureAsync();
+            if (!accepted)
+            {
+                try { await f.PreserveFailureAsync(); }
+                catch (Exception error) { output.WriteLine("Failure evidence preservation also failed: " + error); }
+            }
             if (!process.HasExited && OperatingSystem.IsWindows() && GetProcessIoCounters(process.Handle, out var counters)) io = counters;
             if (!process.HasExited) linuxIo = ReadLinuxIo(process);
             disk.Add(Disk(f, timer.Elapsed.TotalSeconds));

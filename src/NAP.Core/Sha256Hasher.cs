@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Buffers;
 
 namespace NAP.Core;
 
@@ -18,6 +19,18 @@ public sealed class Sha256Hasher
     {
         ArgumentNullException.ThrowIfNull(stream);
         if (!stream.CanRead) throw new ArgumentException("The stream must be readable.", nameof(stream));
-        return new Sha256Digest(Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant());
+        // The framework stream helper reads 4 KiB at a time. Fresh whole-ledger hashing
+        // at every boundary made large batches issue millions of tiny OS reads.
+        // A bounded pooled buffer still consumes every byte, including short reads,
+        // without retaining data, seeking or owning the caller's stream.
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        var buffer = ArrayPool<byte>.Shared.Rent(128 * 1024);
+        try
+        {
+            int count;
+            while ((count = stream.Read(buffer, 0, 128 * 1024)) != 0) hash.AppendData(buffer, 0, count);
+            return new Sha256Digest(Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant());
+        }
+        finally { ArrayPool<byte>.Shared.Return(buffer, clearArray: true); }
     }
 }

@@ -6,6 +6,15 @@ namespace NAP.Tests;
 
 public sealed class PreparationStorageDiagnosticsTests
 {
+    [Fact]
+    public async Task AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal()
+    {
+        await using var f = new AutomationHostProcessFixture(); await f.StartAsync();
+        await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { });
+        await f.StopAsync(); await f.StopAsync();
+        Assert.True(f.Process!.HasExited); Assert.Equal(0, f.Process.ExitCode);
+    }
+
     [Theory]
     [InlineData(false)] [InlineData(true)]
     public void OriginalStorageFailureIsReportedWithoutChangingIdentityOrAdoptingEffects(bool audit)
