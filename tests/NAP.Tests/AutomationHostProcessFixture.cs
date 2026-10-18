@@ -53,8 +53,13 @@ internal sealed class AutomationHostProcessFixture : IAsyncDisposable
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(20));
         JsonElement result;
         try { result = await Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }, deadline.Token); }
-        catch (Exception error) when (error is OperationCanceledException or IOException or TimeoutException && Process.HasExited && Process.ExitCode == 0)
-        { return; } // another authenticated caller may have completed the same normal shutdown
+        catch (Exception error) when (error is OperationCanceledException or IOException or TimeoutException)
+        {
+            // A second caller can lose the pipe just BEFORE the externally stopped process exits.
+            // This is cleanup only: require real successful exit; never infer a durable stop here.
+            await Process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(20)); Assert.Equal(0, Process.ExitCode);
+            return;
+        }
         Assert.Equal(AutomationHostState.Stopped, AutomationProtocol.Read<AutomationHostSnapshot>(result).State);
         await Process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(20)); Assert.Equal(0, Process.ExitCode);
     }

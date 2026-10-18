@@ -10,9 +10,11 @@ public sealed class PreparationStorageDiagnosticsTests
     public async Task AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal()
     {
         await using var f = new AutomationHostProcessFixture(); await f.StartAsync();
-        await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { });
+        var response = AutomationProtocol.Read<AutomationHostSnapshot>(await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }));
+        Assert.Equal(AutomationHostState.Stopped, response.State); Assert.Null(response.Diagnostic);
         await f.StopAsync(); await f.StopAsync();
         Assert.True(f.Process!.HasExited); Assert.Equal(0, f.Process.ExitCode);
+        Assert.True(new AutomationHostControlStore(f.Files.Control, [f.Files.A.Context]).Read(f.Files.A.Context.Id).Stopped);
     }
 
     [Theory]
