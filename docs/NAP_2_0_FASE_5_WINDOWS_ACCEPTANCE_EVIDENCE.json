@@ -1,0 +1,55 @@
+{
+  "observedUtc": "2026-10-20T16:45:52.7508686+00:00",
+  "repository": "robdor80/NAP",
+  "branch": "codex/nap-2-fase-5-automation-host",
+  "applicationAndFixtureSourceCommit": "08894c03ac6738abab1eec705c9326fae52ec141",
+  "laterChangesSoFar": "Documentation/evidence only; no rebuild while complete regression is running.",
+  "platform": "Windows x64",
+  "sdk": "10.0.400",
+  "runtime": "8.0.8",
+  "assemblies": [
+    {
+      "file": "src/NAP.Core/bin/Release/net8.0/NAP.Core.dll",
+      "sha256": "4d03d86579bf51d40e77d92819906943287d110dcdac930ec8fc9d4723a0c078",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    },
+    {
+      "file": "src/NAP.AI/bin/Release/net8.0/NAP.AI.dll",
+      "sha256": "e12e74e57f94018a384ffca03a2f66807d3aae34f1e6e7f6a00e91e0d64af94a",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    },
+    {
+      "file": "src/NAP.Presentation/bin/Release/net8.0/NAP.Presentation.dll",
+      "sha256": "d2bccf6616583014839d9f50839a41c44ebec4e8da74340f0ef67b7ff6490b01",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    },
+    {
+      "file": "src/NAP.AutomationHost/bin/Release/net8.0/NAP.AutomationHost.dll",
+      "sha256": "ef3ad0cc9de62189f4e789e81d452e9701b706a2bc59bd0e5d6c1d53f6f57509",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    },
+    {
+      "file": "src/NAP.App/bin/Release/net8.0-windows/NAP.App.dll",
+      "sha256": "81f2ac312b2df818c3c2ddcae4d87157132963ed63f35f77396f59fbc7d065ba",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    },
+    {
+      "file": "tests/NAP.Tests/bin/Release/net8.0/NAP.Tests.dll",
+      "sha256": "520f2335f838e5c1f372d66a3647ce6fa9fcedf6a63f539b1de3f8a3977a5c7c",
+      "productVersion": "1.0.0+08894c03ac6738abab1eec705c9326fae52ec141"
+    }
+  ],
+  "buildLog": "artifacts/phase5/resume-20261020-build.log",
+  "directedTrx": "artifacts/phase5/resume-20261020/resume-head-directed.trx",
+  "directedPassed": 56,
+  "windowsManualWpfTrx": "artifacts/phase5/resume-20261020/resume-windows-manual-wpf.trx",
+  "windowsManualWpfPassed": 16,
+  "schemaChecks": 436,
+  "completeTrx": "artifacts/phase5/resume-20261020/resume-complete-windows.trx",
+  "completeStatus": "Running; no final acceptance yet",
+  "historicalCloudArchiveEntriesVerified": 3571,
+  "realHostCutoverApplied": false,
+  "mainProtected": false,
+  "mainEffectiveRules": [],
+  "productionActivated": false
+}
