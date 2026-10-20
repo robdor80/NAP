@@ -12,6 +12,7 @@
       "[xUnit.net 00:00:12.37]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]"
     ],
     "total": 98,
+    "executed": 98,
     "passed": 94,
     "failed": 4,
     "notExecuted": 0,
@@ -331,6 +332,7 @@
       "[xUnit.net 00:45:32.03]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
     ],
     "total": 3779,
+    "executed": 3779,
     "passed": 3772,
     "failed": 7,
     "notExecuted": 0,
@@ -360,6 +362,7 @@
       "Se ha anulado la serie de pruebas activa. Motivo: Proceso de host de pruebas bloqueado"
     ],
     "total": 3759,
+    "executed": 3759,
     "passed": 3753,
     "failed": 6,
     "notExecuted": 0,
@@ -386,6 +389,7 @@
       "[xUnit.net 00:01:28.85]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
     ],
     "total": 3771,
+    "executed": 3771,
     "passed": 3766,
     "failed": 5,
     "notExecuted": 0,
@@ -407,6 +411,7 @@
       ""
     ],
     "total": 6,
+    "executed": 6,
     "passed": 6,
     "failed": 0,
     "notExecuted": 0,
@@ -422,6 +427,7 @@
       ""
     ],
     "total": 3,
+    "executed": 3,
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
@@ -443,6 +449,7 @@
       "[xUnit.net 00:19:04.37]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
     ],
     "total": 33,
+    "executed": 33,
     "passed": 26,
     "failed": 7,
     "notExecuted": 0,
@@ -466,6 +473,7 @@
       ""
     ],
     "total": 10,
+    "executed": 10,
     "passed": 10,
     "failed": 0,
     "notExecuted": 0,
@@ -481,6 +489,7 @@
       "[xUnit.net 00:00:07.07]     NAP.Tests.AutomationAcceptanceTests.AuditHarvestCannotDropAdmissionDeferredByBackpressure [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -498,6 +507,7 @@
       ""
     ],
     "total": 3,
+    "executed": 3,
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
@@ -513,6 +523,7 @@
       ""
     ],
     "total": 101,
+    "executed": 101,
     "passed": 101,
     "failed": 0,
     "notExecuted": 0,
@@ -528,6 +539,7 @@
       ""
     ],
     "total": 12,
+    "executed": 12,
     "passed": 12,
     "failed": 0,
     "notExecuted": 0,
@@ -543,6 +555,7 @@
       "[xUnit.net 00:00:10.97]     NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture [FAIL]"
     ],
     "total": 16,
+    "executed": 16,
     "passed": 15,
     "failed": 1,
     "notExecuted": 0,
@@ -560,6 +573,7 @@
       ""
     ],
     "total": 7,
+    "executed": 7,
     "passed": 7,
     "failed": 0,
     "notExecuted": 0,
@@ -575,6 +589,7 @@
       "[xUnit.net 00:00:02.81]     NAP.Tests.LedgerValidationProofTests.WarmProofRejectsChangedBytesEvenWithIdenticalLengthTimestampAndSelfConsistentAnchors(execution: False, corruption: \"domain\") [FAIL]"
     ],
     "total": 7,
+    "executed": 7,
     "passed": 6,
     "failed": 1,
     "notExecuted": 0,
@@ -592,6 +607,7 @@
       ""
     ],
     "total": 139,
+    "executed": 139,
     "passed": 139,
     "failed": 0,
     "notExecuted": 0,
@@ -607,6 +623,7 @@
       "[xUnit.net 00:00:51.34]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -624,6 +641,7 @@
       "[xUnit.net 00:02:19.13]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 2,
+    "executed": 2,
     "passed": 1,
     "failed": 1,
     "notExecuted": 0,
@@ -641,6 +659,7 @@
       ""
     ],
     "total": 4,
+    "executed": 4,
     "passed": 4,
     "failed": 0,
     "notExecuted": 0,
@@ -656,6 +675,7 @@
       ""
     ],
     "total": 1,
+    "executed": 1,
     "passed": 1,
     "failed": 0,
     "notExecuted": 0,
@@ -671,6 +691,7 @@
       "[xUnit.net 00:00:31.94]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -688,6 +709,7 @@
       "[xUnit.net 00:01:52.72]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -705,6 +727,7 @@
       ""
     ],
     "total": 1,
+    "executed": 1,
     "passed": 1,
     "failed": 0,
     "notExecuted": 0,
@@ -720,6 +743,7 @@
       "[xUnit.net 00:00:01.05]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -737,6 +761,7 @@
       "[xUnit.net 00:00:01.06]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -754,6 +779,7 @@
       "[xUnit.net 00:00:01.04]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -771,6 +797,7 @@
       "[xUnit.net 00:00:08.54]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -796,6 +823,7 @@
       "[xUnit.net 00:05:01.97]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True) [FAIL]"
     ],
     "total": 16,
+    "executed": 16,
     "passed": 7,
     "failed": 9,
     "notExecuted": 0,
@@ -835,6 +863,7 @@
       "[xUnit.net 00:02:17.33]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True) [FAIL]"
     ],
     "total": 16,
+    "executed": 16,
     "passed": 1,
     "failed": 15,
     "notExecuted": 0,
@@ -870,6 +899,7 @@
       "[xUnit.net 00:00:37.69]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
     ],
     "total": 98,
+    "executed": 98,
     "passed": 93,
     "failed": 5,
     "notExecuted": 0,
@@ -898,6 +928,7 @@
       "[xUnit.net 00:06:06.89]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\") [FAIL]"
     ],
     "total": 3768,
+    "executed": 3768,
     "passed": 3760,
     "failed": 8,
     "notExecuted": 0,
@@ -922,6 +953,7 @@
       ""
     ],
     "total": 8,
+    "executed": 8,
     "passed": 8,
     "failed": 0,
     "notExecuted": 0,
@@ -937,6 +969,7 @@
       ""
     ],
     "total": 5,
+    "executed": 5,
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
@@ -952,6 +985,7 @@
       ""
     ],
     "total": 6,
+    "executed": 6,
     "passed": 6,
     "failed": 0,
     "notExecuted": 0,
@@ -967,6 +1001,7 @@
       ""
     ],
     "total": 4,
+    "executed": 4,
     "passed": 4,
     "failed": 0,
     "notExecuted": 0,
@@ -983,6 +1018,7 @@
       "[xUnit.net 00:00:00.73]     NAP.Tests.AutomationHostControlTests.PauseSurvivesReopenAndCommandReplayCannotChangeMeaning [FAIL]"
     ],
     "total": 6,
+    "executed": 6,
     "passed": 4,
     "failed": 2,
     "notExecuted": 0,
@@ -1001,6 +1037,7 @@
       "[xUnit.net 00:00:00.50]     NAP.Tests.UniverseProfileImportTests.RodoPresentationPngPreservesPinnedDimensionsTransparencyAndDecodedPixels [FAIL]"
     ],
     "total": 15,
+    "executed": 15,
     "passed": 14,
     "failed": 1,
     "notExecuted": 0,
@@ -1018,6 +1055,7 @@
       ""
     ],
     "total": 2,
+    "executed": 2,
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
@@ -1033,6 +1071,7 @@
       "[xUnit.net 00:00:32.02]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
     ],
     "total": 44,
+    "executed": 44,
     "passed": 43,
     "failed": 1,
     "notExecuted": 0,
@@ -1050,6 +1089,7 @@
       ""
     ],
     "total": 5,
+    "executed": 5,
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
@@ -1065,6 +1105,7 @@
       ""
     ],
     "total": 53,
+    "executed": 53,
     "passed": 53,
     "failed": 0,
     "notExecuted": 0,
@@ -1080,6 +1121,7 @@
       ""
     ],
     "total": 3,
+    "executed": 3,
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
@@ -1095,6 +1137,7 @@
       ""
     ],
     "total": 7,
+    "executed": 7,
     "passed": 7,
     "failed": 0,
     "notExecuted": 0,
@@ -1110,6 +1153,7 @@
       ""
     ],
     "total": 9,
+    "executed": 9,
     "passed": 9,
     "failed": 0,
     "notExecuted": 0,
@@ -1125,6 +1169,7 @@
       "[xUnit.net 00:00:31.18]     NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -1142,6 +1187,7 @@
       ""
     ],
     "total": 5,
+    "executed": 5,
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
@@ -1157,6 +1203,7 @@
       "[xUnit.net 00:00:31.08]     NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished [FAIL]"
     ],
     "total": 2,
+    "executed": 2,
     "passed": 1,
     "failed": 1,
     "notExecuted": 0,
@@ -1174,6 +1221,7 @@
       ""
     ],
     "total": 2,
+    "executed": 2,
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
@@ -1189,6 +1237,7 @@
       ""
     ],
     "total": 2,
+    "executed": 2,
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
@@ -1204,6 +1253,7 @@
       ""
     ],
     "total": 23,
+    "executed": 23,
     "passed": 23,
     "failed": 0,
     "notExecuted": 0,
@@ -1220,6 +1270,7 @@
       "[xUnit.net 00:00:03.45]     NAP.Tests.AutomationDesktopTests.RemoteManualPipelineKeepsNativeAuthorityInHostAndPreservesBackupFunctions [FAIL]"
     ],
     "total": 2,
+    "executed": 2,
     "passed": 0,
     "failed": 2,
     "notExecuted": 0,
@@ -1238,6 +1289,7 @@
       "[xUnit.net 00:00:01.96]     NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected [FAIL]"
     ],
     "total": 1,
+    "executed": 1,
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
@@ -1255,6 +1307,7 @@
       ""
     ],
     "total": 5,
+    "executed": 5,
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
@@ -1270,6 +1323,7 @@
       "[xUnit.net 00:00:13.14]     NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture [FAIL]"
     ],
     "total": 5,
+    "executed": 5,
     "passed": 4,
     "failed": 1,
     "notExecuted": 0,
@@ -1287,6 +1341,7 @@
       "[xUnit.net 00:00:06.73]     NAP.Tests.ProductionThumbnailTests.GridAndDetailCanRequestSameMissingThumbnailConcurrently [FAIL]"
     ],
     "total": 31,
+    "executed": 31,
     "passed": 30,
     "failed": 1,
     "notExecuted": 0,
@@ -1304,6 +1359,7 @@
       ""
     ],
     "total": 84,
+    "executed": 84,
     "passed": 84,
     "failed": 0,
     "notExecuted": 0,
@@ -1319,6 +1375,7 @@
       ""
     ],
     "total": 3,
+    "executed": 3,
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
@@ -1351,6 +1408,7 @@
       "[xUnit.net 00:01:37.60]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
     ],
     "total": 3742,
+    "executed": 3742,
     "passed": 3724,
     "failed": 18,
     "notExecuted": 0,
@@ -1374,5 +1432,37 @@
       "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
       "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter"
     ]
+  },
+  {
+    "file": "artifacts/phase5/resume-20261020/resume-head-directed.trx",
+    "sha256": "cdd9bdfb43328976c4d0d56e30ad4152700e60d42cf39007adb1e19d8d09f849",
+    "start": "2026-10-20T18:13:42.1556650+02:00",
+    "finish": "2026-10-20T18:18:05.0322134+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 56,
+    "executed": 56,
+    "passed": 56,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/resume-20261020/resume-windows-manual-wpf.trx",
+    "sha256": "82d34847b01c9faf92ccc0f570a6df5bd3ef9faa7877e70d7a796a339a15bdfe",
+    "start": "2026-10-20T18:16:29.4418540+02:00",
+    "finish": "2026-10-20T18:17:58.8644243+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 16,
+    "executed": 16,
+    "passed": 16,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
   }
 ]

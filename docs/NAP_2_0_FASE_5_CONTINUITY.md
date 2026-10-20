@@ -1,5 +1,19 @@
 # NAP 2.0 — continuidad de Fase 5
 
+## REANUDACIÓN WINDOWS AUTORIZADA — 2026-10-20, Europe/Madrid
+
+La autorización expresa adjunta del responsable levanta la suspensión. **P5.10 sigue parcial y no aceptada; desarrollo y validación final en curso.** Esta sección prevalece sobre las paradas históricas siguientes. Se mantiene el contrato de hashes frescos completos y todas las garantías de ownership, receipts, no-overwrite y aislamiento.
+
+Recuperación verificada antes de editar: rama existente `codex/nap-2-fase-5-automation-host`, árbol limpio, HEAD local/remoto `08894c03ac6738abab1eec705c9326fae52ec141`, main sin cambios en `cd7532f011eea8a72e89848234b259f1f5293e15`. GitHub sigue indicando main sin protección (`protected=false`, reglas=[]); no se modifica su configuración. No hay operaciones de NAP previas que cerrar. Entorno Windows x64, SDK 10.0.400, runtime .NET/WindowsDesktop 8.0.8.
+
+Leídos continuidad, implementación, manifests de pruebas/recursos y parada cloud, y contratos de aceptación/CUTOVER de Fase 4. SHA256 del archivo de parada cloud verificado. Revisados los dos resets conservados: cleanup externo y polling QueuePage después de reiniciar en audit-response-received. Su causa exacta no se presume; el filtro final del fixture solo reintenta consultas ante ConnectionReset, nunca mutaciones, manteniendo el deadline original. El StorageUnavailable histórico Windows permanece sin causa demostrada y dispone ya de diagnóstico original y preservación de sidecars al fallar.
+
+Build del HEAD Release completado, 0 errores/0 avisos (sin restaurar; no implica resolver advisories históricos). Selección dirigida de recuperación, almacenamiento, cleanup, hashing y pruebas de ledger en ejecución. No se atribuyen resultados Linux intermedios al HEAD final ni a Windows. Siguiente paso tras verificar las áreas afectadas: regresión completa con volumen, WPF/manual real disponible y diagnóstico del primer fallo, conservando límites y evidencia.
+
+No producción, CUTOVER, servicios, cuentas/permisos Windows, activos reales de Nimroel, merges ni ramas nuevas. El cierre autorizado preparará Draft PR para auditoría con los resultados reales y pendientes.
+
+## Historial conservado — las instrucciones de suspensión siguientes han sido levantadas
+
 ## PARADA CONTROLADA VIGENTE — 2026-10-18, UTC
 
 **Desarrollo suspendido por orden expresa del usuario. P5.10 PARCIAL, sin aceptación integral. No continuar código ni pruebas hasta nueva autorización.** Esta sección sustituye las indicaciones de trabajo en curso que se conservan debajo como historial. La breve autorización intermedia de reanudación fue revocada; no se inició ninguna prueba ni desarrollo entre ambas órdenes.
@@ -131,3 +145,5 @@ Los fixtures limpian normalmente sus universos sintéticos al terminar; no se pr
 3. Corregir solo el defecto demostrado y ejecutar su regresión correspondiente. Revisar por separado el timeout real de admisión 1000. No hay aceptación de lotes 100/1000 con el último Core.
 4. Completar volumen 1/10/100/1000 con métricas CPU/memoria/disco/handles/hilos/ledgers, fairness, ownership y ausencia de duplicados; después regresión completa tras las últimas correcciones y WPF/manual pertinente. No elevar timeouts para fabricar resultados positivos.
 5. Actualizar evidencia y publicar commits validados. Crear Draft PR hacia main únicamente cuando la nueva orden de reanudación lo autorice y el cierre técnico esté documentado con sus limitaciones. No merge/producción sin aprobación. Identidad definitiva, instalación, cuentas/ACL y CUTOVER permanecen fuera de autorización.
+
+Actualización 2026-10-20: dirigidas del HEAD **56/56** y Windows/manual/WPF **16/16**, cero omisiones; regresión completa Windows con ambos grupos de volumen iniciada. Pendiente su resultado real. Fuente de aplicación conservado de 08894c0, sin cambios posteriores de código hasta este punto.

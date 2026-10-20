@@ -1,5 +1,5 @@
 {
-  "recordedUtc": "2026-10-16T21:59:45.6894420+00:00",
+  "recordedUtc": "2026-10-16T23:59:45.689442+02:00",
   "repository": "robdor80/NAP",
   "branch": "codex/nap-2-fase-5-automation-host",
   "initialHead": "20106c7f876ff488ea362bd6f709b643c3b63b5e",
@@ -23,7 +23,7 @@
     "docs/NAP_2_0_FASE_4_CUTOVER.md"
   ],
   "cloudResume": {
-    "recordedUtc": "2026-10-18T07:29:05.191497+00:00",
+    "recordedUtc": "2026-10-18T09:29:05.191497+02:00",
     "repository": "robdor80/NAP",
     "initialBranch": "work",
     "initialHead": "cd7532f011eea8a72e89848234b259f1f5293e15",
@@ -52,5 +52,19 @@
       "docs/NAP_2_0_FASE_4_SOFTWARE_ACCEPTANCE.md",
       "docs/NAP_2_0_FASE_4_CUTOVER.md"
     ]
+  },
+  "windowsResume20261020": {
+    "observedUtc": "2026-10-20T16:15:26.6647544+00:00",
+    "branch": "codex/nap-2-fase-5-automation-host",
+    "initialLocalAndRemoteHead": "08894c03ac6738abab1eec705c9326fae52ec141",
+    "worktreeInitiallyClean": true,
+    "mainSha": "cd7532f011eea8a72e89848234b259f1f5293e15",
+    "mainProtected": false,
+    "effectiveRules": [],
+    "sdk": "10.0.400",
+    "runtime": "8.0.8",
+    "platform": "Windows x64",
+    "freshCompleteHashContractRetained": true,
+    "productionOrCutoverAuthorized": false
   }
 }
