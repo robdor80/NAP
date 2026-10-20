@@ -30,3 +30,12 @@ Los cinco avisos NU1902/NU1903 permanecen visibles. El anuncio oficial confirma 
 Las 220 pruebas y la compilación son **locales** sobre la actualización. El CI completo previo en `1bef7ec` corresponde a ImageSharp 3.1.12 y se conserva como histórico; no certifica 3.2.0. La actualización se publica con `[skip ci]` para respetar la orden de ejecutar solo imágenes y mantener privada la licencia. El archivo local no existe en los runners: un futuro CI Release necesitará una decisión expresa del responsable sobre distribución de esta clave o su provisión segura. No se deshabilita ni falsifica el control de licencia.
 
 La observación IPC local de Fase 5 sigue sin causa demostrada y no se investiga en esta tarea. PR #48 permanece Draft. Main, producción, datos reales de Nimroel, cuentas/permisos y servicios no se modifican; no hay fusión.
+
+## Preparación posterior de GitHub Actions (sin ejecución)
+
+La provisión privada mediante el secreto `SIXLABORS_LICENSE_B64` queda preparada
+según [el procedimiento de Actions y configuración desde el MSI](NAP_2_0_IMAGESHARP_ACTIONS_LICENSE.md).
+Esta autorización posterior permite configurar el secreto desde el original local;
+no autoriza publicar la licencia ni ejecutar CI o nuevas pruebas. Los resultados
+anteriores siguen siendo locales e históricos: no se declara validada una
+compilación remota de ImageSharp 3.2.0.

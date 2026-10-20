@@ -28,7 +28,11 @@ jobs:
             8.0.425
             8.0.426
       - name: Build diagnostic peer
-        run: dotnet build tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj -c Release
+        id: licensed-peer-build
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj','-c','Release'
       - name: Record exact runtimes and independent-process observations
         shell: pwsh
         run: >-
@@ -37,11 +41,15 @@ jobs:
           -RuntimeVersions '8.0.31,8.0.32'
           -OutputPath artifacts/coordination/observations.json
       - name: Verify four original exclusion assertions using the deployed protocol
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
         run: >-
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
-          --filter "FullyQualifiedName~SeparateProcessObservesExclusiveNamedOwnerMutex|FullyQualifiedName~SystemNamedMutexCoordinatesIndependentProcess|FullyQualifiedName~CatalogMutexCoordinatesAnotherProcessWithoutLockFiles"
-          --results-directory artifacts/coordination
-          --logger "trx;LogFileName=original-mutex-tests.trx"
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments
+          'test','tests/NAP.Tests/NAP.Tests.csproj','-c','Release',
+          '--filter','FullyQualifiedName~SeparateProcessObservesExclusiveNamedOwnerMutex|FullyQualifiedName~SystemNamedMutexCoordinatesIndependentProcess|FullyQualifiedName~CatalogMutexCoordinatesAnotherProcessWithoutLockFiles',
+          '--results-directory','artifacts/coordination',
+          '--logger','trx;LogFileName=original-mutex-tests.trx'
       - name: Require Core process races, mixed runtimes and owner death recovery
         env:
           NAP_COORDINATION_RUNTIMES: '8.0.31,8.0.32'
@@ -51,12 +59,20 @@ jobs:
           --results-directory artifacts/coordination
           --logger "trx;LogFileName=core-process-tests.trx"
       - name: Verify Git fixture recovery and frozen snapshots independently
-        if: ${{ always() }}
+        if: ${{ always() && !cancelled() && steps.licensed-peer-build.outcome == 'success' }}
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
         run: >-
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release
-          --filter "FullyQualifiedName~GitProductionRecoveryPushTests"
-          --results-directory artifacts/coordination
-          --logger "trx;LogFileName=git-recovery-tests.trx"
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments
+          'test','tests/NAP.Tests/NAP.Tests.csproj','-c','Release',
+          '--filter','FullyQualifiedName~GitProductionRecoveryPushTests',
+          '--results-directory','artifacts/coordination',
+          '--logger','trx;LogFileName=git-recovery-tests.trx'
+      - name: Remove any temporary Six Labors license before artifact collection
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Preserve diagnostic evidence including failures
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -81,11 +97,18 @@ jobs:
         run: dotnet restore NAP.sln
 
       - name: Build
-        run: dotnet build NAP.sln --configuration Release --no-restore
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','--configuration','Release','--no-restore'
 
       - name: Test
         run: dotnet test NAP.sln --configuration Release --no-build --settings tests/functional.runsettings --results-directory artifacts/linux-tests --logger "trx;LogFileName=linux-regression.trx"
 
+      - name: Remove any temporary Six Labors license before artifact collection
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Preserve Linux regression results
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -122,7 +145,10 @@ jobs:
       - name: Restore
         run: dotnet restore NAP.sln
       - name: Build
-        run: dotnet build NAP.sln -c Release --no-restore
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
       - name: Verify fail-closed fallback then prepare the disposable USN session volume
         shell: pwsh
         run: ./.github/scripts/Prepare-CatalogSessionVolume.ps1 -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
@@ -139,6 +165,10 @@ jobs:
         if: ${{ always() }}
         shell: pwsh
         run: ./.github/scripts/Assert-Phase5SymlinkResults.ps1 -ResultsPath artifacts/windows-regression/windows-regression.trx
+      - name: Remove any temporary Six Labors license before artifact collection
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Preserve complete Windows results
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -179,7 +209,10 @@ jobs:
         run: dotnet restore NAP.sln
 
       - name: Build Release including WPF application
-        run: dotnet build NAP.sln --configuration Release --no-restore
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','--configuration','Release','--no-restore'
 
       - name: Execute the four Windows WPF tests
         run: >-
@@ -195,6 +228,10 @@ jobs:
         shell: pwsh
         run: ./.github/scripts/Assert-WpfTestResults.ps1 -ResultsPath artifacts/windows-wpf/windows-wpf.trx
 
+      - name: Remove any temporary Six Labors license before artifact collection
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Preserve Windows WPF results even on failure
         if: ${{ always() }}
         uses: actions/upload-artifact@v4

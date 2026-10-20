@@ -29,13 +29,20 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Build diagnostic peer
-        run: dotnet build tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj -c Release
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj','-c','Release'
       - name: Require the unchanged Phase 4 synthetic identity and preservation assertions
         shell: pwsh
         run: >-
           ./.github/scripts/Test-WriterCutover.ps1
           -ProbePath tools/NAP.CoordinationProbe/bin/Release/net8.0/NAP.CoordinationProbe.dll
           -OutputPath artifacts/coordination/cutover.json
+      - name: Remove any temporary Six Labors license before artifact collection
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Preserve certification evidence including failures
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
