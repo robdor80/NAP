@@ -1,0 +1,14 @@
+<Project>
+  <!-- Lab-only observation after the unmodified official validator succeeds. -->
+  <Target Name="NAP_Lab_RecordOfficialLicenseValidation"
+          AfterTargets="SixLabors_ValidateLicense"
+          Condition="'$(MSBuildProjectName)' == 'NAP.Core'">
+    <Error Condition="'$(Configuration)' != 'Release' or '$(PlatformTarget)' != 'x64' or '$(DesignTimeBuild)' == 'true'"
+           Text="The lab requires a real Release x64 compilation." />
+    <MakeDir Directories="$(MSBuildProjectDirectory)/../../artifacts/imagesharp-validation" />
+    <WriteLinesToFile File="$(MSBuildProjectDirectory)/../../artifacts/imagesharp-validation/official-validator.txt"
+                      Lines="SixLabors_ValidateLicense completed successfully for NAP.Core in Release x64."
+                      Overwrite="true" Encoding="UTF-8" />
+    <Message Importance="high" Text="LAB EVIDENCE: SixLabors_ValidateLicense completed successfully for NAP.Core in Release x64." />
+  </Target>
+</Project>

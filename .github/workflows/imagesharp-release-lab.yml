@@ -1,0 +1,101 @@
+name: ImageSharp 3.2.0 isolated Release validation
+
+on:
+  push:
+    branches: [lab/imagesharp-320-release-fd7c4ff-20261020]
+    paths: [.github/workflows/imagesharp-release-lab.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/lab/imagesharp-320-release-fd7c4ff-20261020'
+    name: Release ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            platform: Windows-x64
+          - os: ubuntu-24.04
+            platform: Linux-x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Verify source and native x64 runner
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_ARCH -ne 'X64' -or [Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -ne 'X64') { throw 'An x64 runner and SDK process are required.' }
+          git merge-base --is-ancestor fd7c4ff664cb0a945bf53e6898b75352faf1d479 HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Unexpected source ancestry.' }
+          git diff --exit-code fd7c4ff664cb0a945bf53e6898b75352faf1d479 HEAD -- src tests tools NAP.sln .github/scripts/Invoke-LicensedDotnet.ps1 .github/workflows/ci.yml .github/workflows/cutover-laboratory.yml
+          if ($LASTEXITCODE -ne 0) { throw 'The source or inherited automation changed.' }
+          dotnet --info
+      - name: Build solution Release x64 with official license validation
+        id: build
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          $labTargets = Join-Path $env:GITHUB_WORKSPACE '.github/laboratory/ImageSharpValidation.targets'
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','-p:PlatformTarget=x64',"-p:CustomAfterMicrosoftCommonTargets=$labTargets"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Remove temporary license
+        if: always()
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Verify and record public build evidence
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (Test-Path (Join-Path $env:RUNNER_TEMP 'nap-sixlabors-license')) { throw 'Temporary license cleanup failed.' }
+          $evidenceDirectory = 'artifacts/imagesharp-validation'
+          $marker = Join-Path $evidenceDirectory 'official-validator.txt'
+          if (-not (Test-Path $marker)) { throw 'The official validator completion marker is missing.' }
+          $assets = Get-Content 'src/NAP.Core/obj/project.assets.json' -Raw | ConvertFrom-Json -AsHashtable
+          if (-not $assets.libraries.ContainsKey('SixLabors.ImageSharp/3.2.0')) { throw 'ImageSharp 3.2.0 was not resolved.' }
+          $imports = Get-Content 'src/NAP.Core/obj/NAP.Core.csproj.nuget.g.targets' -Raw
+          if ($imports -notmatch 'sixlabors.imagesharp[/\\]3\.2\.0[/\\]build[/\\]SixLabors.ImageSharp.targets') { throw 'Official ImageSharp target import is missing.' }
+          $imageSharpDll = 'src/NAP.Core/bin/Release/net8.0/SixLabors.ImageSharp.dll'
+          # Class libraries may not copy dependencies: inspect the exact restored package instead.
+          $packageRoot = @($assets.packageFolders.Keys)[0]
+          $imageSharpDll = Join-Path $packageRoot 'sixlabors.imagesharp/3.2.0/lib/net6.0/SixLabors.ImageSharp.dll'
+          if (-not (Test-Path $imageSharpDll)) { throw 'The resolved ImageSharp assembly is missing.' }
+          $result = [ordered]@{
+            source_pr = 48
+            source_sha = 'fd7c4ff664cb0a945bf53e6898b75352faf1d479'
+            lab_sha = $env:GITHUB_SHA
+            run_url = "https://github.com/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+            platform = '${{ matrix.platform }}'
+            runner_arch = $env:RUNNER_ARCH
+            sdk = (dotnet --version)
+            configuration = 'Release'
+            platform_target = 'x64'
+            command = 'dotnet build NAP.sln -c Release -p:PlatformTarget=x64 (through Invoke-LicensedDotnet.ps1; lab observer imported)'
+            build_exit_code = 0
+            imagesharp_version = '3.2.0'
+            imagesharp_file_version = [Diagnostics.FileVersionInfo]::GetVersionInfo($imageSharpDll).FileVersion
+            imagesharp_dll_sha256 = (Get-FileHash $imageSharpDll -Algorithm SHA256).Hash
+            official_validator = 'SixLabors_ValidateLicense'
+            official_validator_completed = $true
+            temporary_license_removed = $true
+            tests_executed = 0
+          }
+          $result | ConvertTo-Json | Set-Content (Join-Path $evidenceDirectory 'result.json') -Encoding utf8
+          "Release ${{ matrix.platform }}: build exit 0; ImageSharp 3.2.0; official validator completed; tests executed: 0; temporary license removed." | Add-Content $env:GITHUB_STEP_SUMMARY
+      - name: Preserve public evidence only
+        uses: actions/upload-artifact@v4
+        with:
+          name: imagesharp-release-${{ matrix.platform }}
+          path: |
+            artifacts/imagesharp-validation/official-validator.txt
+            artifacts/imagesharp-validation/result.json
+          if-no-files-found: error
+          retention-days: 90
