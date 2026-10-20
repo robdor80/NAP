@@ -102,10 +102,11 @@ public sealed class AutomationAcceptanceTests(ITestOutputHelper output)
         using var f = new AutomationHostTests.Fixture(); StoredAutomationPolicy policy;
         using (var owner = f.A.Queue.AcquireOwner())
         {
-            policy = f.A.Policy(owner, operations: StoredAutomationPolicy.ExecutionOperations, requests: 64, cost: 64, timeout: 120);
+            policy = f.A.Policy(owner, operations: StoredAutomationPolicy.ExecutionOperations, requests: 3, cost: 3, timeout: 120);
             policy = f.A.Queue.SetPolicyState(owner, policy.Reference, policy.Revision, AutomationPolicyState.Enabled);
         }
-        for (var n = 0; n < 64; n++) f.A.Zip($"input-{n}.zip", $"portrait_sample{n}_001", seed: n + 1);
+        // Three items with two-item pages retain the cross-page scheduling race without a load test.
+        for (var n = 0; n < 3; n++) f.A.Zip($"input-{n}.zip", $"portrait_sample{n}_001", seed: n + 1);
         using (var owner = f.A.Queue.AcquireOwner())
         {
             var admission = new InboxAdmissionService(f.A.Context, f.A.Queue, PreparationTestFixture.Fast);
@@ -121,7 +122,7 @@ public sealed class AutomationAcceptanceTests(ITestOutputHelper output)
         client.Observe = call => { if (call == 2) next.TrySetResult("second-audit"); };
         using var release = new ManualResetEventSlim(); var blocked = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         AutomationHost? observedHost = null; int barrier = 0, responseBound = 0;
-        var options = f.Options with { LaboratoryCheckpoint = (_, _, point) =>
+        var options = f.Options with { PageSize = 2, LaboratoryCheckpoint = (_, _, point) =>
         {
             if (point == "execution-start") next.TrySetResult("execution");
             if (point == "audit-decision-bound") Interlocked.Exchange(ref responseBound, 1);

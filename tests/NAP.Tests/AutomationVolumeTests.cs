@@ -9,7 +9,8 @@ namespace NAP.Tests;
 
 public sealed class AutomationVolumeTests(ITestOutputHelper output)
 {
-    [Theory]
+    // Owner decision 2026-10-20: historical evidence only; no new volume runs authorized.
+    [Theory(Skip = "Volume acceptance uses retained historical evidence; new volume runs prohibited by owner.")]
     [InlineData(1)] [InlineData(10)] [InlineData(100)] [InlineData(1000)]
     [Trait("Category", "AutomationVolume")]
     public async Task SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(int count)

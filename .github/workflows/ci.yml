@@ -84,7 +84,7 @@ jobs:
         run: dotnet build NAP.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test NAP.sln --configuration Release --no-build --results-directory artifacts/linux-tests --logger "trx;LogFileName=linux-regression.trx"
+        run: dotnet test NAP.sln --configuration Release --no-build --settings tests/functional.runsettings --results-directory artifacts/linux-tests --logger "trx;LogFileName=linux-regression.trx"
 
       - name: Preserve Linux regression results
         if: ${{ always() }}
@@ -96,7 +96,7 @@ jobs:
           retention-days: 14
 
   windows-regression:
-    name: Windows complete regression
+    name: Windows functional regression (volume excluded)
     runs-on: windows-2022
     timeout-minutes: 120
     steps:
@@ -129,11 +129,16 @@ jobs:
       - name: Diagnose bounded catalog stamps on both disposable Windows volumes
         shell: pwsh
         run: ./.github/scripts/Diagnose-CatalogStamp.ps1 -CorePath src/NAP.Core/bin/Release/net8.0/NAP.Core.dll
-      - name: Run complete suite including volume and WPF
+      - name: Run functional suite including security, recovery and WPF (no volume)
         run: >-
           dotnet test NAP.sln -c Release --no-build --no-restore
+          --settings tests/functional.runsettings
           --results-directory artifacts/windows-regression
           --logger "trx;LogFileName=windows-regression.trx"
+      - name: Require the five real symlink cases to pass without privilege changes
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Assert-Phase5SymlinkResults.ps1 -ResultsPath artifacts/windows-regression/windows-regression.trx
       - name: Preserve complete Windows results
         if: ${{ always() }}
         uses: actions/upload-artifact@v4

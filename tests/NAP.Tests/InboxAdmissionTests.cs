@@ -12,7 +12,8 @@ namespace NAP.Tests;
 
 public sealed class InboxAdmissionTests(ITestOutputHelper output)
 {
-    [Theory]
+    // Keep the historical assertions without allowing a CLI filter to restart this battery.
+    [Theory(Skip = "Volume acceptance uses retained historical evidence; new volume runs prohibited by owner.")]
     [InlineData(1)] [InlineData(10)] [InlineData(100)] [InlineData(1000)]
     [Trait("Category", "AdmissionVolume")]
     public void MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(int count)
