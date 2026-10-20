@@ -46,7 +46,7 @@
   "windowsManualWpfPassed": 16,
   "schemaChecks": 436,
   "completeTrx": "artifacts/phase5/resume-20261020/resume-complete-windows.trx",
-  "completeStatus": "Running; no final acceptance yet",
+  "completeStatus": "CompletedWithFailures; P5.10 PARTIAL, NOT ACCEPTED",
   "historicalCloudArchiveEntriesVerified": 3571,
   "realHostCutoverApplied": false,
   "mainProtected": false,
@@ -60,5 +60,322 @@
     "periodicSeconds": 45,
     "readsQueuesOrCredentials": false,
     "applicationOrAssertionsChanged": false
-  }
+  },
+  "completeResult": {
+    "start": "2026-10-20T18:18:35.4238826+02:00",
+    "finish": "2026-10-20T19:30:29.0348471+02:00",
+    "total": 3792,
+    "executed": 3792,
+    "passed": 3786,
+    "failed": 6,
+    "notExecuted": 0,
+    "interrupted": false,
+    "trx": "artifacts/phase5/resume-20261020/resume-complete-windows.trx",
+    "sha256": "688494c6a7fe6148aff32a13a28bc583bf3ded474c35946ad94782e95c8d7533",
+    "failures": [
+      {
+        "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+        "message": "System.IO.IOException : El cliente no dispone de un privilegio requerido. : 'C:\\Users\\andro\\AppData\\Local\\Temp\\nap-automation-70d6a7b2462444b78a9eaa8bdd08b58d\\workspace\\state\\automation\\AutomationQueue.db'",
+        "classification": "EnvironmentSymlinkPrivilege"
+      },
+      {
+        "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+        "message": "System.IO.IOException : El cliente no dispone de un privilegio requerido. : 'C:\\Users\\andro\\AppData\\Local\\Temp\\nap-automation-58204f4932694dcbbc80d0573223562c\\workspace\\state'",
+        "classification": "EnvironmentSymlinkPrivilege"
+      },
+      {
+        "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+        "message": "System.IO.IOException : El cliente no dispone de un privilegio requerido. : 'C:\\Users\\andro\\AppData\\Local\\Temp\\nap-automation-c11282cc9e7a41b4aacc86fb56c08f5a\\workspace\\state\\automation\\AutomationQueue.db-journal'",
+        "classification": "EnvironmentSymlinkPrivilege"
+      },
+      {
+        "test": "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+        "message": "System.IO.IOException : El cliente no dispone de un privilegio requerido. : 'C:\\Users\\andro\\AppData\\Local\\Temp\\nap-automation-a0bb87eae4d943c0a8ebdcfd04a5fbd3\\workspace\\state\\automation'",
+        "classification": "EnvironmentSymlinkPrivilege"
+      },
+      {
+        "test": "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+        "message": "System.IO.IOException : El cliente no dispone de un privilegio requerido. : 'C:\\Users\\andro\\AppData\\Local\\Temp\\nap-admission-2a386d79849a440eaa7dd5e933df2e77\\workspace\\inbox\\link.zip'",
+        "classification": "EnvironmentSymlinkPrivilege"
+      },
+      {
+        "test": "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)",
+        "message": "Only 280/1000 in 00:55:00.0524028.",
+        "classification": "MandatoryVolumeDurationAcceptanceFailure"
+      }
+    ],
+    "families": [
+      {
+        "family": "AutomationProcessRecoveryTests",
+        "count": 22,
+        "passed": 22,
+        "failed": 0
+      },
+      {
+        "family": "AutomationAuditStageTests",
+        "count": 3,
+        "passed": 3,
+        "failed": 0
+      },
+      {
+        "family": "AutomationAcceptanceTests",
+        "count": 7,
+        "passed": 7,
+        "failed": 0
+      },
+      {
+        "family": "AutomationDesktopTests",
+        "count": 4,
+        "passed": 4,
+        "failed": 0
+      },
+      {
+        "family": "AutomationWpfTests",
+        "count": 1,
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "family": "VisualExplorerWindowsSmokeTests",
+        "count": 4,
+        "passed": 4,
+        "failed": 0
+      },
+      {
+        "family": "PreparationStorageDiagnosticsTests",
+        "count": 4,
+        "passed": 4,
+        "failed": 0
+      },
+      {
+        "family": "LedgerValidationProofTests",
+        "count": 8,
+        "passed": 8,
+        "failed": 0
+      },
+      {
+        "family": "ExecutionCoordinationProcessTests",
+        "count": 19,
+        "passed": 19,
+        "failed": 0
+      }
+    ]
+  },
+  "host1000": {
+    "accepted": false,
+    "reason": "Mandatory unchanged 55-minute duration bound",
+    "required": 1000,
+    "lastObservedCompleted": 280,
+    "completedByUniverse": [
+      140,
+      140
+    ],
+    "elapsedSecondsIncludingPreservation": 3309.3753298,
+    "peakWorkingBytesSampled": 217808896,
+    "peakPrivateBytesSampled": 159006720,
+    "peakHandles": 413,
+    "peakThreads": 23,
+    "maximumPendingCandidates": 3,
+    "maximumCompletionGapSeconds": 42.6489995,
+    "lastTestCpuSeconds": 3193.5625,
+    "finalLabFiles": 9758,
+    "finalLabBytes": 110941153,
+    "originalCollectorIoIsNull": true,
+    "lastExternalLiveProcessSample": {
+      "observedUtc": "2026-10-20T19:30:10.071607+02:00",
+      "processId": 30508,
+      "laboratory": "nap-host-f5fa5da723594e2e85ec2dbe75c56f52",
+      "startedUtc": "2026-10-20T16:35:11.5457882Z",
+      "cpuSeconds": 3197.640625,
+      "workingBytes": 212180992,
+      "peakWorkingBytes": 218431488,
+      "privateBytes": 152981504,
+      "handles": 344,
+      "threads": 17,
+      "io": {
+        "ReadOperations": 204558700,
+        "WriteOperations": 697022,
+        "OtherOperations": 124561967,
+        "ReadBytes": 1585201936351,
+        "WriteBytes": 1374847250,
+        "OtherBytes": 5654380904
+      },
+      "note": "Read-only Windows process counters; IO bytes are logical transfer counters, not a physical-disk benchmark."
+    },
+    "lastSampleNote": "External live counters are separately measured, not imputed into the failed-case io=null field."
+  },
+  "stoppedCopyStructuralAudit": {
+    "observedUtc": "2026-10-20T19:32:08.643655+02:00",
+    "note": "Offline structural observations of stopped copies. No roots rebound, native authority, repair, or acceptance of 1000 inferred.",
+    "universes": [
+      {
+        "universe": "beta_universe",
+        "states": {
+          "Completed": 140,
+          "Queued": 99,
+          "Running": 1
+        },
+        "attempts": 240,
+        "distinctJobs": 240,
+        "maximumAttemptNumber": 1,
+        "itemsWithMultipleAttempts": 0,
+        "preparationRecords": 141,
+        "auditCalls": 141,
+        "distinctAuditRequestIds": 141,
+        "recordsWithMultipleAuditCalls": 0,
+        "productionWebpFiles": 140
+      },
+      {
+        "universe": "alpha_universe",
+        "states": {
+          "Completed": 140,
+          "Queued": 100
+        },
+        "attempts": 240,
+        "distinctJobs": 240,
+        "maximumAttemptNumber": 1,
+        "itemsWithMultipleAttempts": 0,
+        "preparationRecords": 142,
+        "auditCalls": 140,
+        "distinctAuditRequestIds": 140,
+        "recordsWithMultipleAuditCalls": 0,
+        "productionWebpFiles": 140
+      }
+    ],
+    "controls": [
+      {
+        "universe": "alpha_universe",
+        "stopped": true,
+        "paused": true
+      },
+      {
+        "universe": "beta_universe",
+        "stopped": true,
+        "paused": true
+      }
+    ],
+    "allAttempts": 480,
+    "distinctJobsAcrossUniverses": 480,
+    "allAuditCalls": 281,
+    "distinctAuditRequestsAcrossUniverses": 281,
+    "databases": [
+      {
+        "file": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4/workspace/state/automation/AutomationQueue.db",
+        "sha256": "337bd028b2a5cf97f1492d2a4c28853b741fc4ddabd0353c288823cf2b3f0287",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4/workspace/state/automation/preparation/PreparationLedger.db",
+        "sha256": "6dc5f469a6b6434c372c91b6b7a3e8fb5b2c59875b3d1e1fe59240a86cda9879",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-6b03162335f743b69392baee09214870/workspace/state/automation/AutomationQueue.db",
+        "sha256": "066fe595703f548772a583ff206bb85aefd0b757d0026cf17d60bf58489b618c",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-6b03162335f743b69392baee09214870/workspace/state/automation/preparation/PreparationLedger.db",
+        "sha256": "cd10addf0ebe6fc6f9735b35298b4d3dcf697e5824f90aa5772b83fa9b480866",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "control/HostControl.db",
+        "sha256": "51cd2531dcbe9250157365bbfcb53b66bddd8a1b31b67c8a05d11d059ca6f62d",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4/workspace/state/AssetCatalog.db",
+        "sha256": "5ddaf72b4f700289333911d65a0ffdb15a3229aac7d1868e04d5a7d25658dfc2",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4/workspace/state/automation/execution/ExecutionLedger.db",
+        "sha256": "078f6aa01a3edcfe8c26c9bb81c6a0dc6a1f7a8d8fe1a414eb8029cfa71edb2c",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4/workspace/state/automation/runtime/RuntimeState.db",
+        "sha256": "2343ca0717cf9e3120044b3b93953df29b7d14b02f5c65ec1b1fc809ccae7280",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-6b03162335f743b69392baee09214870/workspace/state/AssetCatalog.db",
+        "sha256": "83fb581567684c38352e6718d506e8355e49e7c554135fcc3fd879836c66015c",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-6b03162335f743b69392baee09214870/workspace/state/automation/execution/ExecutionLedger.db",
+        "sha256": "11ac82e697f6125cf92210b1545557f945faabac11a583acefcb8ab91dc20de0",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      },
+      {
+        "file": "nap-preparation-6b03162335f743b69392baee09214870/workspace/state/automation/runtime/RuntimeState.db",
+        "sha256": "10f14a088ce3b63a153048cccede1eafc4cf4d7dd6d8d430df1a2d64b21bbd2f",
+        "sqliteIntegrity": "ok",
+        "foreignKeyViolations": 0,
+        "bytesUnchanged": true
+      }
+    ]
+  },
+  "prolongedOwnerExclusion": {
+    "observedUtc": "2026-10-20T19:07:04.1686718+02:00",
+    "scope": "AutomationOwner",
+    "coreSha256": "4d03d86579bf51d40e77d92819906943287d110dcdac930ec8fc9d4723a0c078",
+    "peerCoreSha256": "4d03d86579bf51d40e77d92819906943287d110dcdac930ec8fc9d4723a0c078",
+    "observations": [
+      {
+        "universe": "alpha_universe",
+        "stateRoot": "nap-preparation-6b03162335f743b69392baee09214870\\workspace\\state",
+        "exitCode": 10,
+        "output": "BUSY"
+      },
+      {
+        "universe": "beta_universe",
+        "stateRoot": "nap-preparation-4831739affab49ea8378e6a8f91dcbb4\\workspace\\state",
+        "exitCode": 10,
+        "output": "BUSY"
+      }
+    ],
+    "note": "Existing independent peer tried only the native owner lease; no queue epoch or Job mutation."
+  },
+  "archive": {
+    "file": "docs/evidence/NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_20261020.zip",
+    "bytes": 16205505,
+    "sha256": "2fb8ba4b6411ad69e083fdac9d44c5f5a40ce4a4d69e779ccf37ba4510baf78e",
+    "dataEntries": 9843,
+    "archiveEntries": 9844,
+    "inventoryEntry": "evidence-inventory.json",
+    "inventorySha256": "c7bebf25eb6967f8c47b011fbd0ffb709c667791d0423664c7748c57d3404193",
+    "allEntryHashesVerified": true
+  },
+  "guaranteeLimits": [
+    "Host 1000 failed; its post-loop original/effect assertions were not reached.",
+    "Historical StorageUnavailable cause remains unproven; no new storage incident in this run.",
+    "Five local Windows symlink cases failed creating links and remain unverified on this host.",
+    "Offline copied-ledger inspection is structural only, not native authority, root rebinding or acceptance.",
+    "No physical-disk process IO benchmark; reported IO is logical and footprint is synthetic lab files.",
+    "Main remains unprotected; no repository protection settings changed.",
+    "No production, CUTOVER, Windows account/permission/service changes, real Nimroel mutation or merge."
+  ]
 }

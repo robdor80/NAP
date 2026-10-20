@@ -1434,6 +1434,34 @@
     ]
   },
   {
+    "file": "artifacts/phase5/resume-20261020/resume-complete-windows.trx",
+    "sha256": "688494c6a7fe6148aff32a13a28bc583bf3ded474c35946ad94782e95c8d7533",
+    "start": "2026-10-20T18:18:35.4238826+02:00",
+    "finish": "2026-10-20T19:30:29.0348471+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:19.14]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:19.44]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:21.95]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:44.93]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:17:37.06]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]",
+      "[xUnit.net 01:11:53.16]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
+    ],
+    "total": 3792,
+    "executed": 3792,
+    "passed": 3786,
+    "failed": 6,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)"
+    ]
+  },
+  {
     "file": "artifacts/phase5/resume-20261020/resume-head-directed.trx",
     "sha256": "cdd9bdfb43328976c4d0d56e30ad4152700e60d42cf39007adb1e19d8d09f849",
     "start": "2026-10-20T18:13:42.1556650+02:00",

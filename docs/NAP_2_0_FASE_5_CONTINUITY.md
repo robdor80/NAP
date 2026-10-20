@@ -1,16 +1,56 @@
 # NAP 2.0 — continuidad de Fase 5
 
-## REANUDACIÓN WINDOWS AUTORIZADA — 2026-10-20, Europe/Madrid
+## CIERRE TÉCNICO PARCIAL PARA AUDITORÍA — 2026-10-20, Europe/Madrid
 
-La autorización expresa adjunta del responsable levanta la suspensión. **P5.10 sigue parcial y no aceptada; desarrollo y validación final en curso.** Esta sección prevalece sobre las paradas históricas siguientes. Se mantiene el contrato de hashes frescos completos y todas las garantías de ownership, receipts, no-overwrite y aislamiento.
+**P5.10 NO ACEPTADA INTEGRALMENTE: bloqueo de rendimiento en host 1000 y cinco pruebas Windows de symlinks sin privilegio.** La autorización de reanudación se ejecutó hasta obtener la regresión completa real; no se rebajaron límites ni contratos. Entrega destinada a PR Draft hacia main, sin merge ni producción. El informe vigente es `NAP_2_0_FASE_5_SOFTWARE_ACCEPTANCE.md`; el historial de suspensión siguiente no representa el trabajo actual.
 
-Recuperación verificada antes de editar: rama existente `codex/nap-2-fase-5-automation-host`, árbol limpio, HEAD local/remoto `08894c03ac6738abab1eec705c9326fae52ec141`, main sin cambios en `cd7532f011eea8a72e89848234b259f1f5293e15`. GitHub sigue indicando main sin protección (`protected=false`, reglas=[]); no se modifica su configuración. No hay operaciones de NAP previas que cerrar. Entorno Windows x64, SDK 10.0.400, runtime .NET/WindowsDesktop 8.0.8.
+### Recuperación, fuentes y Git
 
-Leídos continuidad, implementación, manifests de pruebas/recursos y parada cloud, y contratos de aceptación/CUTOVER de Fase 4. SHA256 del archivo de parada cloud verificado. Revisados los dos resets conservados: cleanup externo y polling QueuePage después de reiniciar en audit-response-received. Su causa exacta no se presume; el filtro final del fixture solo reintenta consultas ante ConnectionReset, nunca mutaciones, manteniendo el deadline original. El StorageUnavailable histórico Windows permanece sin causa demostrada y dispone ya de diagnóstico original y preservación de sidecars al fallar.
+- Repo `robdor80/NAP`; rama existente `codex/nap-2-fase-5-automation-host`, recuperada limpia/sincronizada en `08894c03ac6738abab1eec705c9326fae52ec141`. Sin ramas nuevas, reset, force-push ni merge.
+- Compilado ese HEAD: Release, 0 errores/0 avisos sin restaurar. Código de producto y tests sin cambios posteriores; nuevas entregas documentales y probe externo Windows. SHA/versiones de las DLL efectivamente ejecutadas en `NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_EVIDENCE.json`. No atribuir revisión embebida anterior a un commit documental posterior.
+- Checkpoints publicados: `1d49dd2` (reanudación/dirigidas), `86fec8e` (matriz/procedencia) y `36dfadd` (probe externo). El commit de cierre incorpora evidencia final; su SHA y sincronía se comprueban con `git log -1` y origin y se entregan en la confirmación final.
+- Main intacta en `cd7532f011eea8a72e89848234b259f1f5293e15`. **GitHub sigue indicando protected=false y reglas=[]**. No se cambió su configuración; resolver antes de cualquier fusión.
 
-Build del HEAD Release completado, 0 errores/0 avisos (sin restaurar; no implica resolver advisories históricos). Selección dirigida de recuperación, almacenamiento, cleanup, hashing y pruebas de ledger en ejecución. No se atribuyen resultados Linux intermedios al HEAD final ni a Windows. Siguiente paso tras verificar las áreas afectadas: regresión completa con volumen, WPF/manual real disponible y diagnóstico del primer fallo, conservando límites y evidencia.
+### Estado de los bloques
 
-No producción, CUTOVER, servicios, cuentas/permisos Windows, activos reales de Nimroel, merges ni ramas nuevas. El cierre autorizado preparará Draft PR para auditoría con los resultados reales y pendientes.
+| Bloque | Estado actual |
+|---|---|
+| P5.1 | Owner/mailbox implementados; 19/19 coordinación de procesos en regresión, peer BUSY durante volumen. |
+| P5.2 | Control durable/autorizaciones/CAS/receipts implementados; pausa/cancelación/reinicio cubiertos. |
+| P5.3 | Admisión asíncrona implementada; 1/10/100/1000 independientes pasan en la versión actual. |
+| P5.4 | Auditoría/timeout/resultados tardíos e inciertos implementados; 3/3 etapa IA y recuperación específica pasan. |
+| P5.5 | Scheduler multiuniverso implementado; 1/10/100 pasan; 1000 no cumple 55 minutos. |
+| P5.6 | Suspensión/recuperación implementadas; 22/22 escenarios reales de proceso pasan. |
+| P5.7 | Cohortes/backpressure/proyecciones implementados; pendientes de aceptación integral a 1000. |
+| P5.8 | Host/IPC autenticado implementados; laboratorio del mismo principal, CUTOVER no certificado. |
+| P5.9 | Manual remoto y WPF Windows reales pasan; 4/4 manuales y 5/5 WPF en regresión final. |
+| P5.10 | **PARCIAL, no aceptada**. Regresión completa terminada y evidencia preservada; bloqueo de rendimiento, symlinks pendientes. |
+
+### Resultado final verificable
+
+- Dirigidas del fuente final conservado: **56/56**, Windows manual/aceptación/WPF **16/16**, JSON Schema **436**. Selecciones superpuestas, no sumarlas.
+- Regresión completa Windows: **3792 ejecutadas, 3786 Passed / 6 Failed / 0 omitidas**, terminada normalmente. TRX `artifacts/phase5/resume-20261020/resume-complete-windows.trx`. Cinco fallos de creación symlink por privilegio; uno de host 1000 por duración. Los trece fallos históricos de software pasan individualmente en ese TRX; comparación con nombres/hashes actualizada.
+- Admisión independiente 1000: Passed, 841,121 s de medición / 14m43,552s del caso. No sustituye el pipeline integral.
+- Host 100: Passed, 100/100 en 793,53 s; pico privado 75.280.384 B, 374 handles; 197.882.443.413 B lógicos leídos. Host 1/10 también pasan.
+- Host 1000: **Failed: Only 280/1000 in 00:55:00.0524028**. Última muestra 140/140 Completed, CPU 3193,56 s, pico privado 159.006.720 B, 413 handles, 23 hilos, gap máximo 42,65 s y máximo 3 candidatos pendientes. Último contador vivo externo: 1.585.201.936.351 B lógicos leídos. Disco del laboratorio: 110.941.153 B/9758 archivos al cierre. No medirlo como E/S física ni presentarlo como lote aceptado.
+- Fallo real de aceptación por rendimiento, no infraestructura. No se elevó el límite ni se repitió una tanda extensa sin una corrección. El contrato de hashes frescos completos permanece por decisión expresa del responsable.
+- Ningún StorageUnavailable nuevo en el lote actual; stderr vacío. Causa histórica Windows no demostrada. Sin fallos ConnectionReset en la regresión final; no inferir causa del incidente Linux anterior.
+
+### Parada y conservación
+
+El fixture drenó el host mediante IPC autenticado y verificó salida 0; el runner terminó con código 1 por los seis casos fallidos, no por aborto. El sampler externo terminó al salir ese host. Build servers cerrados; comprobación posterior sin hosts, WPF ni test runners de NAP activos. No cambios reales de Nimroel, cuentas/permisos Windows, servicios, producción ni CUTOVER.
+
+Copia sintética detenida: 280 Completed, 199 Queued, 1 Running; controles Stopped/Paused para ambos universos. Recuento offline read-only de 11 SQLite, integridad/FK y hashes antes/después sin cambios: 480 intentos/480 Jobs distintos, intento máximo 1; 281 llamadas/281 RequestId distintos, ninguno con más de una llamada; 140 WebP por universo. Son observaciones estructurales de copias, **no aceptación nativa de 1000 ni permiso para rebind/reparación**. Las assertions de originales/efectos posteriores al bucle del caso fallido no se alcanzaron.
+
+Archivo nuevo `docs/evidence/NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_20261020.zip`, con inventario interno `evidence-inventory.json` y hashes verificados. Conserva TRX, logs, métricas/muestras externas, capturas y copia de sidecars sintéticos; excluye launch configs/claves. Los tres archivos históricos permanecen intactos. Los manifests de pruebas/recursos se amplían sin borrar entradas históricas. Inventario completo frente a Fase 4 en `NAP_2_0_FASE_5_CHANGED_FILES.txt`.
+
+### Siguiente operación recomendada tras auditoría
+
+1. Verificar HEAD/origin, árbol limpio y main/protección; leer aceptación, manifiesto Windows y fallo exacto 280/1000. No repetir selecciones ya verificadas sin cambios que lo justifiquen.
+2. Perfilar/reproducir el coste de escalabilidad en un ensayo acotado; evaluar lecturas/validaciones/deserialización redundantes conservando todas las fronteras y hashes globales frescos. El perfil CPU Linux es histórico, los contadores Windows no atribuyen todo al SHA. No está autorizado reemplazar el contrato por validación incremental autenticada; pedir autorización si se necesitara un cambio fundamental.
+3. Corregir solo un defecto demostrado y demostrar mejora/integridad con pruebas dirigidas; entonces repetir 1000 y la regresión final pertinente. La admisión 1000 ya pasó y no debe confundirse con procesamiento completo.
+4. Ejecutar los cinco symlinks en Windows con privilegio apropiado sin alterar este equipo. Revisar el CI de la Draft; no considerar sus resultados pendientes como éxitos. Mantener StorageUnavailable histórico sin causa atribuida y advisories ImageSharp abiertos.
+5. CUTOVER sigue fuera de alcance: identidad/arranque/distribución protegidos, ACL/padres, exclusión de escritores antiguos, preservación/backup y autorización productiva separada. No fusión sin aprobación humana.
 
 ## Historial conservado — las instrucciones de suspensión siguientes han sido levantadas
 
