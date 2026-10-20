@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-10-20T20:05:41.487476+00:00",
+  "repository": "robdor80/NAP",
+  "source_pr": 48,
+  "source_sha": "fd7c4ff664cb0a945bf53e6898b75352faf1d479",
+  "lab_branch": "lab/imagesharp-320-release-fd7c4ff-20261020",
+  "tested_sha": "cd211415cf292c17dc3ab212d6f89465a4f1b6fc",
+  "changed_files_from_pr": [
+    ".github/laboratory/ImageSharpValidation.targets",
+    ".github/workflows/imagesharp-release-lab.yml"
+  ],
+  "ci_general_trigger": {
+    "push": [
+      "main"
+    ],
+    "pull_request": [
+      "main"
+    ]
+  },
+  "cutover_trigger": "workflow_dispatch only; not invoked",
+  "lab_trigger": {
+    "push": {
+      "branches": [
+        "lab/imagesharp-320-release-fd7c4ff-20261020"
+      ],
+      "paths": [
+        ".github/workflows/imagesharp-release-lab.yml"
+      ]
+    }
+  },
+  "first_run": {
+    "id": 39488764661,
+    "url": "https://github.com/robdor80/NAP/actions/runs/39488764661",
+    "result": "preflight failed; both build steps skipped; corrected fetch depth"
+  },
+  "validation_run_id": 39488901573,
+  "expected_builds": 2,
+  "tests_authorized": 0,
+  "secret_list_observation": "403 Resource not accessible by integration; no secret value requested; presence confirmed by user before task",
+  "general_ci_not_matched": true,
+  "no_second_pr_created": true
+}

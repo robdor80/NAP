@@ -1,0 +1,15 @@
+{
+  "platform": "Linux-x64",
+  "job_id": 118856457075,
+  "job_url": "https://github.com/robdor80/NAP/actions/runs/39488901573/job/118856457075",
+  "selected_public_log_lines": [
+    "2026-10-20T20:04:58.9518875Z  Version:           10.0.401",
+    "2026-10-20T20:04:59.3897058Z  RID:         linux-x64",
+    "2026-10-20T20:05:06.9142686Z   LAB EVIDENCE: SixLabors_ValidateLicense completed successfully for NAP.Core in Release x64.",
+    "2026-10-20T20:05:29.8157025Z Build succeeded.",
+    "2026-10-20T20:05:29.8221268Z     10 Warning(s)",
+    "2026-10-20T20:05:29.8221925Z     0 Error(s)",
+    "2026-10-20T20:05:29.8223216Z Time Elapsed 00:00:27.66",
+    "2026-10-20T20:05:31.7887054Z Artifact download URL: https://github.com/robdor80/NAP/actions/runs/39488901573/artifacts/12294203375"
+  ]
+}

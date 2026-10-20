@@ -1,0 +1,296 @@
+{
+  "repository": "robdor80/NAP",
+  "checked_at_utc": "2026-10-20T20:07:50.597524+00:00",
+  "pr": {
+    "number": 48,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head_sha": "fd7c4ff664cb0a945bf53e6898b75352faf1d479",
+    "main_sha": "cd7532f011eea8a72e89848234b259f1f5293e15"
+  },
+  "lab_branch": "lab/imagesharp-320-release-fd7c4ff-20261020",
+  "tested_sha": "cd211415cf292c17dc3ab212d6f89465a4f1b6fc",
+  "run": {
+    "id": 39488901573,
+    "html_url": "https://github.com/robdor80/NAP/actions/runs/39488901573",
+    "path": ".github/workflows/imagesharp-release-lab.yml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-20T20:04:44Z",
+    "updated_at": "2026-10-20T20:06:17Z",
+    "run_attempt": 1
+  },
+  "actual_build_count": 2,
+  "test_execution_count": 0,
+  "jobs": [
+    {
+      "id": 118856456781,
+      "name": "Release Windows-x64",
+      "html_url": "https://github.com/robdor80/NAP/actions/runs/39488901573/job/118856456781",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-20T20:04:50Z",
+      "completed_at": "2026-10-20T20:06:16Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-20T20:04:51Z",
+          "completed_at": "2026-10-20T20:04:52Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-20T20:04:52Z",
+          "completed_at": "2026-10-20T20:05:02Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-20T20:05:02Z",
+          "completed_at": "2026-10-20T20:05:30Z"
+        },
+        {
+          "name": "Verify source and native x64 runner",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-20T20:05:30Z",
+          "completed_at": "2026-10-20T20:05:34Z"
+        },
+        {
+          "name": "Build solution Release x64 with official license validation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-20T20:05:34Z",
+          "completed_at": "2026-10-20T20:06:10Z"
+        },
+        {
+          "name": "Remove temporary license",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-20T20:06:10Z",
+          "completed_at": "2026-10-20T20:06:10Z"
+        },
+        {
+          "name": "Verify and record public build evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-20T20:06:10Z",
+          "completed_at": "2026-10-20T20:06:11Z"
+        },
+        {
+          "name": "Preserve public evidence only",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-20T20:06:11Z",
+          "completed_at": "2026-10-20T20:06:12Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-20T20:06:12Z",
+          "completed_at": "2026-10-20T20:06:12Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-20T20:06:12Z",
+          "completed_at": "2026-10-20T20:06:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-20T20:06:14Z",
+          "completed_at": "2026-10-20T20:06:14Z"
+        }
+      ]
+    },
+    {
+      "id": 118856457075,
+      "name": "Release Linux-x64",
+      "html_url": "https://github.com/robdor80/NAP/actions/runs/39488901573/job/118856457075",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-20T20:04:47Z",
+      "completed_at": "2026-10-20T20:05:34Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-20T20:04:48Z",
+          "completed_at": "2026-10-20T20:04:48Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-20T20:04:48Z",
+          "completed_at": "2026-10-20T20:04:50Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-20T20:04:50Z",
+          "completed_at": "2026-10-20T20:04:57Z"
+        },
+        {
+          "name": "Verify source and native x64 runner",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-20T20:04:57Z",
+          "completed_at": "2026-10-20T20:05:00Z"
+        },
+        {
+          "name": "Build solution Release x64 with official license validation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-20T20:05:00Z",
+          "completed_at": "2026-10-20T20:05:29Z"
+        },
+        {
+          "name": "Remove temporary license",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-20T20:05:29Z",
+          "completed_at": "2026-10-20T20:05:30Z"
+        },
+        {
+          "name": "Verify and record public build evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-20T20:05:30Z",
+          "completed_at": "2026-10-20T20:05:31Z"
+        },
+        {
+          "name": "Preserve public evidence only",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-20T20:05:31Z",
+          "completed_at": "2026-10-20T20:05:31Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-20T20:05:31Z",
+          "completed_at": "2026-10-20T20:05:31Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-20T20:05:31Z",
+          "completed_at": "2026-10-20T20:05:32Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-20T20:05:32Z",
+          "completed_at": "2026-10-20T20:05:32Z"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12294203375,
+      "name": "imagesharp-release-Linux-x64",
+      "size_in_bytes": 844,
+      "digest": "sha256:2e26c230f1c0ccf1a22414c63a9a74f7273179b4dff5157043b34d2c9a965ccb",
+      "created_at": "2026-10-20T20:05:31Z",
+      "expires_at": "2027-01-18T20:04:44Z",
+      "expired": false
+    },
+    {
+      "id": 12293959147,
+      "name": "imagesharp-release-Windows-x64",
+      "size_in_bytes": 853,
+      "digest": "sha256:651648eca65d228b6d054bc762280e22f4d12ef65dea846a1d1496b223b93a32",
+      "created_at": "2026-10-20T20:06:12Z",
+      "expires_at": "2027-01-18T20:04:44Z",
+      "expired": false
+    }
+  ],
+  "source_unchanged": true,
+  "helper_unchanged": true,
+  "general_ci_triggered": false,
+  "cutover_triggered": false,
+  "new_workflow_runs": [
+    {
+      "id": 39488901573,
+      "name": "ImageSharp 3.2.0 isolated Release validation",
+      "path": ".github/workflows/imagesharp-release-lab.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 39488764661,
+      "name": "ImageSharp 3.2.0 isolated Release validation",
+      "path": ".github/workflows/imagesharp-release-lab.yml",
+      "conclusion": "failure"
+    }
+  ],
+  "first_run": {
+    "id": 39488764661,
+    "url": "https://github.com/robdor80/NAP/actions/runs/39488764661",
+    "conclusion": "failure",
+    "both_build_steps": "skipped",
+    "reason": "Shallow checkout omitted source commit; fixed fetch-depth to 0 before any compilation."
+  },
+  "sdk_actual": "10.0.401",
+  "target_frameworks": [
+    "net8.0",
+    "net8.0-windows"
+  ],
+  "architecture": "native x64 runners; PlatformTarget=x64; no RID-specific publish",
+  "linux_wpf_scope": "WPF cross-compilation with EnableWindowsTargeting; no WPF execution",
+  "validator": {
+    "name": "SixLabors_ValidateLicense",
+    "package": "SixLabors.ImageSharp",
+    "version": "3.2.0",
+    "result": "completed successfully for NAP.Core in Release x64 on both runners",
+    "observation": "Lab-only AfterTargets hook; official target and task unchanged; no override or suppression",
+    "official_targets_sha256": "9ae7544d260afad0b253128d192afa6ed9873006af627609de0022878fc9475e"
+  },
+  "nuget_advisories": [
+    "GHSA-gwg2-r3hj-4w44",
+    "GHSA-j3p4-wp97-rph4",
+    "GHSA-j9gm-c75j-xc9q",
+    "GHSA-jjfr-hcj7-qf5w",
+    "GHSA-wmxv-xphr-5c9g"
+  ],
+  "build_warning_summary": "10 warning occurrences per build: five distinct advisories repeated during restore/build; zero errors",
+  "evidence_contains_license": false
+}
