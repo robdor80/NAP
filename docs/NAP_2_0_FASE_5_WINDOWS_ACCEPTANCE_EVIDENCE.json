@@ -1,9 +1,9 @@
 {
-  "observedUtc": "2026-10-20T16:45:52.7508686+00:00",
+  "observedUtc": "2026-10-20T18:45:52.7508686+02:00",
   "repository": "robdor80/NAP",
   "branch": "codex/nap-2-fase-5-automation-host",
   "applicationAndFixtureSourceCommit": "08894c03ac6738abab1eec705c9326fae52ec141",
-  "laterChangesSoFar": "Documentation/evidence only; no rebuild while complete regression is running.",
+  "laterChangesSoFar": "Documentation/evidence and a separate read-only Windows process-counter probe; application, test source and running binaries unchanged.",
   "platform": "Windows x64",
   "sdk": "10.0.400",
   "runtime": "8.0.8",
@@ -51,5 +51,14 @@
   "realHostCutoverApplied": false,
   "mainProtected": false,
   "mainEffectiveRules": [],
-  "productionActivated": false
+  "productionActivated": false,
+  "externalProcessSampling": {
+    "script": "scripts/Measure-Phase5LaboratoryProcess.ps1",
+    "sha256": "a0cb67fe49bbb16033c5cfcf6b86ffc66aa872c98ab7c684c42a586f49b31455",
+    "positiveObservation": "artifacts/phase5/resume-20261020/process-1652.json",
+    "negativeGuardChecks": "artifacts/phase5/resume-20261020/process-probe-checks.log",
+    "periodicSeconds": 45,
+    "readsQueuesOrCredentials": false,
+    "applicationOrAssertionsChanged": false
+  }
 }

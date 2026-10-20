@@ -18,6 +18,7 @@ docs/NAP_2_0_FASE_5_SOFTWARE_ACCEPTANCE.md
 docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json
 docs/NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_EVIDENCE.json
 NAP.sln
+scripts/Measure-Phase5LaboratoryProcess.ps1
 scripts/Read-Phase5LaboratoryHost.ps1
 scripts/Update-Phase5Evidence.ps1
 src/NAP.App/App.xaml.cs

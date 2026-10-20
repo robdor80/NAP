@@ -31,6 +31,8 @@ Medición actual del host 100: 793,53 s, pico privado 75.280.384 bytes, 374 hand
 
 Los presupuestos de datos retenidos del bridge (128 MiB para handles, incluyendo buffers ocultos; 128 MiB independientes para blobs) no constituyen un límite absoluto de memoria residente. El ensayo de volumen comprueba por separado el proceso del host con el envelope original de 1 GiB privado, menos de 2048 handles y menos de 128 hilos. No se han elevado esos límites.
 
+El probe adicional `scripts/Measure-Phase5LaboratoryProcess.ps1` conserva contadores Windows de CPU/E/S y memoria sin consultar la cola, especialmente antes del cierre del host si el caso falla. Se ejecutó contra el host sintético actual y se verificó el rechazo de raíz ajena al laboratorio y de PID que no corresponde al host. Valida la encarnación del proceso y no lee launch configs ni claves. El muestreo efímero cada 45 s termina al salir ese host. Su incorporación no cambia fuentes de producto, fixtures, assertions ni binarios de la regresión en curso.
+
 ## Incidencias que requieren evidencia final
 
 - `StorageUnavailable` histórico de Windows: los lotes Linux de 100 no establecieron su causa. El laboratorio conserva ahora excepción original y sidecars al fallar; no se declara corregido por inferencia.
