@@ -1,5 +1,9 @@
 # ImageSharp 3.2.0 — licencia local y validación dirigida
 
+**Estado posterior verificado, 2026-10-20 UTC:** la provisión privada ya funcionó en [Actions 39488901573](https://github.com/robdor80/NAP/actions/runs/39488901573), Windows/Linux x64 Release, con target oficial `SixLabors_ValidateLicense` satisfactorio, cero errores, temporal eliminado y cero pruebas. No está pendiente la primera configuración del secreto. Las instrucciones/afirmaciones siguientes describen la preparación y validación local anteriores, conservadas por trazabilidad; no ejecutar sus pasos para repetir una configuración ni un CI ya verificados. El secreto debe mantenerse privado y renovarse cuando corresponda. Véase [auditoría final](NAP_2_0_FASE_5_FINAL_REVIEW.md).
+
+## Registro histórico anterior a la validación remota
+
 2026-10-20. El responsable aportó una licencia Community oficial limitada a ensamblados. La lectura privada confirma tipo Community, formato assembly-scoped, vigencia y caducidad en enero de 2028. **El build Release completo valida oficialmente la licencia para el ensamblado efectivo `NAP.Core` y termina con exit 0.** No se publica su contenido, identificador, firmas ni hash.
 
 ## Configuración aplicada

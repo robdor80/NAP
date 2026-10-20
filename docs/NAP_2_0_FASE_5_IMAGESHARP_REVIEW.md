@@ -1,12 +1,18 @@
 # ImageSharp — revisión de seguridad de Fase 5
 
-Actualización vigente, 2026-10-20: **NAP usa ImageSharp 3.2.0; licencia Community oficial validada para NAP.Core, Release correcto y 220/220 pruebas dirigidas de imágenes superadas.** La licencia queda local, ignorada por Git y sin publicación, conforme a la orden expresa. Véase `NAP_2_0_IMAGESHARP_LICENSE_SETUP.md` y `NAP_2_0_FASE_5_IMAGESHARP_320_EVIDENCE.json`.
+Estado verificado al **20-10-2026 UTC**, fuente `fd7c4ff`: **ImageSharp 3.2.0** directa en NAP.Core y transitiva en los otros siete proyectos. Licencia privada, target oficial activo y **220/220** pruebas locales dirigidas de imágenes superadas, sin omisiones. La DLL ensayada coincide con el paquete 3.2.0 y su revisión `baa37cd`.
 
-Los cinco avisos NU1902/NU1903 siguen visibles. La [confirmación oficial actualizada](https://sixlabors.com/posts/security-support-and-license-enforcement/) declara corregidos los backports de 3.2.0 y pendiente su revisión en los metadatos GitHub/NuGet. No se suprimen avisos ni se afirma scan limpio. El bloqueo de licencia de la revisión anterior queda resuelto localmente; CI aún necesita provisión autorizada de licencia. Solo se ejecutaron pruebas de imágenes, ninguna carga ZIP.
+La [ejecución original 39488901573](https://github.com/robdor80/NAP/actions/runs/39488901573) acredita Release x64 correcta en Windows y Linux, `SixLabors_ValidateLicense` satisfactorio para NAP.Core, **cero errores**, limpieza comprobada de licencia temporal y **cero pruebas ejecutadas**. La provisión privada ya está demostrada; el bloqueo anterior de licencia está superado. El workflow y observador son exclusivos del laboratorio y no se incorporan a esta PR. Detalles, alcance y metadatos en [la auditoría final](NAP_2_0_FASE_5_FINAL_REVIEW.md) y su [evidencia](NAP_2_0_FASE_5_CLOSURE_AUDIT_EVIDENCE.json).
+
+Los **cinco NU1902/NU1903 permanecen visibles**. Se verificó directamente la [PR oficial 3208](https://github.com/SixLabors/ImageSharp/pull/3208), fusionada en `baa37cd19077b2a2a0c5667535111cf31d48c019`, que enumera los cinco IDs. El [anuncio del proveedor](https://sixlabors.com/posts/security-support-and-license-enforcement/) confirma backports y revisión de metadatos pendiente. No se añaden supresiones ni se declara scan limpio; la decisión residual de seguridad corresponde al responsable. Seguimiento de soporte v3 antes de 2027-05-12.
+
+La revisión de las rutas PNG/WebP y los TRX dirigidos respalda los contratos de geometría, píxeles/alpha/16 bits, metadatos, límites, rechazo de entradas y conservación de fuentes/caché en su cobertura. La normalización conserva ICC; no se elimina toda exposición por no llamar directamente a ICC/TIFF/histogramas. No se identifica una rotura funcional demostrada; tampoco se afirma cobertura universal o una regresión general nueva con 3.2.0. Ninguna prueba nueva se ejecuta para esta auditoría.
+
+**Conclusión vigente:** actualización y compilación/licencia verificadas local y remotamente; compatibilidad dirigida satisfactoria; avisos/metadatos y riesgo residual requieren decisión expresa y seguimiento. IPC y StorageUnavailable son incidencias separadas con causa no demostrada. No se acepta ningún riesgo por el responsable.
 
 ## Revisión histórica anterior a la aportación de licencia
 
-Fecha de consulta: 2026-10-20. La revisión siguiente documenta 3.1.12 y el bloqueo previo; sus resultados no se atribuyen a 3.2.0.
+Instantánea previa del 2026-10-20, conservada por trazabilidad. Todo este apartado describe 3.1.12 y el bloqueo previo a la licencia; sus frases en presente no describen el estado vigente, actualizado arriba.
 
 `dotnet list NAP.sln package --include-transitive --vulnerable --format json --no-restore` confirma `SixLabors.ImageSharp` **3.1.12**, directa en NAP.Core y transitiva en CLI, AI, Presentation, App, AutomationHost, CoordinationProbe y tests. La enumeración de paquetes completa corrobora la resolución. La biblioteca net6.0 no añade dependencias NuGet propias. Una compilación con caché sin avisos no sustituye esta auditoría.
 

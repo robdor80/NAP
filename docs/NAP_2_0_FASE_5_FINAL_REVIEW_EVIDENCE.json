@@ -873,5 +873,12 @@
     "bytes": 3283792,
     "dataEntries": 40,
     "allEntryHashesVerified": true
+  },
+  "subsequentFinalAudit": {
+    "dateUtc": "2026-10-20",
+    "evidence": "NAP_2_0_FASE_5_CLOSURE_AUDIT_EVIDENCE.json",
+    "report": "NAP_2_0_FASE_5_FINAL_REVIEW.md",
+    "remoteRun": 39488901573,
+    "note": "Original fields above remain historical snapshots. Current ImageSharp 3.2.0 private provision and official Release builds verified remotely on both platforms; zero tests in lab. Owner risk acceptance remains pending."
   }
 }

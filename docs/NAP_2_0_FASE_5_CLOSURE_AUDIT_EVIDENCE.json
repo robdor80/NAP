@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-20",
+  "repository": "robdor80/NAP",
+  "pr": 48,
+  "sourceHead": "fd7c4ff664cb0a945bf53e6898b75352faf1d479",
+  "base": "cd7532f011eea8a72e89848234b259f1f5293e15",
+  "prObserved": {
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "commits": 28,
+    "commentsAndReviews": 0
+  },
+  "decision": "APTO CON ACEPTACIÓN EXPRESA DE RIESGOS",
+  "ownerAcceptanceRecordedByThisAudit": false,
+  "p510": "Cierre condicionado; no aceptación incondicional",
+  "lab": {
+    "runId": 39488901573,
+    "url": "https://github.com/robdor80/NAP/actions/runs/39488901573",
+    "branch": "lab/imagesharp-320-release-fd7c4ff-20261020",
+    "conclusion": "success",
+    "sourceDiff": [
+      ".github/laboratory/ImageSharpValidation.targets",
+      ".github/workflows/imagesharp-release-lab.yml"
+    ],
+    "sourceAndInheritedAutomationUnchanged": true,
+    "command": "dotnet build NAP.sln -c Release -p:PlatformTarget=x64 (Invoke-LicensedDotnet.ps1; lab observer after official target)",
+    "officialTarget": "SixLabors_ValidateLicense",
+    "jobs": [
+      {
+        "id": 118856456781,
+        "platform": "Windows-x64",
+        "runner": "windows-2022",
+        "sdk": "10.0.401",
+        "conclusion": "success",
+        "compileErrors": 0,
+        "warningsPrinted": 10,
+        "uniqueNugetAdvisories": 5,
+        "officialValidatorCompleted": true,
+        "temporaryLicenseRemoved": true,
+        "testsExecuted": 0,
+        "artifactId": 12293959147,
+        "artifactDigestReportedByGitHub": "sha256:651648eca65d228b6d054bc762280e22f4d12ef65dea846a1d1496b223b93a32"
+      },
+      {
+        "id": 118856457075,
+        "platform": "Linux-x64",
+        "runner": "ubuntu-24.04",
+        "sdk": "10.0.401",
+        "conclusion": "success",
+        "compileErrors": 0,
+        "warningsPrinted": 10,
+        "uniqueNugetAdvisories": 5,
+        "officialValidatorCompleted": true,
+        "temporaryLicenseRemoved": true,
+        "testsExecuted": 0,
+        "artifactId": 12294203375,
+        "artifactDigestReportedByGitHub": "sha256:2e26c230f1c0ccf1a22414c63a9a74f7273179b4dff5157043b34d2c9a965ccb"
+      }
+    ],
+    "verification": "Run/jobs metadata, original job logs, workflow/observer and git diff inspected. Artifact digests are reported by GitHub, not recomputed locally; direct artifact ZIP download in cloud was blocked by destination policy. No signed download URLs or raw build logs included.",
+    "testedSha": "cd211415cf292c17dc3ab212d6f89465a4f1b6fc",
+    "branchHeadObservedBeforePublication": "75fbdab93771c4278a8fa4e5ddebc0d096515c6d",
+    "subsequentBranchChange": "Five evidence documents only; no source or inherited workflow changes.",
+    "preservedOriginalEvidence": "https://github.com/robdor80/NAP/tree/75fbdab93771c4278a8fa4e5ddebc0d096515c6d/docs/laboratory/imagesharp-320-remote-release-20261020",
+    "priorFailedRun": {
+      "id": 39488764661,
+      "outcome": "failure",
+      "buildSteps": "skipped",
+      "reportedCause": "Shallow checkout omitted source ancestor; lab fixed fetch-depth to 0."
+    }
+  },
+  "functionalHistory": {
+    "runId": 39474539947,
+    "source": "1bef7ecd1c1234ba0f4dbd014d7eef4bef93589a",
+    "imageSharp": "3.1.12",
+    "jobsSuccess": 5,
+    "windows": {
+      "passed": 3784,
+      "failed": 0,
+      "omitted": 0
+    },
+    "linux": {
+      "passed": 3777,
+      "failed": 0,
+      "omitted": 7,
+      "rawTrxNotExecuted": 0
+    },
+    "wpf": {
+      "passed": 4,
+      "failed": 0,
+      "omitted": 0
+    },
+    "coordinationPerPlatform": {
+      "original": 4,
+      "process": 19,
+      "git": 29
+    },
+    "overlappingSelections": true
+  },
+  "imageDirectedHistory": {
+    "sourceChange": "e18afd543922f89153f2f92de8b463b97338ae3c",
+    "imageSharp": "3.2.0",
+    "executed": 220,
+    "passed": 220,
+    "failed": 0,
+    "omitted": 0,
+    "archive": "docs/evidence/NAP_2_0_IMAGESHARP_320_20261020.zip",
+    "archiveSha256": "3554f4a932150c8238b25ac819e8323c4aad909c00a2bad97a264ef8d7808763",
+    "inventoryEntriesVerified": 8
+  },
+  "retainedFunctionalArchive": {
+    "path": "docs/evidence/NAP_2_0_FASE_5_FINAL_REVIEW_20261020.zip",
+    "sha256": "5aa4d9267ee2a58b3a2660b8ab78a2430375e4e7966124025475731e09f7de89",
+    "inventoryEntriesVerified": 40,
+    "localFailed": 6,
+    "localPassed": 3778,
+    "ipcFailure": "DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: cancel): OperationCanceledException reading QueuePage via fixture 20-second deadline. Cause not established.",
+    "subsequentInhibitionsPassed": 4
+  },
+  "openIncidents": [
+    {
+      "id": "A",
+      "name": "IPC recovery after cancellation",
+      "causeEstablished": false,
+      "technicalMergeConflict": false,
+      "unconditionalAcceptanceBlocked": true,
+      "disposition": "Explicit owner acceptance with tracking, or separately authorized investigation/correction; no correction claimed."
+    },
+    {
+      "id": "B",
+      "name": "Historical StorageUnavailable",
+      "causeEstablished": false,
+      "technicalMergeBlockDemonstrated": false,
+      "disposition": "Retain original failures and safe NeedsReview treatment; explicit owner disposition required."
+    },
+    {
+      "id": "C",
+      "name": "Five NuGet advisories",
+      "ids": [
+        "GHSA-gwg2-r3hj-4w44",
+        "GHSA-j3p4-wp97-rph4",
+        "GHSA-j9gm-c75j-xc9q",
+        "GHSA-jjfr-hcj7-qf5w",
+        "GHSA-wmxv-xphr-5c9g"
+      ],
+      "publisherBackportsVerified": true,
+      "scanClean": false,
+      "suppressionsAdded": false,
+      "technicalMergeBlockDemonstrated": false,
+      "disposition": "Owner security decision and follow-up on advisory metadata; tests do not prove all CVEs absent."
+    },
+    {
+      "id": "D",
+      "name": "ImageSharp functional contracts",
+      "directedTestsPassed": 220,
+      "fullRegressionOn320": false,
+      "identifiedFunctionalBreak": false,
+      "disposition": "Compatibility supported within directed coverage; no extrapolation to full regression."
+    },
+    {
+      "id": "E",
+      "name": "main protection",
+      "protected": false,
+      "rulesets": [],
+      "technicalMergeBlock": false,
+      "governanceConditionBeforeMerge": true,
+      "disposition": "Configure agreed protection or record explicit owner exception; no settings changed."
+    }
+  ],
+  "volume": {
+    "newTestsExecuted": false,
+    "permanentlyExcludedByRunsettingsAndExplicitSkip": true,
+    "historical100AcceptedAsSufficientByOwner": true,
+    "historical1000": {
+      "completed": 280,
+      "total": 1000,
+      "outcome": "Failed",
+      "currentGate": false
+    },
+    "prohibitionIncludesSmallVolumes": true
+  },
+  "license": {
+    "privateProvisionObservedInBothLabJobs": true,
+    "secretName": "SIXLABORS_LICENSE_B64",
+    "officialAssembly": "NAP.Core",
+    "secretValueReadByAudit": false,
+    "secretSettingsChanged": false,
+    "futureAvailabilityAndRenewalRequireMaintenance": true,
+    "licensePublishedByAudit": false
+  },
+  "workflowPreflight": {
+    "prBranchFiles": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/cutover-laboratory.yml"
+    ],
+    "ciEvents": {
+      "pushBranches": [
+        "main"
+      ],
+      "pullRequestBranches": [
+        "main"
+      ]
+    },
+    "cutoverEvent": "workflow_dispatch; authorization default false",
+    "labEvent": "push only lab branch and lab workflow path",
+    "commitMessageRequires": "[skip ci]",
+    "source": "https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs",
+    "headRunsBeforeDocumentation": 0
+  },
+  "cutover": {
+    "issue": 47,
+    "state": "open",
+    "executed": false,
+    "reserved": [
+      "protected distribution and configuration",
+      "writer identity and managed startup",
+      "old writers, autostarts and handles removal/barrier",
+      "roots and parent ACL/ownership",
+      "cross-identity denial checks on real host",
+      "real inventory, leases, verified external backup",
+      "separate deployment/migration/production authorization and rollback"
+    ]
+  },
+  "newTestsExecuted": 0,
+  "productionCodeChanged": false,
+  "mainChanged": false,
+  "branchesDeleted": false,
+  "labWorkflowImported": false
+}

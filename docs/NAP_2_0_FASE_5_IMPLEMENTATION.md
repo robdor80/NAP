@@ -1,5 +1,7 @@
 # NAP 2.0 — Fase 5: implementation and acceptance log
 
+**Final audit update — 2026-10-20 UTC:** P5.1–P5.9 implemented/integrated; P5.10 has satisfactory retained functional evidence within the owner's revised scope, but formal acceptance remains conditional. ImageSharp 3.2.0 directed tests are 220/220; remote Release x64 Windows/Linux run 39488901573 passed the official license target, cleanup and builds, with zero tests. Historical 100/100 is sufficient; 1000 gate withdrawn, 280/1000 remains Failed. No further volume of any size or general regression is authorized. IPC timeout and historical StorageUnavailable causes remain unproven; five advisory warnings and main protection require owner disposition. Current decision: **APTO CON ACEPTACIÓN EXPRESA DE RIESGOS**, not owner acceptance or merge authorization. [Final audit](NAP_2_0_FASE_5_FINAL_REVIEW.md) and [closure evidence](NAP_2_0_FASE_5_CLOSURE_AUDIT_EVIDENCE.json) govern the current status; all entries below are retained chronological records. No tests or builds were run by this final audit.
+
 Authorization: 2026-10-16, explicit approval of P5.1–P5.10 and a separate internal host process. Base: `cd7532f011eea8a72e89848234b259f1f5293e15` (PR #46). Work branch: `codex/nap-2-fase-5-automation-host`.
 
 Only synthetic isolated universes are permitted. No service installation, real credentials, account/ACL changes, Nimroel data changes, production activation or CUTOVER is authorized. One product/installation remains the target. No merge is authorized.
