@@ -1,0 +1,877 @@
+{
+  "recordedUtc": "2026-10-20T18:37:04.618756+00:00",
+  "repository": "robdor80/NAP",
+  "branch": "codex/nap-2-fase-5-automation-host",
+  "testedSourceCommit": "1bef7ecd1c1234ba0f4dbd014d7eef4bef93589a",
+  "ciRun": 39474539947,
+  "cancelledPriorRun": 39468522189,
+  "scope": {
+    "normalZipVolume": "1-20",
+    "historical100Sufficient": true,
+    "historical1000Outcome": "Failed",
+    "thousandGateWithdrawn": true,
+    "newVolumeRunsAuthorized": false,
+    "newVolumeRunsExecuted": false
+  },
+  "imageSharp": {
+    "resolved": "3.1.12",
+    "direct": "NAP.Core",
+    "advisoriesRemaining": 5,
+    "candidate": "3.2.0",
+    "isolatedReleaseBuildExitCode": 1,
+    "updateBlocked": "Valid Six Labors build license not configured",
+    "productDependencyChanged": false
+  },
+  "storageUnavailable": {
+    "historicalCauseEstablished": false,
+    "loadReproducerRun": false,
+    "existingFailClosedTreatmentAndDiagnosticsRetained": true
+  },
+  "localIpcTimeout": {
+    "test": "DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+    "query": "QueuePage",
+    "unchangedDeadlineSeconds": 20,
+    "originalGeneralRunOutcome": "Failed",
+    "subsequentDirectedModesPassed": 4,
+    "causeEstablished": false,
+    "corrected": false
+  },
+  "main": {
+    "sha": "cd7532f011eea8a72e89848234b259f1f5293e15",
+    "protected": false,
+    "effectiveRules": [],
+    "settingsChanged": false
+  },
+  "productionActivated": false,
+  "cutoverExecuted": false,
+  "realNimroelModified": false,
+  "windowsAccountsOrPermissionsChanged": false,
+  "runs": [
+    {
+      "file": "artifacts/phase5/final-review-20261020/backlog-three-items.trx",
+      "sha256": "1355ee38ef15fabcfb24fe78c154063bee37d238feeafbeac765e76e8eb258fb",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 1
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "AutomationAcceptanceTests": {
+          "Passed": 1
+        }
+      }
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/core-process-tests.trx",
+      "sha256": "543857aeaa5a4d088e6de5f18ce3a2e271177329192484a1fe1012c90060f120",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "19",
+        "executed": "19",
+        "passed": "19",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 19
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "ExecutionCoordinationProcessTests": {
+          "Passed": 19
+        }
+      }
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/git-recovery-tests.trx",
+      "sha256": "4b28c7f2317772b9eb2322cf221cab7bbe8c36f5d4a6a481cec405bad727ea3a",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "29",
+        "executed": "29",
+        "passed": "29",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 29
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {}
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/original-mutex-tests.trx",
+      "sha256": "2407e126d43b30c2ec08fd8f2a49a2859237b33c2bb878139b8570bed075e123",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 4
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {}
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/core-process-tests.trx",
+      "sha256": "3ca0d3f7d53124bcfae471ebbf2ff698ed36b1149d46f8ecb329d801dc667c1f",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "19",
+        "executed": "19",
+        "passed": "19",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 19
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "ExecutionCoordinationProcessTests": {
+          "Passed": 19
+        }
+      }
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/git-recovery-tests.trx",
+      "sha256": "3b34eab97987f236487d14fd9d77239edf45f7fb73a6fb7d153b9ec36d890c92",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "29",
+        "executed": "29",
+        "passed": "29",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 29
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {}
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/original-mutex-tests.trx",
+      "sha256": "27547f008961853c7a01fb2f1219a84f39a6561409c55811ce8ec2b8bbfccd17",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 4
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {}
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-linux/linux-regression.trx",
+      "sha256": "ea20792079958f962b81a5797d3bdf09576c9ce72e811de34e6e2d242d89659e",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "3784",
+        "executed": "3777",
+        "passed": "3777",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "NotExecuted": 7,
+        "Passed": 3777
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [
+        "NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender",
+        "NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate",
+        "NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest",
+        "NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings",
+        "NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings",
+        "NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings",
+        "NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup"
+      ],
+      "families": {
+        "AutomationProcessRecoveryTests": {
+          "NotExecuted": 0,
+          "Passed": 22
+        },
+        "AutomationAuditStageTests": {
+          "NotExecuted": 0,
+          "Passed": 3
+        },
+        "AutomationAcceptanceTests": {
+          "NotExecuted": 2,
+          "Passed": 5
+        },
+        "AutomationDesktopTests": {
+          "NotExecuted": 0,
+          "Passed": 4
+        },
+        "AutomationWpfTests": {
+          "NotExecuted": 1,
+          "Passed": 0
+        },
+        "VisualExplorerWindowsSmokeTests": {
+          "NotExecuted": 4,
+          "Passed": 0
+        },
+        "PreparationStorageDiagnosticsTests": {
+          "NotExecuted": 0,
+          "Passed": 4
+        },
+        "LedgerValidationProofTests": {
+          "NotExecuted": 0,
+          "Passed": 8
+        },
+        "ExecutionCoordinationProcessTests": {
+          "NotExecuted": 0,
+          "Passed": 19
+        },
+        "ImageNormalizationTests": {
+          "NotExecuted": 0,
+          "Passed": 32
+        },
+        "ImageNormalizationSafetyTests": {
+          "NotExecuted": 0,
+          "Passed": 15
+        },
+        "PortraitPngToWebpConverterTests": {
+          "NotExecuted": 0,
+          "Passed": 44
+        },
+        "ScenePngToWebpConverterTests": {
+          "NotExecuted": 0,
+          "Passed": 44
+        }
+      },
+      "original18": [
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        }
+      ]
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-windows/windows-regression/windows-regression.trx",
+      "sha256": "310ff49c0144ee6aab1535e485f868577377d90ae8801f1e10e1d0c8ff7e51a6",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "3784",
+        "executed": "3784",
+        "passed": "3784",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 3784
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "AutomationProcessRecoveryTests": {
+          "Passed": 22
+        },
+        "AutomationAuditStageTests": {
+          "Passed": 3
+        },
+        "AutomationAcceptanceTests": {
+          "Passed": 7
+        },
+        "AutomationDesktopTests": {
+          "Passed": 4
+        },
+        "AutomationWpfTests": {
+          "Passed": 1
+        },
+        "VisualExplorerWindowsSmokeTests": {
+          "Passed": 4
+        },
+        "PreparationStorageDiagnosticsTests": {
+          "Passed": 4
+        },
+        "LedgerValidationProofTests": {
+          "Passed": 8
+        },
+        "ExecutionCoordinationProcessTests": {
+          "Passed": 19
+        },
+        "ImageNormalizationTests": {
+          "Passed": 32
+        },
+        "ImageNormalizationSafetyTests": {
+          "Passed": 15
+        },
+        "PortraitPngToWebpConverterTests": {
+          "Passed": 44
+        },
+        "ScenePngToWebpConverterTests": {
+          "Passed": 44
+        }
+      },
+      "original18": [
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        }
+      ]
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/ci-wpf/windows-wpf.trx",
+      "sha256": "3fea6f1b46ece83650ce8a8b1b8ee1bc45bb225232b1a501c2b5962b5e6eef5e",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 4
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "VisualExplorerWindowsSmokeTests": {
+          "Passed": 4
+        }
+      }
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/inhibitions-directed.trx",
+      "sha256": "06877de76af448fa4f2147ad283abd2a9d26658e712816783a87191114b902ab",
+      "runOutcome": "Completed",
+      "rawCounters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Passed": 4
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [],
+      "omittedTests": [],
+      "families": {
+        "AutomationProcessRecoveryTests": {
+          "Passed": 4
+        }
+      }
+    },
+    {
+      "file": "artifacts/phase5/final-review-20261020/windows-functional.trx",
+      "sha256": "8f756d177143113a9f7ba3d2dfd680dfb23db3ae0588ce83369c1cee8a0a73f1",
+      "runOutcome": "Failed",
+      "rawCounters": {
+        "total": "3784",
+        "executed": "3784",
+        "passed": "3778",
+        "failed": "6",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualResultOutcomes": {
+        "Failed": 6,
+        "Passed": 3778
+      },
+      "prohibitedVolumeResults": [],
+      "failedTests": [
+        "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+        "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+        "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+        "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+        "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+        "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")"
+      ],
+      "omittedTests": [],
+      "families": {
+        "AutomationProcessRecoveryTests": {
+          "Failed": 1,
+          "Passed": 21
+        },
+        "AutomationAuditStageTests": {
+          "Failed": 0,
+          "Passed": 3
+        },
+        "AutomationAcceptanceTests": {
+          "Failed": 0,
+          "Passed": 7
+        },
+        "AutomationDesktopTests": {
+          "Failed": 0,
+          "Passed": 4
+        },
+        "AutomationWpfTests": {
+          "Failed": 0,
+          "Passed": 1
+        },
+        "VisualExplorerWindowsSmokeTests": {
+          "Failed": 0,
+          "Passed": 4
+        },
+        "PreparationStorageDiagnosticsTests": {
+          "Failed": 0,
+          "Passed": 4
+        },
+        "LedgerValidationProofTests": {
+          "Failed": 0,
+          "Passed": 8
+        },
+        "ExecutionCoordinationProcessTests": {
+          "Failed": 0,
+          "Passed": 19
+        },
+        "ImageNormalizationTests": {
+          "Failed": 0,
+          "Passed": 32
+        },
+        "ImageNormalizationSafetyTests": {
+          "Failed": 0,
+          "Passed": 15
+        },
+        "PortraitPngToWebpConverterTests": {
+          "Failed": 0,
+          "Passed": 44
+        },
+        "ScenePngToWebpConverterTests": {
+          "Failed": 0,
+          "Passed": 44
+        }
+      },
+      "original18": [
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Failed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Failed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Failed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Failed"
+        },
+        {
+          "test": "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        },
+        {
+          "test": "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+          "previousClassification": "EnvironmentSymlinkPrivilege",
+          "currentOutcome": "Failed"
+        },
+        {
+          "test": "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter",
+          "previousClassification": "Software",
+          "currentOutcome": "Passed"
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "file": "docs/evidence/NAP_2_0_FASE_5_FINAL_REVIEW_20261020.zip",
+    "sha256": "5aa4d9267ee2a58b3a2660b8ab78a2430375e4e7966124025475731e09f7de89",
+    "bytes": 3283792,
+    "dataEntries": 40,
+    "allEntryHashesVerified": true
+  }
+}

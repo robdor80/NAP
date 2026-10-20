@@ -19,6 +19,9 @@ $entries = @(Get-ChildItem -LiteralPath $artifactRoot -Filter '*.trx' -Recurse |
         passed = [int]$counters.passed
         failed = [int]$counters.failed
         notExecuted = [int]$counters.notExecuted
+        # Some VSTest TRX counters say zero while individual Windows-only results are NotExecuted.
+        # Preserve the raw counter above and record the actual omitted result count separately.
+        notExecutedResults = @($report.TestRun.Results.UnitTestResult | Where-Object outcome -eq 'NotExecuted').Count
         failedTests = @($report.TestRun.Results.UnitTestResult | Where-Object outcome -eq 'Failed' | ForEach-Object { [string]$_.testName })
     }
 })

@@ -16,6 +16,7 @@
     "passed": 94,
     "failed": 4,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
@@ -317,6 +318,228 @@
     "failedTests": []
   },
   {
+    "file": "artifacts/phase5/final-review-20261020/backlog-three-items.trx",
+    "sha256": "1355ee38ef15fabcfb24fe78c154063bee37d238feeafbeac765e76e8eb258fb",
+    "start": "2026-10-20T20:24:34.1449192+02:00",
+    "finish": "2026-10-20T20:24:38.9008629+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/core-process-tests.trx",
+    "sha256": "543857aeaa5a4d088e6de5f18ce3a2e271177329192484a1fe1012c90060f120",
+    "start": "2026-10-20T18:26:10.1283009+00:00",
+    "finish": "2026-10-20T18:26:16.8638058+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 19,
+    "executed": 19,
+    "passed": 19,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/git-recovery-tests.trx",
+    "sha256": "4b28c7f2317772b9eb2322cf221cab7bbe8c36f5d4a6a481cec405bad727ea3a",
+    "start": "2026-10-20T18:26:20.7827697+00:00",
+    "finish": "2026-10-20T18:26:36.1944771+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 29,
+    "executed": 29,
+    "passed": 29,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/original-mutex-tests.trx",
+    "sha256": "2407e126d43b30c2ec08fd8f2a49a2859237b33c2bb878139b8570bed075e123",
+    "start": "2026-10-20T18:26:03.3754825+00:00",
+    "finish": "2026-10-20T18:26:09.1307021+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/core-process-tests.trx",
+    "sha256": "3ca0d3f7d53124bcfae471ebbf2ff698ed36b1149d46f8ecb329d801dc667c1f",
+    "start": "2026-10-20T18:26:36.5204591+00:00",
+    "finish": "2026-10-20T18:26:44.2061603+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 19,
+    "executed": 19,
+    "passed": 19,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/git-recovery-tests.trx",
+    "sha256": "3b34eab97987f236487d14fd9d77239edf45f7fb73a6fb7d153b9ec36d890c92",
+    "start": "2026-10-20T18:26:47.8323433+00:00",
+    "finish": "2026-10-20T18:30:14.3848611+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 29,
+    "executed": 29,
+    "passed": 29,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/original-mutex-tests.trx",
+    "sha256": "27547f008961853c7a01fb2f1219a84f39a6561409c55811ce8ec2b8bbfccd17",
+    "start": "2026-10-20T18:26:31.9969849+00:00",
+    "finish": "2026-10-20T18:26:35.2648355+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-linux/linux-regression.trx",
+    "sha256": "ea20792079958f962b81a5797d3bdf09576c9ce72e811de34e6e2d242d89659e",
+    "start": "2026-10-20T18:25:50.5601142+00:00",
+    "finish": "2026-10-20T18:29:21.1935942+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:00:13.47]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:01:45.45]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:01:48.87]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]"
+    ],
+    "total": 3784,
+    "executed": 3777,
+    "passed": 3777,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 7,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-windows/windows-regression/windows-regression.trx",
+    "sha256": "310ff49c0144ee6aab1535e485f868577377d90ae8801f1e10e1d0c8ff7e51a6",
+    "start": "2026-10-20T18:26:32.8203147+00:00",
+    "finish": "2026-10-20T18:34:53.1625568+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3784,
+    "executed": 3784,
+    "passed": 3784,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-wpf/windows-wpf.trx",
+    "sha256": "3fea6f1b46ece83650ce8a8b1b8ee1bc45bb225232b1a501c2b5962b5e6eef5e",
+    "start": "2026-10-20T18:26:42.2874378+00:00",
+    "finish": "2026-10-20T18:26:58.2747547+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/inhibitions-directed.trx",
+    "sha256": "06877de76af448fa4f2147ad283abd2a9d26658e712816783a87191114b902ab",
+    "start": "2026-10-20T20:32:25.1598375+02:00",
+    "finish": "2026-10-20T20:33:09.2345673+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/windows-functional.trx",
+    "sha256": "8f756d177143113a9f7ba3d2dfd680dfb23db3ae0588ce83369c1cee8a0a73f1",
+    "start": "2026-10-20T20:25:22.1042012+02:00",
+    "finish": "2026-10-20T20:31:17.7144905+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:07.79]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:08.09]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:08.38]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:36.74]     NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\") [FAIL]",
+      "[xUnit.net 00:00:38.73]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:01:24.71]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 3784,
+    "executed": 3784,
+    "passed": 3778,
+    "failed": 6,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")"
+    ]
+  },
+  {
     "file": "artifacts/phase5/final/p510-final-complete-regression.trx",
     "sha256": "96cfbd827da0335eb611ae2fce18b5a88b814f319a9d0fedeff24ed1f84f252a",
     "start": "2026-10-16T23:48:29.7816377+02:00",
@@ -336,6 +559,7 @@
     "passed": 3772,
     "failed": 7,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
@@ -366,6 +590,7 @@
     "passed": 3753,
     "failed": 6,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
       "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
@@ -393,6 +618,7 @@
     "passed": 3766,
     "failed": 5,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
       "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
@@ -415,6 +641,7 @@
     "passed": 6,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -431,6 +658,7 @@
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -453,6 +681,7 @@
     "passed": 26,
     "failed": 7,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100)",
       "NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup",
@@ -477,6 +706,7 @@
     "passed": 10,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -493,6 +723,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.AuditHarvestCannotDropAdmissionDeferredByBackpressure"
     ]
@@ -511,6 +742,7 @@
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -527,6 +759,7 @@
     "passed": 101,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -543,6 +776,7 @@
     "passed": 12,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -559,6 +793,7 @@
     "passed": 15,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
     ]
@@ -577,6 +812,7 @@
     "passed": 7,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -593,6 +829,7 @@
     "passed": 6,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.LedgerValidationProofTests.WarmProofRejectsChangedBytesEvenWithIdenticalLengthTimestampAndSelfConsistentAnchors(execution: False, corruption: \"domain\")"
     ]
@@ -611,6 +848,7 @@
     "passed": 139,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -627,6 +865,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -645,6 +884,7 @@
     "passed": 1,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -663,6 +903,7 @@
     "passed": 4,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -679,6 +920,7 @@
     "passed": 1,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -695,6 +937,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -713,6 +956,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -731,6 +975,7 @@
     "passed": 1,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -747,6 +992,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -765,6 +1011,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -783,6 +1030,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -801,6 +1049,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
     ]
@@ -827,6 +1076,7 @@
     "passed": 7,
     "failed": 9,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False)",
       "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True)",
@@ -867,6 +1117,7 @@
     "passed": 1,
     "failed": 15,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"extraction-recorded\", recoverable: True)",
       "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
@@ -903,6 +1154,7 @@
     "passed": 93,
     "failed": 5,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
@@ -932,6 +1184,7 @@
     "passed": 3760,
     "failed": 8,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
@@ -957,6 +1210,7 @@
     "passed": 8,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -973,6 +1227,7 @@
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -989,6 +1244,7 @@
     "passed": 6,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1005,6 +1261,7 @@
     "passed": 4,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1022,6 +1279,7 @@
     "passed": 4,
     "failed": 2,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationHostControlTests.CorruptControlIsPreservedAndStorageCannotOverlapUniverse",
       "NAP.Tests.AutomationHostControlTests.PauseSurvivesReopenAndCommandReplayCannotChangeMeaning"
@@ -1041,6 +1299,7 @@
     "passed": 14,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.UniverseProfileImportTests.RodoPresentationPngPreservesPinnedDimensionsTransparencyAndDecodedPixels"
     ]
@@ -1059,6 +1318,7 @@
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1075,6 +1335,7 @@
     "passed": 43,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed"
     ]
@@ -1093,6 +1354,7 @@
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1109,6 +1371,7 @@
     "passed": 53,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1125,6 +1388,7 @@
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1141,6 +1405,7 @@
     "passed": 7,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1157,6 +1422,7 @@
     "passed": 9,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1173,6 +1439,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
     ]
@@ -1191,6 +1458,7 @@
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1207,6 +1475,7 @@
     "passed": 1,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
     ]
@@ -1225,6 +1494,7 @@
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1241,6 +1511,7 @@
     "passed": 2,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1257,6 +1528,7 @@
     "passed": 23,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1274,6 +1546,7 @@
     "passed": 0,
     "failed": 2,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationDesktopTests.RemoteManualPipelineKeepsNativeAuthorityInHostAndPreservesBackupFunctions",
       "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
@@ -1293,6 +1566,7 @@
     "passed": 0,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
     ]
@@ -1311,6 +1585,7 @@
     "passed": 5,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1327,6 +1602,7 @@
     "passed": 4,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
     ]
@@ -1345,6 +1621,7 @@
     "passed": 30,
     "failed": 1,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.ProductionThumbnailTests.GridAndDetailCanRequestSameMissingThumbnailConcurrently"
     ]
@@ -1363,6 +1640,7 @@
     "passed": 84,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1379,6 +1657,7 @@
     "passed": 3,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1412,6 +1691,7 @@
     "passed": 3724,
     "failed": 18,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
       "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
@@ -1452,6 +1732,7 @@
     "passed": 3786,
     "failed": 6,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": [
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
       "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
@@ -1475,6 +1756,7 @@
     "passed": 56,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   },
   {
@@ -1491,6 +1773,7 @@
     "passed": 16,
     "failed": 0,
     "notExecuted": 0,
+    "notExecutedResults": 0,
     "failedTests": []
   }
 ]

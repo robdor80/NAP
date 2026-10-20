@@ -1,16 +1,24 @@
 # NAP 2.0 — aceptación técnica de Fase 5
 
-Fecha: 2026-10-20, Europe/Madrid. **P5.10 PARCIAL — NO ACEPTADA INTEGRALMENTE.** El procesamiento integral de 1000 no cumple el presupuesto temporal. La entrega queda preparada para auditoría mediante PR Draft, sin fusión ni producción.
+Fecha: 2026-10-20, Europe/Madrid. **Alcance vigente aprobado por el responsable: volumen histórico de 100 suficiente; gate de 1000 retirado.** No se permiten nuevas cargas de 20/50/100/1000 ZIP ni repetir baterías de volumen. El fallo histórico permanece Failed y ya no bloquea P5.10 por volumen. El cierre integral queda condicionado a la revisión de seguridad de ImageSharp y las evidencias funcionales indicadas abajo. PR #48 permanece Draft, sin fusión ni producción.
 
 ## Versión y contrato conservado
 
-Repositorio `robdor80/NAP`, rama existente `codex/nap-2-fase-5-automation-host`. Recuperación limpia y sincronizada en `08894c03ac6738abab1eec705c9326fae52ec141`; se compiló ese HEAD. Después solo cambiaron documentación/evidencia y un probe externo de contadores. `src/` y `tests/` siguen con las mismas fuentes; las DLL ejecutadas están identificadas por SHA256 y versión en `NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_EVIDENCE.json`. No se atribuye su revisión embebida a un commit documental posterior.
+Repositorio `robdor80/NAP`, rama existente `codex/nap-2-fase-5-automation-host`. Los resultados históricos siguientes corresponden al producto recuperado en `08894c03ac6738abab1eec705c9326fae52ec141`, con sus DLL identificadas en `NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_EVIDENCE.json`. La corrección actual `1bef7ecd1c1234ba0f4dbd014d7eef4bef93589a` cambia CI, selección de tests y fixture funcional; no cambia `src/`. No se atribuye la revisión embebida de un binario anterior a un commit documental posterior.
 
 Se conserva por decisión expresa la validación global mediante hashes frescos completos, con pruebas de validación pura vinculadas a contenido, ruta y raíces exactas. No se introdujo validación incremental autenticada, no se ampliaron límites y no se eliminaron comprobaciones de ownership, política, originales, receipts, CAS o no-overwrite.
 
 Entorno: Windows x64, SDK 10.0.400, .NET y WindowsDesktop 8.0.8. Los resultados Linux anteriores son históricos. Main sigue en `cd7532f011eea8a72e89848234b259f1f5293e15`; GitHub informa **sin protección (`protected=false`, reglas=[])**. No se cambió esa configuración; queda pendiente antes de fusionar.
 
-## Resultados efectivamente ejecutados
+## Corrección final sin nuevas cargas
+
+La ejecución previa de CI `39468522189` quedó cancelada antes de lanzar pruebas nuevas o publicar. Se revisaron los dos workflows; CUTOVER no se lanzó. Se excluyen AutomationVolume y AdmissionVolume de la configuración general y de CI, con deshabilitación explícita de ambas teorías como barrera adicional frente a filtros CLI. La selección por defecto se verificó mediante discovery sin ejecutar volumen. El caso de prioridad entre páginas pasó con tres elementos y páginas de dos, conservando sus barreras y assertions.
+
+Regresión funcional local: **3784 ejecutadas, 3778 Passed / 6 Failed / 0 omitidas**. Cinco son falta de privilegio symlink; el sexto es un timeout de consulta QueuePage (20 s, límite sin ampliar) en recuperación tras cancelación. Selección posterior de inhibiciones **4/4 Passed**, sin demostrar causa ni corrección del timeout. No se declara fallo ambiental por suposición ni se oculta el TRX fallido. Los trece fallos históricos de software vuelven a pasar.
+
+CI [39474539947](https://github.com/robdor80/NAP/actions/runs/39474539947), sobre fuente `1bef7ec`: **Windows 3784/3784 Passed, cero omisiones; Linux 3777 Passed / 0 Failed / 7 NotExecuted** (Windows). Los cinco symlinks reales pasan en Windows, recuperación 22/22 y los dieciocho casos originalmente fallidos 18/18. WPF separado **4/4**, coordinación/Git recovery **4/4 + 19/19 + 29/29** en cada plataforma; son selecciones solapadas. Los cinco jobs terminaron success. Ninguna batería nueva incluye volumen. El collector conserva los contadores crudos del TRX y añade la cantidad real de resultados NotExecuted, porque Linux informa cero en el contador pese a siete omisiones individuales. Ver `NAP_2_0_FASE_5_FINAL_REVIEW.md`, su evidencia JSON/ZIP y `NAP_2_0_FASE_5_IMAGESHARP_REVIEW.md`.
+
+## Resultados históricos efectivamente ejecutados (antes del cambio de alcance)
 
 | Batería | Resultado |
 |---|---|
@@ -42,7 +50,7 @@ El caso 1000 falla exactamente con `Only 280/1000 in 00:55:00.0524028`. No es un
 
 Ocupación sintética medida: de 1.261.926 B/1013 archivos a 110.941.153 B/9758 archivos. Los ledgers de preparación llegan a unos 21,5 MB y los de ejecución a unos 26,8 MB por universo. Estos datos son tamaño de archivos y transferencias lógicas, **no E/S física de disco**, y excluyen inventarios de datos reales o del directorio global de coordinación. Es una carga sintética durante regresión, con consultas adicionales de diagnóstico por IPC espaciadas y declaradas. No es un benchmark productivo.
 
-Los contadores muestran amplificación de lectura y aumento del tiempo por item. El perfil CPU Linux conservado señala validación de ledgers, deserialización y comprobación de rutas; no es un perfil nuevo de Windows ni permite atribuir todo el coste actual al SHA. El cuello de escalabilidad sigue abierto. Cualquier mejora debe conservar el contrato global y demostrar su efecto mediante un reproducer acotado antes de otra regresión extensa.
+Los contadores históricos muestran amplificación de lectura y aumento del tiempo por item. El perfil CPU Linux conservado señala validación de ledgers, deserialización y comprobación de rutas; no es un perfil nuevo de Windows ni permite atribuir todo el coste actual al SHA. El límite observado se conserva como limitación histórica fuera del alcance exigido. No se autoriza investigar throughput mediante nuevas cargas ni repetir esta regresión extensa.
 
 Los presupuestos del bridge (128 MiB de handles con buffers ocultos, 128 MiB independientes de blobs) limitan datos retenidos, no toda la memoria residente. El ensayo conserva su envelope de 1 GiB privado, menos de 2048 handles/128 hilos. Los valores observados del lote fallido no sustituyen las assertions finales que no alcanzó.
 
@@ -58,11 +66,12 @@ Tras fallar el lote, el fixture drenó mediante ShutdownHost autenticado y verif
 
 ## Fallos y pendientes de aceptación
 
-1. **Bloqueo de rendimiento:** completar el host integral de 1000 dentro del presupuesto sin debilitar seguridad o pruebas. El lote terminó fallido; P5.10 sigue parcial.
-2. **Entorno Windows:** cinco symlinks necesitan ejecución satisfactoria donde exista el privilegio, sin cambiar este equipo. No se extrapolan los cinco éxitos Linux históricos.
+1. **Volumen aceptado según decisión expresa:** 100/100 histórico es suficiente. El gate 1000 se retira, su resultado 280/1000 sigue Failed y no se intentará mejorarlo ni repetirlo.
+2. **Symlinks verificados:** cinco Passed reales en CI Windows, con guard obligatorio, sin omisiones ni cambios de privilegios del MSI. Los fallos locales históricos y actuales se conservan como limitación de creación de enlaces en ese entorno.
 3. StorageUnavailable histórico: no se reprodujo en el 100 actual ni en la porción ejecutada del 1000; stderr de ese host vacío. Su causa original no está demostrada y no se declara solucionada. Diagnóstico original y conservación de sidecars permanecen disponibles.
 4. ConnectionReset histórico: no hay fallos por reset en la regresión final. El filtro acotado de reintento y cleanup se compilaron y ejecutaron; no se presume la causa del incidente Linux anterior ni se reintentan mutaciones.
-5. Advisories históricos de ImageSharp siguen pendientes de valoración separada. La compilación sin restaurar no acredita su resolución.
+5. **ImageSharp: riesgo pendiente, analizado.** NAP resuelve 3.1.12 con cinco avisos. 3.2.0 anuncia backports, pero la compilación Release aislada falla por falta de licencia válida; no se elude la validación ni se cambia la dependencia a una versión que rompa el build. Ver el informe específico. No se presume aceptación de ese riesgo y no se certifica seguridad corregida.
+6. **Nueva observación local pendiente:** timeout de consulta durante recuperación tras cancelar en la regresión general. La selección posterior 4/4 pasa sin cambios; el fallo original permanece Failed. Falta una causa demostrada; no se ha ampliado el timeout ni reintentado una mutación para obtener verde.
 
 ## Reservado para CUTOVER y auditoría
 
