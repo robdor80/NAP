@@ -1,6 +1,12 @@
 # ImageSharp — revisión de seguridad de Fase 5
 
-Fecha de consulta: 2026-10-20. **Los cinco avisos siguen pendientes; no se ha cambiado la versión de NAP ni suprimido NU1902/NU1903.**
+Actualización vigente, 2026-10-20: **NAP usa ImageSharp 3.2.0; licencia Community oficial validada para NAP.Core, Release correcto y 220/220 pruebas dirigidas de imágenes superadas.** La licencia queda local, ignorada por Git y sin publicación, conforme a la orden expresa. Véase `NAP_2_0_IMAGESHARP_LICENSE_SETUP.md` y `NAP_2_0_FASE_5_IMAGESHARP_320_EVIDENCE.json`.
+
+Los cinco avisos NU1902/NU1903 siguen visibles. La [confirmación oficial actualizada](https://sixlabors.com/posts/security-support-and-license-enforcement/) declara corregidos los backports de 3.2.0 y pendiente su revisión en los metadatos GitHub/NuGet. No se suprimen avisos ni se afirma scan limpio. El bloqueo de licencia de la revisión anterior queda resuelto localmente; CI aún necesita provisión autorizada de licencia. Solo se ejecutaron pruebas de imágenes, ninguna carga ZIP.
+
+## Revisión histórica anterior a la aportación de licencia
+
+Fecha de consulta: 2026-10-20. La revisión siguiente documenta 3.1.12 y el bloqueo previo; sus resultados no se atribuyen a 3.2.0.
 
 `dotnet list NAP.sln package --include-transitive --vulnerable --format json --no-restore` confirma `SixLabors.ImageSharp` **3.1.12**, directa en NAP.Core y transitiva en CLI, AI, Presentation, App, AutomationHost, CoordinationProbe y tests. La enumeración de paquetes completa corrobora la resolución. La biblioteca net6.0 no añade dependencias NuGet propias. Una compilación con caché sin avisos no sustituye esta auditoría.
 

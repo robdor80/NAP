@@ -1,5 +1,9 @@
 # Fase 5 — corrección final y alcance aprobado (2026-10-20)
 
+**Actualización posterior autorizada de imágenes:** ImageSharp 3.2.0 configurada con licencia Community oficial validada para `NAP.Core`; Release correcto y 220/220 pruebas dirigidas Passed. No se ejecutaron nuevas cargas ni regresión general/CI. El archivo de licencia sigue local e ignorado, con sus condiciones de distribución revisadas y sin permiso para publicarlo. Los avisos de metadatos NuGet se conservan; el proveedor confirma sus backports corregidos. Véanse `NAP_2_0_IMAGESHARP_LICENSE_SETUP.md` y `NAP_2_0_FASE_5_IMAGESHARP_320_EVIDENCE.json`. El bloqueo local de licencia descrito abajo es histórico y queda resuelto; CI necesita provisión autorizada y la observación IPC previa sigue abierta.
+
+## Revisión previa a la actualización de ImageSharp (3.1.12)
+
 La orden del responsable retira el gate de 1000 ZIP. El uso previsto es 1–20 ZIP y el resultado histórico integral de 100/100 es suficiente para volumen. **No están autorizadas nuevas pruebas de carga de 20, 50, 100, 1000 o más ZIP, ni repetir baterías de volumen menores ya superadas.** El fallo histórico 280/1000 sigue siendo Failed; retirar un requisito no cambia un resultado.
 
 Antes de ejecutar pruebas nuevas o publicar, se revisaron los dos workflows. La ejecución previa `39468522189`, iniciada con el HEAD anterior, se canceló de forma controlada; GitHub confirma `completed/cancelled`. No se borraron resultados ni artefactos. Coordinación Windows/Linux y WPF habían terminado satisfactoriamente; las regresiones interrumpidas no certifican aceptación. Se conservó el artefacto parcial Windows para trazabilidad, sin reiniciar sus baterías.

@@ -3,9 +3,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Only NAP.Core references ImageSharp directly; keep the issued license outside build outputs. -->
+    <SixLaborsLicenseFile Condition="'$(SixLaborsLicenseFile)' == ''">$(MSBuildProjectDirectory)/../../sixlabors.lic</SixLaborsLicenseFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.31" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.2.0" />
   </ItemGroup>
 </Project>

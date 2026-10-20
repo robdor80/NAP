@@ -1,11 +1,13 @@
 .github/scripts/Assert-Phase5SymlinkResults.ps1
 .github/workflows/ci.yml
 .github/workflows/cutover-laboratory.yml
+.gitignore
 docs/evidence/NAP_2_0_FASE_5_CLOUD_PROGRESS_20261018.zip
 docs/evidence/NAP_2_0_FASE_5_CLOUD_STOP_20261018.zip
 docs/evidence/NAP_2_0_FASE_5_FINAL_REVIEW_20261020.zip
 docs/evidence/NAP_2_0_FASE_5_QUOTA_STOP_20261017.zip
 docs/evidence/NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_20261020.zip
+docs/evidence/NAP_2_0_IMAGESHARP_320_20261020.zip
 docs/NAP_2_0_FASE_4_CUTOVER.md
 docs/NAP_2_0_FASE_5_BUILD_PROVENANCE.json
 docs/NAP_2_0_FASE_5_CHANGED_FILES.txt
@@ -14,6 +16,7 @@ docs/NAP_2_0_FASE_5_CLOUD_STOP_EVIDENCE.json
 docs/NAP_2_0_FASE_5_CONTINUITY.md
 docs/NAP_2_0_FASE_5_FINAL_REVIEW_EVIDENCE.json
 docs/NAP_2_0_FASE_5_FINAL_REVIEW.md
+docs/NAP_2_0_FASE_5_IMAGESHARP_320_EVIDENCE.json
 docs/NAP_2_0_FASE_5_IMAGESHARP_REVIEW.md
 docs/NAP_2_0_FASE_5_IMPLEMENTATION.md
 docs/NAP_2_0_FASE_5_PREFLIGHT.json
@@ -23,6 +26,7 @@ docs/NAP_2_0_FASE_5_RESOURCE_EVIDENCE.json
 docs/NAP_2_0_FASE_5_SOFTWARE_ACCEPTANCE.md
 docs/NAP_2_0_FASE_5_TEST_EVIDENCE.json
 docs/NAP_2_0_FASE_5_WINDOWS_ACCEPTANCE_EVIDENCE.json
+docs/NAP_2_0_IMAGESHARP_LICENSE_SETUP.md
 NAP.sln
 scripts/Measure-Phase5LaboratoryProcess.ps1
 scripts/Read-Phase5LaboratoryHost.ps1
@@ -70,6 +74,7 @@ src/NAP.Core/ImageNormalizationService.cs
 src/NAP.Core/InboxAdmissionContracts.cs
 src/NAP.Core/InboxAdmissionService.cs
 src/NAP.Core/LedgerValidationProof.cs
+src/NAP.Core/NAP.Core.csproj
 src/NAP.Core/PreparationStateStore.cs
 src/NAP.Core/ProductionAssetExecutor.cs
 src/NAP.Core/ProductionAssetFile.cs
