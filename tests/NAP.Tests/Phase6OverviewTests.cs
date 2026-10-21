@@ -61,6 +61,18 @@ public sealed class Phase6OverviewTests
         await vm.RefreshAsync(); Assert.Equal("3", vm.Completed); Assert.Equal("Todo al día", vm.Status);
     }
     [Fact]
+    public async Task IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate()
+    {
+        var context = Context("alpha"); var value = Snapshot(context);
+        var source = new Source { Value = value with
+        {
+            Queue = value.Queue with { Counts = new(0, 0, 0, 0, 0), Review = [] },
+            Host = value.Host with { Universes = value.Host.Universes.Select(s => s.UniverseId == context.Id ? s with { PendingCandidates = 2 } : s).ToArray() }
+        } };
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
+        await vm.RefreshAsync(); Assert.Equal("0", vm.Pending); Assert.Equal("Comprobando archivos", vm.Status);
+    }
+    [Fact]
     public async Task DisconnectClearsCountsAndNeverFallsBackOrSendsCommands()
     {
         var context = Context("alpha"); var source = new Source { Value = Snapshot(context) };

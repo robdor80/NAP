@@ -85,7 +85,8 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             _overview = value;
             var state = value.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded or AutomationHostState.Stopping or AutomationHostState.Stopped
                 ? value.Host.State : SelectedState()!.Value;
-            Status = Describe(state, value.Queue.Counts);
+            var selected = value.Host.Universes.Single(s => s.UniverseId == context.Id);
+            Status = Describe(state, value.Queue.Counts, selected.PendingCandidates);
             var active = value.Host.Universes.Count(s => s.State is AutomationHostState.Running or AutomationHostState.Pausing or AutomationHostState.Stopping);
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
@@ -133,7 +134,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         finally { _changing = false; }
         await RefreshAsync();
     }
-    public static string Describe(AutomationHostState state, AutomationQueueCounts counts) => state switch
+    public static string Describe(AutomationHostState state, AutomationQueueCounts counts, int pendingCandidates = 0) => state switch
     {
         AutomationHostState.Starting => "Consultando automatización…",
         AutomationHostState.Pausing => "Pausando automatización…",
@@ -143,6 +144,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         AutomationHostState.Disabled => "Automatización sin activar",
         AutomationHostState.Blocked or AutomationHostState.Degraded => "Automatización necesita revisión",
         AutomationHostState.Running when counts.Processing > 0 => "Procesando imágenes",
+        AutomationHostState.Running when pendingCandidates > 0 => "Comprobando archivos",
         AutomationHostState.Running when counts.Pending > 0 => "Automatización activa",
         AutomationHostState.Running when counts.NeedsReview > 0 => counts.NeedsReview == 1 ? "1 necesita revisión" : $"{counts.NeedsReview:N0} necesitan revisión",
         AutomationHostState.Running => "Todo al día",

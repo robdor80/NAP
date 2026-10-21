@@ -42,15 +42,17 @@ internal static class Phase6Preview
         var compact = window.Tag is true;
         var width = compact ? 1200 : 1440; var height = compact ? 700 : 900;
         var content = (UIElement)window.Content;
-        var capture = new Grid { Background = window.Background };
+        var capture = new Grid { Background = window.Background, Width = width, Height = height };
         window.Content = capture; capture.Children.Add(content);
-        await window.Dispatcher.InvokeAsync(() =>
+        var image = await window.Dispatcher.InvokeAsync(() =>
         {
-            capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height)); capture.UpdateLayout();
+            capture.UpdateLayout();
+            capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height));
+            if (capture.ActualWidth != width || capture.ActualHeight != height) throw new InvalidOperationException("Synthetic layout was constrained by the runner desktop.");
+            var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(capture); return bitmap;
         }, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
-        var image = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
-        image.Render(capture);
         System.IO.Directory.CreateDirectory(output);
         var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
         using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"inicio-{mode}-{width}x{height}.png"));
