@@ -19,13 +19,22 @@ internal static class Phase6Preview
         var contexts = new[] { Context("preview", "Universo de muestra"), Context("other_preview", "Segundo universo") };
         var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
-        var automation = mode == "local" ? null : new AutomationControlViewModel(new PreviewSource(mode, contexts), () => explorer.Context, confirmation);
+        var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
         return new(explorer, service, confirmation, automation: automation) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
     internal static async Task CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, string mode, string output)
     {
         // This is a capture, never acceptance on the responsible person's MSI.
+        var shell = (ShellViewModel)window.DataContext;
+        if (shell.CurrentPage != shell.Dashboard || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
+            throw new InvalidOperationException("Preview navigation differs from the reviewed shell.");
+        if (mode is "active" or "paused" or "review" && shell.Automation?.Completed != "14")
+            throw new InvalidOperationException("Synthetic projection was not displayed.");
+        if (mode == "review" && shell.Automation?.Review.Count != 1)
+            throw new InvalidOperationException("Synthetic incident was not displayed.");
+        if (mode == "offline" && shell.Automation?.Completed != "—" || mode == "local" && shell.Automation is not null)
+            throw new InvalidOperationException("Unavailable automation must not invent counters.");
         await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
         var image = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);

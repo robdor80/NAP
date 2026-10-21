@@ -50,8 +50,8 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public UiAsyncCommand Resume { get; }
     public UiAsyncCommand Stop { get; }
     public AutomationControlViewModel(AutomationHostClient client, Func<UniverseContext?> context, IUserConfirmation confirmation)
-        : this(new AutomationOverviewClient(client), context, confirmation) { }
-    public AutomationControlViewModel(IAutomationOverviewClient client, Func<UniverseContext?> context, IUserConfirmation confirmation)
+        : this(context, confirmation, new AutomationOverviewClient(client)) { }
+    public AutomationControlViewModel(Func<UniverseContext?> context, IUserConfirmation confirmation, IAutomationOverviewClient client)
     {
         _client = client; _context = context; _confirmation = confirmation;
         Refresh = new(RefreshAsync, () => !_disposed, _ => Unavailable());

@@ -8,10 +8,37 @@ namespace NAP.Tests;
 public sealed class Phase6OverviewTests
 {
     [Fact]
+    public async Task AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue()
+    {
+        // Existing fixture creates isolated directories and sentinels only. Never call Zip/Admit/Enable.
+        using var fixture = new AutomationHostTests.Fixture();
+        var contexts = new[] { fixture.A.Context, fixture.B.Context };
+        await using var host = new AutomationHost(fixture.Control, contexts, fixture.Options);
+        await host.Started;
+        var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(fixture.Root, "desktop-requests"));
+        var connection = new AutomationConnection("nap-phase6-" + Guid.NewGuid().ToString("N"),
+            Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32)));
+        await using var server = new AutomationPipeServer(connection, bridge.HandleAsync);
+        var client = new AutomationOverviewClient(new(connection));
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+        await host.QueryAsync(contexts[0].Id, s => s.Queue.CurrentPolicy(), timeout.Token);
+        var before = System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(fixture.A.Queue.DatabasePath));
+        var overview = await client.ReadAsync(contexts[0].Id, timeout.Token);
+        Assert.Equal(contexts[0].Id, overview.Queue.UniverseId); Assert.Equal(2, overview.Host.Universes.Count);
+        Assert.Equal(new AutomationQueueCounts(0, 0, 0, 0, 0), overview.Queue.Counts); Assert.Empty(overview.Queue.Review);
+        Assert.False(overview.Queue.Policy.IsPreproductionAuthorized);
+        Assert.Equal(before, System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(fixture.A.Queue.DatabasePath)));
+        Assert.Empty(Directory.EnumerateFiles(Path.Combine(fixture.Root, "desktop-requests")));
+        Assert.Empty(Directory.EnumerateFiles(fixture.Root, "*.zip", SearchOption.AllDirectories));
+        var foreign = await Assert.ThrowsAsync<AutomationException>(() => client.ReadAsync(new("unknown_universe"), timeout.Token));
+        Assert.Equal(AutomationError.UniverseMismatch, foreign.Code);
+    }
+
+    [Fact]
     public async Task SelectedCountsStaySeparateFromExecutionScope()
     {
         var context = Context("alpha"); var source = new Source { Value = Snapshot(context) };
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         await vm.RefreshAsync();
         Assert.Equal("2", vm.Pending); Assert.Equal("1", vm.Processing); Assert.Equal("14", vm.Completed);
         Assert.Equal("1", vm.NeedsReview); Assert.Equal("En marcha: 2 universos", vm.ExecutionScope);
@@ -24,7 +51,7 @@ public sealed class Phase6OverviewTests
     {
         UniverseContext context = Context("alpha"); var old = context; var gate = new TaskCompletionSource<AutomationDesktopOverview>();
         var source = new Source { Read = _ => gate.Task };
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         var pending = vm.RefreshAsync(); context = Context("beta"); vm.ContextChanged();
         Assert.Equal("—", vm.Completed); Assert.False(vm.CanPause);
         gate.SetResult(Snapshot(old)); await pending;
@@ -36,7 +63,7 @@ public sealed class Phase6OverviewTests
     public async Task DisconnectClearsCountsAndNeverFallsBackOrSendsCommands()
     {
         var context = Context("alpha"); var source = new Source { Value = Snapshot(context) };
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         await vm.RefreshAsync(); source.Read = _ => throw new IOException("private/path/queue_id"); await vm.RefreshAsync();
         Assert.Equal("—", vm.Pending); Assert.Equal("—", vm.Completed); Assert.Empty(vm.Review);
         Assert.False(vm.CanPause); Assert.False(vm.CanResume); Assert.Empty(vm.ExecutionScope);
@@ -47,7 +74,7 @@ public sealed class Phase6OverviewTests
     public async Task ForeignControlOrQueueIsNeverDisplayed()
     {
         var context = Context("alpha"); var source = new Source { Value = Snapshot(context) with { Control = Snapshot(Context("beta")).Control } };
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         await vm.RefreshAsync(); Assert.Equal("—", vm.NeedsReview); Assert.False(vm.CanPause);
         source.Value = Snapshot(Context("beta")); await vm.RefreshAsync(); Assert.Equal("—", vm.Pending);
     }
@@ -56,7 +83,7 @@ public sealed class Phase6OverviewTests
     {
         var context = Context("alpha"); var source = new Source { Value = Snapshot(context) };
         var gate = new TaskCompletionSource(); source.Send = () => gate.Task;
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         await vm.RefreshAsync(); var pausing = vm.Pause.ExecuteAsync();
         Assert.Equal("Pausando automatización…", vm.Status); Assert.Equal("—", vm.Processing); Assert.False(vm.CanResume);
         source.Value = Snapshot(context, AutomationHostState.Paused); gate.SetResult(); await pausing;
@@ -68,7 +95,7 @@ public sealed class Phase6OverviewTests
     {
         var context = Context("alpha"); var value = Snapshot(context, AutomationHostState.Paused);
         var source = new Source { Value = value };
-        using var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         await vm.RefreshAsync(); Assert.True(vm.CanResume);
         source.Value = value with { Queue = value.Queue with { Policy = value.Queue.Policy with { State = AutomationPolicyState.Revoked } } };
         await vm.RefreshAsync(); Assert.False(vm.CanResume);
@@ -80,7 +107,7 @@ public sealed class Phase6OverviewTests
     {
         var context = Context("alpha"); var gate = new TaskCompletionSource<AutomationDesktopOverview>();
         var source = new Source { Read = _ => gate.Task };
-        var vm = new AutomationControlViewModel(source, () => context, new NoConfirmation());
+        var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         var pending = vm.RefreshAsync(); await vm.RefreshAsync(); Assert.Equal(1, source.Reads);
         vm.Dispose(); gate.SetResult(Snapshot(context)); await pending; Assert.Equal("—", vm.Completed); Assert.Empty(vm.Review);
     }
