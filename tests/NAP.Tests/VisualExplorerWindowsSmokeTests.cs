@@ -64,7 +64,7 @@ public sealed class VisualExplorerWindowsSmokeTests
     private static async Task<JsonDocument> Run(string settings, string? outputDirectory = null, string? importSource = null, string? normalizationProfile = null)
     {
         var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../"));
-        var app = Path.Combine(root, "src/NAP.App/bin/Release/net8.0-windows/NAP.App.dll"); Assert.True(File.Exists(app), "Build NAP.sln Release before the Windows smoke tests.");
+        var app = Path.Combine(root, "src/NAP.App/bin", AutomationHostProcessFixture.BuildConfiguration, "net8.0-windows/NAP.App.dll"); Assert.True(File.Exists(app), "Build NAP.sln in the test configuration before the Windows smoke tests.");
         var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
         start.ArgumentList.Add(app); start.ArgumentList.Add("--smoke-test"); start.ArgumentList.Add("--settings=" + settings);
         start.ArgumentList.Add("--profiles-root=" + Path.Combine(Path.GetDirectoryName(settings)!, "installed-profiles"));

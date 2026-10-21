@@ -7,8 +7,9 @@ namespace NAP.Core;
 /// the owner's thread waits for all readers before any admission effect can continue.</summary>
 internal static class RetainedAdmissionInventory
 {
-    internal static bool Fits(string directory, long capacity)
+    internal static bool Fits(string directory, long capacity, CancellationToken cancellation = default)
     {
+        cancellation.ThrowIfCancellationRequested();
         if (!Directory.Exists(directory)) return true;
         using var pinnedAncestors = WindowsInventoryDirectories.PinAncestors(directory);
         InboxAdmissionEvidence.DirectoryBoundary(directory);
@@ -18,7 +19,7 @@ internal static class RetainedAdmissionInventory
         try
         {
             Parallel.ForEach(Partitioner.Create(Directory.EnumerateFileSystemEntries(directory), EnumerablePartitionerOptions.NoBuffering),
-                new ParallelOptions { MaxDegreeOfParallelism = Math.Min(4, Environment.ProcessorCount) }, (entry, state) =>
+                new ParallelOptions { MaxDegreeOfParallelism = Math.Min(4, Environment.ProcessorCount), CancellationToken = cancellation }, (entry, state) =>
             {
                 var pending = new Stack<(IEnumerator<string> Cursor, IDisposable? Pin)>();
                 try
@@ -33,6 +34,7 @@ internal static class RetainedAdmissionInventory
                     }
                     void Visit(string path)
                     {
+                        cancellation.ThrowIfCancellationRequested();
                         if (Interlocked.Increment(ref count) > 100000) { Interlocked.Exchange(ref exceeded, 1); return; }
                         // Windows parents are held without FILE_SHARE_DELETE for this whole depth.
                         // Other platforms keep the full original component checks for every entry.

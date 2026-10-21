@@ -97,6 +97,8 @@ public sealed class ImageNormalizationService
 
     public ImageNormalizationResult Decide(ImageNormalizationProposal proposal, ImageNormalizationAuthorization authorization, CancellationToken ct = default)
     {
+        AutomationReadViews.RequireNative(proposal);
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         ArgumentNullException.ThrowIfNull(proposal); ArgumentNullException.ThrowIfNull(authorization);
         if (proposal.Context != _context || proposal.Policy != _policy || authorization.OperationId != proposal.OperationId ||
             authorization.EvidenceSha256 != proposal.EvidenceSha256)

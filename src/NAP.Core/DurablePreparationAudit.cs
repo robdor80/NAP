@@ -7,6 +7,24 @@ public sealed partial class DurablePreparationService
     public PreparationResult Audit(AutomationQueueOwner owner, QueueItemId itemId, IIdentifiedAiAuditClient client,
         CancellationToken token = default)
     {
+        var step = BeginAudit(owner, itemId, client.ProviderId, client.ModelId, token);
+        if (step.Dispatch is not { } dispatch) return step.Result;
+        var outcome = AutomationAuditTransport.SendAsync(dispatch, client, token).GetAwaiter().GetResult();
+        if (outcome.Cancelled) throw new OperationCanceledException(token);
+        return outcome.Failure is { } failure ? FailAudit(owner, dispatch, failure) : CompleteAudit(owner, dispatch, outcome.Report!);
+    }
+
+    public PreparationAuditStep BeginAudit(AutomationQueueOwner owner, QueueItemId itemId, string providerId, string modelId,
+        CancellationToken token = default)
+    {
+        var result = BeginAuditCore(owner, itemId, providerId, modelId, out var dispatch, token);
+        return new(result, dispatch);
+    }
+
+    private PreparationResult BeginAuditCore(AutomationQueueOwner owner, QueueItemId itemId, string providerId, string modelId,
+        out DurableAuditDispatch? dispatch, CancellationToken token)
+    {
+        dispatch = null;
         owner.Require(_context.Storage.StateRoot); token.ThrowIfCancellationRequested();
         var prepared = Prepare(owner, itemId, token);
         if (prepared.Code != PreparationCode.Planned) return prepared; // STOP precedes every provider invocation
@@ -15,7 +33,7 @@ public sealed partial class DurablePreparationService
         if (!policy.IsPreproductionAuthorized || policy.Authorization is null || !policy.Definition.Operations.HasFlag(AutomationOperations.Audit))
             return Park(owner, item, record, PreparationCode.PolicyInactive);
         if (grant is null || grant.PolicyAuthorizationId != policy.Authorization.AuthorizationId || grant.Actor != policy.Authorization.Actor ||
-            client.ProviderId != grant.ProviderId || client.ModelId != grant.ModelId)
+            providerId != grant.ProviderId || modelId != grant.ModelId)
             return Park(owner, item, record, PreparationCode.AuditConfigurationRequired);
         var snapshot = record.Snapshot!;
         var root = EffectiveRoot(record); var effective = UniverseProfileSnapshotRenderer.Context(record.EffectiveProfile, _context.Storage);
@@ -53,32 +71,52 @@ public sealed partial class DurablePreparationService
         record = Save(owner, record with { Calls = record.Calls.Append(call).ToArray(), AuditState = DurableAuditState.RequestIntent,
             RequestHash = requestHash, RequestJson = requestJson, AuditGrant = grant, RetryAtUtc = null, Code = PreparationCode.Pending }, QueueStage.Audit);
         Checkpoint?.Invoke("audit-request-intent");
-        using var cancel = CancellationTokenSource.CreateLinkedTokenSource(token);
-        cancel.CancelAfter(TimeSpan.FromSeconds(budget.TimeoutSeconds));
+        dispatch = new(itemId, record.AttemptId, record.JobId, _context.Id, owner.Epoch, call.RequestId,
+            snapshot.Hash, requestHash, grant.Hash, providerId, modelId, request, TimeSpan.FromSeconds(budget.TimeoutSeconds));
+        return Result(record, PreparationCode.Pending);
+    }
+
+    public PreparationResult CompleteAudit(AutomationQueueOwner owner, DurableAuditDispatch dispatch, AiAuditReport report,
+        bool publishResponse = true)
+    {
+        var record = RequireDispatch(owner, dispatch);
+        var item = _queue.Get(dispatch.ItemId); var grant = record.AuditGrant!;
         try
         {
-            var report = client.AuditAsync(request, cancel.Token).WaitAsync(TimeSpan.FromSeconds(budget.TimeoutSeconds), token).GetAwaiter().GetResult();
             Checkpoint?.Invoke("audit-response-received");
             if (report is null) throw new AiAuditClientException(AiAuditErrorKind.InvalidResponse, "No validated audit report.");
             var verified = new AiAuditReport(report.Decision, report.Summary, report.Findings);
-            var receipt = new DurableAuditReceipt(1, call.RequestId, itemId, record.AttemptId, record.JobId, _context.Id,
-                snapshot.Hash, requestHash, item.Policy, grant.Hash, client.ProviderId, client.ModelId, _clock.GetUtcNow(),
+            var receipt = new DurableAuditReceipt(1, dispatch.RequestId, dispatch.ItemId, record.AttemptId, record.JobId, _context.Id,
+                dispatch.SnapshotHash, dispatch.RequestHash, item.Policy, grant.Hash, dispatch.ProviderId, dispatch.ModelId, _clock.GetUtcNow(),
                 verified.Decision, verified.Summary, verified.Findings);
             var bytes = Encoding.UTF8.GetBytes(AutomationJson.Encode(receipt));
             var inventory = new[] { new AdmissionFile("report.json", AutomationJson.HashBytes(bytes), bytes.LongLength) };
-            var bundle = _files.Describe(record, "audit", "automation/preparation/audit/" + itemId.Value + "/" + call.RequestId, inventory);
+            var bundle = _files.Describe(record, "audit", "automation/preparation/audit/" + dispatch.ItemId.Value + "/" + dispatch.RequestId, inventory);
             record = Save(owner, record with { AuditState = DurableAuditState.ResponseReady, ExpectedAuditReceipt = receipt, AuditResponse = bundle }, QueueStage.Audit);
             Checkpoint?.Invoke("audit-response-bound");
-            return FinishAuditResponse(owner, record, requestHash, grant);
+            return publishResponse ? FinishAuditResponse(owner, record, dispatch.RequestHash, grant) : Result(record, PreparationCode.Pending);
         }
-        catch (OperationCanceledException) when (token.IsCancellationRequested) { cancel.Cancel(); throw; }
-        catch (Exception e) when (e is TimeoutException or OperationCanceledException)
-        { cancel.Cancel(); return AuditFailure(owner, record, new(AiAuditErrorKind.Timeout, "Audit deadline elapsed.")); }
         catch (AiAuditClientException failure) { return AuditFailure(owner, record, failure); }
         catch (Exception e) when (e is ArgumentException or InvalidDataException)
         { return AuditFailure(owner, record, new(AiAuditErrorKind.InvalidResponse, "Audit report was inconsistent.")); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or ProductionStorageException)
-        { return Park(owner, _queue.Get(itemId), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, dispatch.ItemId, record, e); }
+    }
+
+    public PreparationResult FailAudit(AutomationQueueOwner owner, DurableAuditDispatch dispatch, AiAuditClientException failure)
+        => AuditFailure(owner, RequireDispatch(owner, dispatch), failure);
+
+    private PreparationRecord RequireDispatch(AutomationQueueOwner owner, DurableAuditDispatch dispatch)
+    {
+        owner.Require(_context.Storage.StateRoot);
+        var record = GetRecord(dispatch.ItemId) ?? throw AutomationValidation.Invalid("Audit dispatch has no durable intent.");
+        if (owner.Epoch != dispatch.OwnerEpoch || dispatch.UniverseId != _context.Id || record.AttemptId != dispatch.AttemptId ||
+            record.JobId != dispatch.JobId || record.AuditState != DurableAuditState.RequestIntent ||
+            record.Calls.LastOrDefault()?.RequestId != dispatch.RequestId || record.RequestHash != dispatch.RequestHash ||
+            record.Snapshot?.Hash != dispatch.SnapshotHash || record.AuditGrant?.Hash != dispatch.GrantHash ||
+            record.AuditGrant.ProviderId != dispatch.ProviderId || record.AuditGrant.ModelId != dispatch.ModelId)
+            throw new AutomationException(AutomationError.InvalidClaim, "Late, duplicate or foreign audit completion cannot replace durable state.");
+        return record;
     }
     private PreparationResult FinishAuditResponse(AutomationQueueOwner owner, PreparationRecord record, Sha256Digest requestHash,
         PreparationOperationalGrant grant)
@@ -121,7 +159,7 @@ public sealed partial class DurablePreparationService
         catch (Exception e) when (e is InvalidDataException or ArgumentException or ProductionStorageException or System.Text.Json.JsonException)
         { return Park(owner, _queue.Get(record.ItemId), record, PreparationCode.EvidenceChanged); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-        { return Park(owner, _queue.Get(record.ItemId), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, record.ItemId, record, e); }
     }
     private PreparationResult AuditFailure(AutomationQueueOwner owner, PreparationRecord record, AiAuditClientException failure)
     {

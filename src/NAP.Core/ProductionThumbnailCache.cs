@@ -16,14 +16,33 @@ public sealed class ProductionThumbnailCache(UniverseContext context)
     public const int Bound = 320;
     private static readonly SemaphoreSlim Workers = new(2, 2);
     private static readonly SemaphoreSlim Publications = new(1, 1);
+    private static readonly SemaphoreSlim ManualOwners = new(1, 1);
     public async Task<ThumbnailResult> GetAsync(CatalogAssetSummary asset, CancellationToken cancellation = default)
+        => await GetCoreAsync(asset, false, cancellation).ConfigureAwait(false);
+
+    public Task<ThumbnailResult> GetOwnedAsync(AutomationUniverseScope scope, CatalogAssetSummary asset, CancellationToken cancellation = default)
+    {
+        if (scope.Context != context) throw new InvalidDataException("Thumbnail owner context differs.");
+        _ = scope.Owner; return GetCoreAsync(asset, true, cancellation);
+    }
+
+    private async Task<ThumbnailResult> GetCoreAsync(CatalogAssetSummary asset, bool owned, CancellationToken cancellation)
     {
         if (asset.AssetKey.UniverseId != context.Id) throw new InvalidDataException("Thumbnail universe mismatch.");
         if (!asset.ProductionRelativePath.EndsWith("/" + asset.AssetKey.AssetId + ".webp", StringComparison.Ordinal))
             throw new InvalidDataException("Only cataloged production WebP is a thumbnail source.");
         await Workers.WaitAsync(cancellation).ConfigureAwait(false);
-        try { return await Task.Run(() => GenerateAsync(asset, cancellation), cancellation).ConfigureAwait(false); }
-        finally { Workers.Release(); }
+        bool manual = false;
+        try
+        {
+            if (!owned) { await ManualOwners.WaitAsync(cancellation).ConfigureAwait(false); manual = true; }
+            return await Task.Run(() =>
+            {
+                using var access = owned ? null : AutomationManualAccess.Enter(context);
+                return GenerateAsync(asset, cancellation).GetAwaiter().GetResult();
+            }, cancellation).ConfigureAwait(false);
+        }
+        finally { if (manual) ManualOwners.Release(); Workers.Release(); }
     }
     public string CacheKey(CatalogAssetSummary asset) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(
         JsonKey(asset)))).ToLowerInvariant();
@@ -78,8 +97,8 @@ public sealed class ProductionThumbnailCache(UniverseContext context)
         try
         {
             using var lease = ExecutionMutex.Acquire("Thumbnail", cache, CacheKey(asset));
-            await using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
-            { await decoded.SaveAsync(output, new PngEncoder { CompressionLevel = PngCompressionLevel.Level6 }, cancellation).ConfigureAwait(false); output.Flush(true); }
+            using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+            { decoded.Save(output, new PngEncoder { CompressionLevel = PngCompressionLevel.Level6 }); output.Flush(true); }
             cancellation.ThrowIfCancellationRequested();
             ProductionPaths.CheckPath(target, NapIssueCodes.CatalogInvalid, NapIssueCodes.CatalogInvalid);
             File.Move(temp, target, overwrite: true);

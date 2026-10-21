@@ -1,0 +1,80 @@
+{
+  "observedUtc": "2026-10-17T00:07:53.6847075+02:00",
+  "note": "Observed binaries while the complete Release regression is running; source changes were subsequently committed. Configuration and embedded build revision differ; do not infer a single exact-head invocation from this record.",
+  "sourceStabilizationCommit": "1a049c0290539b9d6e84544df28301792bf2e623",
+  "currentSourceCommit": "8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a",
+  "assemblies": [
+    {
+      "file": "src/NAP.Core/bin/Release/net8.0/NAP.Core.dll",
+      "sha256": "8432308092980770e9b4d814b84f2b7766c39ea336199dc5c5a8a2966ac4634b",
+      "productVersion": "1.0.0+20106c7f876ff488ea362bd6f709b643c3b63b5e"
+    },
+    {
+      "file": "src/NAP.AutomationHost/bin/Release/net8.0/NAP.AutomationHost.dll",
+      "sha256": "385346090f29cbb6877fc88d92b39bb88c26bd6c1a3b298c76365729f6448b53",
+      "productVersion": "1.0.0+20106c7f876ff488ea362bd6f709b643c3b63b5e"
+    },
+    {
+      "file": "src/NAP.Presentation/bin/Release/net8.0/NAP.Presentation.dll",
+      "sha256": "d2d5b34d48e792cb6e99c4f34288e95819935db3e825c115c88230690943a71a",
+      "productVersion": "1.0.0+20106c7f876ff488ea362bd6f709b643c3b63b5e"
+    },
+    {
+      "file": "tests/NAP.Tests/bin/Release/net8.0/NAP.Tests.dll",
+      "sha256": "e520ded655d687b05613db8f9890d1ebdd6aafc12d415fcca09afc216ebe6854",
+      "productVersion": "1.0.0+20106c7f876ff488ea362bd6f709b643c3b63b5e"
+    },
+    {
+      "file": "src/NAP.Core/bin/P510Review/net8.0/NAP.Core.dll",
+      "sha256": "0b15ba1adb3ad7f9162cd18f970f8ea6e9e7a4dfc073dc7fe939f7b329276546",
+      "productVersion": "1.0.0+1a049c0290539b9d6e84544df28301792bf2e623"
+    },
+    {
+      "file": "src/NAP.Presentation/bin/P510Review/net8.0/NAP.Presentation.dll",
+      "sha256": "8b7cdb7e1b4269c8a1e5bfe4b2254028bd041f61fee3ac5b3e6112e0de961117",
+      "productVersion": "1.0.0+1a049c0290539b9d6e84544df28301792bf2e623"
+    },
+    {
+      "file": "src/NAP.App/bin/P510Review/net8.0-windows/NAP.App.dll",
+      "sha256": "5d0f197a9e10cf648ea8e6ce5659b3432e58bc8df40fb8e2a929b61523a04933",
+      "productVersion": "1.0.0+1a049c0290539b9d6e84544df28301792bf2e623"
+    },
+    {
+      "file": "tests/NAP.Tests/bin/P510Review/net8.0/NAP.Tests.dll",
+      "sha256": "ec3db35c7deb626f0b66254c60e045bd8f3d373c930d0f7413c01aa8d7e67054",
+      "productVersion": "1.0.0+1a049c0290539b9d6e84544df28301792bf2e623"
+    }
+  ],
+  "quotaStopObservation": {
+    "observedUtc": "2026-10-16T22:41:08.0697503+00:00",
+    "sourceCommit": "4549c48d07017a5a97f9f77a4df711d14763e8cb",
+    "note": "Existing binaries observed without rebuilding at quota stop. The latest complete invocation was intentionally aborted. Embedded source revision metadata reflects the build context; code changes were subsequently committed.",
+    "assemblies": [
+      {
+        "file": "src/NAP.Core/bin/P510Review/net8.0/NAP.Core.dll",
+        "sha256": "42aaa747f2ba6638bafe554550557db715b50a64ce33f8ccec4821e8265eebc0",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.AutomationHost/bin/P510Review/net8.0/NAP.AutomationHost.dll",
+        "sha256": "7d4743983364c289bf4acfa182b0a730fda30bc68fb2d575be62aaf8ed4e86ca",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.Presentation/bin/P510Review/net8.0/NAP.Presentation.dll",
+        "sha256": "5ffed890d929fa0aa43088f477b50826156f4590b924c0ad92a9327d1d1b3629",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "src/NAP.App/bin/P510Review/net8.0-windows/NAP.App.dll",
+        "sha256": "7fc2d17b371483378ed735b4632a762835403eefdcd433d5bb11a36a566cf319",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      },
+      {
+        "file": "tests/NAP.Tests/bin/P510Review/net8.0/NAP.Tests.dll",
+        "sha256": "394c5e0111b9b78a1571e48b7354dba559167ecaa3855ff2d881eb2f9ca70e4a",
+        "productVersion": "1.0.0+8fd0f10c3b6e0ab05abad9bd5fb1aa5e8ce00f1a"
+      }
+    ]
+  }
+}

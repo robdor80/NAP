@@ -7,6 +7,8 @@ namespace NAP.Core;
 public sealed class PreparationStateStore
 {
     private readonly UniverseStorageConfig _roots;
+    private Sha256Digest? _validatedDatabaseHash;
+    private string? _validatedRoots;
     private static readonly string[] Schema =
     [
         "CREATE TABLE metadata(id INTEGER PRIMARY KEY CHECK(id=1), roots TEXT NOT NULL)",
@@ -113,8 +115,29 @@ public sealed class PreparationStateStore
             if (ProductionPaths.CheckPath(DatabasePath + suffix, NapIssueCodes.PackageStructureInvalid) is not null)
                 throw AutomationValidation.Corrupt("Unexpected preparation SQLite sidecar needs review.");
         var db = Connect(DatabasePath, SqliteOpenMode.ReadWrite);
-        try { return AutomationQueueBoundary.Guard(() => { Check(db); return db; }, true); } catch { db.Dispose(); throw; }
+        try
+        {
+            return AutomationQueueBoundary.Guard(() =>
+            {
+                var roots = AutomationJson.Encode(_roots); var hash = DatabaseHash();
+                if (_validatedDatabaseHash != hash || _validatedRoots != roots)
+                {
+                    var scope = LedgerValidationProof.Scope(DatabasePath, roots);
+                    if (!LedgerValidationProof.Matches(scope, ":database:", hash.Hex))
+                    {
+                        Check(db);
+                        if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Preparation ledger changed during validation.");
+                        LedgerValidationProof.Remember(scope, ":database:", hash.Hex);
+                    }
+                    _validatedDatabaseHash = hash; _validatedRoots = roots;
+                }
+                return db;
+            }, true);
+        }
+        catch { db.Dispose(); throw; }
     }
+    private Sha256Digest DatabaseHash()
+    { using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); return new Sha256Hasher().Compute(input); }
     private static SqliteConnection Connect(string path, SqliteOpenMode mode)
     {
         var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = mode, Pooling = false, DefaultTimeout = 2 }.ToString());
@@ -137,13 +160,25 @@ public sealed class PreparationStateStore
             var actual = new List<string>(); while (rows.Read()) actual.Add(rows.GetString(0));
             if (!actual.Order(StringComparer.Ordinal).SequenceEqual(Schema.Order(StringComparer.Ordinal))) throw AutomationValidation.Corrupt("Preparation schema changed.");
         }
-        foreach (var record in All(db))
+        var scope = LedgerValidationProof.Scope(DatabasePath, AutomationJson.Encode(_roots));
+        using var all = Command(db, null, "SELECT item,attempt,job,revision,payload,hash FROM workflows ORDER BY item");
+        using var workflows = all.ExecuteReader(); int count = 0;
+        while (workflows.Read())
         {
+            if (++count > 100000) throw AutomationValidation.Corrupt("Preparation scope exceeds its inspection budget.");
+            var fingerprint = LedgerValidationProof.ReadFingerprint(db, workflows);
+            if (LedgerValidationProof.Matches(scope, workflows.GetString(0), fingerprint)) continue;
+            using var validated = LedgerValidationProof.Begin(workflows);
+            var record = AutomationJson.Decode<PreparationRecord>(workflows.GetString(4));
+            if (record.ItemId.Value != workflows.GetString(0) || record.AttemptId.Value != workflows.GetString(1) || record.JobId.Value != workflows.GetString(2) ||
+                record.Revision != workflows.GetInt64(3) || AutomationJson.Hash(record).Hex != workflows.GetString(5))
+                throw AutomationValidation.Corrupt("Preparation indexed fields or anchor hash mismatch.");
             Validate(record); Sha256Digest? previous = null; int revision = 0; PreparationRecord? last = null;
             using var cmd = Command(db, null, "SELECT revision,payload,hash,previous_hash FROM history WHERE item=$i ORDER BY revision", "$i", record.ItemId.Value);
             using var rows = cmd.ExecuteReader();
             while (rows.Read())
             {
+                validated.History(rows);
                 if (revision > 1024) throw AutomationValidation.Corrupt("Preparation history exceeds bounds.");
                 var value = AutomationJson.Decode<PreparationRecord>(rows.GetString(1)); Validate(value);
                 var hash = AutomationJson.Hash(value);
@@ -153,6 +188,7 @@ public sealed class PreparationStateStore
                 previous = hash; last = value;
             }
             if (last is null || AutomationJson.Encode(last) != AutomationJson.Encode(record)) throw AutomationValidation.Corrupt("Preparation binding has no exact history.");
+            LedgerValidationProof.Remember(scope, workflows.GetString(0), validated.Finish());
         }
         foreach (var table in new[] { "grants", "previews" })
         {

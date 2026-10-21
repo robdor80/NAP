@@ -149,6 +149,8 @@ internal static class BackupStorage
     internal static T Run<T>(Func<T> action)
     {
         try { return action(); }
+        catch (IOException error) when (error.InnerException is AutomationException { Code: AutomationError.Busy })
+        { throw BackupException.Stop(NapIssueCodes.BackupBusy, "The universe automation owner is occupied."); }
         catch (BackupException) { throw; }
         catch (CatalogException e)
         {

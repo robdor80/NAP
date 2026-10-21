@@ -1,0 +1,114 @@
+{
+  "recordedUtc": "2026-10-20T19:05:55.192514+00:00",
+  "sourceParentCommit": "9b485a9686b194ea127b3a10c6bf65c94630a24b",
+  "changedProject": {
+    "file": "src/NAP.Core/NAP.Core.csproj",
+    "sha256": "40af872de7ed5f1ff802688dfc80f0fc61933a56186f91f02208c3b4e5f00930"
+  },
+  "imageSharp": {
+    "version": "3.2.0",
+    "informationalVersion": "3.2.0+baa37cd19077b2a2a0c5667535111cf31d48c019",
+    "executedDllSha256": "60d345f55451db74bbefb3231950c2524c12fe038173b08dabce4a844f22b179",
+    "executedDllMatchesResolvedPackage": true,
+    "projectResolutions": [
+      {
+        "project": "NAP.Core.csproj",
+        "kind": "topLevelPackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.Cli.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.Tests.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.AI.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.Presentation.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.App.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.CoordinationProbe.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      },
+      {
+        "project": "NAP.AutomationHost.csproj",
+        "kind": "transitivePackages",
+        "version": "3.2.0"
+      }
+    ],
+    "nugetAdvisoriesStillReported": 5,
+    "auditSuppressionsAdded": false,
+    "publisherBackportConfirmation": "https://sixlabors.com/posts/security-support-and-license-enforcement/"
+  },
+  "license": {
+    "community": true,
+    "assemblyScoped": true,
+    "assemblyValidatedByOfficialReleaseBuild": "NAP.Core",
+    "notExpired": true,
+    "expiryMatchesJanuary2028": true,
+    "ignoredByGit": true,
+    "published": false,
+    "uploadedAsGithubSecret": false,
+    "copiedIntoBuildOutput": false
+  },
+  "releaseBuild": {
+    "command": "dotnet build NAP.sln -c Release --verbosity minimal",
+    "exitCode": 0,
+    "compileErrors": 0,
+    "licenseValidationErrors": 0,
+    "rawLogExcludedAsPrivate": true
+  },
+  "tests": {
+    "file": "artifacts/phase5/imagesharp-320-20261020/imagesharp-320-directed.trx",
+    "sha256": "77445dd7cd9117bba8345a2b0896ecc59f618fb80fc1649da9b1c47d7cd5f3ed",
+    "executed": 220,
+    "passed": 220,
+    "failed": 0,
+    "omitted": 0,
+    "families": {
+      "SceneWebpOutputValidatorTests": 32,
+      "ImageNormalizationTests": 32,
+      "ScenePngToWebpConverterTests": 44,
+      "PortraitPngToWebpConverterTests": 44,
+      "ImageNormalizationSafetyTests": 15,
+      "ProductionThumbnailTests": 21,
+      "PortraitWebpOutputValidatorTests": 32
+    }
+  },
+  "zipVolumeTestsExecuted": false,
+  "generalRegressionExecuted": false,
+  "ciExecuted": false,
+  "productionActivated": false,
+  "realNimroelChanged": false,
+  "cutoverExecuted": false,
+  "archive": {
+    "file": "docs/evidence/NAP_2_0_IMAGESHARP_320_20261020.zip",
+    "sha256": "3554f4a932150c8238b25ac819e8323c4aad909c00a2bad97a264ef8d7808763",
+    "dataEntries": 8,
+    "allEntryHashesVerified": true,
+    "licenseAndPrivateLogExcluded": true
+  },
+  "subsequentFinalAudit": {
+    "dateUtc": "2026-10-20",
+    "evidence": "NAP_2_0_FASE_5_CLOSURE_AUDIT_EVIDENCE.json",
+    "report": "NAP_2_0_FASE_5_FINAL_REVIEW.md",
+    "remoteRun": 39488901573,
+    "note": "Original fields above remain historical snapshots. Current ImageSharp 3.2.0 private provision and official Release builds verified remotely on both platforms; zero tests in lab. Owner risk acceptance remains pending."
+  }
+}

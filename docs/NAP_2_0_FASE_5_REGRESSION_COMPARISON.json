@@ -1,0 +1,116 @@
+{
+  "previousTrx": "artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx",
+  "currentTrx": "artifacts/phase5/final-review-20261020/ci-windows/windows-regression/windows-regression.trx",
+  "previousSha256": "6f4f4fdba272a577a89f7d3b5d343e5402f24eb5901a4292c8f5a6e60d6a1d91",
+  "currentSha256": "310ff49c0144ee6aab1535e485f868577377d90ae8801f1e10e1d0c8ff7e51a6",
+  "comparisons": [
+    {
+      "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "previousClassification": "EnvironmentSymlinkPrivilege",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "previousClassification": "EnvironmentSymlinkPrivilege",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "previousClassification": "EnvironmentSymlinkPrivilege",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "previousClassification": "EnvironmentSymlinkPrivilege",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "previousClassification": "EnvironmentSymlinkPrivilege",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    },
+    {
+      "test": "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter",
+      "previousClassification": "Software",
+      "currentOutcome": "Passed",
+      "currentMessage": null
+    }
+  ]
+}

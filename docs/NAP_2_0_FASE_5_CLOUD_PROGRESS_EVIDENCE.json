@@ -1,0 +1,176 @@
+{
+  "recordedUtc": "2026-10-18T07:32:33.769535+00:00",
+  "status": "Intermediate conservation; complete regression is still running. Not final acceptance.",
+  "codeCommit": "6ddf602cc6e6fbdce5b3b7b80e2935c2c2c9a3b8",
+  "archive": {
+    "file": "docs/evidence/NAP_2_0_FASE_5_CLOUD_PROGRESS_20261018.zip",
+    "sha256": "fe5ff8d8fa48a07c2acedf402c5799ecd193d0d3295e45bfc5ccb6ce5c5e28ba",
+    "files": [
+      {
+        "file": "artifacts/phase5/cloud-resume/admission1000-baseline.log",
+        "bytes": 429,
+        "sha256": "d7665914ec89035c3b2bc7fe9351f7ba1e5fe0c503f9fb0665dfadc4a8c737f3"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/admission1000-baseline.trx",
+        "bytes": 2972,
+        "sha256": "ca50a667d8426ac46d1d39c5b820162b6fb723760a7ea3343928d336898b7e16"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/authority-and-storage.log",
+        "bytes": 438,
+        "sha256": "c33b67304ec93eef874ff99388c7a79409728c1dfb9f017b7fc3b5ceee8b9a8c"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/authority-and-storage.trx",
+        "bytes": 82596,
+        "sha256": "aaaacd267bfb7d1a2bae42b7690efcfceab3a5afae743117fd0610a7fe4520ec"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-acceptance-v2.log",
+        "bytes": 2589,
+        "sha256": "be65dc765790af2a50f4a563bc7e18c37b157611a05527b4c1c2c6d6ef95032a"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-acceptance.log",
+        "bytes": 3078,
+        "sha256": "e7ce8e3c72a6f529ddc8d7717bad2aa3110525b2645eaf7c7ee487ee7972902e"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-cloudreview-final.log",
+        "bytes": 2565,
+        "sha256": "a572eab33ec83581ae7ecef3f4215abd70d3232c9e22922c96141eeb746ae07a"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-cloudreview-v2.log",
+        "bytes": 2565,
+        "sha256": "fc233a0308953f71a57342a63f8c0f4e0aee2d4582fa27ca274ee75cd4c5cb1e"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-cloudreview.log",
+        "bytes": 856,
+        "sha256": "65417d7ff4c87d2ef742f1afa78f889a1914f10730d7a9f8ae15ce06e90d2995"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-diagnostic.log",
+        "bytes": 2691,
+        "sha256": "87150b15df17a73dc5d15f399529835a3627a5330590fb3a24c3aaafaf817af3"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-final-tests.log",
+        "bytes": 2589,
+        "sha256": "de276f023f44e063ded34b370dd53ef4353812d5c329e1f6e3f9a5b569f199ac"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-final-wpf.log",
+        "bytes": 2354,
+        "sha256": "935f4d2f1ff404b939945e375483e073703a3a9453a10592f5028d1dafbd3e04"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build-shared-proof.log",
+        "bytes": 2589,
+        "sha256": "10d28fb09082f9a52084de71c21140da45c8601fab26d6fae709f77d752ffd68"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/build.log",
+        "bytes": 2691,
+        "sha256": "05dbfb5749cb90d46e01c5c115fafc37bec25f614779fb541742df57651e1253"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/diagnostics-and-proof.log",
+        "bytes": 430,
+        "sha256": "7574b803cd1a03587fd51a37f858e0b8f9a91d7be02095680e86a35b490b423f"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/diagnostics-and-proof.trx",
+        "bytes": 14437,
+        "sha256": "99cdd6d8c05c7de154c13931c5823868ad3dbd370d58a423da7d62f41015fbb2"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/final-build-provenance.json",
+        "bytes": 1144,
+        "sha256": "33b9b082f9fb558bbfca6edd7bfc760ce33d5091dcb086e96393176e589108ab"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/portable-regression.log",
+        "bytes": 2348,
+        "sha256": "dcb60092173f2e4b286c4ee2c9451d758ec3fa4bf75e5459f867261ea78f8ec9"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/portable-regression.trx",
+        "bytes": 5137854,
+        "sha256": "8c99ce996d3f3f5fbdf223a419b2e408738e8d05715a3dcd0392a41f95989a62"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/profile-summary.json",
+        "bytes": 9221,
+        "sha256": "8f5946d23a9e8a4642f3f20073d7d1ccace13ab13df43e05b7ae928e0827bd3a"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/profile.log",
+        "bytes": 858,
+        "sha256": "9c6c13a1cdce1d4c907a8bedbd6cefa7f1252d6bf9f0fcebaf692619429f12f3"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/restore.log",
+        "bytes": 1261,
+        "sha256": "c484d76f3f62ec574b13912cffa65ff0b7c052aab240a6e544f055a57e6a44ac"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/shared-proof-and-authority.log",
+        "bytes": 443,
+        "sha256": "758a8dabcd04fa3585f0e29cc8077e09a785fc39a3e41d9be5661c9be99467d0"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/shared-proof-and-authority.trx",
+        "bytes": 83954,
+        "sha256": "0c5d42ab35db62a481978614d25c3181341b2858cb65abbb2ae86b8cc88dadb8"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/symlinks.log",
+        "bytes": 415,
+        "sha256": "32ba1c36147aa04f358ba537247687bb8a9eaed8a7ce3518f2fae17e2d67ff1a"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/symlinks.trx",
+        "bytes": 7822,
+        "sha256": "3aefddcb3444ec510867545b174e7fb837b1861c9aa02997c420811565098af1"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/volume100-diagnostic-v2.log",
+        "bytes": 430,
+        "sha256": "cb84f196c9bb9c294408066af913b2f075a88b1aad8d600ceaf6a03bb10e6a3e"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/volume100-diagnostic-v2.trx",
+        "bytes": 76360,
+        "sha256": "8997b8fdaad63fa1d898fe30865c59c2a8e33bff800b26bfe0cb54d961a56383"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/volume100-diagnostic.log",
+        "bytes": 719,
+        "sha256": "d65be9ec31727095f86a06718608f2bb12b2ef8d5859885295bff68e6e70fe30"
+      },
+      {
+        "file": "artifacts/phase5/cloud-resume/volume100-diagnostic.trx",
+        "bytes": 2125,
+        "sha256": "a02c6746182139d883c13908d62a5fee66d32b6d794f977645c4e45d882960f3"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-1-073029.json",
+        "bytes": 4585,
+        "sha256": "9904b295ce0598200cf503ecd2df3c898750654d9cdb2b926c5ee8e9c50126e9"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-10-073116.json",
+        "bytes": 21666,
+        "sha256": "8459e4c426502e4dd0e0271a1c782bb0e1f86615d98611b630c7d2c5cc7d587b"
+      },
+      {
+        "file": "artifacts/phase5/p510/metrics/automation-100-072355.json",
+        "bytes": 73461,
+        "sha256": "02ce4eeadea2bbbcf15972f5b6c2dc5932edd59eb5cb08d2eccc82df12dc06eb"
+      }
+    ]
+  }
+}

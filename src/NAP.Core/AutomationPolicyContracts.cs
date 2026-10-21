@@ -72,7 +72,13 @@ public sealed record NormalizationAuthority(NormalizationAuthorityKind Kind, str
 public sealed record EffectiveRuleSnapshot(UniverseId UniverseId, int Version, string AssetType,
     string ProductionProfile, string ProfileJson, Sha256Digest Hash)
 {
-    public UniverseAssetRule ValidateAndGetRule() => AutomationQueueBoundary.Guard(() =>
+    // Snapshots and the loaded rule are deeply immutable. Reuse only this object's pure
+    // parse/validation, not policy authority or observations of any physical path. A `with`
+    // copy has a different weak-table identity and must validate all of its fields again.
+    // Weak keys retain neither stale queue payloads nor another universe's snapshots.
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<EffectiveRuleSnapshot, UniverseAssetRule> ValidatedRules = new();
+    public UniverseAssetRule ValidateAndGetRule() => ValidatedRules.GetValue(this, static value => value.ValidateRule());
+    private UniverseAssetRule ValidateRule() => AutomationQueueBoundary.Guard(() =>
     {
         AutomationValidation.Positive(Version);
         if (string.IsNullOrWhiteSpace(ProfileJson) || ProfileJson.Length > 1024 * 1024) throw AutomationValidation.Invalid("Profile snapshot must be bounded JSON.");

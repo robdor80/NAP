@@ -62,9 +62,14 @@ public sealed partial class AutomationQueueStore : IAutomationQueueStore, IAutom
             var hash = DatabaseHash();
             if (_validatedDatabaseHash != hash)
             {
-                Validate(db);
-                AutomationQueueBoundary.Guard(() => { ValidateData(db); return 0; }, true);
-                if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Automation database changed during validation.");
+                var scope = LedgerValidationProof.Scope(DatabasePath, AutomationJson.Encode(_roots));
+                if (!LedgerValidationProof.Matches(scope, ":database:", hash.Hex))
+                {
+                    Validate(db);
+                    AutomationQueueBoundary.Guard(() => { ValidateData(db); return 0; }, true);
+                    if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Automation database changed during validation.");
+                    LedgerValidationProof.Remember(scope, ":database:", hash.Hex);
+                }
                 _validatedDatabaseHash = hash;
             }
             return db;

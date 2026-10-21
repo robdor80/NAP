@@ -16,6 +16,7 @@ public sealed class GitProductionService
         var owned = new Dictionary<string, GitOwnedFile>(StringComparer.Ordinal);
         foreach (var result in results)
         {
+            if (result is not null) AutomationReadViews.RequireNative(result);
             if (result is null || result.AssetKey.UniverseId != context.Id || result.Issues.ShouldStop || result.FilesVerified.Count == 0)
                 throw GitProductionException.Stop(NapIssueCodes.GitUnownedChange, "Production evidence must belong to the active universe.");
             ProductionPaths.Resolve(context.Storage.ProductionRoot, result.RelativeDirectory);
@@ -38,6 +39,8 @@ public sealed class GitProductionService
 
     public GitCommitResult Commit(UniverseContext context, GitCommitPlan plan) => GitProductionSafety.Run(() =>
     {
+        AutomationReadViews.RequireNative(plan);
+        using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context); RequireNoPending(context); Revalidate(context, plan);
         return CommitLocked(context, new(GitOperationId.New(), plan, GitReceiptState.Prepared), create: true);
     });
@@ -51,6 +54,7 @@ public sealed class GitProductionService
     /// <summary>Explicit recovery never moves HEAD. Base HEAD leaves Prepared for an explicit RetryCommit.</summary>
     public GitOperationReceipt Recover(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
     {
+        using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context); var receipt = GitProductionReceiptStore.Read(context, operationId);
         var status = Inspector.InspectLocked(context); RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid);
         if (receipt.State == GitReceiptState.Prepared && status.Head == receipt.BaseHead)
@@ -66,6 +70,7 @@ public sealed class GitProductionService
     /// <summary>Retries a Prepared operation at base HEAD; only proven owned index entries may be unstaged.</summary>
     public GitCommitResult RetryCommit(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
     {
+        using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context); var receipt = GitProductionReceiptStore.Read(context, operationId);
         if (receipt.State != GitReceiptState.Prepared) throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Only Prepared operations can retry commit.");
         var current = Inspector.InspectLocked(context); RequireBinding(receipt.Plan.Status, current, NapIssueCodes.GitPlanStale);
@@ -78,6 +83,7 @@ public sealed class GitProductionService
 
     public GitPushResult Push(UniverseContext context, GitCommitResult result) => GitProductionSafety.Run(() =>
     {
+        AutomationReadViews.RequireNative(result); using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context);
         if (result.UniverseId != context.Id || result.RepositoryBinding != GitProductionSafety.Binding(context))
             throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Commit result belongs to another universe or repository.");
@@ -89,7 +95,7 @@ public sealed class GitProductionService
     });
 
     public GitPushResult Push(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
-    { using var lease = GitProductionSafety.Acquire(context); return PushLocked(context, GitProductionReceiptStore.Read(context, operationId)); });
+    { using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context); return PushLocked(context, GitProductionReceiptStore.Read(context, operationId)); });
 
     private GitCommitResult CommitLocked(UniverseContext c, GitOperationReceipt receipt, bool create)
     {

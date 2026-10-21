@@ -21,6 +21,8 @@ public sealed partial class DurablePreparationService
     private readonly PackagePreparationService _preparation = new();
     private readonly TimeProvider _clock;
     internal Action<string>? Checkpoint { get; set; }
+    internal Action<QueueItemId, Exception>? StorageFailure { get; set; }
+    public WorkflowRunControl? RunControl { get; set; }
     public DurablePreparationService(UniverseContext context, AutomationQueueStore queue, TimeProvider? clock = null)
     {
         if (!AutomationValidation.SameRoots(context.Storage, queue.Storage)) throw new AutomationException(AutomationError.UniverseMismatch, "Preparation queue scope differs.");
@@ -72,6 +74,7 @@ public sealed partial class DurablePreparationService
                 _files.Publish(record, "original", record.Originals!, sources, null, policy.Definition.Resources.MaxStagingBytes, token, Checkpoint);
                 record = Save(owner, record with { Checkpoint = PreparationCheckpoint.Preserved }, QueueStage.Preparation);
                 Checkpoint?.Invoke("original-preserved");
+                RunControl?.Check(id, "original-preserved");
             }
             _files.Verify(record, "original", record.Originals!);
             var preserved = Path.Combine(_files.Resolve(record.Originals!), "package", manifest.AssetId);
@@ -129,6 +132,7 @@ public sealed partial class DurablePreparationService
             }
             if (record.Checkpoint == PreparationCheckpoint.CandidateIntent)
                 record = FinishCandidate(owner, record, receipt, preserved, token);
+            RunControl?.Check(id, "candidate-ready");
             var packageRoot = record.Candidate is null ? preserved : Path.Combine(_files.Resolve(record.Candidate), "package", manifest.AssetId);
             if (record.Candidate is not null)
             {
@@ -149,6 +153,7 @@ public sealed partial class DurablePreparationService
             {
                 Journal(record.JobId, JobState.Staged, JobState.Validated); Checkpoint?.Invoke("journal-validated");
                 record = Save(owner, record with { Checkpoint = PreparationCheckpoint.Validated }, QueueStage.Preparation);
+                RunControl?.Check(id, "validated");
             }
             var plans = _preparation.Plan(effectiveContext, package);
             if (plans.Archive.Action != ArchiveMasterAction.CopyAndIndex || plans.Archive.FilesToCopy.Count != plans.Archive.Files.Count)
@@ -167,6 +172,7 @@ public sealed partial class DurablePreparationService
             if (new JobStateStore(_context).Load(record.JobId).State != JobState.Planned) return Park(owner, item, record, PreparationCode.EvidenceChanged);
             return Result(record, PreparationCode.Planned);
         }
+        catch (WorkflowSuspendedException) { return record is null ? Result(item, PreparationCode.Interrupted) : Result(record, PreparationCode.Interrupted); }
         catch (OperationCanceledException) { throw; }
         catch (AutomationException e) when (e.Code is AutomationError.AssetCollision or AutomationError.ReservationOccupied)
         { return Park(owner, _queue.Get(id), record, PreparationCode.AssetCollision); }
@@ -188,7 +194,12 @@ public sealed partial class DurablePreparationService
         catch (Exception e) when (e is InvalidDataException or JsonException or ProductionStorageException or ArchiveStorageException)
         { return Park(owner, _queue.Get(id), record, PreparationCode.EvidenceChanged); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-        { return Park(owner, _queue.Get(id), record, PreparationCode.StorageUnavailable); }
+        { return ParkStorageFailure(owner, id, record, e); }
+    }
+    private PreparationResult ParkStorageFailure(AutomationQueueOwner owner, QueueItemId id, PreparationRecord? record, Exception error)
+    {
+        StorageFailure?.Invoke(id, error);
+        return Park(owner, _queue.Get(id), record, PreparationCode.StorageUnavailable);
     }
     private PreparationRecord? GetRecord(QueueItemId id)
     { try { return _state.Get(id); } catch (AutomationException e) when (e.Code == AutomationError.Missing) { return null; } }

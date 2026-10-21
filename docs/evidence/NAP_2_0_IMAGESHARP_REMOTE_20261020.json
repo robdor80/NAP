@@ -1,0 +1,25 @@
+{
+  "description": "Public excerpts from original GitHub Actions job logs, fetched 2026-10-20. No raw logs or secret values.",
+  "excerpts": [
+    {
+      "jobId": 118856456781,
+      "sourceUrl": "https://github.com/robdor80/NAP/actions/runs/39488901573/job/118856456781",
+      "lines": [
+        "2026-10-20T20:05:47.0942392Z   LAB EVIDENCE: SixLabors_ValidateLicense completed successfully for NAP.Core in Release x64.",
+        "2026-10-20T20:06:10.2304501Z Build succeeded.",
+        "2026-10-20T20:06:10.2526263Z     10 Warning(s)",
+        "2026-10-20T20:06:10.2539027Z     0 Error(s)"
+      ]
+    },
+    {
+      "jobId": 118856457075,
+      "sourceUrl": "https://github.com/robdor80/NAP/actions/runs/39488901573/job/118856457075",
+      "lines": [
+        "2026-10-20T20:05:06.9142686Z   LAB EVIDENCE: SixLabors_ValidateLicense completed successfully for NAP.Core in Release x64.",
+        "2026-10-20T20:05:29.8157025Z Build succeeded.",
+        "2026-10-20T20:05:29.8221268Z     10 Warning(s)",
+        "2026-10-20T20:05:29.8221925Z     0 Error(s)"
+      ]
+    }
+  ]
+}

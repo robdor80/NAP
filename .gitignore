@@ -60,6 +60,9 @@ secrets.json
 *.pem
 *.pfx
 *.p12
+# Six Labors license stays local until its distribution is explicitly approved.
+sixlabors.lic
+sixlabors.lic.*
 
 # Local artifacts and generated data
 local/

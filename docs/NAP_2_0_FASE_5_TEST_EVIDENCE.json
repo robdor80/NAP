@@ -1,0 +1,1796 @@
+[
+  {
+    "file": "artifacts/phase5/baseline/phase5-baseline.trx",
+    "sha256": "6d3a7cbb47aeee914c31e0100d39e80ca2197d34b8d9b01115f23284b849abda",
+    "start": "2026-10-16T12:30:50.6026209+02:00",
+    "finish": "2026-10-16T12:34:05.4666347+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:03.33]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:03.48]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:03.65]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:12.37]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]"
+    ],
+    "total": 98,
+    "executed": 98,
+    "passed": 94,
+    "failed": 4,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/admission1000-baseline.trx",
+    "sha256": "ca50a667d8426ac46d1d39c5b820162b6fb723760a7ea3343928d336898b7e16",
+    "start": "2026-10-18T07:15:31.5256898+00:00",
+    "finish": "2026-10-18T07:31:21.9338755+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/authority-and-storage.trx",
+    "sha256": "aaaacd267bfb7d1a2bae42b7690efcfceab3a5afae743117fd0610a7fe4520ec",
+    "start": "2026-10-18T07:23:41.6497611+00:00",
+    "finish": "2026-10-18T07:25:27.8732204+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 59,
+    "executed": 59,
+    "passed": 59,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-and-stop-safety-v2.trx",
+    "sha256": "c7bed9179e66fdbea3b3a6bbfb9ee660f9d053087f8b7e7612293d8f925835fd",
+    "start": "2026-10-18T07:46:33.3481750+00:00",
+    "finish": "2026-10-18T07:46:46.9707647+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 34,
+    "executed": 34,
+    "passed": 34,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-and-stop-safety.trx",
+    "sha256": "4fc2c81893f2b523218f0e00b37c5d7c04e040f8894207f7c4f93b79ac267d4c",
+    "start": "2026-10-18T07:45:08.1136603+00:00",
+    "finish": "2026-10-18T07:45:20.3835900+00:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:08.62]     NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal [FAIL]"
+    ],
+    "total": 34,
+    "executed": 34,
+    "passed": 33,
+    "failed": 1,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/buffered-io-safety.trx",
+    "sha256": "fa3028b453e3883ce230253bcc4d77ac94693ad6479b0a79cf979005481c02f7",
+    "start": "2026-10-18T07:44:07.1741607+00:00",
+    "finish": "2026-10-18T07:44:24.3837283+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 33,
+    "executed": 33,
+    "passed": 33,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/diagnostics-and-proof.trx",
+    "sha256": "99cdd6d8c05c7de154c13931c5823868ad3dbd370d58a423da7d62f41015fbb2",
+    "start": "2026-10-18T07:18:01.4597339+00:00",
+    "finish": "2026-10-18T07:18:19.0089232+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 9,
+    "executed": 9,
+    "passed": 9,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/final-buffered-complete.trx",
+    "sha256": "a1c232d285bb52b61527c4543b753a993b82907d687d87df45d85c51a175929f",
+    "start": "2026-10-18T07:49:38.7261826+00:00",
+    "finish": "2026-10-18T08:05:19.2050317+00:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:16.24]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:00:16.25]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:00:36.91]     NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal [FAIL]",
+      "[xUnit.net 00:00:39.40]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]",
+      "[xUnit.net 00:01:45.40]     NAP.Tests.AutomationProcessRecoveryTests.UnboundRemoteOutcomeSurvivesRestartWithoutRefundOrUnauthorizedSecondCall(boundary: \"audit-response-received\") [FAIL]",
+      "[xUnit.net 00:06:14.61]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:06:19.50]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]",
+      "The active test run was aborted. Reason: Test host process crashed"
+    ],
+    "total": 3764,
+    "executed": 3757,
+    "passed": 3755,
+    "failed": 2,
+    "notExecuted": 0,
+    "failedTests": [
+      "NAP.Tests.PreparationStorageDiagnosticsTests.AuthenticatedExternalStopRemainsSafeForRepeatedFixtureDisposal",
+      "NAP.Tests.AutomationProcessRecoveryTests.UnboundRemoteOutcomeSurvivesRestartWithoutRefundOrUnauthorizedSecondCall(boundary: \"audit-response-received\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/portable-regression.trx",
+    "sha256": "8c99ce996d3f3f5fbdf223a419b2e408738e8d05715a3dcd0392a41f95989a62",
+    "start": "2026-10-18T07:19:18.8607162+00:00",
+    "finish": "2026-10-18T07:28:52.6030630+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:01:26.41]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:02:58.91]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:03:15.24]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]",
+      "[xUnit.net 00:03:33.26]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]"
+    ],
+    "total": 3780,
+    "executed": 3773,
+    "passed": 3773,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/recovery-and-stop-final.trx",
+    "sha256": "3de249be1ac20bfb0be6b9db93ca6b65df10379a5a218f8fcd06c805071ed7f0",
+    "start": "2026-10-18T07:59:07.3851904+00:00",
+    "finish": "2026-10-18T08:04:50.1299243+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 26,
+    "executed": 26,
+    "passed": 26,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/shared-proof-and-authority.trx",
+    "sha256": "0c5d42ab35db62a481978614d25c3181341b2858cb65abbb2ae86b8cc88dadb8",
+    "start": "2026-10-18T07:26:08.0986458+00:00",
+    "finish": "2026-10-18T07:27:42.6913243+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 60,
+    "executed": 60,
+    "passed": 60,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-1.trx",
+    "sha256": "3c85c1d9e0dcc3c2921263aeed6d3cadc1bc4b22781361b2ebf2853ced338eec",
+    "start": "2026-10-18T07:53:53.2790034+00:00",
+    "finish": "2026-10-18T07:53:58.1298821+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-2.trx",
+    "sha256": "83a53a51a686027c3f559b7e6d17d2574f5fba0a77a416d20735d2d247a2b749",
+    "start": "2026-10-18T07:53:59.2956383+00:00",
+    "finish": "2026-10-18T07:54:03.3639423+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race-repeat-3.trx",
+    "sha256": "d255009d8678ec218a8422a08725e872234bd36dbac95d6b1119d1872ce7cee7",
+    "start": "2026-10-18T07:54:05.1712719+00:00",
+    "finish": "2026-10-18T07:54:09.0308566+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/stop-exit-race.trx",
+    "sha256": "7b2b461fb43c67dd197672f561ec6e4776ebcbfb5dfc5ea4883c367513835ac2",
+    "start": "2026-10-18T07:52:27.1820114+00:00",
+    "finish": "2026-10-18T07:52:31.2336291+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/symlinks.trx",
+    "sha256": "3aefddcb3444ec510867545b174e7fb837b1861c9aa02997c420811565098af1",
+    "start": "2026-10-18T07:13:35.2473577+00:00",
+    "finish": "2026-10-18T07:13:38.8117163+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/volume100-diagnostic-v2.trx",
+    "sha256": "8997b8fdaad63fa1d898fe30865c59c2a8e33bff800b26bfe0cb54d961a56383",
+    "start": "2026-10-18T07:13:24.7033197+00:00",
+    "finish": "2026-10-18T07:23:57.1077012+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/cloud-resume/volume100-diagnostic.trx",
+    "sha256": "a02c6746182139d883c13908d62a5fee66d32b6d794f977645c4e45d882960f3",
+    "start": "2026-10-18T07:13:08.5492548+00:00",
+    "finish": "2026-10-18T07:13:10.4515057+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.06] NAP.Tests: Exception filtering tests: Incorrect format for TestCaseFilter Error: Missing '('. Specify the correct format and try again. Note that the incorrect format can lead to no test getting executed.",
+      "No test matches the given testcase filter `FullyQualifiedName~AutomationVolumeTests&DisplayName~count: 100)` in /workspace/NAP/tests/NAP.Tests/bin/Release/net8.0/NAP.Tests.dll"
+    ],
+    "total": 0,
+    "executed": 0,
+    "passed": 0,
+    "failed": 0,
+    "notExecuted": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/backlog-three-items.trx",
+    "sha256": "1355ee38ef15fabcfb24fe78c154063bee37d238feeafbeac765e76e8eb258fb",
+    "start": "2026-10-20T20:24:34.1449192+02:00",
+    "finish": "2026-10-20T20:24:38.9008629+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/core-process-tests.trx",
+    "sha256": "543857aeaa5a4d088e6de5f18ce3a2e271177329192484a1fe1012c90060f120",
+    "start": "2026-10-20T18:26:10.1283009+00:00",
+    "finish": "2026-10-20T18:26:16.8638058+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 19,
+    "executed": 19,
+    "passed": 19,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/git-recovery-tests.trx",
+    "sha256": "4b28c7f2317772b9eb2322cf221cab7bbe8c36f5d4a6a481cec405bad727ea3a",
+    "start": "2026-10-20T18:26:20.7827697+00:00",
+    "finish": "2026-10-20T18:26:36.1944771+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 29,
+    "executed": 29,
+    "passed": 29,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-linux/original-mutex-tests.trx",
+    "sha256": "2407e126d43b30c2ec08fd8f2a49a2859237b33c2bb878139b8570bed075e123",
+    "start": "2026-10-20T18:26:03.3754825+00:00",
+    "finish": "2026-10-20T18:26:09.1307021+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/core-process-tests.trx",
+    "sha256": "3ca0d3f7d53124bcfae471ebbf2ff698ed36b1149d46f8ecb329d801dc667c1f",
+    "start": "2026-10-20T18:26:36.5204591+00:00",
+    "finish": "2026-10-20T18:26:44.2061603+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 19,
+    "executed": 19,
+    "passed": 19,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/git-recovery-tests.trx",
+    "sha256": "3b34eab97987f236487d14fd9d77239edf45f7fb73a6fb7d153b9ec36d890c92",
+    "start": "2026-10-20T18:26:47.8323433+00:00",
+    "finish": "2026-10-20T18:30:14.3848611+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 29,
+    "executed": 29,
+    "passed": 29,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-coordination-windows/original-mutex-tests.trx",
+    "sha256": "27547f008961853c7a01fb2f1219a84f39a6561409c55811ce8ec2b8bbfccd17",
+    "start": "2026-10-20T18:26:31.9969849+00:00",
+    "finish": "2026-10-20T18:26:35.2648355+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-linux/linux-regression.trx",
+    "sha256": "ea20792079958f962b81a5797d3bdf09576c9ce72e811de34e6e2d242d89659e",
+    "start": "2026-10-20T18:25:50.5601142+00:00",
+    "finish": "2026-10-20T18:29:21.1935942+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      "[xUnit.net 00:00:13.47]     NAP.Tests.AutomationWpfTests.RemoteShellRendersNavigatesAndClosesWithoutStoppingHostOrCreatingUserSettings [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.SyntheticNormalizationComparisonRendersAtBothViewportsWithoutCreatingDefinitiveCandidate [SKIP]",
+      "[xUnit.net 00:00:35.60]     NAP.Tests.VisualExplorerWindowsSmokeTests.ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings [SKIP]",
+      "[xUnit.net 00:01:45.45]     NAP.Tests.AutomationAcceptanceTests.RetentionPinsLongPathsWithoutDependingOnTheCallerManifest [SKIP]",
+      "[xUnit.net 00:01:48.87]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [SKIP]"
+    ],
+    "total": 3784,
+    "executed": 3777,
+    "passed": 3777,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 7,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-windows/windows-regression/windows-regression.trx",
+    "sha256": "310ff49c0144ee6aab1535e485f868577377d90ae8801f1e10e1d0c8ff7e51a6",
+    "start": "2026-10-20T18:26:32.8203147+00:00",
+    "finish": "2026-10-20T18:34:53.1625568+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3784,
+    "executed": 3784,
+    "passed": 3784,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/ci-wpf/windows-wpf.trx",
+    "sha256": "3fea6f1b46ece83650ce8a8b1b8ee1bc45bb225232b1a501c2b5962b5e6eef5e",
+    "start": "2026-10-20T18:26:42.2874378+00:00",
+    "finish": "2026-10-20T18:26:58.2747547+00:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/inhibitions-directed.trx",
+    "sha256": "06877de76af448fa4f2147ad283abd2a9d26658e712816783a87191114b902ab",
+    "start": "2026-10-20T20:32:25.1598375+02:00",
+    "finish": "2026-10-20T20:33:09.2345673+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/final-review-20261020/windows-functional.trx",
+    "sha256": "8f756d177143113a9f7ba3d2dfd680dfb23db3ae0588ce83369c1cee8a0a73f1",
+    "start": "2026-10-20T20:25:22.1042012+02:00",
+    "finish": "2026-10-20T20:31:17.7144905+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:07.79]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:08.09]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:08.38]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:36.74]     NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\") [FAIL]",
+      "[xUnit.net 00:00:38.73]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:01:24.71]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 3784,
+    "executed": 3784,
+    "passed": 3778,
+    "failed": 6,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/final/p510-final-complete-regression.trx",
+    "sha256": "96cfbd827da0335eb611ae2fce18b5a88b814f319a9d0fedeff24ed1f84f252a",
+    "start": "2026-10-16T23:48:29.7816377+02:00",
+    "finish": "2026-10-17T00:34:02.1379621+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:21.61]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:21.90]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:22.19]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:47.25]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:22:34.37]     NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1000) [FAIL]",
+      "[xUnit.net 00:22:53.10]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]",
+      "[xUnit.net 00:45:32.03]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
+    ],
+    "total": 3779,
+    "executed": 3779,
+    "passed": 3772,
+    "failed": 7,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.InboxAdmissionTests.MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication(count: 1000)",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/final/p510-final-optimized-complete.trx",
+    "sha256": "f9b0535d2a64a3701b1ea61ac4ddc522bf1d20814d5f28a0dde4b4d54c153463",
+    "start": "2026-10-17T00:27:24.9193756+02:00",
+    "finish": "2026-10-17T00:38:35.2123008+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:11.57]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:11.87]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:12.14]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:34.93]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:09:36.77]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100) [FAIL]",
+      "[xUnit.net 00:11:05.93]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]",
+      "Se ha anulado la serie de pruebas activa. Motivo: Proceso de host de pruebas bloqueado"
+    ],
+    "total": 3759,
+    "executed": 3759,
+    "passed": 3753,
+    "failed": 6,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100)",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/final/p510-final-ui-and-software-regression.trx",
+    "sha256": "a10c050105f137a21a1a73ec5048bbb6ddf3dd16a7dbccbad880c023ee188010",
+    "start": "2026-10-16T23:55:31.1775989+02:00",
+    "finish": "2026-10-17T00:03:00.8536849+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:15.46]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:16.26]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:16.78]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:38.94]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:01:28.85]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 3771,
+    "executed": 3771,
+    "passed": 3766,
+    "failed": 5,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/final/p510-final-wpf-and-stop.trx",
+    "sha256": "9d17f93955171a1535e8a8013157268d477f822bbc22ef00243aef45054dc1f0",
+    "start": "2026-10-17T00:04:44.9041231+02:00",
+    "finish": "2026-10-17T00:04:55.9321259+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 6,
+    "executed": 6,
+    "passed": 6,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/imagesharp-320-20261020/imagesharp-320-directed.trx",
+    "sha256": "77445dd7cd9117bba8345a2b0896ecc59f618fb80fc1649da9b1c47d7cd5f3ed",
+    "start": "2026-10-20T21:02:50.2370434+02:00",
+    "finish": "2026-10-20T21:03:12.1366273+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 220,
+    "executed": 220,
+    "passed": 220,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p51/p51.trx",
+    "sha256": "657952e1fc3928f4989e57bb5825cdfae29878756b3cd3a0b98a590d42702b78",
+    "start": "2026-10-16T12:33:07.3402383+02:00",
+    "finish": "2026-10-16T12:33:11.2358163+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3,
+    "executed": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-acceptance-v3.trx",
+    "sha256": "aba4d5207b1af28a7353253242e3133f20f82b266780e202c12edf9761fe43bd",
+    "start": "2026-10-16T23:14:55.7319846+02:00",
+    "finish": "2026-10-16T23:34:00.5843771+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:00.70]     NAP.Tests.AutomationAcceptanceTests.BridgeAccountsHiddenNormalizationBuffersAndRejectsBeforeRetainingBeyondBudget [FAIL]",
+      "[xUnit.net 00:00:11.24]     NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup [FAIL]",
+      "[xUnit.net 00:04:43.19]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\") [FAIL]",
+      "[xUnit.net 00:05:20.84]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\") [FAIL]",
+      "[xUnit.net 00:05:44.76]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\") [FAIL]",
+      "[xUnit.net 00:08:01.17]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100) [FAIL]",
+      "[xUnit.net 00:19:04.37]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
+    ],
+    "total": 33,
+    "executed": 33,
+    "passed": 26,
+    "failed": 7,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 100)",
+      "NAP.Tests.AutomationAcceptanceTests.ClientCachePinsAncestorsAndPreservesReplacedFilesDuringHandleBasedCleanup",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\")",
+      "NAP.Tests.AutomationAcceptanceTests.BridgeAccountsHiddenNormalizationBuffersAndRejectsBeforeRetainingBeyondBudget",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\")",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-backpressure-fix.trx",
+    "sha256": "3b743fef2a7995741e4cbf15fee4fffc73441f30e8e7337275d5c1c9c340204d",
+    "start": "2026-10-16T23:27:20.2832686+02:00",
+    "finish": "2026-10-16T23:27:37.7019361+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 10,
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-backpressure-reproducer.trx",
+    "sha256": "5fa9d577126bfbaa3dd973d91909975411ba4bee0cab7f462cf81bc793ec99f7",
+    "start": "2026-10-16T23:26:35.5887948+02:00",
+    "finish": "2026-10-16T23:26:43.1292424+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:07.07]     NAP.Tests.AutomationAcceptanceTests.AuditHarvestCannotDropAdmissionDeferredByBackpressure [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.AuditHarvestCannotDropAdmissionDeferredByBackpressure"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-budgets-cache-http.trx",
+    "sha256": "cf3a9c9d02f5faa494f7e0cce9c7c19ac37cab17379f88a46ba061a3978af1e6",
+    "start": "2026-10-16T23:17:38.1941846+02:00",
+    "finish": "2026-10-16T23:17:50.9411890+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3,
+    "executed": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-compatibility-corrections.trx",
+    "sha256": "314fafce9c731b981cd7d6624815ac4afa76919a7b355814e6287289c291e2a0",
+    "start": "2026-10-16T13:34:58.8264830+02:00",
+    "finish": "2026-10-16T13:35:12.4905004+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 101,
+    "executed": 101,
+    "passed": 101,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-continuation-fix.trx",
+    "sha256": "9504b8e4ced54e4dc72b0bc41ab8465f43203455e252cef279f5b74b3aec9694",
+    "start": "2026-10-16T23:42:37.8909276+02:00",
+    "finish": "2026-10-16T23:44:09.4751669+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 12,
+    "executed": 12,
+    "passed": 12,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-final-directed.trx",
+    "sha256": "5986d5f6f3418f37ccee849ea5e5b3b9dc081a24d09c3c80acfad9f8a7fb533e",
+    "start": "2026-10-16T23:45:48.8629356+02:00",
+    "finish": "2026-10-16T23:47:19.4190621+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:10.97]     NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture [FAIL]"
+    ],
+    "total": 16,
+    "executed": 16,
+    "passed": 15,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial-v2.trx",
+    "sha256": "48109e51286f6dd4c668156c9beea6de04f1206a32daeb2c521132910cc53c79",
+    "start": "2026-10-17T00:23:53.3458556+02:00",
+    "finish": "2026-10-17T00:24:15.3135753+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 7,
+    "executed": 7,
+    "passed": 7,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-adversarial.trx",
+    "sha256": "1703f9278db423b90c4ae023c5778e3bad1600b3337ce41915cd43b185ff1846",
+    "start": "2026-10-17T00:20:43.8560670+02:00",
+    "finish": "2026-10-17T00:21:06.9975481+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:02.81]     NAP.Tests.LedgerValidationProofTests.WarmProofRejectsChangedBytesEvenWithIdenticalLengthTimestampAndSelfConsistentAnchors(execution: False, corruption: \"domain\") [FAIL]"
+    ],
+    "total": 7,
+    "executed": 7,
+    "passed": 6,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.LedgerValidationProofTests.WarmProofRejectsChangedBytesEvenWithIdenticalLengthTimestampAndSelfConsistentAnchors(execution: False, corruption: \"domain\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-ledger-proof-initial.trx",
+    "sha256": "eab0d9677d4817c43fd15ebb6a22bc6abae8f5b103d4ec9d42d423ccac2c897b",
+    "start": "2026-10-17T00:16:43.6582571+02:00",
+    "finish": "2026-10-17T00:20:11.1819139+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 139,
+    "executed": 139,
+    "passed": 139,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-longpaths-and-priority-reproducer.trx",
+    "sha256": "479d97047c456bcc26bcc2db3c0c1342b327b13efcc0da0c8545da071b57eb58",
+    "start": "2026-10-16T23:37:30.5407604+02:00",
+    "finish": "2026-10-16T23:38:22.1889481+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:51.34]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-longpaths-and-priority-v2.trx",
+    "sha256": "f50ac1a7139cb8388e1f50f432e894652f4faa95b55b8c5a28790f95af792eb9",
+    "start": "2026-10-16T23:39:35.3984799+02:00",
+    "finish": "2026-10-16T23:41:54.9734167+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:02:19.13]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 1,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-manual-routes-final.trx",
+    "sha256": "1fa43819eb8061fb659a4d5603b135b9d9f44c7170f592ac9a300cff317c3880",
+    "start": "2026-10-16T23:47:52.5157044+02:00",
+    "finish": "2026-10-16T23:48:09.4548941+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v2.trx",
+    "sha256": "20afac08e7d4b8671764312ccf460ac50dd5fd5dd55b9c9681c0cc9200689665",
+    "start": "2026-10-16T23:30:12.0011934+02:00",
+    "finish": "2026-10-16T23:30:16.9218999+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v3.trx",
+    "sha256": "adb6b856f2617fea7e862365a5d00814f4773778b134db05b595625a9c545b10",
+    "start": "2026-10-16T23:31:05.0495531+02:00",
+    "finish": "2026-10-16T23:31:37.4568529+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:31.94]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v4.trx",
+    "sha256": "ecec740f8cedb1222125a1cdc5b407ff668ff209706415e1183bee855247cf83",
+    "start": "2026-10-16T23:32:11.0588563+02:00",
+    "finish": "2026-10-16T23:34:04.2301825+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:01:52.72]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v5.trx",
+    "sha256": "b161602ce9cdb4eafb9e5ccd67eeacbd275235c27f504007bd371eaf8a3db8fb",
+    "start": "2026-10-16T23:34:17.1143875+02:00",
+    "finish": "2026-10-16T23:34:30.2288899+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v6.trx",
+    "sha256": "4823f66f5e995d4e9a3c34f13c4db661fd842bae3f481b151da4b6db0ece4a23",
+    "start": "2026-10-16T23:35:41.1878962+02:00",
+    "finish": "2026-10-16T23:35:42.7007910+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.05]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v7.trx",
+    "sha256": "77d52a6a6470b2fd4e429f8aa03efb2ca4df4495e0cafe1383f96db7a95e41c7",
+    "start": "2026-10-16T23:36:17.6334126+02:00",
+    "finish": "2026-10-16T23:36:19.1954256+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.06]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer-v8.trx",
+    "sha256": "a7a2522d1772e3361aaf5d90367cc25de8aeb9882507ac0ec653415f71213129",
+    "start": "2026-10-16T23:36:56.1692222+02:00",
+    "finish": "2026-10-16T23:36:57.6768619+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.04]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-priority-reproducer.trx",
+    "sha256": "20d234c5abf1732b4de435c4bfb3eefb697db5346e06ede466776fe36e609116",
+    "start": "2026-10-16T23:29:25.6390622+02:00",
+    "finish": "2026-10-16T23:29:34.6662779+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:08.54]     NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationAcceptanceTests.BoundResponseExecutesBeforeDispatchingAnotherItemFromTheBacklog"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-process-recovery-v2.trx",
+    "sha256": "535fe05ac17150a51b2e69da1f568c85f28cf65c3e0badee686afe1259d1d2f6",
+    "start": "2026-10-16T23:09:32.8267186+02:00",
+    "finish": "2026-10-16T23:14:35.2928057+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:56.22]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:07.64]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:19.25]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:30.69]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:03:41.22]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False) [FAIL]",
+      "[xUnit.net 00:03:53.43]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:04:13.86]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False) [FAIL]",
+      "[xUnit.net 00:04:49.12]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:05:01.97]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True) [FAIL]"
+    ],
+    "total": 16,
+    "executed": 16,
+    "passed": 7,
+    "failed": 9,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-process-recovery.trx",
+    "sha256": "a498c3fa184926b1bc27bea2ee560cabf476b4a07c7954a77aa435873f2551d4",
+    "start": "2026-10-16T23:07:04.8734358+02:00",
+    "finish": "2026-10-16T23:09:23.1472083+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:09.84]     NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\") [FAIL]",
+      "[xUnit.net 00:00:24.06]     NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"pause\") [FAIL]",
+      "[xUnit.net 00:00:31.44]     NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"session\") [FAIL]",
+      "[xUnit.net 00:00:41.45]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:00:50.83]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:00:58.34]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:06.21]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:16.05]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False) [FAIL]",
+      "[xUnit.net 00:01:27.29]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:33.89]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"original-preserved\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:42.02]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False) [FAIL]",
+      "[xUnit.net 00:01:48.06]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"extraction-recorded\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:01:54.16]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"snapshot-recorded\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:02:05.58]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True) [FAIL]",
+      "[xUnit.net 00:02:17.33]     NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True) [FAIL]"
+    ],
+    "total": 16,
+    "executed": 16,
+    "passed": 1,
+    "failed": 15,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"extraction-recorded\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"cancel\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"claimed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"session\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:journal-Completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:production-file:portrait_example_001.webp\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:production-file:portrait_example_001.webp\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"queue-completed\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"original-preserved\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:archive-index\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"audit-response-bound\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"after:catalog-register\", recoverable: True)",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"effect:archive-file:portrait_example_001_brief.txt\", recoverable: False)",
+      "NAP.Tests.AutomationProcessRecoveryTests.DurableInhibitionsAndRestartAuthorizationCannotBeBypassed(mode: \"pause\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.KillAndRestartSameSidecarsPreservesIdentityAndNeverAdoptsAmbiguousFinal(boundary: \"snapshot-recorded\", recoverable: True)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-queue-cache-safety.trx",
+    "sha256": "fa31aa43312c450e0ecd8c98757ff61edab04fb6e9c52389f372179db63c92c8",
+    "start": "2026-10-17T00:25:11.6717347+02:00",
+    "finish": "2026-10-17T00:25:49.9101070+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:02.20]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:02.37]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:02.57]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:15.74]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:00:37.69]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 98,
+    "executed": 98,
+    "passed": 93,
+    "failed": 5,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-review-regression.trx",
+    "sha256": "03cf1bb4a836a2bc6f3c9e9da3d687884ede0ee30de2911ae8b8767e687dc8f4",
+    "start": "2026-10-16T23:18:55.0406966+02:00",
+    "finish": "2026-10-16T23:25:02.3750159+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:05.41]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:05.75]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:06.06]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:29.33]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:01:24.53]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]",
+      "[xUnit.net 00:05:41.56]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\") [FAIL]",
+      "[xUnit.net 00:05:53.66]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\") [FAIL]",
+      "[xUnit.net 00:06:06.89]     NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\") [FAIL]"
+    ],
+    "total": 3768,
+    "executed": 3768,
+    "passed": 3760,
+    "failed": 8,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"receipt\")",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"production\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.AutomationProcessRecoveryTests.CompletedStartupVerificationReportsCorruptionWithoutRepairOrNewAudit(corruption: \"paused\")"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-scheduler-corrections.trx",
+    "sha256": "01dfe13e57678f04f2083f8b06a1b78a2d2be9ea4029ccf17534fb145477b1f1",
+    "start": "2026-10-16T13:36:45.7887361+02:00",
+    "finish": "2026-10-16T13:36:56.3469068+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 8,
+    "executed": 8,
+    "passed": 8,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p510/p510-stop-diagnostic-wpf-control.trx",
+    "sha256": "5eed5eef05f3bf864229a18f44444adfe693f5b45cc614bf1d8c00eaaf0855e5",
+    "start": "2026-10-16T23:53:10.5722409+02:00",
+    "finish": "2026-10-16T23:53:32.7803979+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52-final.trx",
+    "sha256": "46897e82a5c579f43cc019c66245a723f77266821871ee88fd3a54c5b6c507cd",
+    "start": "2026-10-16T12:35:13.3773038+02:00",
+    "finish": "2026-10-16T12:35:15.2716295+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 6,
+    "executed": 6,
+    "passed": 6,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52-rollback.trx",
+    "sha256": "4e070d52a4cfb86a05486be419d91782911f5bfdbfcb8e616e1e87e392d615e9",
+    "start": "2026-10-16T12:35:38.5174012+02:00",
+    "finish": "2026-10-16T12:35:39.8859430+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 4,
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p52/p52.trx",
+    "sha256": "ce8788f14ae8fc3add908e9c0a1302bb2b60140b4e4b1bec94f42a5cbc07d4ac",
+    "start": "2026-10-16T12:34:48.9918232+02:00",
+    "finish": "2026-10-16T12:34:50.8562321+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:00.66]     NAP.Tests.AutomationHostControlTests.CorruptControlIsPreservedAndStorageCannotOverlapUniverse [FAIL]",
+      "[xUnit.net 00:00:00.73]     NAP.Tests.AutomationHostControlTests.PauseSurvivesReopenAndCommandReplayCannotChangeMeaning [FAIL]"
+    ],
+    "total": 6,
+    "executed": 6,
+    "passed": 4,
+    "failed": 2,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationHostControlTests.CorruptControlIsPreservedAndStorageCannotOverlapUniverse",
+      "NAP.Tests.AutomationHostControlTests.PauseSurvivesReopenAndCommandReplayCannotChangeMeaning"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p53/p53-final.trx",
+    "sha256": "8396ebb2b405bf023b499b3e6b6b9f3645a512bfebdf187834e5760926ef1114",
+    "start": "2026-10-16T12:37:54.5210652+02:00",
+    "finish": "2026-10-16T12:37:56.2813376+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:00.50]     NAP.Tests.UniverseProfileImportTests.RodoPresentationPngPreservesPinnedDimensionsTransparencyAndDecodedPixels [FAIL]"
+    ],
+    "total": 15,
+    "executed": 15,
+    "passed": 14,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.UniverseProfileImportTests.RodoPresentationPngPreservesPinnedDimensionsTransparencyAndDecodedPixels"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p53/p53-staged.trx",
+    "sha256": "dc05f779857b181b13fb1b0b86fe48b41b91310d0d3bc42986136b08bc779c07",
+    "start": "2026-10-16T12:38:05.1677154+02:00",
+    "finish": "2026-10-16T12:38:07.0951748+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p53/p53.trx",
+    "sha256": "b26bf7d1942911ce02e5f3e1b0730a55185b1e738652cfe0bc420a0cf8c35e93",
+    "start": "2026-10-16T12:36:50.7161076+02:00",
+    "finish": "2026-10-16T12:37:24.0076363+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:32.02]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 44,
+    "executed": 44,
+    "passed": 43,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p54/p54-shared-transport.trx",
+    "sha256": "ad0951ace4e24acfe2df054c93a9264181ba868f45b3db5df10689dbd64b49db",
+    "start": "2026-10-16T12:41:13.1478109+02:00",
+    "finish": "2026-10-16T12:41:19.3895910+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p54/p54.trx",
+    "sha256": "f956954e38fc1d01ab7b128f528f33d66a30162e6811cd156a9c6ad352291aba",
+    "start": "2026-10-16T12:39:21.9519817+02:00",
+    "finish": "2026-10-16T12:40:43.4840557+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 53,
+    "executed": 53,
+    "passed": 53,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p55/p55.trx",
+    "sha256": "a0cc9bc87842b9f7fd77b5a8c6a8a26ede584c723ed875962318a4cf72b2574c",
+    "start": "2026-10-16T12:45:09.3385315+02:00",
+    "finish": "2026-10-16T12:45:22.7131202+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3,
+    "executed": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p56/p56-control-final.trx",
+    "sha256": "1f9790acfb62f5cee4fcda6dba0ce33d70e6b68c42a2bbc112ed3901467f1abd",
+    "start": "2026-10-16T12:48:04.8433428+02:00",
+    "finish": "2026-10-16T12:48:15.4803253+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 7,
+    "executed": 7,
+    "passed": 7,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p56/p56.trx",
+    "sha256": "29293bf1e696e51d2ce86d9d7a1c4d8a0f849ac93e9990d2d22cd994a0739d98",
+    "start": "2026-10-16T12:46:53.7692449+02:00",
+    "finish": "2026-10-16T12:47:23.4999869+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 9,
+    "executed": 9,
+    "passed": 9,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p57/p57-diagnosis.trx",
+    "sha256": "d585b6f1c58e58c4b863e6ad8399355c67d21b0773715188aaf81391b0387fe7",
+    "start": "2026-10-16T12:51:41.9024625+02:00",
+    "finish": "2026-10-16T12:52:13.5412351+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:31.18]     NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p57/p57-final.trx",
+    "sha256": "d491c1c15b3b7f0180cb7114a2635549bc19fb6adf19f367092c762e34eadcf4",
+    "start": "2026-10-16T12:52:19.2785673+02:00",
+    "finish": "2026-10-16T12:52:29.4582413+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p57/p57.trx",
+    "sha256": "eaca21dbba45076a7b84ef3dfc4e50a396b18c0effcbdf89e0dce281425d7b48",
+    "start": "2026-10-16T12:49:53.4830894+02:00",
+    "finish": "2026-10-16T12:50:25.2615057+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:31.08]     NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished [FAIL]"
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 1,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationBatchTests.ClosedBatchSummaryReflectsFinalWorkflowAfterCaptureFinished"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p58/p58-final.trx",
+    "sha256": "aeaaaef5742c07e6f692b793a18a71e0bcbd0985b2004e527046a0bbf34a616a",
+    "start": "2026-10-16T12:56:14.6537772+02:00",
+    "finish": "2026-10-16T12:56:15.8686553+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop-final.trx",
+    "sha256": "cbf878f6d53329647b506780a15f5b813fbedcc74e77ae655843f8fdefeffcc2",
+    "start": "2026-10-16T13:05:34.3125880+02:00",
+    "finish": "2026-10-16T13:05:38.9952651+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop-thumbnails.trx",
+    "sha256": "1dacd8aef1ad960561a3f9ea9f8e580d7895a12d3e00b752b56ad80e252dab96",
+    "start": "2026-10-16T13:11:15.7801406+02:00",
+    "finish": "2026-10-16T13:11:33.8890041+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 23,
+    "executed": 23,
+    "passed": 23,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-desktop.trx",
+    "sha256": "9b0ee085b7351cbdc13b90198fcf889f6624ad3cade8fd0ebcd526d59b9b73be",
+    "start": "2026-10-16T13:04:54.6269880+02:00",
+    "finish": "2026-10-16T13:04:58.5728111+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:02.17]     NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected [FAIL]",
+      "[xUnit.net 00:00:03.45]     NAP.Tests.AutomationDesktopTests.RemoteManualPipelineKeepsNativeAuthorityInHostAndPreservesBackupFunctions [FAIL]"
+    ],
+    "total": 2,
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteManualPipelineKeepsNativeAuthorityInHostAndPreservesBackupFunctions",
+      "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-diagnosis.trx",
+    "sha256": "49c82e637ad1d12cc9569d71994ae7452de4f9b4795635e141a99993021e77ca",
+    "start": "2026-10-16T13:05:20.3991838+02:00",
+    "finish": "2026-10-16T13:05:22.8744651+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:01.96]     NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected [FAIL]"
+    ],
+    "total": 1,
+    "executed": 1,
+    "passed": 0,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RequestReplayDoesNotCreateSecondManualJobAndCrossUniverseReferenceIsRejected"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-final.trx",
+    "sha256": "bb7b71d588d2143b1fd971a1cda1be0acf66046d4bd70562d06cdafef4bd15d3",
+    "start": "2026-10-16T13:19:46.9731677+02:00",
+    "finish": "2026-10-16T13:20:00.8221613+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 5,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-manual-complete.trx",
+    "sha256": "9ee9cd34959fd4a20ccb336d52741795fed98dafa1843d50224ab06f07cd564b",
+    "start": "2026-10-16T13:18:37.4474837+02:00",
+    "finish": "2026-10-16T13:18:51.5785485+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:13.14]     NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture [FAIL]"
+    ],
+    "total": 5,
+    "executed": 5,
+    "passed": 4,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-ownership.trx",
+    "sha256": "5f7af859274bbb08ead083c429a0dd4d91c34ca2d3106c487124d24540cd42b8",
+    "start": "2026-10-16T13:07:56.0055911+02:00",
+    "finish": "2026-10-16T13:08:18.0736793+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:06.73]     NAP.Tests.ProductionThumbnailTests.GridAndDetailCanRequestSameMissingThumbnailConcurrently [FAIL]"
+    ],
+    "total": 31,
+    "executed": 31,
+    "passed": 30,
+    "failed": 1,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.ProductionThumbnailTests.GridAndDetailCanRequestSameMissingThumbnailConcurrently"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-regression.trx",
+    "sha256": "ef59338bf599ac7d4243f7d4403ea7f6a62222126f0d09b539dbd51a9f6ca7ac",
+    "start": "2026-10-16T13:13:34.9773336+02:00",
+    "finish": "2026-10-16T13:14:14.0642543+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 84,
+    "executed": 84,
+    "passed": 84,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/p59/p59-remote-wpf.trx",
+    "sha256": "67581d82ee649d5dd74f5acd376427c1c6a5073a7d1eced5e938182032443abd",
+    "start": "2026-10-16T13:16:39.3410636+02:00",
+    "finish": "2026-10-16T13:16:44.4754080+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 3,
+    "executed": 3,
+    "passed": 3,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/preacceptance/phase5-preacceptance-regression.trx",
+    "sha256": "6f4f4fdba272a577a89f7d3b5d343e5402f24eb5901a4292c8f5a6e60d6a1d91",
+    "start": "2026-10-16T13:23:02.3154502+02:00",
+    "finish": "2026-10-16T13:28:41.6888412+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:00.72]     NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment [FAIL]",
+      "[xUnit.net 00:00:20.55]     NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\") [FAIL]",
+      "[xUnit.net 00:00:23.71]     NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\") [FAIL]",
+      "[xUnit.net 00:00:34.68]     NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity [FAIL]",
+      "[xUnit.net 00:00:38.64]     NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter [FAIL]",
+      "[xUnit.net 00:00:39.98]     NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter [FAIL]",
+      "[xUnit.net 00:00:40.25]     NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases [FAIL]",
+      "[xUnit.net 00:00:50.50]     NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog [FAIL]",
+      "[xUnit.net 00:00:51.59]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:51.88]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:52.40]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:01:00.54]     NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry [FAIL]",
+      "[xUnit.net 00:01:03.88]     NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\") [FAIL]",
+      "[xUnit.net 00:01:07.26]     NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False) [FAIL]",
+      "[xUnit.net 00:01:07.96]     NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\") [FAIL]",
+      "[xUnit.net 00:01:09.73]     NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True) [FAIL]",
+      "[xUnit.net 00:01:23.24]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:01:37.60]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]"
+    ],
+    "total": 3742,
+    "executed": 3742,
+    "passed": 3724,
+    "failed": 18,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"invalid_webp\")",
+      "NAP.Tests.BackupSafetyTests.SimultaneousDatabaseBackupsStopBusyWithoutDeadlockAndReleaseBothLeases",
+      "NAP.Tests.BackupSafetyTests.SnapshotAcquiresProductionBeforeArchiveAndStopsCompetingProductionWriter",
+      "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Production\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.CatalogConcurrencyTests.SimultaneousSchemaCreationProducesOneCoherentCatalog",
+      "NAP.Tests.AutomationHostTests.StartsPausedAndRunsTwoSyntheticUniversesWithSameAssetIdentity",
+      "NAP.Tests.ProductionSafetyTests.PersistedWebpIsHashedAndReallyDecoded(kind: \"wrong_dimensions\")",
+      "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: True)",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationHostTests.MissingAuthorityNeverStartsAndSecondHostCannotOwnSameDeployment",
+      "NAP.Tests.CatalogConcurrencyTests.TwoAssetsOrSameIdentityConcurrentAttemptsHaveNoLostUpdates(sameIdentity: False)",
+      "NAP.Tests.ProductionConversionBoundaryTests.ConcurrentExecutionsCannotOverwriteOrLoseJobState(scope: \"Job\")",
+      "NAP.Tests.CatalogConcurrencyTests.ActualRebuildRacingActualUpdateIsCoherentAfterExplicitBusyRetry",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.BackupSafetyTests.DatabaseBackupCoordinatesWithExistingArchiveMasterWriter"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/resume-20261020/resume-complete-windows.trx",
+    "sha256": "688494c6a7fe6148aff32a13a28bc583bf3ded474c35946ad94782e95c8d7533",
+    "start": "2026-10-20T18:18:35.4238826+02:00",
+    "finish": "2026-10-20T19:30:29.0348471+02:00",
+    "runOutcome": "Failed",
+    "runMessages": [
+      "[xUnit.net 00:00:19.14]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\") [FAIL]",
+      "[xUnit.net 00:00:19.44]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\") [FAIL]",
+      "[xUnit.net 00:00:21.95]     NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\") [FAIL]",
+      "[xUnit.net 00:00:44.93]     NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed [FAIL]",
+      "[xUnit.net 00:17:37.06]     NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed [FAIL]",
+      "[xUnit.net 01:11:53.16]     NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000) [FAIL]"
+    ],
+    "total": 3792,
+    "executed": 3792,
+    "passed": 3786,
+    "failed": 6,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": [
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"database\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"state\")",
+      "NAP.Tests.AutomationQueueTests.LinkedBoundaryArtifactsNeverModifyTargets(kind: \"journal\")",
+      "NAP.Tests.AutomationQueueTests.LinkedQueueDirectoryAndWalArtifactsAreNeverFollowed",
+      "NAP.Tests.InboxAdmissionTests.SymlinkZipAndSymlinkStagingFailClosed",
+      "NAP.Tests.AutomationVolumeTests.SeparateHostCompletesUniqueMastersWithFairnessAndBoundedResources(count: 1000)"
+    ]
+  },
+  {
+    "file": "artifacts/phase5/resume-20261020/resume-head-directed.trx",
+    "sha256": "cdd9bdfb43328976c4d0d56e30ad4152700e60d42cf39007adb1e19d8d09f849",
+    "start": "2026-10-20T18:13:42.1556650+02:00",
+    "finish": "2026-10-20T18:18:05.0322134+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 56,
+    "executed": 56,
+    "passed": 56,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  },
+  {
+    "file": "artifacts/phase5/resume-20261020/resume-windows-manual-wpf.trx",
+    "sha256": "82d34847b01c9faf92ccc0f570a6df5bd3ef9faa7877e70d7a796a339a15bdfe",
+    "start": "2026-10-20T18:16:29.4418540+02:00",
+    "finish": "2026-10-20T18:17:58.8644243+02:00",
+    "runOutcome": "Completed",
+    "runMessages": [
+      ""
+    ],
+    "total": 16,
+    "executed": 16,
+    "passed": 16,
+    "failed": 0,
+    "notExecuted": 0,
+    "notExecutedResults": 0,
+    "failedTests": []
+  }
+]

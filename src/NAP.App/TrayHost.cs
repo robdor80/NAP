@@ -21,7 +21,7 @@ internal sealed class TrayHost : IDisposable
     private void Add(Forms.ContextMenuStrip menu, string title, string? page) => menu.Items.Add(title, null, (_, _) => _window.Dispatcher.Invoke(() => { Restore(); if (page is not null) _shell.NavigateTo(page); }));
     internal void Hide()
     {
-        if (_shell.IsExecuting) return;
+        if (_shell.IsExecuting && _shell.Automation is null) return;
         _icon.Visible = true; _window.Hide();
     }
     internal bool IsVisible => _icon.Visible;

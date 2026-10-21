@@ -23,6 +23,8 @@ public sealed class FacetViewModel(string dimension, bool trait, IEnumerable<Cat
 public sealed class ExplorerViewModel : ObservableObject, IDisposable
 {
     private readonly LocalUniverseSettingsStore _settings;
+    private readonly IReadOnlyList<UniverseStorageConfig>? _hostConfigurations;
+    public bool SettingsManagedByHost => _hostConfigurations is not null;
     private readonly IExplorerService _service;
     private readonly IFolderPicker _folders;
     private readonly IUniverseProfileStore? _profileStore;
@@ -49,11 +51,13 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private CatalogPlanningReadModel? _planning;
     private bool _settingsReadable = true;
     private long _generation;
-    public ExplorerViewModel(IEnumerable<UniverseProfile> profiles, LocalUniverseSettingsStore settings, IExplorerService service, IFolderPicker folders, IUniverseProfileStore? profileStore = null)
+    public ExplorerViewModel(IEnumerable<UniverseProfile> profiles, LocalUniverseSettingsStore settings, IExplorerService service, IFolderPicker folders, IUniverseProfileStore? profileStore = null,
+        IReadOnlyList<UniverseStorageConfig>? hostConfigurations = null)
     {
         _profiles = Array.AsReadOnly(profiles.ToArray());
         if (Profiles.Select(p => p.Id).Distinct().Count() != Profiles.Count) throw new ArgumentException("Duplicate profiles.", nameof(profiles));
         _settings = settings; _service = service; _folders = folders; _profileStore = profileStore;
+        _hostConfigurations = hostConfigurations;
         ApplyFilters = new(RefreshAsync, Fail); ResetFilters = new(ClearAsync, Fail);
         SaveSettings = new(SaveAsync, Fail);
         Navigate = new(p => { Section = (string)p!; }, p => Navigation.Any(n => n.Name == p as string && n.Enabled));
@@ -129,7 +133,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public RelayCommand Browse { get; }
     public async Task InitializeAsync()
     {
-        try { _configurations = await Task.Run(_settings.Load); }
+        try { _configurations = _hostConfigurations ?? await Task.Run(_settings.Load); }
         catch (Exception ex) { _settingsReadable = false; Notify(nameof(SettingsReadable)); NotifyRoots(); Fail(ex); return; }
         if (Profiles.Count > 0) { _selectedUniverse = Profiles[0]; Notify(nameof(SelectedUniverse)); await SwitchAsync(); }
     }
@@ -141,7 +145,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         if (profile is null || roots is null) { State = ExplorerState.Empty; Section = "Ajustes"; return; }
         try
         {
-            await Task.Run(() => { _profileStore?.ValidateStorage(_configurations); LocalUniverseSettingsStore.ValidateStructure(_configurations); LocalUniverseSettingsStore.ValidateAvailable(roots); });
+            await Task.Run(() => { _profileStore?.ValidateStorage(_configurations); LocalUniverseSettingsStore.ValidateStructure(_configurations); if (_hostConfigurations is null) LocalUniverseSettingsStore.ValidateAvailable(roots); });
             if (SelectedUniverse != profile) return;
             _validatedRoots = roots; _rootValidationStopped = false; NotifyRoots();
             _context = new(profile, roots); Notify(nameof(Context)); Section = "Catálogo"; await RefreshAsync(loadFacets: true);
@@ -213,6 +217,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     }
     private async Task SaveAsync()
     {
+        if (SettingsManagedByHost) throw new InvalidOperationException("Host configuration is managed by its explicit launch configuration.");
         if (!_settingsReadable || SelectedUniverse is null) throw new InvalidOperationException("Settings are unreadable or no profile is selected.");
         var storage = new UniverseStorageConfig(SelectedUniverse.Id, WorkspaceRoot, ProductionRoot, ArchiveRoot);
         var rows = _configurations.Where(c => c.UniverseId != storage.UniverseId).Append(storage).ToArray();

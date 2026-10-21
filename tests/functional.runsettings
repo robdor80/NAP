@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <!-- Owner scope decision 2026-10-20: retain historical volume evidence, never rerun it. -->
+    <TestCaseFilter>Category!=AutomationVolume&amp;Category!=AdmissionVolume&amp;FullyQualifiedName!~AutomationVolumeTests&amp;FullyQualifiedName!~MonitorAdmitsVolumeWithBoundedPendingAndDurableDeduplication</TestCaseFilter>
+  </RunConfiguration>
+</RunSettings>

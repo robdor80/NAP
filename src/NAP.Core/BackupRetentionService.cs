@@ -41,6 +41,8 @@ public sealed class BackupRetentionService
     });
     public BackupRetentionResult Execute(UniverseContext context, BackupRetentionPlan plan) => BackupStorage.Run(() =>
     {
+        AutomationReadViews.RequireNative(plan);
+        using var access = AutomationManualAccess.EnterLegacy(context);
         ArgumentNullException.ThrowIfNull(plan); using var archive = BackupStorage.Archive(context, true);
         if (plan.Binding != BackupStorage.Binding(context) || plan.Inventory != BackupHistoryReader.Inventory(context))
             throw BackupException.Stop(NapIssueCodes.RetentionStalePlan, "Backup history or context changed after retention planning.");

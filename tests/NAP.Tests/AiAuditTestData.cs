@@ -33,7 +33,10 @@ internal static class AiAuditTestData
     {
         status = "completed", steps = new[] { new { type = "model_output", content = new[] { new { type = "text", text = report } } } }
     });
-    internal static T Construct<T>(params object[] args) => Assert.IsType<T>(Assert.Single(typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)).Invoke(args));
+    internal static T Construct<T>(params object[] args) => Assert.IsType<T>(Assert.Single(typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic),
+        c => c.GetParameters().Length == args.Length && c.GetParameters().Select((p, index) => args[index] is null
+            ? !p.ParameterType.IsValueType || Nullable.GetUnderlyingType(p.ParameterType) is not null
+            : p.ParameterType.IsInstanceOfType(args[index])).All(matches => matches)).Invoke(args));
     internal static void AssertNoPrivateFacts(string text)
     {
         foreach (var sentinel in PrivateSentinels) Assert.DoesNotContain(sentinel, text);

@@ -6,7 +6,7 @@ public enum UiTone { Neutral, Success, Warning, Error, Ai }
 public enum UiPageState { Unconfigured, Loading, Ready, Empty, Stopped, Reserved, Cancelled }
 public sealed class UiStoppedException : InvalidOperationException
 {
-    public UiStoppedException(NapIssueReport issues) : base("Core validation stopped.")
+    public UiStoppedException(NapIssueReport issues) : base("Core validation stopped: " + string.Join(", ", issues.Issues.Select(i => i.Code + ": " + i.Message)))
     { if (!issues.ShouldStop) throw new ArgumentException("A stopped operation requires STOP issues.", nameof(issues)); Issues = issues; }
     public NapIssueReport Issues { get; }
 }
@@ -17,7 +17,8 @@ public sealed record UiNotice(string Message, string Code, UiTone Tone)
         if (error is ImageNormalizationException normalization) return new(normalization.Message, normalization.Code, UiTone.Error);
         if (error is UniverseProfileStoreException profile) return new(profile.Message, profile.Code, UiTone.Error);
         var report = error switch { BackupException e => e.Issues, GitProductionException e => e.Issues,
-            CatalogException e => e.Issues, ProductionStorageException e => e.Issues, ArchiveStorageException e => e.Issues, UiStoppedException e => e.Issues, _ => null };
+            CatalogException e => e.Issues, ProductionStorageException e => e.Issues, ArchiveStorageException e => e.Issues, UiStoppedException e => e.Issues,
+            AutomationRemoteOperationException e => e.Issues, _ => null };
         var code = report?.Issues.FirstOrDefault(i => i.StopsProcessing)?.Code ?? "ui_operation_unavailable";
         return new("Operación detenida. Revisa la configuración o el diagnóstico antes de reintentar.", code, UiTone.Error);
     }
@@ -53,13 +54,21 @@ public sealed record ObjectiveCard(CatalogObjectiveProgress Progress)
 }
 public sealed class PreparedPipelineAsset
 {
+    private readonly string? _remoteSummary;
+    private readonly ValidatedAssetPackage? _package;
+    private readonly ProcessingPlan? _processing;
+    private readonly ArchiveMasterPlan? _archive;
+    private readonly NapIssueReport? _validation;
+    internal bool IsRemoteProjection => _remoteSummary is not null;
+    internal PreparedPipelineAsset(UniverseContext context, JobId job, string summary)
+    { Context = context; JobId = job; _remoteSummary = summary; }
     internal PreparedPipelineAsset(UniverseContext context, JobId job, ValidatedAssetPackage package, ProcessingPlan plan, ArchiveMasterPlan archive, NapIssueReport validation)
-    { Context = context; JobId = job; Package = package; Processing = plan; Archive = archive; Validation = validation; }
+    { Context = context; JobId = job; _package = package; _processing = plan; _archive = archive; _validation = validation; }
     public UniverseContext Context { get; }
     public JobId JobId { get; }
-    public ValidatedAssetPackage Package { get; }
-    public ProcessingPlan Processing { get; }
-    public ArchiveMasterPlan Archive { get; }
-    public NapIssueReport Validation { get; }
-    public string Summary => $"{Package.AssetKey.AssetId} · {Processing.ProductionDestination.RelativeDirectory}";
+    public ValidatedAssetPackage Package => _package ?? throw new InvalidOperationException("Remote preparations expose a summary and server reference only.");
+    public ProcessingPlan Processing => _processing ?? throw new InvalidOperationException("Remote plan remains in AutomationHost.");
+    public ArchiveMasterPlan Archive => _archive ?? throw new InvalidOperationException("Remote archive plan remains in AutomationHost.");
+    public NapIssueReport Validation => _validation ?? throw new InvalidOperationException("Remote validation remains in AutomationHost.");
+    public string Summary => _remoteSummary ?? $"{Package.AssetKey.AssetId} · {Processing.ProductionDestination.RelativeDirectory}";
 }

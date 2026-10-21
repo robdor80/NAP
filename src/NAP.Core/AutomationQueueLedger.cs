@@ -5,6 +5,15 @@ namespace NAP.Core;
 
 public sealed partial class AutomationQueueStore
 {
+    // One fresh, fully validated IO scope for facts used at the same workflow boundary.
+    // No connection/transaction/authority escapes the read or survives to the next boundary.
+    internal (QueueItem Item, WorkflowAttempt Attempt, StoredAutomationPolicy Policy, StoredAutomationPolicy Current) ReadWorkflow(QueueItemId id)
+        => Read(db =>
+        {
+            var item = Item(db, null, id);
+            var attempt = Attempt(db, null, item.ActiveAttempt ?? throw new InvalidDataException("Missing active workflow attempt."));
+            return (item, attempt, Policy(db, null, item.Policy), CurrentPolicy(db, null));
+        });
     public StoredAutomationPolicy CurrentPolicy() => Read(db => CurrentPolicy(db, null));
     public IReadOnlyList<StoredAutomationPolicy> PolicyHistory(PolicyReference reference) => Read(db => { Policy(db, null, reference); return Payloads<StoredAutomationPolicy>(db, null, "SELECT payload FROM policy_history WHERE policy_hash=$h ORDER BY revision", "$h", reference.Hash.Hex); });
     public StoredAutomationPolicy GetPolicy(PolicyReference reference) => Read(db => Policy(db, null, reference));
@@ -65,9 +74,12 @@ public sealed partial class AutomationQueueStore
         var value = AutomationJson.Decode<StoredAutomationPolicy>((string?)Scalar(db, tx, "SELECT payload FROM policies WHERE hash=$h", "$h", reference.Hash.Hex) ?? throw new AutomationException(AutomationError.Missing, "Policy snapshot does not exist."));
         if (value.Reference != reference) throw new AutomationException(AutomationError.PolicyMismatch, "Policy identity differs from its hash."); return value;
     }
-    public QueueBatch CreateBatch(AutomationQueueOwner owner) => Write(owner, (db, tx) =>
+    public QueueBatch CreateBatch(AutomationQueueOwner owner) => CreateBatch(owner, QueueBatchId.Create());
+    public QueueBatch CreateBatch(AutomationQueueOwner owner, QueueBatchId id) => Write(owner, (db, tx) =>
     {
-        var batch = new QueueBatch(QueueBatchId.Create(), UniverseId, DateTimeOffset.UtcNow, null);
+        var existing = (string?)Scalar(db, tx, "SELECT payload FROM batches WHERE id=$i", "$i", id.Value);
+        if (existing is not null) return AutomationJson.Decode<QueueBatch>(existing);
+        var batch = new QueueBatch(id, UniverseId, DateTimeOffset.UtcNow, null);
         Execute(db, tx, "INSERT INTO batches VALUES($i,$p)", "$i", batch.Id.Value, "$p", AutomationJson.Encode(batch)); return batch;
     });
     public QueueBatch CloseBatch(AutomationQueueOwner owner, QueueBatchId id) => Write(owner, (db, tx) =>

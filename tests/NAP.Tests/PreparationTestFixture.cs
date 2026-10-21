@@ -10,7 +10,7 @@ namespace NAP.Tests;
 
 internal sealed class PreparationTestFixture : IDisposable
 {
-    internal readonly string Root = Path.Combine(Path.GetTempPath(), "nap-preparation-" + Guid.NewGuid().ToString("N"));
+    internal readonly string Root;
     internal UniverseStorageConfig Roots { get; }
     internal UniverseContext Context { get; }
     internal AutomationQueueStore Queue { get; }
@@ -18,8 +18,9 @@ internal sealed class PreparationTestFixture : IDisposable
     internal readonly TestClock Clock = new();
     private Dictionary<string, string> _foreign = [];
     internal static readonly InboxAdmissionOptions Fast = new() { StabilitySamples = 2, SampleInterval = TimeSpan.Zero, MinFreeBytes = 0 };
-    internal PreparationTestFixture(string universe = "test_universe", string assetType = "portrait", string profile = "portrait_npc", int width = 40, int height = 50)
+    internal PreparationTestFixture(string universe = "test_universe", string assetType = "portrait", string profile = "portrait_npc", int width = 40, int height = 50, string? parent = null)
     {
+        Root = Path.Combine(parent ?? Path.GetTempPath(), "nap-preparation-" + Guid.NewGuid().ToString("N"));
         Roots = new(new(universe), Path.Combine(Root, "workspace"), Path.Combine(Root, "production"), Path.Combine(Root, "archive"));
         foreach (var path in new[] { Roots.WorkspaceRoot, Roots.InboxRoot, Roots.StagingRoot, Roots.ProductionRoot, Roots.ArchiveRoot }) Directory.CreateDirectory(path);
         var json = JsonSerializer.Serialize(new
@@ -53,6 +54,9 @@ internal sealed class PreparationTestFixture : IDisposable
     {
         using var image = new Image<Rgba32>(width, height);
         for (var y = 0; y < height; y++) for (var x = 0; x < width; x++) image[x, y] = new((byte)(x * 3 + seed), (byte)(y * 5 + seed), (byte)(x + y + seed), 255);
+        // Encode all seed bytes so volume fixtures remain distinct beyond 256 masters.
+        image[0, 0] = new((byte)seed, (byte)(seed >> 8), (byte)(seed >> 16), 255);
+        if (width > 1) image[1, 0] = new((byte)(seed >> 24), 17, 29, 255);
         using var output = new MemoryStream(); image.SaveAsPng(output); return output.ToArray();
     }
     internal InboxAdmissionResult Admit(AutomationQueueOwner owner, string? path = null)
@@ -66,10 +70,10 @@ internal sealed class PreparationTestFixture : IDisposable
         128L * 1024 * 1024, "nearest-edge-canvas-v1", operational);
     internal StoredAutomationPolicy Policy(AutomationQueueOwner owner, ProfileNormalizationPolicy? normalization = null,
         int requests = 10, int attempts = 3, decimal cost = 10, bool authorizePreparation = false, bool allowDuplicate = false, int retry = 5, int circuitThreshold = 2,
-        AutomationOperations operations = AutomationOperations.Admit | AutomationOperations.Normalize | AutomationOperations.Audit)
+        AutomationOperations operations = AutomationOperations.Admit | AutomationOperations.Normalize | AutomationOperations.Audit, int pending = 100, int timeout = 1)
     {
         var definition = new AutomationPolicyDefinition("synthetic_policy", 1, Roots, operations,
-            new(128L * 1024 * 1024, 512L * 1024 * 1024, 100), new(requests, attempts, 1, cost), normalization is null ? [] : [normalization]);
+            new(128L * 1024 * 1024, 512L * 1024 * 1024, pending), new(requests, attempts, timeout, cost), normalization is null ? [] : [normalization]);
         var policy = Queue.SavePolicy(owner, definition);
         policy = Queue.RecordAuthorization(owner, policy.Reference, policy.Revision, new("synthetic_authorization", Context.Id, policy.Reference, "synthetic_responsible", DateTimeOffset.UtcNow));
         Service.State.RegisterGrant(owner, policy, new("synthetic_terms", 1, policy.Reference, policy.Authorization!.AuthorizationId,
@@ -97,7 +101,14 @@ internal sealed class PreparationTestFixture : IDisposable
         Assert.DoesNotContain(Directory.EnumerateFiles(Roots.ProductionRoot, "*", SearchOption.AllDirectories), p => p.EndsWith(".webp", StringComparison.Ordinal));
         Assert.False(Queue.CurrentPolicy().IsExecutionAuthorized);
     }
-    public void Dispose() => Directory.Delete(Root, true);
+    public void Dispose()
+    {
+        var full = Path.GetFullPath(Root); var temporary = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())) + Path.DirectorySeparatorChar;
+        if (!full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase) || !Path.GetFileName(full).StartsWith("nap-preparation-", StringComparison.Ordinal)) throw new InvalidOperationException("Invalid fixture cleanup root.");
+        foreach (var file in Directory.EnumerateFiles(full, "*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = FileAttributes.ReparsePoint }))
+            File.SetAttributes(file, FileAttributes.Normal);
+        Directory.Delete(full, true);
+    }
     internal sealed class TestClock : TimeProvider
     {
         private DateTimeOffset _now = DateTimeOffset.UtcNow;

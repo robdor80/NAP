@@ -10,11 +10,27 @@ namespace NAP.App;
 public partial class App : Application
 {
     private HttpClient? _auditTransport;
+    private RemoteDesktopService? _remoteDesktop;
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         try
         {
+            var automationConfig = e.Args.FirstOrDefault(a => a.StartsWith("--automation-config=", StringComparison.Ordinal))?[20..];
+            if (automationConfig is not null)
+            {
+                var file = new System.IO.FileInfo(automationConfig); if (file.Length > 2 * 1024 * 1024) throw new System.IO.InvalidDataException("Host config exceeds its bound.");
+                using var document = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(file.FullName));
+                var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
+                var client = new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
+                var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
+                    _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
+                var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
+                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls);
+                var remoteOutput = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
+                var remoteWindow = new MainWindow(remoteShell, smokeOutput: remoteOutput, automationSmoke: e.Args.Contains("--smoke-automation", StringComparer.Ordinal));
+                MainWindow = remoteWindow; remoteWindow.Show(); return;
+            }
             var settings = e.Args.FirstOrDefault(a => a.StartsWith("--settings=", StringComparison.Ordinal))?[11..] ?? LocalUniverseSettingsStore.DefaultPath;
             var smoke = e.Args.Contains("--smoke-test", StringComparer.Ordinal);
             var localProfiles = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--profiles-root=", StringComparison.Ordinal))?[16..] ?? UniverseProfileStore.DefaultLocalRoot : UniverseProfileStore.DefaultLocalRoot;
@@ -28,10 +44,13 @@ public partial class App : Application
             });
             var vm = new ExplorerViewModel(snapshot.Installed.Select(p => p.Profile), new(settings), new ExplorerService(), new FolderPicker(), registry);
             IAiAuditClient? auditor = null;
-            var key = Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY");
-            var model = Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL");
-            if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(model))
-                auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
+            if (!smoke)
+            {
+                var key = Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY");
+                var model = Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL");
+                if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(model))
+                    auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
+            }
             var importSource = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-import-profile=", StringComparison.Ordinal))?[23..] : null;
             var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot);
             var output = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
@@ -45,7 +64,7 @@ public partial class App : Application
             Shutdown(1);
         }
     }
-    protected override void OnExit(ExitEventArgs e) { _auditTransport?.Dispose(); base.OnExit(e); }
+    protected override void OnExit(ExitEventArgs e) { _auditTransport?.Dispose(); _remoteDesktop?.Dispose(); base.OnExit(e); }
     private sealed class ProfilePicker(string? diagnosticSource) : IProfileFilePicker
     {
         public string? Pick()

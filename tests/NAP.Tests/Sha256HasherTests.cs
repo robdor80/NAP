@@ -112,6 +112,19 @@ public sealed class Sha256HasherTests : IDisposable
     }
 
     [Fact]
+    public void LargeSequentialSourceUsesBoundedReadsAndMatchesTheWholeByteReference()
+    {
+        const int size = 4 * 1024 * 1024 + 17;
+        var bytes = Enumerable.Range(0, size).Select(i => (byte)i).ToArray();
+        using var source = new NonseekableReadStream(size, int.MaxValue);
+        var actual = _hasher.Compute(source);
+        Assert.Equal(Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).ToLowerInvariant(), actual.Hex);
+        Assert.Equal(size, source.BytesRead);
+        Assert.InRange(source.ReadCalls, 2, 40); // includes EOF; thousands of 4-KiB reads are a regression
+        Assert.True(source.CanRead);
+    }
+
+    [Fact]
     public void UnicodeTextIsHashedAsExactEncodingBytes()
     {
         const string text = "á漢🙂";

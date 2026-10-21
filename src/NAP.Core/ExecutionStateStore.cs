@@ -13,6 +13,8 @@ public sealed record ExecutionRecord(ExecutionBinding Binding, long Revision, IR
 public sealed class ExecutionStateStore
 {
     private readonly UniverseStorageConfig _roots;
+    private Sha256Digest? _validatedDatabaseHash;
+    private string? _validatedRoots;
     private static readonly string[] Schema =
     [
         "CREATE TABLE metadata(id INTEGER PRIMARY KEY CHECK(id=1), roots TEXT NOT NULL)",
@@ -75,9 +77,30 @@ public sealed class ExecutionStateStore
         if (Directory.EnumerateFileSystemEntries(dir).Any(p => !ProductionPaths.Same(p, DatabasePath)))
             throw AutomationValidation.Corrupt("Unexpected execution ledger sidecar requires review.");
         var db = Connect(DatabasePath, SqliteOpenMode.ReadWrite);
-        try { AutomationQueueBoundary.Guard(() => { Check(db); return 0; }, true); return db; }
+        try
+        {
+            AutomationQueueBoundary.Guard(() =>
+            {
+                var roots = AutomationJson.Encode(_roots); var hash = DatabaseHash();
+                if (_validatedDatabaseHash != hash || _validatedRoots != roots)
+                {
+                    var scope = LedgerValidationProof.Scope(DatabasePath, roots);
+                    if (!LedgerValidationProof.Matches(scope, ":database:", hash.Hex))
+                    {
+                        Check(db);
+                        if (DatabaseHash() != hash) throw AutomationValidation.Corrupt("Execution ledger changed during validation.");
+                        LedgerValidationProof.Remember(scope, ":database:", hash.Hex);
+                    }
+                    _validatedDatabaseHash = hash; _validatedRoots = roots;
+                }
+                return 0;
+            }, true);
+            return db;
+        }
         catch { db.Dispose(); throw; }
     }
+    private Sha256Digest DatabaseHash()
+    { using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); return new Sha256Hasher().Compute(input); }
     private static SqliteConnection Connect(string path, SqliteOpenMode mode)
     {
         var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = mode, Pooling = false, DefaultTimeout = 2 }.ToString());
@@ -101,10 +124,14 @@ public sealed class ExecutionStateStore
             var actual = new List<string>(); while (rows.Read()) actual.Add(rows.GetString(0));
             if (!actual.Order(StringComparer.Ordinal).SequenceEqual(Schema.Order(StringComparer.Ordinal))) throw AutomationValidation.Corrupt("Execution schema changed.");
         }
+        var scope = LedgerValidationProof.Scope(DatabasePath, AutomationJson.Encode(_roots));
         using var all = Command(db, null, "SELECT item,attempt,job,revision,payload,hash FROM workflows"); using var workflows = all.ExecuteReader(); int count = 0;
         while (workflows.Read())
         {
             if (++count > 100000) throw AutomationValidation.Corrupt("Execution ledger inventory exceeds bounds.");
+            var fingerprint = LedgerValidationProof.ReadFingerprint(db, workflows);
+            if (LedgerValidationProof.Matches(scope, workflows.GetString(0), fingerprint)) continue;
+            using var validated = LedgerValidationProof.Begin(workflows);
             var record = AutomationJson.Decode<ExecutionRecord>(workflows.GetString(4)); Validate(record);
             if (record.Binding.ItemId.Value != workflows.GetString(0) || record.Binding.AttemptId.Value != workflows.GetString(1) ||
                 record.Binding.JobId.Value != workflows.GetString(2) || record.Revision != workflows.GetInt64(3) ||
@@ -113,6 +140,7 @@ public sealed class ExecutionStateStore
             using var rows = cmd.ExecuteReader(); ExecutionRecord? previous = null; long revision = 0;
             while (rows.Read())
             {
+                validated.History(rows);
                 if (revision > 1024 || rows.GetString(1).Length > 2 * 1024 * 1024) throw AutomationValidation.Corrupt("Execution history exceeds bounds.");
                 var entry = AutomationJson.Decode<ExecutionRecord>(rows.GetString(1)); Validate(entry);
                 if (rows.GetInt64(0) != revision || entry.Revision != revision++ || AutomationJson.Hash(entry).Hex != rows.GetString(2) ||
@@ -121,6 +149,7 @@ public sealed class ExecutionStateStore
                 if (previous is not null) Continuity(previous, entry); previous = entry;
             }
             if (previous is null || AutomationJson.Encode(previous) != AutomationJson.Encode(record)) throw AutomationValidation.Corrupt("Execution history differs from current row.");
+            LedgerValidationProof.Remember(scope, workflows.GetString(0), validated.Finish());
         }
     }
     private void Validate(ExecutionRecord value)

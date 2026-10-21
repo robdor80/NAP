@@ -9,6 +9,8 @@ internal static class GitProductionSafety
     internal static T Run<T>(Func<T> action)
     {
         try { return action(); }
+        catch (IOException error) when (error.InnerException is AutomationException { Code: AutomationError.Busy })
+        { throw GitProductionException.Stop(NapIssueCodes.GitBusy, "The universe automation owner is occupied."); }
         catch (GitProductionException) { throw; }
         catch (ProductionStorageException) { throw GitProductionException.Stop(NapIssueCodes.GitRepositoryInvalid, "Production boundary or file validation rejected the operation."); }
         catch (BackupException) { throw GitProductionException.Stop(NapIssueCodes.GitRepositoryInvalid, "Git metadata must be ordinary local entries without links."); }

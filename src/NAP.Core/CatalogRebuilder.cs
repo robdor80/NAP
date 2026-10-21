@@ -11,6 +11,7 @@ public sealed class CatalogRebuilder
     public CatalogRebuilder(UniverseContext context) { ArgumentNullException.ThrowIfNull(context); _context = context; }
     public CatalogRebuildResult Rebuild() => AssetCatalog.Run(() =>
     {
+        using var access = AutomationManualAccess.EnterLegacy(_context);
         using var sources = CatalogSourceLease.Acquire(_context);
         var plan = new CatalogImporter(_context).Discover();
         if (plan.Issues.ShouldStop) throw new CatalogException(plan.Issues);

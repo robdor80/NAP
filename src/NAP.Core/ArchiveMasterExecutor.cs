@@ -12,7 +12,7 @@ public sealed class ArchiveMasterExecutor
     }
 
     public ArchiveMasterResult Execute(ArchiveMasterPlan plan, AiAuditReport auditReport)
-        => ExecuteControlled(plan, auditReport, null);
+    { using var access = AutomationManualAccess.EnterLegacy(_context); return ExecuteControlled(plan, auditReport, null); }
 
     internal ArchiveMasterResult ExecuteControlled(ArchiveMasterPlan plan, AiAuditReport auditReport, WorkflowExecutionControl? control)
     {
