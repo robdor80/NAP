@@ -86,7 +86,7 @@ public sealed class AutomationDesktopBridge
     private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
-        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl;
+        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview;
 
     public async Task<JsonElement> HandleAsync(AutomationRequest request, string principal)
     {
@@ -162,6 +162,9 @@ public sealed class AutomationDesktopBridge
         }
         switch (request.Operation)
         {
+            case AutomationOperation.Overview:
+                var overview = await _host.QueryAsync(id, s => s.Queue.Overview());
+                return AutomationProtocol.Payload(new AutomationDesktopOverview(_host.Snapshot(), overview, _host.ReadControl(id)));
             case AutomationOperation.ReleaseBlob:
                 var release = Arg<AutomationReference>().Reference;
                 if (_blobs.TryGetValue(release, out var released) && released.Universe == id && _blobs.TryRemove(release, out var removed))

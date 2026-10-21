@@ -18,6 +18,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private CancellationTokenSource? _read;
     private long _generation, _universeSwitchSequence;
     private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
+    private bool _toolsExpanded, _reviewExpanded;
     private ProfessionalPage _current;
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
@@ -30,9 +31,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
-        Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Producción", "\uE895"), new("Catálogo", "\uE8F1"),
-            new("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Historial", "\uE81C"), new("RoDo", "\uE899"), new("Ajustes", "\uE713") };
-        Navigate = new(p => NavigateTo((string)p!), p => !_disposed && !IsExecuting && (p as string == "Git" || Navigation.Any(n => n.Name == p as string)));
+        Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
+        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        Navigate = new(p => NavigateTo((string)p!), p => !_disposed && !IsExecuting && Navigation.Concat(Tools).Any(n => n.Name == p as string));
         Refresh = Command(RefreshCurrentAsync, () => !IsExecuting);
         SaveSettings = Command(async () =>
         {
@@ -165,6 +166,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public SettingsViewModel Settings { get; }
     public RodoViewModel Rodo { get; } = new();
     public IReadOnlyList<ShellNavigationItem> Navigation { get; }
+    public IReadOnlyList<ShellNavigationItem> Tools { get; }
+    public bool ToolsExpanded { get => _toolsExpanded; set => Set(ref _toolsExpanded, value); }
+    public bool ReviewExpanded { get => _reviewExpanded; set => Set(ref _reviewExpanded, value); }
     public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Backups, History, Git, Settings, Rodo];
     public UniverseContext? Context => Explorer.Context;
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
@@ -212,7 +216,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand PushGit { get; }
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
-    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); if (Automation is not null) await Automation.RefreshAsync(); }
+    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
     private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
     {
         try { await switching; }
@@ -224,7 +228,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (!Navigate.CanExecute(name)) return; Activate(Pages.Single(p => p.Name == name)); LastRefresh = RefreshCurrentAsync();
     }
     private void Activate(ProfessionalPage page)
-    { CurrentPage = page; foreach (var item in Navigation) item.IsActive = item.Name == page.Name; RefreshCommands(); }
+    { CurrentPage = page; foreach (var item in Navigation.Concat(Tools)) item.IsActive = item.Name == page.Name; if (Tools.Any(t => t.IsActive)) ToolsExpanded = true; RefreshCommands(); }
     private UiAsyncCommand Command(Func<Task> action, Func<bool> allowed)
     { UiAsyncCommand? command = null; command = new(action, () => !_disposed && allowed(), Fail, () => DisabledReason(command!)); _commands.Add(command); return command; }
     private string DisabledReason(UiAsyncCommand command)
@@ -286,12 +290,20 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (page == Rodo) { page.State = UiPageState.Reserved; return; }
         if (page == Settings) { page.State = !Explorer.SettingsReadable || (Context is null && Explorer.Error is not null) ? UiPageState.Stopped : Context is null ? UiPageState.Unconfigured : UiPageState.Ready; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
         if (context is null) { page.State = Explorer.Error is null ? UiPageState.Unconfigured : UiPageState.Stopped; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
+        if (page == Dashboard && Automation is not null)
+        {
+            // Connected Inicio reads only the host projection, never manual journals or Inbox scans.
+            await Automation.RefreshAsync();
+            if (!_disposed && generation == _generation && context == Context) page.State = UiPageState.Ready;
+            return;
+        }
         page.State = UiPageState.Loading;
         bool Current() => !_disposed && !source.IsCancellationRequested && generation == _generation && context == Context;
         try
         {
             if (page == Dashboard)
             {
+                // Retain the original local read model for manual adapters; it is never an automation summary.
                 var value = await _service.DashboardAsync(context, source.Token); if (!Current()) return; Scope(value.UniverseId, context);
                 if (value.Planning is not null) CheckPlanning(value.Planning, context);
                 if (value.Pipeline is not null) CheckPipeline(value.Pipeline, context);
@@ -339,6 +351,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
             _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
+            Automation?.ContextChanged();
             Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel));
             _scopePending = true;
         }
@@ -366,5 +379,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }

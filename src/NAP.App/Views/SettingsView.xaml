@@ -1,6 +1,20 @@
 <UserControl x:Class="NAP.App.Views.SettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel>
+      <c:RobTitledFrame Header="AUTOMATIZACIÓN">
+        <StackPanel>
+          <TextBlock Text="Automatización sin configurar"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Automation, RelativeSource={RelativeSource AncestorType=Window}}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+        <ContentControl Content="{Binding DataContext.Automation, RelativeSource={RelativeSource AncestorType=Window}}">
+          <ContentControl.ContentTemplate><DataTemplate>
+            <StackPanel>
+              <TextBlock Text="{Binding Status}" Margin="0,0,0,16" />
+              <WrapPanel><Button Content="Activar universo" Command="{Binding Activate}" ToolTip="{Binding Activate.DisabledReason}" /><Button Content="Detener automatización" Command="{Binding Stop}" ToolTip="{Binding Stop.DisabledReason}" /></WrapPanel>
+            </StackPanel>
+          </DataTemplate></ContentControl.ContentTemplate>
+          <ContentControl.Style><Style TargetType="ContentControl"><Style.Triggers><DataTrigger Binding="{Binding DataContext.Automation, RelativeSource={RelativeSource AncestorType=Window}}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></ContentControl.Style>
+        </ContentControl>
+        </StackPanel>
+      </c:RobTitledFrame>
       <c:RobTitledFrame Header="UNIVERSOS">
         <StackPanel>
           <DockPanel>

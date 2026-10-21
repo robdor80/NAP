@@ -158,7 +158,7 @@ public sealed class ProfessionalUiTests
             await shell.InitializeAsync(); Assert.Equal("Ajustes", shell.CurrentPage.Name);
             Assert.Equal("—", shell.Dashboard.Assets); Assert.Equal("—", shell.Dashboard.BackupCount); Assert.Null(shell.Context);
             foreach (var nav in shell.Navigation) { shell.NavigateTo(nav.Name); await shell.LastRefresh; Assert.Single(shell.Navigation, n => n.IsActive); Assert.Equal(nav.Name, shell.CurrentPage.Name); }
-            Assert.Equal(9, shell.Navigation.Count); Assert.Empty(proxy.Calls);
+            Assert.Equal(5, shell.Navigation.Count); Assert.Equal(5, shell.Tools.Count); Assert.Empty(proxy.Calls);
             Assert.False(shell.PreparePackage.CanExecute(null)); Assert.False(shell.CreateBackup.CanExecute(null)); Assert.False(shell.CommitGit.CanExecute(null)); Assert.False(shell.PushGit.CanExecute(null));
         }
     }
