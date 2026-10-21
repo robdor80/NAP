@@ -53,6 +53,7 @@ public sealed class Phase6OverviewTests
         var source = new Source { Read = _ => gate.Task };
         using var vm = new AutomationControlViewModel(() => context, new NoConfirmation(), source);
         var pending = vm.RefreshAsync(); context = Context("beta"); vm.ContextChanged();
+        Assert.True(source.LastReadCancellation.IsCancellationRequested);
         Assert.Equal("—", vm.Completed); Assert.False(vm.CanPause);
         gate.SetResult(Snapshot(old)); await pending;
         Assert.Equal("—", vm.Pending); Assert.Empty(vm.Review);
@@ -147,8 +148,9 @@ public sealed class Phase6OverviewTests
         public Func<UniverseId, Task<AutomationDesktopOverview>>? Read { get; set; }
         public Func<Task>? Send { get; set; }
         public int Reads;
+        public CancellationToken LastReadCancellation;
         public List<(AutomationOperation, UniverseId?)> Sent { get; } = [];
-        public Task<AutomationDesktopOverview> ReadAsync(UniverseId universe, CancellationToken cancellation) { Reads++; return Read?.Invoke(universe) ?? Task.FromResult(Value); }
+        public Task<AutomationDesktopOverview> ReadAsync(UniverseId universe, CancellationToken cancellation) { Reads++; LastReadCancellation = cancellation; return Read?.Invoke(universe) ?? Task.FromResult(Value); }
         public Task SendAsync(AutomationOperation operation, UniverseId? universe, object payload, CancellationToken cancellation) { Sent.Add((operation, universe)); return Send?.Invoke() ?? Task.CompletedTask; }
     }
 }

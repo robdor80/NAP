@@ -24,6 +24,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private readonly Func<UniverseContext?> _context;
     private readonly IUserConfirmation _confirmation;
     private readonly CancellationTokenSource _lifetime = new();
+    private CancellationTokenSource? _read;
     private AutomationDesktopOverview? _overview;
     private string _status = "Consultando automatización…", _executionScope = "";
     private bool _reading, _changing, _disposed;
@@ -34,9 +35,10 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string Processing => _overview?.Queue.Counts.Processing.ToString("N0") ?? "—";
     public string Completed => _overview?.Queue.Counts.Completed.ToString("N0") ?? "—";
     public string NeedsReview => _overview?.Queue.Counts.NeedsReview.ToString("N0") ?? "—";
+    public bool HasReview => _overview?.Queue.Counts.NeedsReview > 0;
     public string ReviewLabel => _overview?.Queue.Counts.NeedsReview switch { null => "Incidencias sin consultar", 0 => "Sin incidencias", 1 => "1 necesita revisión", var n => $"{n:N0} necesitan revisión" };
     public string ReviewRemainder => _overview is { Queue: var q } && q.Counts.NeedsReview > q.Review.Count
-        ? $"{q.Counts.NeedsReview - q.Review.Count:N0} más pendientes de revisión" : "";
+        ? q.Counts.NeedsReview - q.Review.Count == 1 ? "1 más pendiente de revisión" : $"{q.Counts.NeedsReview - q.Review.Count:N0} más pendientes de revisión" : "";
     public ObservableCollection<AutomationReviewRow> Review { get; } = [];
     public bool CanPause => !_disposed && !_changing && Current() && _overview!.Control is { Grant: not null, Paused: false, Stopped: false } && SelectedState() == AutomationHostState.Running;
     private bool AuthorizedGrant => Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Grant is { } grant &&
@@ -64,16 +66,18 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private AutomationHostState? SelectedState() => _overview?.Host.Universes.SingleOrDefault(s => s.UniverseId == _overview.Queue.UniverseId)?.State;
     public void ContextChanged()
     {
-        ++_generation; Clear(); Status = _context() is null ? "Selecciona un universo" : "Consultando automatización…"; ExecutionScope = "";
+        ++_generation; _read?.Cancel(); Clear(); Status = _context() is null ? "Selecciona un universo" : "Consultando automatización…"; ExecutionScope = "";
     }
     public async Task RefreshAsync()
     {
         if (_disposed || _reading || _changing) return;
         var context = _context(); if (context is null) { ContextChanged(); return; }
         var generation = _generation; _reading = true;
+        using var read = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
+        _read = read; read.CancelAfter(TimeSpan.FromSeconds(20));
         try
         {
-            var value = await _client.ReadAsync(context.Id, _lifetime.Token);
+            var value = await _client.ReadAsync(context.Id, read.Token);
             if (_disposed || generation != _generation || context != _context()) return;
             if (value.Queue.UniverseId != context.Id || value.Control.UniverseId != context.Id ||
                 value.Queue.Policy.Definition.Roots != context.Storage || value.Host.Universes.Count(s => s.UniverseId == context.Id) != 1)
@@ -85,18 +89,18 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             var active = value.Host.Universes.Count(s => s.State is AutomationHostState.Running or AutomationHostState.Pausing or AutomationHostState.Stopping);
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
-            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g")));
+            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES"))));
             Changed();
         }
         catch (OperationCanceledException) when (_disposed) { }
         catch (Exception) { if (!_disposed && generation == _generation && context == _context()) Unavailable(); }
-        finally { _reading = false; }
+        finally { _read = null; _reading = false; }
     }
     private void Unavailable() { Clear(); Status = "No se pudo consultar la automatización"; ExecutionScope = ""; }
     private void Clear() { _overview = null; Review.Clear(); Changed(); }
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume) }) Notify(name);
+        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh();
     }
     private async Task Change(AutomationOperation operation)

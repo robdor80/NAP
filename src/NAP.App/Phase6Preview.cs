@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -35,15 +37,25 @@ internal static class Phase6Preview
             throw new InvalidOperationException("Synthetic incident was not displayed.");
         if (mode == "offline" && shell.Automation?.Completed != "—" || mode == "local" && shell.Automation is not null)
             throw new InvalidOperationException("Unavailable automation must not invent counters.");
-        await window.Dispatcher.InvokeAsync(window.UpdateLayout, DispatcherPriority.Render);
+        // Render the real visual tree at the requested logical client size, independent of
+        // the runner's smaller desktop. Keep the Window ancestor for all product bindings.
+        var compact = window.Tag is true;
+        var width = compact ? 1200 : 1440; var height = compact ? 700 : 900;
+        var content = (UIElement)window.Content;
+        var capture = new Grid { Background = window.Background };
+        window.Content = capture; capture.Children.Add(content);
+        await window.Dispatcher.InvokeAsync(() =>
+        {
+            capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height)); capture.UpdateLayout();
+        }, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
-        var image = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-        image.Render(window);
+        var image = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+        image.Render(capture);
         System.IO.Directory.CreateDirectory(output);
         var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
-        using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"inicio-{mode}-{(int)window.ActualWidth}x{(int)window.ActualHeight}.png"));
+        using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"inicio-{mode}-{width}x{height}.png"));
         encoder.Save(file);
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, synthetic = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
     }
     private sealed class PreviewSource(string mode, IReadOnlyList<UniverseContext> contexts) : IAutomationOverviewClient
     {
