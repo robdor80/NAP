@@ -43,7 +43,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         grant.Policy == _overview.Queue.Policy.Reference && grant.PolicyAuthorizationId == _overview.Queue.Policy.Authorization?.AuthorizationId &&
         grant.Actor == _overview.Queue.Policy.Authorization?.Actor;
     public bool CanResume => !_disposed && !_changing && AuthorizedGrant &&
-        _overview.Control is { Grant: not null, Paused: true, Stopped: false } && SelectedState() == AutomationHostState.Paused;
+        _overview!.Control is { Grant: not null, Paused: true, Stopped: false } && SelectedState() == AutomationHostState.Paused;
     public UiAsyncCommand Refresh { get; }
     public UiAsyncCommand Activate { get; }
     public UiAsyncCommand Pause { get; }

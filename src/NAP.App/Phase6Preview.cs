@@ -13,12 +13,13 @@ internal static class Phase6Preview
     internal static ShellViewModel Create(string mode)
     {
         if (mode is not ("active" or "paused" or "review" or "offline" or "local")) throw new ArgumentException("Unknown preview mode.");
-        var id = new UniverseId("preview"); var profile = new UniverseProfile(id, "Universo de muestra");
         var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
-        var storage = new UniverseStorageConfig(id, System.IO.Path.Combine(root, "workspace"), System.IO.Path.Combine(root, "production"), System.IO.Path.Combine(root, "archive"));
-        var explorer = new ExplorerViewModel([profile], new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: [storage]);
+        UniverseContext Context(string id, string label) => new(new UniverseProfile(new(id), label),
+            new(new(id), System.IO.Path.Combine(root, id, "workspace"), System.IO.Path.Combine(root, id, "production"), System.IO.Path.Combine(root, id, "archive")));
+        var contexts = new[] { Context("preview", "Universo de muestra"), Context("other_preview", "Segundo universo") };
+        var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
-        var automation = mode == "local" ? null : new AutomationControlViewModel(new PreviewSource(mode), () => explorer.Context, confirmation);
+        var automation = mode == "local" ? null : new AutomationControlViewModel(new PreviewSource(mode, contexts), () => explorer.Context, confirmation);
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
         return new(explorer, service, confirmation, automation: automation) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
@@ -35,14 +36,12 @@ internal static class Phase6Preview
         encoder.Save(file);
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, synthetic = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
     }
-    private sealed class PreviewSource(string mode) : IAutomationOverviewClient
+    private sealed class PreviewSource(string mode, IReadOnlyList<UniverseContext> contexts) : IAutomationOverviewClient
     {
         public Task<AutomationDesktopOverview> ReadAsync(UniverseId universe, CancellationToken cancellation)
         {
-            if (mode == "offline") throw new IOException("Synthetic disconnection.");
-            var c = new UniverseContext(new UniverseProfile(universe, "Universo de muestra"),
-                new(universe, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused", "workspace"),
-                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused", "production"), System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused", "archive")));
+            if (mode == "offline") throw new System.IO.IOException("Synthetic disconnection.");
+            var c = contexts.Single(c => c.Id == universe);
             var definition = AutomationPolicyDefinition.DisabledDefault(c.Storage) with { Operations = AutomationOperations.Admit };
             var auth = new AutomationAuthorization("synthetic", universe, definition.Reference, "Preview", DateTimeOffset.UtcNow);
             var policy = new StoredAutomationPolicy(definition, definition.Reference, AutomationPolicyState.PreparationOnly, auth, 1);
@@ -50,7 +49,7 @@ internal static class Phase6Preview
             var review = mode == "review" ? new[] { new AutomationReviewItem(QueueItemId.Create(), "Retrato de muestra.zip", QueueIncident.RatioUnsupported, new DateTimeOffset(2026, 10, 21, 12, 30, 0, TimeSpan.Zero)) } : [];
             var counts = mode == "active" ? new AutomationQueueCounts(2, 1, 14, 0, 0) : new(0, 0, 14, review.Length, 0);
             return Task.FromResult(new AutomationDesktopOverview(new(null, "synthetic", AutomationHostState.Running,
-                [new(universe, state, 0, 0, null, null, null), new(new("other_preview"), AutomationHostState.Running, 0, 0, null, null, null)], null),
+                [new(universe, state, 0, 0, null, null, null), new(contexts.Single(other => other.Id != universe).Id, AutomationHostState.Running, 0, 0, null, null, null)], null),
                 new(universe, DateTimeOffset.UtcNow, counts, review, policy),
                 new(universe, 1, mode == "paused", false, new(universe, c.Storage, new(new string('a', 64)), policy.Reference, auth.AuthorizationId, auth.Actor, false), "synthetic", [])));
         }
