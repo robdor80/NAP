@@ -27,17 +27,17 @@ La lectura de la cola usa un único snapshot SQLite de solo lectura y conserva s
 | Necesitan revisión | NeedsReview, Rejected, MissingSource |
 | Duplicados (contrato, sin tarjeta adicional) | Duplicate |
 
-Son elementos únicos durables de todo el universo, sin limitar a lote, día ni primera página. Observaciones repetidas no multiplican contadores. Los sondeos de archivos aún no admitidos del host no se presentan como elementos de cola. Processing cuenta Running durable, incluso durante suspensión; el texto de pausa tiene prioridad. No hay porcentaje estimado ni se contabilizan duplicados como Completed.
+Son elementos únicos durables de todo el universo, sin limitar a lote, día ni primera página. Observaciones repetidas no multiplican contadores. Los sondeos de archivos aún no admitidos del host no se presentan como elementos de cola; cuando existen, el texto indica «Comprobando archivos», sin afirmar «Todo al día». Processing cuenta Running durable, incluso durante suspensión; el texto de pausa tiene prioridad. No hay porcentaje estimado ni se contabilizan duplicados como Completed.
 
 ## Inicio y navegación
 
 Cinco accesos principales: Inicio, Catálogo, Producción, Historial y Ajustes. Herramientas agrupa Objetivos, Estadísticas, Backups, Git y RoDo, con selección visible al abrir una herramienta. Las funciones manuales originales permanecen accesibles mediante sus pantallas existentes.
 
-Inicio muestra cuatro contadores, estado natural y acceso desplegable a las ocho incidencias más recientes por orden de ingreso; si hay más, indica cuántas quedan fuera de esta vista breve. Muestra nombre de archivo, problema y fecha, sin rutas internas, IDs, códigos, logs ni acciones de aprobación. La lista completa y la resolución corresponden a los incrementos posteriores. Este acceso inicial no sustituye el flujo de P6.4.
+Inicio muestra cuatro contadores y estado natural. Solo cuando existen casos que revisar aparece el acceso desplegable a las ocho incidencias más recientes por orden de ingreso; si hay más, indica cuántas quedan fuera de esta vista breve. Muestra nombre de archivo, problema y fecha, sin rutas internas, IDs, códigos, logs ni acciones de aprobación. La lista completa y la resolución corresponden a los incrementos posteriores. Este acceso inicial no sustituye el flujo de P6.4.
 
 Los contadores corresponden al universo seleccionado en la cabecera. «En marcha: N universos» cuenta los scopes que el host informa Running/Pausing/Stopping; no cambia por seleccionar otro universo. Pausar/Reanudar afecta únicamente al seleccionado y no pide confirmación rutinaria. El host revalida siempre la orden. Activación inicial y parada de todos los universos se conservan en Ajustes, con sus confirmaciones existentes por alcance/autoridad.
 
-El refresco, cada cinco segundos y sin consultas solapadas, pertenece a la ventana y sigue al navegar o minimizar a bandeja. Nunca inicia ni cancela el trabajo del host. Cambiar contexto borra inmediatamente las proyecciones, invalida respuestas anteriores y bloquea controles obsoletos. Una consulta fallida deja `—` y acciones deshabilitadas, sin fingir éxito ni recurrir a escrituras locales.
+El refresco, cada cinco segundos y sin consultas solapadas, pertenece a la ventana y sigue al navegar o minimizar a bandeja. Nunca inicia ni cancela el trabajo del host. Cambiar contexto borra inmediatamente las proyecciones, cancela la lectura anterior, invalida respuestas anteriores y bloquea controles obsoletos. Cada consulta visual tiene un plazo de 20 segundos; no se amplía ningún timeout del protocolo ni se reintentan mutaciones. Esto no demuestra una solución del incidente IPC de #49. Una consulta fallida deja `—` y acciones deshabilitadas, sin fingir éxito ni recurrir a escrituras locales.
 
 ### Arranque ordinario frente a laboratorio
 
@@ -51,13 +51,29 @@ Core dispone de `ProposeException`, decisiones persistidas, preview/regla efecti
 
 - XML/XAML bien formado y `git diff --check` locales.
 - Build local intentado con SDK .NET 8.0.426: bloqueado por ausencia de licencia en el target oficial de ImageSharp. No se altera esa validación ni se lee/provisiona una licencia local. Persisten cinco avisos NU1902/NU1903; no se declaran corregidos.
-- Workflow específico `phase6-review.yml`: exclusivamente rama de Fase 6, paths de producto/tests focalizados y dispatch explícito. Reutiliza el helper privado existente para validación oficial en runner desechable; cleanup antes de artefactos. Solo ejecuta filtro `Phase6Overview` y el caso existente de navegación sin configuración. No ejecuta suites generales, pruebas de volumen, procesamiento ZIP, benchmark ni CUTOVER. Abrir esta rama no autoriza abrir PR.
-- La vista previa `--phase6-preview=active|paused|review|offline|local --phase6-output=<directorio>` construye datos en memoria con adaptadores sin escritor y sin conectar al host, leer settings locales ni crear/procesar ZIP. Captura la misma MainWindow y DashboardView de producto y cierra. Título explícito «Vista previa sintética P6.2». `--compact` comprueba 1200×700; tamaño habitual 1440×900. Solo escribe las capturas en el destino explícito.
+- Workflow específico `phase6-review.yml`: exclusivamente rama de Fase 6, paths de producto/tests focalizados y dispatch explícito. Reutiliza el helper privado existente para validación oficial en runner desechable; cleanup antes de artefactos. Solo ejecuta filtro `Phase6Overview` y el caso existente de navegación sin configuración: proyecciones, metadatos durables y endpoint autenticado contra host vacío, sin activar políticas ni ejecutar assets. No ejecuta suites generales, pruebas de volumen, procesamiento ZIP, benchmark ni CUTOVER. Abrir esta rama no autoriza abrir PR.
+- La vista previa `--phase6-preview=active|paused|review|offline|local --phase6-output=<directorio>` construye datos en memoria con adaptadores sin escritor y sin conectar al host, leer settings locales ni crear/procesar ZIP. Renderiza la misma MainWindow y DashboardView de producto mediante el árbol visual WPF y cierra. El layout fuera de pantalla fija el área cliente lógica para independizarla del escritorio pequeño del runner; no es una captura del MSI ni una maqueta HTML. Título explícito «Vista previa sintética P6.2». `--compact` comprueba 1200×700; tamaño habitual 1440×900. Solo escribe las capturas en el destino explícito.
 
-Los resultados remotos y las capturas se incorporarán al cerrar este incremento. Ningún test WPF ni captura constituye aprobación del responsable en el MSI.
+Los resultados y las capturas definitivas se documentan en la evidencia de revisión. Ningún test WPF ni renderizado constituye aprobación del responsable en el MSI.
 
 ## Pendiente tras esta revisión
 
 P6.3–P6.8 no desarrollados. Producción/Historial y funciones manuales conservan sus vistas previas; su simplificación visual está pendiente de P6.3. Diagnóstico, licencias y simulación histórica Treskal también quedan pendientes. No se han tocado retratos reales, otros repositorios, arranques/servicios/cuentas/ACL del MSI ni producción.
 
 Se detiene el desarrollo de nuevas pantallas principales en este punto hasta aprobación visual y funcional explícita del responsable.
+
+## Evidencia definitiva de revisión
+
+**Fuente de producto verificada:** `f7b93f9e7f29aef41cdc9be89d3838cab513777b`. [Workflow Windows 39668852346](https://github.com/robdor80/NAP/actions/runs/39668852346): ambos builds Release correctos, validación oficial conservada y cleanup satisfactorio; **25/25 pruebas dirigidas Passed, cero omisiones**. Los diez estados se comprueban mediante registros de metadatos, nunca generando ZIP. Un caso abre un host sintético vacío y el canal autenticado, sin habilitar políticas ni ejecutar assets. Se comprueban hashes de cola sin cambios y ausencia de órdenes durables para `Overview`.
+
+Seis procesos WPF renderizaron la vista de producto con datos sintéticos y salieron con código 0; cada captura falla ante cualquier error de binding. Se inspeccionaron las seis imágenes, incluidas revisión compacta, pausa, desconexión y arranque local. Se corrigió el tamaño del renderizado para independizar el área cliente lógica del escritorio del runner. Se conservan colores/componentes RobStyle; no se añadieron tarjetas para rellenar espacio ni controles de incidencias vacías.
+
+[Galería de seis renderizados WPF y reproducción en Windows](phase6/README.md). [TRX original](phase6/phase6-focused.trx). [Manifiesto y resultados individuales](phase6/evidence.json). El SHA256 del ZIP descargado coincide con el digest declarado por GitHub: `2063cac7738c3ce1ea7c3c8380c531f3c98be8f734eee75d28ac999158cc34b2`. También se contrastaron los seis hashes PNG y el SHA de fuente del artefacto.
+
+Los cinco advisories NU1902/NU1903 siguen presentes (diez líneas de warning por repetición entre restore/build en cada invocación), sin supresiones ni atribución de resolución a esta fase. No se publicaron licencias, claves ni launch configs. Las capturas no contienen raíces reales ni datos privados.
+
+Se conserva la cronología: [39667028224](https://github.com/robdor80/NAP/actions/runs/39667028224) falló en compilación del preview; [39667342046](https://github.com/robdor80/NAP/actions/runs/39667342046) falló por ambigüedad de constructores al compilar pruebas. Ambos quedan Failed y no ejecutaron pruebas. [39667646160](https://github.com/robdor80/NAP/actions/runs/39667646160) y [39668333961](https://github.com/robdor80/NAP/actions/runs/39668333961) pasaron 24 pruebas sobre sus propios SHAs y produjeron imágenes preliminares. No se atribuyen esos resultados a la fuente definitiva ni se modifican evidencias anteriores.
+
+Los commits documentales posteriores conservan el producto del SHA verificado; no reciben una nueva ejecución ni heredan checks como si se hubieran ejecutado sobre ellos. El cierre documental solo publica esta evidencia en la rama de trabajo. No se crea PR, fusiona ni cambia main.
+
+**PUNTO DE REVISIÓN VISUAL 1: DETENIDO.** Pendiente de aprobación visual y funcional explícita del responsable en su MSI para continuar con P6.3. Esta entrega no declara aprobada la interfaz ni terminada la Fase 6.

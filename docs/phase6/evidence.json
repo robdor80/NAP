@@ -1,0 +1,255 @@
+{
+  "date_utc": "2026-10-21",
+  "phase": "P6.1/P6.2",
+  "human_visual_approval": "pending",
+  "human_functional_approval_on_msi": "pending",
+  "base_main_sha": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "branch": "codex/nap-2-fase-6-ux",
+  "verified_product_sha": "f7b93f9e7f29aef41cdc9be89d3838cab513777b",
+  "run_url": "https://github.com/robdor80/NAP/actions/runs/39668852346",
+  "run_conclusion": "success",
+  "artifact": {
+    "id": 12378657477,
+    "name": "phase6-review",
+    "downloaded_zip_sha256": "2063cac7738c3ce1ea7c3c8380c531f3c98be8f734eee75d28ac999158cc34b2",
+    "matches_github_declared_digest": true
+  },
+  "windows_release": {
+    "wpf_build": "passed",
+    "test_assembly_build": "passed",
+    "official_license_validation": "unchanged, existing private provisioning helper",
+    "license_cleanup": "success",
+    "dependency_advisories": "five existing NU1902/NU1903 advisories remain; tracked by #49"
+  },
+  "focused_tests": {
+    "filter": "FullyQualifiedName~Phase6Overview|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo",
+    "counters": {
+      "total": "25",
+      "executed": "25",
+      "passed": "25",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "trx_path": "docs/phase6/phase6-focused.trx",
+    "trx_sha256": "4aba9d46d9a1f70ccf4c56019624830d2e4e6d0cb864a8d68e5b2f27a5745cf7",
+    "results": [
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.SelectedCountsStaySeparateFromExecutionScope",
+        "outcome": "Passed",
+        "duration": "00:00:00.0471481"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation",
+        "outcome": "Passed",
+        "duration": "00:00:00.0088760"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.LateOldUniverseReplyCannotReplaceNewSelection",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023045"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: RetryScheduled, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:01.8751449"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Observed, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3352070"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Paused, label: \"Automatización pausada\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000047"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Duplicate, pending: 0, processing: 0, completed: 0, review: 0, duplicate: 1)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3782141"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Queued, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3666209"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: MissingSource, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3805430"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.PollsNeverOverlapAndDisposedRepliesCannotPublish",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009438"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Completed, pending: 0, processing: 0, completed: 1, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.5431671"
+      },
+      {
+        "name": "NAP.Tests.ProfessionalUiTests.UnconfiguredNavigationNeverInventsCountsOrPerformsIo",
+        "outcome": "Passed",
+        "duration": "00:00:00.3634716"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue",
+        "outcome": "Passed",
+        "duration": "00:00:01.8804143"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.RevokedOrMismatchedGrantNeverEnablesResume",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016221"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.ForeignControlOrQueueIsNeverDisplayed",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014001"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: WaitingStable, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3824938"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Running, pending: 0, processing: 1, completed: 0, review: 0, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.4794624"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Disabled, label: \"Automatización sin activar\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002834"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Degraded, label: \"Automatización necesita revisión\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000106"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015403"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Rejected, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3607155"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Blocked, label: \"Automatización necesita revisión\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001844"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse",
+        "outcome": "Passed",
+        "duration": "00:00:00.7191902"
+      },
+      {
+        "name": "NAP.Tests.Phase6OverviewTests.DisconnectClearsCountsAndNeverFallsBackOrSendsCommands",
+        "outcome": "Passed",
+        "duration": "00:00:00.0029263"
+      },
+      {
+        "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: NeedsReview, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+        "outcome": "Passed",
+        "duration": "00:00:00.3602391"
+      }
+    ]
+  },
+  "visual_evidence": {
+    "kind": "native WPF offscreen render of the product visual tree with explicit synthetic in-memory data",
+    "not_msi_capture": true,
+    "binding_errors": 0,
+    "binding_error_guard": "Phase6Preview.CaptureAsync throws on any BindingDiagnostics error; all six preview processes exited zero",
+    "captures": [
+      {
+        "path": "docs/phase6/inicio-active-1440x900.png",
+        "sha256": "4f3d77a09acb840513146a95aab26f3a49ede62b894156984725716cebaaa360",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "path": "docs/phase6/inicio-local-1440x900.png",
+        "sha256": "338be3b9972d14afd6708fa69b17a3b23123a3d48abff5a14a3ff77428b17faf",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "path": "docs/phase6/inicio-offline-1440x900.png",
+        "sha256": "490ce89ae1e8848e0c36cbefa6df4e31ff8338c6dfcb2d278ec6ac44b44e6178",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "path": "docs/phase6/inicio-paused-1440x900.png",
+        "sha256": "55c12c0fd217945f07aaedb55268be88c5bb6faf4e47d076f805abf70bf19756",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "path": "docs/phase6/inicio-review-1200x700.png",
+        "sha256": "2c715ec45a170f64045ac2fb5cd7f255e20c07eabf5d6b62a39df74a52945022",
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "path": "docs/phase6/inicio-review-1440x900.png",
+        "sha256": "74b37edcb0e36a9835032c660c156ad8a3dd23941f1e4a36c8ebaed867fe9513",
+        "width": 1440,
+        "height": 900
+      }
+    ]
+  },
+  "scope": {
+    "zip_files_created_or_processed": 0,
+    "general_regressions_executed": false,
+    "volume_tests_executed": false,
+    "benchmarks_or_stress": false,
+    "production_or_cutover_enabled": false,
+    "real_nimroel_assets_touched": false,
+    "pull_request_created": false
+  },
+  "previous_runs": [
+    {
+      "id": 39667028224,
+      "sha": "291b73fb990db817df029a24dd1b612a9e627e37",
+      "conclusion": "failure",
+      "reason": "Missing System.IO qualification in synthetic preview; tests not executed"
+    },
+    {
+      "id": 39667342046,
+      "sha": "7d5e62ed0c0ee212f2cc5fa085754e611982e4d6",
+      "conclusion": "failure",
+      "reason": "Ambiguous target-typed constructor in existing test call; tests not executed"
+    },
+    {
+      "id": 39667646160,
+      "sha": "8e8c04bd59e0d6cc720e42f1680e4da44a7f4304",
+      "conclusion": "success",
+      "focused_passed": 24,
+      "visuals": "preliminary renders constrained by runner desktop"
+    },
+    {
+      "id": 39668333961,
+      "sha": "ab8248132faab975962f24e8204a3dbe769392f2",
+      "conclusion": "success",
+      "focused_passed": 24,
+      "visuals": "preliminary render canvases, before final sizing correction and empty-control removal"
+    }
+  ]
+}

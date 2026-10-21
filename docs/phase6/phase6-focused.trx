@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1514c699-130f-4313-b7e8-808f4474ce34" name="runneradmin@runnervmgnbhw 2026-10-21 20:17:48" runUser="runnervmgnbhw\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-21T20:17:48.5369208+00:00" queuing="2026-10-21T20:17:48.5369211+00:00" start="2026-10-21T20:17:46.5152989+00:00" finish="2026-10-21T20:17:54.2009259+00:00" />
+  <TestSettings name="default" id="66b2db61-8456-45cc-a3b5-c4ce7b4aad24">
+    <Deployment runDeploymentRoot="runneradmin_runnervmgnbhw_2026-10-21_20_17_48" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e08c0c1b-fe7d-45a9-a8fd-cd80572d1b63" testId="e971476e-da40-57af-74e7-36fc86f767c1" testName="NAP.Tests.Phase6OverviewTests.SelectedCountsStaySeparateFromExecutionScope" computerName="runnervmgnbhw" duration="00:00:00.0471481" startTime="2026-10-21T20:17:49.8757468+00:00" endTime="2026-10-21T20:17:49.8757471+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e08c0c1b-fe7d-45a9-a8fd-cd80572d1b63" />
+    <UnitTestResult executionId="cb00d4e4-fcdc-40d2-9172-13c420030d09" testId="e74e5b97-c27e-86ca-65ed-3afbcc96c311" testName="NAP.Tests.Phase6OverviewTests.PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation" computerName="runnervmgnbhw" duration="00:00:00.0088760" startTime="2026-10-21T20:17:49.8877846+00:00" endTime="2026-10-21T20:17:49.8877848+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb00d4e4-fcdc-40d2-9172-13c420030d09" />
+    <UnitTestResult executionId="dce0d993-b0b7-427f-90bb-5ebb84fe908b" testId="610382dd-03da-afea-ce54-d75e65de3440" testName="NAP.Tests.Phase6OverviewTests.LateOldUniverseReplyCannotReplaceNewSelection" computerName="runnervmgnbhw" duration="00:00:00.0023045" startTime="2026-10-21T20:17:49.8935675+00:00" endTime="2026-10-21T20:17:49.8935677+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dce0d993-b0b7-427f-90bb-5ebb84fe908b" />
+    <UnitTestResult executionId="d4c21890-e40f-4a2e-bbf2-9744ac5e6571" testId="ba0b403a-2479-7231-15bf-9f7f6fa479a3" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: RetryScheduled, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:01.8751449" startTime="2026-10-21T20:17:49.8222317+00:00" endTime="2026-10-21T20:17:49.8222320+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4c21890-e40f-4a2e-bbf2-9744ac5e6571" />
+    <UnitTestResult executionId="95b888ee-ad02-4683-80ff-bf3e2fd26e66" testId="b3cfe420-dc4c-b4f2-be1f-68b50b540c16" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Observed, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3352070" startTime="2026-10-21T20:17:50.7008733+00:00" endTime="2026-10-21T20:17:50.7008736+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95b888ee-ad02-4683-80ff-bf3e2fd26e66" />
+    <UnitTestResult executionId="c0b51c28-8359-43db-b30b-37adac41a3a0" testId="4999d7b2-24f9-f346-f6e6-e685cc0fd858" testName="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Paused, label: &quot;Automatización pausada&quot;)" computerName="runnervmgnbhw" duration="00:00:00.0000047" startTime="2026-10-21T20:17:49.8285127+00:00" endTime="2026-10-21T20:17:49.8285128+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c0b51c28-8359-43db-b30b-37adac41a3a0" />
+    <UnitTestResult executionId="3552ee03-cc85-47e0-bae8-e18eaf8b087f" testId="e11f07f8-47e5-eb58-7606-9ef37d876208" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Duplicate, pending: 0, processing: 0, completed: 0, review: 0, duplicate: 1)" computerName="runnervmgnbhw" duration="00:00:00.3782141" startTime="2026-10-21T20:17:52.6826954+00:00" endTime="2026-10-21T20:17:52.6826956+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3552ee03-cc85-47e0-bae8-e18eaf8b087f" />
+    <UnitTestResult executionId="afde422b-21b8-46a7-8b55-878afefcdaa2" testId="7d84f4de-10a7-fa7b-f432-5e386a0e3311" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Queued, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3666209" startTime="2026-10-21T20:17:53.0495420+00:00" endTime="2026-10-21T20:17:53.0495424+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afde422b-21b8-46a7-8b55-878afefcdaa2" />
+    <UnitTestResult executionId="7d0fc983-cac9-4579-8225-772f6e7095cd" testId="df0deff1-69f5-a585-8b21-f93c3ecc95cf" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: MissingSource, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3805430" startTime="2026-10-21T20:17:52.3042916+00:00" endTime="2026-10-21T20:17:52.3042919+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d0fc983-cac9-4579-8225-772f6e7095cd" />
+    <UnitTestResult executionId="06be1b0b-3b93-4205-bce5-60049fc5f5ea" testId="810dab7b-4fce-f11c-995a-13c6c19c0130" testName="NAP.Tests.Phase6OverviewTests.PollsNeverOverlapAndDisposedRepliesCannotPublish" computerName="runnervmgnbhw" duration="00:00:00.0009438" startTime="2026-10-21T20:17:49.8960974+00:00" endTime="2026-10-21T20:17:49.8960975+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06be1b0b-3b93-4205-bce5-60049fc5f5ea" />
+    <UnitTestResult executionId="1a160a5f-9dc2-490e-8535-f6ed4c26754a" testId="497c5728-2937-8a08-9b1b-980dfa9aba8e" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Completed, pending: 0, processing: 0, completed: 1, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.5431671" startTime="2026-10-21T20:17:50.3655408+00:00" endTime="2026-10-21T20:17:50.3655411+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a160a5f-9dc2-490e-8535-f6ed4c26754a" />
+    <UnitTestResult executionId="6b69a61d-fcc8-4e27-9b2e-8df35a88d997" testId="40832ec7-8b7d-949c-9a3e-2b261e9f9de2" testName="NAP.Tests.ProfessionalUiTests.UnconfiguredNavigationNeverInventsCountsOrPerformsIo" computerName="runnervmgnbhw" duration="00:00:00.3634716" startTime="2026-10-21T20:17:48.3151794+00:00" endTime="2026-10-21T20:17:48.3152048+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6b69a61d-fcc8-4e27-9b2e-8df35a88d997" />
+    <UnitTestResult executionId="6a2625af-27cf-44fd-86ac-26c170eb9cce" testId="7c864977-360c-fb82-58c4-e4a0522e47d5" testName="NAP.Tests.Phase6OverviewTests.AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue" computerName="runnervmgnbhw" duration="00:00:01.8804143" startTime="2026-10-21T20:17:49.8275627+00:00" endTime="2026-10-21T20:17:49.8275628+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a2625af-27cf-44fd-86ac-26c170eb9cce" />
+    <UnitTestResult executionId="e99e87c6-4c79-426d-a16b-355c81c78852" testId="6dfbb182-2031-56be-e454-eafe3a40ac95" testName="NAP.Tests.Phase6OverviewTests.RevokedOrMismatchedGrantNeverEnablesResume" computerName="runnervmgnbhw" duration="00:00:00.0016221" startTime="2026-10-21T20:17:49.8911646+00:00" endTime="2026-10-21T20:17:49.8911648+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e99e87c6-4c79-426d-a16b-355c81c78852" />
+    <UnitTestResult executionId="caefa5c9-2c62-4c18-bdce-1242e7b77af0" testId="38843960-b457-eebe-8ff4-cfa0ef78f9ea" testName="NAP.Tests.Phase6OverviewTests.ForeignControlOrQueueIsNeverDisplayed" computerName="runnervmgnbhw" duration="00:00:00.0014001" startTime="2026-10-21T20:17:49.8950620+00:00" endTime="2026-10-21T20:17:49.8950622+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="caefa5c9-2c62-4c18-bdce-1242e7b77af0" />
+    <UnitTestResult executionId="fe44148a-1ddb-4f7e-b3de-a859f0696a97" testId="5b5b3e4e-d6c0-0d3e-dff3-d7e9204bf4d6" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: WaitingStable, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3824938" startTime="2026-10-21T20:17:51.4439095+00:00" endTime="2026-10-21T20:17:51.4439098+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fe44148a-1ddb-4f7e-b3de-a859f0696a97" />
+    <UnitTestResult executionId="bb7dd56f-0cdc-496d-b5d3-0418bb393068" testId="a7291162-06c0-1e54-90e7-ed20f551c0f5" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Running, pending: 0, processing: 1, completed: 0, review: 0, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.4794624" startTime="2026-10-21T20:17:51.9235289+00:00" endTime="2026-10-21T20:17:51.9235291+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb7dd56f-0cdc-496d-b5d3-0418bb393068" />
+    <UnitTestResult executionId="73d5953a-cbec-40b0-8a7e-c4f5cbee2d5b" testId="a942c164-d695-1f3d-adb3-5990f49e891c" testName="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Disabled, label: &quot;Automatización sin activar&quot;)" computerName="runnervmgnbhw" duration="00:00:00.0002834" startTime="2026-10-21T20:17:49.8280865+00:00" endTime="2026-10-21T20:17:49.8280866+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="73d5953a-cbec-40b0-8a7e-c4f5cbee2d5b" />
+    <UnitTestResult executionId="879e75e2-d1a0-4db1-bb6e-4cdf5e203be3" testId="360e6cf2-fe6f-5ae4-0fc0-b0144efb73a7" testName="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Degraded, label: &quot;Automatización necesita revisión&quot;)" computerName="runnervmgnbhw" duration="00:00:00.0000106" startTime="2026-10-21T20:17:49.8284424+00:00" endTime="2026-10-21T20:17:49.8284425+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="879e75e2-d1a0-4db1-bb6e-4cdf5e203be3" />
+    <UnitTestResult executionId="0edd00e0-6dad-4bf5-8d41-58b01a88238b" testId="64326d56-1a99-8879-f156-6b7458d2d43c" testName="NAP.Tests.Phase6OverviewTests.IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate" computerName="runnervmgnbhw" duration="00:00:00.0015403" startTime="2026-10-21T20:17:49.8894415+00:00" endTime="2026-10-21T20:17:49.8894417+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0edd00e0-6dad-4bf5-8d41-58b01a88238b" />
+    <UnitTestResult executionId="ad1daa88-f846-4bb9-8a10-bceab3d4846f" testId="de357ab5-eb58-70e1-1ff6-03300a25002a" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Rejected, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3607155" startTime="2026-10-21T20:17:53.4104253+00:00" endTime="2026-10-21T20:17:53.4104255+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad1daa88-f846-4bb9-8a10-bceab3d4846f" />
+    <UnitTestResult executionId="01a2d8de-8682-4dc4-a02c-84d8358f3829" testId="bc503c46-f21f-6f16-5cd4-34893f4b11a9" testName="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Blocked, label: &quot;Automatización necesita revisión&quot;)" computerName="runnervmgnbhw" duration="00:00:00.0001844" startTime="2026-10-21T20:17:49.8283626+00:00" endTime="2026-10-21T20:17:49.8283628+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="01a2d8de-8682-4dc4-a02c-84d8358f3829" />
+    <UnitTestResult executionId="87bf1941-f2e4-4a7a-8936-f4ce07b0e214" testId="520f766f-58ca-b895-b6c6-b8cebc995bce" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse" computerName="runnervmgnbhw" duration="00:00:00.7191902" startTime="2026-10-21T20:17:54.1298682+00:00" endTime="2026-10-21T20:17:54.1298685+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87bf1941-f2e4-4a7a-8936-f4ce07b0e214" />
+    <UnitTestResult executionId="a8bd5ae1-01ed-455e-ab1b-cc58eceb81ca" testId="9ea41d9d-76a2-6c6f-ab3e-d7a5abfb12f5" testName="NAP.Tests.Phase6OverviewTests.DisconnectClearsCountsAndNeverFallsBackOrSendsCommands" computerName="runnervmgnbhw" duration="00:00:00.0029263" startTime="2026-10-21T20:17:49.8787921+00:00" endTime="2026-10-21T20:17:49.8787923+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8bd5ae1-01ed-455e-ab1b-cc58eceb81ca" />
+    <UnitTestResult executionId="603f1ae1-39c2-42e8-b5b5-a802b816212b" testId="4b77712f-97a4-65c7-ceb6-677a38a37fb4" testName="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: NeedsReview, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" computerName="runnervmgnbhw" duration="00:00:00.3602391" startTime="2026-10-21T20:17:51.0612668+00:00" endTime="2026-10-21T20:17:51.0612671+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="603f1ae1-39c2-42e8-b5b5-a802b816212b" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="7c864977-360c-fb82-58c4-e4a0522e47d5">
+      <Execution id="6a2625af-27cf-44fd-86ac-26c170eb9cce" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: NeedsReview, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="4b77712f-97a4-65c7-ceb6-677a38a37fb4">
+      <Execution id="603f1ae1-39c2-42e8-b5b5-a802b816212b" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Disabled, label: &quot;Automatización sin activar&quot;)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="a942c164-d695-1f3d-adb3-5990f49e891c">
+      <Execution id="73d5953a-cbec-40b0-8a7e-c4f5cbee2d5b" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="ControlStateHasPriorityOverCounts" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: RetryScheduled, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="ba0b403a-2479-7231-15bf-9f7f6fa479a3">
+      <Execution id="d4c21890-e40f-4a2e-bbf2-9744ac5e6571" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="520f766f-58ca-b895-b6c6-b8cebc995bce">
+      <Execution id="87bf1941-f2e4-4a7a-8936-f4ce07b0e214" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Queued, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="7d84f4de-10a7-fa7b-f432-5e386a0e3311">
+      <Execution id="afde422b-21b8-46a7-8b55-878afefcdaa2" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Rejected, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="de357ab5-eb58-70e1-1ff6-03300a25002a">
+      <Execution id="ad1daa88-f846-4bb9-8a10-bceab3d4846f" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.ForeignControlOrQueueIsNeverDisplayed" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="38843960-b457-eebe-8ff4-cfa0ef78f9ea">
+      <Execution id="caefa5c9-2c62-4c18-bdce-1242e7b77af0" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="ForeignControlOrQueueIsNeverDisplayed" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="e74e5b97-c27e-86ca-65ed-3afbcc96c311">
+      <Execution id="cb00d4e4-fcdc-40d2-9172-13c420030d09" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.LateOldUniverseReplyCannotReplaceNewSelection" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="610382dd-03da-afea-ce54-d75e65de3440">
+      <Execution id="dce0d993-b0b7-427f-90bb-5ebb84fe908b" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="LateOldUniverseReplyCannotReplaceNewSelection" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Degraded, label: &quot;Automatización necesita revisión&quot;)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="360e6cf2-fe6f-5ae4-0fc0-b0144efb73a7">
+      <Execution id="879e75e2-d1a0-4db1-bb6e-4cdf5e203be3" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="ControlStateHasPriorityOverCounts" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Observed, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="b3cfe420-dc4c-b4f2-be1f-68b50b540c16">
+      <Execution id="95b888ee-ad02-4683-80ff-bf3e2fd26e66" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.RevokedOrMismatchedGrantNeverEnablesResume" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="6dfbb182-2031-56be-e454-eafe3a40ac95">
+      <Execution id="e99e87c6-4c79-426d-a16b-355c81c78852" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="RevokedOrMismatchedGrantNeverEnablesResume" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Paused, label: &quot;Automatización pausada&quot;)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="4999d7b2-24f9-f346-f6e6-e685cc0fd858">
+      <Execution id="c0b51c28-8359-43db-b30b-37adac41a3a0" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="ControlStateHasPriorityOverCounts" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Duplicate, pending: 0, processing: 0, completed: 0, review: 0, duplicate: 1)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="e11f07f8-47e5-eb58-7606-9ef37d876208">
+      <Execution id="3552ee03-cc85-47e0-bae8-e18eaf8b087f" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: MissingSource, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="df0deff1-69f5-a585-8b21-f93c3ecc95cf">
+      <Execution id="7d0fc983-cac9-4579-8225-772f6e7095cd" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.PollsNeverOverlapAndDisposedRepliesCannotPublish" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="810dab7b-4fce-f11c-995a-13c6c19c0130">
+      <Execution id="06be1b0b-3b93-4205-bce5-60049fc5f5ea" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="PollsNeverOverlapAndDisposedRepliesCannotPublish" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.SelectedCountsStaySeparateFromExecutionScope" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="e971476e-da40-57af-74e7-36fc86f767c1">
+      <Execution id="e08c0c1b-fe7d-45a9-a8fd-cd80572d1b63" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="SelectedCountsStaySeparateFromExecutionScope" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="64326d56-1a99-8879-f156-6b7458d2d43c">
+      <Execution id="0edd00e0-6dad-4bf5-8d41-58b01a88238b" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Blocked, label: &quot;Automatización necesita revisión&quot;)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="bc503c46-f21f-6f16-5cd4-34893f4b11a9">
+      <Execution id="01a2d8de-8682-4dc4-a02c-84d8358f3829" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="ControlStateHasPriorityOverCounts" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.Phase6OverviewTests.DisconnectClearsCountsAndNeverFallsBackOrSendsCommands" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="9ea41d9d-76a2-6c6f-ab3e-d7a5abfb12f5">
+      <Execution id="a8bd5ae1-01ed-455e-ab1b-cc58eceb81ca" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.Phase6OverviewTests" name="DisconnectClearsCountsAndNeverFallsBackOrSendsCommands" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.ProfessionalUiTests.UnconfiguredNavigationNeverInventsCountsOrPerformsIo" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="40832ec7-8b7d-949c-9a3e-2b261e9f9de2">
+      <Execution id="6b69a61d-fcc8-4e27-9b2e-8df35a88d997" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.ProfessionalUiTests" name="UnconfiguredNavigationNeverInventsCountsOrPerformsIo" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Completed, pending: 0, processing: 0, completed: 1, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="497c5728-2937-8a08-9b1b-980dfa9aba8e">
+      <Execution id="1a160a5f-9dc2-490e-8535-f6ed4c26754a" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Running, pending: 0, processing: 1, completed: 0, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="a7291162-06c0-1e54-90e7-ed20f551c0f5">
+      <Execution id="bb7dd56f-0cdc-496d-b5d3-0418bb393068" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: WaitingStable, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)" storage="d:\a\nap\nap\tests\nap.tests\bin\release\net8.0\nap.tests.dll" id="5b5b3e4e-d6c0-0d3e-dff3-d7e9204bf4d6">
+      <Execution id="fe44148a-1ddb-4f7e-b3de-a859f0696a97" />
+      <TestMethod codeBase="D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.AutomationQueueTests" name="Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e971476e-da40-57af-74e7-36fc86f767c1" executionId="e08c0c1b-fe7d-45a9-a8fd-cd80572d1b63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e74e5b97-c27e-86ca-65ed-3afbcc96c311" executionId="cb00d4e4-fcdc-40d2-9172-13c420030d09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="610382dd-03da-afea-ce54-d75e65de3440" executionId="dce0d993-b0b7-427f-90bb-5ebb84fe908b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba0b403a-2479-7231-15bf-9f7f6fa479a3" executionId="d4c21890-e40f-4a2e-bbf2-9744ac5e6571" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b3cfe420-dc4c-b4f2-be1f-68b50b540c16" executionId="95b888ee-ad02-4683-80ff-bf3e2fd26e66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4999d7b2-24f9-f346-f6e6-e685cc0fd858" executionId="c0b51c28-8359-43db-b30b-37adac41a3a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e11f07f8-47e5-eb58-7606-9ef37d876208" executionId="3552ee03-cc85-47e0-bae8-e18eaf8b087f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7d84f4de-10a7-fa7b-f432-5e386a0e3311" executionId="afde422b-21b8-46a7-8b55-878afefcdaa2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df0deff1-69f5-a585-8b21-f93c3ecc95cf" executionId="7d0fc983-cac9-4579-8225-772f6e7095cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="810dab7b-4fce-f11c-995a-13c6c19c0130" executionId="06be1b0b-3b93-4205-bce5-60049fc5f5ea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="497c5728-2937-8a08-9b1b-980dfa9aba8e" executionId="1a160a5f-9dc2-490e-8535-f6ed4c26754a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40832ec7-8b7d-949c-9a3e-2b261e9f9de2" executionId="6b69a61d-fcc8-4e27-9b2e-8df35a88d997" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c864977-360c-fb82-58c4-e4a0522e47d5" executionId="6a2625af-27cf-44fd-86ac-26c170eb9cce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6dfbb182-2031-56be-e454-eafe3a40ac95" executionId="e99e87c6-4c79-426d-a16b-355c81c78852" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38843960-b457-eebe-8ff4-cfa0ef78f9ea" executionId="caefa5c9-2c62-4c18-bdce-1242e7b77af0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b5b3e4e-d6c0-0d3e-dff3-d7e9204bf4d6" executionId="fe44148a-1ddb-4f7e-b3de-a859f0696a97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a7291162-06c0-1e54-90e7-ed20f551c0f5" executionId="bb7dd56f-0cdc-496d-b5d3-0418bb393068" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a942c164-d695-1f3d-adb3-5990f49e891c" executionId="73d5953a-cbec-40b0-8a7e-c4f5cbee2d5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="360e6cf2-fe6f-5ae4-0fc0-b0144efb73a7" executionId="879e75e2-d1a0-4db1-bb6e-4cdf5e203be3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64326d56-1a99-8879-f156-6b7458d2d43c" executionId="0edd00e0-6dad-4bf5-8d41-58b01a88238b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="de357ab5-eb58-70e1-1ff6-03300a25002a" executionId="ad1daa88-f846-4bb9-8a10-bceab3d4846f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bc503c46-f21f-6f16-5cd4-34893f4b11a9" executionId="01a2d8de-8682-4dc4-a02c-84d8358f3829" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="520f766f-58ca-b895-b6c6-b8cebc995bce" executionId="87bf1941-f2e4-4a7a-8936-f4ce07b0e214" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9ea41d9d-76a2-6c6f-ab3e-d7a5abfb12f5" executionId="a8bd5ae1-01ed-455e-ab1b-cc58eceb81ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b77712f-97a4-65c7-ceb6-677a38a37fb4" executionId="603f1ae1-39c2-42e8-b5b5-a802b816212b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="25" executed="25" passed="25" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.32)&#xD;
+[xUnit.net 00:00:00.11]   Discovering: NAP.Tests&#xD;
+[xUnit.net 00:00:00.83]   Discovered:  NAP.Tests&#xD;
+[xUnit.net 00:00:00.85]   Starting:    NAP.Tests&#xD;
+[xUnit.net 00:00:07.08]   Finished:    NAP.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
