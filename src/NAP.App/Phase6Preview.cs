@@ -154,7 +154,11 @@ internal static class Phase6Preview
         if(HistoricalModes.Contains(mode) && shell.Settings.Historical.HasSelection)
         {
             var detail = Descendants(capture).OfType<ScrollViewer>().Single(v => v.Name == "HistoricalScroll");
-            detail.ScrollToBottom();
+            var frame = Descendants(capture).OfType<FrameworkElement>().Single(v => v.Name == "HistoricalDetail");
+            frame.BringIntoView(new Rect(0, 0, frame.ActualWidth, Math.Min(250, frame.ActualHeight)));
+            await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
+            var top = frame.TransformToAncestor(detail).Transform(new Point(0, 0)).Y;
+            detail.ScrollToVerticalOffset(detail.VerticalOffset + top);
             await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             await Save("-detalle");
         }

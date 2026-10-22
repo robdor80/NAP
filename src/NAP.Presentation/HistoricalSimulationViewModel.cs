@@ -35,7 +35,9 @@ public sealed class HistoricalSimulationViewModel : ObservableObject
     public HistoricalSimulationIssue? SelectedIssue { get => _issue; set => Set(ref _issue, value); }
     public bool HasSelection => Selected is not null;
     public string Result => Rows.Count == 0 ? "Sin coincidencias. Cambia los filtros o restablece la referencia." : $"{Rows.Count} de 39 referencias sintéticas · ocho grupos documentales";
-    public string Summary => string.Join(" · ", _reference.GroupBy(r => r.StatusLabel).Select(g => $"{g.Count()} {g.Key.ToLowerInvariant()}"));
+    public string Summary => $"{_reference.Count(r => r.Status == HistoricalSimulationStatus.Conforming)} conformes en simulación · " +
+        $"{_reference.Count(r => r.Status == HistoricalSimulationStatus.DocumentationReview)} necesitan revisión documental · " +
+        $"{_reference.Count(r => r.Status == HistoricalSimulationStatus.Unverifiable)} no verificable sin originales";
     public string Report => HistoricalSimulation.Report();
     public RelayCommand ResetFilters => new(_ => ContextChanged());
     public RelayCommand CloseDetail => new(_ => Selected = null);

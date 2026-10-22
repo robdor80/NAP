@@ -1,4 +1,5 @@
 <UserControl x:Class="NAP.App.Views.HistoricalSimulationView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls" Language="es-ES">
+  <UserControl.InputBindings><KeyBinding Key="Escape" Command="{Binding CloseDetail}" /></UserControl.InputBindings>
   <UserControl.Resources>
     <CollectionViewSource x:Key="GroupedReferences" Source="{Binding Rows}">
       <CollectionViewSource.GroupDescriptions><PropertyGroupDescription PropertyName="HistoricalGroup" /></CollectionViewSource.GroupDescriptions>
@@ -15,7 +16,7 @@
           <WrapPanel>
             <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding Group}" DisplayMemberPath="Label" Width="200" AutomationProperties.Name="Grupo histórico" />
             <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" DisplayMemberPath="Label" Width="280" AutomationProperties.Name="Estado de simulación" />
-            <TextBox Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Width="180" MaxLength="80" ToolTip="Buscar referencia o identidad sintética" AutomationProperties.Name="Buscar referencia sintética" />
+            <StackPanel Width="180"><TextBlock Text="Buscar referencia o identidad" Style="{StaticResource Muted}" /><TextBox Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" MaxLength="80" ToolTip="Buscar referencia o identidad sintética" AutomationProperties.Name="Buscar referencia sintética" /></StackPanel>
           </WrapPanel>
           <WrapPanel Margin="0,8,0,8"><Button Content="Restablecer filtros" Command="{Binding ResetFilters}" /><Button Content="Exportar simulación…" Click="ExportReport" /></WrapPanel>
           <TextBlock Text="{Binding Result}" AutomationProperties.LiveSetting="Polite" />
