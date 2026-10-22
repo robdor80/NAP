@@ -59,7 +59,7 @@ public sealed class Phase6WorkflowTests
         await using var server=new AutomationPipeServer(connection,bridge.HandleAsync);var wire=new AutomationHostClient(connection);var client=new WorkflowDesktopClient(wire);
         using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(30));
         var detail=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);Assert.True(detail.CanPropose);Assert.NotNull(detail.OriginalImage);
-        var choice=Assert.Single(detail.Choices.Where(c=>c.Width==39&&c.Height==50));
+        var choice=Assert.Single(detail.Choices,c=>c.Width==39&&c.Height==50);
         var proposal=new ReviewProposalRequest(item,detail.Item.Revision,choice.Key);var command="command_"+Guid.NewGuid().ToString("N");
         await wire.CallAsync(AutomationOperation.ReviewPropose,f.A.Context.Id.Value,proposal,timeout.Token,command);
         await wire.CallAsync(AutomationOperation.ReviewPropose,f.A.Context.Id.Value,proposal,timeout.Token,command);
@@ -79,6 +79,19 @@ public sealed class Phase6WorkflowTests
         detail=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);Assert.False(detail.CanApprove);Assert.True(detail.CanContinue);
         Assert.Equal(ExceptionalDecisionState.Approved,detail.Preview!.State);
         var persisted=await host.QueryAsync(f.A.Context.Id,s=>new DurablePreparationService(s.Context,s.Queue).ReadReviewPreview(item));Assert.Equal(detail.Preview.DecisionId,persisted!.DecisionId);
+        // Tampering with this one synthetic preserved original disables the preview and continuation.
+        var preserved=await host.QueryAsync(f.A.Context.Id,s=>new DurablePreparationService(s.Context,s.Queue).State.Get(item));
+        var master=preserved!.Originals!.Files.Single(f=>f.RelativePath.EndsWith(".png",StringComparison.OrdinalIgnoreCase));
+        var masterPath=Path.Combine(f.A.Context.Storage.StateRoot,preserved.Originals.RelativeDirectory,master.RelativePath);
+        var masterBytes=File.ReadAllBytes(masterPath);
+        try
+        {
+            File.WriteAllBytes(masterPath,[0]);
+            var damaged=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);
+            Assert.NotNull(damaged.ReadNotice);Assert.Null(damaged.Preview);Assert.False(damaged.CanContinue);Assert.False(damaged.CanPropose);Assert.False(damaged.CanApprove);
+            await Assert.ThrowsAsync<AutomationException>(()=>wire.CallAsync(AutomationOperation.ReviewContinue,f.A.Context.Id.Value,new ReviewDecisionRequest(item,detail.Item.Revision,preview.DecisionId,preview.Version,preview.Evidence,true),timeout.Token));
+        }
+        finally { File.WriteAllBytes(masterPath,masterBytes); }
         foreach(var id in blocked)
         {
             var bad=await client.DetailAsync(f.A.Context.Id,new(id),timeout.Token);Assert.False(bad.CanPropose);Assert.False(bad.CanApprove);Assert.False(bad.CanContinue);

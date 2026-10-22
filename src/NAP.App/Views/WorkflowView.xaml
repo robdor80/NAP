@@ -45,6 +45,7 @@
               <Button Content="Preparar vista previa" Command="{Binding Propose}"/>
             </StackPanel></Expander>
             <StackPanel Visibility="{Binding HasPreview,Converter={StaticResource Visible}}" Margin="0,12,0,0">
+              <TextBlock Text="{Binding ProfileChange}" Margin="0,0,0,8"/>
               <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                 <StackPanel><TextBlock Text="Original" FontWeight="SemiBold"/><Image Source="{Binding OriginalImage,Converter={StaticResource Png}}" Stretch="Uniform" Height="120" AutomationProperties.Name="Original preservado"/><TextBlock Text="{Binding OriginalSize}" Style="{StaticResource Muted}"/></StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0"><TextBlock Text="Propuesta" FontWeight="SemiBold"/><Image Source="{Binding CandidateImage,Converter={StaticResource Png}}" Stretch="Uniform" Height="120" AutomationProperties.Name="Vista previa de la corrección"/></StackPanel>

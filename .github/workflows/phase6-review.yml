@@ -45,7 +45,7 @@ jobs:
         run: |
           $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
           $captureRoot = Join-Path $PWD 'artifacts/phase6-review2'
-          foreach ($mode in @('review','production','history','exception','approved','blocked','empty','read-error','manual')) {
+          foreach ($mode in @('review','production','history','choice','exception','approved','blocked','empty','read-error','manual')) {
             foreach ($compact in @($false,$true)) {
               $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
               if ($compact) { $captureArguments += '--compact' }
@@ -54,7 +54,7 @@ jobs:
               if ($process.ExitCode -ne 0) { throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
-          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 18) { throw 'Expected eighteen focused WPF renders.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 28) { throw 'Expected twenty-eight focused WPF renders.' }
           git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
           Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
       - name: Clean temporary license before artifacts

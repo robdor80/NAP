@@ -16,7 +16,8 @@ public sealed partial class DurablePreparationService
         var rule = record.BaseProfile.ValidateAndGetRule();
         var path = Path.Combine(_files.Resolve(record.Originals!), "package", admission.AssetId!, rule.PackageFiles.Single(f => f.Role == rule.Conversion!.SourceRole).ResolveFileName(admission.AssetId!));
         var info = new PngMasterValidator().Validate(path).ImageInfo ?? throw AutomationValidation.Invalid("Invalid original image.");
-        if (new Sha256Hasher().Compute(path) != record.MasterHash || 32L * 1024 * 1024 + 16L * info.Width * info.Height > _queue.GetPolicy(record.Policy).Definition.Resources.MaxMemoryBytes)
+        var pixels=checked((long)info.Width*info.Height);
+        if (pixels>PackagePreparationService.MaxInputPixels || new Sha256Hasher().Compute(path) != record.MasterHash || checked(32L * 1024 * 1024 + 16L * pixels) > _queue.GetPolicy(record.Policy).Definition.Resources.MaxMemoryBytes)
             throw AutomationValidation.Invalid("Original identity or preview memory budget differs.");
         return path;
     }
@@ -108,7 +109,7 @@ public sealed partial class DurablePreparationService
         ValidateExceptionalRule(record, preview.EffectiveRule);
         var g = preview.Geometry;
         return new(decision.DecisionId, decision.Version, preview.Hash, decision.State, g.OriginalWidth, g.OriginalHeight, g.CanvasWidth, g.CanvasHeight,
-            decision.OutputWidth, decision.OutputHeight, g.Left, g.Top, g.Right, g.Bottom, ProfileLabel(decision.EffectiveRule.ProductionProfile), Thumbnail(original), Thumbnail(Path.Combine(_files.Resolve(preview.Bundle), "preview.png")));
+            decision.OutputWidth, decision.OutputHeight, g.Left, g.Top, g.Right, g.Bottom, ProfileLabel(decision.EffectiveRule.ProductionProfile), Thumbnail(original), Thumbnail(Path.Combine(_files.Resolve(preview.Bundle), "preview.png")),ProfileLabel(record.BaseProfile.ProductionProfile));
     }
     public void ApproveReview(AutomationQueueOwner owner, ReviewDecisionRequest request, string actor)
     {

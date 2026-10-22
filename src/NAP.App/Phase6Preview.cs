@@ -36,6 +36,7 @@ internal static class Phase6Preview
             if(mode=="manual")shell.Pipeline.ManualExpanded=true;
             else if(work.Rows.Count>0){work.Selected=mode=="history"?work.Rows.First(r=>r.Value.State==QueueState.Completed):work.Rows[0];await work.LastDetail;}
             if(mode is "exception" or "approved" && !work.HasPreview)throw new InvalidOperationException("Missing synthetic correction preview.");
+            if(mode=="choice"&&(!work.HasOptions||work.HasPreview))throw new InvalidOperationException("Missing compatible choice state.");
             if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
         }
         if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
@@ -53,20 +54,40 @@ internal static class Phase6Preview
         var content = (UIElement)window.Content;
         var capture = new Grid { Background = window.Background, Width = width, Height = height };
         window.Content = capture; capture.Children.Add(content);
-        var image = await window.Dispatcher.InvokeAsync(() =>
-        {
-            capture.UpdateLayout();
-            capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height));
-            if (capture.ActualWidth != width || capture.ActualHeight != height) throw new InvalidOperationException("Synthetic layout was constrained by the runner desktop.");
-            var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
-            bitmap.Render(capture); return bitmap;
-        }, DispatcherPriority.Render);
-        if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
         System.IO.Directory.CreateDirectory(output);
-        var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
-        using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}-{width}x{height}.png"));
-        encoder.Save(file);
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
+        async Task Save(string suffix)
+        {
+            var image = await window.Dispatcher.InvokeAsync(() =>
+            {
+                capture.UpdateLayout();
+                capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height));
+                if (capture.ActualWidth != width || capture.ActualHeight != height) throw new InvalidOperationException("Synthetic layout was constrained by the runner desktop.");
+                var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+                bitmap.Render(capture); return bitmap;
+            }, DispatcherPriority.Render);
+            if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
+            var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
+            using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}{suffix}-{width}x{height}.png"));
+            encoder.Save(file);
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, view = suffix, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
+        }
+        await Save("");
+        if(mode is "choice" or "exception" or "approved" or "history")
+        {
+            // Preserve an additional native view of the lower detail, including the real action controls.
+            var detail=Descendants(capture).OfType<ScrollViewer>().Single(v=>v.Name=="ReviewDetailsScroll");
+            detail.ScrollToBottom();
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            await Save("-detalle");
+        }
+    }
+    private static IEnumerable<DependencyObject> Descendants(DependencyObject root)
+    {
+        for(var i=0;i<VisualTreeHelper.GetChildrenCount(root);i++)
+        {
+            var child=VisualTreeHelper.GetChild(root,i);yield return child;
+            foreach(var descendant in Descendants(child))yield return descendant;
+        }
     }
     private sealed class PreviewSource(string mode, IReadOnlyList<UniverseContext> contexts) : IAutomationOverviewClient
     {

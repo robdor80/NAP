@@ -7,7 +7,7 @@ namespace NAP.App;
 /// <summary>In-memory fixture for rendering only; all mutations are rejected.</summary>
 internal sealed class Phase6WorkflowPreview(string mode) : IWorkflowDesktopClient
 {
-    internal static readonly string[] Modes=["production","history","exception","approved","blocked","empty","read-error","manual"];
+    internal static readonly string[] Modes=["production","history","choice","exception","approved","blocked","empty","read-error","manual"];
     private readonly QueueItemId[] _ids=[QueueItemId.Create(),QueueItemId.Create(),QueueItemId.Create(),QueueItemId.Create()];
     private readonly string _decision="decision_"+Guid.NewGuid().ToString("N");
     private readonly QueueBatchId _batch=QueueBatchId.Create();
@@ -28,15 +28,17 @@ internal sealed class Phase6WorkflowPreview(string mode) : IWorkflowDesktopClien
     {
         var row=Rows(u).Single(i=>i.ItemId==request.ItemId);
         var correction=mode is "exception" or "approved";
+        var canChoose=correction||mode=="choice";
         var preview=correction?new ReviewPreview(_decision,mode=="approved"?2:1,new(new string('a',64)),mode=="approved"?ExceptionalDecisionState.Approved:ExceptionalDecisionState.Proposed,
-            768,950,768,960,768,960,0,5,0,5,"Retrato",Pattern(false),Pattern(true)):null;
+            768,954,768,960,768,960,0,3,0,3,"Retrato",Pattern(false),Pattern(true)):null;
         return Task.FromResult(new WorkflowDetail(u,row,[new(row.ItemId,4,Utc,row.State==QueueState.Completed?QueueStage.Catalog:QueueStage.Review,QueueEventCode.Transitioned,row.State==QueueState.Completed?QueueEventResult.Succeeded:QueueEventResult.ReviewRequired,row.State,row.Incident,null),new(row.ItemId,1,Utc.AddMinutes(-20),QueueStage.Observation,QueueEventCode.Observed,QueueEventResult.Recorded,QueueState.Observed,QueueIncident.None,null)],false,
-            correction?[new("synthetic-choice","Retrato · 768 × 960 (4:5)","Retrato",768,960)]:[],preview,Pattern(false),correction,mode=="exception",mode=="approved"));
+            canChoose?[new("synthetic-choice","Retrato · 768 × 960 (4:5)","Retrato",768,960)]:[],preview,Pattern(false),canChoose,mode=="exception",mode=="approved",correction?[new(Utc,mode=="approved"?ExceptionalDecisionState.Approved:ExceptionalDecisionState.Proposed,"Retrato",768,960)]:[]));
     }
     internal static byte[] Pattern(bool border)
     {
-        using var image=new Image<Rgba32>(128,160);
-        for(var y=0;y<160;y++)for(var x=0;x<128;x++)
+        var height=border?160:159;
+        using var image=new Image<Rgba32>(128,height);
+        for(var y=0;y<height;y++)for(var x=0;x<128;x++)
         {
             var face=(x-64)*(x-64)+(y-55)*(y-55)<24*24;
             var shoulders=y>95&&Math.Abs(x-64)<(y-80)/2;

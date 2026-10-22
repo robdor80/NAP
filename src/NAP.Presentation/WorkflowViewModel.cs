@@ -127,13 +127,14 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public string ItemState=>_detail is null?"":WorkflowWords.State(_detail.Item.State);
     public string Dates=>_detail is null?"":$"Recibido: {WorkflowWords.Date(_detail.Item.CreatedUtc)} · Actualizado: {WorkflowWords.Date(_detail.Item.UpdatedUtc)}";
     public string Problem=>_detail is null?"":AutomationControlViewModel.Problem(_detail.Item.Incident);
-    public string Guidance=>_detail?.Preview?.State==ExceptionalDecisionState.Approved
+    public string Guidance=>_detail?.ReadNotice is {} note?note:_detail?.Preview?.State==ExceptionalDecisionState.Approved
         ? _detail.CanContinue?"Corrección aprobada para este asset.":"Corrección guardada. Revisa la autorización y reanuda este universo para continuar."
         :_detail is null?"":HasOptions?WorkflowWords.Guidance(_detail.Item.Incident):NeedsReview?BlockedGuidance():"";
     private string BlockedGuidance()=>_detail!.Item.Incident is QueueIncident.RatioUnsupported or QueueIncident.NormalizationLimitExceeded or QueueIncident.ExceptionDecisionRequired
         ?"No hay una corrección autorizada disponible. Revisa la imagen y la autorización de este universo.":WorkflowWords.Guidance(_detail.Item.Incident);
     public IReadOnlyList<ReviewChoice> Choices=>_detail?.Choices??[];
     public ReviewChoice? Choice {get=>_choice;set{if(Set(ref _choice,value)){if(_detail?.Preview!=null){_detail=_detail with{Preview=null,CanApprove=false,CanContinue=false};NotifyDetail();}RefreshCommands();}}}
+    public string ProfileChange=>_detail?.Preview is {} p?string.IsNullOrEmpty(p.OriginalProfile)||p.OriginalProfile==p.Profile?"Perfil: "+p.Profile:p.OriginalProfile+" → "+p.Profile:"";
     public string OriginalSize=>_detail?.Preview is {} p?$"{p.OriginalWidth} × {p.OriginalHeight}":"Original preservado";
     public string CandidateSize=>_detail?.Preview is {} p?$"Lienzo: {p.CanvasWidth} × {p.CanvasHeight} · Salida: {p.OutputWidth} × {p.OutputHeight}":"";
     public string Transformation=>_detail?.Preview is {} p?$"Bordes añadidos: {p.Left} izquierda, {p.Top} arriba, {p.Right} derecha, {p.Bottom} abajo. Sin recorte.":"";
@@ -191,18 +192,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     }
     public async Task OpenItemAsync(QueueItemId item)
     {
-        if(_disposed||_client==null||_context() is not {} c)return;
-        var scope=_scope;
-        try
-        {
-            var value=await _client.DetailAsync(c.Id,new(item),_lifetime.Token);
-            if(!Current(scope,c))return;
-            if(value.UniverseId!=c.Id||value.Item.UniverseId!=c.Id||value.Item.ItemId!=item)throw new InvalidDataException();
-            var match=Rows.FirstOrDefault(r=>r.Value.ItemId==item);
-            if(match!=null){Selected=match;await LastDetail;}
-            else {_focusedItem=item;_selected=null;Notify(nameof(Selected));ClearDetail();await LoadDetailAsync();}
-        }
-        catch(Exception){if(Current(scope,c))DetailStatus="No se pudo consultar la incidencia";}
+        if(_disposed||_client==null||_context() is null)return;
+        // Navigation retains only the requested identity; the bounded host read supplies every fact.
+        _focusedItem=item;_selected=Rows.FirstOrDefault(r=>r.Value.ItemId==item);Notify(nameof(Selected));
+        _eventOffset=0;ClearDetail();await LoadDetailAsync();
     }
     private Task LoadEvents(int by){_eventOffset=Math.Max(0,_eventOffset+by);return LoadDetailAsync();}
     private async Task Change(AutomationOperation operation)
@@ -212,7 +205,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(operation==AutomationOperation.ReviewApprove)
         {
             if(preview==null||!await _confirmation.ConfirmAsync(new("Aprobar corrección", "Solo este asset. El original se conserva; la imagen volverá a pasar sus verificaciones.", c.Id,
-                [d.Item.Name,preview.Profile,$"Lienzo: {preview.CanvasWidth} × {preview.CanvasHeight}",$"Salida: {preview.OutputWidth} × {preview.OutputHeight}"],c.Profile.DisplayName),_lifetime.Token))return;
+                [d.Item.Name,ProfileChange,$"Lienzo: {preview.CanvasWidth} × {preview.CanvasHeight}",$"Salida: {preview.OutputWidth} × {preview.OutputHeight}"],c.Profile.DisplayName),_lifetime.Token))return;
             if(!Current(scope,c)||_detail!=d)return;
         }
         object request=operation==AutomationOperation.ReviewPropose?new ReviewProposalRequest(d.Item.ItemId,d.Item.Revision,choice!.Key)
@@ -228,7 +221,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
         finally{_changing=false;RefreshCommands();}
     }
-    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation)})Notify(n);RefreshCommands();}
+    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;Events.Clear();Decisions.Clear();NotifyDetail();}
     private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,NextEvents,PreviousEvents})command.Refresh();}
     private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}
