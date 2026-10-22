@@ -116,7 +116,9 @@ internal static class Phase6Preview
         var preview=model.Comparison!;
         var original=System.Security.Cryptography.SHA256.HashData(preview.OriginalImage);
         var candidate=System.Security.Cryptography.SHA256.HashData(preview.CandidateImage);
-        var window=new ComparisonWindow(model){Owner=owner};window.Show();
+        // The product content keeps its Window namescope and logical parent, while an
+        // unshown Window avoids all native desktop clipping during this offscreen capture.
+        var window=new ComparisonWindow(model);
         var content=(UIElement)window.Content;
         var capture=new Grid{Background=window.Background,Width=width,Height=height};
         window.Content=capture;capture.Children.Add(content);
@@ -144,6 +146,7 @@ internal static class Phase6Preview
                 if(diagnostics.Errors!=0)throw new InvalidOperationException("Comparison binding errors: "+diagnostics.Errors);
                 var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
                 using var file=System.IO.File.Create(System.IO.Path.Combine(output,$"comparacion-{(zoom==1?"ampliada":"zoom-200")}-{width}x{height}.png"));encoder.Save(file);
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{comparison=true,synthetic=true,offscreenLayout=true,zoom,width,height,bindingErrors=diagnostics.Errors,marginGuides=2}));
             }
             if(!original.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.OriginalImage))||!candidate.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.CandidateImage)))
                 throw new InvalidOperationException("Read-only comparison changed its buffers.");

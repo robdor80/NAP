@@ -50,9 +50,12 @@ jobs:
             foreach ($compact in @($false,$true)) {
               $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
               if ($compact) { $captureArguments += '--compact' }
-              $process = Start-Process $appPath -ArgumentList $captureArguments -PassThru
+              $captureLabel = "$mode-$(if ($compact) {'compact'} else {'normal'})"
+              $errorPath = Join-Path $captureRoot "$captureLabel.stderr.txt"
+              $outputPath = Join-Path $captureRoot "$captureLabel.stdout.txt"
+              $process = Start-Process $appPath -ArgumentList $captureArguments -RedirectStandardError $errorPath -RedirectStandardOutput $outputPath -PassThru
               if (-not $process.WaitForExit(60000)) { $process.Kill(); throw "Preview timed out: $mode" }
-              if ($process.ExitCode -ne 0) { throw "Preview failed: $mode ($($process.ExitCode))" }
+              if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
           if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 25) { throw 'Expected twenty-five focused WPF polish renders.' }
