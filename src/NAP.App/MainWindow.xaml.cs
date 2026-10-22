@@ -10,16 +10,22 @@ public partial class MainWindow : Window
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
         if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
         var licenseCheckDate=DateTime.Now.Date;
+        var licenseRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
+        licenseRefresh.Tick += async (_,_) =>
+        {
+            if(DateTime.Now.Date==licenseCheckDate)return;
+            licenseCheckDate=DateTime.Now.Date;
+            await shell.Settings.Licenses!.CheckAsync();
+        };
         var hostRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         hostRefresh.Tick += async (_, _) =>
         {
-            if(DateTime.Now.Date != licenseCheckDate) { licenseCheckDate=DateTime.Now.Date; await shell.Settings.Licenses!.CheckAsync(); }
             if(shell.Automation is not null)await shell.Automation.Refresh.ExecuteAsync();
             if(shell.CurrentPage==shell.Pipeline&&!shell.Pipeline.ManualExpanded)await shell.Pipeline.Work!.Poll.ExecuteAsync();
             else if(shell.CurrentPage==shell.History)await shell.History.Work!.Poll.ExecuteAsync();
         };
         Closing += (_, e) => { if (shell.IsExecuting && shell.Automation is null) { e.Cancel = true; MessageBox.Show(this, "Espera a que termine la operación explícita del Core.", "NAP", MessageBoxButton.OK, MessageBoxImage.Information); } };
-        Closed += (_, _) => { hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
+        Closed += (_, _) => { licenseRefresh.Stop(); hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
         SizeChanged += (_,_)=> { if(phase6Preview is null) shell.IsCompact=ActualWidth<=1220||ActualHeight<=760; };
         StateChanged += (_, _) => { if (WindowState == WindowState.Minimized && shell.MinimizeToTray) _tray.Hide(); };
         Loaded += async (_, _) =>
@@ -33,7 +39,8 @@ public partial class MainWindow : Window
                 catch (Exception error) { Console.Error.WriteLine("phase6_preview_failed:" + error); Application.Current.Shutdown(5); }
                 return;
             }
-            hostRefresh.Start();
+            licenseRefresh.Start();
+            if (shell.Automation is not null) hostRefresh.Start();
             if (automationSmoke)
             {
                 try { await AutomationSmokeProbe.RunAsync(this, shell, diagnostics, smokeOutput); Application.Current.Shutdown(0); }
