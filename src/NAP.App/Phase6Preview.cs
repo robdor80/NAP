@@ -22,7 +22,7 @@ internal static class Phase6Preview
         var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
         var workflow=new Phase6WorkflowPreview(mode);
-        var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
+        var automation = mode == "local" || Phase6SettingsPreview.Modes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
         return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
@@ -96,10 +96,15 @@ internal static class Phase6Preview
         if(mode=="diagnostics-export")
         {
             await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            var copyButton=Descendants(capture).OfType<Button>().Single(v=>v.Name=="CopyReportButton");
+            copyButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            if(!Clipboard.ContainsText()||Clipboard.GetText()!=shell.Settings.Diagnostics!.Report)throw new InvalidOperationException("Native diagnostic clipboard differs.");
             var expander=Descendants(capture).OfType<Expander>().Single(v=>v.Name=="ReportPreview");
             expander.IsExpanded=true;expander.BringIntoView();
             await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
-            System.IO.File.WriteAllText(System.IO.Path.Combine(output,$"diagnostic-report-{width}x{height}.txt"),shell.Settings.Diagnostics!.Report);
+            DiagnosticReportWriter.Export(System.IO.Path.GetFullPath(System.IO.Path.Combine(output,$"diagnostic-report-{width}x{height}.txt")),shell.Settings.Diagnostics!.Report,[],System.IO.Path.Combine(System.IO.Path.GetTempPath(),"nap-preview-unused-admin"));
+            if(System.IO.File.ReadAllText(System.IO.Path.Combine(output,$"diagnostic-report-{width}x{height}.txt"))!=shell.Settings.Diagnostics!.Report)throw new InvalidOperationException("Exported diagnostic bytes differ.");
+            Console.WriteLine("diagnostic_native_clipboard_and_new_text_export_verified");
         }
         await Save("");
         if(mode=="review"&&compact)

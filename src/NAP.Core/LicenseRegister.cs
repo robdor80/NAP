@@ -11,7 +11,13 @@ public sealed record AdministrativeLicense(string Key, string Name, string Assoc
 public sealed record LicenseRegistry(int Version, IReadOnlyList<AdministrativeLicense> Licenses);
 
 /// <summary>Administrative metadata only. This component has no API for opening a vendor license.</summary>
-public sealed class LicenseRegister
+public interface ILicenseRegister
+{
+    LicenseRegistry Check(DateOnly today);
+    LicenseRegistry Attend(string key, DateOnly today);
+    LicenseRegistry Renew(string key, DateOnly expiry, DateOnly today);
+}
+public sealed class LicenseRegister : ILicenseRegister
 {
     public static string DefaultPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "license-reminders.json");
     private readonly string _path;
@@ -32,12 +38,14 @@ public sealed class LicenseRegister
     public static LicenseReminder? Pending(AdministrativeLicense license) => license.Reminders
         .Where(r => r.Expiry == license.Expiry && r.Attended is null).OrderByDescending(r => r.Kind).FirstOrDefault();
     public LicenseRegistry Check(DateOnly today) => Change(r => Evaluate(r, today));
-    public LicenseRegistry Attend(string key, DateOnly today) => Change(r => Evaluate(r, today) with
+    public LicenseRegistry Attend(string key, DateOnly today) => Change(r => MarkAttended(r,key,today));
+    public static LicenseRegistry MarkAttended(LicenseRegistry r, string key, DateOnly today) => Evaluate(r, today) with
     {
         Licenses = Evaluate(r, today).Licenses.Select(l => l.Key != key ? l : l with
         { Reminders = l.Reminders.Select(n => n.Expiry == l.Expiry && n.Attended is null ? n with { Attended = today } : n).ToArray() }).ToArray()
-    });
-    public LicenseRegistry Renew(string key, DateOnly expiry, DateOnly today) => Change(r =>
+    };
+    public LicenseRegistry Renew(string key, DateOnly expiry, DateOnly today) => Change(r => RecordRenewal(r,key,expiry,today));
+    public static LicenseRegistry RecordRenewal(LicenseRegistry r, string key, DateOnly expiry, DateOnly today)
     {
         var old = r.Licenses.Single(l => l.Key == key);
         if (expiry <= today || expiry <= old.Expiry) throw new ArgumentException("La nueva fecha debe ser posterior a hoy y al vencimiento registrado.");
@@ -46,7 +54,7 @@ public sealed class LicenseRegister
             Expiry = expiry, Reminders = l.Reminders.Select(n => n.Attended is null ? n with { Attended = today } : n).ToArray(),
             Renewals = l.Renewals.Append(new LicenseRenewal(today, l.Expiry, expiry)).TakeLast(50).ToArray()
         }).ToArray() }, today);
-    });
+    }
     public LicenseRegistry Read()
     {
         Guard(); if (!File.Exists(_path)) return Initial();

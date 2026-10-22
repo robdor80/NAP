@@ -1,4 +1,8 @@
-<UserControl x:Class="NAP.App.Views.DiagnosticView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+<UserControl x:Class="NAP.App.Views.DiagnosticView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls" xmlns:p="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework" Language="es-ES">
+  <UserControl.Resources>
+    <Style TargetType="DatePicker"><Setter Property="Background" Value="{StaticResource CardBrush}" /><Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="BorderBrush" Value="{StaticResource MutedBrush}" /></Style>
+    <Style TargetType="p:DatePickerTextBox"><Setter Property="Background" Value="{StaticResource CardBrush}" /><Setter Property="Foreground" Value="{StaticResource TextBrush}" /></Style>
+  </UserControl.Resources>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel>
       <c:RobTitledFrame Header="DIAGNÓSTICO">
@@ -10,7 +14,7 @@
             <ComboBox ItemsSource="{Binding Severities}" SelectedItem="{Binding Severity}" DisplayMemberPath="Label" Width="200" AutomationProperties.Name="Gravedad" />
             <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" DisplayMemberPath="Label" Width="210" AutomationProperties.Name="Categoría" />
           </WrapPanel>
-          <WrapPanel Margin="0,8,0,8"><Button Content="Consultar" Style="{StaticResource Primary}" Command="{Binding Refresh}" /><Button Content="Información local" Click="ShowLocal" /><Button Content="Copiar informe" Click="CopyReport" /><Button Content="Exportar informe…" Click="ExportReport" /></WrapPanel>
+          <WrapPanel Margin="0,8,0,8"><Button Content="Consultar" Style="{StaticResource Primary}" Command="{Binding Refresh}" /><Button Content="Información local" Click="ShowLocal" /><Button x:Name="CopyReportButton" Content="Copiar informe" Click="CopyReport" /><Button Content="Exportar informe…" Click="ExportReport" /></WrapPanel>
           <TextBlock Text="{Binding Notice}" AutomationProperties.LiveSetting="Polite" />
           <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" MaxHeight="290" MinHeight="80" Margin="0,12,0,8" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Registros de diagnóstico">
             <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,6"><WrapPanel><TextBlock Text="{Binding When}" Style="{StaticResource Muted}" Margin="0,0,16,0" /><TextBlock Text="{Binding Level}" FontWeight="SemiBold" Margin="0,0,16,0" /><TextBlock Text="{Binding Area}" /></WrapPanel><TextBlock Text="{Binding Message}" /></StackPanel></DataTemplate></ListBox.ItemTemplate>

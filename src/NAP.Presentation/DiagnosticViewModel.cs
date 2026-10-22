@@ -30,6 +30,7 @@ public sealed record DiagnosticRow(DateTimeOffset? Utc, DiagnosticSeverity Sever
         QueueIncident.AssetCollision or QueueIncident.ReservationOccupied => "Posible colisión de assets",
         QueueIncident.PolicyInactive => "La autorización requiere revisión",
         { } i when i != QueueIncident.None => "La operación necesita revisión",
+        _ when ManualState == JobState.Completed => "Operación completada",
         _ => Severity == DiagnosticSeverity.Error ? "La operación se ha detenido" : Severity == DiagnosticSeverity.Warning ? "Revisa la operación" : "Actividad registrada"
     };
     // Closed enum vocabulary only. Never pass arbitrary messages, IDs, names, paths or credentials to reports.
@@ -124,6 +125,8 @@ public sealed class DiagnosticViewModel : ObservableObject, IDisposable
     public async Task ShowLocalAsync()
     {
         ContextChanged();var generation=++_generation;var universe=_universe();_isLocal=true;Notify(nameof(Source));
+        try
+        {
         var local=_local();
         if(_persisted is not null)
         {
@@ -134,6 +137,8 @@ public sealed class DiagnosticViewModel : ObservableObject, IDisposable
         foreach(var row in local.Where(r=>(From is null||r.Utc>=new DateTimeOffset(From.Value.Date))&&(Until is null||r.Utc<new DateTimeOffset(Until.Value.Date.AddDays(1)))&&
             (Severity?.Value is null||r.Severity==Severity.Value)&&(Category?.Value is null||r.Category==Category.Value)).Take(100))Rows.Add(row);
         Notice=$"{Rows.Count} registros locales · muestra disponible";Selected=Rows.FirstOrDefault();Notify(nameof(Report));
+        }
+        catch(Exception){if(generation==_generation){Rows.Clear();Selected=null;Notice="No se pudieron leer los registros locales";Notify(nameof(Report));}}
     }
     private void Fail(Exception _) { Notice="No se pudo completar la consulta"; }
     public void Dispose(){_disposed=true;ContextChanged();_read?.Dispose();}

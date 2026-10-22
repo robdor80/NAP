@@ -12,9 +12,16 @@ internal sealed class Phase6SettingsPreview(string mode) : IDiagnosticDesktopCli
     };
     internal static LicenseViewModel Licenses(string mode)
     {
-        var today=Date(mode);var vm=new LicenseViewModel(null,()=>today);var registry=LicenseRegister.Initial();
+        var today=Date(mode);var registry=LicenseRegister.Initial();
         if(mode=="licenses-renewed")registry=registry with{Licenses=registry.Licenses.Select(l=>l with{Expiry=new(2029,1,18),Renewals=[new(today,l.Expiry,new(2029,1,18))]}).ToArray()};
-        vm.Apply(LicenseRegister.Evaluate(registry,today));return vm;
+        var store=new MemoryRegister(registry);var vm=new LicenseViewModel(store,()=>today);vm.Apply(store.Check(today));return vm;
+    }
+    private sealed class MemoryRegister(LicenseRegistry initial) : ILicenseRegister
+    {
+        private LicenseRegistry _value=initial;
+        public LicenseRegistry Check(DateOnly today)=>_value=LicenseRegister.Evaluate(_value,today);
+        public LicenseRegistry Attend(string key,DateOnly today)=>_value=LicenseRegister.MarkAttended(_value,key,today);
+        public LicenseRegistry Renew(string key,DateOnly expiry,DateOnly today)=>_value=LicenseRegister.RecordRenewal(_value,key,expiry,today);
     }
     public Task<DiagnosticPage> ReadAsync(UniverseId universe,DiagnosticQuery query,CancellationToken cancellation)
     {

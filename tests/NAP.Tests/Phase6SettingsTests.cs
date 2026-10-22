@@ -31,12 +31,12 @@ public sealed class Phase6SettingsTests
         try
         {
             var path=Path.Combine(root,"administrative.json");var today=new DateOnly(2027,12,23);
-            var vm=new LicenseViewModel(new(path),()=>today);await vm.CheckAsync();
+            var vm=new LicenseViewModel(new LicenseRegister(path),()=>today);await vm.CheckAsync();
             Assert.NotEmpty(vm.PendingNotice);Assert.Equal(2,vm.Selected!.Value.Reminders.Count);
             await vm.Attend.ExecuteAsync();Assert.Empty(vm.PendingNotice);
             var store=new LicenseRegister(path);var bytes=File.ReadAllBytes(path);Assert.Null(LicenseRegister.Pending(store.Check(today).Licenses.Single()));
             Assert.Equal(bytes,File.ReadAllBytes(path));
-            today=new(2028,1,12);var restarted=new LicenseViewModel(new(path),()=>today);await restarted.CheckAsync();
+            today=new(2028,1,12);var restarted=new LicenseViewModel(new LicenseRegister(path),()=>today);await restarted.CheckAsync();
             Assert.Equal(LicenseReminderKind.SevenDays,LicenseRegister.Pending(restarted.Selected!.Value)!.Kind);
             restarted.RenewalDate=new DateTime(2029,1,18);await restarted.Renew.ExecuteAsync();
             Assert.Empty(restarted.PendingNotice);Assert.Single(restarted.Selected!.Value.Renewals);
@@ -101,6 +101,8 @@ public sealed class Phase6SettingsTests
         using var vm=new DiagnosticViewModel(client,()=>selected,()=>[]);var read=vm.Refresh.ExecuteAsync();selected=b;vm.ContextChanged();pending.SetResult(new(a,[],false,0));await read;Assert.Empty(vm.Rows);
         client.Read=(_,_,_)=>Task.FromResult(new DiagnosticPage(a,[],false,0));await vm.Refresh.ExecuteAsync();Assert.Contains("No se pudo",vm.Notice);
         client.Read=(_,_,_)=>throw new IOException("secret path");await vm.Refresh.ExecuteAsync();Assert.DoesNotContain("secret",vm.Report);await vm.ShowLocalAsync();Assert.Contains("local",vm.Source);
+        using var broken=new DiagnosticViewModel(null,()=>selected,()=>throw new IOException("private local secret"));
+        await broken.ShowLocalAsync();Assert.Contains("No se pudieron",broken.Notice);Assert.DoesNotContain("private",broken.Report);
     }
     [Fact]
     public void ReportExportCreatesOnlyANewTextFileAndNeverOverwritesAnySource()
@@ -136,6 +138,22 @@ public sealed class Phase6SettingsTests
         var result=LocalDiagnosticReader.Read(f.Context,CancellationToken.None);Assert.Single(result.States);Assert.True(result.ReadError);Assert.False(result.More);
         foreach(var file in before)Assert.Equal(file.Value,SHA256.HashData(File.ReadAllBytes(file.Key)));
         f.AssertUntouched();
+    }
+    [Fact]
+    public void RegisterSupportsIndependentLicensesAndRejectsDuplicateJsonFields()
+    {
+        var initial=LicenseRegister.Initial();var imageSharp=initial.Licenses.Single();
+        var other=imageSharp with{Key="synthetic-second-license",Name="Licencia sintética",AssociatedFile="metadata-only",Expiry=new(2030,1,1)};
+        var value=LicenseRegister.Evaluate(initial with{Licenses=[imageSharp,other]},new(2028,1,18));
+        Assert.Equal(4,value.Licenses[0].Reminders.Count);Assert.Empty(value.Licenses[1].Reminders);
+        var attended=LicenseRegister.MarkAttended(value,imageSharp.Key,new(2028,1,18));Assert.Null(LicenseRegister.Pending(attended.Licenses[0]));
+        var root=Path.Combine(Path.GetTempPath(),"nap-license-test-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
+        try
+        {
+            var path=Path.Combine(root,"metadata.json");var text="{\"Version\":1,\"Version\":1,\"Licenses\":[]}";File.WriteAllText(path,text);
+            Assert.Throws<InvalidDataException>(()=>new LicenseRegister(path).Check(new(2028,1,18)));Assert.Equal(text,File.ReadAllText(path));
+        }
+        finally{Directory.Delete(root,true);}
     }
     private sealed class FakeDiagnostics(Func<UniverseId,DiagnosticQuery,CancellationToken,Task<DiagnosticPage>> read):IDiagnosticDesktopClient
     {

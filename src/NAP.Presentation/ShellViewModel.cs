@@ -399,8 +399,6 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             a.Tone==UiTone.Error?DiagnosticSeverity.Error:a.Tone==UiTone.Warning?DiagnosticSeverity.Warning:DiagnosticSeverity.Information,null,null,null,null,null,a.Code)).ToList();
         if(Explorer.Error is not null)rows.Insert(0,new(null,DiagnosticSeverity.Error,null,null,null,null,null,Explorer.Error.Code));
         foreach(var page in Pages.Where(p=>p.Notice is not null))rows.Add(new(null,page.Notice!.Tone==UiTone.Error?DiagnosticSeverity.Error:DiagnosticSeverity.Warning,null,null,null,null,null,page.Notice.Code));
-        foreach(var job in History.Jobs.Concat(Pipeline.Jobs).DistinctBy(j=>j.Record.JobId).Take(30))
-            rows.Add(new(null,job.Record.State==JobState.Failed?DiagnosticSeverity.Error:DiagnosticSeverity.Information,QueueStage.Preparation,null,null,null,null,ManualState:job.Record.State));
         return rows.Take(100).ToArray();
     }
     private void Record(UniverseContext c, string message, UiTone tone, string? code = null)

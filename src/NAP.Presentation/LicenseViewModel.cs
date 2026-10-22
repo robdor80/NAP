@@ -18,20 +18,22 @@ public sealed record LicenseDisplay(AdministrativeLicense Value, DateOnly Today)
 }
 public sealed class LicenseViewModel : ObservableObject
 {
-    private readonly LicenseRegister? _store;
+    private readonly ILicenseRegister? _store;
+    private readonly SemaphoreSlim _operations = new(1,1);
     private readonly Func<DateOnly> _today;
     private LicenseRegistry _value = new(1, []);
     private DateTime? _renewal;
     private string _notice = "";
     private string? _selectedKey;
-    public LicenseViewModel(LicenseRegister? store, Func<DateOnly>? today = null)
+    public LicenseViewModel(ILicenseRegister? store, Func<DateOnly>? today = null)
     {
         _store = store; _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
         Check = new(CheckAsync, () => _store is not null, Failed);
-        Attend = new(async () => Apply(await Task.Run(() => _store!.Attend(Selected!.Value.Key, _today()))), () => _store is not null && Selected is not null && LicenseRegister.Pending(Selected.Value) is not null, Failed);
+        Attend = new(async () => { var key=Selected!.Value.Key;await RunAsync(() => _store!.Attend(key,_today())); }, () => _store is not null && Selected is not null && LicenseRegister.Pending(Selected.Value) is not null, Failed);
         Renew = new(async () =>
         {
-            Apply(await Task.Run(() => _store!.Renew(Selected!.Value.Key, DateOnly.FromDateTime(RenewalDate!.Value), _today())));
+            var key=Selected!.Value.Key;var expiry=DateOnly.FromDateTime(RenewalDate!.Value);
+            await RunAsync(() => _store!.Renew(key,expiry,_today()));
             Notice = "Renovación registrada"; RenewalDate = null;
         }, () => _store is not null && Selected is not null && RenewalDate is { } d && DateOnly.FromDateTime(d) > Selected.Value.Expiry && DateOnly.FromDateTime(d) > _today(), Failed);
     }
@@ -46,8 +48,14 @@ public sealed class LicenseViewModel : ObservableObject
     public async Task CheckAsync()
     {
         if (_store is null) return;
-        try { Apply(await Task.Run(() => _store.Check(_today()))); Notice = ""; }
+        try { await RunAsync(() => _store.Check(_today())); Notice = ""; }
         catch (Exception) { Failed(null!); }
+    }
+    private async Task RunAsync(Func<LicenseRegistry> operation)
+    {
+        await _operations.WaitAsync();
+        try { Apply(await Task.Run(operation)); }
+        finally { _operations.Release(); }
     }
     public void Apply(LicenseRegistry registry)
     { _value = registry; Notify(nameof(Licenses)); Notify(nameof(Selected)); Notify(nameof(PendingNotice)); Attend.Refresh(); Renew.Refresh(); }
