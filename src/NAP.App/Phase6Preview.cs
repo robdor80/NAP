@@ -44,6 +44,7 @@ internal static class Phase6Preview
             if(mode == "historical-ambiguous") vm.Selected = vm.Rows.Single(r => r.Reference.EndsWith("004"));
             if(mode == "historical-duplicate") vm.Selected = vm.Rows[0];
             if(mode == "historical-unknown") vm.Selected = vm.Rows.Single(r => r.Status == HistoricalSimulationStatus.Unverifiable);
+            if(vm.Selected?.Issues.Count > 0) vm.SelectedIssue = vm.Selected.Issues.Last();
             if(mode == "historical-empty") { vm.Group = vm.Groups.Single(g => g.Value == "children"); vm.Status = vm.Statuses.Single(s => s.Value == HistoricalSimulationStatus.Unverifiable); if(vm.Rows.Count != 0) throw new InvalidOperationException("Expected empty historical filter."); }
             if(mode == "historical-context")
             {
@@ -161,6 +162,12 @@ internal static class Phase6Preview
             detail.ScrollToVerticalOffset(detail.VerticalOffset + top);
             await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             await Save("-detalle");
+            if(shell.Settings.Historical.SelectedIssue is not null)
+            {
+                detail.ScrollToBottom();
+                await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
+                await Save("-incidencia");
+            }
         }
         if(mode=="review"&&compact)
         {

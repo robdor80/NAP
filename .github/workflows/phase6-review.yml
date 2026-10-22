@@ -60,7 +60,7 @@ jobs:
               if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
-          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 28) { throw 'Expected twenty-eight focused historical WPF renders.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 34) { throw 'Expected thirty-four focused historical WPF renders.' }
           git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
           Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
       - name: Clean temporary license before artifacts
