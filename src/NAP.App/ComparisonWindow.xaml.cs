@@ -22,11 +22,11 @@ public partial class ComparisonWindow : Window
     {if(e.PropertyName==nameof(WorkflowViewModel.HasPreview)&&!_model.HasPreview)Close();}
     private void FitImages()
     {
-        if(ImageScroll.ActualWidth>0&&ImageScroll.ActualHeight>0)
+        if(ImageScroll.RenderSize.Width>0&&ImageScroll.RenderSize.Height>0)
         {
             // 1x means fit to the current viewport; larger values scroll on both axes.
-            ImageStage.Width=Math.Max(200,ImageScroll.ActualWidth-32);
-            ImageStage.Height=Math.Max(180,ImageScroll.ActualHeight-32);
+            ImageStage.Width=Math.Max(200,ImageScroll.RenderSize.Width-32);
+            ImageStage.Height=Math.Max(180,ImageScroll.RenderSize.Height-32);
         }
     }
     private void ZoomIn(object sender,RoutedEventArgs e)=>ZoomValue=Math.Min(3,ZoomValue+.25);

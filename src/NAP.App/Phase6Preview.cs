@@ -126,21 +126,24 @@ internal static class Phase6Preview
         {
             foreach(var zoom in new[]{1d,2d})
             {
+                await window.Dispatcher.InvokeAsync(()=>
+                {
+                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));capture.UpdateLayout();
+                    window.PrepareCapture(zoom);capture.UpdateLayout();
+                },DispatcherPriority.Render);
+                // Hidden content still needs the normal binding/ScrollChanged dispatcher cycle.
+                await window.Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ContextIdle);
                 var bitmap=await window.Dispatcher.InvokeAsync(()=>
                 {
-                    // Flush ordinary Window layout first. Never let a later UpdateLayout reapply
-                    // the runner's physical client bounds after this fixed offscreen arrangement.
                     capture.UpdateLayout();
-                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));
-                    window.PrepareCapture(zoom);
-                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));
+                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));capture.UpdateLayout();
                     var clip=VisualTreeHelper.GetClip(capture);
                     if(clip is not null&&!clip.Bounds.Contains(new Rect(0,0,width,height)))throw new InvalidOperationException("Comparison capture was clipped by the physical desktop.");
                     var image=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);image.Render(capture);
                     var guides=Descendants(capture).OfType<Controls.ComparisonBorderGuides>().Single();
                     if(guides.VisibleGuides!=2)throw new InvalidOperationException("Expected two visible margin guides.");
                     var scroll=(ScrollViewer)window.FindName("ImageScroll");
-                    if(zoom==2&&(scroll.ScrollableHeight<=0||scroll.ScrollableWidth<=0))throw new InvalidOperationException("Zoom must scroll on both axes.");
+                    if(zoom==2&&(scroll.ScrollableHeight<=0||scroll.ScrollableWidth<=0))throw new InvalidOperationException($"Zoom must scroll on both axes: {scroll.ExtentWidth} × {scroll.ExtentHeight} / {scroll.ViewportWidth} × {scroll.ViewportHeight}.");
                     return image;
                 },DispatcherPriority.Render);
                 if(diagnostics.Errors!=0)throw new InvalidOperationException("Comparison binding errors: "+diagnostics.Errors);
