@@ -25,6 +25,12 @@ public sealed partial class AutomationQueueStore
             return (total, items);
         });
     }
+    public IReadOnlyList<ExceptionalConfigurationDecision> BrowseDecisions(QueueItemId item, int offset)
+    {
+        if(offset<0)throw AutomationValidation.Invalid("Invalid decision offset.");
+        return Read(db=>{Item(db,null,item);return Payloads<ExceptionalConfigurationDecision>(db,null,
+            "SELECT payload FROM decisions WHERE item_id=$i ORDER BY json_extract(payload,'$.Utc') DESC,version DESC LIMIT 21 OFFSET $o","$i",item.Value,"$o",offset);});
+    }
     public IReadOnlyList<QueueEvent> BrowseEvents(QueueItemId item, int offset)
     {
         if (offset < 0) throw AutomationValidation.Invalid("Invalid event offset.");

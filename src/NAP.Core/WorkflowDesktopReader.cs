@@ -11,7 +11,7 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
             try { name = new InboxAdmissionService(context, queue).GetReceipt(item.Id).AssetId ?? name; }
             catch (AutomationException e) when (e.Code == AutomationError.Missing) { }
         }
-        return new(item.Id, item.UniverseId, name, item.State, item.Incident, item.CreatedUtc, item.UpdatedUtc, item.BatchId, item.Revision);
+        return new(item.Id, item.UniverseId, name.Replace('_', ' '), item.State, item.Incident, item.CreatedUtc, item.UpdatedUtc, item.BatchId, item.Revision, Path.GetFileName(item.SourcePath));
     }
     public WorkflowPage Browse(WorkflowPageRequest request)
     {
@@ -22,6 +22,7 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
     {
         var item = queue.Get(request.ItemId); var service = new DurablePreparationService(context, queue);
         var events = queue.BrowseEvents(item.Id, request.EventOffset);
+        var decisions = queue.BrowseDecisions(item.Id, request.EventOffset);
         // A missing/corrupt image does not hide the durable incident or fabricate a preview.
         byte[]? image = null; ReviewPreview? preview = null; IReadOnlyList<ReviewChoice> choices = [];
         try
@@ -32,8 +33,9 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
         }
         catch (Exception e) when (e is AutomationException or IOException or UnauthorizedAccessException or ImageNormalizationException or PackagePreparationStoppedException)
         { capabilities = new(false, false, false); image = null; preview = null; choices = []; }
-        return new(context.Id, Row(item), events.Take(20).ToArray(), events.Count > 20, choices, preview, preview is null ? image : null,
+        return new(context.Id, Row(item), events.Take(20).ToArray(), events.Count > 20 || decisions.Count > 20, choices, preview, preview is null ? image : null,
             capabilities.CanPropose && choices.Count > 0, capabilities.CanApprove && preview?.State == ExceptionalDecisionState.Proposed,
-            capabilities.CanContinue && preview?.State == ExceptionalDecisionState.Approved);
+            capabilities.CanContinue && preview?.State == ExceptionalDecisionState.Approved,
+            decisions.Take(20).Select(d=>new WorkflowDecisionEntry(d.Utc,d.State,DurablePreparationService.ProfileLabel(d.EffectiveRule.ProductionProfile),d.OutputWidth,d.OutputHeight)).ToArray());
     }
 }

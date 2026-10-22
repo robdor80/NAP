@@ -10,7 +10,12 @@ public partial class MainWindow : Window
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
         if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
         var hostRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
-        hostRefresh.Tick += async (_, _) => { if (shell.Automation is not null) await shell.Automation.Refresh.ExecuteAsync(); };
+        hostRefresh.Tick += async (_, _) =>
+        {
+            if(shell.Automation is not null)await shell.Automation.Refresh.ExecuteAsync();
+            if(shell.CurrentPage==shell.Pipeline&&!shell.Pipeline.ManualExpanded)await shell.Pipeline.Work!.Poll.ExecuteAsync();
+            else if(shell.CurrentPage==shell.History)await shell.History.Work!.Poll.ExecuteAsync();
+        };
         Closing += (_, e) => { if (shell.IsExecuting && shell.Automation is null) { e.Cancel = true; MessageBox.Show(this, "Espera a que termine la operación explícita del Core.", "NAP", MessageBoxButton.OK, MessageBoxImage.Information); } };
         Closed += (_, _) => { hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
         SizeChanged += (_,_)=> { if(phase6Preview is null) shell.IsCompact=ActualWidth<=1220||ActualHeight<=760; };

@@ -12,7 +12,7 @@
         <StackPanel Margin="0,16,0,0">
           <Button Content="Preparar paquete" Style="{StaticResource Primary}" Command="{Binding DataContext.PreparePackage, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.PreparePackage.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="Adaptación de imagen" FontWeight="SemiBold" Margin="0,16,0,4" />
-          <TextBlock Text="Perfil del candidato (si el original no está habilitado, selección explícita):" Style="{StaticResource Muted}" />
+          <TextBlock Text="Perfil del candidato" Style="{StaticResource Muted}" />
           <ComboBox ItemsSource="{Binding NormalizationProfiles}" SelectedItem="{Binding NormalizationTarget}" DisplayMemberPath="Label" IsEnabled="{Binding DataContext.CanChangeContext, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="Límites de crecimiento, en % (0–5):" Style="{StaticResource Muted}" />
           <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
               <TextBlock Text="{Binding Normalization.Method}" Style="{StaticResource Muted}" />
               <TextBlock Text="{Binding Normalization.Safety}" Style="{StaticResource Muted}" />
               <TextBlock Text="{Binding Normalization.ProfileChange}" FontWeight="SemiBold" Margin="0,8,0,0" />
-              <TextBlock Text="Una vista previa no autoriza producción. Aprobar crea un candidato separado; no cambia el ZIP del Inbox." Style="{StaticResource Muted}" Margin="0,8,0,0" />
+              <TextBlock Text="El original se conserva. La aprobación crea un candidato separado." Style="{StaticResource Muted}" Margin="0,8,0,0" />
               <WrapPanel>
                 <Button Content="Aprobar candidato" Style="{StaticResource Primary}" Command="{Binding DataContext.ApproveNormalization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ApproveNormalization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
                 <Button x:Name="RejectNormalizationButton" Content="Rechazar" Style="{StaticResource Secondary}" Command="{Binding DataContext.RejectNormalization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RejectNormalization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />

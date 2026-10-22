@@ -31,6 +31,18 @@ public static class WorkflowWords
     public static string Date(DateTimeOffset value) => value.ToLocalTime().ToString("g",System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
     public static string State(QueueState state) => state switch { QueueState.Observed or QueueState.WaitingStable => "Preparando", QueueState.Queued => "Pendiente", QueueState.Running => "Procesando", QueueState.RetryScheduled => "Reintento pendiente", QueueState.Completed => "Completado", QueueState.Duplicate => "Ya registrado", _ => "Necesita revisión" };
     public static string Stage(QueueStage stage) => stage switch { QueueStage.Observation => "Archivo detectado", QueueStage.Admission => "Comprobación del paquete", QueueStage.Preparation => "Preparación", QueueStage.Normalization => "Adaptación de imagen", QueueStage.Audit => "Revisión de imagen", QueueStage.Execution => "Producción", QueueStage.Verification => "Verificación", QueueStage.Catalog => "Registro en catálogo", _ => "Revisión necesaria" };
+    public static string Action(QueueEvent value)=>value.Code switch
+    {
+        QueueEventCode.Observed=>"Archivo recibido",
+        QueueEventCode.AttemptCreated=>"Preparación iniciada",
+        QueueEventCode.ClaimInterrupted=>"Procesamiento interrumpido",
+        QueueEventCode.ClaimRecovered=>"Trabajo recuperado",
+        QueueEventCode.CompletedInconsistent=>"Resultado pendiente de revisión",
+        QueueEventCode.EvidenceRecorded when value.Stage==QueueStage.Review=>"Decisión registrada",
+        QueueEventCode.Transitioned when value.Stage==QueueStage.Review&&value.State==QueueState.Queued=>"Continuación solicitada",
+        QueueEventCode.Transitioned when value.State==QueueState.Completed=>"Asset completado",
+        _=>Stage(value.Stage)
+    };
     public static string Guidance(QueueIncident issue) => issue switch
     {
         QueueIncident.ProfileUnknown => "Corrige el perfil del paquete y vuelve a incorporarlo.",
@@ -58,6 +70,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private bool _disposed,_changing;
     private int _offset,_total,_eventOffset;
     private string _search="",_status="",_detailStatus="";
+    private QueueItemId? _focusedItem;
+    private QueueItemId? ActiveItem=>Selected?.Value.ItemId??_focusedItem;
     private WorkflowDisplayRow? _selected;
     private WorkflowDetail? _detail;
     private ReviewChoice? _choice;
@@ -66,6 +80,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public WorkflowViewModel(IWorkflowDesktopClient? client,Func<UniverseContext?> context,IUserConfirmation confirmation)
     {
         _client=client;_context=context;_confirmation=confirmation;_filter=Filters[0]; Batches.Add(_batch);
+        Poll=new(()=>LoadPageAsync(false,true),()=>!_disposed&&!_changing&&ActiveItem==null,FailRead);
+        CloseDetail=new(_=>{_focusedItem=null;Selected=null;_detailRead?.Cancel();++_detailGeneration;ClearDetail();DetailStatus="";});
         Refresh=new(()=>LoadPageAsync(true),()=>!_disposed,FailRead);
         Apply=new(()=>LoadPageAsync(true),()=>!_disposed,FailRead);
         Next=new(()=>ChangePage(20),()=>!_disposed&&_offset+20<_total,FailRead);
@@ -84,7 +100,9 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public bool HasBatches=>Batches.Count>1;
     public ObservableCollection<WorkflowDisplayRow> Rows {get;}=[];
     public ObservableCollection<WorkflowEventRow> Events {get;}=[];
-    public WorkflowDisplayRow? Selected {get=>_selected;set{if(Set(ref _selected,value)){_eventOffset=0;ClearDetail();LastDetail=LoadDetailAsync();}}}
+    public ObservableCollection<WorkflowEventRow> Decisions {get;}=[];
+    public bool HasDecisions=>Decisions.Count>0;
+    public WorkflowDisplayRow? Selected {get=>_selected;set{if(Set(ref _selected,value)){_focusedItem=value?.Value.ItemId;_eventOffset=0;ClearDetail();LastDetail=LoadDetailAsync();}}}
     public Task LastDetail {get;private set;}=Task.CompletedTask;
     public string Status {get=>_status;private set=>Set(ref _status,value);}
     public string DetailStatus {get=>_detailStatus;private set=>Set(ref _detailStatus,value);}
@@ -105,6 +123,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public byte[]? CandidateImage=>_detail?.Preview?.CandidateImage;
     public string Name=>_detail?.Item.Name??"";
     public string Universe=>_context()?.Profile.DisplayName??"";
+    public string PackageName=>_detail?.Item.PackageName??"";
     public string ItemState=>_detail is null?"":WorkflowWords.State(_detail.Item.State);
     public string Dates=>_detail is null?"":$"Recibido: {WorkflowWords.Date(_detail.Item.CreatedUtc)} · Actualizado: {WorkflowWords.Date(_detail.Item.UpdatedUtc)}";
     public string Problem=>_detail is null?"":AutomationControlViewModel.Problem(_detail.Item.Incident);
@@ -118,17 +137,18 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public string OriginalSize=>_detail?.Preview is {} p?$"{p.OriginalWidth} × {p.OriginalHeight}":"Original preservado";
     public string CandidateSize=>_detail?.Preview is {} p?$"Lienzo: {p.CanvasWidth} × {p.CanvasHeight} · Salida: {p.OutputWidth} × {p.OutputHeight}":"";
     public string Transformation=>_detail?.Preview is {} p?$"Bordes añadidos: {p.Left} izquierda, {p.Top} arriba, {p.Right} derecha, {p.Bottom} abajo. Sin recorte.":"";
+    public UiAsyncCommand Poll{get;} public RelayCommand CloseDetail{get;}
     public UiAsyncCommand Refresh{get;} public UiAsyncCommand Apply{get;} public UiAsyncCommand Next{get;} public UiAsyncCommand Previous{get;}
     public UiAsyncCommand Propose{get;} public UiAsyncCommand Approve{get;} public UiAsyncCommand Continue{get;}
     public UiAsyncCommand NextEvents{get;} public UiAsyncCommand PreviousEvents{get;}
-    private async Task ChangePage(int by){_offset=Math.Max(0,_offset+by);await LoadPageAsync(false);}
-    public async Task LoadPageAsync(bool reset=false)
+    private async Task ChangePage(int by){CloseDetail.Execute(null);_offset=Math.Max(0,_offset+by);await LoadPageAsync(false);}
+    public async Task LoadPageAsync(bool reset=false,bool quiet=false)
     {
-        if(_disposed)return;if(reset)_offset=0;
+        if(_disposed)return;if(reset){_offset=0;CloseDetail.Execute(null);}
         _pageRead?.Cancel();var read=_pageRead=CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);read.CancelAfter(TimeSpan.FromSeconds(20));
-        var generation=++_pageGeneration;var scope=_scope;var c=_context();var selected=Selected?.Value.ItemId;
+        var generation=++_pageGeneration;var scope=_scope;var c=_context();var selected=ActiveItem;
         if(_client==null||c==null){Rows.Clear();ClearDetail();Status="La automatización no está conectada";read.Dispose();_pageRead=null;return;}
-        Status="Actualizando…";
+        if(!quiet)Status="Actualizando…";
         try
         {
             var page=await _client.PageAsync(c.Id,new(_offset,20,Filter.Value,Search,Batch.Id),read.Token);
@@ -139,7 +159,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             var prior=Batch.Id;Batches.Clear();Batches.Add(new(null,"Todos los lotes"));
             foreach(var b in batches)Batches.Add(new(b.Id,$"{b.CreatedUtc.ToLocalTime():dd/MM HH:mm:ss} · {b.Items} assets"));
             _batch=Batches.FirstOrDefault(b=>b.Id==prior)??Batches[0];Notify(nameof(Batch));Notify(nameof(HasBatches));
-            Selected=Rows.FirstOrDefault(r=>r.Value.ItemId==selected);
+            var match=Rows.FirstOrDefault(r=>r.Value.ItemId==selected);
+            if(match!=null)Selected=match;
+            else if(_focusedItem!=null)await LoadDetailAsync();
+            else Selected=null;
             Status=Rows.Count==0?"No hay registros para estos filtros":"";Notify(nameof(PageLabel));RefreshCommands();
         }
         catch(OperationCanceledException){if(Current(scope,c)&&generation==_pageGeneration)FailRead(new IOException());}
@@ -149,16 +172,17 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private bool Current(long scope,UniverseContext? c)=>!_disposed&&scope==_scope&&c==_context();
     public async Task LoadDetailAsync()
     {
-        _detailRead?.Cancel();if(_disposed||_client==null||Selected==null||_context() is not {} c)return;
-        var item=Selected.Value.ItemId;var scope=_scope;var generation=++_detailGeneration;
+        _detailRead?.Cancel();if(_disposed||_client==null||ActiveItem==null||_context() is not {} c)return;
+        var item=ActiveItem!;var scope=_scope;var generation=++_detailGeneration;
         using var read=CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);_detailRead=read;read.CancelAfter(TimeSpan.FromSeconds(20));
         DetailStatus="Consultando…";
         try
         {
             var d=await _client.DetailAsync(c.Id,new(item,_eventOffset),read.Token);
-            if(!Current(scope,c)||generation!=_detailGeneration||Selected?.Value.ItemId!=item||read.IsCancellationRequested)return;
+            if(!Current(scope,c)||generation!=_detailGeneration||ActiveItem!=item||read.IsCancellationRequested)return;
             if(d.UniverseId!=c.Id||d.Item.UniverseId!=c.Id||d.Item.ItemId!=item)throw new InvalidDataException("Workflow detail mismatch.");
-            _detail=d;_choice=null;EditExpanded=d.Preview==null;Events.Clear();foreach(var e in d.Events)Events.Add(new(WorkflowWords.Date(e.Utc),WorkflowWords.Stage(e.Stage),e.Incident!=QueueIncident.None?AutomationControlViewModel.Problem(e.Incident):WorkflowWords.State(e.State)));
+            _detail=d;_choice=null;EditExpanded=d.Preview==null;Events.Clear();foreach(var e in d.Events)Events.Add(new(WorkflowWords.Date(e.Utc),WorkflowWords.Action(e),e.Incident!=QueueIncident.None?AutomationControlViewModel.Problem(e.Incident):WorkflowWords.State(e.State)));
+            Decisions.Clear();foreach(var decision in d.Decisions??[])Decisions.Add(new(WorkflowWords.Date(decision.Utc),decision.State switch{ExceptionalDecisionState.Proposed=>"Corrección propuesta",ExceptionalDecisionState.Approved=>"Corrección aprobada",_=>"Corrección revocada"},$"{decision.Profile} · {decision.Width} × {decision.Height}"));
             DetailStatus="";NotifyDetail();
         }
         catch(OperationCanceledException){if(Current(scope,c)&&generation==_detailGeneration){ClearDetail();DetailStatus="Lectura cancelada. Actualiza para volver a consultar.";}}
@@ -174,8 +198,9 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             var value=await _client.DetailAsync(c.Id,new(item),_lifetime.Token);
             if(!Current(scope,c))return;
             if(value.UniverseId!=c.Id||value.Item.UniverseId!=c.Id||value.Item.ItemId!=item)throw new InvalidDataException();
-            Selected=Rows.FirstOrDefault(r=>r.Value.ItemId==item)??new(value.Item,c.Profile.DisplayName);
-            await LastDetail;
+            var match=Rows.FirstOrDefault(r=>r.Value.ItemId==item);
+            if(match!=null){Selected=match;await LastDetail;}
+            else {_focusedItem=item;_selected=null;Notify(nameof(Selected));ClearDetail();await LoadDetailAsync();}
         }
         catch(Exception){if(Current(scope,c))DetailStatus="No se pudo consultar la incidencia";}
     }
@@ -196,18 +221,18 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         try
         {
             await _client.MutateAsync(c.Id,operation,request,_lifetime.Token);
-            if(!Current(scope,c)||Selected?.Value.ItemId!=d.Item.ItemId)return;
+            if(!Current(scope,c)||ActiveItem!=d.Item.ItemId)return;
             await LoadDetailAsync();
             if(operation==AutomationOperation.ReviewContinue){await LoadPageAsync();DetailStatus="Continuación solicitada";}
         }
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
         finally{_changing=false;RefreshCommands();}
     }
-    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation)})Notify(n);RefreshCommands();}
-    private void ClearDetail(){_detail=null;_choice=null;Events.Clear();NotifyDetail();}
+    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation)})Notify(n);RefreshCommands();}
+    private void ClearDetail(){_detail=null;_choice=null;Events.Clear();Decisions.Clear();NotifyDetail();}
     private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,NextEvents,PreviousEvents})command.Refresh();}
     private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}
     private void FailMutation(Exception _){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}
-    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();Rows.Clear();_selected=null;_offset=0;_eventOffset=0;_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
+    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();Rows.Clear();_selected=null;_focusedItem=null;_offset=0;_eventOffset=0;_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
     public void Dispose(){if(_disposed)return;_disposed=true;_lifetime.Cancel();ContextChanged();_lifetime.Dispose();}
 }

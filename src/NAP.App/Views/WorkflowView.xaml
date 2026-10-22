@@ -3,10 +3,11 @@
     <BooleanToVisibilityConverter x:Key="Visible" />
     <c:NormalizationPngConverter x:Key="Png" />
   </UserControl.Resources>
+  <UserControl.InputBindings><KeyBinding Key="Escape" Command="{Binding CloseDetail}"/></UserControl.InputBindings>
   <Grid>
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <WrapPanel>
-      <TextBox Width="190" MaxLength="80" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar asset" AutomationProperties.Name="Buscar asset"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding Apply}"/></TextBox.InputBindings></TextBox>
+      <TextBox Width="190" MaxLength="80" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar por nombre del paquete" AutomationProperties.Name="Buscar por nombre del paquete"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding Apply}"/></TextBox.InputBindings></TextBox>
       <ComboBox Width="180" Margin="8,6,8,12" ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter}" DisplayMemberPath="Label" AutomationProperties.Name="Estado"/>
       <ComboBox Width="235" Margin="0,6,8,12" ItemsSource="{Binding Batches}" SelectedItem="{Binding Batch}" DisplayMemberPath="Label" Visibility="{Binding HasBatches,Converter={StaticResource Visible}}" AutomationProperties.Name="Lote"/>
       <Button Content="Filtrar" Command="{Binding Apply}" Margin="0,6,0,12"/>
@@ -29,6 +30,7 @@
         <TextBlock Text="{Binding DetailStatus}" Style="{StaticResource EmptyState}"/>
         <ScrollViewer x:Name="ReviewDetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding HasDetail,Converter={StaticResource Visible}}">
           <StackPanel Margin="0,0,12,0">
+            <Button Content="Cerrar detalle" Command="{Binding CloseDetail}" HorizontalAlignment="Right"/>
             <TextBlock Text="{Binding Name}" FontSize="{StaticResource CompactTitleSize}" FontWeight="SemiBold"/>
             <TextBlock Text="{Binding ItemState}" Margin="0,8,0,0"/>
             <StackPanel Visibility="{Binding NeedsReview,Converter={StaticResource Visible}}">
@@ -53,7 +55,8 @@
               <Button Content="Continuar este asset" Command="{Binding Continue}" Visibility="{Binding CanContinue,Converter={StaticResource Visible}}"/>
             </StackPanel>
             <Expander Header="Actividad" Margin="0,20,0,12" IsExpanded="{Binding ActivityExpanded}">
-              <StackPanel Margin="0,8,0,0"><TextBlock Text="{Binding Dates}" Style="{StaticResource Muted}" Margin="0,0,0,12"/>
+              <StackPanel Margin="0,8,0,0"><TextBlock Text="{Binding Dates}" Style="{StaticResource Muted}" Margin="0,0,0,8"/><TextBlock Text="{Binding PackageName}" Style="{StaticResource Muted}" Margin="0,0,0,12"/>
+                <StackPanel Visibility="{Binding HasDecisions,Converter={StaticResource Visible}}"><TextBlock Text="Decisiones guardadas" FontWeight="SemiBold" Margin="0,0,0,12"/><ItemsControl ItemsSource="{Binding Decisions}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></StackPanel>
                 <ItemsControl ItemsSource="{Binding Events}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}" FontWeight="SemiBold"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
                 <WrapPanel Visibility="{Binding HasEventPaging,Converter={StaticResource Visible}}"><Button Content="Más recientes" Command="{Binding PreviousEvents}"/><Button Content="Anteriores" Command="{Binding NextEvents}"/></WrapPanel>
               </StackPanel>

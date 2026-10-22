@@ -19,6 +19,7 @@ public sealed class Phase6WorkflowTests
         await using var host=new AutomationHost(f.Control,[f.A.Context,f.B.Context],f.Options);await host.Started;
         var bridge=new AutomationDesktopBridge(host,[f.A.Context,f.B.Context],Path.Combine(f.Root,"desktop-requests"));
         var connection=Connection();await using var server=new AutomationPipeServer(connection,bridge.HandleAsync);var client=new WorkflowDesktopClient(new(connection));
+        await host.QueryAsync(f.A.Context.Id,s=>s.Queue.CurrentPolicy());
         var before=SHA256.HashData(File.ReadAllBytes(f.A.Queue.DatabasePath));using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(20));
         var page=await client.PageAsync(f.A.Context.Id,new(Filter:WorkflowFilter.Review),timeout.Token);
         Assert.Equal(1,page.Total);Assert.Equal(review.Id,Assert.Single(page.Items).ItemId);Assert.Equal("retrato",page.Items[0].Name);
@@ -69,6 +70,11 @@ public sealed class Phase6WorkflowTests
         await Assert.ThrowsAsync<AutomationException>(()=>wire.CallAsync(AutomationOperation.ReviewApprove,f.A.Context.Id.Value,request with{Evidence=new(new string('0',64))},timeout.Token));
         await Assert.ThrowsAsync<AutomationException>(()=>wire.CallAsync(AutomationOperation.ReviewApprove,f.A.Context.Id.Value,request with{Version=99},timeout.Token));
         Assert.Single(await host.QueryAsync(f.A.Context.Id,s=>s.Queue.Decisions(item)));
+        await wire.CallAsync(AutomationOperation.ReviewPropose,f.A.Context.Id.Value,new ReviewProposalRequest(item,detail.Item.Revision,choice.Key),timeout.Token);
+        await Assert.ThrowsAsync<AutomationException>(()=>wire.CallAsync(AutomationOperation.ReviewApprove,f.A.Context.Id.Value,request,timeout.Token));
+        detail=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);
+        Assert.Contains(detail.Decisions!,d=>d.State==ExceptionalDecisionState.Revoked);
+        preview=detail.Preview!;request=new(item,detail.Item.Revision,preview.DecisionId,preview.Version,preview.Evidence,true);
         await wire.CallAsync(AutomationOperation.ReviewApprove,f.A.Context.Id.Value,request,timeout.Token);
         detail=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);Assert.False(detail.CanApprove);Assert.True(detail.CanContinue);
         Assert.Equal(ExceptionalDecisionState.Approved,detail.Preview!.State);
@@ -133,6 +139,23 @@ public sealed class Phase6WorkflowTests
         source.Value=Detail(c.Id);await vm.LoadPageAsync();vm.Selected=vm.Rows[0];await vm.LastDetail;Assert.True(vm.CanApprove);
         source.FailRead=true;await vm.LoadPageAsync();Assert.Empty(vm.Rows);Assert.False(vm.CanApprove);Assert.Empty(source.Sent);
     }
+    [Fact]
+    public async Task OpeningAnIncidentOutsideTheVisiblePageKeepsItsExactIdentityAndPollingPreservesEdits()
+    {
+        var c=Context("alpha");var value=Detail(c.Id);var source=new Fake{Value=value,PageItem=value.Item with{ItemId=QueueItemId.Create(),Name="Otro asset"}};
+        using var vm=new WorkflowViewModel(source,()=>c,new Confirm(true));await vm.LoadPageAsync();
+        await vm.OpenItemAsync(value.Item.ItemId);Assert.True(vm.HasDetail);Assert.Equal(value.Item.Name,vm.Name);
+        await vm.Approve.ExecuteAsync();Assert.Equal(value.Item.ItemId,Assert.IsType<ReviewDecisionRequest>(Assert.Single(source.Sent).Request).ItemId);
+        var reads=source.PageReads;vm.Choice=vm.Choices[0];await vm.Poll.ExecuteAsync();Assert.Equal(reads,source.PageReads);Assert.NotNull(vm.Choice);
+        vm.CloseDetail.Execute(null);Assert.False(vm.HasDetail);Assert.True(vm.Poll.CanExecute(null));await vm.Poll.ExecuteAsync();Assert.Equal(reads+1,source.PageReads);
+    }
+    [Fact]
+    public async Task UniverseChangeWhileConfirmingNeverSendsAnApprovalForTheOldScreen()
+    {
+        UniverseContext c=Context("alpha");var source=new Fake{Value=Detail(c.Id)};var confirmation=new Confirm(true);var gate=new TaskCompletionSource<bool>();confirmation.Response=gate.Task;
+        using var vm=new WorkflowViewModel(source,()=>c,confirmation);await vm.LoadPageAsync();vm.Selected=vm.Rows[0];await vm.LastDetail;
+        var pending=vm.Approve.ExecuteAsync();c=Context("beta");vm.ContextChanged();gate.SetResult(true);await pending;Assert.Empty(source.Sent);Assert.False(vm.HasDetail);
+    }
     private static AutomationConnection Connection()=>new("nap-phase6-review-"+Guid.NewGuid().ToString("N"),Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
     private static UniverseContext Context(string name){var root=Path.Combine(Path.GetTempPath(),"phase6-display-only",name);return new(new UniverseProfile(new(name),"Universo "+name),new(new(name),Path.Combine(root,"workspace"),Path.Combine(root,"production"),Path.Combine(root,"archive")));}
     private static WorkflowDetail Detail(UniverseId u)
@@ -142,14 +165,14 @@ public sealed class Phase6WorkflowTests
     }
     private sealed class Confirm(bool accept):IUserConfirmation
     {
-        public bool Accept=accept;public UiConfirmation? Last;
-        public Task<bool> ConfirmAsync(UiConfirmation c,CancellationToken ct){Last=c;return Task.FromResult(Accept);}
+        public bool Accept=accept;public UiConfirmation? Last;public Task<bool>? Response;
+        public Task<bool> ConfirmAsync(UiConfirmation c,CancellationToken ct){Last=c;return Response??Task.FromResult(Accept);}
     }
     private sealed class Fake:IWorkflowDesktopClient
     {
-        public WorkflowDetail Value=null!;public bool FailRead,FailMutation;public Func<Task<WorkflowDetail>>? ReadDetail;public CancellationToken Token;
+        public WorkflowDetail Value=null!;public WorkflowRow? PageItem;public int PageReads;public bool FailRead,FailMutation;public Func<Task<WorkflowDetail>>? ReadDetail;public CancellationToken Token;
         public List<(AutomationOperation Operation,object Request)> Sent=[];
-        public Task<WorkflowPage> PageAsync(UniverseId u,WorkflowPageRequest r,CancellationToken ct)=>FailRead?throw new IOException("private/path"):Task.FromResult(new WorkflowPage(Value.UniverseId,r.Offset,1,[Value.Item]));
+        public Task<WorkflowPage> PageAsync(UniverseId u,WorkflowPageRequest r,CancellationToken ct){PageReads++;return FailRead?throw new IOException("private/path"):Task.FromResult(new WorkflowPage(Value.UniverseId,r.Offset,1,[PageItem??Value.Item]));}
         public Task<IReadOnlyList<WorkflowBatch>> BatchesAsync(UniverseId u,CancellationToken ct)=>Task.FromResult<IReadOnlyList<WorkflowBatch>>([]);
         public Task<WorkflowDetail> DetailAsync(UniverseId u,WorkflowDetailRequest r,CancellationToken ct){Token=ct;return ReadDetail?.Invoke()??Task.FromResult(Value);}
         public Task MutateAsync(UniverseId u,AutomationOperation op,object request,CancellationToken ct){Sent.Add((op,request));if(FailMutation)throw new IOException("unknown accepted effect");return Task.CompletedTask;}

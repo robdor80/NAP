@@ -31,7 +31,7 @@ public sealed class ImageNormalizationUiService(IUniverseOperationDispatcher? di
 }
 
 public sealed record ImageNormalizationProfileChoice(string AssetType, string ProductionProfile)
-{ public string Label => AssetType + " / " + ProductionProfile; }
+{ public string Label => DurablePreparationService.ProfileLabel(ProductionProfile); }
 
 public sealed class ImageNormalizationReview
 {
@@ -44,9 +44,9 @@ public sealed class ImageNormalizationReview
     public string CandidateDimensions => $"{Proposal.Preview.Geometry.CanvasWidth} × {Proposal.Preview.Geometry.CanvasHeight}";
     public string Summary => FormattableString.Invariant($"{OriginalDimensions} → {CandidateDimensions} · +{Proposal.Preview.Geometry.AddedPercent:0.000}% de área");
     public string Margins => $"Anchura +{Proposal.Preview.Geometry.Left + Proposal.Preview.Geometry.Right}; altura +{Proposal.Preview.Geometry.Top + Proposal.Preview.Geometry.Bottom}. Márgenes: izquierda {Proposal.Preview.Geometry.Left}, derecha {Proposal.Preview.Geometry.Right}, arriba {Proposal.Preview.Geometry.Top}, abajo {Proposal.Preview.Geometry.Bottom}.";
-    public string Method => Proposal.Preview.Geometry.HasChanges ? "Extensión del píxel de borde más cercano; sin recorte, escalado ni deformación." : "Proporción exacta: el PNG se conserva byte-for-byte, sin normalizar.";
-    public string Safety => "PNG estático y decode verificados. Píxeles y bordes comprobados; crecimiento dentro de límites. SHA-256 vincula original y candidato. El ZIP completo cumple el perfil seleccionado.";
-    public string ProfileChange => Proposal.RequiresMetadataApproval ? $"Corrección separada pendiente de aprobación: {Proposal.OriginalProfile} → {Proposal.TargetProfile}." : $"Perfil: {Proposal.TargetProfile}; manifest sin cambios.";
+    public string Method => Proposal.Preview.Geometry.HasChanges ? "Se añaden bordes sin recorte ni deformación." : "Se conservan las proporciones y el PNG original.";
+    public string Safety => "Imagen verificada. Se conservan todos los píxeles y el original.";
+    public string ProfileChange => Proposal.RequiresMetadataApproval ? $"Corrección separada pendiente de aprobación: {DurablePreparationService.ProfileLabel(Proposal.OriginalProfile)} → {DurablePreparationService.ProfileLabel(Proposal.TargetProfile)}." : $"Perfil: {DurablePreparationService.ProfileLabel(Proposal.TargetProfile)}; datos del paquete sin cambios.";
     public string OriginalHash => "SHA-256 original: " + Proposal.Preview.OriginalSha256;
     public string CandidateHash => "SHA-256 candidato: " + Proposal.Preview.CandidateSha256;
 }

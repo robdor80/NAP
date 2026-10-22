@@ -81,7 +81,7 @@ public sealed partial class DurablePreparationService
         }
         return result.DistinctBy(c => c.View.Key).Take(32).ToArray();
     }
-    internal static string ProfileLabel(string profile) => profile switch { "portrait_npc" => "Retrato", "scene_cartography" => "Cartografía", "scene_narrative" => "Escena", _ => profile.Replace('_', ' ') };
+    public static string ProfileLabel(string profile) => profile switch { "portrait_npc" => "Retrato", "scene_cartography" => "Cartografía", "scene_narrative" => "Escena", _ => profile.Replace('_', ' ') };
     public IReadOnlyList<ReviewChoice> ReadReviewChoices(QueueItemId item) => ReviewOptions(item).Select(c => c.View).ToArray();
     public ExceptionalPreparationPreview ProposeReviewChoice(AutomationQueueOwner owner, ReviewProposalRequest request, string actor)
     {
