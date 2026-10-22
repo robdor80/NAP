@@ -102,7 +102,7 @@ public sealed class DiagnosticViewModel : ObservableObject, IDisposable
             Rows.Clear();
             foreach(var row in page?.Events.Select(e=>new DiagnosticRow(e.Utc,e.Severity,e.Category,e.Code,e.Result,e.State,e.Incident))??local)Rows.Add(row);
             _through=page?.Through;_next=page?.Events.LastOrDefault()?.Cursor;_more=page?.More??false;
-            Notice=Rows.Count==0?"No hay registros con estos filtros":$"{Rows.Count} registros · página {_back.Count+1}";
+            Notice=Rows.Count==0?"No hay registros con estos filtros":$"{Rows.Count} {(Rows.Count==1?"registro":"registros")} · página {_back.Count+1}";
             Selected=Rows.FirstOrDefault();
         }
         catch(OperationCanceledException){if(generation==_generation)Notice="Consulta cancelada. Actualiza para reintentar.";}

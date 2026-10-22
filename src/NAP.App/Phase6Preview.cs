@@ -84,6 +84,14 @@ internal static class Phase6Preview
                 capture.UpdateLayout();
                 capture.Measure(new Size(width, height)); capture.Arrange(new Rect(0, 0, width, height));
                 if (capture.ActualWidth != width || capture.ActualHeight != height) throw new InvalidOperationException("Synthetic layout was constrained by the runner desktop.");
+                foreach(var picker in Descendants(capture).OfType<DatePicker>().Where(p=>p.IsVisible&&p.SelectedDate is not null))
+                {
+                    var editor=(System.Windows.Controls.Primitives.DatePickerTextBox)picker.Template.FindName("PART_TextBox",picker);
+                    var text=new FormattedText(editor.Text,System.Globalization.CultureInfo.GetCultureInfo("es-ES"),FlowDirection.LeftToRight,
+                        new Typeface(editor.FontFamily,editor.FontStyle,editor.FontWeight,editor.FontStretch),editor.FontSize,editor.Foreground,VisualTreeHelper.GetDpi(editor).PixelsPerDip);
+                    if(text.WidthIncludingTrailingWhitespace>editor.ActualWidth-editor.Padding.Left-editor.Padding.Right-2)
+                        throw new InvalidOperationException("Date field clips its recorded date.");
+                }
                 var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
                 bitmap.Render(capture); return bitmap;
             }, DispatcherPriority.Render);
