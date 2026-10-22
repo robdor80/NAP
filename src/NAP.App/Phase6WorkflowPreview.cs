@@ -2,6 +2,7 @@ using NAP.Core;
 using NAP.Presentation;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 namespace NAP.App;
 
 /// <summary>In-memory fixture for rendering only; all mutations are rejected.</summary>
@@ -49,15 +50,17 @@ internal sealed class Phase6WorkflowPreview(string mode) : IWorkflowDesktopClien
     }
     internal static byte[] Pattern(bool border)
     {
-        var height=border?160:159;
-        using var image=new Image<Rgba32>(128,height);
-        for(var y=0;y<height;y++)for(var x=0;x<128;x++)
+        // Illustrative pixels match the declared geometry: 768×954, extended by 3 rows per edge.
+        var height=border?960:954;
+        using var image=new Image<Rgba32>(768,height);
+        for(var y=0;y<height;y++)for(var x=0;x<768;x++)
         {
-            var face=(x-64)*(x-64)+(y-55)*(y-55)<24*24;
-            var shoulders=y>95&&Math.Abs(x-64)<(y-80)/2;
-            image[x,y]=face?new(177,206,206,255):shoulders?new(76,127,143,255):new((byte)(12+x/8),(byte)(35+y/5),(byte)(49+y/6),255);
-            if(border&&(y<3||y>=157))image[x,y]=new(47,78,87,255);
+            var px=x/6;var py=(border?Math.Clamp(y-3,0,953):y)/6;
+            var face=(px-64)*(px-64)+(py-55)*(py-55)<24*24;
+            var shoulders=py>95&&Math.Abs(px-64)<(py-80)/2;
+            image[x,y]=face?new(177,206,206,255):shoulders?new(76,127,143,255):new((byte)(12+px/8),(byte)(35+py/5),(byte)(49+py/6),255);
         }
+        image.Mutate(c=>c.Resize(new ResizeOptions{Mode=ResizeMode.Max,Size=new Size(256,256)}));
         using var memory=new System.IO.MemoryStream();image.SaveAsPng(memory);return memory.ToArray();
     }
     public Task MutateAsync(UniverseId universe,AutomationOperation op,object request,CancellationToken cancellation)=>throw new InvalidOperationException("Synthetic rendering cannot write.");
