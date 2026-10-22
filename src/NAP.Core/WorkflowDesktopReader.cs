@@ -21,8 +21,8 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
     public WorkflowDetail Detail(WorkflowDetailRequest request, ReviewCapability capabilities)
     {
         var item = queue.Get(request.ItemId); var service = new DurablePreparationService(context, queue);
-        var events = queue.BrowseEvents(item.Id, request.EventOffset);
-        var decisions = queue.BrowseDecisions(item.Id, request.EventOffset);
+        var activity = queue.BrowseWorkflowActivity(request);
+        var events = activity.Events;var decisions = activity.Decisions;
         // A missing/corrupt image does not hide the durable incident or fabricate a preview.
         string? notice=null; byte[]? image = null; ReviewPreview? preview = null; IReadOnlyList<ReviewChoice> choices = [];
         try
@@ -33,9 +33,10 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
         }
         catch (Exception e) when (e is AutomationException or IOException or InvalidDataException or ProductionStorageException or UnauthorizedAccessException or ImageNormalizationException or PackagePreparationStoppedException or SixLabors.ImageSharp.InvalidImageContentException or SixLabors.ImageSharp.UnknownImageFormatException)
         { capabilities = new(false, false, false); image = null; preview = null; choices = []; notice="El original o la vista previa no se pueden verificar. No se aplicarán cambios."; }
-        return new(context.Id, Row(item), events.Take(20).ToArray(), events.Count > 20 || decisions.Count > 20, choices, preview, preview is null ? image : null,
+        return new(context.Id, Row(item), events.Take(20).ToArray(), events.Count > 20, choices, preview, preview is null ? image : null,
             capabilities.CanPropose && choices.Count > 0, capabilities.CanApprove && preview?.State == ExceptionalDecisionState.Proposed,
             capabilities.CanContinue && preview?.State == ExceptionalDecisionState.Approved,
-            decisions.Take(20).Select(d=>new WorkflowDecisionEntry(d.Utc,d.State,DurablePreparationService.ProfileLabel(d.EffectiveRule.ProductionProfile),d.OutputWidth,d.OutputHeight)).ToArray(),notice);
+            decisions.Take(20).Select(d=>new WorkflowDecisionEntry(d.Utc,d.State,DurablePreparationService.ProfileLabel(d.EffectiveRule.ProductionProfile),d.OutputWidth,d.OutputHeight)).ToArray(),notice,
+            decisions.Count>20,activity.EventThrough,activity.DecisionThrough);
     }
 }

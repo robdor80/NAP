@@ -50,6 +50,7 @@
                 <StackPanel><TextBlock Text="Original" FontWeight="SemiBold"/><Image Source="{Binding OriginalImage,Converter={StaticResource Png}}" Stretch="Uniform" Height="120" AutomationProperties.Name="Original preservado"/><TextBlock Text="{Binding OriginalSize}" Style="{StaticResource Muted}"/></StackPanel>
                 <StackPanel Grid.Column="1" Margin="8,0,0,0"><TextBlock Text="Propuesta" FontWeight="SemiBold"/><Image Source="{Binding CandidateImage,Converter={StaticResource Png}}" Stretch="Uniform" Height="120" AutomationProperties.Name="Vista previa de la corrección"/></StackPanel>
               </Grid>
+              <Button Content="Ampliar comparación" Click="OpenComparison" HorizontalAlignment="Left" Margin="0,8,0,4"/>
               <TextBlock Text="{Binding CandidateSize}" Margin="0,8,0,4"/>
               <TextBlock Text="{Binding Transformation}" Style="{StaticResource Muted}"/>
               <Button Content="Aprobar corrección" Command="{Binding Approve}" Margin="0,12,8,8" Visibility="{Binding CanApprove,Converter={StaticResource Visible}}"/>
@@ -57,9 +58,12 @@
             </StackPanel>
             <Expander Header="Actividad" Margin="0,20,0,12" IsExpanded="{Binding ActivityExpanded}">
               <StackPanel Margin="0,8,0,0"><TextBlock Text="{Binding Dates}" Style="{StaticResource Muted}" Margin="0,0,0,8"/><TextBlock Text="{Binding PackageName}" Style="{StaticResource Muted}" Margin="0,0,0,12"/>
-                <StackPanel Visibility="{Binding HasDecisions,Converter={StaticResource Visible}}"><TextBlock Text="Decisiones guardadas" FontWeight="SemiBold" Margin="0,0,0,12"/><ItemsControl ItemsSource="{Binding Decisions}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></StackPanel>
+                <StackPanel Visibility="{Binding HasDecisions,Converter={StaticResource Visible}}"><TextBlock x:Name="DecisionsHeading" Text="Decisiones guardadas" FontWeight="SemiBold" Margin="0,0,0,12"/><ItemsControl ItemsSource="{Binding Decisions}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                  <WrapPanel x:Name="DecisionsPaging" Visibility="{Binding HasDecisionPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding DecisionPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousDecisions}" AutomationProperties.Name="Decisiones más recientes"/><Button Content="Anteriores" Command="{Binding NextDecisions}" AutomationProperties.Name="Decisiones anteriores"/></WrapPanel>
+                </StackPanel>
+                <TextBlock Text="Actividad del asset" FontWeight="SemiBold" Margin="0,12,0,12"/>
                 <ItemsControl ItemsSource="{Binding Events}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}" FontWeight="SemiBold"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
-                <WrapPanel Visibility="{Binding HasEventPaging,Converter={StaticResource Visible}}"><Button Content="Más recientes" Command="{Binding PreviousEvents}"/><Button Content="Anteriores" Command="{Binding NextEvents}"/></WrapPanel>
+                <WrapPanel x:Name="EventsPaging" Visibility="{Binding HasEventPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding EventPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousEvents}" AutomationProperties.Name="Actividad más reciente"/><Button Content="Anteriores" Command="{Binding NextEvents}" AutomationProperties.Name="Actividad anterior"/></WrapPanel>
               </StackPanel>
             </Expander>
           </StackPanel>

@@ -96,10 +96,8 @@ public sealed partial class DurablePreparationService
     }
     public ReviewPreview? ReadReviewPreview(QueueItemId itemId)
     {
-        var decisions = _queue.Decisions(itemId);
-        var latest = decisions.Where(d => d.Version == 1).OrderByDescending(d => d.Utc).FirstOrDefault();
-        if (latest is null) return null;
-        var decision = decisions.Where(d => d.DecisionId == latest.DecisionId).MaxBy(d => d.Version)!;
+        var decision = _queue.LatestReviewDecision(itemId);
+        if (decision is null) return null;
         if (decision.State == ExceptionalDecisionState.Revoked) return null;
         var record = GetRecord(itemId) ?? throw AutomationValidation.Invalid("No preparation record.");
         var preview = _state.Preview(decision.DecisionId) ?? throw AutomationValidation.Invalid("Missing preview.");

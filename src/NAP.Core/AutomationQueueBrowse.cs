@@ -37,7 +37,34 @@ public sealed partial class AutomationQueueStore
     {
         if(offset<0)throw AutomationValidation.Invalid("Invalid decision offset.");
         return Read(db=>{Item(db,null,item);return Payloads<ExceptionalConfigurationDecision>(db,null,
-            "SELECT payload FROM decisions WHERE item_id=$i ORDER BY json_extract(payload,'$.Utc') DESC,version DESC LIMIT 21 OFFSET $o","$i",item.Value,"$o",offset);});
+            "SELECT payload FROM decisions WHERE item_id=$i ORDER BY json_extract(payload,'$.Utc') DESC,version DESC,rowid DESC LIMIT 21 OFFSET $o","$i",item.Value,"$o",offset);});
+    }
+    public ExceptionalConfigurationDecision? LatestReviewDecision(QueueItemId item) => Read(db=>
+    {
+        Item(db,null,item);
+        return Payloads<ExceptionalConfigurationDecision>(db,null,
+            "SELECT payload FROM decisions WHERE item_id=$i AND decision_id=(SELECT decision_id FROM decisions WHERE item_id=$i AND version=1 ORDER BY json_extract(payload,'$.Utc') DESC,rowid DESC LIMIT 1) ORDER BY version DESC LIMIT 1",
+            "$i",item.Value).SingleOrDefault();
+    });
+    public (IReadOnlyList<QueueEvent> Events, IReadOnlyList<ExceptionalConfigurationDecision> Decisions, long EventThrough, long DecisionThrough)
+        BrowseWorkflowActivity(WorkflowDetailRequest request)
+    {
+        if(request.EventOffset<0||request.DecisionOffset<0||request.EventThrough is <0||request.DecisionThrough is <0)
+            throw AutomationValidation.Invalid("Invalid activity page.");
+        return Read(db=>
+        {
+            using var tx=db.BeginTransaction(deferred:true);Item(db,tx,request.ItemId);
+            var eventMax=Convert.ToInt64(Scalar(db,tx,"SELECT coalesce(max(sequence),0) FROM events WHERE item_id=$i","$i",request.ItemId.Value));
+            var decisionMax=Convert.ToInt64(Scalar(db,tx,"SELECT coalesce(max(rowid),0) FROM decisions WHERE item_id=$i","$i",request.ItemId.Value));
+            var eventsThrough=request.EventThrough??eventMax;var decisionsThrough=request.DecisionThrough??decisionMax;
+            if(eventsThrough>eventMax||decisionsThrough>decisionMax)throw AutomationValidation.Invalid("Activity cursor is outside this asset.");
+            // Stable upper bounds keep new records from shifting an open reader's pages.
+            var events=Payloads<QueueEvent>(db,tx,"SELECT payload FROM events WHERE item_id=$i AND sequence<=$t ORDER BY sequence DESC LIMIT 21 OFFSET $o",
+                "$i",request.ItemId.Value,"$t",eventsThrough,"$o",request.EventOffset);
+            var decisions=Payloads<ExceptionalConfigurationDecision>(db,tx,"SELECT payload FROM decisions WHERE item_id=$i AND rowid<=$t ORDER BY json_extract(payload,'$.Utc') DESC,version DESC,rowid DESC LIMIT 21 OFFSET $o",
+                "$i",request.ItemId.Value,"$t",decisionsThrough,"$o",request.DecisionOffset);
+            return(events,decisions,eventsThrough,decisionsThrough);
+        });
     }
     public IReadOnlyList<QueueEvent> BrowseEvents(QueueItemId item, int offset)
     {

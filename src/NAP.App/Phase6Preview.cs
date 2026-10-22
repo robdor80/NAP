@@ -21,9 +21,10 @@ internal static class Phase6Preview
         var contexts = new[] { Context("preview", "Universo de muestra"), Context("other_preview", "Segundo universo") };
         var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
-        var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts));
+        var workflow=new Phase6WorkflowPreview(mode);
+        var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
-        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: new Phase6WorkflowPreview(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
+        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
     internal static async Task CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, string mode, string output)
     {
@@ -31,10 +32,17 @@ internal static class Phase6Preview
         var shell = (ShellViewModel)window.DataContext;
         if(Phase6WorkflowPreview.Modes.Contains(mode))
         {
-            shell.NavigateTo(mode=="history"?"Historial":"Producción"); await shell.LastRefresh;
-            var work=mode=="history"?shell.History.Work!:shell.Pipeline.Work!;
+            shell.NavigateTo(mode=="history"||mode.StartsWith("activity")?"Historial":"Producción"); await shell.LastRefresh;
+            var work=mode=="history"||mode.StartsWith("activity")?shell.History.Work!:shell.Pipeline.Work!;
             if(mode=="manual")shell.Pipeline.ManualExpanded=true;
             else if(work.Rows.Count>0){work.Selected=mode=="history"?work.Rows.First(r=>r.Value.State==QueueState.Completed):work.Rows[0];await work.LastDetail;}
+            if(mode.StartsWith("activity"))
+            {
+                await work.NextEvents.ExecuteAsync();
+                if(work.EventPageLabel!="21–24"||work.NextEvents.CanExecute(null)||work.DecisionPageLabel!=(mode=="activity"?"1–3":"1–20")||work.NextDecisions.CanExecute(null)!=(mode=="activity-decisions"))
+                    throw new InvalidOperationException("Independent activity pages differ.");
+            }
+            if(work.Rows.Any(r=>r.Value.State==QueueState.Running)&&shell.Automation?.Status!="Procesando imágenes")throw new InvalidOperationException("Synthetic overview contradicts its workflow rows.");
             if(mode is "exception" or "approved" && !work.HasPreview)throw new InvalidOperationException("Missing synthetic correction preview.");
             if(mode=="choice"&&(!work.HasOptions||work.HasPreview))throw new InvalidOperationException("Missing compatible choice state.");
             if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
@@ -90,6 +98,52 @@ internal static class Phase6Preview
             await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
             await Save("-detalle");
         }
+        if(mode.StartsWith("activity"))
+        {
+            var decisionTarget=Descendants(capture).OfType<FrameworkElement>().Single(v=>v.Name==(mode=="activity-decisions"?"DecisionsPaging":"DecisionsHeading"));
+            decisionTarget.BringIntoView();
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            await Save("-decisiones");
+            var eventsTarget=Descendants(capture).OfType<FrameworkElement>().Single(v=>v.Name=="EventsPaging");
+            eventsTarget.BringIntoView();
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            await Save("-actividad");
+        }
+        if(mode=="exception")await CaptureComparison(window,shell.Pipeline.Work!,diagnostics,output,width,height);
+    }
+    private static async Task CaptureComparison(MainWindow owner,WorkflowViewModel model,BindingDiagnostics diagnostics,string output,int width,int height)
+    {
+        var preview=model.Comparison!;
+        var original=System.Security.Cryptography.SHA256.HashData(preview.OriginalImage);
+        var candidate=System.Security.Cryptography.SHA256.HashData(preview.CandidateImage);
+        var window=new ComparisonWindow(model){Owner=owner};window.Show();
+        var content=(UIElement)window.Content;
+        var capture=new Grid{Background=window.Background,Width=width,Height=height};
+        window.Content=capture;capture.Children.Add(content);
+        try
+        {
+            foreach(var zoom in new[]{1d,2d})
+            {
+                var bitmap=await window.Dispatcher.InvokeAsync(()=>
+                {
+                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));capture.UpdateLayout();
+                    window.PrepareCapture(zoom);
+                    capture.Measure(new Size(width,height));capture.Arrange(new Rect(0,0,width,height));capture.UpdateLayout();
+                    var image=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);image.Render(capture);
+                    var guides=Descendants(capture).OfType<Controls.ComparisonBorderGuides>().Single();
+                    if(guides.VisibleGuides!=2)throw new InvalidOperationException("Expected two visible margin guides.");
+                    var scroll=(ScrollViewer)window.FindName("ImageScroll");
+                    if(zoom==2&&(scroll.ScrollableHeight<=0||scroll.ScrollableWidth<=0))throw new InvalidOperationException("Zoom must scroll on both axes.");
+                    return image;
+                },DispatcherPriority.Render);
+                if(diagnostics.Errors!=0)throw new InvalidOperationException("Comparison binding errors: "+diagnostics.Errors);
+                var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var file=System.IO.File.Create(System.IO.Path.Combine(output,$"comparacion-{(zoom==1?"ampliada":"zoom-200")}-{width}x{height}.png"));encoder.Save(file);
+            }
+            if(!original.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.OriginalImage))||!candidate.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.CandidateImage)))
+                throw new InvalidOperationException("Read-only comparison changed its buffers.");
+        }
+        finally{window.Close();}
     }
     private static IEnumerable<DependencyObject> Descendants(DependencyObject root)
     {
@@ -99,7 +153,7 @@ internal static class Phase6Preview
             foreach(var descendant in Descendants(child))yield return descendant;
         }
     }
-    private sealed class PreviewSource(string mode, IReadOnlyList<UniverseContext> contexts) : IAutomationOverviewClient
+    private sealed class PreviewSource(string mode, IReadOnlyList<UniverseContext> contexts,Phase6WorkflowPreview workflow) : IAutomationOverviewClient
     {
         public Task<AutomationDesktopOverview> ReadAsync(UniverseId universe, CancellationToken cancellation)
         {
@@ -113,7 +167,7 @@ internal static class Phase6Preview
             var counts = mode == "active" ? new AutomationQueueCounts(2, 1, 14, 0, 0) : new(0, 0, 14, review.Length, 0);
             return Task.FromResult(new AutomationDesktopOverview(new(null, "synthetic", AutomationHostState.Running,
                 [new(universe, state, 0, 0, null, null, null), new(contexts.Single(other => other.Id != universe).Id, AutomationHostState.Running, 0, 0, null, null, null)], null),
-                new(universe, DateTimeOffset.UtcNow, counts, review, policy),
+                Phase6WorkflowPreview.Modes.Contains(mode)?workflow.ReadOverview(universe,policy):new(universe, DateTimeOffset.UtcNow, counts, review, policy),
                 new(universe, 1, mode == "paused", false, new(universe, c.Storage, new(new string('a', 64)), policy.Reference, auth.AuthorizationId, auth.Actor, false), "synthetic", [])));
         }
         public Task SendAsync(AutomationOperation operation, UniverseId? universe, object payload, CancellationToken cancellation) =>

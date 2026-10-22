@@ -68,7 +68,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private CancellationTokenSource? _pageRead,_detailRead;
     private long _scope,_pageGeneration,_detailGeneration;
     private bool _disposed,_changing;
-    private int _offset,_total,_eventOffset;
+    private int _offset,_total,_eventOffset,_decisionOffset;
+    private long? _eventThrough,_decisionThrough;
     private string _search="",_status="",_detailStatus="";
     private QueueItemId? _focusedItem;
     private QueueItemId? ActiveItem=>Selected?.Value.ItemId??_focusedItem;
@@ -81,7 +82,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     {
         _client=client;_context=context;_confirmation=confirmation;_filter=Filters[0]; Batches.Add(_batch);
         Poll=new(()=>LoadPageAsync(false,true),()=>!_disposed&&!_changing&&ActiveItem==null,FailRead);
-        CloseDetail=new(_=>{_focusedItem=null;Selected=null;_detailRead?.Cancel();++_detailGeneration;ClearDetail();DetailStatus="";});
+        CloseDetail=new(_=>{ResetActivity();_focusedItem=null;Selected=null;_detailRead?.Cancel();++_detailGeneration;ClearDetail();DetailStatus="";});
         Refresh=new(()=>LoadPageAsync(true),()=>!_disposed,FailRead);
         Apply=new(()=>LoadPageAsync(true),()=>!_disposed,FailRead);
         Next=new(()=>ChangePage(20),()=>!_disposed&&_offset+20<_total,FailRead);
@@ -89,8 +90,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         Propose=new(()=>Change(AutomationOperation.ReviewPropose),()=>!_disposed&&!_changing&&_detail?.CanPropose==true&&Choice!=null,FailMutation);
         Approve=new(()=>Change(AutomationOperation.ReviewApprove),()=>!_disposed&&!_changing&&_detail?.CanApprove==true,FailMutation);
         Continue=new(()=>Change(AutomationOperation.ReviewContinue),()=>!_disposed&&!_changing&&_detail?.CanContinue==true,FailMutation);
-        NextEvents=new(()=>LoadEvents(20),()=>!_disposed&&_detail?.MoreEvents==true,FailRead);
-        PreviousEvents=new(()=>LoadEvents(-20),()=>!_disposed&&_eventOffset>0,FailRead);
+        NextEvents=new(()=>LoadActivity(20,false),()=>!_disposed&&!_changing&&_detail?.MoreEvents==true,FailRead);
+        PreviousEvents=new(()=>LoadActivity(-20,false),()=>!_disposed&&!_changing&&_eventOffset>0,FailRead);
+        NextDecisions=new(()=>LoadActivity(20,true),()=>!_disposed&&!_changing&&_detail?.MoreDecisions==true,FailRead);
+        PreviousDecisions=new(()=>LoadActivity(-20,true),()=>!_disposed&&!_changing&&_decisionOffset>0,FailRead);
     }
     public IReadOnlyList<WorkflowFilterChoice> Filters {get;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión")];
     public WorkflowFilterChoice Filter {get=>_filter;set{if(Set(ref _filter,value)) _offset=0;}}
@@ -101,8 +104,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public ObservableCollection<WorkflowDisplayRow> Rows {get;}=[];
     public ObservableCollection<WorkflowEventRow> Events {get;}=[];
     public ObservableCollection<WorkflowEventRow> Decisions {get;}=[];
-    public bool HasDecisions=>Decisions.Count>0;
-    public WorkflowDisplayRow? Selected {get=>_selected;set{if(Set(ref _selected,value)){_focusedItem=value?.Value.ItemId;_eventOffset=0;ClearDetail();LastDetail=LoadDetailAsync();}}}
+    public bool HasDecisions=>Decisions.Count>0||HasDecisionPaging;
+    public WorkflowDisplayRow? Selected {get=>_selected;set{if(Set(ref _selected,value)){_focusedItem=value?.Value.ItemId;ResetActivity();ClearDetail();LastDetail=LoadDetailAsync();}}}
     public Task LastDetail {get;private set;}=Task.CompletedTask;
     public string Status {get=>_status;private set=>Set(ref _status,value);}
     public string DetailStatus {get=>_detailStatus;private set=>Set(ref _detailStatus,value);}
@@ -116,6 +119,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public bool CanApprove=>_detail?.CanApprove==true;
     public bool CanContinue=>_detail?.CanContinue==true;
     public bool HasEventPaging=>_eventOffset>0||_detail?.MoreEvents==true;
+    public bool HasDecisionPaging=>_decisionOffset>0||_detail?.MoreDecisions==true;
+    public string EventPageLabel=>Events.Count==0?"":$"{_eventOffset+1}–{_eventOffset+Events.Count}";
+    public string DecisionPageLabel=>Decisions.Count==0?"":$"{_decisionOffset+1}–{_decisionOffset+Decisions.Count}";
+    public ReviewPreview? Comparison=>_detail?.Preview;
     public bool HasPreview=>_detail?.Preview!=null;
     public bool HasImage=>OriginalImage!=null;
     public bool NeedsReview=>_detail?.Item.State is QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource;
@@ -142,6 +149,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public UiAsyncCommand Refresh{get;} public UiAsyncCommand Apply{get;} public UiAsyncCommand Next{get;} public UiAsyncCommand Previous{get;}
     public UiAsyncCommand Propose{get;} public UiAsyncCommand Approve{get;} public UiAsyncCommand Continue{get;}
     public UiAsyncCommand NextEvents{get;} public UiAsyncCommand PreviousEvents{get;}
+    public UiAsyncCommand NextDecisions{get;} public UiAsyncCommand PreviousDecisions{get;}
     private async Task ChangePage(int by){CloseDetail.Execute(null);_offset=Math.Max(0,_offset+by);await LoadPageAsync(false);}
     public async Task LoadPageAsync(bool reset=false,bool quiet=false)
     {
@@ -179,9 +187,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         DetailStatus="Consultando…";
         try
         {
-            var d=await _client.DetailAsync(c.Id,new(item,_eventOffset),read.Token);
+            var d=await _client.DetailAsync(c.Id,new(item,_eventOffset,_decisionOffset,_eventThrough,_decisionThrough),read.Token);
             if(!Current(scope,c)||generation!=_detailGeneration||ActiveItem!=item||read.IsCancellationRequested)return;
             if(d.UniverseId!=c.Id||d.Item.UniverseId!=c.Id||d.Item.ItemId!=item)throw new InvalidDataException("Workflow detail mismatch.");
+            _eventThrough=d.EventThrough;_decisionThrough=d.DecisionThrough;
             _detail=d;_choice=null;EditExpanded=d.Preview==null;Events.Clear();foreach(var e in d.Events)Events.Add(new(WorkflowWords.Date(e.Utc),WorkflowWords.Action(e),e.Incident!=QueueIncident.None?AutomationControlViewModel.Problem(e.Incident):WorkflowWords.State(e.State)));
             Decisions.Clear();foreach(var decision in d.Decisions??[])Decisions.Add(new(WorkflowWords.Date(decision.Utc),decision.State switch{ExceptionalDecisionState.Proposed=>"Corrección propuesta",ExceptionalDecisionState.Approved=>"Corrección aprobada",_=>"Corrección revocada"},$"{decision.Profile} · {decision.Width} × {decision.Height}"));
             DetailStatus="";NotifyDetail();
@@ -195,9 +204,14 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(_disposed||_client==null||_context() is null)return;
         // Navigation retains only the requested identity; the bounded host read supplies every fact.
         _focusedItem=item;_selected=Rows.FirstOrDefault(r=>r.Value.ItemId==item);Notify(nameof(Selected));
-        _eventOffset=0;ClearDetail();await LoadDetailAsync();
+        ResetActivity();ClearDetail();await LoadDetailAsync();
     }
-    private Task LoadEvents(int by){_eventOffset=Math.Max(0,_eventOffset+by);return LoadDetailAsync();}
+    private void ResetActivity(){_eventOffset=0;_decisionOffset=0;_eventThrough=null;_decisionThrough=null;}
+    private Task LoadActivity(int by,bool decisions)
+    {
+        if(decisions)_decisionOffset=Math.Max(0,_decisionOffset+by);else _eventOffset=Math.Max(0,_eventOffset+by);
+        return LoadDetailAsync();
+    }
     private async Task Change(AutomationOperation operation)
     {
         if(_client==null||_detail==null||_context() is not {} c)return;
@@ -215,17 +229,17 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         {
             await _client.MutateAsync(c.Id,operation,request,_lifetime.Token);
             if(!Current(scope,c)||ActiveItem!=d.Item.ItemId)return;
-            await LoadDetailAsync();
+            ResetActivity();await LoadDetailAsync();
             if(operation==AutomationOperation.ReviewContinue){await LoadPageAsync();DetailStatus="Continuación solicitada";}
         }
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
         finally{_changing=false;RefreshCommands();}
     }
-    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange)})Notify(n);RefreshCommands();}
+    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;Events.Clear();Decisions.Clear();NotifyDetail();}
-    private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,NextEvents,PreviousEvents})command.Refresh();}
+    private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,NextEvents,PreviousEvents,NextDecisions,PreviousDecisions})command.Refresh();}
     private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}
     private void FailMutation(Exception _){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}
-    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();Rows.Clear();_selected=null;_focusedItem=null;_offset=0;_eventOffset=0;_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
+    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();Rows.Clear();_selected=null;_focusedItem=null;_offset=0;ResetActivity();_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
     public void Dispose(){if(_disposed)return;_disposed=true;_lifetime.Cancel();ContextChanged();_lifetime.Dispose();}
 }
