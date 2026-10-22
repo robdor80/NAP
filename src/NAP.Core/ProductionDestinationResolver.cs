@@ -12,9 +12,22 @@ public sealed class ProductionDestinationResolver
         if (package.AssetKey.UniverseId != repository.UniverseId)
             throw new ArgumentException("The package and production repository must belong to the same universe.", nameof(repository));
 
-        var routing = package.AssetRule.Routing
+        var relativeDirectory = ResolveRelative(package.AssetRule, package.Manifest.Classification, package.AssetKey.AssetId);
+        var fullDirectoryPath = repository.RootPath;
+        foreach (var segment in relativeDirectory.Split('/'))
+            fullDirectoryPath = Path.Combine(fullDirectoryPath, segment);
+        fullDirectoryPath = Path.GetFullPath(fullDirectoryPath);
+        if (!IsStrictlyWithinRoot(repository.RootPath, fullDirectoryPath))
+            throw new InvalidOperationException("The destination must be strictly within the authorized production root.");
+
+        return new ProductionAssetDestination(package.AssetKey, repository.RootPath, relativeDirectory, fullDirectoryPath);
+    }
+
+    // Shared calculation only. This internal function grants no validated package, root or write authority.
+    internal static string ResolveRelative(UniverseAssetRule rule, IReadOnlyDictionary<string, string> classification, string assetId)
+    {
+        var routing = rule.Routing
             ?? throw new InvalidOperationException("The package's validated asset rule has no routing.");
-        var classification = package.Manifest.Classification;
         var segments = new string[routing.Segments.Count];
         for (var index = 0; index < segments.Length; index++)
         {
@@ -31,7 +44,7 @@ public sealed class ProductionDestinationResolver
                     value = classifiedValue;
                     break;
                 case AssetRouteSegmentKind.AssetId:
-                    value = package.AssetKey.AssetId;
+                    value = assetId;
                     break;
                 default:
                     throw new InvalidOperationException("The routing segment kind is invalid.");
@@ -45,15 +58,7 @@ public sealed class ProductionDestinationResolver
             segments[index] = value;
         }
 
-        var relativeDirectory = string.Join("/", segments);
-        var fullDirectoryPath = repository.RootPath;
-        foreach (var segment in segments)
-            fullDirectoryPath = Path.Combine(fullDirectoryPath, segment);
-        fullDirectoryPath = Path.GetFullPath(fullDirectoryPath);
-        if (!IsStrictlyWithinRoot(repository.RootPath, fullDirectoryPath))
-            throw new InvalidOperationException("The destination must be strictly within the authorized production root.");
-
-        return new ProductionAssetDestination(package.AssetKey, repository.RootPath, relativeDirectory, fullDirectoryPath);
+        return string.Join("/", segments);
     }
 
     // Lexical containment only: links and filesystem state belong to future write boundaries.

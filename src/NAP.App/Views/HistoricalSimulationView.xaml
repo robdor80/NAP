@@ -1,0 +1,52 @@
+<UserControl x:Class="NAP.App.Views.HistoricalSimulationView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls" Language="es-ES">
+  <ScrollViewer x:Name="HistoricalScroll" VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <c:RobTitledFrame Header="TRESKAL · HISTÓRICO SINTÉTICO">
+        <StackPanel>
+          <TextBlock Text="{Binding Scope}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding DocumentarySource}" Style="{StaticResource Muted}" Margin="0,8,0,0" />
+          <TextBlock Text="{Binding ContextNotice}" Style="{StaticResource Muted}" />
+          <TextBlock Text="{Binding Summary}" Margin="0,12,0,8" />
+          <WrapPanel>
+            <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding Group}" DisplayMemberPath="Label" Width="200" AutomationProperties.Name="Grupo histórico" />
+            <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" DisplayMemberPath="Label" Width="280" AutomationProperties.Name="Estado de simulación" />
+            <TextBox Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Width="180" MaxLength="80" ToolTip="Buscar referencia o identidad sintética" AutomationProperties.Name="Buscar referencia sintética" />
+          </WrapPanel>
+          <WrapPanel Margin="0,8,0,8"><Button Content="Restablecer filtros" Command="{Binding ResetFilters}" /><Button Content="Exportar simulación…" Click="ExportReport" /></WrapPanel>
+          <TextBlock Text="{Binding Result}" AutomationProperties.LiveSetting="Polite" />
+          <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" Height="180" Margin="0,8,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Inventario sintético de referencia">
+            <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,5"><WrapPanel><TextBlock Text="{Binding HistoricalGroup}" FontWeight="SemiBold" Margin="0,0,16,0" /><TextBlock Text="{Binding Identity}" Margin="0,0,16,0" /><TextBlock Text="{Binding StatusLabel}" /></WrapPanel><TextBlock Text="{Binding Reference}" Style="{StaticResource Muted}" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock x:Name="HistoricalTransferNotice" Style="{StaticResource Muted}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite" />
+        </StackPanel>
+      </c:RobTitledFrame>
+      <c:RobTitledFrame x:Name="HistoricalDetail" Header="REVISIÓN DOCUMENTAL · SOLO PROPUESTAS">
+        <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasSelection}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
+        <StackPanel>
+          <WrapPanel><TextBlock Text="{Binding Selected.Identity}" FontSize="20" FontWeight="SemiBold" Margin="0,0,16,8" /><Button Content="Cerrar detalle" Command="{Binding CloseDetail}" /></WrapPanel>
+          <TextBlock Text="{Binding Selected.Provenance}" Style="{StaticResource Muted}" />
+          <TextBlock Text="{Binding Selected.StatusLabel}" Margin="0,8,0,0" />
+          <TextBlock Text="{Binding Selected.OriginalStatus}" />
+          <TextBlock Text="Clasificaciones del fixture (sintéticas)" FontWeight="SemiBold" Margin="0,12,0,4" />
+          <TextBlock Text="{Binding Selected.ClassificationLabel}" />
+          <TextBlock Text="Ruta histórica · modelo sintético" FontWeight="SemiBold" Margin="0,12,0,4" />
+          <TextBlock Text="{Binding Selected.HistoricalPath}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
+          <TextBlock Text="Ruta canónica · propuesta sintética" FontWeight="SemiBold" Margin="0,12,0,4" />
+          <TextBlock Text="{Binding Selected.ProposedPathLabel}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
+          <TextBlock Text="Selecciona una incidencia para examinar su evidencia y propuesta" Margin="0,12,0,4" />
+          <ListBox ItemsSource="{Binding Selected.Issues}" SelectedItem="{Binding SelectedIssue}" DisplayMemberPath="Title" MaxHeight="100" AutomationProperties.Name="Incidencias sintéticas del registro" />
+          <TextBlock Text="{Binding SelectedIssue.Evidence}" Margin="0,8,0,4" />
+          <TextBlock Text="{Binding SelectedIssue.Proposal}" />
+          <TextBlock Text="Conforme en simulación valida solo metadata sintética. No valida archivos ni autoriza adopción, corrección o publicación." Style="{StaticResource Muted}" Margin="0,12,0,0" />
+        </StackPanel>
+      </c:RobTitledFrame>
+      <Expander Header="Procedencia, estructura histórica y adopción futura" Margin="0,8,0,16">
+        <StackPanel>
+          <TextBlock Text="{Binding HistoricalFiles}" />
+          <TextBlock Text="Fuente: docs/NIMROEL_HISTORICAL_STRUCTURE_AUDIT.md · corte 03/10/2026. No se reconstruye el inventario nominal ni se comprueba el estado actual de originales." Margin="0,8,0,8" />
+          <TextBlock Text="Futura adopción: certificar entorno → backup verificado → inventario actualizado → identidad y metadata → rutas y duplicados/colisiones → propuestas → aprobación humana explícita → un retrato piloto → verificación y recuperación. Fuera de P6.7." />
+        </StackPanel>
+      </Expander>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

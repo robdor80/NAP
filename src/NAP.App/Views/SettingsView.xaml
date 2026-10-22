@@ -3,6 +3,7 @@
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
       <Button Content="General" Command="{Binding SelectSection}" CommandParameter="General" />
       <Button Content="Diagnóstico" Command="{Binding SelectSection}" CommandParameter="Diagnóstico" />
+      <Button Content="Histórico sintético" Command="{Binding SelectSection}" CommandParameter="Histórico sintético" />
       <Button Content="Licencias" Command="{Binding SelectSection}" CommandParameter="Licencias" />
     </StackPanel>
     <Grid>
@@ -92,7 +93,10 @@
             </StackPanel>
           </c:RobTitledFrame>
         </StackPanel>
-      </Grid>
+        <local:HistoricalSimulationView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Historical}">
+        <local:HistoricalSimulationView.Style><Style TargetType="local:HistoricalSimulationView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Histórico sintético"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:HistoricalSimulationView.Style>
+      </local:HistoricalSimulationView>
+    </Grid>
       <c:RobTitledFrame Header="APLICACIÓN">
         <StackPanel>
           <CheckBox Content="Minimizar a la bandeja durante esta sesión" IsChecked="{Binding DataContext.MinimizeToTray, RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -107,6 +111,9 @@
       <local:LicenseView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Licenses}">
         <local:LicenseView.Style><Style TargetType="local:LicenseView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Licencias"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:LicenseView.Style>
       </local:LicenseView>
+      <local:HistoricalSimulationView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Historical}">
+        <local:HistoricalSimulationView.Style><Style TargetType="local:HistoricalSimulationView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Histórico sintético"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:HistoricalSimulationView.Style>
+      </local:HistoricalSimulationView>
     </Grid>
   </DockPanel>
 </UserControl>

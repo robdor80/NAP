@@ -378,7 +378,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
             _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
-            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged();
+            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged(); Settings.Historical.ContextChanged();
             Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }

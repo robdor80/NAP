@@ -131,6 +131,7 @@ public sealed class GitViewModel() : ProfessionalPage("Git", "Estado humano y op
 }
 public sealed class SettingsViewModel(ExplorerViewModel explorer) : ProfessionalPage("Ajustes", "Raíces locales explícitas, independientes y recordadas por universo.")
 {
+    public HistoricalSimulationViewModel Historical { get; } = new();
     public DiagnosticViewModel? Diagnostics { get; internal set; }
     public LicenseViewModel? Licenses { get; internal set; }
     private string _section = "General";

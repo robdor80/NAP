@@ -10,6 +10,7 @@ on:
       - 'tests/NAP.Tests/Phase6WorkflowTests.cs'
       - 'tests/NAP.Tests/Phase6PolishTests.cs'
       - 'tests/NAP.Tests/Phase6SettingsTests.cs'
+      - 'tests/NAP.Tests/Phase6HistoricalTests.cs'
       - 'tests/NAP.Tests/AutomationQueueTests.cs'
       - 'tests/NAP.Tests/ProfessionalUiTests.cs'
       - '.github/workflows/phase6-review.yml'
@@ -37,17 +38,17 @@ jobs:
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
-      - name: Only focused Phase 6 projections, paging and navigation; no ZIP assets
+      - name: Only P6.7 metadata, retained resolver and navigation; no ZIP assets
         shell: pwsh
         run: |
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6Overview|FullyQualifiedName~Phase6Workflow|FullyQualifiedName~Phase6Polish|FullyQualifiedName~Phase6Settings|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-settings --logger 'trx;LogFileName=phase6-settings.trx'
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo' --results-directory artifacts/phase6-historical --logger 'trx;LogFileName=phase6-historical.trx'
           if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
-      - name: Render only synthetic diagnostic and administrative license scenarios
+      - name: Render only closed synthetic historical metadata scenarios
         shell: pwsh
         run: |
           $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
-          $captureRoot = Join-Path $PWD 'artifacts/phase6-settings'
-          foreach ($mode in @('diagnostics','diagnostics-filtered','diagnostics-export','diagnostics-offline','diagnostics-error','licenses','licenses-90','licenses-30','licenses-7','licenses-expired','licenses-renewed')) {
+          $captureRoot = Join-Path $PWD 'artifacts/phase6-historical'
+          foreach ($mode in @('historical','historical-children','historical-elder','historical-ambiguous','historical-duplicate','historical-unknown','historical-empty','historical-context','historical-export')) {
             foreach ($compact in @($false,$true)) {
               $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
               if ($compact) { $captureArguments += '--compact' }
@@ -59,7 +60,7 @@ jobs:
               if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
-          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 22) { throw 'Expected twenty-two focused WPF settings renders.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 28) { throw 'Expected twenty-eight focused historical WPF renders.' }
           git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
           Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
       - name: Clean temporary license before artifacts
@@ -70,7 +71,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: phase6-settings
-          path: artifacts/phase6-settings/
+          name: phase6-historical
+          path: artifacts/phase6-historical/
           if-no-files-found: warn
           retention-days: 14
