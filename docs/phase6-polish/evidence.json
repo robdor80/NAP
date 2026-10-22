@@ -1,0 +1,991 @@
+{
+  "schemaVersion": 1,
+  "project": "NAP 2.0",
+  "scope": "P6.3/P6.4 polish A/B/C only",
+  "branch": "codex/nap-2-fase-6-ux",
+  "baseDelivery": "d9396831eed4ae4b55d581417a477e3037349e3f",
+  "sourceCommit": "91f94b972ec5a1daa7efc718509ffb3ee97e7410",
+  "mainVerified": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "workflow": {
+    "runId": 39839852706,
+    "jobId": 120037674100,
+    "artifactId": 12453066125,
+    "artifactSha256": "dd24dcf4ec906aa43ee1c7821ce684cc40d1e3535729e621bb60586d4ab6c1bf",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39839852706",
+    "conclusion": "success",
+    "runner": "windows-2022",
+    "configuration": "Release",
+    "appBuild": "passed",
+    "testAssemblyBuild": "passed",
+    "officialLicenseValidation": "unchanged; existing helper and cleanup",
+    "filter": "dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6Overview|FullyQualifiedName~Phase6Workflow|FullyQualifiedName~Phase6Polish|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-polish --logger 'trx;LogFileName=phase6-polish.trx'"
+  },
+  "counters": {
+    "total": "43",
+    "executed": "43",
+    "passed": "43",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "tests": [
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.LateDetailAndPageRepliesCannotCrossUniverseAndCancelTheOldRead",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.SelectedCountsStaySeparateFromExecutionScope",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.LateOldUniverseReplyCannotReplaceNewSelection",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 0, processing: 1, review: 0, label: \"Procesando imágenes\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ForeignControlOrQueueIsNeverDisplayed",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: NeedsReview, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Degraded, label: \"Automatización necesita revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.DurableStreamsPageIndependentlyAndNewRecordsDoNotShiftOpenPages(decisions: 3, extraTransitions: 24)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.PollsNeverOverlapAndDisposedRepliesCannotPublish",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.IndependentClientOffsetsKeepScopeBoundsAndNavigationIdentity",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.OpeningAnIncidentOutsideTheVisiblePageKeepsItsExactIdentityAndPollingPreservesEdits",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Running, pending: 0, processing: 1, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.DurableStreamsPageIndependentlyAndNewRecordsDoNotShiftOpenPages(decisions: 24, extraTransitions: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.ForeignSnapshotsAndDisconnectedReadsClearActionsWithoutFallback",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Observed, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 0, processing: 0, review: 0, label: \"Todo al día\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 1, processing: 0, review: 0, label: \"Automatización activa\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.ExplicitApprovalBindsPreviewAndDoesNotInventHostOutcome",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 0, processing: 0, review: 1, label: \"1 necesita revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Duplicate, pending: 0, processing: 0, completed: 0, review: 0, duplicate: 1)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.ExtendedReadContractRoundTripsThroughTheAuthenticatedHost",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.AuthenticatedPagingFiltersAndEventsAreScopedBoundedAndReadOnly",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.UniverseChangeWhileConfirmingNeverSendsAnApprovalForTheOldScreen",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: WaitingStable, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: RetryScheduled, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Rejected, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 1, processing: 1, review: 1, label: \"Procesando imágenes\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.DurableStreamsPageIndependentlyAndNewRecordsDoNotShiftOpenPages(decisions: 0, extraTransitions: 24)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.ProfessionalUiTests.UnconfiguredNavigationNeverInventsCountsOrPerformsIo",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.RevokedOrMismatchedGrantNeverEnablesResume",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.DisconnectClearsCountsAndNeverFallsBackOrSendsCommands",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Paused, label: \"Automatización pausada\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.RevokedPolicyBlocksIndividualContinuationBeforeAnyDecisionOrPreparationWrite",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Queued, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Disabled, label: \"Automatización sin activar\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Blocked, label: \"Automatización necesita revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Completed, pending: 0, processing: 0, completed: 1, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6PolishTests.RealSummaryNeverSaysUpToDateWithWorkOrIncidents(pending: 0, processing: 0, review: 2, label: \"2 necesitan revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: MissingSource, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    }
+  ],
+  "captures": {
+    "count": 25,
+    "bindingErrors": 0,
+    "stderrFiles": 10,
+    "stderrBytes": 0,
+    "dpi": 96,
+    "sizes": [
+      [
+        1440,
+        900
+      ],
+      [
+        1200,
+        700
+      ]
+    ],
+    "method": "Product WPF visual tree rendered offscreen; comparison content in its original logical Window/namescope without showing a native Window; no image editing",
+    "data": "In-memory synthetic fixtures only; image pixels correspond to declared 768x954 original and 768x960 canvas with 3 rows per vertical edge; downsampled to existing 256-axis bound",
+    "assertions": [
+      "state summary agrees with synthetic workflow rows",
+      "independent activity page and continuation flags",
+      "no physical-desktop clip",
+      "two optional declared-margin guides",
+      "horizontal and vertical scroll at 200%",
+      "verified preview buffers unchanged by presentation"
+    ],
+    "traces": [
+      {
+        "preview": "review",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "production",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "-decisiones",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "-actividad",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity",
+        "view": "-decisiones",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity",
+        "view": "-actividad",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "-decisiones",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity-decisions",
+        "view": "-actividad",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity",
+        "view": "-decisiones",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "activity",
+        "view": "-actividad",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "exception",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "preview": "exception",
+        "view": "-detalle",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "comparison": true,
+        "synthetic": true,
+        "offscreenLayout": true,
+        "zoom": 1,
+        "width": 1440,
+        "height": 900,
+        "bindingErrors": 0,
+        "marginGuides": 2
+      },
+      {
+        "comparison": true,
+        "synthetic": true,
+        "offscreenLayout": true,
+        "zoom": 2,
+        "width": 1440,
+        "height": 900,
+        "bindingErrors": 0,
+        "marginGuides": 2
+      },
+      {
+        "preview": "review",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "review",
+        "view": "-herramientas",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "exception",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "preview": "exception",
+        "view": "-detalle",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1200,
+        "height": 700
+      },
+      {
+        "comparison": true,
+        "synthetic": true,
+        "offscreenLayout": true,
+        "zoom": 1,
+        "width": 1200,
+        "height": 700,
+        "bindingErrors": 0,
+        "marginGuides": 2
+      },
+      {
+        "comparison": true,
+        "synthetic": true,
+        "offscreenLayout": true,
+        "zoom": 2,
+        "width": 1200,
+        "height": 700,
+        "bindingErrors": 0,
+        "marginGuides": 2
+      },
+      {
+        "preview": "production",
+        "view": "",
+        "synthetic": true,
+        "offscreenLayout": true,
+        "bindingErrors": 0,
+        "width": 1440,
+        "height": 900
+      }
+    ]
+  },
+  "restrictions": {
+    "zipAssetsCreated": 0,
+    "realAssets": false,
+    "production": false,
+    "cutover": false,
+    "generalRegression": false,
+    "stress": false,
+    "benchmark": false,
+    "prCreated": false,
+    "mainChanged": false
+  },
+  "limitations": [
+    "Enlargement displays existing verified thumbnails, not full-resolution originals.",
+    "Ordinary production composition and MSI certification remain pending under #47.",
+    "App and host must use matching read contracts.",
+    "#49 and the five ImageSharp advisories remain open."
+  ],
+  "imageSharpAdvisories": [
+    "GHSA-gwg2-r3hj-4w44",
+    "GHSA-j3p4-wp97-rph4",
+    "GHSA-j9gm-c75j-xc9q",
+    "GHSA-jjfr-hcj7-qf5w",
+    "GHSA-wmxv-xphr-5c9g"
+  ],
+  "preliminaryRuns": [
+    {
+      "runId": 39836835384,
+      "sourceCommit": "8428cb321fb4ce50d6164689420bc74210c92dbe",
+      "artifactId": 12451760587,
+      "artifactSha256": "003b4b60c1113dc7fbf45df89b2d3486fdc103bca79a9a082d7f5fcb2f785a2f",
+      "conclusion": "failure",
+      "note": "Three metadata-only fixtures called full detail without an admission receipt.",
+      "counters": {
+        "total": "43",
+        "executed": "43",
+        "passed": "40",
+        "failed": "3",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "runId": 39837383866,
+      "sourceCommit": "05e89925435406f8f44b7c1ced71ac0ece3c82de",
+      "artifactId": 12450564263,
+      "artifactSha256": "fad2900901094a775bc778122e4947eccf8b7db10b3ed32ba94c9121b361bd11",
+      "conclusion": "success",
+      "note": "Passed CI; visual review rejected comparison clipping.",
+      "counters": {
+        "total": "43",
+        "executed": "43",
+        "passed": "43",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "runId": 39838149909,
+      "sourceCommit": "38b1b43166229f012c9e7c4b955df2a576564ac6",
+      "artifactId": 12451527210,
+      "artifactSha256": "738506de0ab479f703a2c58ffeb128ce5eec2cf0962bb336c1be106674b1ea7c",
+      "conclusion": "failure",
+      "note": "Desktop clipping assertion stopped rendering.",
+      "counters": {
+        "total": "43",
+        "executed": "43",
+        "passed": "43",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "runId": 39838735578,
+      "sourceCommit": "1256f98877ba6b95bf6feb7884e8c1e7a82dd42b",
+      "artifactId": 12451348994,
+      "artifactSha256": "c2ed49915fc14e310ff9222cddf57135ba2ba36a173bd17b2376daabd6c7e9d2",
+      "conclusion": "failure",
+      "note": "Full comparison rendered; zoom needed completion of the offscreen layout cycle.",
+      "counters": {
+        "total": "43",
+        "executed": "43",
+        "passed": "43",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "runId": 39839437551,
+      "sourceCommit": "1e1c1eadb0e028255dacade57f5058e25bbb0e35",
+      "artifactId": 12451843183,
+      "artifactSha256": "1986416f0ad86f4ca4d33a0653ed10c3e5557f5aa374d255cd769404893f1a66",
+      "conclusion": "success",
+      "note": "25 valid renders, prior illustrative pixels; subsequent fixture aligns with exact declared margins.",
+      "counters": {
+        "total": "43",
+        "executed": "43",
+        "passed": "43",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "files": [
+    {
+      "name": ".gitattributes",
+      "bytes": 132,
+      "sha256": "c09152f479544cb5a7920365f04f9cc970a33e5c5c3b9d30bc8e9a6486404b05"
+    },
+    {
+      "name": "Informe-revision.md",
+      "bytes": 9550,
+      "sha256": "8136d910b87ed01be7e5079b1f821f2ff8a1b4bebef859de43bb286ca95cac45"
+    },
+    {
+      "name": "Informe-revision.pdf",
+      "bytes": 515633,
+      "sha256": "68a7ac0b84541f0a62030dde602cc580323604f3e303bd09f105db3a275af4b4"
+    },
+    {
+      "name": "README.md",
+      "bytes": 6626,
+      "sha256": "f41ea1599020522a3d46440a5eb0cc320144313ec19384b0b71d6feccd06243f"
+    },
+    {
+      "name": "activity-compact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "activity-compact.stdout.txt",
+      "bytes": 375,
+      "sha256": "2eef567f432514d1b351f86f077230db2ffb3d783849a74607e6ea3036b7b7df"
+    },
+    {
+      "name": "activity-decisions-compact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "activity-decisions-compact.stdout.txt",
+      "bytes": 405,
+      "sha256": "b8da16a82841bbe199ba70a28502ac599b2369e8bd8037eaf5829403e3ffe8fd"
+    },
+    {
+      "name": "activity-decisions-normal.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "activity-decisions-normal.stdout.txt",
+      "bytes": 405,
+      "sha256": "c1c45a8ab2ea0b0b78da011a933e3eab7b2326492f4abc0e16b29f94ed613ab6"
+    },
+    {
+      "name": "activity-normal.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "activity-normal.stdout.txt",
+      "bytes": 375,
+      "sha256": "123ab59ebeead9c2a44124226f41d6be2f718da2fb2c79a2d059cd940cffc378"
+    },
+    {
+      "name": "captures.sha256",
+      "bytes": 2577,
+      "sha256": "53038d829d345d129e5f0057c5adc1e6e6863fe388f0ef790dbe4121bd311506"
+    },
+    {
+      "name": "comparacion-ampliada-1200x700.png",
+      "bytes": 53345,
+      "sha256": "54f0fe9697a01ef76297e29ec8e4550f97b397f249120fa773a1b73c6dc01bc1",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "comparacion-ampliada-1440x900.png",
+      "bytes": 75975,
+      "sha256": "aaa5de6f7cd8af4b7a18f85bafb02a00d5696273525978ac9879622196a2d37f",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "comparacion-zoom-200-1200x700.png",
+      "bytes": 43315,
+      "sha256": "63bd805551ab97d9a43d271b29911c3604babf217a966cf6f5d96647619cdc23",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "comparacion-zoom-200-1440x900.png",
+      "bytes": 58675,
+      "sha256": "2c30b0aa0563f99d9dcbce91523d4e913b8c9b37feb15d4ff3d4673c20ce9d79",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "exception-compact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "exception-compact.stdout.txt",
+      "bytes": 508,
+      "sha256": "0cde1e7cb2483801e1315e4c84125806f82b038b164c60128da2cf687b70f9b1"
+    },
+    {
+      "name": "exception-normal.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "exception-normal.stdout.txt",
+      "bytes": 508,
+      "sha256": "1aadc15a79fe7c529b9bcd0a1506ffd3c332a4a077890afb7ccc3d366160f982"
+    },
+    {
+      "name": "flujo-activity-1200x700.png",
+      "bytes": 76547,
+      "sha256": "7898c6132872f76d6634259f7649d680b036058629f01fcb5b6f9e89e462196a",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-1440x900.png",
+      "bytes": 95040,
+      "sha256": "2aec391ba12ef30b1e448c60161c6b0e316265426ee639937445793040e93de5",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-activity-actividad-1200x700.png",
+      "bytes": 80167,
+      "sha256": "3bfa95bd05086b3155b1359332041d4dc3c2c1506ce243320d870e9828499560",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-actividad-1440x900.png",
+      "bytes": 106957,
+      "sha256": "efaedeae3bd29b44dbed8248e346ebef88a569d4d11587498d86c1ad4829e980",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-activity-decisiones-1200x700.png",
+      "bytes": 70956,
+      "sha256": "96cd2c3314a0dc00e0a216569195be6c5db6d0771f7b5ad3269f520aef224aa4",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-decisiones-1440x900.png",
+      "bytes": 94152,
+      "sha256": "313bc94c3340eb68c5119ded114a2cf2c94eb67b4dad1a85c138322191d88310",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-activity-decisions-1200x700.png",
+      "bytes": 76564,
+      "sha256": "cfd2a5f4842d8b493ad6c27c5b76c6b45a6ba017ea723549cb306d430398dd73",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-decisions-1440x900.png",
+      "bytes": 94948,
+      "sha256": "646ad3dea28cf38156be1da1fb1bcc499c30699d9513a728c018d2a77a769a23",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-activity-decisions-actividad-1200x700.png",
+      "bytes": 80139,
+      "sha256": "fd247fe91ef9d3b6b15b683f757f2786734c0e8657cd51c25bd09b18ad7272d5",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-decisions-actividad-1440x900.png",
+      "bytes": 109715,
+      "sha256": "cfd327181fd7a2f7bdb793556742eee1a5a47981223273b62b3d40d2b6a4fda2",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-activity-decisions-decisiones-1200x700.png",
+      "bytes": 77027,
+      "sha256": "0db22e5c4a651fc2f0908d8df3ebb384dd9dfc4bd698582c2ee89764de6afeca",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-activity-decisions-decisiones-1440x900.png",
+      "bytes": 101851,
+      "sha256": "4956354b9081fdf1154125129cf389a61577745ede87c2a00bf96a9f7ece352c",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-exception-1200x700.png",
+      "bytes": 76328,
+      "sha256": "a31e8ebaec80c23e11acbf0df915512dbc39e28844c36cde970a7545ff2f071f",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-exception-1440x900.png",
+      "bytes": 98316,
+      "sha256": "eee54b8c580192e24fe756185cfc563e032c5f2631f15212088e3d5af3eb4a9d",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-exception-detalle-1200x700.png",
+      "bytes": 74512,
+      "sha256": "e7cbe1ba9b5b30fc68a3519bea0555ffdb9f6b41526ee6c2f6192486600b7bbc",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-exception-detalle-1440x900.png",
+      "bytes": 97488,
+      "sha256": "a39612060f8b30c6affa03892640a9a92d91633177a59f040f7ba62b9fa99b39",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-production-1200x700.png",
+      "bytes": 76906,
+      "sha256": "2fc80305298e0c697aef2588b4ca0247acc0023ab6ec30f0cdfd41d208247155",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-production-1440x900.png",
+      "bytes": 95476,
+      "sha256": "e1f89e0370541d603a325b2d5ae36baee5d67886f3e6a61c5bfbdd71813440cd",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "inicio-review-1200x700.png",
+      "bytes": 67813,
+      "sha256": "30d206e5e4c45b33f875662e4bed8649e207d59f93e98a2dae381b4a4523e019",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "inicio-review-1440x900.png",
+      "bytes": 67357,
+      "sha256": "add66ad9860cae6d57c82d75e9938bd5811345fa6b4d4f233bb9c30bdc452b6d",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "inicio-review-herramientas-1200x700.png",
+      "bytes": 67706,
+      "sha256": "aa88ce93003468938e24d2dcedf33b10d96e9710195bbb5cb48e39365965eedf",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "phase6-polish.trx",
+      "bytes": 59748,
+      "sha256": "47e9276929a34595462104903a4e2b72ffc75d3692f90a0b6fe21a512e7a807f"
+    },
+    {
+      "name": "preliminary-39836835384.trx",
+      "bytes": 68821,
+      "sha256": "a64122d837c0f8ddfe27d4f6edaa52b5df0d35ccfdf0848153d26c0bd6bfdb84"
+    },
+    {
+      "name": "preliminary-39836835384.zip",
+      "bytes": 9415,
+      "sha256": "003b4b60c1113dc7fbf45df89b2d3486fdc103bca79a9a082d7f5fcb2f785a2f"
+    },
+    {
+      "name": "preliminary-39837383866.trx",
+      "bytes": 59748,
+      "sha256": "903b14cc9f621aa2c522630a17df2abbdb78a2eb7968e537e461d88baf137976"
+    },
+    {
+      "name": "preliminary-39837383866.zip",
+      "bytes": 1841810,
+      "sha256": "fad2900901094a775bc778122e4947eccf8b7db10b3ed32ba94c9121b361bd11"
+    },
+    {
+      "name": "preliminary-39838149909.trx",
+      "bytes": 59748,
+      "sha256": "a579c32ed6a586ae8edcc2397d456febf021fe17d320894c462c8887eb5d5d4e"
+    },
+    {
+      "name": "preliminary-39838149909.zip",
+      "bytes": 592874,
+      "sha256": "738506de0ab479f703a2c58ffeb128ce5eec2cf0962bb336c1be106674b1ea7c"
+    },
+    {
+      "name": "preliminary-39838735578.trx",
+      "bytes": 59748,
+      "sha256": "d1af33a6a257a7ebce9f5cd07831f87b92e4057ccbd7ed86e3070254ec6e9323"
+    },
+    {
+      "name": "preliminary-39838735578.zip",
+      "bytes": 595736,
+      "sha256": "c2ed49915fc14e310ff9222cddf57135ba2ba36a173bd17b2376daabd6c7e9d2"
+    },
+    {
+      "name": "preliminary-39839437551.trx",
+      "bytes": 59748,
+      "sha256": "66661c506f5ccc3cdd8c886829a04cc6e651ada6eb69d56efe3bca29fbc391d9"
+    },
+    {
+      "name": "preliminary-39839437551.zip",
+      "bytes": 1881301,
+      "sha256": "1986416f0ad86f4ca4d33a0653ed10c3e5557f5aa374d255cd769404893f1a66"
+    },
+    {
+      "name": "production-compact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "production-compact.stdout.txt",
+      "bytes": 120,
+      "sha256": "925297c58e64f076e66e81659792b1e405e799d6e9357ab7bb3f6754c4860f0e"
+    },
+    {
+      "name": "production-normal.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "production-normal.stdout.txt",
+      "bytes": 120,
+      "sha256": "916789f4feebcb3fab82d482b3734bbcdc11a096f77859203787a9b73a074e0f"
+    },
+    {
+      "name": "review-compact.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "review-compact.stdout.txt",
+      "bytes": 245,
+      "sha256": "4d26435bbeb57738db6a2fd9359bad815ac8fa0142c36ee082a8f7dc872f3267"
+    },
+    {
+      "name": "review-normal.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "review-normal.stdout.txt",
+      "bytes": 116,
+      "sha256": "84e513112338c2c8bea4765b977c5e86c29e29232acd731622f9c24f5250363a"
+    },
+    {
+      "name": "source-sha.txt",
+      "bytes": 42,
+      "sha256": "1c6ebc43743b8a2e0b63c328300675fe683a326e2ec8fdcb69e88ac1c950520d"
+    }
+  ]
+}
