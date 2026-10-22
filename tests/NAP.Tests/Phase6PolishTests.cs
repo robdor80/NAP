@@ -32,15 +32,15 @@ public sealed class Phase6PolishTests
                 item.State==QueueState.NeedsReview?QueueIncident.None:QueueIncident.RatioUnsupported);
         }
         if(f.Queue.Get(item.Id).State!=QueueState.NeedsReview)f.Queue.Transition(owner,item.Id,f.Queue.Get(item.Id).Revision,QueueState.NeedsReview,QueueIncident.RatioUnsupported);
-        var reader=new WorkflowDesktopReader(f.Context,f.Queue);var caps=new ReviewCapability(false,false,false);
+        var reader=f.Queue;
         var before=SHA256.HashData(File.ReadAllBytes(f.Queue.DatabasePath));
-        var first=reader.Detail(new(item.Id),caps);
+        var first=reader.BrowseWorkflowActivity(new(item.Id));
         Assert.Equal(Math.Min(20,decisions),first.Decisions!.Count);Assert.Equal(decisions>20,first.MoreDecisions);
         Assert.Equal(20,first.Events.Count);Assert.True(first.MoreEvents);
         var cursor=new WorkflowDetailRequest(item.Id,20,0,first.EventThrough,first.DecisionThrough);
-        var eventPage=reader.Detail(cursor,caps);
+        var eventPage=reader.BrowseWorkflowActivity(cursor);
         Assert.Equal(first.Decisions,eventPage.Decisions);Assert.Empty(first.Events.Select(e=>e.Sequence).Intersect(eventPage.Events.Select(e=>e.Sequence)));
-        var decisionPage=reader.Detail(cursor with{EventOffset=0,DecisionOffset=20},caps);
+        var decisionPage=reader.BrowseWorkflowActivity(cursor with{EventOffset=0,DecisionOffset=20});
         Assert.Equal(first.Events,decisionPage.Events);
         Assert.Equal(Enumerable.Range(0,decisions).Reverse().Select(i=>utc.AddSeconds(i)),first.Decisions.Concat(decisionPage.Decisions!).Select(d=>d.Utc));
         Assert.False(decisionPage.MoreDecisions);
@@ -56,11 +56,11 @@ public sealed class Phase6PolishTests
             Assert.Equal(appended,f.Queue.LatestReviewDecision(item.Id));
         }
         before=SHA256.HashData(File.ReadAllBytes(f.Queue.DatabasePath));
-        var stable=reader.Detail(cursor,caps);Assert.Equal(eventPage.Events,stable.Events);Assert.Equal(first.Decisions,stable.Decisions);
-        var latest=reader.Detail(new(item.Id),caps);Assert.NotEqual(first.EventThrough,latest.EventThrough);Assert.NotEqual(first.DecisionThrough,latest.DecisionThrough);
-        var exhausted=reader.Detail(cursor with{EventOffset=100},caps);Assert.Empty(exhausted.Events);Assert.False(exhausted.MoreEvents);Assert.Equal(decisions>20,exhausted.MoreDecisions);
-        Assert.Throws<AutomationException>(()=>reader.Detail(new(item.Id,DecisionOffset:-1),caps));
-        Assert.Throws<AutomationException>(()=>reader.Detail(new(item.Id,EventThrough:long.MaxValue),caps));
+        var stable=reader.BrowseWorkflowActivity(cursor);Assert.Equal(eventPage.Events,stable.Events);Assert.Equal(first.Decisions,stable.Decisions);
+        var latest=reader.BrowseWorkflowActivity(new(item.Id));Assert.NotEqual(first.EventThrough,latest.EventThrough);Assert.NotEqual(first.DecisionThrough,latest.DecisionThrough);
+        var exhausted=reader.BrowseWorkflowActivity(cursor with{EventOffset=100});Assert.Empty(exhausted.Events);Assert.False(exhausted.MoreEvents);Assert.Equal(decisions>20,exhausted.MoreDecisions);
+        Assert.Throws<AutomationException>(()=>reader.BrowseWorkflowActivity(new(item.Id,DecisionOffset:-1)));
+        Assert.Throws<AutomationException>(()=>reader.BrowseWorkflowActivity(new(item.Id,EventThrough:long.MaxValue)));
         Assert.Equal(before,SHA256.HashData(File.ReadAllBytes(f.Queue.DatabasePath)));
         Assert.Empty(Directory.EnumerateFiles(f.Root,"*.zip",SearchOption.AllDirectories));
     }

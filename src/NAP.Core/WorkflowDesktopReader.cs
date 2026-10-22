@@ -33,10 +33,10 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
         }
         catch (Exception e) when (e is AutomationException or IOException or InvalidDataException or ProductionStorageException or UnauthorizedAccessException or ImageNormalizationException or PackagePreparationStoppedException or SixLabors.ImageSharp.InvalidImageContentException or SixLabors.ImageSharp.UnknownImageFormatException)
         { capabilities = new(false, false, false); image = null; preview = null; choices = []; notice="El original o la vista previa no se pueden verificar. No se aplicarán cambios."; }
-        return new(context.Id, Row(item), events.Take(20).ToArray(), events.Count > 20, choices, preview, preview is null ? image : null,
+        return new(context.Id, Row(item), events, activity.MoreEvents, choices, preview, preview is null ? image : null,
             capabilities.CanPropose && choices.Count > 0, capabilities.CanApprove && preview?.State == ExceptionalDecisionState.Proposed,
             capabilities.CanContinue && preview?.State == ExceptionalDecisionState.Approved,
-            decisions.Take(20).Select(d=>new WorkflowDecisionEntry(d.Utc,d.State,DurablePreparationService.ProfileLabel(d.EffectiveRule.ProductionProfile),d.OutputWidth,d.OutputHeight)).ToArray(),notice,
-            decisions.Count>20,activity.EventThrough,activity.DecisionThrough);
+            decisions.Select(d=>new WorkflowDecisionEntry(d.Utc,d.State,DurablePreparationService.ProfileLabel(d.EffectiveRule.ProductionProfile),d.OutputWidth,d.OutputHeight)).ToArray(),notice,
+            activity.MoreDecisions,activity.EventThrough,activity.DecisionThrough);
     }
 }

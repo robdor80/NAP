@@ -46,7 +46,7 @@ public sealed partial class AutomationQueueStore
             "SELECT payload FROM decisions WHERE item_id=$i AND decision_id=(SELECT decision_id FROM decisions WHERE item_id=$i AND version=1 ORDER BY json_extract(payload,'$.Utc') DESC,rowid DESC LIMIT 1) ORDER BY version DESC LIMIT 1",
             "$i",item.Value).SingleOrDefault();
     });
-    public (IReadOnlyList<QueueEvent> Events, IReadOnlyList<ExceptionalConfigurationDecision> Decisions, long EventThrough, long DecisionThrough)
+    public (IReadOnlyList<QueueEvent> Events, IReadOnlyList<ExceptionalConfigurationDecision> Decisions, long EventThrough, long DecisionThrough, bool MoreEvents, bool MoreDecisions)
         BrowseWorkflowActivity(WorkflowDetailRequest request)
     {
         if(request.EventOffset<0||request.DecisionOffset<0||request.EventThrough is <0||request.DecisionThrough is <0)
@@ -63,7 +63,7 @@ public sealed partial class AutomationQueueStore
                 "$i",request.ItemId.Value,"$t",eventsThrough,"$o",request.EventOffset);
             var decisions=Payloads<ExceptionalConfigurationDecision>(db,tx,"SELECT payload FROM decisions WHERE item_id=$i AND rowid<=$t ORDER BY json_extract(payload,'$.Utc') DESC,version DESC,rowid DESC LIMIT 21 OFFSET $o",
                 "$i",request.ItemId.Value,"$t",decisionsThrough,"$o",request.DecisionOffset);
-            return(events,decisions,eventsThrough,decisionsThrough);
+            return(events.Take(20).ToArray(),decisions.Take(20).ToArray(),eventsThrough,decisionsThrough,events.Count>20,decisions.Count>20);
         });
     }
     public IReadOnlyList<QueueEvent> BrowseEvents(QueueItemId item, int offset)
