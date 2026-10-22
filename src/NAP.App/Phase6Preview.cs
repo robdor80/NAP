@@ -14,7 +14,7 @@ internal static class Phase6Preview
 {
     internal static ShellViewModel Create(string mode)
     {
-        if (mode is not ("active" or "paused" or "review" or "offline" or "local") && !Phase6WorkflowPreview.Modes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
+        if (mode is not ("active" or "paused" or "review" or "offline" or "local") && !Phase6WorkflowPreview.Modes.Contains(mode) && !Phase6SettingsPreview.Modes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
         var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
         UniverseContext Context(string id, string label) => new(new UniverseProfile(new(id), label),
             new(new(id), System.IO.Path.Combine(root, id, "workspace"), System.IO.Path.Combine(root, id, "production"), System.IO.Path.Combine(root, id, "archive")));
@@ -24,12 +24,26 @@ internal static class Phase6Preview
         var workflow=new Phase6WorkflowPreview(mode);
         var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
-        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
+        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
     internal static async Task CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, string mode, string output)
     {
         // This is a capture, never acceptance on the responsible person's MSI.
         var shell = (ShellViewModel)window.DataContext;
+        if(Phase6SettingsPreview.Modes.Contains(mode))
+        {
+            shell.NavigateTo("Ajustes");await shell.LastRefresh;
+            shell.Settings.Section=mode.StartsWith("licenses")?"Licencias":"Diagnóstico";
+            if(mode.StartsWith("diagnostics"))
+            {
+                var vm=shell.Settings.Diagnostics!;
+                if(mode=="diagnostics-filtered")
+                { vm.From=new(2026,10,22);vm.Until=new(2026,10,22);vm.Severity=vm.Severities.Single(s=>s.Value==DiagnosticSeverity.Warning);vm.Category=vm.Categories.Single(c=>c.Value==QueueStage.Normalization); }
+                await vm.Refresh.ExecuteAsync();
+                if(mode is "diagnostics" or "diagnostics-export" && vm.Rows.Count!=4)throw new InvalidOperationException("Missing diagnostic fixture.");
+                if(mode=="diagnostics-filtered"&&vm.Rows.Count!=1)throw new InvalidOperationException("Diagnostic filters differ.");
+            }
+        }
         if(Phase6WorkflowPreview.Modes.Contains(mode))
         {
             shell.NavigateTo(mode=="history"||mode.StartsWith("activity")?"Historial":"Producción"); await shell.LastRefresh;
@@ -47,7 +61,7 @@ internal static class Phase6Preview
             if(mode=="choice"&&(!work.HasOptions||work.HasPreview))throw new InvalidOperationException("Missing compatible choice state.");
             if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
         }
-        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
+        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&!Phase6SettingsPreview.Modes.Contains(mode)&&shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
             throw new InvalidOperationException("Preview navigation differs from the reviewed shell.");
         if (mode is "active" or "paused" or "review" && shell.Automation?.Completed != "14")
             throw new InvalidOperationException("Synthetic projection was not displayed.");
@@ -75,9 +89,17 @@ internal static class Phase6Preview
             }, DispatcherPriority.Render);
             if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
             var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
-            using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}{suffix}-{width}x{height}.png"));
+            using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(Phase6SettingsPreview.Modes.Contains(mode)?"ajustes":Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}{suffix}-{width}x{height}.png"));
             encoder.Save(file);
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, view = suffix, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
+        }
+        if(mode=="diagnostics-export")
+        {
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            var expander=Descendants(capture).OfType<Expander>().Single(v=>v.Name=="ReportPreview");
+            expander.IsExpanded=true;expander.BringIntoView();
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            System.IO.File.WriteAllText(System.IO.Path.Combine(output,$"diagnostic-report-{width}x{height}.txt"),shell.Settings.Diagnostics!.Report);
         }
         await Save("");
         if(mode=="review"&&compact)

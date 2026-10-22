@@ -43,6 +43,10 @@
       </Grid.ColumnDefinitions>
       <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="12,20">
         <DockPanel>
+          <Button DockPanel.Dock="Bottom" Click="OpenLicenses" HorizontalAlignment="Stretch" ToolTip="Consultar licencias">
+            <TextBlock Text="{Binding Settings.Licenses.PendingNotice}" TextWrapping="Wrap" />
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Margin" Value="0,10,0,0" /><Style.Triggers><DataTrigger Binding="{Binding Settings.Licenses.PendingNotice}" Value=""><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Button.Style>
+          </Button>
           <TextBlock DockPanel.Dock="Bottom" Text="RobDev · NAP 2.0" Style="{StaticResource Muted}" Margin="16,20,0,0" />
           <Grid>
             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
@@ -146,6 +150,7 @@
           </c:RodoMascot>
         </Grid>
         <StackPanel Grid.Row="1">
+
           <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Producción"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Historial"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
           <TextBlock Text="{Binding CurrentPage.Status}" Margin="0,0,0,16">
             <TextBlock.Style>

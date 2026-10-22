@@ -36,7 +36,7 @@ public partial class App : Application
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
-                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls, workflowClient: new WorkflowDesktopClient(client));
+                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls, workflowClient: new WorkflowDesktopClient(client), diagnosticClient: new DiagnosticDesktopClient(client), licenses: new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true);
                 var remoteOutput = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
                 var remoteWindow = new MainWindow(remoteShell, smokeOutput: remoteOutput, automationSmoke: e.Args.Contains("--smoke-automation", StringComparer.Ordinal));
                 MainWindow = remoteWindow; remoteWindow.Show(); return;
@@ -62,7 +62,7 @@ public partial class App : Application
                     auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
             }
             var importSource = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-import-profile=", StringComparison.Ordinal))?[23..] : null;
-            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot);
+            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot, licenses: smoke ? new LicenseViewModel(null) : new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true);
             var output = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
             var normalizationProfile = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-normalization-profile=", StringComparison.Ordinal))?[30..] : null;
             var window = new MainWindow(shell, smoke, output, importSource is not null, normalizationProfile); MainWindow = window; window.Show();

@@ -131,6 +131,11 @@ public sealed class GitViewModel() : ProfessionalPage("Git", "Estado humano y op
 }
 public sealed class SettingsViewModel(ExplorerViewModel explorer) : ProfessionalPage("Ajustes", "Raíces locales explícitas, independientes y recordadas por universo.")
 {
+    public DiagnosticViewModel? Diagnostics { get; internal set; }
+    public LicenseViewModel? Licenses { get; internal set; }
+    private string _section = "General";
+    public string Section { get => _section; set => Set(ref _section, value); }
+    public RelayCommand SelectSection => new(p => Section = (string)p!);
     public ExplorerViewModel Explorer { get; } = explorer;
     private IReadOnlyList<InstalledUniverseProfile> _installed = explorer.Profiles.Select(p => new InstalledUniverseProfile(p, false)).ToArray();
     public IReadOnlyList<InstalledUniverseProfile> InstalledProfiles { get => _installed; internal set => Set(ref _installed, value); }

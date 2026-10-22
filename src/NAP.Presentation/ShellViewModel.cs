@@ -27,7 +27,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
         Automation = automation;
@@ -35,6 +35,16 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
         _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
+        Settings.Licenses = licenses ?? new LicenseViewModel(null);
+        Settings.Diagnostics = new(diagnosticClient, () => Explorer.SelectedUniverse?.Id, LocalDiagnostics,
+            readLocalDiagnostics ? async ct =>
+            {
+                var context=Context;if(context is null)return Array.Empty<DiagnosticRow>();
+                var snapshot=await Task.Run(()=>LocalDiagnosticReader.Read(context,ct),ct);
+                var rows=snapshot.States.Select(s=>new DiagnosticRow(null,s==JobState.Failed?DiagnosticSeverity.Error:DiagnosticSeverity.Information,QueueStage.Preparation,null,null,null,null,ManualState:s)).ToList();
+                if(snapshot.ReadError)rows.Add(new(null,DiagnosticSeverity.Error,null,null,null,null,null));
+                return rows;
+            } : null);
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
         Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
@@ -231,7 +241,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand PushGit { get; }
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
-    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
+    { await Settings.Licenses!.CheckAsync(); _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
     private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
     {
         try { await switching; }
@@ -368,7 +378,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
             _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
-            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged();
+            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged();
             Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }
@@ -382,6 +392,17 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private void RefreshCommands() { foreach (var command in _commands) command.Refresh(); Navigate?.Refresh(); CancelRead?.Refresh(); }
     private void Fail(Exception error)
     { if (_disposed) return; var notice = UiNotice.From(error); CurrentPage.Notice = notice; CurrentPage.State = UiPageState.Stopped; if (Context is { } c) Record(c, notice.Message, notice.Tone, notice.Code); }
+    private IReadOnlyList<DiagnosticRow> LocalDiagnostics()
+    {
+        var id=Explorer.SelectedUniverse?.Id;
+        var rows=History.Activities.Where(a=>a.UniverseId==id).Take(100).Select(a=>new DiagnosticRow(a.ObservedUtc,
+            a.Tone==UiTone.Error?DiagnosticSeverity.Error:a.Tone==UiTone.Warning?DiagnosticSeverity.Warning:DiagnosticSeverity.Information,null,null,null,null,null,a.Code)).ToList();
+        if(Explorer.Error is not null)rows.Insert(0,new(null,DiagnosticSeverity.Error,null,null,null,null,null,Explorer.Error.Code));
+        foreach(var page in Pages.Where(p=>p.Notice is not null))rows.Add(new(null,page.Notice!.Tone==UiTone.Error?DiagnosticSeverity.Error:DiagnosticSeverity.Warning,null,null,null,null,null,page.Notice.Code));
+        foreach(var job in History.Jobs.Concat(Pipeline.Jobs).DistinctBy(j=>j.Record.JobId).Take(30))
+            rows.Add(new(null,job.Record.State==JobState.Failed?DiagnosticSeverity.Error:DiagnosticSeverity.Information,QueueStage.Preparation,null,null,null,null,ManualState:job.Record.State));
+        return rows.Take(100).ToArray();
+    }
     private void Record(UniverseContext c, string message, UiTone tone, string? code = null)
     { if (_disposed || c != Context) return; History.Activities.Insert(0, new(DateTimeOffset.UtcNow, c.Id, message, tone, code)); while (History.Activities.Count > 100) History.Activities.RemoveAt(History.Activities.Count - 1); }
     private static int Parse(string value) => int.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
@@ -396,5 +417,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }

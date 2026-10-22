@@ -9,6 +9,7 @@ on:
       - 'tests/NAP.Tests/Phase6OverviewTests.cs'
       - 'tests/NAP.Tests/Phase6WorkflowTests.cs'
       - 'tests/NAP.Tests/Phase6PolishTests.cs'
+      - 'tests/NAP.Tests/Phase6SettingsTests.cs'
       - 'tests/NAP.Tests/AutomationQueueTests.cs'
       - 'tests/NAP.Tests/ProfessionalUiTests.cs'
       - '.github/workflows/phase6-review.yml'
@@ -39,14 +40,14 @@ jobs:
       - name: Only focused Phase 6 projections, paging and navigation; no ZIP assets
         shell: pwsh
         run: |
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6Overview|FullyQualifiedName~Phase6Workflow|FullyQualifiedName~Phase6Polish|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-polish --logger 'trx;LogFileName=phase6-polish.trx'
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6Overview|FullyQualifiedName~Phase6Workflow|FullyQualifiedName~Phase6Polish|FullyQualifiedName~Phase6Settings|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-settings --logger 'trx;LogFileName=phase6-settings.trx'
           if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
-      - name: Render only polish scenarios with coherent in-memory data and read-only comparison
+      - name: Render only synthetic diagnostic and administrative license scenarios
         shell: pwsh
         run: |
           $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
-          $captureRoot = Join-Path $PWD 'artifacts/phase6-polish'
-          foreach ($mode in @('review','production','exception','activity','activity-decisions')) {
+          $captureRoot = Join-Path $PWD 'artifacts/phase6-settings'
+          foreach ($mode in @('diagnostics','diagnostics-filtered','diagnostics-export','diagnostics-offline','diagnostics-error','licenses','licenses-90','licenses-30','licenses-7','licenses-expired','licenses-renewed')) {
             foreach ($compact in @($false,$true)) {
               $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
               if ($compact) { $captureArguments += '--compact' }
@@ -58,7 +59,7 @@ jobs:
               if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
-          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 25) { throw 'Expected twenty-five focused WPF polish renders.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 22) { throw 'Expected twenty-two focused WPF settings renders.' }
           git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
           Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
       - name: Clean temporary license before artifacts
@@ -69,7 +70,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: phase6-polish
-          path: artifacts/phase6-polish/
+          name: phase6-settings
+          path: artifacts/phase6-settings/
           if-no-files-found: warn
           retention-days: 14

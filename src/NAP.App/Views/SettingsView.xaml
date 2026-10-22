@@ -1,5 +1,13 @@
 <UserControl x:Class="NAP.App.Views.SettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls">
+  <DockPanel LastChildFill="True">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+      <Button Content="General" Command="{Binding SelectSection}" CommandParameter="General" />
+      <Button Content="Diagnóstico" Command="{Binding SelectSection}" CommandParameter="Diagnóstico" />
+      <Button Content="Licencias" Command="{Binding SelectSection}" CommandParameter="Licencias" />
+    </StackPanel>
+    <Grid>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding Section}" Value="General"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
     <StackPanel>
       <c:RobTitledFrame Header="AUTOMATIZACIÓN">
         <StackPanel>
@@ -93,4 +101,12 @@
       </c:RobTitledFrame>
     </StackPanel>
   </ScrollViewer>
+      <local:DiagnosticView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Diagnostics}">
+        <local:DiagnosticView.Style><Style TargetType="local:DiagnosticView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Diagnóstico"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:DiagnosticView.Style>
+      </local:DiagnosticView>
+      <local:LicenseView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Licenses}">
+        <local:LicenseView.Style><Style TargetType="local:LicenseView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Licencias"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:LicenseView.Style>
+      </local:LicenseView>
+    </Grid>
+  </DockPanel>
 </UserControl>

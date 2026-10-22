@@ -9,9 +9,11 @@ public partial class MainWindow : Window
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
         if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
+        var licenseCheckDate=DateTime.Now.Date;
         var hostRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         hostRefresh.Tick += async (_, _) =>
         {
+            if(DateTime.Now.Date != licenseCheckDate) { licenseCheckDate=DateTime.Now.Date; await shell.Settings.Licenses!.CheckAsync(); }
             if(shell.Automation is not null)await shell.Automation.Refresh.ExecuteAsync();
             if(shell.CurrentPage==shell.Pipeline&&!shell.Pipeline.ManualExpanded)await shell.Pipeline.Work!.Poll.ExecuteAsync();
             else if(shell.CurrentPage==shell.History)await shell.History.Work!.Poll.ExecuteAsync();
@@ -31,7 +33,7 @@ public partial class MainWindow : Window
                 catch (Exception error) { Console.Error.WriteLine("phase6_preview_failed:" + error); Application.Current.Shutdown(5); }
                 return;
             }
-            if (shell.Automation is not null) hostRefresh.Start();
+            hostRefresh.Start();
             if (automationSmoke)
             {
                 try { await AutomationSmokeProbe.RunAsync(this, shell, diagnostics, smokeOutput); Application.Current.Shutdown(0); }
@@ -43,6 +45,7 @@ public partial class MainWindow : Window
             catch (Exception ex) { Console.WriteLine("smoke_failed: " + ex.Message); Application.Current.Shutdown(3); }
         };
     }
+    private void OpenLicenses(object sender,RoutedEventArgs e) { var shell=(ShellViewModel)DataContext; shell.Settings.Section="Licencias";shell.NavigateTo("Ajustes"); }
     private void HideToTray(object sender, RoutedEventArgs e) => _tray.Hide();
     internal void VerifyTrayRoundTrip()
     {
