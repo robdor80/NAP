@@ -34,5 +34,5 @@ public partial class ComparisonWindow : Window
     private void Fit(object sender,RoutedEventArgs e){ZoomValue=1;FitImages();ImageScroll.ScrollToHome();}
     private void CloseComparison(object sender,RoutedEventArgs e)=>Close();
     private void HandleKey(object sender,KeyEventArgs e){if(e.Key==Key.Escape){e.Handled=true;Close();}}
-    internal void PrepareCapture(double zoom){UpdateLayout();FitImages();ZoomValue=zoom;UpdateLayout();}
+    internal void PrepareCapture(double zoom){FitImages();ZoomValue=zoom;}
 }
