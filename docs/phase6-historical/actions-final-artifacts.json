@@ -1,0 +1,23 @@
+{
+  "artifacts": [
+    {
+      "id": 12467030140,
+      "name": "phase6-historical",
+      "size_in_bytes": 2763529,
+      "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12467030140",
+      "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12467030140/zip",
+      "expired": false,
+      "created_at": "2026-10-22T23:20:04Z",
+      "expires_at": "2026-11-05T23:20:03Z",
+      "updated_at": "2026-10-22T23:20:04Z",
+      "digest": "sha256:5021f4131389637dbe5f172bfe3997312cfa7fc62d929292280ac5c50248377a",
+      "workflow_run": {
+        "id": 39870877507,
+        "repository_id": 1395904070,
+        "head_repository_id": 1395904070,
+        "head_branch": "codex/nap-2-fase-6-ux",
+        "head_sha": "f3130ce7144644fb4179920c0332371ed0c5991c"
+      }
+    }
+  ]
+}

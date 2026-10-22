@@ -1,0 +1,7 @@
+*.trx -text
+*.txt -text
+*.log -text
+*.png binary
+*.zip binary
+*.pdf binary
+captures.sha256 -text

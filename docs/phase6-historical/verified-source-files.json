@@ -1,0 +1,15 @@
+{
+  ".github/workflows/phase6-review.yml": "4fc851f34596e757f8a819ec8cef95a9d0fa1fbdec0ac9697123f0c588ce8e03",
+  "src/NAP.App/Phase6Preview.cs": "34db33e6d725209119aa7b7b18b379a8255e435452095de6d9afd309be9748d8",
+  "src/NAP.App/Views/HistoricalSimulationView.xaml": "9a98a55ea60823cb20659eb094d35922b281da056676724906e39bc3ba40190b",
+  "src/NAP.App/Views/HistoricalSimulationView.xaml.cs": "0fa511fdd28303234f2f97cbae4b47f9fcf5257323195d4df3df64863984bce7",
+  "src/NAP.App/Views/SettingsView.xaml": "3a177ad9e5f875a06c3d51ea60f8d841c9b487d139625c9e66df79ff62da86bf",
+  "src/NAP.Core/Fixtures/TreskalSyntheticInventory.json": "34299b32dea35a1ba657dda49330939812fe26f3b88c6d279fc5c3bc6d20faf6",
+  "src/NAP.Core/HistoricalSimulation.cs": "fb8763f3a75454fd693a19de907cb260326cffb382495781f26964c3119c917a",
+  "src/NAP.Core/NAP.Core.csproj": "4dfa97bd377535f9aded9e2558c00de781976ddd2cabdce31b6ca4b54eecfbfc",
+  "src/NAP.Core/ProductionDestinationResolver.cs": "236bcbb87056b56ee0daf883f10469c7a65d85056cdb9e28119106772f5d6e77",
+  "src/NAP.Presentation/HistoricalSimulationViewModel.cs": "0c430c4973ff37ea6e7ab63ba860a1705d8d79221368cbf8f0a2613cac2491ea",
+  "src/NAP.Presentation/ProfessionalPages.cs": "839cb6585579473b6dca116c029c1daf2935cad5c69b2582d638af5cb32b795d",
+  "src/NAP.Presentation/ShellViewModel.cs": "f2b90b9f9fb8e5e00f87eabc3adaee6ddc378083c58f9bc0c74f410609579e0e",
+  "tests/NAP.Tests/Phase6HistoricalTests.cs": "174ae5017e14cd072a94653fe8cc2fe6f67fc7ca4aabcb9dcd6bcd419e42d0b5"
+}

@@ -1,0 +1,2 @@
+{"preview":"historical-elder","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-elder","view":"-detalle","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
