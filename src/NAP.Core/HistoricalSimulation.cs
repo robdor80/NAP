@@ -21,6 +21,7 @@ public sealed record HistoricalSimulationRow(string Reference, string Historical
         string.Join(" · ", Classification.Select(p => $"{p.Key}: {p.Value}"));
     public string ProposedPathLabel => ProposedPath ?? "Sin propuesta: metadata insuficiente o incompatible";
     public string Provenance => "Registro sintético · no corresponde a un retrato real";
+    public string IssueSummary => Issues.Count == 0 ? "Sin incidencias de metadata sintética; originales pendientes de comprobar." : $"{Issues.Count} incidencias sintéticas · selecciona una para examinar evidencia y propuesta";
     public string OriginalStatus => "No verificable sin originales · sin homologación para producción";
 }
 

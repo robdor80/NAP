@@ -1,4 +1,9 @@
 <UserControl x:Class="NAP.App.Views.HistoricalSimulationView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:NAP.App.Controls" Language="es-ES">
+  <UserControl.Resources>
+    <CollectionViewSource x:Key="GroupedReferences" Source="{Binding Rows}">
+      <CollectionViewSource.GroupDescriptions><PropertyGroupDescription PropertyName="HistoricalGroup" /></CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+  </UserControl.Resources>
   <ScrollViewer x:Name="HistoricalScroll" VerticalScrollBarVisibility="Auto">
     <StackPanel>
       <c:RobTitledFrame Header="TRESKAL · HISTÓRICO SINTÉTICO">
@@ -14,7 +19,8 @@
           </WrapPanel>
           <WrapPanel Margin="0,8,0,8"><Button Content="Restablecer filtros" Command="{Binding ResetFilters}" /><Button Content="Exportar simulación…" Click="ExportReport" /></WrapPanel>
           <TextBlock Text="{Binding Result}" AutomationProperties.LiveSetting="Polite" />
-          <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" Height="180" Margin="0,8,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Inventario sintético de referencia">
+          <ListBox x:Name="HistoricalInventory" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource GroupedReferences}}" SelectedItem="{Binding Selected}" Height="180" Margin="0,8,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Inventario sintético de referencia">
+            <ListBox.GroupStyle><GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><TextBlock FontWeight="SemiBold" Margin="8,8,0,4"><Run Text="{Binding Name,Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding ItemCount,Mode=OneWay}" /></TextBlock></DataTemplate></GroupStyle.HeaderTemplate></GroupStyle></ListBox.GroupStyle>
             <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,5"><WrapPanel><TextBlock Text="{Binding HistoricalGroup}" FontWeight="SemiBold" Margin="0,0,16,0" /><TextBlock Text="{Binding Identity}" Margin="0,0,16,0" /><TextBlock Text="{Binding StatusLabel}" /></WrapPanel><TextBlock Text="{Binding Reference}" Style="{StaticResource Muted}" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
           </ListBox>
           <TextBlock x:Name="HistoricalTransferNotice" Style="{StaticResource Muted}" Margin="0,8,0,0" AutomationProperties.LiveSetting="Polite" />
@@ -33,7 +39,7 @@
           <TextBlock Text="{Binding Selected.HistoricalPath}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
           <TextBlock Text="Ruta canónica · propuesta sintética" FontWeight="SemiBold" Margin="0,12,0,4" />
           <TextBlock Text="{Binding Selected.ProposedPathLabel}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
-          <TextBlock Text="Selecciona una incidencia para examinar su evidencia y propuesta" Margin="0,12,0,4" />
+          <TextBlock Text="{Binding Selected.IssueSummary}" Margin="0,12,0,4" />
           <ListBox ItemsSource="{Binding Selected.Issues}" SelectedItem="{Binding SelectedIssue}" DisplayMemberPath="Title" MaxHeight="100" AutomationProperties.Name="Incidencias sintéticas del registro" />
           <TextBlock Text="{Binding SelectedIssue.Evidence}" Margin="0,8,0,4" />
           <TextBlock Text="{Binding SelectedIssue.Proposal}" />

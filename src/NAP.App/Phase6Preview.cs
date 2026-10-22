@@ -142,6 +142,14 @@ internal static class Phase6Preview
             DiagnosticReportWriter.Export(reportPath, shell.Settings.Historical.Report, shell.Explorer.Configurations, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-preview-unused-admin"));
             if(System.IO.File.ReadAllText(reportPath) != HistoricalSimulation.Report()) throw new InvalidOperationException("Historical export differs.");
         }
+        if(HistoricalModes.Contains(mode))
+        {
+            await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
+            var inventory = Descendants(capture).OfType<ListBox>().Single(v => v.Name == "HistoricalInventory");
+            var expectedGroups = shell.Settings.Historical.Rows.Select(r => r.HistoricalGroup).Distinct().Count();
+            if(inventory.Items.Count != shell.Settings.Historical.Rows.Count || inventory.Items.Groups?.Count != expectedGroups)
+                throw new InvalidOperationException("Historical visual grouping differs from reference.");
+        }
         await Save("");
         if(HistoricalModes.Contains(mode) && shell.Settings.Historical.HasSelection)
         {
