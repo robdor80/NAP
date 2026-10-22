@@ -39,8 +39,11 @@ public sealed class DashboardViewModel() : ProfessionalPage("Inicio", "Una vista
     public ObservableCollection<UiNotice> Notices { get; } = [];
     internal override void Reset() { base.Reset(); Snapshot = null; Objectives.Clear(); Notices.Clear(); }
 }
-public sealed class PipelineViewModel() : ProfessionalPage("Producción", "Inbox, preparación explícita y checkpoints persistidos por Core.")
+public sealed class PipelineViewModel() : ProfessionalPage("Producción", "")
 {
+    public WorkflowViewModel? Work { get; internal set; }
+    private bool _manualExpanded;
+    public bool ManualExpanded { get=>_manualExpanded; set=>Set(ref _manualExpanded,value); }
     private InboxPackageCandidate? _candidate;
     private PipelineJob? _job;
     private PreparedPipelineAsset? _prepared;
@@ -99,11 +102,13 @@ public sealed class BackupsViewModel() : ProfessionalPage("Backups", "Copias loc
 }
 public sealed class HistoryViewModel : ProfessionalPage
 {
-    public HistoryViewModel() : base("Historial", "Checkpoints, recibos Git y actividad observada en esta sesión.")
-    { Activities.CollectionChanged += (_, _) => Notify(nameof(EmptyActivity)); }
+    public WorkflowViewModel? Work { get; internal set; }
+    public HistoryViewModel() : base("Historial", "")
+    { Activities.CollectionChanged += (_, _) => Notify(nameof(EmptyActivity)); Jobs.CollectionChanged += (_,_)=>Notify(nameof(ManualEntries)); Receipts.CollectionChanged += (_,_)=>Notify(nameof(ManualEntries)); }
     public ObservableCollection<PipelineJob> Jobs { get; } = [];
     public ObservableCollection<GitOperationReceipt> Receipts { get; } = [];
     public ObservableCollection<UiActivity> Activities { get; } = [];
+    public IEnumerable<ManualHistoryEntry> ManualEntries => Jobs.Select(j=>new ManualHistoryEntry("Operación manual",j.HumanState)).Concat(Receipts.Select(r=>new ManualHistoryEntry("Cambio en Git",r.State==GitReceiptState.Committed?"Guardado":r.State==GitReceiptState.Prepared?"Pendiente":"Registrado")));
     public override string? EmptyJobs => EvidenceMessage(Jobs.Count == 0 ? "No hay jobs persistidos para este universo." : null);
     public override string? EmptyReceipts => EvidenceMessage(Receipts.Count == 0 ? "No hay operaciones Git registradas para este universo." : null);
     public string? EmptyActivity => Activities.Count == 0 ? "Todavía no hay actividad registrada en esta sesión." : null;
@@ -152,3 +157,5 @@ public sealed class ShellNavigationItem(string name, string glyph) : ObservableO
     public string Glyph { get; } = glyph;
     public bool IsActive { get => _active; internal set => Set(ref _active, value); }
 }
+
+public sealed record ManualHistoryEntry(string Label,string Result);

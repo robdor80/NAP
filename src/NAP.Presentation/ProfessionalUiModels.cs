@@ -23,11 +23,12 @@ public sealed record UiNotice(string Message, string Code, UiTone Tone)
         return new("Operación detenida. Revisa la configuración o el diagnóstico antes de reintentar.", code, UiTone.Error);
     }
 }
-public sealed record UiConfirmation(string Title, string Explanation, UniverseId UniverseId, IReadOnlyList<string> Details);
+public sealed record UiConfirmation(string Title, string Explanation, UniverseId UniverseId, IReadOnlyList<string> Details, string? UniverseName = null);
 public interface IUserConfirmation { Task<bool> ConfirmAsync(UiConfirmation confirmation, CancellationToken cancellation); }
 public sealed record PipelineStep(string Label, bool IsCurrent, UiTone Tone);
 public sealed record PipelineJob(JobStateRecord Record)
 {
+    public string HumanState => Record.State switch { JobState.Completed=>"Completado",JobState.Failed=>"Necesita revisión",JobState.Planned=>"Preparado",JobState.Verified=>"Verificado",JobState.Validated=>"Validado",_=>"Preparando" };
     public string JobId => Record.JobId.Value;
     public string State => Record.State.ToString().ToUpperInvariant();
     public UiTone Tone => Record.State switch { JobState.Failed => UiTone.Error, JobState.Completed or JobState.Verified => UiTone.Success, _ => UiTone.Neutral };
@@ -70,5 +71,6 @@ public sealed class PreparedPipelineAsset
     public ProcessingPlan Processing => _processing ?? throw new InvalidOperationException("Remote plan remains in AutomationHost.");
     public ArchiveMasterPlan Archive => _archive ?? throw new InvalidOperationException("Remote archive plan remains in AutomationHost.");
     public NapIssueReport Validation => _validation ?? throw new InvalidOperationException("Remote validation remains in AutomationHost.");
+    public string DisplayName => _remoteSummary?.Split('·')[0].Trim() ?? Package.AssetKey.AssetId;
     public string Summary => _remoteSummary ?? $"{Package.AssetKey.AssetId} · {Processing.ProductionDestination.RelativeDirectory}";
 }

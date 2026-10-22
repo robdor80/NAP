@@ -49,52 +49,7 @@
       </StackPanel>
     </Border>
   </DataTemplate>
-  <DataTemplate x:Key="PipelineJob">
-    <StackPanel>
-      <DockPanel>
-        <TextBlock Text="{Binding State}" Foreground="{Binding Tone, Converter={StaticResource ToneBrush}}" DockPanel.Dock="Right" />
-        <TextBlock Text="{Binding JobId}" Style="{StaticResource Technical}" />
-      </DockPanel>
-      <ItemsControl ItemsSource="{Binding Steps}" Margin="0,16,0,0">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <WrapPanel />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border CornerRadius="8" Padding="8" Margin="0,0,8,8">
-              <Border.Style>
-                <Style TargetType="Border">
-                  <Setter Property="Opacity" Value="0.42" />
-                  <Setter Property="BorderBrush" Value="Transparent" />
-                  <Setter Property="BorderThickness" Value="1" />
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsCurrent}" Value="True">
-                      <Setter Property="Opacity" Value="1" />
-                      <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </Border.Style>
-              <TextBlock Text="{Binding Label}" FontSize="{StaticResource TechnicalSize}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding IsCurrent}" Value="True">
-                        <Setter Property="Foreground" Value="{Binding Tone, Converter={StaticResource ToneBrush}}" />
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-    </StackPanel>
-  </DataTemplate>
+  <DataTemplate x:Key="PipelineJob"><TextBlock Text="{Binding HumanState}" Foreground="{Binding Tone,Converter={StaticResource ToneBrush}}" Margin="4,8"/></DataTemplate>
   <DataTemplate x:Key="Notice">
     <StackPanel Margin="0,0,0,12">
       <TextBlock Text="{Binding Message}" Foreground="{Binding Tone, Converter={StaticResource ToneBrush}}" />

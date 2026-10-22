@@ -19,20 +19,32 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private long _generation, _universeSwitchSequence;
     private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
     private bool _toolsExpanded, _reviewExpanded;
+    private bool _compact;
+    public bool IsCompact { get=>_compact; set=>Set(ref _compact,value); }
+    public string PauseLabel=>"Pausar · "+UniverseLabel;
+    public string ResumeLabel=>"Reanudar · "+UniverseLabel;
     private ProfessionalPage _current;
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
         Automation = automation;
+        Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
+        History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
         _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
         Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
         Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        OpenIncident = new(p =>
+        {
+            Pipeline.Work!.Filter = Pipeline.Work.Filters.Single(f=>f.Value==WorkflowFilter.Review);
+            NavigateTo("Producción"); var reading=LastRefresh; var context=Context;
+            if(p is QueueItemId item) LastRefresh=OpenAfterRead(reading,context,item);
+        }, _=>!_disposed&&!IsExecuting);
         Navigate = new(p => NavigateTo((string)p!), p => !_disposed && !IsExecuting && Navigation.Concat(Tools).Any(n => n.Name == p as string));
         Refresh = Command(RefreshCurrentAsync, () => !IsExecuting);
         SaveSettings = Command(async () =>
@@ -192,6 +204,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public bool AuditAvailable => _service.AuditAvailable;
     public bool MinimizeToTray { get => _trayOnMinimize; set => Set(ref _trayOnMinimize, value); }
     public string StatusText => IsExecuting ? "Operación explícita en curso · conserva esta sesión abierta" : CurrentPage.Status;
+    private async Task OpenAfterRead(Task read,UniverseContext? context,QueueItemId item)
+    { await read; if(!_disposed&&Context==context&&CurrentPage==Pipeline) await Pipeline.Work!.OpenItemAsync(item); }
+    public RelayCommand OpenIncident { get; }
     public RelayCommand Navigate { get; }
     public RelayCommand CancelRead { get; }
     public UiAsyncCommand Refresh { get; }
@@ -313,6 +328,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             }
             else if (page == Pipeline || page == History)
             {
+                var work = page == Pipeline ? Pipeline.Work! : History.Work!;
+                await work.LoadPageAsync(); if (!Current()) return;
                 var value = await _service.PipelineAsync(context, source.Token); if (!Current()) return; CheckPipeline(value, context);
                 if (page == Pipeline)
                 {
@@ -351,8 +368,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
             _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
-            Automation?.ContextChanged();
-            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel));
+            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged();
+            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }
         // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.
@@ -379,5 +396,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }

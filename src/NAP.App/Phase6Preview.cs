@@ -14,7 +14,7 @@ internal static class Phase6Preview
 {
     internal static ShellViewModel Create(string mode)
     {
-        if (mode is not ("active" or "paused" or "review" or "offline" or "local")) throw new ArgumentException("Unknown preview mode.");
+        if (mode is not ("active" or "paused" or "review" or "offline" or "local") && !Phase6WorkflowPreview.Modes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
         var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
         UniverseContext Context(string id, string label) => new(new UniverseProfile(new(id), label),
             new(new(id), System.IO.Path.Combine(root, id, "workspace"), System.IO.Path.Combine(root, id, "production"), System.IO.Path.Combine(root, id, "archive")));
@@ -23,13 +23,22 @@ internal static class Phase6Preview
         var confirmation = new NoConfirmation();
         var automation = mode == "local" ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
-        return new(explorer, service, confirmation, automation: automation) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
+        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: new Phase6WorkflowPreview(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
     internal static async Task CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, string mode, string output)
     {
         // This is a capture, never acceptance on the responsible person's MSI.
         var shell = (ShellViewModel)window.DataContext;
-        if (shell.CurrentPage != shell.Dashboard || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
+        if(Phase6WorkflowPreview.Modes.Contains(mode))
+        {
+            shell.NavigateTo(mode=="history"?"Historial":"Producción"); await shell.LastRefresh;
+            var work=mode=="history"?shell.History.Work!:shell.Pipeline.Work!;
+            if(mode=="manual")shell.Pipeline.ManualExpanded=true;
+            else if(work.Rows.Count>0){work.Selected=mode=="history"?work.Rows.First(r=>r.Value.State==QueueState.Completed):work.Rows[0];await work.LastDetail;}
+            if(mode is "exception" or "approved" && !work.HasPreview)throw new InvalidOperationException("Missing synthetic correction preview.");
+            if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
+        }
+        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
             throw new InvalidOperationException("Preview navigation differs from the reviewed shell.");
         if (mode is "active" or "paused" or "review" && shell.Automation?.Completed != "14")
             throw new InvalidOperationException("Synthetic projection was not displayed.");
@@ -39,7 +48,7 @@ internal static class Phase6Preview
             throw new InvalidOperationException("Unavailable automation must not invent counters.");
         // Render the real visual tree at the requested logical client size, independent of
         // the runner's smaller desktop. Keep the Window ancestor for all product bindings.
-        var compact = window.Tag is true;
+        var compact = window.Tag is true; shell.IsCompact=compact;
         var width = compact ? 1200 : 1440; var height = compact ? 700 : 900;
         var content = (UIElement)window.Content;
         var capture = new Grid { Background = window.Background, Width = width, Height = height };
@@ -55,7 +64,7 @@ internal static class Phase6Preview
         if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
         System.IO.Directory.CreateDirectory(output);
         var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
-        using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"inicio-{mode}-{width}x{height}.png"));
+        using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}-{width}x{height}.png"));
         encoder.Save(file);
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
     }
@@ -79,6 +88,12 @@ internal static class Phase6Preview
         public Task SendAsync(AutomationOperation operation, UniverseId? universe, object payload, CancellationToken cancellation) =>
             throw new InvalidOperationException("Capture-only preview cannot send commands.");
     }
+    private sealed class ReadOnlyNormalization : IImageNormalizationUiService
+    {
+        public Task<ImageNormalizationProposal> PrepareAsync(UniverseContext c, InboxPackageCandidate item,string? profile,ImageNormalizationPolicy policy,CancellationToken ct)=>throw new InvalidOperationException("Read-only preview.");
+        public Task<ImageNormalizationResult> DecideAsync(UniverseContext c,ImageNormalizationProposal p,ImageNormalizationAuthorization a,CancellationToken ct)=>throw new InvalidOperationException("Read-only preview.");
+        public Task<ImageNormalizationRecoverySnapshot> ReadAsync(UniverseContext c,CancellationToken ct)=>Task.FromResult(new ImageNormalizationRecoverySnapshot([],[],[]));
+    }
     private sealed class NoFolders : IFolderPicker { public string? Pick(string title, string current) => null; }
     private sealed class NoConfirmation : IUserConfirmation { public Task<bool> ConfirmAsync(UiConfirmation confirmation, CancellationToken cancellation) => Task.FromResult(false); }
     private sealed class PreviewExplorer : IExplorerService
@@ -97,6 +112,8 @@ public class Phase6ReadOnlyPreviewService : DispatchProxy
     {
         "get_AuditAvailable" => false,
         nameof(IProfessionalUiService.DashboardAsync) => Task.FromResult(new DashboardSnapshot(((UniverseContext)args![0]!).Id, null, null, null, null, [])),
+        nameof(IProfessionalUiService.PipelineAsync) => Task.FromResult(new PipelineSnapshot(((UniverseContext)args![0]!).Id, [], [], [])),
+        nameof(IProfessionalUiService.ReceiptsAsync) => Task.FromResult<IReadOnlyList<GitOperationReceipt>>([]),
         _ => throw new InvalidOperationException("Capture-only preview has no manual writer.")
     };
 }

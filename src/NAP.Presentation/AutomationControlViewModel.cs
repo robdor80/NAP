@@ -15,7 +15,7 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
     public async Task SendAsync(AutomationOperation operation, UniverseId? universe, object payload, CancellationToken cancellation) =>
         _ = await client.CallAsync(operation, universe?.Value, payload, cancellation);
 }
-public sealed record AutomationReviewRow(string Name, string Problem, string Date);
+public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
 public sealed class AutomationControlViewModel : ObservableObject, IDisposable
@@ -90,7 +90,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             var active = value.Host.Universes.Count(s => s.State is AutomationHostState.Running or AutomationHostState.Pausing or AutomationHostState.Stopping);
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
-            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES"))));
+            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
             Changed();
         }
         catch (OperationCanceledException) when (_disposed) { }

@@ -18,7 +18,7 @@
         </StackPanel>
       </StackPanel>
       <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-        <Button Content="Bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />
+        <Button Content="Minimizar a bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />
       </StackPanel>
       <StackPanel Grid.Column="2">
         <TextBlock Text="UNIVERSO" Style="{StaticResource Muted}" />
@@ -44,12 +44,13 @@
       <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="12,20">
         <DockPanel>
           <TextBlock DockPanel.Dock="Bottom" Text="RobDev · NAP 2.0" Style="{StaticResource Muted}" Margin="16,20,0,0" />
-          <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
+          <Grid>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
             <ItemsControl ItemsSource="{Binding Navigation}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                  <Button Style="{StaticResource Navigation}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}">
+                  <Button Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}">
+                    <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Navigation}"><Style.Triggers><DataTrigger Binding="{Binding DataContext.IsCompact,RelativeSource={RelativeSource AncestorType=Window}}" Value="True"><Setter Property="MinHeight" Value="32"/><Setter Property="Padding" Value="10,6"/><Setter Property="Margin" Value="0,0,0,2"/></DataTrigger></Style.Triggers></Style></Button.Style>
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Glyph}" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource IconSize}" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                       <TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
@@ -58,7 +59,8 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Expander Header="Herramientas" Margin="8,20,0,0" IsExpanded="{Binding ToolsExpanded}">
+            <Expander Grid.Row="1" Header="Herramientas" Margin="8,16,0,0" IsExpanded="{Binding ToolsExpanded}" VerticalContentAlignment="Stretch">
+              <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Focusable="False">
               <ItemsControl ItemsSource="{Binding Tools}" Margin="-8,8,0,0">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
@@ -66,9 +68,9 @@
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
+              </ScrollViewer>
             </Expander>
-            </StackPanel>
-          </ScrollViewer>
+          </Grid>
         </DockPanel>
       </Border>
       <Grid Grid.Column="2">
@@ -134,7 +136,7 @@
           </c:RodoMascot>
         </Grid>
         <StackPanel Grid.Row="1">
-          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
+          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Producción"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Historial"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
           <TextBlock Text="{Binding CurrentPage.Status}" Margin="0,0,0,16">
             <TextBlock.Style>
               <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
@@ -171,10 +173,10 @@
       <Border.Style><Style TargetType="Border"><Style.Triggers><DataTrigger Binding="{Binding Automation}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Border.Style>
       <DockPanel>
         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" DataContext="{Binding Automation}">
-          <Button Content="Pausar" Command="{Binding Pause}" ToolTip="Pausar el universo seleccionado">
+          <Button Content="{Binding DataContext.PauseLabel,RelativeSource={RelativeSource AncestorType=Window}}" Command="{Binding Pause}" ToolTip="Pausar el universo seleccionado">
             <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding CanPause}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></Button.Style>
           </Button>
-          <Button Content="Reanudar" Command="{Binding Resume}" ToolTip="Reanudar el universo seleccionado">
+          <Button Content="{Binding DataContext.ResumeLabel,RelativeSource={RelativeSource AncestorType=Window}}" Command="{Binding Resume}" ToolTip="Reanudar el universo seleccionado">
             <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding CanResume}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></Button.Style>
           </Button>
         </StackPanel>

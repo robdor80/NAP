@@ -13,6 +13,7 @@ public partial class MainWindow : Window
         hostRefresh.Tick += async (_, _) => { if (shell.Automation is not null) await shell.Automation.Refresh.ExecuteAsync(); };
         Closing += (_, e) => { if (shell.IsExecuting && shell.Automation is null) { e.Cancel = true; MessageBox.Show(this, "Espera a que termine la operación explícita del Core.", "NAP", MessageBoxButton.OK, MessageBoxImage.Information); } };
         Closed += (_, _) => { hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
+        SizeChanged += (_,_)=> { if(phase6Preview is null) shell.IsCompact=ActualWidth<=1220||ActualHeight<=760; };
         StateChanged += (_, _) => { if (WindowState == WindowState.Minimized && shell.MinimizeToTray) _tray.Hide(); };
         Loaded += async (_, _) =>
         {

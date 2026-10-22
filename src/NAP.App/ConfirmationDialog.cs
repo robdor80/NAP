@@ -28,7 +28,7 @@ internal sealed class ConfirmationDialog : Window
         buttons.Children.Add(cancel); buttons.Children.Add(execute); DockPanel.SetDock(buttons, Dock.Bottom); body.Children.Add(buttons);
         var header = new StackPanel { Margin = new Thickness(0, 0, 0, 24) };
         header.Children.Add(new TextBlock { Text = plan.Title, Style = (Style)FindResource("Heading") });
-        header.Children.Add(new TextBlock { Text = "UNIVERSO: " + plan.UniverseId.Value, Foreground = (System.Windows.Media.Brush)FindResource("WarningBrush"), Margin = new Thickness(0, 12, 0, 12) });
+        header.Children.Add(new TextBlock { Text = "UNIVERSO: " + (plan.UniverseName ?? plan.UniverseId.Value), Foreground = (System.Windows.Media.Brush)FindResource("WarningBrush"), Margin = new Thickness(0, 12, 0, 12) });
         header.Children.Add(new TextBlock { Text = plan.Explanation, Style = (Style)FindResource("Muted") });
         DockPanel.SetDock(header, Dock.Top); body.Children.Add(header);
         body.Children.Add(new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = new TextBox

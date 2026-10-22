@@ -20,12 +20,13 @@
                 <ItemsControl.ItemTemplate><DataTemplate>
                   <Border BorderBrush="{StaticResource CardBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                     <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-                      <StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" /><TextBlock Text="{Binding Problem}" Foreground="{StaticResource WarningBrush}" Margin="0,6,0,0" /></StackPanel>
+                      <StackPanel><Button Content="{Binding Name}" Style="{StaticResource Navigation}" Command="{Binding DataContext.OpenIncident,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ItemId}"/><TextBlock Text="{Binding Problem}" Foreground="{StaticResource WarningBrush}" Margin="0,6,0,0" /></StackPanel>
                       <TextBlock Grid.Column="1" Text="{Binding Date}" Style="{StaticResource Muted}" Margin="24,0,0,0" />
                     </Grid>
                   </Border>
                 </DataTemplate></ItemsControl.ItemTemplate>
               </ItemsControl>
+              <Button Content="Ver todas las incidencias" Command="{Binding DataContext.OpenIncident,RelativeSource={RelativeSource AncestorType=Window}}"/>
               <TextBlock Text="{Binding DataContext.Automation.ReviewRemainder, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" Margin="0,12,0,0" />
             </StackPanel>
           </Expander>
