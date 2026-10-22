@@ -14,7 +14,7 @@ Los fallos previos se conservan bajo `preliminary/` y se describen en README; no
 
 Entrega en `codex/nap-2-fase-6-ux`, continuación autorizada de `fbb88c2`. Se detiene para revisión humana al terminar P6.6. No incluye P6.7 ni P6.8.
 
-[Informe de revisión, galería y evidencias](phase6-settings/README.md).
+[Informe de revisión, galería y evidencias](README.md).
 
 ## P6.5 — Diagnóstico
 
