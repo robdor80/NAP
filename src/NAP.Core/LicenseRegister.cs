@@ -52,7 +52,9 @@ public sealed class LicenseRegister
         Guard(); if (!File.Exists(_path)) return Initial();
         using var stream = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read);
         if (stream.Length > 256 * 1024) throw new InvalidDataException("Administrative register exceeds its bound.");
-        var value = JsonSerializer.Deserialize<LicenseRegistry>(stream, Json) ?? throw new InvalidDataException("Missing register.");
+        using var document=JsonDocument.Parse(stream);
+        Unique(document.RootElement);
+        var value = document.RootElement.Deserialize<LicenseRegistry>(Json) ?? throw new InvalidDataException("Missing register.");
         Validate(value); return value;
     }
     private LicenseRegistry Change(Func<LicenseRegistry, LicenseRegistry> update)
@@ -78,6 +80,15 @@ public sealed class LicenseRegister
         for (var p = Path.GetDirectoryName(_path); p is not null; p = Path.GetDirectoryName(p))
             if (Directory.Exists(Path.Combine(p, ".git")) || File.Exists(Path.Combine(p, ".git"))) throw new InvalidDataException("Administrative register must remain outside Git.");
         if (Directory.Exists(_path)) throw new InvalidDataException("Register is not a file.");
+    }
+    private static void Unique(JsonElement element)
+    {
+        if(element.ValueKind==JsonValueKind.Object)
+        {
+            var fields=new HashSet<string>(StringComparer.Ordinal);
+            foreach(var field in element.EnumerateObject()) { if(!fields.Add(field.Name))throw new InvalidDataException("Duplicate administrative field.");Unique(field.Value); }
+        }
+        else if(element.ValueKind==JsonValueKind.Array)foreach(var child in element.EnumerateArray())Unique(child);
     }
     private static void Validate(LicenseRegistry value)
     {

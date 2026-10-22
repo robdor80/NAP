@@ -36,7 +36,7 @@ public partial class App : Application
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
-                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls, workflowClient: new WorkflowDesktopClient(client), diagnosticClient: new DiagnosticDesktopClient(client), licenses: new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true);
+                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls, workflowClient: new WorkflowDesktopClient(client), diagnosticClient: new DiagnosticDesktopClient(client), licenses: new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)));
                 var remoteOutput = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
                 var remoteWindow = new MainWindow(remoteShell, smokeOutput: remoteOutput, automationSmoke: e.Args.Contains("--smoke-automation", StringComparer.Ordinal));
                 MainWindow = remoteWindow; remoteWindow.Show(); return;

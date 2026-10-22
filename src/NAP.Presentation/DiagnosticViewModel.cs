@@ -113,7 +113,8 @@ public sealed class DiagnosticViewModel : ObservableObject, IDisposable
         get
         {
             var b=new StringBuilder("NAP 2.0 · Diagnóstico anonimizado\n");
-            b.AppendLine(_isLocal?"Fuente: sesión local":"Fuente: automatización; universo anonimizado");
+            b.AppendLine(_isLocal?"Fuente: información local disponible":"Fuente: automatización; universo anonimizado");
+            b.AppendLine($"Consulta: {Notice}");
             b.AppendLine($"Registros: {Rows.Count}. Solo página consultada; no constituye un historial completo.");
             b.AppendLine($"Desde: {From:yyyy-MM-dd}; hasta: {Until:yyyy-MM-dd}; gravedad: {Severity?.Label}; categoría: {Category?.Label}");
             foreach(var r in Rows)b.AppendLine($"{r.Utc?.ToString("O")??"sin fecha"} | {r.Level} | {r.Area} | {r.Message} | {r.Detail}");

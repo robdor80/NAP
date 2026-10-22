@@ -20,10 +20,10 @@ public static class LocalDiagnosticReader
                     if(new FileInfo(path).Length>16*1024)throw new InvalidDataException("Journal exceeds its diagnostic bound.");
                     states.Add(new JobStateStore(context).Load(new(Path.GetFileNameWithoutExtension(path))).State);
                 }
-                catch(Exception e)when(e is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException){error=true;}
+                catch(Exception e)when(e is IOException or InvalidDataException or UnauthorizedAccessException or ArgumentException or InvalidOperationException){error=true;}
             }
             return new(states,paths.Length>30,error);
         }
-        catch(Exception e)when(e is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException){return new(states,false,true);}
+        catch(Exception e)when(e is IOException or InvalidDataException or UnauthorizedAccessException or ArgumentException or InvalidOperationException){return new(states,false,true);}
     }
 }

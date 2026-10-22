@@ -105,7 +105,7 @@ public sealed class Phase6SettingsTests
     [Fact]
     public void ReportExportCreatesOnlyANewTextFileAndNeverOverwritesAnySource()
     {
-        using var f=new PreparationTestFixture();var output=Path.Combine(f.Root,"report.txt");var admin=Path.Combine(f.Root,"application");
+        using var f=new PreparationTestFixture();using var owner=f.Queue.AcquireOwner();var output=Path.Combine(f.Root,"report.txt");var admin=Path.Combine(f.Root,"application");
         DiagnosticReportWriter.Export(output,"Informe anonimizado",[f.Roots],admin);var bytes=File.ReadAllBytes(output);
         Assert.Throws<IOException>(()=>DiagnosticReportWriter.Export(output,"replace",[f.Roots],admin));Assert.Equal(bytes,File.ReadAllBytes(output));
         Assert.Throws<InvalidDataException>(()=>DiagnosticReportWriter.Export(Path.Combine(f.Roots.WorkspaceRoot,"report.txt"),"data",[f.Roots],admin));
@@ -130,7 +130,7 @@ public sealed class Phase6SettingsTests
     [Fact]
     public void OfflineJournalReadIsBoundedDoesNotInventDatesAndNeverRepairsDamagedFiles()
     {
-        using var f=new PreparationTestFixture();var store=new JobStateStore(f.Context);var job=JobId.Create();store.Create(job);
+        using var f=new PreparationTestFixture();using var owner=f.Queue.AcquireOwner();var store=new JobStateStore(f.Context);var job=JobId.Create();store.Create(job);
         var bad=Path.Combine(f.Roots.StateRoot,JobId.Create().Value+".json");File.WriteAllText(bad,"corrupt synthetic metadata");
         var before=Directory.GetFiles(f.Roots.StateRoot).ToDictionary(p=>p,p=>SHA256.HashData(File.ReadAllBytes(p)));
         var result=LocalDiagnosticReader.Read(f.Context,CancellationToken.None);Assert.Single(result.States);Assert.True(result.ReadError);Assert.False(result.More);
