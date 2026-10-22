@@ -60,7 +60,17 @@
               </ItemsControl.ItemTemplate>
             </ItemsControl>
             <Expander Grid.Row="1" Header="Herramientas" Margin="8,16,0,0" IsExpanded="{Binding ToolsExpanded}" VerticalContentAlignment="Stretch">
-              <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+              <Expander.Template>
+                <ControlTemplate TargetType="Expander">
+                  <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+                    <ToggleButton Style="{StaticResource Disclosure}" IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" Content="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"/>
+                    <ContentPresenter x:Name="ToolsBody" Grid.Row="1" Margin="8,12,0,0" Visibility="Collapsed"/>
+                  </Grid>
+                  <ControlTemplate.Triggers><Trigger Property="IsExpanded" Value="True"><Setter TargetName="ToolsBody" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Expander.Template>
+              <ScrollViewer x:Name="ToolsScroll" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Focusable="False">
               <ItemsControl ItemsSource="{Binding Tools}" Margin="-8,8,0,0">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>

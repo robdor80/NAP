@@ -72,6 +72,16 @@ internal static class Phase6Preview
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, view = suffix, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
         }
         await Save("");
+        if(mode=="review"&&compact)
+        {
+            var tools=(ScrollViewer)window.FindName("ToolsScroll");
+            if(tools.ScrollableHeight<=0)throw new InvalidOperationException("Compact tools must have a constrained scrolling viewport.");
+            var lastTool=Descendants(tools).OfType<Button>().Single(b=>b.Content as string=="RoDo");
+            lastTool.BringIntoView();
+            await window.Dispatcher.InvokeAsync(()=>capture.UpdateLayout(),DispatcherPriority.Render);
+            if(tools.VerticalOffset<=0)throw new InvalidOperationException("The last compact tool could not be brought into view.");
+            await Save("-herramientas");
+        }
         if(mode is "choice" or "exception" or "approved" or "history")
         {
             // Preserve an additional native view of the lower detail, including the real action controls.
