@@ -313,7 +313,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         _read?.Cancel(); _read?.Dispose(); var source = _read = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
         var generation = ++_generation; var context = Context; var page = CurrentPage; page.Notice = null;
         if (page == Rodo) { page.State = UiPageState.Reserved; return; }
-        if (page == Settings) { page.State = !Explorer.SettingsReadable || (Context is null && Explorer.Error is not null) ? UiPageState.Stopped : Context is null ? UiPageState.Unconfigured : UiPageState.Ready; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
+        if (page == Settings) { if(Settings.Section=="Licencias")await Settings.Licenses!.CheckAsync();else if(Settings.Section=="Diagnóstico")await Settings.Diagnostics!.Refresh.ExecuteAsync(); page.State = !Explorer.SettingsReadable || (Context is null && Explorer.Error is not null) ? UiPageState.Stopped : Context is null ? UiPageState.Unconfigured : UiPageState.Ready; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
         if (context is null) { page.State = Explorer.Error is null ? UiPageState.Unconfigured : UiPageState.Stopped; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
         if (page == Dashboard && Automation is not null)
         {

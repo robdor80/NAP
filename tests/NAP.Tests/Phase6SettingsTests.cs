@@ -42,6 +42,9 @@ public sealed class Phase6SettingsTests
             Assert.Empty(restarted.PendingNotice);Assert.Single(restarted.Selected!.Value.Renewals);
             Assert.Equal(new DateOnly(2028,10,20),LicenseRegister.Threshold(restarted.Selected.Value.Expiry,LicenseReminderKind.NinetyDays));
             Assert.Equal(new DateOnly(2029,1,18),new LicenseRegister(path).Read().Licenses.Single().Expiry);
+            today=new(2028,10,20);await restarted.CheckAsync();
+            Assert.Equal(LicenseReminderKind.NinetyDays,LicenseRegister.Pending(restarted.Selected!.Value)!.Kind);
+            Assert.Equal(4,restarted.Selected.Value.Reminders.Count);
             Assert.DoesNotContain("LicenseKey",File.ReadAllText(path));Assert.Single(Directory.GetFiles(root));
         }
         finally{Directory.Delete(root,true);}

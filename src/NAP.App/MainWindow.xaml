@@ -151,7 +151,7 @@
         </Grid>
         <StackPanel Grid.Row="1">
 
-          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Producción"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Historial"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
+          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding CurrentPage.Name}" Value="Ajustes"/><Condition Binding="{Binding Settings.IsGeneral}" Value="False"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Collapsed"/></MultiDataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Producción"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Historial"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
           <TextBlock Text="{Binding CurrentPage.Status}" Margin="0,0,0,16">
             <TextBlock.Style>
               <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
