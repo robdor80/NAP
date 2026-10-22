@@ -9,10 +9,13 @@ public sealed class Phase6WorkflowTests
     [Fact]
     public async Task AuthenticatedPagingFiltersAndEventsAreScopedBoundedAndReadOnly()
     {
-        using var f=new AutomationHostTests.Fixture();QueueItem review;
+        using var f=new AutomationHostTests.Fixture();QueueItem review;QueueBatchId first,second;
         using(var owner=f.A.Queue.AcquireOwner())
         {
-            review=f.A.Queue.Observe(owner,f.A.Context.Id,Path.Combine(f.A.Roots.InboxRoot,"retrato.zip"),new(new(new string('a',64)),10));
+            first=f.A.Queue.CreateBatch(owner).Id;second=f.A.Queue.CreateBatch(owner).Id;
+            var path=Path.Combine(f.A.Roots.InboxRoot,"retrato.zip");var identity=new QueueZipIdentity(new(new string('a',64)),10);
+            review=f.A.Queue.Observe(owner,f.A.Context.Id,path,identity,first);
+            Assert.Equal(review.Id,f.A.Queue.Observe(owner,f.A.Context.Id,path,identity,second).Id);
             review=f.A.Queue.Transition(owner,review.Id,review.Revision,QueueState.NeedsReview,QueueIncident.AuditFail);
             f.A.Queue.Observe(owner,f.A.Context.Id,Path.Combine(f.A.Roots.InboxRoot,"mapa.zip"),new(new(new string('b',64)),10));
         }
@@ -26,6 +29,11 @@ public sealed class Phase6WorkflowTests
         Assert.Equal(2,(await client.PageAsync(f.A.Context.Id,new(Limit:1),timeout.Token)).Total);
         Assert.Empty((await client.PageAsync(f.B.Context.Id,new(),timeout.Token)).Items);
         Assert.Single((await client.PageAsync(f.A.Context.Id,new(Search:"mapa"),timeout.Token)).Items);
+        Assert.Empty((await client.PageAsync(f.A.Context.Id,new(Search:Path.GetFileName(f.Root)),timeout.Token)).Items);
+        var batches=await client.BatchesAsync(f.A.Context.Id,timeout.Token);Assert.Equal(second,batches[0].Id);Assert.All(batches,b=>Assert.Equal(1,b.Items));
+        Assert.Equal(review.Id,Assert.Single((await client.PageAsync(f.A.Context.Id,new(Batch:second),timeout.Token)).Items).ItemId);
+        Assert.Empty(await client.BatchesAsync(f.B.Context.Id,timeout.Token));
+        Assert.False(File.Exists(new AutomationRuntimeStateStore(f.A.Context).DatabasePath));
         var detail=await client.DetailAsync(f.A.Context.Id,new(review.Id),timeout.Token);
         Assert.Equal(2,detail.Events.Count);Assert.False(detail.CanApprove);Assert.False(detail.CanContinue);Assert.Empty(detail.Choices);
         await Assert.ThrowsAsync<AutomationException>(()=>client.DetailAsync(f.B.Context.Id,new(review.Id),timeout.Token));
@@ -89,7 +97,9 @@ public sealed class Phase6WorkflowTests
             File.WriteAllBytes(masterPath,[0]);
             var damaged=await client.DetailAsync(f.A.Context.Id,new(item),timeout.Token);
             Assert.NotNull(damaged.ReadNotice);Assert.Null(damaged.Preview);Assert.False(damaged.CanContinue);Assert.False(damaged.CanPropose);Assert.False(damaged.CanApprove);
-            await Assert.ThrowsAsync<AutomationException>(()=>wire.CallAsync(AutomationOperation.ReviewContinue,f.A.Context.Id.Value,new ReviewDecisionRequest(item,detail.Item.Revision,preview.DecisionId,preview.Version,preview.Evidence,true),timeout.Token));
+            var stopped=await Assert.ThrowsAsync<AutomationRemoteOperationException>(()=>wire.CallAsync(AutomationOperation.ReviewContinue,f.A.Context.Id.Value,new ReviewDecisionRequest(item,detail.Item.Revision,preview.DecisionId,preview.Version,preview.Evidence,true),timeout.Token));
+            Assert.Contains(nameof(ProductionStorageException),stopped.Message);
+            Assert.Equal(detail.Item.Revision,(await host.QueryAsync(f.A.Context.Id,s=>s.Queue.Get(item))).Revision);
         }
         finally { File.WriteAllBytes(masterPath,masterBytes); }
         foreach(var id in blocked)

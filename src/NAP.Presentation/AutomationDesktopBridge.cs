@@ -163,8 +163,7 @@ public sealed class AutomationDesktopBridge
         switch (request.Operation)
         {
             case AutomationOperation.WorkflowBatches:
-                var batches = await _host.BatchesAsync(id, 0, 40);
-                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => batches.Select(b => new WorkflowBatch(id, b.Capture.BatchId, s.Queue.GetBatch(b.Capture.BatchId).CreatedUtc, b.Summary.UniqueItems)).ToArray()));
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseWorkflowBatches()));
             case AutomationOperation.WorkflowPage:
                 var pageRequest = Arg<WorkflowPageRequest>();
                 return AutomationProtocol.Payload(await _host.QueryAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Browse(pageRequest)));

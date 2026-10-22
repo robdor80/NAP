@@ -9,7 +9,7 @@
     <WrapPanel>
       <TextBox Width="190" MaxLength="80" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar por nombre del paquete" AutomationProperties.Name="Buscar por nombre del paquete"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding Apply}"/></TextBox.InputBindings></TextBox>
       <ComboBox Width="180" Margin="8,6,8,12" ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter}" DisplayMemberPath="Label" AutomationProperties.Name="Estado"/>
-      <ComboBox Width="235" Margin="0,6,8,12" ItemsSource="{Binding Batches}" SelectedItem="{Binding Batch}" DisplayMemberPath="Label" Visibility="{Binding HasBatches,Converter={StaticResource Visible}}" AutomationProperties.Name="Lote"/>
+      <ComboBox Width="235" Margin="0,6,8,12" ItemsSource="{Binding Batches}" SelectedItem="{Binding Batch}" DisplayMemberPath="Label" Visibility="{Binding HasBatches,Converter={StaticResource Visible}}" AutomationProperties.Name="Lote" ToolTip="Los 40 lotes más recientes"/>
       <Button Content="Filtrar" Command="{Binding Apply}" Margin="0,6,0,12"/>
     </WrapPanel>
     <TextBlock Grid.Row="1" Text="{Binding Status}" Style="{StaticResource EmptyState}"/>

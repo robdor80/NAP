@@ -15,16 +15,24 @@ public sealed partial class AutomationQueueStore
             WorkflowFilter.Review => "state IN ('NeedsReview','Rejected','MissingSource')",
             _ => "1=1"
         };
-        var where = states + " AND ($b IS NULL OR batch_id=$b) AND ($s='' OR instr(lower(json_extract(payload,'$.SourcePath')),lower($s))>0)";
+        var where = states + " AND ($b IS NULL OR EXISTS (SELECT 1 FROM observations o WHERE o.item_id=items.id AND o.batch_id=$b)) AND ($s='' OR instr(lower(substr(json_extract(payload,'$.SourcePath'),length($r)+2)),lower($s))>0)";
         return Read(db =>
         {
             using var tx = db.BeginTransaction(deferred: true);
-            var total = Convert.ToInt32(Scalar(db, tx, "SELECT COUNT(*) FROM items WHERE " + where, "$b", request.Batch?.Value, "$s", request.Search));
+            var total = Convert.ToInt32(Scalar(db, tx, "SELECT COUNT(*) FROM items WHERE " + where, "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot)));
             var items = Payloads<QueueItem>(db, tx, "SELECT payload FROM items WHERE " + where + " ORDER BY json_extract(payload,'$.UpdatedUtc') DESC,rowid DESC LIMIT $l OFFSET $o",
-                "$b", request.Batch?.Value, "$s", request.Search, "$l", request.Limit, "$o", request.Offset);
+                "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot), "$l", request.Limit, "$o", request.Offset);
             return (total, items);
         });
     }
+    public IReadOnlyList<WorkflowBatch> BrowseWorkflowBatches() => Read(db =>
+    {
+        // Cohorts already belong to the queue; browsing must not initialize a runtime ledger.
+        using var tx=db.BeginTransaction(deferred:true);
+        var batches=Payloads<QueueBatch>(db,tx,"SELECT payload FROM batches ORDER BY rowid DESC LIMIT 40");
+        return batches.Select(b=>new WorkflowBatch(UniverseId,b.Id,b.CreatedUtc,
+            Convert.ToInt32(Scalar(db,tx,"SELECT COUNT(DISTINCT item_id) FROM observations WHERE batch_id=$b","$b",b.Id.Value)))).ToArray();
+    });
     public IReadOnlyList<ExceptionalConfigurationDecision> BrowseDecisions(QueueItemId item, int offset)
     {
         if(offset<0)throw AutomationValidation.Invalid("Invalid decision offset.");
