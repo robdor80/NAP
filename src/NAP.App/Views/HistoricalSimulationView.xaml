@@ -32,15 +32,15 @@
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
         <c:RobTitledFrame Header="REFERENCIAS SINTÉTICAS" Padding="16,24,16,12">
-          <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame"><Setter Property="Grid.ColumnSpan" Value="2" /><Style.Triggers><DataTrigger Binding="{Binding HasSelection}" Value="True"><Setter Property="Grid.ColumnSpan" Value="1" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
+          <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame" BasedOn="{StaticResource {x:Type c:RobTitledFrame}}"><Setter Property="Grid.ColumnSpan" Value="2" /><Style.Triggers><DataTrigger Binding="{Binding HasSelection}" Value="True"><Setter Property="Grid.ColumnSpan" Value="1" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
           <ListBox x:Name="HistoricalInventory" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource GroupedReferences}}" SelectedItem="{Binding Selected}" Margin="0,8,0,0" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Inventario sintético de referencia">
             <ListBox.GroupStyle><GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><TextBlock FontWeight="SemiBold" Margin="8,8,0,4"><Run Text="{Binding Name,Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding ItemCount,Mode=OneWay}" /></TextBlock></DataTemplate></GroupStyle.HeaderTemplate></GroupStyle></ListBox.GroupStyle>
-            <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,5"><TextBlock Text="{Binding Identity}" FontWeight="SemiBold" /><TextBlock Text="{Binding StatusLabel}" TextWrapping="Wrap" /><TextBlock Text="{Binding Reference}" Style="{StaticResource Muted}" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
+            <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,5"><WrapPanel><TextBlock Text="{Binding Identity}" FontWeight="SemiBold" Margin="0,0,12,0" /><TextBlock Text="{Binding StatusLabel}" TextWrapping="Wrap" /></WrapPanel><TextBlock Text="{Binding Reference}" Style="{StaticResource Muted}" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
           </ListBox>
         </c:RobTitledFrame>
       <ScrollViewer x:Name="HistoricalScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding HasSelection,Converter={StaticResource Visible}}">
       <c:RobTitledFrame x:Name="HistoricalDetail" Header="REVISIÓN DOCUMENTAL · SOLO PROPUESTAS">
-        <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasSelection}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
+        <c:RobTitledFrame.Style><Style TargetType="c:RobTitledFrame" BasedOn="{StaticResource {x:Type c:RobTitledFrame}}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasSelection}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></c:RobTitledFrame.Style>
         <StackPanel>
           <WrapPanel><TextBlock Text="{Binding Selected.Identity}" FontSize="20" FontWeight="SemiBold" Margin="0,0,16,8" /><Button Content="Cerrar detalle" Command="{Binding CloseDetail}" /></WrapPanel>
           <TextBlock Text="{Binding Selected.Provenance}" Style="{StaticResource Muted}" />

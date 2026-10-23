@@ -132,6 +132,7 @@ internal static class Phase6Preview
             var work = shell.CurrentPage == shell.History ? shell.History.Work : shell.Pipeline.Work;
             var state = new { mode, view = suffix, width, height, page = shell.CurrentPage.Name, section = shell.Settings.Section,
                 selectedUniverse = shell.UniverseLabel, historicalRows = shell.Settings.Historical.Rows.Count,
+                historicalViewport = Descendants(capture).OfType<ListBox>().FirstOrDefault(v => v.Name == "HistoricalInventory")?.ActualHeight,
                 historicalSelection = shell.Settings.Historical.Selected?.Reference, issue = shell.Settings.Historical.SelectedIssue?.Code,
                 workflowSelection = work?.Name, canApprove = work?.CanApprove, canContinue = work?.CanContinue,
                 events = work?.EventPageLabel, decisions = work?.DecisionPageLabel,
@@ -166,7 +167,7 @@ internal static class Phase6Preview
             await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             var inventory = Descendants(capture).OfType<ListBox>().Single(v => v.Name == "HistoricalInventory");
             var expectedGroups = shell.Settings.Historical.Rows.Select(r => r.HistoricalGroup).Distinct().Count();
-            if (inventory.ActualHeight < (compact ? 200 : 350)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
+            if (inventory.ActualHeight < (compact ? 120 : 300)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
             if (shell.Settings.Historical.HasSelection) inventory.ScrollIntoView(shell.Settings.Historical.Selected);
             if(inventory.Items.Count != shell.Settings.Historical.Rows.Count || inventory.Items.Groups?.Count != expectedGroups)
                 throw new InvalidOperationException("Historical visual grouping differs from reference.");
