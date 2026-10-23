@@ -167,7 +167,7 @@ internal static class Phase6Preview
             await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             var inventory = Descendants(capture).OfType<ListBox>().Single(v => v.Name == "HistoricalInventory");
             var expectedGroups = shell.Settings.Historical.Rows.Select(r => r.HistoricalGroup).Distinct().Count();
-            if (inventory.ActualHeight < (compact ? 120 : 300)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
+            if (inventory.ActualHeight < (compact ? 180 : 350)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
             var inventoryBounds = inventory.TransformToAncestor(capture).TransformBounds(new Rect(inventory.RenderSize));
             if (inventoryBounds.Bottom > height || inventoryBounds.Top < 0) throw new InvalidOperationException("Historical inventory is outside the captured viewport.");
             if (shell.Settings.Historical.HasSelection) inventory.ScrollIntoView(shell.Settings.Historical.Selected);
@@ -267,7 +267,10 @@ internal static class Phase6Preview
                 },DispatcherPriority.Render);
                 if(diagnostics.Errors!=0)throw new InvalidOperationException("Comparison binding errors: "+diagnostics.Errors);
                 var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
-                using var file=System.IO.File.Create(System.IO.Path.Combine(output,$"comparacion-{(zoom==1?"ampliada":"zoom-200")}-{width}x{height}.png"));encoder.Save(file);
+                var path=System.IO.Path.Combine(output,$"comparacion-{(zoom==1?"ampliada":"zoom-200")}-{width}x{height}.png");
+                using (var file=new System.IO.FileStream(path,System.IO.FileMode.CreateNew)) encoder.Save(file);
+                System.IO.File.WriteAllText(path+".json",System.Text.Json.JsonSerializer.Serialize(new { mode="exception",view=zoom==1?"comparacion-ampliada":"comparacion-zoom-200",width,height,zoom,marginGuides=2,bindingErrors=diagnostics.Errors,
+                    originalSha256=Convert.ToHexString(original),candidateSha256=Convert.ToHexString(candidate),sha256=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.IO.File.ReadAllBytes(path))) },new System.Text.Json.JsonSerializerOptions { WriteIndented=true }));
                 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{comparison=true,synthetic=true,offscreenLayout=true,zoom,width,height,bindingErrors=diagnostics.Errors,marginGuides=2}));
             }
             if(!original.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.OriginalImage))||!candidate.SequenceEqual(System.Security.Cryptography.SHA256.HashData(preview.CandidateImage)))
