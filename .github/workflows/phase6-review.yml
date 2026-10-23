@@ -15,12 +15,18 @@ on:
       - 'tests/NAP.Tests/ProfessionalUiTests.cs'
       - '.github/workflows/phase6-review.yml'
   workflow_dispatch:
+    inputs:
+      preserve_original_evidence:
+        description: Recover only original Actions evidence bytes; no build, render or tests
+        type: boolean
+        default: false
 
 permissions:
   contents: write # Commit synthetic evidence only to this same authorized branch.
 
 jobs:
   focused-review:
+    if: ${{ inputs.preserve_original_evidence != true }}
     runs-on: windows-2022
     timeout-minutes: 20
     steps:
@@ -111,3 +117,38 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }
           git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
           if ($LASTEXITCODE -ne 0) { throw 'Evidence push failed; artifacts remain available.' }
+
+  preserve-original-evidence:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.preserve_original_evidence == true && github.ref == 'refs/heads/codex/nap-2-fase-6-ux' }}
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Recover original evidence ZIPs and verify GitHub artifact digests
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.4') { throw 'Native binary redirection requires PowerShell 7.4 or later.' }
+          $archives = 'docs/phase6-acceptance/archives'
+          New-Item -ItemType Directory -Force $archives | Out-Null
+          $artifacts = @(
+            @('39918769852','12486685373','681b55e31e0977c9a34192bbf97571199602286a9b50b1e49adea577f5a529ac'),
+            @('39919314372','12485639823','96601fbc61811437a3784fe3afae08ed9329564220d1c5206bbb03b942bfa4dc'),
+            @('39920176930','12486598053','556347945e81143c8ad3b76dd3c0c9bbad57e32c3afbbd88eefcae47a7f27521'),
+            @('39920275175','12487291440','716fef903be7fa49b93b03256bc78c87e84d8fd9c78bb1f02a2b7ca52cca548c'),
+            @('39920731413','12487431827','c75b664cc7b6353975bd54121eac011af7ef41aca42053ac657b45ce8b2900fd'),
+            @('39921263656','12487925777','4a574d2c1daff68be6381ccda3c667b142f1fd37bdd8916b2220e9c861a07759'))
+          foreach ($entry in $artifacts) {
+            $zip = "$archives/actions-$($entry[0]).zip"
+            gh api "repos/robdor80/NAP/actions/artifacts/$($entry[1])/zip" > $zip
+            if ($LASTEXITCODE -ne 0) { throw 'Original artifact download failed.' }
+            $digest = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($digest -ne $entry[2]) { throw 'Original artifact SHA256 differs from GitHub.' }
+            Expand-Archive -LiteralPath $zip -DestinationPath "docs/phase6-acceptance/runs/$($entry[0])" -Force
+          }
+          git add -- docs/phase6-acceptance/archives docs/phase6-acceptance/runs
+          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve original artifact bytes and verified ZIP digests [skip ci]'
+          if ($LASTEXITCODE -ne 0) { throw 'Original evidence commit failed.' }
+          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
+          if ($LASTEXITCODE -ne 0) { throw 'Original evidence push failed.' }

@@ -1,0 +1,5 @@
+# Preserve native Actions evidence bytes, including Windows TRX line endings.
+runs/** -text
+archives/** -text
+*.pdf -text
+*.zip -text
