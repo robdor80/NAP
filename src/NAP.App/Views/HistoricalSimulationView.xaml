@@ -8,7 +8,7 @@
   </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
-      <c:RobTitledFrame Header="TRESKAL · HISTÓRICO SINTÉTICO" Padding="16,24,16,12">
+      <c:RobTitledFrame Header="TRESKAL · HISTÓRICO SINTÉTICO" Padding="16,24,16,12" Margin="0,8,16,8">
         <StackPanel>
 
 

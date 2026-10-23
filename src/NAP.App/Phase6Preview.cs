@@ -157,6 +157,7 @@ internal static class Phase6Preview
         }
         if(mode == "historical-export")
         {
+            await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             var reportPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(output, $"historical-simulation-{width}x{height}.txt"));
             DiagnosticReportWriter.Export(reportPath, shell.Settings.Historical.Report, shell.Explorer.Configurations, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-preview-unused-admin"));
             if(System.IO.File.ReadAllText(reportPath) != HistoricalSimulation.Report()) throw new InvalidOperationException("Historical export differs.");
