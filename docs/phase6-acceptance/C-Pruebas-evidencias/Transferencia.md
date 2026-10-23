@@ -1,0 +1,11 @@
+# Transferencia de evidencias P6.8
+
+La descarga CLI de artefactos de Actions recibió HTTP 403 en el destino de almacenamiento al seguir su redirección. El conector GitHub pudo recuperar metadatos, logs decodificados y referencias de archivo, pero su referencia no pudo materializarse por HTTP en este executor (403). No se cambiaron proxy, TLS, credenciales ni política de red. Los enlaces temporales de descarga no se incluyen en la entrega.
+
+El workflow focalizado conserva los bytes de PNG, TRX, metadatos por captura y stdout/stderr directamente en `docs/phase6-acceptance/runs/<run-id>` de la misma rama autorizada mediante un commit documental `[skip ci]`. Recupera asimismo el artefacto preliminar 39918769852. Su permiso de escritura se limita por la condición de rama y los comandos a la rama existente; no escribe en main ni crea PR. Los logs se recuperan mediante el conector GitHub, con LF normalizado. No se publican ejecutables, licencias ni contenido real.
+
+Los archivos ZIP de evidencia que puedan citarse son contenedores de PNG/TRX/textos generados por Actions. No son ZIP de assets ni pruebas de volumen de NAP.
+
+Durante el cotejo se detectó que `text=auto` podía normalizar CRLF de los TRX en el commit del runner. Se añadió `.gitattributes` local para conservar runs/archives sin transformación y una operación explícita de recuperación de los seis ZIP originales. Ese job no compila ni ejecuta tests: verifica cada ZIP contra el digest SHA-256 publicado por Actions y restaura los bytes originales. Los logs decodificados se mantienen con LF documentado. La fuente de producto verificada sigue siendo ed556bb; el cambio posterior del workflow es exclusivamente archivístico y su versión efectivamente ejecutada se conserva como verified-build-workflow.yml.
+
+Resultado de recuperación: Actions 39922236605 correcto. En local se cotejan los seis digest ZIP originales y todas sus entradas, incluidos TRX/PNG/stdout/stderr. PASS. Los PNG finales subidos individualmente a Drive tienen sus enlaces observados en drive-files.json. La lectura posterior de Drive verifica existencia/nombre/tamaño y padres; el conector no expone un checksum remoto utilizable, por lo que no se atribuye una verificación SHA remota independiente a esa lectura.

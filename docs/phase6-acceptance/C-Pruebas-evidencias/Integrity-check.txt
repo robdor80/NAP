@@ -1,0 +1,1 @@
+PASS: ed556bbbdf8a6971cd22d38f96ff88885a366225 157/157 targeted tests; 113 distinct original PNGs; {(1440, 900): 51, (1200, 700): 62} ; source, captures and delivery hashes verified
