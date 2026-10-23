@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # Commit synthetic evidence only to this same authorized branch.
 
 jobs:
   focused-review:
@@ -80,3 +80,29 @@ jobs:
           path: artifacts/phase6-acceptance/
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Preserve exact synthetic bytes in the authorized branch
+        if: ${{ always() && github.ref == 'refs/heads/codex/nap-2-fase-6-ux' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $source = git rev-parse HEAD
+          $evidence = "docs/phase6-acceptance/runs/$env:GITHUB_RUN_ID"
+          New-Item -ItemType Directory -Force $evidence | Out-Null
+          if (Test-Path artifacts/phase6-acceptance) { Copy-Item artifacts/phase6-acceptance/* $evidence -Recurse }
+          $source | Out-File "$evidence/source-sha.txt"
+          $previous = 'docs/phase6-acceptance/runs/39918769852'
+          if (-not (Test-Path $previous)) {
+            New-Item -ItemType Directory -Force $previous | Out-Null
+            gh run download 39918769852 --repo robdor80/NAP --name phase6-acceptance --dir $previous
+            if ($LASTEXITCODE -ne 0) { throw 'Could not preserve preliminary bytes.' }
+            '15a52baa1967100a3ad748e593cf22c60b557d33' | Out-File "$previous/source-sha.txt"
+          }
+          $files = @(Get-ChildItem docs/phase6-acceptance/runs -File -Recurse)
+          if (@($files | Where-Object { $_.Extension -notin @('.png','.json','.txt','.trx') }).Count -gt 0) { throw 'Unexpected evidence file type.' }
+          git add -- docs/phase6-acceptance/runs
+          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve exact focused runner evidence [skip ci]'
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }
+          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence push failed; artifacts remain available.' }
