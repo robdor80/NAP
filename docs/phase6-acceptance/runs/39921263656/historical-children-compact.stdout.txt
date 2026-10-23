@@ -1,0 +1,3 @@
+{"preview":"historical-children","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-children","view":"-ruta-historica","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-children","view":"-ruta-propuesta","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}

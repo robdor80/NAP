@@ -1,0 +1,4 @@
+{"preview":"historical-duplicate","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-duplicate","view":"-ruta-historica","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-duplicate","view":"-ruta-propuesta","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-duplicate","view":"-incidencia","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
