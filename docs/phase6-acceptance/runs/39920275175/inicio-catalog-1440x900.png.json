@@ -1,0 +1,23 @@
+{
+  "mode": "catalog",
+  "view": "",
+  "width": 1440,
+  "height": 900,
+  "page": "Cat\u00E1logo",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "0DBBDC2C55B737DE73DA9BB55A7E9E887E7038595BBE393ABD474E374F67B6B7"
+}

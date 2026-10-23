@@ -1,0 +1,4 @@
+{"preview":"exception","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"exception","view":"-detalle","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"comparison":true,"synthetic":true,"offscreenLayout":true,"zoom":1,"width":1200,"height":700,"bindingErrors":0,"marginGuides":2}
+{"comparison":true,"synthetic":true,"offscreenLayout":true,"zoom":2,"width":1200,"height":700,"bindingErrors":0,"marginGuides":2}

@@ -1,0 +1,2 @@
+diagnostic_native_clipboard_and_new_text_export_verified
+{"preview":"diagnostics-export","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
