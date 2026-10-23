@@ -22,7 +22,7 @@ public partial class App : Application
                 var previewOutput = e.Args.FirstOrDefault(a => a.StartsWith("--phase6-output=", StringComparison.Ordinal))?[16..]
                     ?? throw new ArgumentException("Synthetic preview requires an explicit capture directory.");
                 var previewWindow = new MainWindow(Phase6Preview.Create(preview), smokeOutput: previewOutput, phase6Preview: preview)
-                { Title = "NAP — Vista previa sintética P6.2", WindowState = WindowState.Normal, Tag = e.Args.Contains("--compact", StringComparer.Ordinal) };
+                { Title = "NAP — Vista previa sintética de Fase 6", WindowState = WindowState.Normal, Tag = e.Args.Contains("--compact", StringComparer.Ordinal) };
                 if (e.Args.Contains("--compact", StringComparer.Ordinal)) { previewWindow.Width = 1200; previewWindow.Height = 700; }
                 MainWindow = previewWindow; previewWindow.Show(); return;
             }

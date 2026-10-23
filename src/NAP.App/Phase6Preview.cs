@@ -15,7 +15,7 @@ internal static class Phase6Preview
     private static readonly string[] HistoricalModes = ["historical", "historical-children", "historical-elder", "historical-ambiguous", "historical-duplicate", "historical-unknown", "historical-empty", "historical-context", "historical-export"];
     internal static ShellViewModel Create(string mode)
     {
-        if (mode is not ("active" or "paused" or "review" or "offline" or "local") && !Phase6WorkflowPreview.Modes.Contains(mode) && !Phase6SettingsPreview.Modes.Contains(mode) && !HistoricalModes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
+        if (mode is not ("active" or "paused" or "review" or "offline" or "local" or "catalog" or "settings") && !Phase6WorkflowPreview.Modes.Contains(mode) && !Phase6SettingsPreview.Modes.Contains(mode) && !HistoricalModes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
         var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
         UniverseContext Context(string id, string label) => new(new UniverseProfile(new(id), label),
             new(new(id), System.IO.Path.Combine(root, id, "workspace"), System.IO.Path.Combine(root, id, "production"), System.IO.Path.Combine(root, id, "archive")));
@@ -23,7 +23,7 @@ internal static class Phase6Preview
         var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
         var workflow=new Phase6WorkflowPreview(mode);
-        var automation = mode == "local" || Phase6SettingsPreview.Modes.Contains(mode) || HistoricalModes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
+        var automation = mode is "local" or "catalog" or "settings" || Phase6SettingsPreview.Modes.Contains(mode) || HistoricalModes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
         return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
@@ -31,6 +31,8 @@ internal static class Phase6Preview
     {
         // This is a capture, never acceptance on the responsible person's MSI.
         var shell = (ShellViewModel)window.DataContext;
+        if(mode is "catalog" or "settings") { shell.NavigateTo(mode == "catalog" ? "Catálogo" : "Ajustes"); await shell.LastRefresh; }
+        window.VerifyTrayRoundTrip();
         if(HistoricalModes.Contains(mode))
         {
             shell.NavigateTo("Ajustes"); await shell.LastRefresh;
@@ -84,7 +86,7 @@ internal static class Phase6Preview
             if(mode=="choice"&&(!work.HasOptions||work.HasPreview))throw new InvalidOperationException("Missing compatible choice state.");
             if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
         }
-        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&!Phase6SettingsPreview.Modes.Contains(mode)&&!HistoricalModes.Contains(mode)&&shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
+        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&!Phase6SettingsPreview.Modes.Contains(mode)&&!HistoricalModes.Contains(mode)&& mode is not ("catalog" or "settings") && shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
             throw new InvalidOperationException("Preview navigation differs from the reviewed shell.");
         if (mode is "active" or "paused" or "review" && shell.Automation?.Completed != "14")
             throw new InvalidOperationException("Synthetic projection was not displayed.");
@@ -100,6 +102,7 @@ internal static class Phase6Preview
         var capture = new Grid { Background = window.Background, Width = width, Height = height };
         window.Content = capture; capture.Children.Add(content);
         System.IO.Directory.CreateDirectory(output);
+        string? previousImageHash = null;
         async Task Save(string suffix)
         {
             var image = await window.Dispatcher.InvokeAsync(() =>
@@ -120,8 +123,22 @@ internal static class Phase6Preview
             }, DispatcherPriority.Render);
             if (diagnostics.Errors != 0) throw new InvalidOperationException("Preview binding errors: " + diagnostics.Errors);
             var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
-            using var file = System.IO.File.Create(System.IO.Path.Combine(output, $"{(HistoricalModes.Contains(mode)?"historico":Phase6SettingsPreview.Modes.Contains(mode)?"ajustes":Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}{suffix}-{width}x{height}.png"));
-            encoder.Save(file);
+            var pixels = new byte[width * height * 4]; image.CopyPixels(pixels, width * 4, 0);
+            var pixelHash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(pixels));
+            if (pixelHash == previousImageHash) { Console.WriteLine($"omitted_unchanged_view:{mode}{suffix}"); return; }
+            previousImageHash = pixelHash;
+            var path = System.IO.Path.Combine(output, $"{(HistoricalModes.Contains(mode)?"historico":Phase6SettingsPreview.Modes.Contains(mode)?"ajustes":Phase6WorkflowPreview.Modes.Contains(mode)?"flujo":"inicio")}-{mode}{suffix}-{width}x{height}.png");
+            using (var file = new System.IO.FileStream(path, System.IO.FileMode.CreateNew)) encoder.Save(file);
+            var work = shell.CurrentPage == shell.History ? shell.History.Work : shell.Pipeline.Work;
+            var state = new { mode, view = suffix, width, height, page = shell.CurrentPage.Name, section = shell.Settings.Section,
+                selectedUniverse = shell.UniverseLabel, historicalRows = shell.Settings.Historical.Rows.Count,
+                historicalSelection = shell.Settings.Historical.Selected?.Reference, issue = shell.Settings.Historical.SelectedIssue?.Code,
+                workflowSelection = work?.Name, canApprove = work?.CanApprove, canContinue = work?.CanContinue,
+                events = work?.EventPageLabel, decisions = work?.DecisionPageLabel,
+                diagnosticRows = shell.Settings.Diagnostics?.Rows.Count, license = shell.Settings.Licenses?.Selected?.Reminder,
+                trayRoundTrip = true, bindingErrors = diagnostics.Errors,
+                sha256 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.IO.File.ReadAllBytes(path))) };
+            System.IO.File.WriteAllText(path + ".json", System.Text.Json.JsonSerializer.Serialize(state, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { preview = mode, view = suffix, synthetic = true, offscreenLayout = true, bindingErrors = diagnostics.Errors, width = image.PixelWidth, height = image.PixelHeight }));
         }
         if(mode=="diagnostics-export")
@@ -142,12 +159,15 @@ internal static class Phase6Preview
             var reportPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(output, $"historical-simulation-{width}x{height}.txt"));
             DiagnosticReportWriter.Export(reportPath, shell.Settings.Historical.Report, shell.Explorer.Configurations, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-preview-unused-admin"));
             if(System.IO.File.ReadAllText(reportPath) != HistoricalSimulation.Report()) throw new InvalidOperationException("Historical export differs.");
+            Descendants(capture).OfType<TextBlock>().Single(v => v.Name == "HistoricalTransferNotice").Text = "Simulación exportada · sin homologación para producción";
         }
         if(HistoricalModes.Contains(mode))
         {
             await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
             var inventory = Descendants(capture).OfType<ListBox>().Single(v => v.Name == "HistoricalInventory");
             var expectedGroups = shell.Settings.Historical.Rows.Select(r => r.HistoricalGroup).Distinct().Count();
+            if (inventory.ActualHeight < (compact ? 200 : 350)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
+            if (shell.Settings.Historical.HasSelection) inventory.ScrollIntoView(shell.Settings.Historical.Selected);
             if(inventory.Items.Count != shell.Settings.Historical.Rows.Count || inventory.Items.Groups?.Count != expectedGroups)
                 throw new InvalidOperationException("Historical visual grouping differs from reference.");
         }
@@ -155,18 +175,16 @@ internal static class Phase6Preview
         if(HistoricalModes.Contains(mode) && shell.Settings.Historical.HasSelection)
         {
             var detail = Descendants(capture).OfType<ScrollViewer>().Single(v => v.Name == "HistoricalScroll");
-            var frame = Descendants(capture).OfType<FrameworkElement>().Single(v => v.Name == "HistoricalDetail");
-            frame.BringIntoView(new Rect(0, 0, frame.ActualWidth, Math.Min(250, frame.ActualHeight)));
-            await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
-            var top = frame.TransformToAncestor(detail).Transform(new Point(0, 0)).Y;
-            detail.ScrollToVerticalOffset(detail.VerticalOffset + top);
-            await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
-            await Save("-detalle");
             if(shell.Settings.Historical.SelectedIssue is not null)
             {
                 detail.ScrollToBottom();
                 await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
-                await Save("-incidencia");
+                var proposal = Descendants(capture).OfType<TextBlock>().Single(v => v.Name == "HistoricalProposal");
+                var rect = proposal.TransformToAncestor(detail).TransformBounds(new Rect(proposal.RenderSize));
+                if (rect.Top < -1 || rect.Bottom > detail.ViewportHeight + 1 || string.IsNullOrWhiteSpace(proposal.Text))
+                    throw new InvalidOperationException("The named proposal is not fully visible.");
+                // A second view is evidence only when scrolling really changes the viewport.
+                if (detail.VerticalOffset > 0) await Save("-incidencia");
             }
         }
         if(mode=="review"&&compact)

@@ -38,17 +38,17 @@ jobs:
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
-      - name: Only P6.7 metadata, retained resolver and navigation; no ZIP assets
+      - name: P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture
         shell: pwsh
         run: |
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo' --results-directory artifacts/phase6-historical --logger 'trx;LogFileName=phase6-historical.trx'
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6OverviewTests|FullyQualifiedName~Phase6WorkflowTests|FullyQualifiedName~Phase6PolishTests|FullyQualifiedName~Phase6SettingsTests|FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-acceptance --logger 'trx;LogFileName=phase6-acceptance.trx'
           if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
-      - name: Render only closed synthetic historical metadata scenarios
+      - name: Render only closed synthetic Phase 6 states at both client sizes
         shell: pwsh
         run: |
           $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
-          $captureRoot = Join-Path $PWD 'artifacts/phase6-historical'
-          foreach ($mode in @('historical','historical-children','historical-elder','historical-ambiguous','historical-duplicate','historical-unknown','historical-empty','historical-context','historical-export')) {
+          $captureRoot = Join-Path $PWD 'artifacts/phase6-acceptance'
+          foreach ($mode in @('active','paused','review','offline','local','catalog','settings','production','history','choice','exception','approved','blocked','empty','read-error','manual','activity','activity-decisions','diagnostics','diagnostics-filtered','diagnostics-export','diagnostics-offline','diagnostics-error','licenses','licenses-90','licenses-30','licenses-7','licenses-expired','licenses-renewed','historical','historical-children','historical-elder','historical-ambiguous','historical-duplicate','historical-unknown','historical-empty','historical-context','historical-export')) {
             foreach ($compact in @($false,$true)) {
               $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
               if ($compact) { $captureArguments += '--compact' }
@@ -60,7 +60,12 @@ jobs:
               if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
             }
           }
-          if (@(Get-ChildItem $captureRoot -Filter '*.png').Count -ne 34) { throw 'Expected thirty-four focused historical WPF renders.' }
+          $captures = @(Get-ChildItem $captureRoot -Filter '*.png')
+          if ($captures.Count -lt 76) { throw 'Every requested state and size requires a primary render.' }
+          $duplicates = @($captures | Get-FileHash -Algorithm SHA256 | Group-Object Hash | Where-Object Count -gt 1)
+          if ($duplicates.Count -gt 0) { $duplicates | ForEach-Object { $_.Group.Path }; throw 'Different evidence names contain identical PNGs.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png.json').Count -ne $captures.Count) { throw 'Missing per-image state metadata.' }
+          git diff --exit-code
           git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
           Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
       - name: Clean temporary license before artifacts
@@ -71,7 +76,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: phase6-historical
-          path: artifacts/phase6-historical/
+          name: phase6-acceptance
+          path: artifacts/phase6-acceptance/
           if-no-files-found: warn
           retention-days: 14

@@ -93,14 +93,11 @@
             </StackPanel>
           </c:RobTitledFrame>
         </StackPanel>
-        <local:HistoricalSimulationView xmlns:local="clr-namespace:NAP.App.Views" DataContext="{Binding Historical}">
-        <local:HistoricalSimulationView.Style><Style TargetType="local:HistoricalSimulationView"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Section,RelativeSource={RelativeSource AncestorType=UserControl}}" Value="Histórico sintético"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></local:HistoricalSimulationView.Style>
-      </local:HistoricalSimulationView>
     </Grid>
       <c:RobTitledFrame Header="APLICACIÓN">
         <StackPanel>
           <CheckBox Content="Minimizar a la bandeja durante esta sesión" IsChecked="{Binding DataContext.MinimizeToTray, RelativeSource={RelativeSource AncestorType=Window}}" />
-          <TextBlock Text="El auditor de producción de Fase 7 usa configuración de entorno explícita. Sin auditor real no se habilita publicar. RoDo conversación llegará en Fase 15." Style="{StaticResource Muted}" />
+          <TextBlock Text="Publicar requiere un auditor real configurado y una revisión PASS." Style="{StaticResource Muted}" />
         </StackPanel>
       </c:RobTitledFrame>
     </StackPanel>

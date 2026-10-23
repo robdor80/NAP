@@ -66,7 +66,7 @@ public sealed class Phase6HistoricalTests
     public void SyntheticConformityNeverClaimsRealHomologationOrVerifiedFiles()
     {
         var rows = HistoricalSimulation.CreateReference();
-        Assert.NotEmpty(rows.Where(r => r.Status == HistoricalSimulationStatus.Conforming));
+        Assert.Contains(rows, r => r.Status == HistoricalSimulationStatus.Conforming);
         Assert.All(rows, r => Assert.Contains("sin homologación para producción", r.OriginalStatus));
         var unknown = Assert.Single(rows, r => r.Status == HistoricalSimulationStatus.Unverifiable);
         Assert.Equal("No verificable", unknown.Identity); Assert.Empty(unknown.Classification); Assert.Null(unknown.ProposedPath);
