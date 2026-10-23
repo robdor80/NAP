@@ -1,0 +1,22 @@
+{
+  "mode": "licenses-30",
+  "view": "",
+  "width": 1440,
+  "height": 900,
+  "page": "Ajustes",
+  "section": "Licencias",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Renovaci\u00F3n pendiente \u00B7 aviso de 30 d\u00EDas",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "76FE3FB0AA69901D097B8B0831654309C506A1F1D1F9A0EAF0494CA38695F77F"
+}

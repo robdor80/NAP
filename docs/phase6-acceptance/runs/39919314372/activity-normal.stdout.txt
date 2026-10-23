@@ -1,0 +1,3 @@
+{"preview":"activity","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}
+{"preview":"activity","view":"-decisiones","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}
+{"preview":"activity","view":"-actividad","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}

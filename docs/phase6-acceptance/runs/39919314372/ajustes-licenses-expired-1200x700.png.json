@@ -1,0 +1,22 @@
+{
+  "mode": "licenses-expired",
+  "view": "",
+  "width": 1200,
+  "height": 700,
+  "page": "Ajustes",
+  "section": "Licencias",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Vencimiento registrado \u00B7 revisa la renovaci\u00F3n",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "8729ADDA71708E442AFA3619E6D60EF683F5F65D37412DC7840D5864EEAEA6C4"
+}

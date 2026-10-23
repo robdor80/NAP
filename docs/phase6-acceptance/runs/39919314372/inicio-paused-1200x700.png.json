@@ -1,0 +1,22 @@
+{
+  "mode": "paused",
+  "view": "",
+  "width": 1200,
+  "height": 700,
+  "page": "Inicio",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "D653948779DD967D834129E2777A3AE375AA32811FEC441D140DB1CB700674C6"
+}

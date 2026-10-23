@@ -1,0 +1,2 @@
+{"preview":"historical-ambiguous","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"historical-ambiguous","view":"-incidencia","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
