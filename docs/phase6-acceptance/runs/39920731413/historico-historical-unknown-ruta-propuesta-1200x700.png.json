@@ -1,0 +1,23 @@
+{
+  "mode": "historical-unknown",
+  "view": "-ruta-propuesta",
+  "width": 1200,
+  "height": 700,
+  "page": "Ajustes",
+  "section": "Hist\u00F3rico sint\u00E9tico",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": 192.87999999999994,
+  "historicalSelection": "portrait_p67_reference_006",
+  "issue": "identity_unverifiable",
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "75BE29A3E8F2024723D56DFCE1C8BF2251C11310F754E8C24C8A8A3DD47A6868"
+}

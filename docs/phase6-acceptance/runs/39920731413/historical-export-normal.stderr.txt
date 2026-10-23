@@ -1,0 +1,5 @@
+phase6_preview_failed:System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at NAP.App.Phase6Preview.CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, String mode, String output) in D:\a\NAP\NAP\src\NAP.App\Phase6Preview.cs:line 163
+   at NAP.App.MainWindow.<>c__DisplayClass1_1.<<-ctor>b__6>d.MoveNext() in D:\a\NAP\NAP\src\NAP.App\MainWindow.xaml.cs:line 38

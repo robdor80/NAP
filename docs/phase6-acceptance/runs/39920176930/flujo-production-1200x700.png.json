@@ -1,0 +1,23 @@
+{
+  "mode": "production",
+  "view": "",
+  "width": 1200,
+  "height": 700,
+  "page": "Producci\u00F3n",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "Retrato de muestra",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "1\u20132",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "2FC80305298E0C697AEF2588B4CA0247ACC0023AB6EC30F0CDFD41D208247155"
+}

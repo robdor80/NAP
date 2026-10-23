@@ -1,0 +1,23 @@
+{
+  "mode": "licenses-90",
+  "view": "",
+  "width": 1200,
+  "height": 700,
+  "page": "Ajustes",
+  "section": "Licencias",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Renovaci\u00F3n pendiente \u00B7 aviso de 90 d\u00EDas",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "C919001765B5BC2FBADA40B8BE2B564212D579792D94A38788730BBEE3E927D3"
+}

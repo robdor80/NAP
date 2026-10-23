@@ -1,0 +1,1 @@
+{"preview":"diagnostics","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}

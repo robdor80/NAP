@@ -1,0 +1,4 @@
+{"preview":"historical-duplicate","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}
+omitted_unchanged_view:historical-duplicate-ruta-historica
+omitted_unchanged_view:historical-duplicate-ruta-propuesta
+{"preview":"historical-duplicate","view":"-incidencia","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}
