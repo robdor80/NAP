@@ -168,6 +168,8 @@ internal static class Phase6Preview
             var inventory = Descendants(capture).OfType<ListBox>().Single(v => v.Name == "HistoricalInventory");
             var expectedGroups = shell.Settings.Historical.Rows.Select(r => r.HistoricalGroup).Distinct().Count();
             if (inventory.ActualHeight < (compact ? 120 : 300)) throw new InvalidOperationException($"Historical viewport too small: {inventory.ActualHeight}");
+            var inventoryBounds = inventory.TransformToAncestor(capture).TransformBounds(new Rect(inventory.RenderSize));
+            if (inventoryBounds.Bottom > height || inventoryBounds.Top < 0) throw new InvalidOperationException("Historical inventory is outside the captured viewport.");
             if (shell.Settings.Historical.HasSelection) inventory.ScrollIntoView(shell.Settings.Historical.Selected);
             if(inventory.Items.Count != shell.Settings.Historical.Rows.Count || inventory.Items.Groups?.Count != expectedGroups)
                 throw new InvalidOperationException("Historical visual grouping differs from reference.");
@@ -176,6 +178,15 @@ internal static class Phase6Preview
         if(HistoricalModes.Contains(mode) && shell.Settings.Historical.HasSelection)
         {
             var detail = Descendants(capture).OfType<ScrollViewer>().Single(v => v.Name == "HistoricalScroll");
+            foreach (var (name, suffix) in new[] { ("HistoricalRoute", "-ruta-historica"), ("ProposedRoute", "-ruta-propuesta") })
+            {
+                var route = Descendants(capture).OfType<TextBlock>().Single(v => v.Name == name);
+                route.BringIntoView();
+                await window.Dispatcher.InvokeAsync(() => capture.UpdateLayout(), DispatcherPriority.Render);
+                var bounds = route.TransformToAncestor(detail).TransformBounds(new Rect(route.RenderSize));
+                if (bounds.Top < -1 || bounds.Bottom > detail.ViewportHeight + 1) throw new InvalidOperationException("The named route is clipped.");
+                await Save(suffix);
+            }
             if(shell.Settings.Historical.SelectedIssue is not null)
             {
                 detail.ScrollToBottom();

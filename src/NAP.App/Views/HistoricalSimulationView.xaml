@@ -49,9 +49,9 @@
           <TextBlock Text="Clasificaciones del fixture (sintéticas)" FontWeight="SemiBold" Margin="0,12,0,4" />
           <TextBlock Text="{Binding Selected.ClassificationLabel}" />
           <TextBlock Text="Ruta histórica · modelo sintético" FontWeight="SemiBold" Margin="0,12,0,4" />
-          <TextBlock Text="{Binding Selected.HistoricalPath}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
+          <TextBlock x:Name="HistoricalRoute" Text="{Binding Selected.HistoricalPath}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
           <TextBlock Text="Ruta canónica · propuesta sintética" FontWeight="SemiBold" Margin="0,12,0,4" />
-          <TextBlock Text="{Binding Selected.ProposedPathLabel}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
+          <TextBlock x:Name="ProposedRoute" Text="{Binding Selected.ProposedPathLabel}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Selected.IssueSummary}" Margin="0,12,0,4" />
           <ListBox ItemsSource="{Binding Selected.Issues}" SelectedItem="{Binding SelectedIssue}" DisplayMemberPath="Title" MaxHeight="100" AutomationProperties.Name="Incidencias sintéticas del registro" />
           <TextBlock Text="{Binding SelectedIssue.Evidence}" Margin="0,8,0,4" />
