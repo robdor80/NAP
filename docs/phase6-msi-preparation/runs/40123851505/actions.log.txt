@@ -1,0 +1,371 @@
+﻿2026-10-24T19:07:33.4317821Z Current runner version: '2.338.0'
+2026-10-24T19:07:33.4345963Z ##[group]Runner Image Provisioner
+2026-10-24T19:07:33.4346933Z Hosted Compute Agent
+2026-10-24T19:07:33.4347452Z Version: 20261021.618
+2026-10-24T19:07:33.4348041Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-24T19:07:33.4348715Z Build Date: 2026-10-21T00:45:21Z
+2026-10-24T19:07:33.4349393Z Worker ID: {ef7eb00f-15d2-42bd-901d-6c8322f47c3c}
+2026-10-24T19:07:33.4350119Z Region: eastus
+2026-10-24T19:07:33.4350587Z Cloud: Azure
+2026-10-24T19:07:33.4351086Z ##[endgroup]
+2026-10-24T19:07:33.4352684Z ##[group]Operating System
+2026-10-24T19:07:33.4353278Z Microsoft Windows Server 2022
+2026-10-24T19:07:33.4353882Z 10.0.20348
+2026-10-24T19:07:33.4354361Z Datacenter
+2026-10-24T19:07:33.4354815Z ##[endgroup]
+2026-10-24T19:07:33.4355295Z ##[group]Runner Image
+2026-10-24T19:07:33.4355825Z Image: windows-2022
+2026-10-24T19:07:33.4356332Z Version: 20261022.344.1
+2026-10-24T19:07:33.4357800Z Included Software: https://github.com/actions/runner-images/blob/win22/20261022.344/images/windows/Windows2022-Readme.md
+2026-10-24T19:07:33.4359316Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261022.344
+2026-10-24T19:07:33.4360231Z ##[endgroup]
+2026-10-24T19:07:33.4361316Z ##[group]GITHUB_TOKEN Permissions
+2026-10-24T19:07:33.4363408Z Contents: write
+2026-10-24T19:07:33.4363994Z Metadata: read
+2026-10-24T19:07:33.4364487Z ##[endgroup]
+2026-10-24T19:07:33.4366674Z Secret source: Actions
+2026-10-24T19:07:33.4367540Z Cache mode: write
+2026-10-24T19:07:33.4368192Z Prepare workflow directory
+2026-10-24T19:07:33.4699219Z Prepare all required actions
+2026-10-24T19:07:33.4751375Z Getting action download info
+2026-10-24T19:07:33.6488456Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-24T19:07:33.7782775Z Download action repository 'actions/setup-dotnet@v6' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-10-24T19:07:34.1375758Z Complete job name: retained-verification
+2026-10-24T19:07:34.2882949Z ##[group]Run actions/checkout@v5
+2026-10-24T19:07:34.2885278Z with:
+2026-10-24T19:07:34.2885732Z   repository: robdor80/NAP
+2026-10-24T19:07:34.2890293Z   token: ***
+2026-10-24T19:07:34.2890717Z   ssh-strict: true
+2026-10-24T19:07:34.2891153Z   ssh-user: git
+2026-10-24T19:07:34.2891588Z   persist-credentials: true
+2026-10-24T19:07:34.2892072Z   clean: true
+2026-10-24T19:07:34.2892512Z   sparse-checkout-cone-mode: true
+2026-10-24T19:07:34.2893045Z   fetch-depth: 1
+2026-10-24T19:07:34.2893477Z   fetch-tags: false
+2026-10-24T19:07:34.2893919Z   show-progress: true
+2026-10-24T19:07:34.2894360Z   lfs: false
+2026-10-24T19:07:34.2894757Z   submodules: false
+2026-10-24T19:07:34.2895197Z   set-safe-directory: true
+2026-10-24T19:07:34.2895705Z   allow-unsafe-pr-checkout: false
+2026-10-24T19:07:34.2896727Z ##[endgroup]
+2026-10-24T19:07:34.4530124Z Syncing repository: robdor80/NAP
+2026-10-24T19:07:34.4532711Z ##[group]Getting Git version info
+2026-10-24T19:07:34.4533749Z Working directory is 'D:\a\NAP\NAP'
+2026-10-24T19:07:34.5869374Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-24T19:07:34.9248351Z git version 2.56.0.windows.3
+2026-10-24T19:07:34.9304514Z ##[endgroup]
+2026-10-24T19:07:34.9326916Z Temporarily overriding HOME='D:\a\_temp\f62e52f1-61e7-48c5-ae42-7e462a99cf08' before making global git config changes
+2026-10-24T19:07:34.9329454Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T19:07:34.9341297Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\NAP\NAP
+2026-10-24T19:07:34.9993574Z Deleting the contents of 'D:\a\NAP\NAP'
+2026-10-24T19:07:34.9999544Z ##[group]Initializing the repository
+2026-10-24T19:07:35.0009320Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\NAP\NAP
+2026-10-24T19:07:35.0885664Z Initialized empty Git repository in D:/a/NAP/NAP/.git/
+2026-10-24T19:07:35.0933971Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/robdor80/NAP
+2026-10-24T19:07:35.1606585Z ##[endgroup]
+2026-10-24T19:07:35.1607857Z ##[group]Disabling automatic garbage collection
+2026-10-24T19:07:35.1616149Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-24T19:07:35.1949581Z ##[endgroup]
+2026-10-24T19:07:35.1950829Z ##[group]Setting up auth
+2026-10-24T19:07:35.1963047Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T19:07:35.2299726Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-24T19:07:36.6608467Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T19:07:36.6947414Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-24T19:07:37.2547412Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T19:07:37.2896195Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-24T19:07:37.8339206Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-24T19:07:37.8690349Z ##[endgroup]
+2026-10-24T19:07:37.8691420Z ##[group]Fetching the repository
+2026-10-24T19:07:37.8705101Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b2e9413f0d3b9d3eb4df79f07fce74685d861d7c:refs/remotes/origin/codex/nap-2-fase-6-ux
+2026-10-24T19:07:41.9308515Z From https://github.com/robdor80/NAP
+2026-10-24T19:07:41.9312385Z  * [new ref]         b2e9413f0d3b9d3eb4df79f07fce74685d861d7c -> origin/codex/nap-2-fase-6-ux
+2026-10-24T19:07:41.9352420Z ##[endgroup]
+2026-10-24T19:07:41.9353033Z ##[group]Determining the checkout info
+2026-10-24T19:07:41.9355553Z ##[endgroup]
+2026-10-24T19:07:41.9371470Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-24T19:07:41.9853770Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-24T19:07:42.0181770Z ##[group]Checking out the ref
+2026-10-24T19:07:42.0192705Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/nap-2-fase-6-ux refs/remotes/origin/codex/nap-2-fase-6-ux
+2026-10-24T19:07:43.0551467Z Updating files:  82% (2414/2920)
+2026-10-24T19:07:43.0605314Z Updating files:  83% (2424/2920)
+2026-10-24T19:07:43.0651879Z Updating files:  84% (2453/2920)
+2026-10-24T19:07:43.0700755Z Updating files:  85% (2482/2920)
+2026-10-24T19:07:43.0761109Z Updating files:  86% (2512/2920)
+2026-10-24T19:07:43.0818761Z Updating files:  87% (2541/2920)
+2026-10-24T19:07:43.0884367Z Updating files:  88% (2570/2920)
+2026-10-24T19:07:43.0931585Z Updating files:  89% (2599/2920)
+2026-10-24T19:07:43.0987446Z Updating files:  90% (2628/2920)
+2026-10-24T19:07:43.1039647Z Updating files:  91% (2658/2920)
+2026-10-24T19:07:43.1108893Z Updating files:  92% (2687/2920)
+2026-10-24T19:07:43.1169029Z Updating files:  93% (2716/2920)
+2026-10-24T19:07:43.1229086Z Updating files:  94% (2745/2920)
+2026-10-24T19:07:43.1290424Z Updating files:  95% (2774/2920)
+2026-10-24T19:07:43.1361096Z Updating files:  96% (2804/2920)
+2026-10-24T19:07:43.1421867Z Updating files:  97% (2833/2920)
+2026-10-24T19:07:43.1491686Z Updating files:  98% (2862/2920)
+2026-10-24T19:07:43.1549815Z Updating files:  99% (2891/2920)
+2026-10-24T19:07:43.1550754Z Updating files: 100% (2920/2920)
+2026-10-24T19:07:43.1551553Z Updating files: 100% (2920/2920), done.
+2026-10-24T19:07:43.1747553Z Switched to a new branch 'codex/nap-2-fase-6-ux'
+2026-10-24T19:07:43.1820141Z branch 'codex/nap-2-fase-6-ux' set up to track 'origin/codex/nap-2-fase-6-ux'.
+2026-10-24T19:07:43.2402605Z ##[endgroup]
+2026-10-24T19:07:43.2412875Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-24T19:07:43.2709875Z b2e9413f0d3b9d3eb4df79f07fce74685d861d7c
+2026-10-24T19:07:43.3178982Z ##[group]Run actions/setup-dotnet@v6
+2026-10-24T19:07:43.3179690Z with:
+2026-10-24T19:07:43.3179992Z   dotnet-version: 8.0.426
+2026-10-24T19:07:43.3180278Z   cache: false
+2026-10-24T19:07:43.3180497Z ##[endgroup]
+2026-10-24T19:07:43.6032445Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+2026-10-24T19:07:44.9965135Z dotnet-install: .NET Core Runtime with version '10.0.13' is already installed.
+2026-10-24T19:07:45.1472356Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Version 8.0.426
+2026-10-24T19:07:45.8431144Z dotnet-install: .NET Core SDK with version '8.0.426' is already installed.
+2026-10-24T19:07:45.9381566Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'publish','src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true', '-p:PublishSingleFile=false','-p:PublishTrimmed=false','-p:DebugType=None','-p:DebugSymbols=false', '-p:ContinuousIntegrationBuild=true','-o',"$env:RUNNER_TEMP/nap-retained-publish"
+2026-10-24T19:07:45.9384329Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'publish','src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true', '-p:PublishSingleFile=false','-p:PublishTrimmed=false','-p:DebugType=None','-p:DebugSymbols=false', '-p:ContinuousIntegrationBuild=true','-o',"$env:RUNNER_TEMP/nap-retained-publish"[0m
+2026-10-24T19:07:45.9487758Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:07:45.9488267Z env:
+2026-10-24T19:07:45.9488538Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:07:45.9491599Z   SIXLABORS_LICENSE_B64: ***
+2026-10-24T19:07:45.9491981Z ##[endgroup]
+2026-10-24T19:07:57.1837009Z   Determining projects to restore...
+2026-10-24T19:08:05.6294955Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-24T19:08:05.6298674Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-24T19:08:05.6300892Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-24T19:08:05.6302670Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-24T19:08:05.6304357Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-24T19:08:05.8213596Z   Restored D:\a\NAP\NAP\src\NAP.Presentation\NAP.Presentation.csproj (in 7.15 sec).
+2026-10-24T19:08:05.8215544Z   Restored D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj (in 7.15 sec).
+2026-10-24T19:08:05.8216989Z   Restored D:\a\NAP\NAP\src\NAP.AI\NAP.AI.csproj (in 7.15 sec).
+2026-10-24T19:08:05.8524070Z   Restored D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj (in 7.15 sec).
+2026-10-24T19:08:06.9876155Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-24T19:08:06.9879084Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-24T19:08:06.9881478Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-24T19:08:06.9885510Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-24T19:08:06.9888851Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-24T19:08:18.6829737Z   NAP.Core -> D:\a\NAP\NAP\src\NAP.Core\bin\Release\net8.0\NAP.Core.dll
+2026-10-24T19:08:19.6508232Z   NAP.AI -> D:\a\NAP\NAP\src\NAP.AI\bin\Release\net8.0\NAP.AI.dll
+2026-10-24T19:08:20.4324373Z   NAP.Presentation -> D:\a\NAP\NAP\src\NAP.Presentation\bin\Release\net8.0\NAP.Presentation.dll
+2026-10-24T19:08:24.9276348Z   NAP.App -> D:\a\NAP\NAP\src\NAP.App\bin\Release\net8.0-windows\win-x64\NAP.App.dll
+2026-10-24T19:08:25.4309965Z   NAP.App -> D:\a\_temp\nap-retained-publish\
+2026-10-24T19:08:25.5264061Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj','-c','Release'
+2026-10-24T19:08:25.5265623Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj','-c','Release'[0m
+2026-10-24T19:08:25.5306923Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:08:25.5307290Z env:
+2026-10-24T19:08:25.5307544Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:08:25.5311225Z   SIXLABORS_LICENSE_B64: ***
+2026-10-24T19:08:25.5311505Z ##[endgroup]
+2026-10-24T19:08:27.0067971Z   Determining projects to restore...
+2026-10-24T19:08:27.7450402Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:27.7459650Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:27.7472778Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:27.7476675Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:27.7480460Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:27.8367191Z   Restored D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj (in 459 ms).
+2026-10-24T19:08:27.8407711Z   Restored D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj (in 459 ms).
+2026-10-24T19:08:28.1638884Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-24T19:08:28.1641794Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-24T19:08:28.1644449Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-24T19:08:28.1647138Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-24T19:08:28.1649723Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-24T19:08:32.0921447Z   NAP.Core -> D:\a\NAP\NAP\src\NAP.Core\bin\Release\net8.0\NAP.Core.dll
+2026-10-24T19:08:32.4454122Z   NAP.PrivatePackageProbe -> D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\bin\Release\net8.0\NAP.PrivatePackageProbe.dll
+2026-10-24T19:08:32.4577575Z 
+2026-10-24T19:08:32.4589128Z Build succeeded.
+2026-10-24T19:08:32.4589560Z 
+2026-10-24T19:08:32.4595694Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:32.4600207Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:32.4606715Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:32.4610447Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:32.4615570Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tools\NAP.PrivatePackageProbe\NAP.PrivatePackageProbe.csproj]
+2026-10-24T19:08:32.4618684Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-24T19:08:32.4621143Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-24T19:08:32.4623722Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-24T19:08:32.4626447Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-24T19:08:32.4629669Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-24T19:08:32.4632799Z     10 Warning(s)
+2026-10-24T19:08:32.4633132Z     0 Error(s)
+2026-10-24T19:08:32.4633363Z 
+2026-10-24T19:08:32.4633545Z Time Elapsed 00:00:06.00
+2026-10-24T19:08:32.5669823Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
+2026-10-24T19:08:32.5670917Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'[0m
+2026-10-24T19:08:32.5711611Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:08:32.5712002Z env:
+2026-10-24T19:08:32.5712230Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:08:32.5714169Z   SIXLABORS_LICENSE_B64: ***
+2026-10-24T19:08:32.5714428Z ##[endgroup]
+2026-10-24T19:08:34.0450627Z   Determining projects to restore...
+2026-10-24T19:08:35.5511696Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:35.5516398Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:35.5528945Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:35.5539260Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:35.5543959Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:35.9042120Z   Restored D:\a\NAP\NAP\src\NAP.AI\NAP.AI.csproj (in 472 ms).
+2026-10-24T19:08:35.9044781Z   Restored D:\a\NAP\NAP\tools\NAP.CoordinationProbe\NAP.CoordinationProbe.csproj (in 481 ms).
+2026-10-24T19:08:35.9047226Z   Restored D:\a\NAP\NAP\src\NAP.AutomationHost\NAP.AutomationHost.csproj (in 480 ms).
+2026-10-24T19:08:35.9154747Z   Restored D:\a\NAP\NAP\src\NAP.Presentation\NAP.Presentation.csproj (in 5 ms).
+2026-10-24T19:08:39.2369104Z   Restored D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj (in 3.64 sec).
+2026-10-24T19:08:39.2431936Z   1 of 6 projects are up-to-date for restore.
+2026-10-24T19:08:40.1119850Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-24T19:08:40.1125682Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-24T19:08:40.1130869Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-24T19:08:40.1133935Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-24T19:08:40.1136882Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-24T19:08:40.5059990Z   NAP.Core -> D:\a\NAP\NAP\src\NAP.Core\bin\Release\net8.0\NAP.Core.dll
+2026-10-24T19:08:42.9551856Z   NAP.Presentation -> D:\a\NAP\NAP\src\NAP.Presentation\bin\Release\net8.0\NAP.Presentation.dll
+2026-10-24T19:08:43.1131597Z   NAP.CoordinationProbe -> D:\a\NAP\NAP\tools\NAP.CoordinationProbe\bin\Release\net8.0\NAP.CoordinationProbe.dll
+2026-10-24T19:08:43.6006294Z   NAP.AutomationHost -> D:\a\NAP\NAP\src\NAP.AutomationHost\bin\Release\net8.0\NAP.AutomationHost.dll
+2026-10-24T19:08:44.2604696Z   NAP.AI -> D:\a\NAP\NAP\src\NAP.AI\bin\Release\net8.0\NAP.AI.dll
+2026-10-24T19:08:51.5468020Z   NAP.Tests -> D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll
+2026-10-24T19:08:51.6084323Z 
+2026-10-24T19:08:51.6129009Z Build succeeded.
+2026-10-24T19:08:51.6147528Z 
+2026-10-24T19:08:51.6159290Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:51.6199001Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:51.6242928Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:51.6252736Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:51.6271169Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-24T19:08:51.6274144Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-24T19:08:51.6276630Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-24T19:08:51.6278923Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-24T19:08:51.6281330Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-24T19:08:51.6283735Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-24T19:08:51.6286397Z     10 Warning(s)
+2026-10-24T19:08:51.6286751Z     0 Error(s)
+2026-10-24T19:08:51.6286961Z 
+2026-10-24T19:08:51.6287159Z Time Elapsed 00:00:18.12
+2026-10-24T19:08:51.7124571Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+2026-10-24T19:08:51.7125201Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup[0m
+2026-10-24T19:08:51.7164856Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:08:51.7165242Z env:
+2026-10-24T19:08:51.7165466Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:08:51.7165729Z ##[endgroup]
+2026-10-24T19:08:52.2344134Z ##[group]Run ./.github/scripts/Verify-MsiRetainedPublish.ps1
+2026-10-24T19:08:52.2344985Z [36;1m./.github/scripts/Verify-MsiRetainedPublish.ps1[0m
+2026-10-24T19:08:52.2412778Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:08:52.2413429Z env:
+2026-10-24T19:08:52.2413765Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:08:52.2414564Z ##[endgroup]
+2026-10-24T19:09:00.5198300Z Test run for D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll (.NETCoreApp,Version=v8.0)
+2026-10-24T19:09:01.4461398Z A total of 1 test files matched the specified pattern.
+2026-10-24T19:09:04.5704725Z Results File: D:\a\NAP\NAP\artifacts\msi-preparation\focused.trx
+2026-10-24T19:09:04.5708799Z 
+2026-10-24T19:09:04.5804084Z Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 209 ms - NAP.Tests.dll (net8.0)
+2026-10-24T19:09:22.2556178Z ##[group]Run $source = git rev-parse HEAD
+2026-10-24T19:09:22.2556670Z [36;1m$source = git rev-parse HEAD[0m
+2026-10-24T19:09:22.2557069Z [36;1m$path = "docs/phase6-msi-preparation/runs/$env:GITHUB_RUN_ID"[0m
+2026-10-24T19:09:22.2557576Z [36;1mNew-Item -ItemType Directory -Force $path | Out-Null[0m
+2026-10-24T19:09:22.2557981Z [36;1mif (Test-Path artifacts/msi-preparation) {[0m
+2026-10-24T19:09:22.2558431Z [36;1m  $files = @(Get-ChildItem artifacts/msi-preparation -File -Recurse)[0m
+2026-10-24T19:09:22.2558854Z [36;1m  foreach ($file in $files) {[0m
+2026-10-24T19:09:22.2559350Z [36;1m    if ($file.Extension -notin @('.json','.txt','.trx','.png','.sha256')) { throw 'Unexpected evidence type.' }[0m
+2026-10-24T19:09:22.2559820Z [36;1m  }[0m
+2026-10-24T19:09:22.2560100Z [36;1m  Copy-Item artifacts/msi-preparation/* $path -Recurse[0m
+2026-10-24T19:09:22.2560439Z [36;1m}[0m
+2026-10-24T19:09:22.2560668Z [36;1m$source | Out-File "$path/source-sha.txt"[0m
+2026-10-24T19:09:22.2561022Z [36;1mgit add -- $path[0m
+2026-10-24T19:09:22.2561751Z [36;1mgit -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve retained MSI verification evidence [skip ci]'[0m
+2026-10-24T19:09:22.2562589Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }[0m
+2026-10-24T19:09:22.2563014Z [36;1mgit push origin HEAD:refs/heads/codex/nap-2-fase-6-ux[0m
+2026-10-24T19:09:22.2563449Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Evidence push failed.' }[0m
+2026-10-24T19:09:22.2603920Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:09:22.2604290Z env:
+2026-10-24T19:09:22.2604509Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:09:22.2604766Z ##[endgroup]
+2026-10-24T19:09:22.7918219Z warning: in the working copy of 'docs/phase6-msi-preparation/runs/40123851505/focused.trx', LF will be replaced by CRLF the next time Git touches it
+2026-10-24T19:09:22.9728032Z [codex/nap-2-fase-6-ux c163eca] docs(phase6): preserve retained MSI verification evidence [skip ci]
+2026-10-24T19:09:22.9729589Z  67 files changed, 4029 insertions(+)
+2026-10-24T19:09:22.9730699Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-diagnostics-offline-1200x700.png
+2026-10-24T19:09:22.9732098Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-diagnostics-offline-1200x700.png.json
+2026-10-24T19:09:22.9733957Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-1200x700.png
+2026-10-24T19:09:22.9736236Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-1200x700.png.json
+2026-10-24T19:09:22.9737898Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-30-1200x700.png
+2026-10-24T19:09:22.9739508Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-30-1200x700.png.json
+2026-10-24T19:09:22.9740986Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-7-1200x700.png
+2026-10-24T19:09:22.9742631Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-7-1200x700.png.json
+2026-10-24T19:09:22.9744427Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-90-1200x700.png
+2026-10-24T19:09:22.9745737Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-90-1200x700.png.json
+2026-10-24T19:09:22.9746882Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-expired-1200x700.png
+2026-10-24T19:09:22.9748562Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-expired-1200x700.png.json
+2026-10-24T19:09:22.9749918Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-renewed-1200x700.png
+2026-10-24T19:09:22.9751242Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-renewed-1200x700.png.json
+2026-10-24T19:09:22.9755144Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/catalog.stderr.txt
+2026-10-24T19:09:22.9756333Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/catalog.stdout.txt
+2026-10-24T19:09:22.9757619Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/dependency-security-check.json
+2026-10-24T19:09:22.9758380Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/diagnostics-offline.stderr.txt
+2026-10-24T19:09:22.9759123Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/diagnostics-offline.stdout.txt
+2026-10-24T19:09:22.9759819Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-history-1200x700.png
+2026-10-24T19:09:22.9760497Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-history-1200x700.png.json
+2026-10-24T19:09:22.9761201Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-history-detalle-1200x700.png
+2026-10-24T19:09:22.9761955Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-history-detalle-1200x700.png.json
+2026-10-24T19:09:22.9762671Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-production-1200x700.png
+2026-10-24T19:09:22.9763358Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/flujo-production-1200x700.png.json
+2026-10-24T19:09:22.9764159Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/focused.trx
+2026-10-24T19:09:22.9765049Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historical-export.stderr.txt
+2026-10-24T19:09:22.9765747Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historical-export.stdout.txt
+2026-10-24T19:09:22.9766432Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historical-simulation-1200x700.txt
+2026-10-24T19:09:22.9767081Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historical.stderr.txt
+2026-10-24T19:09:22.9767783Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historical.stdout.txt
+2026-10-24T19:09:22.9768520Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historico-historical-1200x700.png
+2026-10-24T19:09:22.9769249Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historico-historical-1200x700.png.json
+2026-10-24T19:09:22.9770174Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historico-historical-export-1200x700.png
+2026-10-24T19:09:22.9770994Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/historico-historical-export-1200x700.png.json
+2026-10-24T19:09:22.9772237Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/history.stderr.txt
+2026-10-24T19:09:22.9772902Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/history.stdout.txt
+2026-10-24T19:09:22.9773523Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-catalog-1200x700.png
+2026-10-24T19:09:22.9774202Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-catalog-1200x700.png.json
+2026-10-24T19:09:22.9774879Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-local-1200x700.png
+2026-10-24T19:09:22.9775534Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-local-1200x700.png.json
+2026-10-24T19:09:22.9776200Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-settings-1200x700.png
+2026-10-24T19:09:22.9776876Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/inicio-settings-1200x700.png.json
+2026-10-24T19:09:22.9778741Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-30.stderr.txt
+2026-10-24T19:09:22.9779353Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-30.stdout.txt
+2026-10-24T19:09:22.9779971Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-7.stderr.txt
+2026-10-24T19:09:22.9780568Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-7.stdout.txt
+2026-10-24T19:09:22.9781689Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-90.stderr.txt
+2026-10-24T19:09:22.9782339Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-90.stdout.txt
+2026-10-24T19:09:22.9783012Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-expired.stderr.txt
+2026-10-24T19:09:22.9783667Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-expired.stdout.txt
+2026-10-24T19:09:22.9784325Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-renewed.stderr.txt
+2026-10-24T19:09:22.9784977Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses-renewed.stdout.txt
+2026-10-24T19:09:22.9785581Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses.stderr.txt
+2026-10-24T19:09:22.9786168Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/licenses.stdout.txt
+2026-10-24T19:09:22.9786738Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/local.stderr.txt
+2026-10-24T19:09:22.9787293Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/local.stdout.txt
+2026-10-24T19:09:22.9787862Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/production.stderr.txt
+2026-10-24T19:09:22.9788452Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/production.stdout.txt
+2026-10-24T19:09:22.9789096Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/retained-candidate-manifest.json
+2026-10-24T19:09:22.9789764Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/retained-candidate.sha256
+2026-10-24T19:09:22.9790374Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/runtime-probe.json
+2026-10-24T19:09:22.9790958Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/settings.stderr.txt
+2026-10-24T19:09:22.9791526Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/settings.stdout.txt
+2026-10-24T19:09:22.9792086Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/source-sha.txt
+2026-10-24T19:09:22.9792671Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/third-party-packages.json
+2026-10-24T19:09:22.9793286Z  create mode 100644 docs/phase6-msi-preparation/runs/40123851505/verification.json
+2026-10-24T19:09:24.2953095Z To https://github.com/robdor80/NAP
+2026-10-24T19:09:24.2953608Z    b2e9413..c163eca  HEAD -> codex/nap-2-fase-6-ux
+2026-10-24T19:09:24.3734411Z ##[group]Run $path = Join-Path $env:RUNNER_TEMP 'nap-retained-publish'
+2026-10-24T19:09:24.3735044Z [36;1m$path = Join-Path $env:RUNNER_TEMP 'nap-retained-publish'[0m
+2026-10-24T19:09:24.3735506Z [36;1mif (Test-Path $path) { Remove-Item $path -Recurse -Force }[0m
+2026-10-24T19:09:24.3735946Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup[0m
+2026-10-24T19:09:24.3776571Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-24T19:09:24.3776945Z env:
+2026-10-24T19:09:24.3777160Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-24T19:09:24.3777424Z ##[endgroup]
+2026-10-24T19:09:24.8606475Z Post job cleanup.
+2026-10-24T19:09:25.0360125Z Post job cleanup.
+2026-10-24T19:09:25.2334914Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-24T19:09:25.2626636Z git version 2.56.0.windows.3
+2026-10-24T19:09:25.2727851Z Temporarily overriding HOME='D:\a\_temp\dc2543b6-16fc-4cc4-bdd8-f1f2da716e18' before making global git config changes
+2026-10-24T19:09:25.2728773Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T19:09:25.2740344Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\NAP\NAP
+2026-10-24T19:09:25.3086363Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T19:09:25.3441169Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-24T19:09:25.8926691Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T19:09:25.9208767Z http.https://github.com/.extraheader
+2026-10-24T19:09:25.9250346Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-24T19:09:25.9576974Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-24T19:09:26.5176490Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T19:09:26.5498616Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-24T19:09:27.1289131Z Cleaning up orphan processes
+2026-10-24T19:09:27.1625067Z Terminate orphan process: pid (6572) (VBCSCompiler)
+2026-10-24T19:09:27.1754374Z Terminate orphan process: pid (3416) (conhost)

@@ -1,0 +1,19 @@
+{
+  "checkedUtc": "2026-10-24T19:23:18.858138+00:00",
+  "branch": "codex/nap-2-fase-6-ux",
+  "mainUnchanged": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "compiledSource": "b2e9413f0d3b9d3eb4df79f07fce74685d861d7c",
+  "productSourceTestsProfilesUnchanged": true,
+  "officialLicenseHelperUnchanged": true,
+  "priorWorkflowsUnchanged": true,
+  "binaryArtifactsInRun": 0,
+  "newExecutableFilesCommitted": 0,
+  "newPrivateLicenseFilesCommitted": 0,
+  "drivePrimaryFilesChecked": 72,
+  "driveClosureFilesChecked": 4,
+  "driveCanaryFilesChecked": 1,
+  "fullDocumentHashReadbacks": 7,
+  "privateBinaryDeliveryEstablished": false,
+  "ordinaryMsiIsolationGuaranteed": false,
+  "humanAcceptancePassed": false
+}

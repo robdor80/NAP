@@ -1,0 +1,13 @@
+{
+  "verifiedCodeCommit": "b2e9413f0d3b9d3eb4df79f07fce74685d861d7c",
+  "run": 40123851505,
+  "focusedPassed": 49,
+  "captures": 15,
+  "uniqueCaptures": 15,
+  "sidecarHashesVerified": true,
+  "binaryFilesInDeliveryEvidence": 0,
+  "binaryPackageDelivered": false,
+  "ordinaryMsiIsolationGuaranteed": false,
+  "licensePrivateFileIncluded": false,
+  "applicationSourcesChanged": false
+}

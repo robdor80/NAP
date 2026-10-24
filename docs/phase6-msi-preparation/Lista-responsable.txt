@@ -1,0 +1,18 @@
+NAP 2.0 — 24/10/2026 — PREPARACIÓN BLOQUEADA
+
+Ahora: leer informe y guía; no abrir NAP en MSI.
+
+Pendiente de una entrega declarada apta:
+[ ] Descargar de Drive privado y verificar procedencia/integridad con ChatGPT.
+[ ] Extraer todo a una carpeta nueva sin mezclar instalaciones.
+[ ] Abrir el acceso de aceptación aislada validado (todavía no existe).
+[ ] Ver cinco secciones y navegar.
+[ ] Minimizar a bandeja y restaurar.
+[ ] Consultar Diagnóstico sin host.
+[ ] Revisar Licencias sin copiar archivos privados ni cambiar reloj.
+[ ] Revisar Histórico sintético, nunca assets reales.
+[ ] Cerrar y volver a abrir la misma edición de prueba.
+[ ] Comunicar fallos con texto/captura revisada y sin datos personales.
+
+No administrador, no desactivar protecciones, no borrar datos previos,
+no servicios, no raíces reales, no CUTOVER, no operaciones manuales productivas.

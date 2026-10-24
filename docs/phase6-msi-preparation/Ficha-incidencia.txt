@@ -1,0 +1,16 @@
+NAP 2.0 — Ficha privada de incidencia
+
+Estado actual: no hay programa entregado para ejecutar. Esta ficha sirve ya
+para fallos de acceso documental y posteriormente para una sesión autorizada.
+
+Versión / SHA de la entrega:
+Documento/enlace o sección abierta:
+Acción realizada:
+Resultado esperado:
+Resultado observado / texto y código de error:
+Ventana cerrada, en bandeja o sin respuesta:
+¿Sucede al volver a abrir?:
+Captura revisada para excluir información personal:
+
+No adjuntar sixlabors.lic, tokens, bases, perfiles personales, carpetas ni assets.
+No publicar esta ficha con datos privados en GitHub.
