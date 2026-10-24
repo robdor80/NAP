@@ -1,0 +1,42 @@
+[
+  {
+    "licenseType": "expression",
+    "package": "Microsoft.Data.Sqlite.Core/8.0.31",
+    "license": "MIT"
+  },
+  {
+    "licenseType": "expression",
+    "package": "Microsoft.Data.Sqlite/8.0.31",
+    "license": "MIT"
+  },
+  {
+    "licenseType": "file",
+    "package": "SixLabors.ImageSharp/3.2.0",
+    "license": "LICENSE"
+  },
+  {
+    "licenseType": "expression",
+    "package": "SQLitePCLRaw.bundle_e_sqlite3/2.1.12",
+    "license": "Apache-2.0"
+  },
+  {
+    "licenseType": "expression",
+    "package": "SQLitePCLRaw.core/2.1.12",
+    "license": "Apache-2.0"
+  },
+  {
+    "licenseType": "expression",
+    "package": "SQLitePCLRaw.lib.e_sqlite3/2.1.12",
+    "license": "Apache-2.0"
+  },
+  {
+    "licenseType": "expression",
+    "package": "SQLitePCLRaw.provider.e_sqlite3/2.1.12",
+    "license": "Apache-2.0"
+  },
+  {
+    "licenseType": "unspecified",
+    "package": "System.Memory/4.5.3",
+    "license": "review required"
+  }
+]

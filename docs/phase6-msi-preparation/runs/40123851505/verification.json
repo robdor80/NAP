@@ -1,0 +1,27 @@
+{
+  "ordinaryStartupIsolated": false,
+  "scope": "LocalAppData/NAP and ProgramData/NAP-coordination-v2-* only; not full process I/O tracing",
+  "bindingErrors": 0,
+  "focusedPassed": 49,
+  "captures": 15,
+  "unchangedNamedNapLocations": true,
+  "msiExecutionAuthorized": false,
+  "noHostStarted": true,
+  "noZipIngestion": true,
+  "modes": [
+    "local",
+    "catalog",
+    "settings",
+    "production",
+    "history",
+    "diagnostics-offline",
+    "licenses",
+    "licenses-90",
+    "licenses-30",
+    "licenses-7",
+    "licenses-expired",
+    "licenses-renewed",
+    "historical",
+    "historical-export"
+  ]
+}
