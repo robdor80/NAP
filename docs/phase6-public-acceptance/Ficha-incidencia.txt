@@ -1,0 +1,14 @@
+NAP 2.0 — incidencia en aceptación sintética
+
+Pantalla:
+Pasos seguidos:
+Qué esperabas ver:
+Qué ocurrió:
+Mensaje exacto de Windows o NAP:
+Captura adjunta:
+¿Se recupera desde la bandeja?:
+¿Se cierra con normalidad?:
+
+Adjunta esta información en la conversación con ChatGPT.
+La ejecución y el commit figuran en la guía y en PROCEDENCIA.json.
+No se necesitan contraseñas ni tokens para comunicar una incidencia.

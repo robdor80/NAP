@@ -1,0 +1,11 @@
+{
+  "mainUnchanged": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "issues": {
+    "47": "open",
+    "49": "open"
+  },
+  "noCodeChangesAfterCompiledCommit": true,
+  "coreTestsPublicConfigAndGeneralCiUnchanged": true,
+  "noMsiAccess": true,
+  "noPrNoReleaseNoCutover": true
+}

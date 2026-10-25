@@ -1,0 +1,626 @@
+[
+  {
+    "id": "1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1",
+    "local": "Informe-ejecutivo.pdf",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Informe-ejecutivo.pdf",
+    "size": 46832,
+    "url": "https://drive.google.com/file/d/1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1DuF8wbuZmup726g4ZQ0LAPhuTM1VXg4p",
+    "local": "Informe-ejecutivo.md",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Informe-ejecutivo.md",
+    "size": 2945,
+    "url": "https://drive.google.com/file/d/1DuF8wbuZmup726g4ZQ0LAPhuTM1VXg4p/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut",
+    "local": "Informe-tecnico.pdf",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Informe-tecnico.pdf",
+    "size": 50574,
+    "url": "https://drive.google.com/file/d/1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1I_luBagsuK77p_tpOrHvq22WanN4agrZ",
+    "local": "Informe-tecnico.md",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Informe-tecnico.md",
+    "size": 7559,
+    "url": "https://drive.google.com/file/d/1I_luBagsuK77p_tpOrHvq22WanN4agrZ/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V",
+    "local": "Guia-Windows11.pdf",
+    "parent": "1RgxzasCpUu_sJLAhmdPuUl90bnJSlPXy",
+    "title": "Guia-MSI.pdf",
+    "size": 180207,
+    "url": "https://drive.google.com/file/d/1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1-rLRY08cz8Ya0pT9o2JNLpnMmooM8EGv",
+    "local": "Guia-Windows11.md",
+    "parent": "1RgxzasCpUu_sJLAhmdPuUl90bnJSlPXy",
+    "title": "Guia-MSI.md",
+    "size": 4244,
+    "url": "https://drive.google.com/file/d/1-rLRY08cz8Ya0pT9o2JNLpnMmooM8EGv/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0",
+    "local": "Capturas-WPF.pdf",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "Galeria-WPF.pdf",
+    "size": 650368,
+    "url": "https://drive.google.com/file/d/1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "179wupLjERRINJ-SmpEQ4w4IOAE52AHE4",
+    "local": "Estado-del-programa.md",
+    "parent": "1zUf9Qh8rqJZGDykI4tED_zyITUMsdGqv",
+    "title": "Estado-del-programa.md",
+    "size": 1344,
+    "url": "https://drive.google.com/file/d/179wupLjERRINJ-SmpEQ4w4IOAE52AHE4/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1nlRSilH6wlBYAqN8HEaNxWomBLA44l6S",
+    "local": "Canal-de-entrega.md",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Canal-privado.md",
+    "size": 1636,
+    "url": "https://drive.google.com/file/d/1nlRSilH6wlBYAqN8HEaNxWomBLA44l6S/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1zL5kkni03SnTLI1i_PsrO1OTc0VFTlao",
+    "local": "Aislamiento.md",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Mapa-almacenamiento.md",
+    "size": 6085,
+    "url": "https://drive.google.com/file/d/1zL5kkni03SnTLI1i_PsrO1OTc0VFTlao/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1Fdj9cTqTrvdT1F6SzCW_UjsCS5plo8uk",
+    "local": "Dependencias-y-licencias.md",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Dependencias-y-licencias-aceptacion-20261025.md",
+    "size": 5715,
+    "url": "https://drive.google.com/file/d/1Fdj9cTqTrvdT1F6SzCW_UjsCS5plo8uk/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1cDxAkkMEYECrtjpGdwD5dR-ax7AZ0ZjP",
+    "local": "Lista-responsable.txt",
+    "parent": "1RgxzasCpUu_sJLAhmdPuUl90bnJSlPXy",
+    "title": "Lista-responsable.txt",
+    "size": 956,
+    "url": "https://drive.google.com/file/d/1cDxAkkMEYECrtjpGdwD5dR-ax7AZ0ZjP/view?usp=drivesdk",
+    "mime": "text/plain",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1iP4x38NH2x5s0nkb2fDFWjUKDkWZh7fw",
+    "local": "Ficha-incidencia.txt",
+    "parent": "1RgxzasCpUu_sJLAhmdPuUl90bnJSlPXy",
+    "title": "Ficha-incidencia.txt",
+    "size": 422,
+    "url": "https://drive.google.com/file/d/1iP4x38NH2x5s0nkb2fDFWjUKDkWZh7fw/view?usp=drivesdk",
+    "mime": "text/plain",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1tu9kwM1ZEm2HrMYxOtnqfGiXDADvIF6A",
+    "local": "Aislamiento.pdf",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Informe-de-aislamiento.pdf",
+    "size": 28092,
+    "url": "https://drive.google.com/file/d/1tu9kwM1ZEm2HrMYxOtnqfGiXDADvIF6A/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1DlIkLnIladcLo8-Ve0OgVbcr4FjyepVm",
+    "local": "Dependencias-y-licencias.pdf",
+    "parent": "12FqoVimPSItCY8_VBhwFSbYsycJG0jK1",
+    "title": "Dependencias-y-licencias-aceptacion.pdf",
+    "size": 29652,
+    "url": "https://drive.google.com/file/d/1DlIkLnIladcLo8-Ve0OgVbcr4FjyepVm/view?usp=drivesdk",
+    "mime": "application/pdf",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1FC5UUsVHeIwvzqIu-XGh8Bji6EhD-Qq4",
+    "local": "ZIP-SHA256.txt",
+    "parent": "1zUf9Qh8rqJZGDykI4tED_zyITUMsdGqv",
+    "title": "ZIP-SHA256.txt",
+    "size": 107,
+    "url": "https://drive.google.com/file/d/1FC5UUsVHeIwvzqIu-XGh8Bji6EhD-Qq4/view?usp=drivesdk",
+    "mime": "text/plain",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1JDnWHQZNHzjX_Y0mRO_p1KTh2zSDQAWW",
+    "local": "runs/40150398814/SHA256SUMS.txt",
+    "parent": "1zUf9Qh8rqJZGDykI4tED_zyITUMsdGqv",
+    "title": "SHA256SUMS-aceptacion.txt",
+    "size": 49134,
+    "url": "https://drive.google.com/file/d/1JDnWHQZNHzjX_Y0mRO_p1KTh2zSDQAWW/view?usp=drivesdk",
+    "mime": "text/plain",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1LGKiCASuHsATAFXogmeXqnjBtfdUXYxt",
+    "local": "runs/40150398814/PROCEDENCIA.json",
+    "parent": "1zUf9Qh8rqJZGDykI4tED_zyITUMsdGqv",
+    "title": "PROCEDENCIA-aceptacion.json",
+    "size": 664,
+    "url": "https://drive.google.com/file/d/1LGKiCASuHsATAFXogmeXqnjBtfdUXYxt/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1q5My-Vmv-4mKtZODP-78SIb8HT-a8uIV",
+    "local": "delivery.json",
+    "parent": "1zUf9Qh8rqJZGDykI4tED_zyITUMsdGqv",
+    "title": "Enlaces-y-commit-aceptacion.json",
+    "size": 445,
+    "url": "https://drive.google.com/file/d/1q5My-Vmv-4mKtZODP-78SIb8HT-a8uIV/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1vaxx23ugbqj_l8k-dJfm2opQXcP075c1",
+    "local": "Resultados.md",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "Resultados-aceptacion-20261025.md",
+    "size": 1794,
+    "url": "https://drive.google.com/file/d/1vaxx23ugbqj_l8k-dJfm2opQXcP075c1/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1dnAM2XlLUXQvIx8_ypgCVJSVAdITtS9T",
+    "local": "runs/40150398814/download-verification.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-download-verification.json",
+    "size": 671,
+    "url": "https://drive.google.com/file/d/1dnAM2XlLUXQvIx8_ypgCVJSVAdITtS9T/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1Z7-aXHeHo9tx50Xvie7fBd2cjz8D1CXu",
+    "local": "runs/40150398814/file-io.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-file-io.json",
+    "size": 23619,
+    "url": "https://drive.google.com/file/d/1Z7-aXHeHo9tx50Xvie7fBd2cjz8D1CXu/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1JLmke4TSbXl1K_ovTx5l5aX55-PbUKGB",
+    "local": "runs/40150398814/focused.trx",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-focused.trx",
+    "size": 66734,
+    "url": "https://drive.google.com/file/d/1JLmke4TSbXl1K_ovTx5l5aX55-PbUKGB/view?usp=drivesdk",
+    "mime": "application/octet-stream",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1ipUWI8dFaq38GXqPWTNemEdg6g9svls7",
+    "local": "runs/40150398814/nuget-vulnerabilities.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-nuget-vulnerabilities.json",
+    "size": 1393,
+    "url": "https://drive.google.com/file/d/1ipUWI8dFaq38GXqPWTNemEdg6g9svls7/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1qOxd7H3WdJ5USg12zR1yJh1IZ1UDuaCB",
+    "local": "runs/40150398814/runtime-probe.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-runtime-probe.json",
+    "size": 330,
+    "url": "https://drive.google.com/file/d/1qOxd7H3WdJ5USg12zR1yJh1IZ1UDuaCB/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1SYHTr-hMMnljwhcPGM4hXKQ8N8SuBg_K",
+    "local": "runs/40150398814/verification.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-verification.json",
+    "size": 670,
+    "url": "https://drive.google.com/file/d/1SYHTr-hMMnljwhcPGM4hXKQ8N8SuBg_K/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1JEpFDvLAOAfrQR3Jb-_zlT4lXrYrk0_Z",
+    "local": "runs/40150398814/aceptacion.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-aceptacion.json",
+    "size": 557,
+    "url": "https://drive.google.com/file/d/1JEpFDvLAOAfrQR3Jb-_zlT4lXrYrk0_Z/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1mNZAJySu1aoZrGaExXRnLw4MbDWy6MAJ",
+    "local": "runs/40150398814/third-party-packages.json",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-third-party-packages.json",
+    "size": 1435,
+    "url": "https://drive.google.com/file/d/1mNZAJySu1aoZrGaExXRnLw4MbDWy6MAJ/view?usp=drivesdk",
+    "mime": "application/json",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1rKCGgH8fNXdWM8eaYqP7FJ0JD-hK2Lt7",
+    "local": "runs/40150398814/actions.log.txt",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-actions.log.txt",
+    "size": 44700,
+    "url": "https://drive.google.com/file/d/1rKCGgH8fNXdWM8eaYqP7FJ0JD-hK2Lt7/view?usp=drivesdk",
+    "mime": "text/plain",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "14vGkzxgvq4Km0JkdiV3E-ZirSW0RJU84",
+    "local": "runs/40150398814/Inicio.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Inicio.png",
+    "size": 43785,
+    "url": "https://drive.google.com/file/d/14vGkzxgvq4Km0JkdiV3E-ZirSW0RJU84/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1WLkjALuYQO5krhvRpbUOviL45AfjgoMP",
+    "local": "runs/40150398814/Catálogo.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Catálogo.png",
+    "size": 58897,
+    "url": "https://drive.google.com/file/d/1WLkjALuYQO5krhvRpbUOviL45AfjgoMP/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "18IyeTESmmJyF8LTqtHUkGDIKDLRhHx0n",
+    "local": "runs/40150398814/Producción.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Producción.png",
+    "size": 81229,
+    "url": "https://drive.google.com/file/d/18IyeTESmmJyF8LTqtHUkGDIKDLRhHx0n/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1s8LcXJ9sHbv78-oKQmf9BFB1YCjn9p_V",
+    "local": "runs/40150398814/Historial.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Historial.png",
+    "size": 80864,
+    "url": "https://drive.google.com/file/d/1s8LcXJ9sHbv78-oKQmf9BFB1YCjn9p_V/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1oqHxQjdCm7lnpik8I09qyWsrYKuPkPfE",
+    "local": "runs/40150398814/Ajustes.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Ajustes.png",
+    "size": 77440,
+    "url": "https://drive.google.com/file/d/1oqHxQjdCm7lnpik8I09qyWsrYKuPkPfE/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1A2CFV0qMovqwaAuSeLLeoUYV5ZZNbYZd",
+    "local": "runs/40150398814/Diagnostico.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Diagnostico.png",
+    "size": 82446,
+    "url": "https://drive.google.com/file/d/1A2CFV0qMovqwaAuSeLLeoUYV5ZZNbYZd/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1ZFkbQiCP58tRCAqO3O-YsIOF76LOAcLS",
+    "local": "runs/40150398814/Licencias.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Licencias.png",
+    "size": 75551,
+    "url": "https://drive.google.com/file/d/1ZFkbQiCP58tRCAqO3O-YsIOF76LOAcLS/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1f9FXUZNYOeziq-fV8UP3gtLAudpSSt0J",
+    "local": "runs/40150398814/Historico.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Historico.png",
+    "size": 96706,
+    "url": "https://drive.google.com/file/d/1f9FXUZNYOeziq-fV8UP3gtLAudpSSt0J/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "1yRRmoRHO7JrTuWSQ3hwRi1hqrirsi2hw",
+    "local": "runs/40150398814/Bandeja-restaurada.png",
+    "parent": "1fUiFMIVaoARdaW0cqpn2ZnnOBW240qoU",
+    "title": "20261025-Bandeja-restaurada.png",
+    "size": 84387,
+    "url": "https://drive.google.com/file/d/1yRRmoRHO7JrTuWSQ3hwRi1hqrirsi2hw/view?usp=drivesdk",
+    "mime": "image/png",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "16JIXHMhhwhVM0CZQmhPQyzU80S66LWms",
+    "local": "README.md",
+    "parent": "1WMXcrTRYbjxk8hP0dm8yK_QGQ-ajZHDu",
+    "title": "INDICE-Y-ESTADO.md",
+    "size": 3178,
+    "url": "https://drive.google.com/file/d/16JIXHMhhwhVM0CZQmhPQyzU80S66LWms/view?usp=drivesdk",
+    "mime": "text/markdown",
+    "ownerOnly": true,
+    "permissionsRoles": [
+      {
+        "type": "user",
+        "role": "owner"
+      }
+    ]
+  }
+]

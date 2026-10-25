@@ -13,7 +13,7 @@ Fuentes oficiales: https://github.com/SixLabors/ImageSharp/blob/v3.2.0/LICENSE y
 ## Inventario revisado
 
 - Microsoft.Data.Sqlite y Microsoft.Data.Sqlite.Core 8.0.31: MIT, Microsoft.
-- SQLitePCLRaw.bundle_e_sqlite3, core, lib.e_sqlite3 y provider.e_sqlite3 2.1.12: Apache-2.0, Eric Sink y colaboradores. El motor SQLite nativo es de dominio público; no impone redistribución de código de NAP. Fuente: https://sqlite.org/copyright.html . Se incluyen e_sqlite3.dll y sus adaptadores; se comprueba la consulta sqlite_version() en base de datos exclusivamente en memoria y la coincidencia SHA-256 de la DLL nativa.
+- SQLitePCLRaw.bundle_e_sqlite3, core, lib.e_sqlite3 y provider.e_sqlite3 2.1.12: Apache-2.0, Eric Sink y colaboradores; el paquete nativo declara Copyright 2014-2024 SourceGear, LLC. El motor SQLite nativo es de dominio público; no impone redistribución de código de NAP. Fuente: https://sqlite.org/copyright.html . Se incluyen e_sqlite3.dll y sus adaptadores; se comprueba la consulta sqlite_version() en base de datos exclusivamente en memoria y la coincidencia SHA-256 de la DLL nativa.
 - System.Memory 4.5.3: MIT, Microsoft. Su NUSPEC histórico usa licenseUrl y carece de license expression; se ha contrastado el URL oficial corefx/LICENSE.TXT y se incluye el texto MIT. Esta ausencia de metadato moderno no queda sin revisar.
 - .NET 8.0.32 autónomo para Windows x64: MIT y avisos de terceros de runtime, WPF y Windows Forms de las etiquetas oficiales v8.0.32. Se incluyen los textos completos y sus copyrights. No requiere instalar .NET ni herramientas de programación.
 - WPF, RobStyle, RoDo y perfiles públicos: recursos del mismo commit NAP compilado; no se importan perfiles personales ni recursos reales de trabajo. Los perfiles JSON públicos incluidos no son descubiertos/cargados en aceptación: la sesión usa dos perfiles construidos en memoria.
@@ -34,3 +34,7 @@ Cada identificador puede consultarse en https://github.com/advisories/ seguido d
 ## Herramientas externas y alcance
 
 Esta aceptación no necesita Git ni otros programas. Las herramientas productivas de Git necesitarán Git externo; aquí la inspección de remotos, commit, push y recuperación están bloqueadas. Backups y Objetivos muestran pantallas vacías sin escritura. Estadísticas usa el catálogo vacío sintético. RoDo continúa reservado. Licencias permite cambios administrativos ficticios en memoria, sin modificar la licencia real ni ampliar derechos de uso. Las exportaciones a archivos se rechazan antes de abrir un diálogo.
+
+## Vigencia del runtime autónomo
+
+Al 25/10/2026, Microsoft identifica 8.0.32 como parche actual de .NET 8. Su soporte termina el 10/11/2026. El ZIP no se actualiza con el .NET instalado en Windows: al ser autónomo, una actualización del runtime requiere regenerar y verificar el paquete. La retención del artefacto hasta enero no extiende ese soporte. Antes de reutilizarlo después del 10/11/2026 debe revisarse el runtime; no se implementa un updater ni se inicia otra fase en esta entrega. Fuente oficial consultada: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core .

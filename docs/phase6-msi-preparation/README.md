@@ -1,3 +1,5 @@
+> Actualización 25/10/2026: el responsable autorizó el paquete público de aceptación sintética. Esta preparación de 24/10 queda como histórico; consulte [la entrega actual comprobada](../phase6-public-acceptance/README.md).
+
 # NAP 2.0 — Preparación privada de aceptación MSI
 
 24/10/2026 · Fase 6, sin aceptación humana ni Fase 7.

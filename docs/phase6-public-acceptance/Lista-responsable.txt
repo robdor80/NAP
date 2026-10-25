@@ -1,0 +1,18 @@
+NAP 2.0 — prueba de aceptación sintética
+
+[ ] Entrar en GitHub con la cuenta normal.
+[ ] Abrir el enlace exacto de la guía y descargar el artefacto NAP-2.0-Fase6-Aceptacion-Windows-x64.
+[ ] Extraer todos los archivos en una carpeta nueva.
+[ ] Abrir Iniciar-prueba-NAP.cmd con doble clic.
+[ ] Ver ACEPTACIÓN y DATOS FICTICIOS.
+[ ] Recorrer Inicio, Catálogo, Producción, Historial y Ajustes.
+[ ] Probar filtros y detalles de muestra.
+[ ] Consultar Diagnóstico, Licencias e Histórico sintético.
+[ ] Minimizar a bandeja y recuperar con doble clic en NAP.
+[ ] Cerrar mediante X o Salir en bandeja.
+[ ] Informar a ChatGPT del resultado y de cualquier problema, con pantalla, pasos y captura.
+
+No ejecutar como administrador. No instalar herramientas de programación.
+Si Windows bloquea la ejecución, conservar el mensaje y consultar con ChatGPT.
+No desactivar Defender ni SmartScreen.
+No introducir datos reales ni buscar cómo activar producción.
