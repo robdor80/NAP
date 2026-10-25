@@ -100,6 +100,14 @@ if (-not $acceptance.acceptanceOnlyBuild -or $acceptance.bindingErrors -ne 0) { 
 Copy-Item "$extracted/laboratorio/*" $evidence
 Remove-Item "$extracted/laboratorio" -Recurse -Force
 Verify-Manifest $extracted
+# Deliberate laboratory escape attempt: a junction must be rejected before any write.
+$escape = Join-Path $env:RUNNER_TEMP 'nap-forbidden-lab-target'
+New-Item -ItemType Directory $escape | Out-Null
+New-Item -ItemType Junction -Path (Join-Path $extracted 'laboratorio') -Target $escape | Out-Null
+$badLab = Start-Process (Join-Path $extracted 'NAP.App.exe') -ArgumentList '--phase6-self-test' -PassThru
+if (-not $badLab.WaitForExit(10000)) { $badLab.Kill(); throw 'Unsafe lab did not stop.' }
+if ($badLab.ExitCode -ne 1 -or @(Get-ChildItem $escape -Force).Count -ne 0) { throw 'Unsafe lab was used.' }
+Remove-Item (Join-Path $extracted 'laboratorio') -Force
 # Direct executable startup must use the same acceptance branch; no development tools in user flow.
 $direct = Start-Process (Join-Path $extracted 'NAP.App.exe') -WorkingDirectory $env:RUNNER_TEMP -PassThru
 Start-Sleep -Seconds 5
@@ -129,7 +137,7 @@ $zipHash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 "$zipHash  $([IO.Path]::GetFileName($zip))" | Out-File (Join-Path $delivery 'ZIP-SHA256.txt') -Encoding utf8
 @{ sourceCommit=$commit; focusedPassed=[int]$counters.passed; bindingErrors=0; files=$files.Count+1;
  zipSha256=$zipHash; extractedManifestVerified=$true; directStartup=$true; launcherVerified=$true;
- unsafeArgumentsRejected=$true; unchangedOrdinaryCanaries=$true; etwFileIoGate=$true; retentionDaysRequested=90;
+ unsafeArgumentsRejected=$true; unsafeLaboratoryJunctionRejected=$true; unchangedOrdinaryCanaries=$true; etwFileIoGate=$true; retentionDaysRequested=90;
  noMsiAccess=$true; noHostStarted=$true; noGeneralRegression=$true; noAssetZipTests=$true;
  privateFileAndSecretPatternScanPassed=$true; noticesCompleteForReviewedGraph=$true } | ConvertTo-Json -Depth 6 | Out-File (Join-Path $evidence 'verification.json')
 Copy-Item (Join-Path $evidence 'verification.json') $delivery

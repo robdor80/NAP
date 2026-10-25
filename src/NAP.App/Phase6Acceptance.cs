@@ -132,6 +132,8 @@ internal static class Phase6Acceptance
         shell.SelectedUniverse = shell.Profiles.Last(); await shell.Explorer.UniverseChangeTask; await shell.LastRefresh;
         Require(historical.Rows.Count == 39 && !historical.HasSelection, "El contexto conserva selección anterior.");
         window.VerifyTrayRoundTrip(); await Capture("Bandeja-restaurada");
+        await shell.Explorer.SaveSettings.ExecuteAsync();
+        Require(shell.Explorer.Error is not null, "El comando heredado no rechazó el guardado de raíces.");
         Require(diagnostics.Errors == 0, "Errores de binding.");
         WriteText(lab, "aceptacion.json", JsonSerializer.Serialize(new { acceptanceOnlyBuild = App.IsAcceptance,
             navigation = shell.Navigation.Select(n => n.Name), tools = shell.Tools.Select(n => n.Name),

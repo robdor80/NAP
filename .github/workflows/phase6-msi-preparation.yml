@@ -9,10 +9,12 @@ on:
       - 'tools/NAP.PrivatePackageProbe/**'
       - '.github/workflows/phase6-msi-preparation.yml'
       - '.github/scripts/Package-Phase6Acceptance.ps1'
+      - '.github/scripts/Verify-DownloadedAcceptance.ps1'
       - 'docs/phase6-public-acceptance/notices/**'
       - 'docs/phase6-public-acceptance/package/**'
 permissions:
-  contents: read
+  contents: write # Allowlisted synthetic evidence on this branch only; never binaries.
+  actions: read
 jobs:
   isolated-acceptance:
     if: github.ref == 'refs/heads/codex/nap-2-fase-6-ux'
@@ -54,12 +56,21 @@ jobs:
         shell: pwsh
         run: ./.github/scripts/Package-Phase6Acceptance.ps1
       - name: Upload verified application files as one directly extractable ZIP
+        id: package
         uses: actions/upload-artifact@v4
         with:
           name: NAP-2.0-Fase6-Aceptacion-Windows-x64
           path: ${{ runner.temp }}/nap-acceptance-publish/
           if-no-files-found: error
           retention-days: 90
+      - name: Download published artifact again and verify every byte
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NAP_ARTIFACT_ID: ${{ steps.package.outputs.artifact-id }}
+          NAP_ARTIFACT_DIGEST: ${{ steps.package.outputs.artifact-digest }}
+          NAP_ARTIFACT_URL: ${{ steps.package.outputs.artifact-url }}
+        run: ./.github/scripts/Verify-DownloadedAcceptance.ps1
       - name: Preserve logs, screenshots, tests and isolation evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -68,6 +79,24 @@ jobs:
           path: artifacts/phase6-evidence/
           if-no-files-found: warn
           retention-days: 90
+      - name: Preserve only synthetic evidence on the authorized branch
+        if: always()
+        shell: pwsh
+        run: |
+          $path = "docs/phase6-public-acceptance/runs/$env:GITHUB_RUN_ID"
+          New-Item -ItemType Directory -Force $path | Out-Null
+          if (Test-Path artifacts/phase6-evidence) {
+            foreach ($file in @(Get-ChildItem artifacts/phase6-evidence -File)) {
+              if ($file.Extension -notin @('.json','.txt','.trx','.png','.sha256')) { throw 'Unexpected evidence type.' }
+              Copy-Item $file.FullName $path
+            }
+          }
+          git rev-parse HEAD | Out-File "$path/source-sha.txt"
+          git add -- $path
+          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve isolated acceptance verification evidence [skip ci]'
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }
+          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence push failed.' }
       - name: Ensure license cleanup
         if: always()
         shell: pwsh

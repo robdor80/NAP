@@ -21,13 +21,17 @@ session.Source.Kernel.FileIOWrite += e => Record(e.ProcessID, "write", e.FileNam
 session.Source.Kernel.FileIODelete += e => Record(e.ProcessID, "delete", e.FileName);
 session.Source.Kernel.FileIORename += e => Record(e.ProcessID, "rename", e.FileName);
 var observing = Task.Run(() => session.Source.Process());
-var start = new ProcessStartInfo(executable) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(executable)! };
+var start = new ProcessStartInfo(executable) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(executable)!, RedirectStandardOutput = true, RedirectStandardError = true };
 foreach (var arg in args.Skip(2)) start.ArgumentList.Add(arg);
 using var process = Process.Start(start)!;
+var stdout = process.StandardOutput.ReadToEndAsync();
+var stderr = process.StandardError.ReadToEndAsync();
 using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(90));
 try { await process.WaitForExitAsync(timeout.Token); }
 catch { process.Kill(true); throw; }
 await Task.Delay(1500); var lost = session.EventsLost; session.Stop(); await observing;
+File.WriteAllText(Path.ChangeExtension(report, ".stdout.txt"), await stdout);
+File.WriteAllText(Path.ChangeExtension(report, ".stderr.txt"), await stderr);
 var own = events.Where(e => e.Pid == process.Id).Select(e => new { operation = e.Operation, path = e.Path }).Distinct().ToArray();
 var forbidden = own.Where(e => e.path.Contains(@"\NAP\", StringComparison.OrdinalIgnoreCase) &&
     (e.path.Contains(@"\AppData\Local\", StringComparison.OrdinalIgnoreCase) || e.path.Contains(@"\ProgramData\", StringComparison.OrdinalIgnoreCase)) ||
