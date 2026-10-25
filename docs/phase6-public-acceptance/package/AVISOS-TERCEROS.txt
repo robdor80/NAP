@@ -11,6 +11,7 @@ La futura distribucion comercial requiere revisar de nuevo su elegibilidad.
 
 Microsoft.Data.Sqlite/Core 8.0.31 y System.Memory 4.5.3: MIT (Microsoft).
 SQLitePCLRaw 2.1.12: Apache-2.0; Copyright Eric Sink y colaboradores.
+Paquete nativo SQLitePCLRaw.lib.e_sqlite3: Copyright 2014-2024 SourceGear, LLC.
 SQLite nativo: dominio publico, https://sqlite.org/copyright.html.
 Runtime .NET 8.0.32, WPF y Windows Forms: MIT (Microsoft y colaboradores),
 con los avisos adicionales de terceros incluidos en third-party-notices.

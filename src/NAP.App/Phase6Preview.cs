@@ -13,7 +13,7 @@ namespace NAP.App;
 internal static class Phase6Preview
 {
     private static readonly string[] HistoricalModes = ["historical", "historical-children", "historical-elder", "historical-ambiguous", "historical-duplicate", "historical-unknown", "historical-empty", "historical-context", "historical-export"];
-    internal static ShellViewModel Create(string mode)
+    internal static ShellViewModel Create(string mode, bool interactiveAcceptance = false)
     {
         if (mode is not ("active" or "paused" or "review" or "offline" or "local" or "catalog" or "settings") && !Phase6WorkflowPreview.Modes.Contains(mode) && !Phase6SettingsPreview.Modes.Contains(mode) && !HistoricalModes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
         // An inert absolute namespace, never created or probed; independent of user environment/configuration.
@@ -23,8 +23,8 @@ internal static class Phase6Preview
         var contexts = new[] { Context("preview", "Universo de muestra"), Context("other_preview", "Segundo universo") };
         var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(root, "unused-settings.json")), new PreviewExplorer(), new NoFolders(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
         var confirmation = new NoConfirmation();
-        var workflow=new Phase6WorkflowPreview(mode);
-        var automation = mode is "local" or "catalog" or "settings" || Phase6SettingsPreview.Modes.Contains(mode) || HistoricalModes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
+        var workflow=new Phase6WorkflowPreview(mode, interactiveAcceptance);
+        var automation = interactiveAcceptance || mode is "local" or "catalog" or "settings" || Phase6SettingsPreview.Modes.Contains(mode) || HistoricalModes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
         return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode), syntheticReadOnly: true) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }

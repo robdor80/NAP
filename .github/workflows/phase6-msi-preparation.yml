@@ -53,11 +53,11 @@ jobs:
       - name: Verify, extract, exercise and package the exact published bytes
         shell: pwsh
         run: ./.github/scripts/Package-Phase6Acceptance.ps1
-      - name: Upload verified acceptance ZIP
+      - name: Upload verified application files as one directly extractable ZIP
         uses: actions/upload-artifact@v4
         with:
           name: NAP-2.0-Fase6-Aceptacion-Windows-x64
-          path: artifacts/phase6-delivery/*
+          path: ${{ runner.temp }}/nap-acceptance-publish/
           if-no-files-found: error
           retention-days: 90
       - name: Preserve logs, screenshots, tests and isolation evidence

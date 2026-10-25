@@ -23,7 +23,7 @@ internal static class Phase6Acceptance
         var probe = args.Contains("--phase6-self-test", StringComparer.Ordinal);
         RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
         var lab = probe ? PrepareLab() : null;
-        var window = new MainWindow(Phase6Preview.Create("exception"), smokeOutput: lab, acceptance: true, acceptanceProbe: probe)
+        var window = new MainWindow(Phase6Preview.Create("exception", interactiveAcceptance: true), smokeOutput: lab, acceptance: true, acceptanceProbe: probe)
         {
             Title = "NAP 2.0 — ACEPTACIÓN AISLADA — Datos ficticios — Sin producción",
             WindowState = WindowState.Normal, Width = 1440, Height = 900
@@ -92,10 +92,12 @@ internal static class Phase6Acceptance
                 Require(work.Rows.Count == 4, "Faltan filas sintéticas.");
                 work.Selected = work.Rows[0]; await work.LastDetail;
                 Require(work.HasPreview, "Falta comparación sintética.");
-                await work.Approve.ExecuteAsync(); // Confirmation adapter always refuses; no writer exists.
+                Require(!work.Propose.CanExecute(null) && !work.Approve.CanExecute(null) && !work.Continue.CanExecute(null), "Mutación de flujo disponible.");
+                await work.Approve.ExecuteAsync(); // Disabled independently of the rejecting service/confirmation adapters.
                 work.Search = "Escena"; await work.Apply.ExecuteAsync();
                 Require(work.Rows.Count == 1, "Filtro sintético inválido.");
                 work.Search = ""; await work.Apply.ExecuteAsync();
+                work.Selected = work.Rows[0]; await work.LastDetail;
             }
             await Capture(item.Name);
         }

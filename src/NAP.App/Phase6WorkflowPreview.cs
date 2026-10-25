@@ -6,7 +6,7 @@ using SixLabors.ImageSharp.Processing;
 namespace NAP.App;
 
 /// <summary>In-memory fixture for rendering only; all mutations are rejected.</summary>
-internal sealed class Phase6WorkflowPreview(string mode) : IWorkflowDesktopClient
+internal sealed class Phase6WorkflowPreview(string mode, bool acceptanceReadOnly = false) : IWorkflowDesktopClient
 {
     internal static readonly string[] Modes=["production","history","choice","exception","approved","blocked","empty","read-error","manual","activity","activity-decisions"];
     private readonly QueueItemId[] _ids=[QueueItemId.Create(),QueueItemId.Create(),QueueItemId.Create(),QueueItemId.Create()];
@@ -45,7 +45,7 @@ internal sealed class Phase6WorkflowPreview(string mode) : IWorkflowDesktopClien
         WorkflowDecisionEntry[] decisions=mode.StartsWith("activity")?Enumerable.Range(1,mode=="activity"?3:24).Select(i=>new WorkflowDecisionEntry(Utc.AddMinutes(-i),ExceptionalDecisionState.Proposed,"Retrato",768,960)).ToArray():
             correction?[new WorkflowDecisionEntry(Utc,mode=="approved"?ExceptionalDecisionState.Approved:ExceptionalDecisionState.Proposed,"Retrato",768,960)]:[];
         return Task.FromResult(new WorkflowDetail(u,row,allEvents.Skip(request.EventOffset).Take(20).ToArray(),allEvents.Length>request.EventOffset+20,
-            canChoose?[new("synthetic-choice","Retrato · 768 × 960 (4:5)","Retrato",768,960)]:[],preview,Pattern(false),canChoose,mode=="exception",mode=="approved",
+            canChoose?[new("synthetic-choice","Retrato · 768 × 960 (4:5)","Retrato",768,960)]:[],preview,Pattern(false),canChoose&&!acceptanceReadOnly,mode=="exception"&&!acceptanceReadOnly,mode=="approved"&&!acceptanceReadOnly,
             decisions.Skip(request.DecisionOffset).Take(20).ToArray(),MoreDecisions:decisions.Length>request.DecisionOffset+20,EventThrough:24,DecisionThrough:decisions.Length));
     }
     internal static byte[] Pattern(bool border)
