@@ -28,7 +28,7 @@ jobs:
       - name: Checkout unchanged pre-fix baseline for comparative WPF evidence
         uses: actions/checkout@v5
         with:
-          ref: fe69ba3
+          ref: fe69ba3500845c3e0f63c9336f159d0a2cda3bee
           path: .ux-baseline
       - name: Build baseline with identical capture instrumentation only
         shell: pwsh
@@ -43,9 +43,10 @@ jobs:
         shell: pwsh
         run: |
           $app = Join-Path $env:RUNNER_TEMP 'nap-ux-before/NAP.App.exe'
-          $p = Start-Process $app -ArgumentList '--phase6-self-test','--compact' -PassThru
+          $errorFile = Join-Path $env:RUNNER_TEMP 'baseline.stderr.txt'
+          $p = Start-Process $app -ArgumentList '--phase6-self-test','--compact' -RedirectStandardError $errorFile -PassThru
           if (-not $p.WaitForExit(120000)) { $p.Kill(); throw 'Baseline capture timed out.' }
-          if ($p.ExitCode -ne 0) { throw 'Baseline capture failed.' }
+          if ($p.ExitCode -ne 0) { Get-Content $errorFile; throw 'Baseline capture failed.' }
           $target = 'artifacts/phase6-evidence'
           New-Item -ItemType Directory -Force $target | Out-Null
           Get-ChildItem "$env:RUNNER_TEMP/nap-ux-before/laboratorio" -File | Where-Object Name -Like 'ux-*' | ForEach-Object { Copy-Item $_.FullName (Join-Path $target ('before-' + $_.Name)) }
