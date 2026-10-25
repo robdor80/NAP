@@ -1,5 +1,6 @@
 name: Phase 6 isolated acceptance package
 on:
+  workflow_dispatch:
   push:
     branches: [codex/nap-2-fase-6-ux]
     paths:
