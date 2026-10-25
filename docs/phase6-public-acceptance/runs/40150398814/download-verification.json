@@ -1,0 +1,13 @@
+{
+  "authentication": "Normal GitHub sign-in required for browser artifact download",
+  "artifactName": "NAP-2.0-Fase6-Aceptacion-Windows-x64",
+  "userDownloadUrl": "https://github.com/robdor80/NAP/actions/runs/40150398814/artifacts/12582294018",
+  "sourceCommit": "d35a8c60ba2318f4950edfed339692f259aed8ed",
+  "artifactId": "12582294018",
+  "archiveDownloadEndpoint": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12582294018/zip",
+  "archiveSha256": "f15626624e0a88b3d7d796f83690fbffca1f21ca8f86687547f232d86e64ea7e",
+  "downloadedZipMatchesGitHubDigest": true,
+  "expiresAt": "2027-01-23T01:22:51Z",
+  "allManifestFilesVerified": true,
+  "files": 491
+}

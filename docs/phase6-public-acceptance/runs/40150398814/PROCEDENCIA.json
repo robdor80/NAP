@@ -1,0 +1,25 @@
+{
+  "architecture": "win-x64",
+  "pending": [
+    "#49: five NU1902/NU1903 advisories; IPC timeout; StorageUnavailable",
+    "#47: CUTOVER blocked",
+    "Human MSI operational acceptance pending"
+  ],
+  "runtime": [
+    {
+      "name": "Microsoft.NETCore.App",
+      "version": "8.0.32"
+    },
+    {
+      "name": "Microsoft.WindowsDesktop.App",
+      "version": "8.0.32"
+    }
+  ],
+  "run": "https://github.com/robdor80/NAP/actions/runs/40150398814",
+  "sessionPersistence": "none",
+  "privateLicenseIncluded": false,
+  "application": "NAP 2.0 Fase 6",
+  "sdk": "10.0.402",
+  "sourceCommit": "d35a8c60ba2318f4950edfed339692f259aed8ed",
+  "acceptanceOnly": true
+}
