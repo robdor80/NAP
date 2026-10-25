@@ -1,0 +1,21 @@
+{
+  "bindingErrors": 0,
+  "launcherVerified": true,
+  "noAssetZipTests": true,
+  "files": 491,
+  "noGeneralRegression": true,
+  "privateFileAndSecretPatternScanPassed": true,
+  "zipSha256": "31a7da43bee5afc6472d2c4bbf8dced7e7cc949d604f4c9be0cc9bfa1eca0078",
+  "noMsiAccess": true,
+  "focusedPassed": 49,
+  "unsafeArgumentsRejected": true,
+  "unchangedOrdinaryCanaries": true,
+  "retentionDaysRequested": 90,
+  "directStartup": true,
+  "sourceCommit": "f549eb57d388e63288f65d6d1710d9b44a63d05d",
+  "unsafeLaboratoryJunctionRejected": true,
+  "noticesCompleteForReviewedGraph": true,
+  "extractedManifestVerified": true,
+  "noHostStarted": true,
+  "etwFileIoGate": true
+}

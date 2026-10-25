@@ -1,0 +1,539 @@
+{
+  "captures": [
+    {
+      "name": "ux-historico-39-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-grupos-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-estados-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-busqueda-001-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 1,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-restablecido-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-farmer-10-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 10,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-dias-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-meses-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-anios-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-dias-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-meses-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-anios-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Objetivos-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Objetivos",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Objetivos-foco-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Objetivos",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Objetivos",
+      "width": 1440,
+      "height": 900,
+      "buttonBounds": "4,8,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Estad\u00EDsticas-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Estad\u00EDsticas",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Estad\u00EDsticas-foco-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Estad\u00EDsticas",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Estad\u00EDsticas",
+      "width": 1440,
+      "height": 900,
+      "buttonBounds": "4,52.620000000000005,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Backups-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Backups",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Backups-foco-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Backups",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Backups",
+      "width": 1440,
+      "height": 900,
+      "buttonBounds": "4,97.24000000000001,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Git-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Git",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Git-foco-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "Git",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Git",
+      "width": 1440,
+      "height": 900,
+      "buttonBounds": "4,141.86,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-RoDo-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "RoDo",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-RoDo-foco-1440x900",
+      "width": 1440,
+      "height": 900,
+      "page": "RoDo",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "RoDo",
+      "width": 1440,
+      "height": 900,
+      "buttonBounds": "4,186.48000000000002,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-historico-39-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-grupos-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-estados-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-busqueda-001-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 1,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-restablecido-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-historico-farmer-10-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Hist\u00F3rico sint\u00E9tico",
+      "rows": 10,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-dias-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-meses-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-licencias-anios-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Licencias",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-dias-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-meses-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-calendario-diagnostico-anios-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Ajustes",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Objetivos-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Objetivos",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Objetivos-foco-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Objetivos",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Objetivos",
+      "width": 1200,
+      "height": 700,
+      "buttonBounds": "4,8,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Estad\u00EDsticas-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Estad\u00EDsticas",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Estad\u00EDsticas-foco-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Estad\u00EDsticas",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Estad\u00EDsticas",
+      "width": 1200,
+      "height": 700,
+      "buttonBounds": "4,52.620000000000005,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Backups-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Backups",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Backups-foco-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Backups",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Backups",
+      "width": 1200,
+      "height": 700,
+      "buttonBounds": "4,97.24000000000001,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-Git-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Git",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-Git-foco-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "Git",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "Git",
+      "width": 1200,
+      "height": 700,
+      "buttonBounds": "4,141.86,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    },
+    {
+      "name": "ux-herramientas-RoDo-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "RoDo",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "name": "ux-herramientas-RoDo-foco-1200x700",
+      "width": 1200,
+      "height": 700,
+      "page": "RoDo",
+      "section": "Diagn\u00F3stico",
+      "rows": 39,
+      "bindingErrors": 0,
+      "rendering": "WPF client visual; separate native popup composed at logical control anchor"
+    },
+    {
+      "tool": "RoDo",
+      "width": 1200,
+      "height": 700,
+      "buttonBounds": "4,186.48000000000002,111,40.620000000000005",
+      "viewportWidth": 119,
+      "leftEdgeInsideViewport": true,
+      "rightEdgeInsideViewport": true
+    }
+  ],
+  "search001": 1,
+  "reset": 39,
+  "farmer": 10,
+  "dateNavigationAndSelection": true,
+  "bindingErrors": 0
+}
