@@ -104,7 +104,9 @@ internal static class Phase6UxEvidence
                 var prefix = "ux-calendario-" + (section == "Licencias" ? "licencias" : "diagnostico") + "-";
                 await Shot(prefix + "dias-" + size, calendarRoot, picker);
                 calendar.DisplayMode = CalendarMode.Year; await Shot(prefix + "meses-" + size, calendarRoot, picker);
+                Require(Tree(calendar).OfType<CalendarButton>().Count(b => b.IsVisible) == 12 && !Tree(calendar).OfType<CalendarDayButton>().Any(b => b.IsVisible), "Cuadrícula de meses UX.");
                 calendar.DisplayMode = CalendarMode.Decade; await Shot(prefix + "anios-" + size, calendarRoot, picker);
+                Require(Tree(calendar).OfType<CalendarButton>().Count(b => b.IsVisible) == 12 && !Tree(calendar).OfType<CalendarDayButton>().Any(b => b.IsVisible), "Cuadrícula de años UX.");
                 calendar.DisplayMode = CalendarMode.Month;
                 calendar.BlackoutDates.Clear();
                 var item = Tree(calendar).OfType<CalendarItem>().Single();

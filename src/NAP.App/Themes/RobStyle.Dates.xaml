@@ -2,10 +2,11 @@
   <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="RobStyle.Colors.xaml" /></ResourceDictionary.MergedDictionaries>
   <!-- Explicit templates keep system light-theme brushes out of the popup. WPF still owns date/navigation behavior. -->
   <Style x:Key="CalendarNavigation" TargetType="Button">
+    <Setter Property="FontSize" Value="14" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="Background" Value="{StaticResource PanelBrush}" />
     <Setter Property="Padding" Value="8" /><Setter Property="MinHeight" Value="36" />
     <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
-      <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+      <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}"><TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" TextWrapping="NoWrap" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
       <ControlTemplate.Triggers>
         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Background" Value="{StaticResource CardBrush}" /></Trigger>
         <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Surface" Property="BorderBrush" Value="{StaticResource TextBrush}" /><Setter TargetName="Surface" Property="BorderThickness" Value="1" /></Trigger>
@@ -14,11 +15,12 @@
     </ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style x:Key="RobCalendarDay" TargetType="p:CalendarDayButton">
+    <Setter Property="FontSize" Value="14" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="MinWidth" Value="36" /><Setter Property="MinHeight" Value="34" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="p:CalendarDayButton">
       <Grid Margin="2">
-        <Border x:Name="Day" Background="{StaticResource PanelBrush}" CornerRadius="5" BorderThickness="1" BorderBrush="Transparent"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+        <Border x:Name="Day" Background="{StaticResource PanelBrush}" CornerRadius="5" BorderThickness="1" BorderBrush="Transparent"><TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" TextWrapping="NoWrap" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
         <Border x:Name="KeyboardFocus" Margin="3" BorderThickness="1" BorderBrush="{StaticResource TextBrush}" CornerRadius="2" Visibility="Collapsed" IsHitTestVisible="False" />
         <Path x:Name="Blackout" Data="M 0,0 L 14,14" Stroke="{StaticResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" IsHitTestVisible="False" />
       </Grid>
@@ -34,9 +36,10 @@
     </ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style x:Key="RobCalendarPeriod" TargetType="p:CalendarButton">
+    <Setter Property="FontSize" Value="14" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="MinHeight" Value="64" /><Setter Property="MinWidth" Value="62" />
     <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="p:CalendarButton">
-      <Border x:Name="Period" Margin="2" Padding="4" Background="{StaticResource PanelBrush}" BorderThickness="1" BorderBrush="Transparent" CornerRadius="5"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+      <Border x:Name="Period" Margin="2" Padding="4" Background="{StaticResource PanelBrush}" BorderThickness="1" BorderBrush="Transparent" CornerRadius="5"><TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" TextWrapping="NoWrap" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
       <ControlTemplate.Triggers>
         <Trigger Property="IsInactive" Value="True"><Setter Property="Foreground" Value="{StaticResource MutedBrush}" /></Trigger>
         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Period" Property="Background" Value="{StaticResource CardBrush}" /></Trigger>
@@ -48,9 +51,10 @@
   </Style>
   <Style x:Key="RobCalendarItem" TargetType="p:CalendarItem">
     <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="p:CalendarItem">
+      <ControlTemplate.Resources><DataTemplate x:Key="{x:Static p:CalendarItem.DayTitleTemplateResourceKey}"><TextBlock Text="{Binding}" Foreground="{StaticResource MutedBrush}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" /></DataTemplate></ControlTemplate.Resources>
       <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource MutedBrush}" BorderThickness="1" CornerRadius="10" Padding="8">
         <Grid x:Name="PART_Root">
-          <Grid.Resources><DataTemplate x:Key="{x:Static p:CalendarItem.DayTitleTemplateResourceKey}"><TextBlock Text="{Binding}" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" /></DataTemplate></Grid.Resources>
+          
           <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition /></Grid.RowDefinitions>
           <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition /><ColumnDefinition Width="40" /></Grid.ColumnDefinitions>
           <Button x:Name="PART_PreviousButton" Content="‹" Style="{StaticResource CalendarNavigation}" Focusable="False" AutomationProperties.Name="Anterior" />
@@ -66,9 +70,14 @@
           </Grid>
         </Grid>
       </Border>
+      <ControlTemplate.Triggers>
+        <DataTrigger Binding="{Binding DisplayMode,RelativeSource={RelativeSource AncestorType=Calendar}}" Value="Year"><Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" /><Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" /></DataTrigger>
+        <DataTrigger Binding="{Binding DisplayMode,RelativeSource={RelativeSource AncestorType=Calendar}}" Value="Decade"><Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" /><Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" /></DataTrigger>
+      </ControlTemplate.Triggers>
     </ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style x:Key="RobCalendar" TargetType="Calendar">
+    <Setter Property="FontSize" Value="14" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="Background" Value="{StaticResource PanelBrush}" />
     <Setter Property="CalendarDayButtonStyle" Value="{StaticResource RobCalendarDay}" /><Setter Property="CalendarButtonStyle" Value="{StaticResource RobCalendarPeriod}" /><Setter Property="CalendarItemStyle" Value="{StaticResource RobCalendarItem}" />
     <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Calendar"><StackPanel x:Name="PART_Root"><p:CalendarItem x:Name="PART_CalendarItem" Style="{TemplateBinding CalendarItemStyle}" /></StackPanel></ControlTemplate></Setter.Value></Setter>
