@@ -1,0 +1,19 @@
+{
+  "commit": "2f743c0fb580b8a859f5e503f6a14bf2afcf5383",
+  "run": "https://github.com/robdor80/NAP/actions/runs/40216835055",
+  "download": "https://github.com/robdor80/NAP/actions/runs/40216835055/artifacts/12608231704",
+  "artifactSha256": "e0da9f472b333b8697868d62c621bf5e26ee46558c1b4f8dcfe1acdccaf0ace9",
+  "expiresAt": "2027-01-23T17:30:55Z",
+  "testsPassed": 49,
+  "bindingErrors": 0,
+  "pngBefore": 60,
+  "pngAfter": 60,
+  "toolEdgesPassed": 10,
+  "baselineClippedEdges": 10,
+  "search001": 1,
+  "reset": 39,
+  "farmer": 10,
+  "etwIsolationPassed": true,
+  "manifestFiles": 491,
+  "windows11HumanAcceptance": "pending"
+}

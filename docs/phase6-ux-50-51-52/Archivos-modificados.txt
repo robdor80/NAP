@@ -1,0 +1,11 @@
+.github/scripts/Package-Phase6Acceptance.ps1
+.github/workflows/phase6-msi-preparation.yml
+src/NAP.App/MainWindow.xaml
+src/NAP.App/Phase6Acceptance.cs
+src/NAP.App/Phase6UxEvidence.cs
+src/NAP.App/Themes/RobStyle.Buttons.xaml
+src/NAP.App/Themes/RobStyle.Controls.xaml
+src/NAP.App/Themes/RobStyle.Dates.xaml
+src/NAP.App/Views/DiagnosticView.xaml
+src/NAP.App/Views/HistoricalSimulationView.xaml
+src/NAP.App/Views/LicenseView.xaml
