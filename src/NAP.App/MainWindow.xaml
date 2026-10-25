@@ -14,9 +14,9 @@
       <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="NAP" FontSize="32" FontWeight="Bold" />
-          <TextBlock x:Name="AcceptanceBanner" Visibility="Collapsed" Text="ACEPTACIÓN · DATOS FICTICIOS · SOLO MEMORIA" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" FontSize="12" TextWrapping="Wrap" MaxWidth="460" />
           <TextBlock Text="NEXUS ASSET PLATFORM" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="18,0,0,0" />
         </StackPanel>
+        <TextBlock x:Name="AcceptanceBanner" Visibility="Collapsed" Text="ACEPTACIÓN · DATOS FICTICIOS · SOLO MEMORIA" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
       </StackPanel>
       <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
         <Button Content="Minimizar a bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />

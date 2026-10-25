@@ -69,13 +69,18 @@ internal static class Phase6Acceptance
     internal static async Task VerifyAsync(MainWindow window, ShellViewModel shell, BindingDiagnostics diagnostics, string lab)
     {
         void Require(bool ok, string message) { if (!ok) throw new InvalidOperationException(message); }
+        // Preserve the Window ancestor and render the entire client surface, including root margins.
+        // The runner desktop can be smaller than the requested 1200 x 700 logical client size.
+        var content = (UIElement)window.Content;
+        var capture = new Grid { Background = window.Background, Width = 1200, Height = 700 };
+        window.Content = capture; capture.Children.Add(content);
         async Task Capture(string name)
         {
             await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ContextIdle);
-            var content = (FrameworkElement)window.Content;
-            content.UpdateLayout();
-            var bitmap = new RenderTargetBitmap((int)content.ActualWidth, (int)content.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            bitmap.Render(content);
+            capture.UpdateLayout(); capture.Measure(new Size(1200, 700)); capture.Arrange(new Rect(0, 0, 1200, 700));
+            Require(capture.ActualWidth == 1200 && capture.ActualHeight == 700, "Captura recortada por el escritorio del runner.");
+            var bitmap = new RenderTargetBitmap(1200, 700, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(capture);
             var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using var stream = new FileStream(EvidencePath(lab, name + ".png"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
             encoder.Save(stream);
