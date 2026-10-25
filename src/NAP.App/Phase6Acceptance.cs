@@ -21,7 +21,7 @@ internal static class Phase6Acceptance
             args.Any(a => a is not ("--phase6-preview=acceptance" or "--phase6-self-test" or "--compact")))
             throw new ArgumentException("Este paquete solo admite aceptación sintética. Argumentos rechazados.");
         var probe = args.Contains("--phase6-self-test", StringComparer.Ordinal);
-        System.Windows.Interop.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
+        RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
         var lab = probe ? PrepareLab() : null;
         var window = new MainWindow(Phase6Preview.Create("exception"), smokeOutput: lab, acceptance: true, acceptanceProbe: probe)
         {

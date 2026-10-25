@@ -10,9 +10,9 @@ namespace NAP.App;
 public partial class App : Application
 {
 #if NAP_ACCEPTANCE_ONLY
-    internal const bool IsAcceptance = true;
+    internal static bool IsAcceptance => true;
 #else
-    internal const bool IsAcceptance = false;
+    internal static bool IsAcceptance => false;
 #endif
     private HttpClient? _auditTransport;
     private RemoteDesktopService? _remoteDesktop;
