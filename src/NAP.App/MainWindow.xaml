@@ -76,10 +76,10 @@
                 </ControlTemplate>
               </Expander.Template>
               <ScrollViewer x:Name="ToolsScroll" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Focusable="False">
-              <ItemsControl ItemsSource="{Binding Tools}" Margin="-8,8,0,0">
+              <ItemsControl ItemsSource="{Binding Tools}" Margin="4,8,4,4">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
-                    <Button Style="{StaticResource Navigation}" Content="{Binding Name}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
+                    <Button Style="{StaticResource ToolsNavigation}" Content="{Binding Name}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>

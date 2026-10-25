@@ -19,12 +19,12 @@
           <TextBlock Text="Futura adopción: certificar entorno → backup verificado → inventario actualizado → identidad y metadata → rutas y duplicados/colisiones → propuestas → aprobación humana explícita → un retrato piloto → verificación y recuperación. Fuera de P6.7." />
         </StackPanel></ScrollViewer>
       </Expander>
-          <WrapPanel>
-            <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding Group}" DisplayMemberPath="Label" Width="170" VerticalAlignment="Bottom" AutomationProperties.Name="Grupo histórico" />
-            <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" DisplayMemberPath="Label" Width="240" VerticalAlignment="Bottom" AutomationProperties.Name="Estado de simulación" />
-            <StackPanel Width="170"><TextBlock Text="Buscar referencia o identidad" Style="{StaticResource Muted}" /><TextBox Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" MaxLength="80" ToolTip="Buscar referencia o identidad sintética" AutomationProperties.Name="Buscar referencia sintética" /></StackPanel>
-            <Button Content="Restablecer" Command="{Binding ResetFilters}" VerticalAlignment="Bottom" /><Button Content="Exportar simulación…" Click="ExportReport" VerticalAlignment="Bottom" />
+          <WrapPanel Margin="0,12,0,0">
+            <StackPanel Width="230" Margin="0,0,16,12"><TextBlock Text="Grupo histórico" Style="{StaticResource Muted}" /><ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding Group}" DisplayMemberPath="Label" Margin="0,6,0,0" AutomationProperties.Name="Grupo histórico" /></StackPanel>
+            <StackPanel Width="260" Margin="0,0,16,12"><TextBlock Text="Estado de simulación" Style="{StaticResource Muted}" /><ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" DisplayMemberPath="Label" Margin="0,6,0,0" AutomationProperties.Name="Estado de simulación" /></StackPanel>
+            <StackPanel Width="250" Margin="0,0,16,12"><TextBlock Text="Buscar referencia o identidad" Style="{StaticResource Muted}" /><TextBox Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0" MinHeight="40" MaxLength="80" ToolTip="Buscar referencia o identidad sintética" AutomationProperties.Name="Buscar referencia sintética" /></StackPanel>
           </WrapPanel>
+          <WrapPanel Margin="0,0,0,4"><Button Content="Restablecer" Command="{Binding ResetFilters}" Margin="0,0,16,8" /><Button Content="Exportar simulación…" Click="ExportReport" Margin="0,0,0,8" /></WrapPanel>
           <TextBlock Text="{Binding Result}" AutomationProperties.LiveSetting="Polite" />
           <TextBlock x:Name="HistoricalTransferNotice" Style="{StaticResource Muted}" AutomationProperties.LiveSetting="Polite" />
 

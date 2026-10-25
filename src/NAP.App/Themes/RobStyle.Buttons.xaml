@@ -83,6 +83,17 @@
       </DataTrigger>
     </Style.Triggers>
   </Style>
+  <Style x:Key="ToolsNavigation" TargetType="Button" BasedOn="{StaticResource Navigation}">
+    <!-- WPF shows FocusVisualStyle for keyboard navigation only. Keep it inside the
+         selected outline and distinguish it with dashes; mouse selection has one border. -->
+    <Setter Property="FocusVisualStyle"><Setter.Value><Style TargetType="Control"><Setter Property="Template"><Setter.Value><ControlTemplate><Rectangle Margin="5" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" StrokeDashArray="2,2" RadiusX="10" RadiusY="10" /></ControlTemplate></Setter.Value></Setter></Style></Setter.Value></Setter>
+    <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+      <Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource Radius}" Padding="{TemplateBinding Padding}">
+        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" RecognizesAccessKey="True" />
+      </Border>
+      <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Background" Value="{StaticResource CardBrush}" /></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="{StaticResource DisabledContentOpacity}" /></Trigger></ControlTemplate.Triggers>
+    </ControlTemplate></Setter.Value></Setter>
+  </Style>
   <Style x:Key="ActionTile" TargetType="Button" BasedOn="{StaticResource Primary}">
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="Padding" Value="{StaticResource SpaceLarge}" />

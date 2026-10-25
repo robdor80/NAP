@@ -19,12 +19,41 @@ jobs:
   isolated-acceptance:
     if: github.ref == 'refs/heads/codex/nap-2-fase-6-ux'
     runs-on: windows-2022
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.426
+      - name: Checkout unchanged pre-fix baseline for comparative WPF evidence
+        uses: actions/checkout@v5
+        with:
+          ref: fe69ba3
+          path: .ux-baseline
+      - name: Build baseline with identical capture instrumentation only
+        shell: pwsh
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          Copy-Item src/NAP.App/Phase6Acceptance.cs .ux-baseline/src/NAP.App/Phase6Acceptance.cs
+          Copy-Item src/NAP.App/Phase6UxEvidence.cs .ux-baseline/src/NAP.App/Phase6UxEvidence.cs
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'publish','.ux-baseline/src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true','-p:Phase6AcceptanceOnly=true','-p:DebugType=None','-p:DebugSymbols=false','-o',"$env:RUNNER_TEMP/nap-ux-before"
+          if ($LASTEXITCODE -ne 0) { throw 'Baseline build failed.' }
+      - name: Capture actual baseline WPF before corrections
+        shell: pwsh
+        run: |
+          $app = Join-Path $env:RUNNER_TEMP 'nap-ux-before/NAP.App.exe'
+          $p = Start-Process $app -ArgumentList '--phase6-self-test','--compact' -PassThru
+          if (-not $p.WaitForExit(120000)) { $p.Kill(); throw 'Baseline capture timed out.' }
+          if ($p.ExitCode -ne 0) { throw 'Baseline capture failed.' }
+          $target = 'artifacts/phase6-evidence'
+          New-Item -ItemType Directory -Force $target | Out-Null
+          Get-ChildItem "$env:RUNNER_TEMP/nap-ux-before/laboratorio" -File | Where-Object Name -Like 'ux-*' | ForEach-Object { Copy-Item $_.FullName (Join-Path $target ('before-' + $_.Name)) }
+          'fe69ba3; identical Phase6Acceptance.cs and Phase6UxEvidence.cs instrumentation; original views and themes' | Out-File "$target/before-source.txt"
+          # Delete only the known second checkout inside this disposable runner workspace.
+          $baseline = [IO.Path]::GetFullPath((Join-Path $PWD '.ux-baseline'))
+          if ($baseline -ne [IO.Path]::GetFullPath("$env:GITHUB_WORKSPACE/.ux-baseline")) { throw 'Unexpected baseline path.' }
+          Remove-Item -LiteralPath $baseline -Recurse -Force
       - name: Publish acceptance-only self-contained Windows x64
         shell: pwsh
         env:
@@ -59,7 +88,7 @@ jobs:
         id: package
         uses: actions/upload-artifact@v4
         with:
-          name: NAP-2.0-Fase6-Aceptacion-Windows-x64
+          name: NAP-2.0-Fase6-UX-Corregida-Windows-x64
           path: ${{ runner.temp }}/nap-acceptance-publish/
           if-no-files-found: error
           retention-days: 90

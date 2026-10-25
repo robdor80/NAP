@@ -140,6 +140,7 @@ internal static class Phase6Acceptance
         await shell.Explorer.SaveSettings.ExecuteAsync();
         Require(shell.Explorer.Error is not null, "El comando heredado no rechazó el guardado de raíces.");
         Require(diagnostics.Errors == 0, "Errores de binding.");
+        await Phase6UxEvidence.CaptureAsync(window, shell, diagnostics, capture, lab);
         WriteText(lab, "aceptacion.json", JsonSerializer.Serialize(new { acceptanceOnlyBuild = App.IsAcceptance,
             navigation = shell.Navigation.Select(n => n.Name), tools = shell.Tools.Select(n => n.Name),
             syntheticDataOnly = true, persistentSessionStore = false, productionCommandsBlocked = true,

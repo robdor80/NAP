@@ -69,7 +69,7 @@ foreach ($file in $files) {
 }
 $manifest = @($files | Sort-Object FullName | ForEach-Object { '{0}  {1}' -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(),[IO.Path]::GetRelativePath($publish,$_.FullName).Replace('\','/') })
 $manifest | Out-File (Join-Path $publish 'SHA256SUMS.txt') -Encoding utf8
-$zip = Join-Path $delivery 'NAP-2.0-Fase6-Aceptacion-Windows-x64.zip'
+$zip = Join-Path $delivery 'NAP-2.0-Fase6-UX-Corregida-Windows-x64.zip'
 Compress-Archive -Path "$publish/*" -DestinationPath $zip -CompressionLevel Optimal
 $extracted = Join-Path $env:RUNNER_TEMP 'nap-acceptance-extracted'
 Expand-Archive $zip $extracted
