@@ -54,7 +54,7 @@
       <ControlTemplate.Resources><DataTemplate x:Key="{x:Static p:CalendarItem.DayTitleTemplateResourceKey}"><TextBlock Text="{Binding}" Foreground="{StaticResource MutedBrush}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" /></DataTemplate></ControlTemplate.Resources>
       <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource MutedBrush}" BorderThickness="1" CornerRadius="10" Padding="8">
         <Grid x:Name="PART_Root">
-          
+
           <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition /></Grid.RowDefinitions>
           <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition /><ColumnDefinition Width="40" /></Grid.ColumnDefinitions>
           <Button x:Name="PART_PreviousButton" Content="‹" Style="{StaticResource CalendarNavigation}" Focusable="False" AutomationProperties.Name="Anterior" />

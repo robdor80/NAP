@@ -30,8 +30,9 @@ internal static class Phase6UxEvidence
         async Task Layout()
         {
             await window.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ContextIdle);
+            capture.UpdateLayout();
             capture.Measure(new Size(capture.Width, capture.Height));
-            capture.Arrange(new Rect(0, 0, capture.Width, capture.Height)); capture.UpdateLayout();
+            capture.Arrange(new Rect(0, 0, capture.Width, capture.Height));
         }
         void Png(Visual visual, int width, int height, string name)
         {
@@ -42,10 +43,14 @@ internal static class Phase6UxEvidence
         async Task Shot(string name, FrameworkElement? popup = null, FrameworkElement? anchor = null)
         {
             await Layout();
+            // A VisualBrush with its automatic viewbox can scale the runner's clipped
+            // native desktop bounds. Render the requested logical client directly first.
+            var client = new RenderTargetBitmap((int)capture.Width, (int)capture.Height, 96, 96, PixelFormats.Pbgra32);
+            client.Render(capture);
             var drawing = new DrawingVisual();
             using (var dc = drawing.RenderOpen())
             {
-                dc.DrawRectangle(new VisualBrush(capture), null, new Rect(0, 0, capture.Width, capture.Height));
+                dc.DrawImage(client, new Rect(0, 0, capture.Width, capture.Height));
                 if (popup is not null)
                 {
                     popup.UpdateLayout();
