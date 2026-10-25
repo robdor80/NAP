@@ -9,6 +9,11 @@ namespace NAP.App;
 
 public partial class App : Application
 {
+#if NAP_ACCEPTANCE_ONLY
+    internal const bool IsAcceptance = true;
+#else
+    internal const bool IsAcceptance = false;
+#endif
     private HttpClient? _auditTransport;
     private RemoteDesktopService? _remoteDesktop;
     protected override async void OnStartup(StartupEventArgs e)
@@ -16,6 +21,11 @@ public partial class App : Application
         base.OnStartup(e);
         try
         {
+#if NAP_ACCEPTANCE_ONLY
+            // This distribution cannot enter ordinary startup, regardless of arguments or launcher.
+            Phase6Acceptance.Start(this, e.Args);
+            return;
+#else
             var preview = e.Args.FirstOrDefault(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))?[17..];
             if (preview is not null)
             {
@@ -66,9 +76,11 @@ public partial class App : Application
             var output = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
             var normalizationProfile = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-normalization-profile=", StringComparison.Ordinal))?[30..] : null;
             var window = new MainWindow(shell, smoke, output, importSource is not null, normalizationProfile); MainWindow = window; window.Show();
+#endif
         }
         catch (Exception ex)
         {
+            if (IsAcceptance) { Console.Error.WriteLine("Aceptación detenida de forma segura: " + ex.Message); Shutdown(1); return; }
             if (e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
             var error = ExplorerError.From(ex); MessageBox.Show(error.Message + "\nCódigo: " + error.Code, "NAP — Inicio detenido", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);

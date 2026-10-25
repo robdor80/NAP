@@ -16,7 +16,8 @@ internal static class Phase6Preview
     internal static ShellViewModel Create(string mode)
     {
         if (mode is not ("active" or "paused" or "review" or "offline" or "local" or "catalog" or "settings") && !Phase6WorkflowPreview.Modes.Contains(mode) && !Phase6SettingsPreview.Modes.Contains(mode) && !HistoricalModes.Contains(mode)) throw new ArgumentException("Unknown preview mode.");
-        var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
+        // An inert absolute namespace, never created or probed; independent of user environment/configuration.
+        var root = System.IO.Path.Combine(System.IO.Path.GetPathRoot(AppContext.BaseDirectory)!, "NAP-SYNTHETIC-NOT-A-WORKSPACE");
         UniverseContext Context(string id, string label) => new(new UniverseProfile(new(id), label),
             new(new(id), System.IO.Path.Combine(root, id, "workspace"), System.IO.Path.Combine(root, id, "production"), System.IO.Path.Combine(root, id, "archive")));
         var contexts = new[] { Context("preview", "Universo de muestra"), Context("other_preview", "Segundo universo") };
@@ -25,7 +26,7 @@ internal static class Phase6Preview
         var workflow=new Phase6WorkflowPreview(mode);
         var automation = mode is "local" or "catalog" or "settings" || Phase6SettingsPreview.Modes.Contains(mode) || HistoricalModes.Contains(mode) ? null : new AutomationControlViewModel(() => explorer.Context, confirmation, new PreviewSource(mode, contexts,workflow));
         var service = DispatchProxy.Create<IProfessionalUiService, Phase6ReadOnlyPreviewService>();
-        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode)) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
+        return new(explorer, service, confirmation, automation: automation, normalization: new ReadOnlyNormalization(), workflowClient: workflow, diagnosticClient: mode=="diagnostics-offline"?null:new Phase6SettingsPreview(mode), licenses: Phase6SettingsPreview.Licenses(mode), syntheticReadOnly: true) { ReviewExpanded = mode == "review", ToolsExpanded = mode == "review" };
     }
     internal static async Task CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, string mode, string output)
     {
@@ -333,6 +334,8 @@ public class Phase6ReadOnlyPreviewService : DispatchProxy
         nameof(IProfessionalUiService.DashboardAsync) => Task.FromResult(new DashboardSnapshot(((UniverseContext)args![0]!).Id, null, null, null, null, [])),
         nameof(IProfessionalUiService.PipelineAsync) => Task.FromResult(new PipelineSnapshot(((UniverseContext)args![0]!).Id, [], [], [])),
         nameof(IProfessionalUiService.ReceiptsAsync) => Task.FromResult<IReadOnlyList<GitOperationReceipt>>([]),
+        nameof(IProfessionalUiService.PlanningAsync) => Task.FromResult(new CatalogPlanningReadModel(((UniverseContext)args![0]!).Id, [], [])),
+        nameof(IProfessionalUiService.BackupsAsync) => Task.FromResult(new BackupHistory([], new NapIssueReport([]))),
         _ => throw new InvalidOperationException("Capture-only preview has no manual writer.")
     };
 }

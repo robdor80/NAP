@@ -1,17 +1,19 @@
-name: Phase 6 MSI retained verification
-
-# No binaries/artifact archives leave this runner. No host or persistent NAP writer.
+name: Phase 6 isolated acceptance package
 on:
   push:
     branches: [codex/nap-2-fase-6-ux]
     paths:
-      - '.github/workflows/phase6-msi-preparation.yml'
-      - '.github/scripts/Verify-MsiRetainedPublish.ps1'
+      - 'src/**'
+      - 'tools/NAP.AcceptanceIoProbe/**'
       - 'tools/NAP.PrivatePackageProbe/**'
+      - '.github/workflows/phase6-msi-preparation.yml'
+      - '.github/scripts/Package-Phase6Acceptance.ps1'
+      - 'docs/phase6-public-acceptance/notices/**'
+      - 'docs/phase6-public-acceptance/package/**'
 permissions:
-  contents: write # Only allowlisted synthetic evidence on this same branch.
+  contents: read
 jobs:
-  retained-verification:
+  isolated-acceptance:
     if: github.ref == 'refs/heads/codex/nap-2-fase-6-ux'
     runs-on: windows-2022
     timeout-minutes: 25
@@ -20,56 +22,52 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.426
-      - name: Publish self-contained candidate inside disposable runner only
+      - name: Publish acceptance-only self-contained Windows x64
         shell: pwsh
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: >-
           ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments
           'publish','src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true',
-          '-p:PublishSingleFile=false','-p:PublishTrimmed=false','-p:DebugType=None','-p:DebugSymbols=false',
-          '-p:ContinuousIntegrationBuild=true','-o',"$env:RUNNER_TEMP/nap-retained-publish"
-      - name: Build runtime probe with unchanged official Core validation
+          '-p:Phase6AcceptanceOnly=true','-p:PublishSingleFile=false','-p:PublishTrimmed=false',
+          '-p:DebugType=None','-p:DebugSymbols=false','-p:ContinuousIntegrationBuild=true',
+          '-o',"$env:RUNNER_TEMP/nap-acceptance-publish"
+      - name: Build memory runtime probe
         shell: pwsh
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj','-c','Release'
-      - name: Build focused tests only
+      - name: Build focused tests
         shell: pwsh
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
-      - name: Require secret cleanup before any runtime execution
+      - name: Remove private build license before runtime or packaging
         if: always()
         shell: pwsh
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
-      - name: Verify retained publication and bounded synthetic UI
+      - name: Build runner-only file I/O observer
         shell: pwsh
-        run: ./.github/scripts/Verify-MsiRetainedPublish.ps1
-      - name: Preserve allowlisted evidence without executables or archives
+        run: dotnet build tools/NAP.AcceptanceIoProbe/NAP.AcceptanceIoProbe.csproj -c Release
+      - name: Verify, extract, exercise and package the exact published bytes
+        shell: pwsh
+        run: ./.github/scripts/Package-Phase6Acceptance.ps1
+      - name: Upload verified acceptance ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAP-2.0-Fase6-Aceptacion-Windows-x64
+          path: artifacts/phase6-delivery/*
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve logs, screenshots, tests and isolation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAP-Fase6-evidencias-${{ github.sha }}
+          path: artifacts/phase6-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Ensure license cleanup
         if: always()
         shell: pwsh
-        run: |
-          $source = git rev-parse HEAD
-          $path = "docs/phase6-msi-preparation/runs/$env:GITHUB_RUN_ID"
-          New-Item -ItemType Directory -Force $path | Out-Null
-          if (Test-Path artifacts/msi-preparation) {
-            $files = @(Get-ChildItem artifacts/msi-preparation -File -Recurse)
-            foreach ($file in $files) {
-              if ($file.Extension -notin @('.json','.txt','.trx','.png','.sha256')) { throw 'Unexpected evidence type.' }
-            }
-            Copy-Item artifacts/msi-preparation/* $path -Recurse
-          }
-          $source | Out-File "$path/source-sha.txt"
-          git add -- $path
-          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve retained MSI verification evidence [skip ci]'
-          if ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }
-          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
-          if ($LASTEXITCODE -ne 0) { throw 'Evidence push failed.' }
-      - name: Destroy retained candidate; never upload binaries
-        if: always()
-        shell: pwsh
-        run: |
-          $path = Join-Path $env:RUNNER_TEMP 'nap-retained-publish'
-          if (Test-Path $path) { Remove-Item $path -Recurse -Force }
-          ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup

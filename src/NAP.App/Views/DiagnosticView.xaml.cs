@@ -5,7 +5,7 @@ using NAP.Presentation;
 namespace NAP.App.Views;
 public partial class DiagnosticView : UserControl
 {
-    public DiagnosticView() => InitializeComponent();
+    public DiagnosticView() { InitializeComponent(); if (App.IsAcceptance) TransferNotice.Text = "Prueba en memoria: exportación a archivos no disponible."; }
     private async void ShowLocal(object sender,RoutedEventArgs e) => await ((DiagnosticViewModel)DataContext).ShowLocalAsync();
     private void CopyReport(object sender,RoutedEventArgs e)
     {
@@ -14,6 +14,7 @@ public partial class DiagnosticView : UserControl
     }
     private async void ExportReport(object sender,RoutedEventArgs e)
     {
+        if (App.IsAcceptance) { TransferNotice.Text = "Aceptación en memoria: no se guardan archivos."; return; }
         var dialog=new SaveFileDialog{Title="Exportar diagnóstico anonimizado",Filter="Informe de texto|*.txt",FileName=$"NAP-diagnostico-{DateTime.Now:yyyyMMdd-HHmmss}.txt",DefaultExt=".txt",AddExtension=true,OverwritePrompt=false};
         if(dialog.ShowDialog()!=true)return;
         try

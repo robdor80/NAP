@@ -1,0 +1,22 @@
+NAP 2.0: paquete de prueba autorizado por su responsable el 25/10/2026.
+La autorizacion no constituye una licencia comercial futura de NAP.
+Recursos WPF/RobStyle y perfiles publicos proceden del mismo commit NAP.
+
+ImageSharp 3.2.0: uso Community ya validado por SixLabors_ValidateLicense.
+La concesion Community aplica las condiciones Apache-2.0 segun la Split License
+1.0 del proveedor. Se incluyen texto Apache-2.0, copyright y procedencia original.
+No se incluye sixlabors.lic ni se concede una clave para otros ensamblados.
+El usuario final de este binario no compila y no necesita la clave privada.
+La futura distribucion comercial requiere revisar de nuevo su elegibilidad.
+
+Microsoft.Data.Sqlite/Core 8.0.31 y System.Memory 4.5.3: MIT (Microsoft).
+SQLitePCLRaw 2.1.12: Apache-2.0; Copyright Eric Sink y colaboradores.
+SQLite nativo: dominio publico, https://sqlite.org/copyright.html.
+Runtime .NET 8.0.32, WPF y Windows Forms: MIT (Microsoft y colaboradores),
+con los avisos adicionales de terceros incluidos en third-party-notices.
+Las DLL nativas y componentes runtime conservan sus avisos de upstream.
+No se modifican las bibliotecas de terceros.
+
+third-party-packages.json enumera el grafo de paquetes resuelto.
+third-party-notices/sources.json registra fuentes publicas y SHA-256 de avisos.
+El observador ETW y las herramientas de pruebas NO forman parte del programa.

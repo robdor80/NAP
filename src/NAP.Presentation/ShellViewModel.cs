@@ -9,6 +9,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
     private readonly IUserConfirmation _confirmation;
+    private readonly bool _syntheticReadOnly;
     private readonly IImageNormalizationUiService _normalization;
     private CancellationTokenSource? _normalizationPreparation;
     private readonly IUniverseProfileStore? _profilesStore;
@@ -27,9 +28,10 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
+        _syntheticReadOnly = syntheticReadOnly;
         Automation = automation;
         Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
         History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
@@ -255,10 +257,11 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private void Activate(ProfessionalPage page)
     { CurrentPage = page; foreach (var item in Navigation.Concat(Tools)) item.IsActive = item.Name == page.Name; if (Tools.Any(t => t.IsActive)) ToolsExpanded = true; RefreshCommands(); }
     private UiAsyncCommand Command(Func<Task> action, Func<bool> allowed)
-    { UiAsyncCommand? command = null; command = new(action, () => !_disposed && allowed(), Fail, () => DisabledReason(command!)); _commands.Add(command); return command; }
+    { UiAsyncCommand? command = null; command = new(action, () => !_disposed && (!_syntheticReadOnly || command == Refresh) && allowed(), Fail, () => DisabledReason(command!)); _commands.Add(command); return command; }
     private string DisabledReason(UiAsyncCommand command)
     {
         if (_disposed) return "Esta sesión ya está cerrada.";
+        if (_syntheticReadOnly && command != Refresh) return "Aceptación sintética: operaciones productivas, archivos, perfiles y Git no disponibles.";
         if (IsExecuting) return "Operación en curso. Espera a que termine.";
         if (command == ImportProfile && (_profilesStore is null || _profilePicker is null)) return "La instalación de perfiles no está disponible en esta sesión.";
         if (!Explorer.SettingsReadable) return "La configuración local no se puede leer. Revisa el diagnóstico; no se sobrescribirá.";

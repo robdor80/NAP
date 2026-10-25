@@ -4,10 +4,11 @@ namespace NAP.App;
 public partial class MainWindow : Window
 {
     private readonly TrayHost _tray;
-    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false, string? phase6Preview = null)
+    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false, string? phase6Preview = null, bool acceptance = false, bool acceptanceProbe = false)
     {
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
+        if (acceptance) AcceptanceBanner.Visibility = Visibility.Visible;
         if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
         var licenseCheckDate=DateTime.Now.Date;
         var licenseRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
@@ -31,6 +32,16 @@ public partial class MainWindow : Window
         Loaded += async (_, _) =>
         {
             await shell.InitializeAsync();
+            if (acceptance)
+            {
+                shell.MinimizeToTray = true;
+                if (acceptanceProbe)
+                {
+                    try { await Phase6Acceptance.VerifyAsync(this, shell, diagnostics, smokeOutput!); Application.Current.Shutdown(0); }
+                    catch (Exception error) { Console.Error.WriteLine("acceptance_probe_failed:" + error); Application.Current.Shutdown(6); }
+                }
+                return;
+            }
             if (phase6Preview is not null)
             {
                 // Enable presentation for its capture; no input is dispatched before immediate shutdown.

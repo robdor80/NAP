@@ -6,9 +6,10 @@ using NAP.Presentation;
 namespace NAP.App.Views;
 public partial class HistoricalSimulationView : UserControl
 {
-    public HistoricalSimulationView() => InitializeComponent();
+    public HistoricalSimulationView() { InitializeComponent(); if (App.IsAcceptance) HistoricalTransferNotice.Text = "Prueba en memoria: exportación a archivos no disponible."; }
     private async void ExportReport(object sender, RoutedEventArgs e)
     {
+        if (App.IsAcceptance) { HistoricalTransferNotice.Text = "Aceptación en memoria: no se guardan archivos."; return; }
         var dialog = new SaveFileDialog { Title = "Exportar simulación sintética", Filter = "Informe de texto|*.txt",
             FileName = "NAP-Treskal-simulacion.txt", DefaultExt = ".txt", AddExtension = true, OverwritePrompt = false };
         if (dialog.ShowDialog() != true) return;

@@ -2,18 +2,7 @@ name: Phase 6 focused UI review
 
 # Isolated branch only. Never invokes NAP.sln tests or ZIP/host volume fixtures.
 on:
-  push:
-    branches: [codex/nap-2-fase-6-ux]
-    paths:
-      - 'src/**'
-      - 'tests/NAP.Tests/Phase6OverviewTests.cs'
-      - 'tests/NAP.Tests/Phase6WorkflowTests.cs'
-      - 'tests/NAP.Tests/Phase6PolishTests.cs'
-      - 'tests/NAP.Tests/Phase6SettingsTests.cs'
-      - 'tests/NAP.Tests/Phase6HistoricalTests.cs'
-      - 'tests/NAP.Tests/AutomationQueueTests.cs'
-      - 'tests/NAP.Tests/ProfessionalUiTests.cs'
-      - '.github/workflows/phase6-review.yml'
+  # Automatic delivery now uses phase6-msi-preparation.yml on this branch.
   workflow_dispatch:
     inputs:
       preserve_original_evidence:
