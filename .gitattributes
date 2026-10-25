@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve the byte offsets of the generated Phase 6 executive report.
+docs/phase6-ux-50-51-52/Informe-ejecutivo.pdf binary

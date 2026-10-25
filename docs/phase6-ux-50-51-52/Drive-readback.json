@@ -3,91 +3,105 @@
     "file": "Informe-ejecutivo.pdf",
     "id": "1hdHYboOWP1ngxjcxSztjsgt8VO9tHzRY",
     "url": "https://drive.google.com/file/d/1hdHYboOWP1ngxjcxSztjsgt8VO9tHzRY/view?usp=drivesdk",
-    "size": 263073,
+    "size": 187286,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Informe-tecnico.md",
     "id": "1gjh9y-ImVT1Mryr98_kUgGmx9mr8n3my",
     "url": "https://drive.google.com/file/d/1gjh9y-ImVT1Mryr98_kUgGmx9mr8n3my/view?usp=drivesdk",
-    "size": 5103,
+    "size": 6326,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Archivos-modificados.txt",
     "id": "130N0iCle4V9m1JIQj0x6I-lcRbOZ12wi",
     "url": "https://drive.google.com/file/d/130N0iCle4V9m1JIQj0x6I-lcRbOZ12wi/view?usp=drivesdk",
-    "size": 436,
+    "size": 440,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Capturas-y-evidencias.zip",
     "id": "10zmGWluznzfylt7HIuTVZ8MbOchWwXVk",
     "url": "https://drive.google.com/file/d/10zmGWluznzfylt7HIuTVZ8MbOchWwXVk/view?usp=drivesdk",
-    "size": 7748791,
+    "size": 7818527,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Resultados.json",
     "id": "1FhNHtZkYs51kKvwdPPv6HozmvjOc2d3W",
     "url": "https://drive.google.com/file/d/1FhNHtZkYs51kKvwdPPv6HozmvjOc2d3W/view?usp=drivesdk",
-    "size": 647,
+    "size": 716,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Posibles-regresiones.md",
     "id": "1xA59dJ9a081bNb4a3vPFVvxDFJLQjOcE",
     "url": "https://drive.google.com/file/d/1xA59dJ9a081bNb4a3vPFVvxDFJLQjOcE/view?usp=drivesdk",
-    "size": 2520,
+    "size": 2677,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   },
   {
     "file": "Guia-MSI.md",
     "id": "1nhkoxZ9_09o1nsGLhe1mg_wSrvR1C5JJ",
     "url": "https://drive.google.com/file/d/1nhkoxZ9_09o1nsGLhe1mg_wSrvR1C5JJ/view?usp=drivesdk",
-    "size": 2935,
+    "size": 3014,
     "parents": [
       "1_pWwOs48t99dZoPeGwnjKXJCqYbv7dDH"
     ],
     "roles": [
       "owner"
     ],
-    "verified": true
+    "verified": true,
+    "verification": "connector metadata readback; local size checked separately",
+    "run": "40243110761"
   }
 ]

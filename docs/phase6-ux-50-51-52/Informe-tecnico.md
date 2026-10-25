@@ -27,16 +27,24 @@ Las tres incidencias permanecen abiertas para confirmación del responsable en W
 
 ## Entrega verificada
 
-Commit compilado: `2f743c0fb580b8a859f5e503f6a14bf2afcf5383`.
+Commit compilado: `0a27b9c50e528db3e77f87f85e73eb266379cd96`.
 
-Ejecución: https://github.com/robdor80/NAP/actions/runs/40216835055
+Ejecución: https://github.com/robdor80/NAP/actions/runs/40243110761
 
-Descarga: https://github.com/robdor80/NAP/actions/runs/40216835055/artifacts/12608231704
+Descarga: https://github.com/robdor80/NAP/actions/runs/40243110761/artifacts/12618090727
 
-SHA-256 del ZIP descargado de Actions: `e0da9f472b333b8697868d62c621bf5e26ee46558c1b4f8dcfe1acdccaf0ace9`. El ZIP interno del ensayo usa otra compresión; este es el hash de la descarga del usuario.
+SHA-256 del ZIP descargado de Actions: `7afdaab8b054b491ebe89ebce2608d680c6fa27acc882b6e733689b9f7723671`. El ZIP interno del ensayo usa otra compresión; este es el hash de la descarga del usuario.
 
-Caducidad indicada por GitHub: 2027-01-23T17:30:55Z. Requiere sesión en GitHub. No es una Release.
+Caducidad indicada por GitHub: 2027-01-23T23:04:47Z. Requiere sesión en GitHub. No es una Release.
 
 49 pruebas focalizadas superadas; cero errores de binding. Búsqueda 001: 1; Restablecer: 39; farmer: 10. Diez comprobaciones geométricas del submenú superadas; las diez fallaban en la referencia anterior. Cuadrículas de meses y años comprobadas con doce botones visibles y días ocultos. Selección de fecha y navegación verificadas.
 
 ETW: cero accesos a ubicaciones habituales de NAP, cero escrituras fuera del laboratorio, cero procesos hijos y cero eventos perdidos. 491 archivos verificados por manifiesto tras descargar el artefacto. Arranque directo y CMD, argumentos y junctions inseguros, renovación en memoria, cambio de universo y bandeja superados. Sin licencias privadas ni patrones de secretos en el paquete. Avisos legales conservados.
+
+## Auditoría adicional de la entrega vigente
+
+Al comenzar esta revisión, la rama estaba en `5644aeb18d5e82ab7b9dc2f1f2788fff7c2bca22`. Las tres correcciones ya existían. Se preservaron todos los commits posteriores al paquete original y se verificó que main seguía en `5f81950275098881fd0befac0a13cde08c9d751f`.
+
+La comparación de código y capturas reveló una regresión de codificación introducida al espaciar Diagnóstico: cinco textos aparecían con caracteres corruptos. Se restauraron «DIAGNÓSTICO», «Categoría», «Información local», «Exportar informe…» y «Registros de diagnóstico» en DiagnosticView.xaml. No cambia ningún binding, comando, fecha ni lógica. El commit compilado de esta entrega incluye esta reparación y todas las correcciones anteriores.
+
+Se volvió a ejecutar el workflow focalizado completo, incluidas compilación Windows x64, capturas WPF antes/después, 49 pruebas, aislamiento ETW/canarios, bloqueos productivos y verificación de la descarga. La versión anterior de la entrega y sus evidencias permanecen en el historial del repositorio y de Drive. Las capturas finales de Diagnóstico permiten comprobar la restauración del texto. La confirmación visual en Windows 11 y al DPI del MSI sigue pendiente.

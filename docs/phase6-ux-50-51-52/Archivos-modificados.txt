@@ -1,3 +1,4 @@
+.gitattributes
 .github/scripts/Package-Phase6Acceptance.ps1
 .github/workflows/phase6-msi-preparation.yml
 src/NAP.App/MainWindow.xaml
