@@ -172,6 +172,43 @@ public sealed class DurableExecutionService
         bool policyInactive() => !_queue.GetPolicy(item.Policy).IsExecutionAuthorized || _queue.CurrentPolicy().Reference != item.Policy;
     }
 
+    /// <summary>Native, read-only evidence recovery. No queue/journal/catalog/asset writes or audit calls.</summary>
+    public CompletedProductionEvidence VerifyCompletedReadOnly(QueueItemId id)
+    {
+        using var access = AutomationManualAccess.EnterLegacy(_context);
+        var item = _queue.Get(id);
+        var attempt = _queue.GetAttempt(item.ActiveAttempt ?? throw new InvalidDataException("Missing Completed attempt."));
+        var record = State.Get(id) ?? throw new InvalidDataException("Missing execution ledger.");
+        var b = record.Binding;
+        if (item.State != QueueState.Completed || !record.Completed || record.Diagnostic is not null ||
+            b.ItemId != id || b.AttemptId != attempt.Id || b.JobId != attempt.JobId || b.Policy != item.Policy ||
+            !record.Intents.Contains("journal-Completed") || !record.Intents.Contains("catalog-register") ||
+            new JobStateStore(_context).Load(attempt.JobId).State != JobState.Completed)
+            throw new InvalidDataException("Completed workflow lacks exact durable evidence.");
+        var h = _preparation.VerifyExecution(id, true);
+        var policy = _queue.GetPolicy(item.Policy);
+        var expectedBinding = new ExecutionBinding(1, id, attempt.Id, attempt.JobId, _context.Id, _context.Storage, item.Policy,
+            h.Preparation.Snapshot!.Hash, AutomationJson.Hash(h.Preparation.ExpectedAuditReceipt!), h.Preparation.AuditGrant!.Hash,
+            policy.Authorization!.AuthorizationId);
+        if (AutomationJson.Encode(b) != AutomationJson.Encode(expectedBinding))
+            throw new InvalidDataException("Completed execution binding changed.");
+        foreach (var f in h.Plans.Archive.Files)
+        {
+            if (!record.Receipts.Contains("archive-file:" + f.FileName)) throw new InvalidDataException("Missing archive ownership.");
+            ArchiveMasterPlanner.VerifyFile(f.DestinationPath, f, NapIssueCodes.ArchiveVerificationFailed);
+        }
+        RejectUnknownProductionEntries(h);
+        var effective = UniverseProfileSnapshotRenderer.Context(h.Preparation.EffectiveProfile, _context.Storage);
+        var result = new AssetExecutionCoordinator(effective).VerifyCompletedReadOnly(attempt.JobId, h.Plans.Package, h.Plans.Processing);
+        VerifyCatalog(effective, h, result);
+        var provenance = Path.Combine(_context.Storage.StateRoot, "production-executions", attempt.JobId.Value + ".json");
+        var snapshot = AutomationJson.Hash(new { b.SnapshotHash, b.AuditReceiptHash, b.GrantHash,
+            Provenance = new Sha256Hasher().Compute(provenance),
+            Files = result.Production.FilesVerified.OrderBy(f => f.FileName, StringComparer.Ordinal)
+                .Select(f => new { f.FileName, f.Digest, f.SizeBytes }).ToArray() });
+        return new(id, attempt.Id, attempt.JobId, snapshot, result.Production);
+    }
+
     private void RequireAuthority(QueueItem item)
     {
         var facts = _queue.ReadWorkflow(item.Id); var policy = facts.Policy;

@@ -37,12 +37,18 @@ public sealed class GitProductionService
         return new GitCommitPlan(status, new(owned.Values, status.Changes.Select(c => c.RelativePath)), subject);
     });
 
-    public GitCommitResult Commit(UniverseContext context, GitCommitPlan plan) => GitProductionSafety.Run(() =>
+    public GitCommitResult Commit(UniverseContext context, GitCommitPlan plan)
+        => CommitBound(context, plan, GitOperationId.New(), null);
+
+    // Internal reservation seam: caller must durably bind the ID and exact plan before entering.
+    // CreateNew receipt and all existing engine checks remain mandatory.
+    internal GitCommitResult CommitBound(UniverseContext context, GitCommitPlan plan, GitOperationId operationId, Action? authorize) => GitProductionSafety.Run(() =>
     {
         AutomationReadViews.RequireNative(plan);
         using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context); RequireNoPending(context); Revalidate(context, plan);
-        return CommitLocked(context, new(GitOperationId.New(), plan, GitReceiptState.Prepared), create: true);
+        authorize?.Invoke();
+        return CommitLocked(context, new(operationId, plan, GitReceiptState.Prepared), create: true, authorize);
     });
 
     public IReadOnlyList<GitOperationId> ListOperations(UniverseContext context) => GitProductionSafety.Run(() =>
@@ -68,7 +74,9 @@ public sealed class GitProductionService
     });
 
     /// <summary>Retries a Prepared operation at base HEAD; only proven owned index entries may be unstaged.</summary>
-    public GitCommitResult RetryCommit(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
+    public GitCommitResult RetryCommit(UniverseContext context, GitOperationId operationId) => RetryCommitBound(context, operationId, null);
+
+    internal GitCommitResult RetryCommitBound(UniverseContext context, GitOperationId operationId, Action? authorize) => GitProductionSafety.Run(() =>
     {
         using var access = AutomationManualAccess.EnterLegacy(context);
         using var lease = GitProductionSafety.Acquire(context); var receipt = GitProductionReceiptStore.Read(context, operationId);
@@ -76,9 +84,10 @@ public sealed class GitProductionService
         var current = Inspector.InspectLocked(context); RequireBinding(receipt.Plan.Status, current, NapIssueCodes.GitPlanStale);
         if (current.Head != receipt.BaseHead || current.RemoteTip != receipt.BaseHead) Stale();
         var staged = ValidatePreparedIndex(context, receipt);
+        authorize?.Invoke();
         if (staged.Count != 0) Git.Unstage(context, staged, receipt.BaseHead);
         Revalidate(context, receipt.Plan);
-        return CommitLocked(context, receipt, create: false);
+        return CommitLocked(context, receipt, create: false, authorize);
     });
 
     public GitPushResult Push(UniverseContext context, GitCommitResult result) => GitProductionSafety.Run(() =>
@@ -97,7 +106,7 @@ public sealed class GitProductionService
     public GitPushResult Push(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
     { using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context); return PushLocked(context, GitProductionReceiptStore.Read(context, operationId)); });
 
-    private GitCommitResult CommitLocked(UniverseContext c, GitOperationReceipt receipt, bool create)
+    private GitCommitResult CommitLocked(UniverseContext c, GitOperationReceipt receipt, bool create, Action? authorize = null)
     {
         var plan = receipt.Plan;
         var config = GitProductionSafety.Configuration(c, Git);
@@ -106,13 +115,14 @@ public sealed class GitProductionService
             throw GitProductionException.Stop(NapIssueCodes.GitIdentityMissing, "Explicit Git user.name and user.email are required before staging.");
         var author = Git.Identity(c, true); var committer = Git.Identity(c, false); ValidateIdentity(author); ValidateIdentity(committer);
         RequireAttributes(c, plan.Selection.OwnedFiles.Select(f => f.RelativePath).ToArray()); Revalidate(c, plan);
+        authorize?.Invoke();
         GitProductionReceiptStore.Write(c, receipt, create); Observer?.Invoke("prepared");
         var attempted = new List<string>(); var moved = false;
         try
         {
             Revalidate(c, plan);
             RequireAttributes(c, plan.Selection.OwnedFiles.Select(f => f.RelativePath).ToArray());
-            foreach (var path in plan.Selection.Paths) { attempted.Add(path); Git.Add(c, path); }
+            foreach (var path in plan.Selection.Paths) { authorize?.Invoke(); attempted.Add(path); Git.Add(c, path); }
             Observer?.Invoke("staged"); VerifyIndex(c, plan); GitProductionSafety.Owned(c, plan.Selection.OwnedFiles);
             var status = Inspector.InspectLocked(c); RequireBinding(plan.Status, status, NapIssueCodes.GitPlanStale);
             if (status.Head != plan.Status.Head || status.RemoteTip != plan.Status.Head) Stale();
@@ -132,6 +142,7 @@ public sealed class GitProductionService
             VerifyIndex(c, plan); GitProductionSafety.Owned(c, plan.Selection.OwnedFiles);
             var beforeCommit = Inspector.InspectLocked(c); RequireBinding(plan.Status, beforeCommit, NapIssueCodes.GitPlanStale);
             if (beforeCommit.Head != plan.Status.Head || beforeCommit.RemoteTip != plan.Status.Head || Git.Tree(c) != tree) Stale();
+            authorize?.Invoke();
             Git.Commit(c, plan.Message, author, committer); moved = true; Observer?.Invoke("after_commit");
             var committedStatus = GitProductionInspector.Parse(Git.Status(c));
             var committedConfig = GitProductionSafety.Configuration(c, Git);
