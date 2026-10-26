@@ -31,6 +31,45 @@ public sealed class ProductionAssetPlanner
         return Revalidate(new ProductionAssetPlan(package, processingPlan, archiveResult, _context.Storage.ProductionRoot, conversion, files, files, new NapIssueReport([]), jobId));
     }
 
+    /// <summary>Recover Completed expectations without encoding/conversion. Catalog hashes are candidates only:
+    /// the original native provenance snapshot must authenticate this exact plan before verification can succeed.</summary>
+    internal ProductionAssetPlan PlanCompletedReadOnly(ValidatedAssetPackage package, ProcessingPlan processing,
+        ArchiveMasterResult archive, long maxInputPixels, JobId job)
+    {
+        if (ProductionExecutionEvidence.State(_context, job) != JobState.Completed)
+            throw Mismatch("Read-only recovery requires a Completed Job.");
+        ProductionStorageRootValidator.Require(_context); VerifyArchive(package, processing, archive);
+        var conversion = new ImageConversionResolver().Resolve(package, maxInputPixels)
+            ?? throw Mismatch("Missing native conversion specification.");
+        var master = package.AssetRule.PackageFiles.Single(r => r.ContentValidator == "png_master");
+        if (conversion.SourceRole != master.Role || conversion.Kind != ImageConversionKind.PngToWebp)
+            throw Mismatch("Completed conversion specification differs from the native master.");
+        var catalog = new AssetCatalog(_context); catalog.CheckIntegrity();
+        var asset = catalog.Get(package.AssetKey.AssetId);
+        if (asset is null || asset.AssetKey != package.AssetKey || asset.AuditState != "PASS" ||
+            asset.ProductionRelativeDirectory != processing.ProductionDestination.RelativeDirectory)
+            throw Mismatch("Completed catalog PASS evidence is absent or scoped differently.");
+        var destination = ProductionPaths.Resolve(_context.Storage.ProductionRoot, processing.ProductionDestination.RelativeDirectory);
+        var name = package.AssetKey.AssetId + ".webp";
+        var output = ProductionPaths.Resolve(_context.Storage.ProductionRoot, processing.ProductionDestination.RelativeDirectory + "/" + name);
+        // Expected hash/size come from the existing PASS catalog, never a directory listing.
+        ProductionPaths.Verify(output, asset.ProductionDigest, asset.ProductionSizeBytes, NapIssueCodes.ProductionVerificationFailed);
+        var files = new List<ProductionAssetFile>
+        {
+            new(ProductionAssetFileKind.GeneratedWebp, "generated_webp", name, null, output,
+                asset.ProductionDigest, asset.ProductionSizeBytes, File.ReadAllBytes(output))
+        };
+        foreach (var file in archive.FilesVerified.Where(f => f.Role != conversion.SourceRole).OrderBy(f => f.FileName, StringComparer.Ordinal))
+            files.Add(new(file.Role == "manifest" ? ProductionAssetFileKind.Manifest : ProductionAssetFileKind.Companion,
+                file.Role, file.FileName, file.SourcePath, Path.Combine(destination, file.FileName), file.Digest, file.SizeBytes, null));
+        if (files.Select(f => f.FileName).Distinct(StringComparer.OrdinalIgnoreCase).Count() != files.Count)
+            throw Mismatch("Completed output names collide.");
+        var plan = new ProductionAssetPlan(package, processing, archive, _context.Storage.ProductionRoot, conversion, files, [], new([]), job);
+        var provenance = ProductionExecutionEvidence.Load(_context, plan);
+        if (provenance is null || !provenance.IsComplete) throw Mismatch("Original native ownership snapshot does not prove every output.");
+        return Revalidate(plan); // Rechecks source/archive, exact native snapshot, ownership and physical hashes/WebP decode.
+    }
+
     internal ProductionAssetPlan Revalidate(ProductionAssetPlan plan)
     {
         if (plan.AssetKey.UniverseId != _context.Id || !ProductionPaths.Same(plan.ProductionRoot, _context.Storage.ProductionRoot) ||

@@ -68,14 +68,14 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null, IUnive
     public Task<DatabaseRestoreResult> RestoreAsync(UniverseContext c, DatabaseRestorePlan plan, CancellationToken ct) => Run(c, ct, () => new DatabaseRestoreService().Execute(c, plan));
     public Task<BackupRetentionPlan> PlanRetentionAsync(UniverseContext c, BackupRetentionPolicy policy, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Plan(c, policy));
     public Task<BackupRetentionResult> RetainAsync(UniverseContext c, BackupRetentionPlan plan, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Execute(c, plan));
-    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => _gitInspector.Inspect(c));
+    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Inspect(c));
     public Task<IReadOnlyList<GitOperationReceipt>> ReceiptsAsync(UniverseContext c, CancellationToken ct) => Run<IReadOnlyList<GitOperationReceipt>>(c, ct, () =>
     { return _git.ListOperations(c).Select(id => _git.ReadReceipt(c, id)).ToArray(); });
-    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => _git.PrepareCommit(c, results, subject));
-    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => _git.Commit(c, plan));
-    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.Recover(c, id));
-    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.RetryCommit(c, id));
-    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => _git.Push(c, id));
+    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).PrepareCommit(c, results, subject));
+    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Commit(c, plan));
+    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Recover(c, id));
+    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).RetryCommit(c, id));
+    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Push(c, id));
 
     public Task<PreparedPipelineAsset> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, CancellationToken ct) => Run<PreparedPipelineAsset>(c, ct, () =>
     {

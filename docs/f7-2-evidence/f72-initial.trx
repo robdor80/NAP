@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7a9ba777-900b-454c-bcc8-dd6c0ce5593c" name="@4dc81bca8b28 2026-10-26 16:39:00" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-26T16:39:00.0347958+00:00" queuing="2026-10-26T16:39:00.0347959+00:00" start="2026-10-26T16:38:53.3953351+00:00" finish="2026-10-26T16:39:25.9496824+00:00" />
+  <TestSettings name="default" id="0d827e16-087f-4cf7-a0ea-3fb6d28da595">
+    <Deployment runDeploymentRoot="_4dc81bca8b28_2026-10-26_16_39_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2f3e0594-9072-4add-b1c2-3880ff7a63cf" testId="03792df9-56d1-ee44-47e7-1bf5dde7b68f" testName="NAP.Tests.GitOutboxF72Tests.FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently" computerName="4dc81bca8b28" duration="00:00:07.0945035" startTime="2026-10-26T16:39:25.8703513+00:00" endTime="2026-10-26T16:39:25.8703516+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f3e0594-9072-4add-b1c2-3880ff7a63cf" />
+    <UnitTestResult executionId="adfc4209-becf-434e-ba73-c45285073dc2" testId="bbabab59-87e4-7b58-3b82-6ad34f497da1" testName="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;identity&quot;)" computerName="4dc81bca8b28" duration="00:00:01.0434819" startTime="2026-10-26T16:39:13.2192336+00:00" endTime="2026-10-26T16:39:13.2192339+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="adfc4209-becf-434e-ba73-c45285073dc2">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : Git publication is not authorized by the exact current policy.</Message>
+          <StackTrace>   at NAP.Core.GitPublicationPolicyStore.Require(GitPublicationPolicyV1 p, GitRepositoryStatus status, GitProductionProcess git, IEnumerable`1 paths, Boolean push, Boolean automatic) in &lt;checkout&gt;/src/NAP.Core/GitPublicationPolicyStore.cs:line 105
+   at NAP.Core.GitBatchPublicationService.RunOnce(AutomationQueueOwner owner, Int32 pageSize) in &lt;checkout&gt;/src/NAP.Core/GitBatchPublicationService.cs:line 40
+   at NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(String fault) in &lt;checkout&gt;/tests/NAP.Tests/GitOutboxF72Tests.cs:line 121
+   at InvokeStub_GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e7446e10-538e-403f-880a-4418106ced73" testId="db945215-8a87-ce70-4830-9f4ecd8251c1" testName="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;tampered-output&quot;)" computerName="4dc81bca8b28" duration="00:00:00.9970080" startTime="2026-10-26T16:39:10.0183188+00:00" endTime="2026-10-26T16:39:10.0183190+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7446e10-538e-403f-880a-4418106ced73" />
+    <UnitTestResult executionId="17da2036-aef4-487c-9845-d3f6fcb1900b" testId="70eea4a2-df0d-9041-7ab1-f18b6c50a66b" testName="NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption" computerName="4dc81bca8b28" duration="00:00:01.1061182" startTime="2026-10-26T16:39:18.7764916+00:00" endTime="2026-10-26T16:39:18.7764918+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17da2036-aef4-487c-9845-d3f6fcb1900b" />
+    <UnitTestResult executionId="09845805-22eb-4355-8cef-993022cd48ce" testId="c86c5e48-d749-43e7-4955-0b6860490665" testName="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;commit-returned&quot;)" computerName="4dc81bca8b28" duration="00:00:01.7243407" startTime="2026-10-26T16:39:09.0208846+00:00" endTime="2026-10-26T16:39:09.0208849+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09845805-22eb-4355-8cef-993022cd48ce" />
+    <UnitTestResult executionId="72ee6a54-faa2-49a3-909a-8f3edaead77a" testId="0d001d5c-de0c-0bbc-a2b3-f90447b7088e" testName="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;foreign-index&quot;)" computerName="4dc81bca8b28" duration="00:00:01.0399629" startTime="2026-10-26T16:39:12.1615723+00:00" endTime="2026-10-26T16:39:12.1615725+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72ee6a54-faa2-49a3-909a-8f3edaead77a" />
+    <UnitTestResult executionId="5588f328-8e45-4832-9ab6-2a895d04154b" testId="5e45796c-eb96-a30c-2a4e-128642d52b83" testName="NAP.Tests.GitOutboxF72Tests.CorruptPolicyAndRevocationFailClosed" computerName="4dc81bca8b28" duration="00:00:01.0204796" startTime="2026-10-26T16:39:14.2327584+00:00" endTime="2026-10-26T16:39:14.2327587+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5588f328-8e45-4832-9ab6-2a895d04154b" />
+    <UnitTestResult executionId="eec5e598-c8eb-4168-9775-b9748e6d3225" testId="aa7664b7-b4d9-2bc1-5e68-30b2b6e259a4" testName="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;after_commit&quot;)" computerName="4dc81bca8b28" duration="00:00:02.0403805" startTime="2026-10-26T16:39:07.2978340+00:00" endTime="2026-10-26T16:39:07.2978342+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eec5e598-c8eb-4168-9775-b9748e6d3225" />
+    <UnitTestResult executionId="6fdc0e06-dae7-4bc3-bcc6-045456b3d88b" testId="f74d0e74-787a-21c2-f89e-d2910e8c8e87" testName="NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox" computerName="4dc81bca8b28" duration="00:00:00.8889217" startTime="2026-10-26T16:39:17.6693423+00:00" endTime="2026-10-26T16:39:17.6693426+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6fdc0e06-dae7-4bc3-bcc6-045456b3d88b" />
+    <UnitTestResult executionId="766bc974-7041-4fe2-9d99-6476f8440cc7" testId="32047481-2b08-bc99-87fc-29f5f1bd10bb" testName="NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending" computerName="4dc81bca8b28" duration="00:00:02.5464349" startTime="2026-10-26T16:39:16.7812751+00:00" endTime="2026-10-26T16:39:16.7812753+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="766bc974-7041-4fe2-9d99-6476f8440cc7">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+               ↓ (pos 4)
+Expected: "git-blocked"
+Actual:   "git-idle"
+               ↑ (pos 4)</Message>
+          <StackTrace>   at NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending() in &lt;checkout&gt;/tests/NAP.Tests/GitOutboxF72Tests.cs:line 131
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da04d00d-76f4-4689-8e7e-4bd1af0f77c0" testId="aab10516-07ef-e836-e3ff-49cc3c8027a5" testName="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;reconciled&quot;)" computerName="4dc81bca8b28" duration="00:00:02.3858520" startTime="2026-10-26T16:39:05.2556630+00:00" endTime="2026-10-26T16:39:05.2556633+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da04d00d-76f4-4689-8e7e-4bd1af0f77c0" />
+    <UnitTestResult executionId="14bef604-ddae-4789-a35a-deee35635245" testId="b5e9f429-7572-1a29-6855-18514caafd81" testName="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;foreign-worktree&quot;)" computerName="4dc81bca8b28" duration="00:00:01.1020194" startTime="2026-10-26T16:39:11.1205108+00:00" endTime="2026-10-26T16:39:11.1205111+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="14bef604-ddae-4789-a35a-deee35635245" />
+    <UnitTestResult executionId="50cc752c-7ee0-49a3-96b3-5e4135e1105f" testId="45a89447-8baa-573b-3767-a8ab07d178d1" testName="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;prepared&quot;)" computerName="4dc81bca8b28" duration="00:00:02.9340169" startTime="2026-10-26T16:39:02.8697792+00:00" endTime="2026-10-26T16:39:02.8697794+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="50cc752c-7ee0-49a3-96b3-5e4135e1105f" />
+    <UnitTestResult executionId="63994ce8-11dd-4724-b38d-d0240be2f332" testId="40c471f4-8b8e-8397-395b-7499c7e411f0" testName="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;batch-reserved&quot;)" computerName="4dc81bca8b28" duration="00:00:03.9345850" startTime="2026-10-26T16:38:59.9370904+00:00" endTime="2026-10-26T16:38:59.9371171+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="63994ce8-11dd-4724-b38d-d0240be2f332" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;batch-reserved&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="40c471f4-8b8e-8397-395b-7499c7e411f0">
+      <Execution id="63994ce8-11dd-4724-b38d-d0240be2f332" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="InterruptedPublicationResumesExactReservedOperation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;after_commit&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="aa7664b7-b4d9-2bc1-5e68-30b2b6e259a4">
+      <Execution id="eec5e598-c8eb-4168-9775-b9748e6d3225" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="InterruptedPublicationResumesExactReservedOperation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;reconciled&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="aab10516-07ef-e836-e3ff-49cc3c8027a5">
+      <Execution id="da04d00d-76f4-4689-8e7e-4bd1af0f77c0" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="InterruptedPublicationResumesExactReservedOperation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="32047481-2b08-bc99-87fc-29f5f1bd10bb">
+      <Execution id="766bc974-7041-4fe2-9d99-6476f8440cc7" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="SecondBatchIsBlockedByNativeRequireNoPending" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;identity&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="bbabab59-87e4-7b58-3b82-6ad34f497da1">
+      <Execution id="adfc4209-becf-434e-ba73-c45285073dc2" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;foreign-index&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="0d001d5c-de0c-0bbc-a2b3-f90447b7088e">
+      <Execution id="72ee6a54-faa2-49a3-909a-8f3edaead77a" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.CorruptPolicyAndRevocationFailClosed" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="5e45796c-eb96-a30c-2a4e-128642d52b83">
+      <Execution id="5588f328-8e45-4832-9ab6-2a895d04154b" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="CorruptPolicyAndRevocationFailClosed" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;foreign-worktree&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="b5e9f429-7572-1a29-6855-18514caafd81">
+      <Execution id="14bef604-ddae-4789-a35a-deee35635245" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="03792df9-56d1-ee44-47e7-1bf5dde7b68f">
+      <Execution id="2f3e0594-9072-4add-b1c2-3880ff7a63cf" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;prepared&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="45a89447-8baa-573b-3767-a8ab07d178d1">
+      <Execution id="50cc752c-7ee0-49a3-96b3-5e4135e1105f" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="InterruptedPublicationResumesExactReservedOperation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="f74d0e74-787a-21c2-f89e-d2910e8c8e87">
+      <Execution id="6fdc0e06-dae7-4bc3-bcc6-045456b3d88b" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="DisabledCompletedHasNoGitEffectsAndNoOutbox" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: &quot;commit-returned&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="c86c5e48-d749-43e7-4955-0b6860490665">
+      <Execution id="09845805-22eb-4355-8cef-993022cd48ce" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="InterruptedPublicationResumesExactReservedOperation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="70eea4a2-df0d-9041-7ab1-f18b6c50a66b">
+      <Execution id="17da2036-aef4-487c-9845-d3f6fcb1900b" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="OrphanReceiptTempBlocksWithoutAdoption" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: &quot;tampered-output&quot;)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="db945215-8a87-ce70-4830-9f4ecd8251c1">
+      <Execution id="e7446e10-538e-403f-880a-4418106ced73" />
+      <TestMethod codeBase="&lt;checkout&gt;/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="03792df9-56d1-ee44-47e7-1bf5dde7b68f" executionId="2f3e0594-9072-4add-b1c2-3880ff7a63cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bbabab59-87e4-7b58-3b82-6ad34f497da1" executionId="adfc4209-becf-434e-ba73-c45285073dc2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db945215-8a87-ce70-4830-9f4ecd8251c1" executionId="e7446e10-538e-403f-880a-4418106ced73" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="70eea4a2-df0d-9041-7ab1-f18b6c50a66b" executionId="17da2036-aef4-487c-9845-d3f6fcb1900b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c86c5e48-d749-43e7-4955-0b6860490665" executionId="09845805-22eb-4355-8cef-993022cd48ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d001d5c-de0c-0bbc-a2b3-f90447b7088e" executionId="72ee6a54-faa2-49a3-909a-8f3edaead77a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e45796c-eb96-a30c-2a4e-128642d52b83" executionId="5588f328-8e45-4832-9ab6-2a895d04154b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa7664b7-b4d9-2bc1-5e68-30b2b6e259a4" executionId="eec5e598-c8eb-4168-9775-b9748e6d3225" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f74d0e74-787a-21c2-f89e-d2910e8c8e87" executionId="6fdc0e06-dae7-4bc3-bcc6-045456b3d88b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="32047481-2b08-bc99-87fc-29f5f1bd10bb" executionId="766bc974-7041-4fe2-9d99-6476f8440cc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aab10516-07ef-e836-e3ff-49cc3c8027a5" executionId="da04d00d-76f4-4689-8e7e-4bd1af0f77c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5e9f429-7572-1a29-6855-18514caafd81" executionId="14bef604-ddae-4789-a35a-deee35635245" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45a89447-8baa-573b-3767-a8ab07d178d1" executionId="50cc752c-7ee0-49a3-96b3-5e4135e1105f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40c471f4-8b8e-8397-395b-7499c7e411f0" executionId="63994ce8-11dd-4724-b38d-d0240be2f332" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="14" executed="14" passed="12" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.28]   Discovering: NAP.Tests
+[xUnit.net 00:00:01.42]   Discovered:  NAP.Tests
+[xUnit.net 00:00:01.44]   Starting:    NAP.Tests
+[xUnit.net 00:00:18.79]       System.IO.InvalidDataException : Git publication is not authorized by the exact current policy.
+[xUnit.net 00:00:18.79]       Stack Trace:
+[xUnit.net 00:00:18.80]         &lt;checkout&gt;/src/NAP.Core/GitPublicationPolicyStore.cs(105,0): at NAP.Core.GitPublicationPolicyStore.Require(GitPublicationPolicyV1 p, GitRepositoryStatus status, GitProductionProcess git, IEnumerable`1 paths, Boolean push, Boolean automatic)
+[xUnit.net 00:00:18.80]         &lt;checkout&gt;/src/NAP.Core/GitBatchPublicationService.cs(40,0): at NAP.Core.GitBatchPublicationService.RunOnce(AutomationQueueOwner owner, Int32 pageSize)
+[xUnit.net 00:00:18.80]         &lt;checkout&gt;/tests/NAP.Tests/GitOutboxF72Tests.cs(121,0): at NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(String fault)
+[xUnit.net 00:00:18.80]            at InvokeStub_GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(Object, Span`1)
+[xUnit.net 00:00:18.80]            at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:22.36]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:22.36]                      ↓ (pos 4)
+[xUnit.net 00:00:22.36]       Expected: "git-blocked"
+[xUnit.net 00:00:22.36]       Actual:   "git-idle"
+[xUnit.net 00:00:22.36]                      ↑ (pos 4)
+[xUnit.net 00:00:22.36]       Stack Trace:
+[xUnit.net 00:00:22.36]         &lt;checkout&gt;/tests/NAP.Tests/GitOutboxF72Tests.cs(131,0): at NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending()
+[xUnit.net 00:00:22.36]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:22.36]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:31.45]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="4dc81bca8b28" outcome="Error" timestamp="2026-10-26T16:39:13.2178586+00:00">
+        <Text>[xUnit.net 00:00:18.79]     NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: "identity") [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="4dc81bca8b28" outcome="Error" timestamp="2026-10-26T16:39:16.7824452+00:00">
+        <Text>[xUnit.net 00:00:22.36]     NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

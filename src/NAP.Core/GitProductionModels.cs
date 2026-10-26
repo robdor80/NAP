@@ -70,6 +70,7 @@ public sealed class GitCommitSelection
 
 public sealed class GitCommitPlan
 {
+    internal string? PublicationPolicyHash { get; set; }
     internal GitCommitPlan(GitRepositoryStatus status, GitCommitSelection selection, string message)
     { Status = status; Selection = selection; Message = message; }
     public GitRepositoryStatus Status { get; }

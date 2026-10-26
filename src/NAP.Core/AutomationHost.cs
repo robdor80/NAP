@@ -30,6 +30,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
         internal InboxAdmissionService? Admission;
         internal DurablePreparationService? Preparation;
         internal DurableExecutionService? Execution;
+        internal GitBatchPublicationService? GitPublication;
+        internal DateTimeOffset NextGit;
         internal WorkflowRunControl? RunControl;
         internal AutomationRuntimeStateStore? RuntimeState;
         internal Task<Step>? Work;
@@ -247,6 +249,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var admission = _options.Admission with { MaxRetainedBytes = Math.Min(_options.Admission.MaxRetainedBytes, _options.MaxRetainedBytes / _slots.Length / 2) };
                 slot.Admission = new(slot.Context, new(slot.Context.Storage), admission);
                 slot.Preparation = new(slot.Context, new(slot.Context.Storage)); slot.Execution = new(slot.Context, new(slot.Context.Storage));
+                slot.GitPublication = new(slot.Context, new(slot.Context.Storage));
                 slot.Preparation.StorageFailure = (item, error) => _options.LaboratoryStorageFailure?.Invoke(slot.Context.Id, item, error);
                 slot.RunControl = new((item, boundary) => { _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); return !Allowed(slot, item); });
                 slot.Preparation.RunControl = slot.RunControl; slot.Admission.RunControl = slot.RunControl;
@@ -395,6 +398,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             var item = scope.Queue.Get(queued.Id);
             slot.CurrentItem = item.Id;
+            // Preserve the existing initial physical-integrity review, independently of Git.
+            // Outbox reconciliation below never invokes Execute or reports a Git failure here.
             if (slot.InitialRecovery && item.State == QueueState.Completed && Allowed(slot, item.Id) && scope.Queue.GetPolicy(item.Policy).IsExecutionAuthorized)
             {
                 var verified = slot.Execution!.Execute(scope.Owner, item.Id, slot.RunControl);
@@ -435,6 +440,14 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 return new("audit", step.Dispatch);
             }
             catch { Interlocked.Exchange(ref _auditReserved, 0); throw; }
+        }
+        if (DateTimeOffset.UtcNow >= slot.NextGit && Allowed(slot))
+        {
+            slot.NextGit = DateTimeOffset.UtcNow.AddSeconds(5);
+            try { return new(slot.GitPublication!.RunOnce(scope.Owner, Math.Min(20, _options.PageSize))); }
+            catch (Exception error) when (error is InvalidDataException or IOException or UnauthorizedAccessException or InvalidOperationException or
+                AutomationException or ProductionStorageException or ArchiveStorageException or CatalogException or System.Text.Json.JsonException or ArgumentException)
+            { return new("git-blocked"); } // Git fault is isolated from Completed and host production authority.
         }
         if (slot.CurrentItem is { } idleItem) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, idleItem, "workflow-idle");
         return new("idle");

@@ -80,7 +80,18 @@ public sealed class AssetExecutionCoordinator
         }
     }
 
-    private AssetExecutionResult VerifyCompleted(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processing, long maxInputPixels, ExecutionMutex coordination)
+    /// <summary>Read-only Completed projection. Does not enter Execute or transition journals.</summary>
+    internal AssetExecutionResult VerifyCompletedReadOnly(JobId job, ValidatedAssetPackage package, ProcessingPlan processing)
+    {
+        using var access = AutomationManualAccess.EnterLegacy(_context);
+        using var lease = ExecutionMutex.Acquire("Job", _context.Storage.StateRoot, job.Value);
+        RequireJournal(job);
+        if (new JobStateStore(_context).Load(job).State != JobState.Completed)
+            throw new InvalidDataException("Git projection requires a Completed Job.");
+        return VerifyCompleted(job, package, processing, PackagePreparationService.MaxInputPixels, lease, readOnlyProjection: true);
+    }
+
+    private AssetExecutionResult VerifyCompleted(JobId jobId, ValidatedAssetPackage package, ProcessingPlan processing, long maxInputPixels, ExecutionMutex coordination, bool readOnlyProjection = false)
     {
         try
         {
@@ -88,7 +99,9 @@ public sealed class AssetExecutionCoordinator
             if (archivePlan.Issues.ShouldStop || archivePlan.Action != ArchiveMasterAction.AlreadyArchived)
                 throw new InvalidOperationException("The completed Job archive is no longer exact.");
             var archive = new ArchiveMasterResult(archivePlan, ArchiveMasterOutcome.AlreadyArchived);
-            var productionPlan = new ProductionAssetPlanner(_context).Plan(package, processing, archive, maxInputPixels, jobId);
+            var planner = new ProductionAssetPlanner(_context);
+            var productionPlan = readOnlyProjection ? planner.PlanCompletedReadOnly(package, processing, archive, maxInputPixels, jobId)
+                : planner.Plan(package, processing, archive, maxInputPixels, jobId);
             if (productionPlan.Issues.ShouldStop || productionPlan.Action != ProductionAssetAction.AlreadyProduced)
                 throw new InvalidOperationException("The completed Job production is no longer exact.");
             var production = new ProductionAssetExecutor(_context).VerifyCoordinated(productionPlan, coordination);

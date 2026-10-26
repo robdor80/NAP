@@ -1,0 +1,5 @@
+Test run for <checkout>/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+Results File: /tmp/nap-f72-results/f72-final-guards.trx
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 8 s - NAP.Tests.dll (net8.0)
