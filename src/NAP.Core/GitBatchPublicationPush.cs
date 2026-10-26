@@ -3,6 +3,7 @@ namespace NAP.Core;
 public sealed partial class GitBatchPublicationService
 {
     private const int MaxPushAttempts = 3;
+    private const int MaxExhaustedVerifications = 3;
     private static bool AllowsAutomaticPush(GitPublicationPolicyV1 p) =>
         p.Mode == GitPublicationMode.AutoCommitAndPushBatch && p.AllowCommit && p.AllowPush && !p.Revoked;
     private static bool OriginalAuthorization(GitPublicationPolicyV1 p, GitOutboxSnapshot state, GitOutboxBatch batch) =>
@@ -31,6 +32,7 @@ public sealed partial class GitBatchPublicationService
     {
         GitOperationReceipt receipt;
         var verificationOnly = false;
+        var exhaustedPushBudget = false;
         var originalState = state;
         var attempts = 0;
         try
@@ -41,23 +43,33 @@ public sealed partial class GitBatchPublicationService
             var originalAuthorization = OriginalAuthorization(p, state, batch);
             if (receipt.State != GitReceiptState.Pushed && !originalAuthorization)
                 return "git-authorization-required";
-            verificationOnly = receipt.State == GitReceiptState.Pushed || !AllowsAutomaticPush(p);
+            exhaustedPushBudget = !explicitRetry && (batch.Diagnostic is "git_push_attempt_3" or "git_push_retry_3" ||
+                ExhaustedVerifications(batch.Diagnostic) > 0);
+            verificationOnly = exhaustedPushBudget || receipt.State == GitReceiptState.Pushed || !AllowsAutomaticPush(p);
             // A durable Pushed receipt gets its own bounded verification budget, never another push budget.
-            attempts = explicitRetry || verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
-            if (!explicitRetry && attempts >= MaxPushAttempts) return "git-push-retry-exhausted";
+            attempts = exhaustedPushBudget ? ExhaustedVerifications(batch.Diagnostic) :
+                explicitRetry || verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
+            if (!explicitRetry && attempts >= (exhaustedPushBudget ? MaxExhaustedVerifications : MaxPushAttempts)) return "git-push-retry-exhausted";
 
             void Authorize(GitRepositoryStatus status) => _policy.Require(p, status, _git.Git,
                 receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), push: !verificationOnly, automatic: true);
 
             Checkpoint?.Invoke("before-push");
-            if (!verificationOnly)
+            if (exhaustedPushBudget)
+            {
+                // Preserve the exhausted write budget while reserving every read-only turn, even
+                // BaseHead/offline/crash outcomes. Restarting cannot enable a fourth push or endless polling.
+                state = WithPublicationDiagnostic(state, batch, "git_push_exhausted_verify_" + (attempts + 1));
+                _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+            }
+            else if (!verificationOnly)
             {
                 // Persist before any remote write. A crash may consume an attempt but cannot reset it.
                 state = WithPublicationDiagnostic(state, batch, "git_push_attempt_" + (attempts + 1));
                 _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
             }
             var result = _git.PushBound(_context, batch.OperationId, Authorize, verificationOnly, requirePushedReceipt: !originalAuthorization);
-            if (result is null) return "git-awaiting-push";
+            if (result is null) return exhaustedPushBudget ? "git-push-retry-exhausted" : "git-awaiting-push";
             receipt = _git.ReadReceipt(_context, batch.OperationId);
         }
         catch (Exception e) when (Controlled(e))
@@ -69,6 +81,7 @@ public sealed partial class GitBatchPublicationService
             }
             if (TransientPush(e))
             {
+                if (exhaustedPushBudget) return "git-push-retry-exhausted"; // Its verification reservation is already durable.
                 // The command may have reached the server. Every retry uses native ls-remote first.
                 var failures = verificationOnly ? attempts + 1 : Math.Max(1, PushAttempts(batch.Diagnostic));
                 _outbox.SaveLocked(WithPublicationDiagnostic(state, batch, (verificationOnly ? "git_verify_retry_" : "git_push_retry_") + failures));
@@ -102,7 +115,15 @@ public sealed partial class GitBatchPublicationService
     {
         "git_push_attempt_1" or "git_push_retry_1" or "git_verify_attempt_1" or "git_verify_retry_1" => 1,
         "git_push_attempt_2" or "git_push_retry_2" or "git_verify_attempt_2" or "git_verify_retry_2" => 2,
-        "git_push_attempt_3" or "git_push_retry_3" or "git_verify_attempt_3" or "git_verify_retry_3" => 3,
+        "git_push_attempt_3" or "git_push_retry_3" or "git_verify_attempt_3" or "git_verify_retry_3" or
+            "git_push_exhausted_verify_1" or "git_push_exhausted_verify_2" or "git_push_exhausted_verify_3" => 3,
+        _ => 0
+    };
+    private static int ExhaustedVerifications(string? diagnostic) => diagnostic switch
+    {
+        "git_push_exhausted_verify_1" => 1,
+        "git_push_exhausted_verify_2" => 2,
+        "git_push_exhausted_verify_3" => 3,
         _ => 0
     };
     private static GitOutboxSnapshot WithPublicationDiagnostic(GitOutboxSnapshot state, GitOutboxBatch batch, string code) => state with

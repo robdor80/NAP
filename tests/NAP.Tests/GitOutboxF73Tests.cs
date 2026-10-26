@@ -105,6 +105,78 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void F73A1ExhaustedPushBudgetRecognizesExactExternalPublicationAfterRestart()
+    {
+        using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
+        var batch = CommitWithoutPush(f); var commands = Commands(f);
+        ExhaustPushBudget(f);
+        Assert.Equal("git_push_retry_3", f.Outbox.Read().Batches.Single().Diagnostic);
+        Assert.DoesNotContain("push", commands);
+        f.Run("push", "origin", "HEAD:refs/heads/main"); // External fixture actor only.
+        f.Restart(); var before = commands.Count;
+        Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner));
+        Assert.Contains("ls-remote", commands.Skip(before)); Assert.DoesNotContain("push", commands);
+        var after = f.Outbox.Read().Batches.Single();
+        Assert.Equal(batch.OperationId, after.OperationId); Assert.Equal(batch.PlanHash, after.PlanHash);
+        Assert.Equal(batch.CommitSha, after.CommitSha); Assert.Equal(batch.CommitSha, f.RemoteHead);
+        Assert.Equal(GitReceiptState.Pushed, f.Git.ReadReceipt(f.F.Context, batch.OperationId).State);
+        Assert.Equal(GitOutboxState.Pushed, after.State);
+        Assert.All(f.Outbox.Read().Intents, i => Assert.Equal(GitOutboxState.Pushed, i.State));
+        output.WriteLine("F73-A1: exhausted writes=3; subsequent native push commands=0; exact external SHA recognized after restart.");
+        Evidence(f, commands, 1);
+    }
+
+    [Fact]
+    public void F73A1ExhaustedPushBudgetKeepsCommittedAndDurablyBoundsReadOnlyChecks()
+    {
+        using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
+        var batch = CommitWithoutPush(f); var commands = Commands(f);
+        ExhaustPushBudget(f);
+        for (var n = 1; n <= 3; n++)
+        {
+            f.Restart(); var before = commands.Count;
+            // The second read-only query is genuinely unavailable; its reserved budget must survive too.
+            var unavailable = f.Remote + ".offline";
+            if (n == 2) Directory.Move(f.Remote, unavailable);
+            try { Assert.Equal("git-push-retry-exhausted", f.Service.RunOnce(f.Owner)); }
+            finally { if (n == 2) Directory.Move(unavailable, f.Remote); }
+            Assert.Single(commands.Skip(before), c => c == "ls-remote");
+            var current = f.Outbox.Read().Batches.Single();
+            Assert.Equal("git_push_exhausted_verify_" + n, current.Diagnostic);
+            Assert.Equal(GitOutboxState.Committed, current.State); Assert.Equal(batch.CommitSha, current.CommitSha);
+            Assert.Equal(batch.OperationId, current.OperationId); Assert.Equal(batch.PlanHash, current.PlanHash);
+        }
+        f.Restart(); var exhausted = commands.Count;
+        Assert.Equal("git-push-retry-exhausted", f.Service.RunOnce(f.Owner));
+        Assert.DoesNotContain("ls-remote", commands.Skip(exhausted)); Assert.DoesNotContain("push", commands);
+        Assert.Equal(f.BaseHead, f.RemoteHead);
+        Assert.Equal(GitReceiptState.Committed, f.Git.ReadReceipt(f.F.Context, batch.OperationId).State);
+        Assert.All(f.Outbox.Read().Intents, i => Assert.Equal(GitOutboxState.Committed, i.State));
+        // Revocation must stop even local recovery before any new remote query.
+        var p = f.Policy.Load()!;
+        f.Policy.Save(p with { PolicyRevision = p.PolicyRevision + 1, AuthorizationId = "synthetic_a1_revoked", Revoked = true }, p.PolicyRevision);
+        f.Restart(); var revoked = commands.Count;
+        Assert.Equal("git-disabled", f.Service.RunOnce(f.Owner)); Assert.Equal(revoked, commands.Count);
+        output.WriteLine("F73-A1: exhausted writes=3; checks=3 (BaseHead/offline/BaseHead); restart at cap queries=0; revoked queries=0; native push commands=0.");
+        Evidence(f, commands, 1);
+    }
+
+    private static void ExhaustPushBudget(Fixture f)
+    {
+        var unavailable = f.Remote + ".offline"; Directory.Move(f.Remote, unavailable);
+        try
+        {
+            for (var n = 1; n <= 3; n++)
+            {
+                Assert.Equal("git-push-retry", f.Service.RunOnce(f.Owner));
+                Assert.Equal("git_push_retry_" + n, f.Outbox.Read().Batches.Single().Diagnostic);
+                f.Restart();
+            }
+        }
+        finally { Directory.Move(unavailable, f.Remote); }
+    }
+
+    [Fact]
     public void OfflineRetryIsDurablyBoundedAndExplicitRetryRechecksRemote()
     {
         using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
