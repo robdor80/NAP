@@ -6,6 +6,8 @@ Esta entrega requiere auditoría independiente de ChatGPT. **No declara aceptada
 
 Adenda posterior: [corrección focalizada F73-A1](NAP_2_0_F7_3_F73_A1.md), sobre la reconciliación nativa sin escritura remota después de agotar los tres intentos de publicación. Sus SHA y pruebas se registran separadamente; las evidencias iniciales se conservan.
 
+Adenda siguiente: [F73-A2](NAP_2_0_F7_3_F73_A2.md) completa la recuperación local del Outbox desde un receipt Pushed durable después del corte en la última verificación, sin nuevas consultas remotas.
+
 ## Cambios y API
 
 | Archivo | Cambio |

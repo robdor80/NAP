@@ -3,6 +3,8 @@
 Fecha: 2026-10-26. Rama exclusiva `chatgpt/nap-2-f7-3-auto-push`, PR #55 Draft.
 Adenda posterior: [corrección focalizada F73-A1 y sus pruebas](NAP_2_0_F7_3_F73_A1.md). Los resultados siguientes corresponden a la entrega inicial y no se atribuyen al código corregido sin repetirlos.
 
+Última adenda: [F73-A2, reproducción del corte y verificación focalizada](NAP_2_0_F7_3_F73_A2.md). Sus resultados y SHA se conservan por separado.
+
 Código de la entrega inicial sometido a verificación: **`18fafeb810acb15d7ffdcee0fe06d1eef5f43322`**.
 Los cambios posteriores de documentación/evidencia no modifican ese código.
 
