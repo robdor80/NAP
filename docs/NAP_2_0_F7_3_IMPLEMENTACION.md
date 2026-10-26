@@ -38,6 +38,8 @@ Una nueva política no migra ni reautoriza batches Committed anteriores: se cons
 
 Se conserva la secuencia nativa: receipt Committed/Pushed válido, repo/HEAD/parent/árbol/objetos/outputs/index limpio exactos, fingerprints congelados y tip obtenido con `ls-remote` del ref concreto. BaseHead admite el push normal; CommitSha produce AlreadyPushed sin otro push; otro tip bloquea. Después del comando se exigen `ls-remote == CommitSha` e inspección local/remota final antes del receipt Pushed.
 
+En la ruta exclusivamente comprobatoria, si HEAD sigue siendo CommitSha y el remoto sigue en BaseHead, el motor devuelve `null` (todavía pendiente) tras validar configuración/binding/autorización. No afirma publicación ni escribe receipt, Outbox o remoto. Esa observación permite que nuevos outputs Completed sigan encontrando la barrera `RequireNoPending` original, sin bloquear erróneamente el primer lote al observarlos. **Todo push y todo reconocimiento AlreadyPushed conservan la verificación completa** de commit/árbol/bytes y limpieza nativa; la salida pendiente no sirve como prueba de Pushed.
+
 `RecordPushedLocked` solo acepta receipt Pushed de la operación vinculada y escribe **batch y todos sus intents Pushed juntos**. Conserva JobId, QueueItemId, WorkflowAttemptId, SourceBatchId, BatchId, PolicyRevision, AuthorizationId, OperationId y PlanHash. Nunca usa exit code o tracking ref como prueba suficiente.
 
 | Situación | Estado/acción |

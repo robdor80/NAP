@@ -1,0 +1,2105 @@
+{
+  "scope": "F7.3 focused local-bare synthetic tests only; independent acceptance pending",
+  "sdk": "8.0.427",
+  "platform": "Linux x64 Debug",
+  "identity": "Synthetic F72 / f72@example.invalid",
+  "universe": "test_universe",
+  "runs": [
+    {
+      "run": "f73-initial",
+      "source_sha": "0a08d4c010e35c75c2e384cec6f60a03e330226a",
+      "raw_counters": {
+        "total": "25",
+        "executed": "25",
+        "passed": "24",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_cases": 25,
+      "zip_inputs": 29,
+      "max_zip_inputs_per_case": 5,
+      "cases": [
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"after_push\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:08.0960543",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "2bae616c056d66885742baa7bcd523a48607946f",
+              "Head": "a15339d4b95a855ca04dfcfad5a65ff6fec9c964",
+              "CommitSha": "a15339d4b95a855ca04dfcfad5a65ff6fec9c964",
+              "RemoteTip": "a15339d4b95a855ca04dfcfad5a65ff6fec9c964",
+              "OperationId": "g_9881a1ce6bc94b98965d34a5c62e488a",
+              "PlanHash": "29998367462caae4aa4d8f54afeb60e4903d432c57615f7a12704b25c9a61763",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "d0c3c051c62a037b134af8ead3973ad664635e4ef42b20ced0275721fe8a338a",
+                  "JobId": "job_0f6ef11d0ff5423fae712b077695ec4f",
+                  "QueueItemId": "queue_85dc53a4201349f4895b8a539e6146b1",
+                  "WorkflowAttemptId": "attempt_cb2c6bf71c22413b83b1e17e100fc904",
+                  "BatchId": "4dfdd18d1d3c11d891dff0c3a4a0f4628654cd5a15b67f5bbf8a45ae8089f3e9",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_2e7b6d3104574fb48bfc6cb77a49e0ba",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch",
+          "outcome": "Passed",
+          "duration": "00:00:03.8876447",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "c9a19b0f338a1f7df4314fe51d7c088154b913da",
+              "Head": "8e3624bbefca0f1518a5e25b301eb2fd86d4fef9",
+              "CommitSha": "8e3624bbefca0f1518a5e25b301eb2fd86d4fef9",
+              "RemoteTip": "c9a19b0f338a1f7df4314fe51d7c088154b913da",
+              "OperationId": "g_b54aaaaf970e45c99aecb32b19dc5832",
+              "PlanHash": "5102c45850cb759c8041ea1d78fbc265583775588200438372ef719764025861",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "529f1914bf6adc4a8bf7252d54090bb3e5065a20ee89b3ae215707bb60198cc0",
+                  "JobId": "job_f714d7bc3d9040dd9a300c39644d5db0",
+                  "QueueItemId": "queue_7e3e710d1e914aa2bb7b69cdaa9470c6",
+                  "WorkflowAttemptId": "attempt_b22e0aa25e584a25abab708e277a8065",
+                  "BatchId": "59585283940af7f15729fc1eca7b8e3fe84d639972121f64e7c17e1dc2a0f486",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_457e6f91fc1b48499a90fa29338ea51c",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before_push_command\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:10.0724651",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "25cece0b8ecefc921b3f73c3b0111c3457e01654",
+              "Head": "535dec052e402126332839a08dd3491d69fb9448",
+              "CommitSha": "535dec052e402126332839a08dd3491d69fb9448",
+              "RemoteTip": "535dec052e402126332839a08dd3491d69fb9448",
+              "OperationId": "g_c009c108d9104e42ae048d275c92478c",
+              "PlanHash": "aa8dde19cba34b0273a3a96ce626f3d4f8eda6302147222b9a06a325b946f8b2",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "b3ba5695839899730b761570e6bdb77c0dd804ef69da2c21c1e2adc698e50d8f",
+                  "JobId": "job_917f6536242f42c0a3ae081cc58c9400",
+                  "QueueItemId": "queue_23b87e91ee4846fd80be854d85335779",
+                  "WorkflowAttemptId": "attempt_0318d433b4ec475e83b0dd0304f3cae5",
+                  "BatchId": "ad6e53f1cea3e82f3243a3a3a7ebe2d77543bab82acbe1a1a5fe032e6362b582",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_e026bfda92024ca8b5242d78186df114",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"advanced\")",
+          "outcome": "Passed",
+          "duration": "00:00:05.8099287",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "08db5b59bab42f9ac741914b37ce8495f42705d2",
+              "Head": "483948285d61fad695a3a7236a13c3eb884a5f5f",
+              "CommitSha": "483948285d61fad695a3a7236a13c3eb884a5f5f",
+              "RemoteTip": "6e1076580edcf5f1ab4aa6c4126acbb1d76bacb3",
+              "OperationId": "g_97abdab64402405783945e968069ce2c",
+              "PlanHash": "e6c1f572174a69a4980b3a87b39e591b98a3fa97dd3d0683091ba3f5d6e92288",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_remote_changed",
+              "Intents": [
+                {
+                  "Id": "ab5a3e5c722865b7e41e51c502bc2cc9efb088cf920f7e9359588db57a4ea155",
+                  "JobId": "job_6efda5d00c714f1aad89322692b53825",
+                  "QueueItemId": "queue_2b21a8e0715f41c894edba0ec32896ab",
+                  "WorkflowAttemptId": "attempt_95d61d2384c14d73beb461b4859c33be",
+                  "BatchId": "9d03117dd84cf46fc8ac61c20610fe4d629d522846222509660e41ff948e3e90",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_2a2cb268ce43468cbadc8856c6348315",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before_push\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:06.4116584",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "7e3da22029b110c1bbfd9d579ccb75162c95cb0a",
+              "Head": "62e91c3cf1623f489f8e26c0396f6e56009fc0ed",
+              "CommitSha": "62e91c3cf1623f489f8e26c0396f6e56009fc0ed",
+              "RemoteTip": "62e91c3cf1623f489f8e26c0396f6e56009fc0ed",
+              "OperationId": "g_325f48f3b1ab4d519fdc109a06042d51",
+              "PlanHash": "f4129b9234b44d29aab561895ec4e695d6788e2fe4b2802150b1286ca5907ae0",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "0572814b7075ea6192cbf6aebe19cbe8a929be663aff52e6585a8ae5750476e0",
+                  "JobId": "job_f6e1dbaa99c74b628e2bf5de06d9c9a7",
+                  "QueueItemId": "queue_aece855ed01f460b83aca55f42b7f512",
+                  "WorkflowAttemptId": "attempt_314a8bbf9fe94438bbd3d4d1b581bdcf",
+                  "BatchId": "ceba4388e612dccfacfbd579ab1c9404294b57a8a3d63793353c8dbc9a1ed013",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_1890837dcf994610b590db1fc0975201",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.DurablePushedEvidenceCanReconcileUnderNewCommitOnlyGrantWithoutPublishing",
+          "outcome": "Passed",
+          "duration": "00:00:09.0876838",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "b94d9d595b185749259483f4e3280dc43a1cec03",
+              "Head": "e78864f4226f7c72935f0a07abbf072a4bbdfe53",
+              "CommitSha": "e78864f4226f7c72935f0a07abbf072a4bbdfe53",
+              "RemoteTip": "e78864f4226f7c72935f0a07abbf072a4bbdfe53",
+              "OperationId": "g_97f89cba727a4d17b901e078ad28456e",
+              "PlanHash": "478f8ce2153fca7e10dcabc54dcdcd7c4b8efe2747cf299c76823cbad0584e24",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "5a03e57a6cd69a63f1e0d093cea64514039796134e2bcdb4765b58b161895c14",
+                  "JobId": "job_6f835117a16e4e3093680f1d2cbf0c83",
+                  "QueueItemId": "queue_6f883e3ea21748e38b4d1bec56be4c6b",
+                  "WorkflowAttemptId": "attempt_fcc03e54d4b64d7ab2eb86c6256cf584",
+                  "BatchId": "532e50a68f94275a63a4b9f2dccdb8a62786dd0445bdc57a037fb28fda0f4244",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_28fddba6de094f3aadedbd040e07887a",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualModeRequiresExplicitPushAndDoesNotAdoptAnUnrelatedReceipt",
+          "outcome": "Passed",
+          "duration": "00:00:24.5064094",
+          "zip_inputs": 1,
+          "observations": []
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.AuthorizedBatchVerifiesRemoteAndPublishesExactlyOnce(jobs: 5)",
+          "outcome": "Passed",
+          "duration": "00:00:22.3425871",
+          "zip_inputs": 5,
+          "observations": [
+            {
+              "ZipCount": 5,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "e7ce54eb535d6b78c140d70812eed85c34224d2a",
+              "Head": "890a8151c162cc996eaa5930a4cbd953b6d89f20",
+              "CommitSha": "890a8151c162cc996eaa5930a4cbd953b6d89f20",
+              "RemoteTip": "890a8151c162cc996eaa5930a4cbd953b6d89f20",
+              "OperationId": "g_a379c84b690d4864ac54379e35a1217c",
+              "PlanHash": "7498b6b4bd041c73b8f9f0d9e5457ac1e65eeb072b8af08a4d3eac64dff0780a",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "3f80f4805f846584bda48ea89363d38c359c739290af8c2271287792bfe6b615",
+                  "JobId": "job_5d1c38b731e841ca85e17526c71dc6be",
+                  "QueueItemId": "queue_9814fbef784f4c20b3ee2f2ae66cba71",
+                  "WorkflowAttemptId": "attempt_bdb01fdaa5244136939a16d2456ed447",
+                  "BatchId": "93758f9d5c128db6ed0c259b9e444e83c59b8ed9971764f7f47ec38fd8cdd965",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ff07c51097a44d3390f8c1d7547a6fbb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "ac87e41b93064f2b649985063cf0014c12bef84657f33577dc7761e3be94ddc1",
+                  "JobId": "job_9ec09ebd46804e9fbd01867b267b79fc",
+                  "QueueItemId": "queue_6075b51da2a24235901e5f3b71602677",
+                  "WorkflowAttemptId": "attempt_65f8132eafc14db3a7cb61ece2e1b844",
+                  "BatchId": "93758f9d5c128db6ed0c259b9e444e83c59b8ed9971764f7f47ec38fd8cdd965",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ff07c51097a44d3390f8c1d7547a6fbb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "2504f701dd958c58c22e23e987c36f6e3a792c851cae3b0ea33444e8af0e1251",
+                  "JobId": "job_e0139555dfdc408e800a8904f5436716",
+                  "QueueItemId": "queue_526278bfa3e54b9fa541566fab7bad66",
+                  "WorkflowAttemptId": "attempt_e97f6edaf73c4092aa3e98d9c348c776",
+                  "BatchId": "93758f9d5c128db6ed0c259b9e444e83c59b8ed9971764f7f47ec38fd8cdd965",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ff07c51097a44d3390f8c1d7547a6fbb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "bd3bd2be728f4977994e67bc4db96eff29ebbe804483158acac7503039a8e40c",
+                  "JobId": "job_2c9a45d05464467f870d32b2cd395594",
+                  "QueueItemId": "queue_cd0a719d8aaa43a1ad78b141fae23e4f",
+                  "WorkflowAttemptId": "attempt_d634a353a6db41a1bd610ec78383b735",
+                  "BatchId": "93758f9d5c128db6ed0c259b9e444e83c59b8ed9971764f7f47ec38fd8cdd965",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ff07c51097a44d3390f8c1d7547a6fbb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "ee063dee2d641d992d6889f85f0ce745a0224f1b57c032bd2b61cd5bb5011fef",
+                  "JobId": "job_ca80b47df967444c8fd851c24f856c6f",
+                  "QueueItemId": "queue_fb059e4c2fd54b958bf47554e2010b27",
+                  "WorkflowAttemptId": "attempt_cb3ceae1590e4922ab77fba266e988b0",
+                  "BatchId": "93758f9d5c128db6ed0c259b9e444e83c59b8ed9971764f7f47ec38fd8cdd965",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ff07c51097a44d3390f8c1d7547a6fbb",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"remote\")",
+          "outcome": "Failed",
+          "duration": "00:00:05.4070145",
+          "zip_inputs": 1,
+          "observations": []
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.OfflineRetryIsDurablyBoundedAndExplicitRetryRechecksRemote",
+          "outcome": "Passed",
+          "duration": "00:00:05.8253348",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "bc54ebef2488890ed59aa501d0ed6d784c0c769b",
+              "Head": "4e43993d09d078e1e21cfc71bc553bee88c609cd",
+              "CommitSha": "4e43993d09d078e1e21cfc71bc553bee88c609cd",
+              "RemoteTip": "4e43993d09d078e1e21cfc71bc553bee88c609cd",
+              "OperationId": "g_71aea73524274fa188885eccc4558216",
+              "PlanHash": "ef035a581eefb2ceeb0854acd2b13d349bc02ccc4d748424a89b513a01b75362",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "738eb5339c91ec0d9c571980bfee86536ee0572025613efd53ab496863672d66",
+                  "JobId": "job_072b9bd7bac94ac09bf39267f5162496",
+                  "QueueItemId": "queue_f0b36c64ab4c423d86f6c3e06437a373",
+                  "WorkflowAttemptId": "attempt_bc45484aab3d4a1199f69f27ecc3a5e5",
+                  "BatchId": "51a95e2845fb44fc9a6d53312b73601564f4f021dc49899bb3b0210014445da9",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_e11cd17d85844216aebb0cd39d451e82",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndPolicyWriterCannotRaceOwnerAtTheIrreversibleBoundary",
+          "outcome": "Passed",
+          "duration": "00:00:06.7574420",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "af704ba5728352a1642ef8faef0269fabb8ea708",
+              "Head": "35351fb987e66f67cdb062addd5cef491db99b64",
+              "CommitSha": "35351fb987e66f67cdb062addd5cef491db99b64",
+              "RemoteTip": "35351fb987e66f67cdb062addd5cef491db99b64",
+              "OperationId": "g_cd2820f9cf18403f8bbbdd820f55fe42",
+              "PlanHash": "650f88dafb1aabb31e2358e95b7df607ca18e64247a2541c1a67b6e7a5cc6f54",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "a22fc7067e37be67ab1618d789e3bef26665a37eece5c612bedc351a71243625",
+                  "JobId": "job_5915950a839240c291362710ea214fa9",
+                  "QueueItemId": "queue_6ad84323686d4fc2b010beb3e372ccd1",
+                  "WorkflowAttemptId": "attempt_17e1c2b7892745a28b3e3f32d08c2b66",
+                  "BatchId": "5f44355eff7669769302dd3619b5cf5ba3db8722833b695964ef1ab7aaedfa41",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_94bc7cb2595a48d9b1d2a1d730ae8215",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RejectedPushRetainsCommittedAndNextAuthorizedTurnRetriesNativeEngine",
+          "outcome": "Passed",
+          "duration": "00:00:06.3009585",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "33f0685ac7a7f32f882173148d4150b69348a85d",
+              "Head": "2ed38ece7f8b43e3a63b260230bf39fd8fd582b7",
+              "CommitSha": "2ed38ece7f8b43e3a63b260230bf39fd8fd582b7",
+              "RemoteTip": "2ed38ece7f8b43e3a63b260230bf39fd8fd582b7",
+              "OperationId": "g_c8b78755e6cc44ea90240e3a2ce1f9d4",
+              "PlanHash": "a8868665720d5f29bd25d1815befba1d9b83a40decc103a59ac77fc5a1229def",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "711ff2be776dccf5596a028656dcf0f08b4ac1ddf1bbc72a13270e3a98fc4ae8",
+                  "JobId": "job_6a07336a0642462abb061106cee69bac",
+                  "QueueItemId": "queue_b6b74a9581b7420f9b0e5cddb278a3d3",
+                  "WorkflowAttemptId": "attempt_aa40cdc437244d0ca7d345e4fc776769",
+                  "BatchId": "9202e69d9463dd63c26ac4e94c4f449fc6eb280c2f446941fd042d49fbda5fb1",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_7482365c3d4048d4a3823aa56a1d3a5f",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 2
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"corrupt-receipt\")",
+          "outcome": "Passed",
+          "duration": "00:00:06.7222801",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "d53e0a1cb402a730143897fffb0a5cf0beefdac3",
+              "Head": "9f18fd127b46071b90226f8a938b87ea2885d13a",
+              "CommitSha": "9f18fd127b46071b90226f8a938b87ea2885d13a",
+              "RemoteTip": "d53e0a1cb402a730143897fffb0a5cf0beefdac3",
+              "OperationId": "g_c8f98225a7694ee4921fe7e5c07e7718",
+              "PlanHash": "0dbe6a9301750928839800ce779391b7fc46cafd42abaefe1e6c0043782f878e",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "2cdea080884faa9d2bec216247df9623a7dbdadc6cefff1b8540f4c70d41ff47",
+                  "JobId": "job_a4b931c2ad2d44feb2ab71f1c4a3c297",
+                  "QueueItemId": "queue_b2ad05c69b8446a98743b5b4a75b5bb7",
+                  "WorkflowAttemptId": "attempt_1d0f9897de684f498e7e7abc5c1fe88e",
+                  "BatchId": "a5234338419453f68e319b0614c883a45f4d4710027bcf4afaa660e5ff62f451",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_9bce1a8750b14381bc7f0dad23d33ba6",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"pushed\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:09.3153875",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "9f7c5af07ddeed1f2fa0eb993e90997c8665613d",
+              "Head": "3276af6d5fba5f3859bf0aaf5c5ef811c4f39d61",
+              "CommitSha": "3276af6d5fba5f3859bf0aaf5c5ef811c4f39d61",
+              "RemoteTip": "3276af6d5fba5f3859bf0aaf5c5ef811c4f39d61",
+              "OperationId": "g_18ebf833d99e4aad889bd78231e09db8",
+              "PlanHash": "2b83ffbaf96e1d328265e4e50859c436d6bf977bb7df5f1a776961afba4ee4bd",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "609e3efb9ec4be1c7b33a6e4d98385640fe7e22c24776e7c998aff688f3c9485",
+                  "JobId": "job_a908c5797f364c61a486602127848e50",
+                  "QueueItemId": "queue_ebbb31c263b94e2fa0d45b78730f69d0",
+                  "WorkflowAttemptId": "attempt_6ff91b0defab44378234fee709ad5c82",
+                  "BatchId": "47b30437b7971901bf353e4cc596404784d8106cc06319d0541fb1065ed570ed",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_cbb26b5c64904bcfbc0a1fccd0aa9f20",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.NativePushRechecksAuthorizationBeforeCommandAndAlreadyPushedReceipt(alreadyPushed: True)",
+          "outcome": "Passed",
+          "duration": "00:00:11.6067889",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "714783a277541c73ca6ebfc1f36172714edbdeee",
+              "Head": "3eb297ff309ee940e9c4e49c9312974a0fb2b479",
+              "CommitSha": "3eb297ff309ee940e9c4e49c9312974a0fb2b479",
+              "RemoteTip": "3eb297ff309ee940e9c4e49c9312974a0fb2b479",
+              "OperationId": "g_5215b26a51d04079b8bf863df58ca505",
+              "PlanHash": "242297201f9fad5bf70623a0c6055c61d3e9d4a3338c6155c0011e387b0c8f7c",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "5f97a08cd077f9e667b2c27985b370434b88984553e385621c862531abd6d6ae",
+                  "JobId": "job_81f55d4d4d434ed19dccd64196337523",
+                  "QueueItemId": "queue_7da650c918634378b5511644de0b252f",
+                  "WorkflowAttemptId": "attempt_cbd473787e0c416baf6059bb560264a5",
+                  "BatchId": "1823f730ff661ec45d5ed90acc268723bf6bfaa70be21f120e1b215e373c8592",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_6ec879f898aa40679b4210bd1e35c91a",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndExternalPushReconcileOnlyTheExactBoundOperation(external: True)",
+          "outcome": "Passed",
+          "duration": "00:00:12.1279967",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "8b02df3e201b1cc6e1c3f4df66a25ab02a92abfd",
+              "Head": "f74eccb0981e4c1f8836b999bc926413bc791492",
+              "CommitSha": "f74eccb0981e4c1f8836b999bc926413bc791492",
+              "RemoteTip": "f74eccb0981e4c1f8836b999bc926413bc791492",
+              "OperationId": "g_a696c31cfcc345d5b4e49ee490cf7616",
+              "PlanHash": "be4d4a303d8b82781de5183b9c098f3f864491357a20c659c4e49d640d803840",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "90f4a1c3321a0c6a35eb7f1f6a676634e07f63cfb807d6ba7f5d3d6e9c9b9e1a",
+                  "JobId": "job_ccbd47e4231d46f08f631eccf591b098",
+                  "QueueItemId": "queue_d14f1929fd674c8c887bd62b3dcab5ce",
+                  "WorkflowAttemptId": "attempt_947a9b1bcffc4a06861245416a2ec850",
+                  "BatchId": "4df336b0dffe87fe7623765dda79a5a4a067b2554080925007031ef72509b94e",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_e34ef3c1258d4e9ca280271cde18ac55",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"push-returned\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:08.1292609",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "5809b4e9764ed22a4c12f51a17da269e31923031",
+              "Head": "9647780c45a23534f9ad0db87fc3bbf2abe941ea",
+              "CommitSha": "9647780c45a23534f9ad0db87fc3bbf2abe941ea",
+              "RemoteTip": "9647780c45a23534f9ad0db87fc3bbf2abe941ea",
+              "OperationId": "g_7eb108712c0b458d83ab2e1c29874050",
+              "PlanHash": "523dae5688246e040964db34da67ff344408396a2bc0d28e33660207ad03928e",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "ae3f75e384d53b09aa217b0f3ad586074559ea94c0292ee51a8a368bb5bcdbb2",
+                  "JobId": "job_f567d00ac87a418a90ac534afbdc6348",
+                  "QueueItemId": "queue_5b534352e99f4ad79e9e8a840ba55cf0",
+                  "WorkflowAttemptId": "attempt_682740e94e2f4217a0a8837d4ccc726d",
+                  "BatchId": "afbb47a65123ac109c6d42772a02d319e4c4c2ada15d691702bcc2ed5a61792c",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_a201d97b70924bb18512e4986818577d",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"upstream\")",
+          "outcome": "Passed",
+          "duration": "00:00:05.4189980",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "54d276a069cf1eda322a2238b35a554c25703ec1",
+              "Head": "3ec8cb66a9ebc7d4ed3169266b834ff56879b6a3",
+              "CommitSha": "3ec8cb66a9ebc7d4ed3169266b834ff56879b6a3",
+              "RemoteTip": "54d276a069cf1eda322a2238b35a554c25703ec1",
+              "OperationId": "g_56b77ac85b00443e811384e40b1716fc",
+              "PlanHash": "ce7af78b6544f97033909ebeff9dda490316e24da54fddcf36894e9c2db75dc5",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_remote_invalid",
+              "Intents": [
+                {
+                  "Id": "26ba874f8e4f1b6cf2a8a4b0ae17734190668ed246050eecce2861327c6a2da2",
+                  "JobId": "job_0c7435931cea40338c576aa4ead3948b",
+                  "QueueItemId": "queue_bc6894c6a1e340b88d967d5061d40918",
+                  "WorkflowAttemptId": "attempt_d8fa6964f8f54ec6a288067fcece9161",
+                  "BatchId": "5473a65b8b32f60498c994c9fb7abeb4930d8d12801fdef4ce6d809bef345d4e",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_60bcbcfaa658470a97733bc9d4f20f56",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndExternalPushReconcileOnlyTheExactBoundOperation(external: False)",
+          "outcome": "Passed",
+          "duration": "00:00:06.4792187",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "bbe64d43180aede41ed8adc9da4382a9f34d0f38",
+              "Head": "90a174b6c446384cfaef2d3fae213228538edebf",
+              "CommitSha": "90a174b6c446384cfaef2d3fae213228538edebf",
+              "RemoteTip": "90a174b6c446384cfaef2d3fae213228538edebf",
+              "OperationId": "g_5a5387d004d645a48a400fbdd59406a7",
+              "PlanHash": "792c75d3abfdb482ecfddf2d880413d54830d075000e426ad007f8bed9114c8f",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "f53bc9021fa26bd044702f98d2dada6a7ca4235dac5da42efb0ca431d11eaffd",
+                  "JobId": "job_3c7477faeb334b4684266ed68c8148fa",
+                  "QueueItemId": "queue_1d482cda38b94bf6a8b6d3448e6ebf80",
+                  "WorkflowAttemptId": "attempt_4639913ca0f247328efc7f2e0e13c35d",
+                  "BatchId": "9e21242224bcad697d65384ef7731e6a4c5124ec42e02313e2252846b7f28f35",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_bd51c3847983463bb6f71dc7a05bcbd5",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.AuthorizedBatchVerifiesRemoteAndPublishesExactlyOnce(jobs: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:05.6365976",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "10767d7771537f240df293b4beb6e2918f14e022",
+              "Head": "b3d07e751ef47ecd7fac009dab96662b1d9ce870",
+              "CommitSha": "b3d07e751ef47ecd7fac009dab96662b1d9ce870",
+              "RemoteTip": "b3d07e751ef47ecd7fac009dab96662b1d9ce870",
+              "OperationId": "g_cef98c3a6a3247caa1228ea6d43aa8d6",
+              "PlanHash": "64176b23da57e2c4dcb6fd8ca2a0645753c4e7634924d023c73f0b27f92ba8f5",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "75204377733882f2606052ebcb96bc3a3ec5a8b016956c57b0ced4e08832e81d",
+                  "JobId": "job_48aefe7802b147fbaa8619ba3d0b13c5",
+                  "QueueItemId": "queue_eee0b48cc4f843c7ab28e18361b1c9b9",
+                  "WorkflowAttemptId": "attempt_8c6e19cb3f4549248f389b34410da3a4",
+                  "BatchId": "ade4a4048dc3e7e8b35d28f174690f0ef2d2bf260c59e9fa353d6dccd7ccd13d",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_67d09adde5dc4ceabbf22c50d47c049a",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before-push\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:05.8569886",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "22fa1a669118b303242c3be5393ccf37b67f986e",
+              "Head": "037970c2948624e19fc19d4ea527677a2bf02a6c",
+              "CommitSha": "037970c2948624e19fc19d4ea527677a2bf02a6c",
+              "RemoteTip": "037970c2948624e19fc19d4ea527677a2bf02a6c",
+              "OperationId": "g_b2393315e3154271ac79241f5e4b5367",
+              "PlanHash": "4415b6e2a962ffc65c110a260cb0a34b95aafa033d53e6d40dcc68de7b33eebf",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "1c3d64359e98a55c736109a8edc427d007b9a1bf8e3eafc2244e37f0c6c95ba6",
+                  "JobId": "job_d9c13ada9f4b475c9ae066b8c8f12e27",
+                  "QueueItemId": "queue_3b52d6bf6dda4fe29617295565d9964c",
+                  "WorkflowAttemptId": "attempt_6247997865cf47809f4902c07a6137f5",
+                  "BatchId": "5ddf505cc4a860ce8fb44299efba90eddd5067371bfcc5d9466ee678bdf8e543",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_c588ffd0d1734d0dbe45ab96bb738362",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.CommitPermissionNeverImpliesPush(mode: AutoCommitAndPushBatch)",
+          "outcome": "Passed",
+          "duration": "00:00:04.6289422",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "5ba8ffcbb5246f03f87c94f7c26e8d1658013cad",
+              "Head": "bfaf832540dd145d22ba64b90c732b05aa94ad68",
+              "CommitSha": "bfaf832540dd145d22ba64b90c732b05aa94ad68",
+              "RemoteTip": "5ba8ffcbb5246f03f87c94f7c26e8d1658013cad",
+              "OperationId": "g_f4faf7ddec5e46b4a24266e44e11c46b",
+              "PlanHash": "ad8c7612ce4102879093036f32fd1a6e86e996e8624e66377b52a45738e7fe86",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "c8a5d31f86fe110deb82b40c0ff73377d6ba747f59a63ea06c7e8c652831784d",
+                  "JobId": "job_c370d5b66ba34f8c854fc5691aafa605",
+                  "QueueItemId": "queue_fc3b7e9fcb804dc28de539d47cfdd01d",
+                  "WorkflowAttemptId": "attempt_bc73581721d94f00a2372018c4f72e0d",
+                  "BatchId": "dfe0eace29221f32090e9a6811ac4aa34cf18eea56a76733c2741d5916d56270",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_779e3c3f502f479bb6b26b0ef6061083",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.CommitPermissionNeverImpliesPush(mode: AutoCommitBatch)",
+          "outcome": "Passed",
+          "duration": "00:00:04.5449265",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "fa21c7679621e528764ce61ed1c01456b2bfbc2e",
+              "Head": "a0808ed712eb4aa2002b4e08b6dc7b1c8c932d0f",
+              "CommitSha": "a0808ed712eb4aa2002b4e08b6dc7b1c8c932d0f",
+              "RemoteTip": "fa21c7679621e528764ce61ed1c01456b2bfbc2e",
+              "OperationId": "g_111160a70dee486b90fc835593b6a3b1",
+              "PlanHash": "fd2d1f529a84f6fb219da7c79db7c961301e148a73afef9566c657a1c9b683cc",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "c11fe1933979c180ec818e3eec2d44d49a3697554668136fd049c9411cf294f0",
+                  "JobId": "job_30e807f44f3c4ac5834ace1b210880c0",
+                  "QueueItemId": "queue_9139fb2eb7c448b3968c02b369c00dd3",
+                  "WorkflowAttemptId": "attempt_87f8ed7c69614d73b4cbed664b222b0b",
+                  "BatchId": "42977dc53a0f3bf6802f810473a8b9ff8ea37d9e38c83daffcf035f0046463fe",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_7fd5ed8fc0e54c03aedd38fe8701bf29",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.NativePushRechecksAuthorizationBeforeCommandAndAlreadyPushedReceipt(alreadyPushed: False)",
+          "outcome": "Passed",
+          "duration": "00:00:04.7372915",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "31656525de3f395747ae2fea1e1f220014685c09",
+              "Head": "69d349273fc81ba35c909aac0d0eec455a34d05c",
+              "CommitSha": "69d349273fc81ba35c909aac0d0eec455a34d05c",
+              "RemoteTip": "31656525de3f395747ae2fea1e1f220014685c09",
+              "OperationId": "g_948fdf0489f740078eda3a7ce3d3fa8d",
+              "PlanHash": "dfb68b3f5744bb3a93c89b82b39f2b3b31be8d0867935415796a454590566826",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "66bf1e1fa3a30d241345cb960e295c66201570c2066094bec09e9768a9cd8736",
+                  "JobId": "job_71ee7dab45444f32ba3c51b854f62592",
+                  "QueueItemId": "queue_26fe5376267542c09ae002f20a166b1b",
+                  "WorkflowAttemptId": "attempt_511b84392e16435f886ffec64f96adf6",
+                  "BatchId": "e22991c37fceb1ce68506b77cb8e9f7fc2cf8d1dfc9353fa42f72272c62bf9fd",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_c29963169361416db21d6bfa3dc0308d",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"identity\")",
+          "outcome": "Passed",
+          "duration": "00:00:04.7530009",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "1be5cf3ea70052e73446392fb57ce38436bad925",
+              "Head": "acd98e67634813321d1d932062546bad68087e50",
+              "CommitSha": "acd98e67634813321d1d932062546bad68087e50",
+              "RemoteTip": "1be5cf3ea70052e73446392fb57ce38436bad925",
+              "OperationId": "g_fb3ddd7a4c194a5daa15ae931638937a",
+              "PlanHash": "88349dda3dd4e6e790243773c2a1c4099ad1692ad16345578120ab553986880d",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "461d01f09fba9dfa4e8c276e8545a5803f7f6dd0445879f17a2ce0e55e2eb668",
+                  "JobId": "job_0c204b75ee9541bba079de0a1b0537cd",
+                  "QueueItemId": "queue_52d1d7bfd60a492ba70a83d69e55f70e",
+                  "WorkflowAttemptId": "attempt_379fca36dace445984468c5c909afa11",
+                  "BatchId": "f24e5b3e48388572f01a8338d697c18ea67ed81a5d422c4d6c9d00976b807f8a",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_8d24e9014139468b8f2aa0b998bc1ed5",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "f73-final",
+      "source_sha": "18fafeb810acb15d7ffdcee0fe06d1eef5f43322",
+      "raw_counters": {
+        "total": "27",
+        "executed": "27",
+        "passed": "27",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_cases": 27,
+      "zip_inputs": 31,
+      "max_zip_inputs_per_case": 5,
+      "cases": [
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before-push\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:03.9455065",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "dad6174d35a4d2a6e6e375ddff78bea2bd78fe82",
+              "Head": "8f36cea6d3ed7f77813915e705fc122b29d1691e",
+              "CommitSha": "8f36cea6d3ed7f77813915e705fc122b29d1691e",
+              "RemoteTip": "8f36cea6d3ed7f77813915e705fc122b29d1691e",
+              "OperationId": "g_48fa27499b834179a5a4ed9b9aa5432a",
+              "PlanHash": "62aa30da72958f990c8375c5d6c6d37cac480e355335c3f208324b3f74e88acf",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "3183276dad536aa197809d01436bcace91b7a45df70a5035609d4580c4a612f4",
+                  "JobId": "job_0b0a5d53c4bb47858cebc4cdf0cd9c4a",
+                  "QueueItemId": "queue_91a1ca4eefe440e899463a307db87000",
+                  "WorkflowAttemptId": "attempt_d5de51b8dd394d958efc2e9f8beeb294",
+                  "BatchId": "9ec0073ff4510ea2a19c8f70fa16fa7897587672604d46c3cb561bf355aebab0",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_1f9025e8ee424dcb8a339b99fc951cc6",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"remote\")",
+          "outcome": "Passed",
+          "duration": "00:00:04.0463671",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "07fd8ffd70cac05574d73deb2ef8b2bc18ae097a",
+              "Head": "c0adbda4f7e2a1c4ab2ab4e6c0913ff79020e1fe",
+              "CommitSha": "c0adbda4f7e2a1c4ab2ab4e6c0913ff79020e1fe",
+              "RemoteTip": "07fd8ffd70cac05574d73deb2ef8b2bc18ae097a",
+              "OperationId": "g_3178cf103ecf4f868c45bf843c218127",
+              "PlanHash": "a3a71fca16925d0f91fbee32cde4fd8e881ced330750f76807c14e4595ed9d37",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "d6b33dd7efb1c3ce0b7a4fe22c73dd1fbba9b6da513e39800c52331d13bdc529",
+                  "JobId": "job_89ca656cad774049a61ae364ea8fa665",
+                  "QueueItemId": "queue_f15f63ce4d294fa782ef78dfaf7d70e9",
+                  "WorkflowAttemptId": "attempt_936b34718ac74b0487e8c8603a65c5a3",
+                  "BatchId": "4fd5b1dc6d5eaf53667cdfafe30473b6867924d121d9b80e409fb70da17bfe03",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_c7fb31d8bfe14e84b1c7b57347005edf",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndExternalPushReconcileOnlyTheExactBoundOperation(external: False)",
+          "outcome": "Passed",
+          "duration": "00:00:13.9541837",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "aaf6e22126c5a8f94fb5e03e304e372a2a0d9b62",
+              "Head": "222d091e9944e78da5197c5a3d88a717cbc7d703",
+              "CommitSha": "222d091e9944e78da5197c5a3d88a717cbc7d703",
+              "RemoteTip": "222d091e9944e78da5197c5a3d88a717cbc7d703",
+              "OperationId": "g_68001da5277642a79296e63e02c9adb6",
+              "PlanHash": "3bfa1b3ec1da952da421953aef9d6ac9ce7adc7bbfd5dcec6b74b09912209257",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "22817857e151a2c837f34fe9583de8713408e34d999e416993818efaecd72e4d",
+                  "JobId": "job_6c168c02a1c8429dbd757ff6d20a5609",
+                  "QueueItemId": "queue_d2981240c8a54a918fae66f4d4373895",
+                  "WorkflowAttemptId": "attempt_10866777054f49019a65b39c7a746648",
+                  "BatchId": "d1f0c59bff442284cb45c804e56aa1af8b17beca8b2794c3263bfcef940e8c11",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_7469364e9bbc413abbd82a0d8ca28e45",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ExternalPushInCommitOnlyModeIsRecognizedWithoutPushPermission",
+          "outcome": "Passed",
+          "duration": "00:00:04.6743169",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "3fbb45ce6e4cb0d8c3840823eb6cc5180d88acf2",
+              "Head": "9a9fec5c277c278dbdd4be95f4b98c31fff85f8b",
+              "CommitSha": "9a9fec5c277c278dbdd4be95f4b98c31fff85f8b",
+              "RemoteTip": "9a9fec5c277c278dbdd4be95f4b98c31fff85f8b",
+              "OperationId": "g_18b594fe7ccf4bb2a372f6a4aae5d41f",
+              "PlanHash": "c30cf5224e6038b3f84590441e3c7de538203585eb196055d26c802a32852ddc",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "383d42e64803a16a760792fa7b7450fe5a59f698dc0322ba61e2f238ef93e8da",
+                  "JobId": "job_a59380239dfe4c8ea70680c6be67bb81",
+                  "QueueItemId": "queue_16eb329b95784d4c84425b521b1b200e",
+                  "WorkflowAttemptId": "attempt_c070f7bd50d74688a1c247f1a78c2171",
+                  "BatchId": "5f75146f40a3e2bb0a6cebd8e47dcae28e08fd8b0146a5727f49487b68b1287c",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_a158e2bd2e8f4d968c82ad69e887bc1a",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.OfflineRetryIsDurablyBoundedAndExplicitRetryRechecksRemote",
+          "outcome": "Passed",
+          "duration": "00:00:06.1520028",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "c04f40f02ffdb43bd52bb41880aa7bae7b1d795c",
+              "Head": "c3f9f2eec7c6c968517e2e2f4403d22eb9dec74f",
+              "CommitSha": "c3f9f2eec7c6c968517e2e2f4403d22eb9dec74f",
+              "RemoteTip": "c3f9f2eec7c6c968517e2e2f4403d22eb9dec74f",
+              "OperationId": "g_2767a11d801f40278899852527d89365",
+              "PlanHash": "a592838d12e6163e0337b234d8b77cdc18d87ced33be6e7c063382201e9c2255",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "9c0bd8e2e2d35b95e41e2e2be1569d507194eb4a463935c1477accdbe7e553ce",
+                  "JobId": "job_3acb6335b1564ff3a5489f831ccd052d",
+                  "QueueItemId": "queue_081d95eb81b747269e56e4bfeb72d4c7",
+                  "WorkflowAttemptId": "attempt_d9b60cef94654e36b989906bfffdb089",
+                  "BatchId": "62a50df8369e4b2062ab4d446def1dbeb667bc03befecf1991213264026d0e3e",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ac9b52673dee47c89fe29cdfd0c38f62",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"upstream\")",
+          "outcome": "Passed",
+          "duration": "00:00:03.8119126",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "0798fe6bef1cae337ed72a8c248b87650bd30cc5",
+              "Head": "740b7cec4d0f631f73d6e845bcff749dcbf42ed7",
+              "CommitSha": "740b7cec4d0f631f73d6e845bcff749dcbf42ed7",
+              "RemoteTip": "0798fe6bef1cae337ed72a8c248b87650bd30cc5",
+              "OperationId": "g_19be467c6e264380842a1c796940a1ba",
+              "PlanHash": "af4ec0b000ebf927b25cdbf9dd66fe7566a7c3633c711ec83f9195a95d49d9b7",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "e18fe41e12e74437d34fb4adc5dec69c0b8a2f9f5834d8af3a669176e205c62a",
+                  "JobId": "job_fd6c15da6b2245f596f12b7a06ee6eb2",
+                  "QueueItemId": "queue_792d382daac2480ba22a0f1ceed14085",
+                  "WorkflowAttemptId": "attempt_eb59e24e4ea24666858596a437db14da",
+                  "BatchId": "5559b3c982ef2c776eb1a5be276e6e07e9606d775162c36fc939498d75290622",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_d3aecbfc23414dda899eec0802878682",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"after_push\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:04.8035363",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "dc98eec915110b4d2de050870ad75353a31d2f0c",
+              "Head": "ef83fcc858db47a33f5c72dc4908db0ec4f93a7a",
+              "CommitSha": "ef83fcc858db47a33f5c72dc4908db0ec4f93a7a",
+              "RemoteTip": "ef83fcc858db47a33f5c72dc4908db0ec4f93a7a",
+              "OperationId": "g_998e217e25fc4ed6b7dc41195724ad3a",
+              "PlanHash": "7bfee4f8db7877c441b688fb991de08f14ea4998581ec26cd3f295ca762657cc",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "2e812a69c008c8811b68b1b8ff9ee5cb69fbd025533ab3e828670c1b8cafc99a",
+                  "JobId": "job_0d9e25d2fd614b43acba4f3aa71808b7",
+                  "QueueItemId": "queue_762b3076193d4880bb86ed8ead136945",
+                  "WorkflowAttemptId": "attempt_f1a65508d79c45308f951605e74c7f79",
+                  "BatchId": "cf70182cda2ed45793e5f578df9f01c0411ada5a2000130f044b79316ea615aa",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_1b570752b55c44b39277eeeb1cf0d526",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.AuthorizedBatchVerifiesRemoteAndPublishesExactlyOnce(jobs: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:04.9227330",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "abc7bb285a7f41a3178dbea05fa6ad135ba3942f",
+              "Head": "fda7558e0d6beaeeb0d9f1b1d7422c6b1d01bbdc",
+              "CommitSha": "fda7558e0d6beaeeb0d9f1b1d7422c6b1d01bbdc",
+              "RemoteTip": "fda7558e0d6beaeeb0d9f1b1d7422c6b1d01bbdc",
+              "OperationId": "g_fe48c4be34e74cfebb41c8fe01238854",
+              "PlanHash": "26fc571c64334d7a3c661ff36ea757eb4da44b57cb6b59f1997e6438a0b482f1",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "1eaf2d465567d44ddc3071cec6477c51d73f5a6673f76289fb09c47a062a04eb",
+                  "JobId": "job_2a8cc4838d99403cba50b11ef76a801b",
+                  "QueueItemId": "queue_8ee0e3de1d264aab9ac35bda59123bbb",
+                  "WorkflowAttemptId": "attempt_9b930c163be4455d81196385bd64c04d",
+                  "BatchId": "2391218501c87c0434e9d7725a6a053b0c69b6d07ddf15336bf8d8e3850e58f2",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_911133e1982e4d2ea013281d24f25931",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.AuthorizedBatchVerifiesRemoteAndPublishesExactlyOnce(jobs: 5)",
+          "outcome": "Passed",
+          "duration": "00:00:19.3748230",
+          "zip_inputs": 5,
+          "observations": [
+            {
+              "ZipCount": 5,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "4015b573a4e796a4eefe78bd88f4014d7415203f",
+              "Head": "d7c575a1954ad18e989b93e3a3f9ce4785245252",
+              "CommitSha": "d7c575a1954ad18e989b93e3a3f9ce4785245252",
+              "RemoteTip": "d7c575a1954ad18e989b93e3a3f9ce4785245252",
+              "OperationId": "g_a95250e80e0d4580a2ee387b96b5ada7",
+              "PlanHash": "d2d8826c8ff5b80066041352bfc7c85a49d38173a5c5c175fb5b645f3fecaada",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "93d363961e25ff1a91f2b6c3564687443a5265b61fb96c43397adb3d6532808b",
+                  "JobId": "job_58d9c22a6c5049358718dab63161e917",
+                  "QueueItemId": "queue_5a814aa11a144941aeb57cd9cb92d9f8",
+                  "WorkflowAttemptId": "attempt_8b6b1472bc74402e96fc32d6b7aa1027",
+                  "BatchId": "f71dff896227a099bf79f5c6f2e47480a3f6507682329fd72a3106cca31ebfba",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_42e1bc46e0ee44f3b1c1a1b8223f65fb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "5dd44a6cae61de9eeda88b231c0eb0af55c97860f75146bbe18b00ba05df5eb6",
+                  "JobId": "job_26a92c7b058743a4a6a8333d5b047a54",
+                  "QueueItemId": "queue_5cee61474f9049ad94dde61129b3ae58",
+                  "WorkflowAttemptId": "attempt_8518aef14eba4454a4e09a5ee217df89",
+                  "BatchId": "f71dff896227a099bf79f5c6f2e47480a3f6507682329fd72a3106cca31ebfba",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_42e1bc46e0ee44f3b1c1a1b8223f65fb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "2e1539790d1414ef8924c009dfd640ea435657b444ab5f8446134acfaec211e7",
+                  "JobId": "job_b3afccf3c03044aabdf9c7d2b9b7a1e6",
+                  "QueueItemId": "queue_6919aa470e3e43eaaae4011868c69485",
+                  "WorkflowAttemptId": "attempt_efe1f99cd9f64e6896e43a14c503cee6",
+                  "BatchId": "f71dff896227a099bf79f5c6f2e47480a3f6507682329fd72a3106cca31ebfba",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_42e1bc46e0ee44f3b1c1a1b8223f65fb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "5e417268e43ecbc5c152bf7e5c0d8fbd82001621e8844bbc3f873122de72e35a",
+                  "JobId": "job_741c1cd868714772aeaa5d866bf14fe7",
+                  "QueueItemId": "queue_32d0740744c74130a2f1a56013b61bca",
+                  "WorkflowAttemptId": "attempt_9772d94f5d734a1592a0812b34ddfd53",
+                  "BatchId": "f71dff896227a099bf79f5c6f2e47480a3f6507682329fd72a3106cca31ebfba",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_42e1bc46e0ee44f3b1c1a1b8223f65fb",
+                  "State": "Pushed"
+                },
+                {
+                  "Id": "2415b035dcaa6e95169b672f5599ece2e6bbde165d3978cba4f6d95957563c0f",
+                  "JobId": "job_76ad02230c654d42a2c6f5fe4c41e298",
+                  "QueueItemId": "queue_fb607ba3ce5046c2b7528f42fa261123",
+                  "WorkflowAttemptId": "attempt_847ecc8f04e4441892d15fcd672e0b46",
+                  "BatchId": "f71dff896227a099bf79f5c6f2e47480a3f6507682329fd72a3106cca31ebfba",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_42e1bc46e0ee44f3b1c1a1b8223f65fb",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.NativePushRechecksAuthorizationBeforeCommandAndAlreadyPushedReceipt(alreadyPushed: False)",
+          "outcome": "Passed",
+          "duration": "00:00:06.0177850",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "a39cad7f3efeadf4bfe059a1fc527ae64ef73f9c",
+              "Head": "df1789a15be5c92278867038b50f204820c130aa",
+              "CommitSha": "df1789a15be5c92278867038b50f204820c130aa",
+              "RemoteTip": "a39cad7f3efeadf4bfe059a1fc527ae64ef73f9c",
+              "OperationId": "g_0e2ad7787a6641279eae08335260476d",
+              "PlanHash": "ce7877539318d666d81446eb8e34820d2711592da131ba37e0abf50c97a4f7cc",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "4493d0b94fa7281b336f4a4e0d66524aeac569a038dd7aa3026dc5cb6803234b",
+                  "JobId": "job_ec664f52532745fca5cab793566ae414",
+                  "QueueItemId": "queue_8d8d5d532949454a940b99c59715357b",
+                  "WorkflowAttemptId": "attempt_df16aefe3e5042448bccbf8f0dd9a001",
+                  "BatchId": "ade96450b11304d898c4a36e614fc4237225b99ddf2acd2d82238cbe048d2f50",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_92bfc5a3d76a4c55b09ff09f33d3ece8",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before_push_command\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:04.0332907",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "5ccb1a35c244ccde7c08842c35d2f073bd56c900",
+              "Head": "ad0a1e98b0dcdcf4947fc6f681c1aa9bf67caf87",
+              "CommitSha": "ad0a1e98b0dcdcf4947fc6f681c1aa9bf67caf87",
+              "RemoteTip": "ad0a1e98b0dcdcf4947fc6f681c1aa9bf67caf87",
+              "OperationId": "g_bae5623472624ccd944b5dcfa51bb194",
+              "PlanHash": "0918feef839f1b0a59f3051fc03720f44db8710d29af11414a48d6101cd08a59",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "5a5bf7f01cc27620e470ffab4b1bba8797a2e00bdb529eb27b5a9d99727edb41",
+                  "JobId": "job_b4b1406f00864d0c87cb574705a14c6e",
+                  "QueueItemId": "queue_3b3071deac7c442f941a6d31cf5f25e5",
+                  "WorkflowAttemptId": "attempt_fa71168e684d429eb12be2a15df7fb0c",
+                  "BatchId": "987d36e1aac4ff934bfc196bb104be3803edc9344a5520f6d1f0c916c08f8d0b",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_785fa614ba71493c87304a0f1b0e4b42",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RejectedPushRetainsCommittedAndNextAuthorizedTurnRetriesNativeEngine",
+          "outcome": "Passed",
+          "duration": "00:00:04.4056692",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "5b053e72b4b45eddd798b4f62c0f683d0f9619e5",
+              "Head": "c7ea3e330906198fe0692c0e756bb65fda848b5c",
+              "CommitSha": "c7ea3e330906198fe0692c0e756bb65fda848b5c",
+              "RemoteTip": "c7ea3e330906198fe0692c0e756bb65fda848b5c",
+              "OperationId": "g_5d491568f3c74a9ba6367dcfcad787d5",
+              "PlanHash": "242e9b6325a06b9b7790d34c6e25fda5e41fdabaf6f51e5624a22f689857c591",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "2e69e76bd54082fa30db97cafc127e32b22d665c836771dbf0215070545564e2",
+                  "JobId": "job_0c057a7343184115a57ae9b0980027c8",
+                  "QueueItemId": "queue_56c2c7ebf82e48398a0a9f6f76038593",
+                  "WorkflowAttemptId": "attempt_8b49ae70e7ab4dc4bf1ebdfda9f8235a",
+                  "BatchId": "16744b2ff3fb34cd101fbb0c2ec9517934181d591a418269d3cdb7faf6529147",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_7f9737b689834adf8b3387d46cb5601b",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 2
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"pushed\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:05.4730202",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "304940a28e74256b05c0a1a6c2e80a0a7a733f7e",
+              "Head": "473ce3a43fd3eb54abeafcdf202389247057ed3b",
+              "CommitSha": "473ce3a43fd3eb54abeafcdf202389247057ed3b",
+              "RemoteTip": "473ce3a43fd3eb54abeafcdf202389247057ed3b",
+              "OperationId": "g_6992ed191d9440b6ab3943494c65e3b6",
+              "PlanHash": "60b0c681befcc36abf28ca9309f8727a2cda54331f872927d2e70b3bdb40b510",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "a759327cfb1c2480a543dc9b4395c501440bda87942bb119cf38e99b138bc51c",
+                  "JobId": "job_324c083bd102401997208f43dd1243ac",
+                  "QueueItemId": "queue_c552d0b0879440b1960920a90dc2daaa",
+                  "WorkflowAttemptId": "attempt_9b45bc46b3ed4ece9d87a46ccae0356a",
+                  "BatchId": "21905401c2e3207c587f05645d4d4651803980ad0e8c422c1bbe85af7e5960f6",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_997228c1ae9f4a85875bf923ad1f5beb",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.DurablePushedEvidenceCanReconcileUnderNewCommitOnlyGrantWithoutPublishing",
+          "outcome": "Passed",
+          "duration": "00:00:04.5866894",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "fe9d90c4cbbf01b8bcb687eb446f5baab45c1b61",
+              "Head": "2c865fe3ce1b53ef9b9f1ece72e78cfb8a786e96",
+              "CommitSha": "2c865fe3ce1b53ef9b9f1ece72e78cfb8a786e96",
+              "RemoteTip": "2c865fe3ce1b53ef9b9f1ece72e78cfb8a786e96",
+              "OperationId": "g_34d972cc057c41abafb256a0b61a05d9",
+              "PlanHash": "16370711e30e20234b53b67d515e5a57fe40b4abd971a4bb286ee47483d64a76",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "be5bf51ae9f0d431d79db5c7d026c41776edba5f1fdc2b3bba602c814d5efa37",
+                  "JobId": "job_fea988f421a24775bc4a681f089db33f",
+                  "QueueItemId": "queue_6108fff23b9a4b44ba7ecfbd0d77bfd7",
+                  "WorkflowAttemptId": "attempt_bc92846589d24ebda793ef29e2687858",
+                  "BatchId": "88f822c845533ee4a456a50601555dfd19c118d8dbd8e042b80e639c1ba2d5b2",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_7b971620a44345e3bb898c9171fb3a11",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.NewManualGrantRequiresExplicitPushDecisionForOldBatch",
+          "outcome": "Passed",
+          "duration": "00:00:04.6063383",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "d7c30b120e235217deaa03ed012879598ee83cd5",
+              "Head": "e0e6e8f16ac5c301da7150a04e413f9ebbc2c554",
+              "CommitSha": "e0e6e8f16ac5c301da7150a04e413f9ebbc2c554",
+              "RemoteTip": "e0e6e8f16ac5c301da7150a04e413f9ebbc2c554",
+              "OperationId": "g_85dcb1794e4740fda2543430344362b7",
+              "PlanHash": "13243c70e40a761cd20146ce7d701ff62edcdb771e4f5853c0fef50178286c2e",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "bfc08da4a6a62a7018ac2839c619fadbda7457f8be89f625c2a4cc95c6ed383b",
+                  "JobId": "job_101646d063db482a9c076dfa5f5ad5b3",
+                  "QueueItemId": "queue_f1aacb711fbf4e76af9904cf87c22cf3",
+                  "WorkflowAttemptId": "attempt_280ce3057e0641249f14b592894401ef",
+                  "BatchId": "8526e36aab121258f67402244bc1895d7fd22e4decd77545d25003359802840d",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_65e8c69b45e14bf7a4e444f14deb8335",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.NativePushRechecksAuthorizationBeforeCommandAndAlreadyPushedReceipt(alreadyPushed: True)",
+          "outcome": "Passed",
+          "duration": "00:00:07.6362585",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "e76821667cc76743013dd0afe455a3b90d8fc2c2",
+              "Head": "0a50f9b4925c2f7befb59d4a3a7f9bba7273c312",
+              "CommitSha": "0a50f9b4925c2f7befb59d4a3a7f9bba7273c312",
+              "RemoteTip": "0a50f9b4925c2f7befb59d4a3a7f9bba7273c312",
+              "OperationId": "g_801568845957429cb5fc2b8b044ce1ad",
+              "PlanHash": "7fdd75ad4231bd54347e16ad2acf77950fa83fa8bc852eb296dbbe4947647819",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "fba487559c845e209311ea8096e5f65456d3e921f1f20d8d4fda1de5e7ffd545",
+                  "JobId": "job_f1ff4427aba642fab197f5da74c4b27b",
+                  "QueueItemId": "queue_a79c0bd5a6ee4b5c90457252048e0934",
+                  "WorkflowAttemptId": "attempt_a0d58cbd1bfc40569427e04848b57a90",
+                  "BatchId": "0cf10392b8f808753631e1ea386291c16a5bb203948848117f647d05d6414f97",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_f8a7c91b3549445d8843f3428d6aa2ae",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndPolicyWriterCannotRaceOwnerAtTheIrreversibleBoundary",
+          "outcome": "Passed",
+          "duration": "00:00:04.0414662",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "362e7ca04f3aab9637362b6396deaf4ac02c38e4",
+              "Head": "35aa8ba681f18a7428c1c736f3f7204b04f8840d",
+              "CommitSha": "35aa8ba681f18a7428c1c736f3f7204b04f8840d",
+              "RemoteTip": "35aa8ba681f18a7428c1c736f3f7204b04f8840d",
+              "OperationId": "g_a6b15773d1cd415b9031dc80ef7d265b",
+              "PlanHash": "d8eb1a8cd322105d2e73d27def10fd2d82e0dec159df03c1410af32ecda14a32",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "4e0a8f6dc99d073f7277b155f98b5f947ae68b0b3264037d96b621dc4af88332",
+                  "JobId": "job_f8bcadb421154725a48910702b668926",
+                  "QueueItemId": "queue_f386893d67ca46b794c2664e70cc61ed",
+                  "WorkflowAttemptId": "attempt_31facb5da78446d695038c166452deff",
+                  "BatchId": "ab5bab4e7d0a50b8bcb521bc98d1d0d1d59dfea1640f2da8706fe7f8307b6281",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_3226ec18f0e7496da067582c602abdc0",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"identity\")",
+          "outcome": "Passed",
+          "duration": "00:00:04.0905887",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "c995e85b2e22d322c6aa5a3de844dcd48aee62bb",
+              "Head": "6b737ce43d8a8f6d9881941cc0afa7ef2fc25b6c",
+              "CommitSha": "6b737ce43d8a8f6d9881941cc0afa7ef2fc25b6c",
+              "RemoteTip": "c995e85b2e22d322c6aa5a3de844dcd48aee62bb",
+              "OperationId": "g_e56859133b0e4b38b4f33c99a97a78b5",
+              "PlanHash": "6ee16cdba679c54bdcceec07c1e93e907e053da6c61ac406658d5b20de6d6e1e",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "f632f20b4fbe2207ee7a32c76964e45b8911ad4cb961576953d34cbea81dfe94",
+                  "JobId": "job_7cccd9356552488990586c6643e7203a",
+                  "QueueItemId": "queue_e6765e052a4f474da76ac2911c8c39a3",
+                  "WorkflowAttemptId": "attempt_5cacd90426c24954a429051b5ed74a6e",
+                  "BatchId": "8312d15df088d08382750919c40293ca5243cb837ba364adda718fa954acf7ca",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_57b054a776674450843a4e56eadc6b27",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"push-returned\", pushesBefore: 1)",
+          "outcome": "Passed",
+          "duration": "00:00:04.7380189",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "9ead4fc8c904bfe12d3e41d1d9f739649e9ece54",
+              "Head": "51d94e40d7b0733c2a05b25ced486abb64f0ecf5",
+              "CommitSha": "51d94e40d7b0733c2a05b25ced486abb64f0ecf5",
+              "RemoteTip": "51d94e40d7b0733c2a05b25ced486abb64f0ecf5",
+              "OperationId": "g_da1aaea4b7594988aea9501741d473f8",
+              "PlanHash": "82926de1be5e46546ba4564ff33f7b5a643d5c50d4127846074029080e038fda",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "b22ddd1ee5fd476d3bb2273533cc77fd1b443d1103578278e2c54f979df5eb6b",
+                  "JobId": "job_7a9537f19959423f9f0f751e5996eabf",
+                  "QueueItemId": "queue_79dff481a68a405a9ce457ec5d981f43",
+                  "WorkflowAttemptId": "attempt_1c461fa0ef00429fb03a9c96eb0af10d",
+                  "BatchId": "047d5b8321244dd40582eac7f1ebceb339b4072a13783aaa310384f2ec3d54a8",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_fd2c3f4af11346d4abd8fa8f6a5dcf2d",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch",
+          "outcome": "Passed",
+          "duration": "00:00:03.6118057",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "41ff3d4f80d9a1a20828a304515a9eb2fc528627",
+              "Head": "5baa737d0210cabcf5c8f35a141b3490a8bd5640",
+              "CommitSha": "5baa737d0210cabcf5c8f35a141b3490a8bd5640",
+              "RemoteTip": "41ff3d4f80d9a1a20828a304515a9eb2fc528627",
+              "OperationId": "g_045043d7152b4d4fbae6b4ade9c32d01",
+              "PlanHash": "e016f2021f8e128ba06ae70e4ed1359b9618c219fdd647b85854ff9115f858a5",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "c08d842e233a36a3bcc93c18ccb5e31fe71c6693265a34da41484cb6e3589a49",
+                  "JobId": "job_bdae90979a5d48c581d4744ba88d1087",
+                  "QueueItemId": "queue_a8aba6f6251c4541bbcef9e40823cb99",
+                  "WorkflowAttemptId": "attempt_55e39f65fc67425fb5ac629c1cb26656",
+                  "BatchId": "c34f79fdd806cb83f237697f46f55bcfc6d2ffa4a7508ac1c5cfd29bebb4af39",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_385dc3003a074ef2b4ffcef0b58a7306",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"advanced\")",
+          "outcome": "Passed",
+          "duration": "00:00:04.4525968",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "bfcf1d1c6bb1b64a569484ff9f07aeecc6cb7a59",
+              "Head": "a18e84f7e0f5b62091e0fbe52eabafb183f6035f",
+              "CommitSha": "a18e84f7e0f5b62091e0fbe52eabafb183f6035f",
+              "RemoteTip": "6bb482f0c9254e6c79908c0f97dab1f602b1287a",
+              "OperationId": "g_4cb05a54c25d4a4ab4948b87991a86aa",
+              "PlanHash": "2af7b7a5f05e47a9e3cea6c04df71737f6d8c6bd924d1f6b31244516bcfdc7d9",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_remote_changed",
+              "Intents": [
+                {
+                  "Id": "d6cc9159fc01b500b064a105daf717ffd6b0c00150ee45045c129fc51ec3bb2b",
+                  "JobId": "job_38f74766bdf04161b09f00702ac81310",
+                  "QueueItemId": "queue_271c3d592e8949ff86baa729a0ec4755",
+                  "WorkflowAttemptId": "attempt_815562e896ca46d2b4e0eef6365df496",
+                  "BatchId": "2dba3f62eec32621f5c09171af95626c93101039a36e8c4f62e73779ad14c2b5",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_ba7dad13172f4ecd8acd722f91f4e870",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualModeRequiresExplicitPushAndDoesNotAdoptAnUnrelatedReceipt",
+          "outcome": "Passed",
+          "duration": "00:00:17.6581233",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "f707805a8d0a0c86638f3dfb893f8a62ece4e8b9",
+              "Head": "6af979cd1b45fdcdfd90a90338d259a25bcd2427",
+              "CommitSha": "6af979cd1b45fdcdfd90a90338d259a25bcd2427",
+              "RemoteTip": "6af979cd1b45fdcdfd90a90338d259a25bcd2427",
+              "OperationId": "g_e61f1de4571f4893a72272bb7e5548a8",
+              "Receipt": "Pushed",
+              "Outbox": "empty; unrelated operation not adopted",
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.CommitPermissionNeverImpliesPush(mode: AutoCommitBatch)",
+          "outcome": "Passed",
+          "duration": "00:00:03.4433752",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "4972a07dfa7162b18f34a1d1c2fca95319da5db6",
+              "Head": "f804222bcde25447812fd037fee3a23673363e21",
+              "CommitSha": "f804222bcde25447812fd037fee3a23673363e21",
+              "RemoteTip": "4972a07dfa7162b18f34a1d1c2fca95319da5db6",
+              "OperationId": "g_77f008fa191e46d7a1972edea1246f1e",
+              "PlanHash": "c4d43ff02444ee222777fe7e52f762d35e124b6207f9b3835db11bd7b4aa19c4",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "d2cd100d63c806562433a391780c6fbcc94789e137a7822e6727f2a18caeeed2",
+                  "JobId": "job_f684c45cc4774e7c989f3a04e9e0d5ae",
+                  "QueueItemId": "queue_1c752089743c46b7a6b6864d37397af3",
+                  "WorkflowAttemptId": "attempt_0382948c92ea4fcfbf297eb77e90bd0a",
+                  "BatchId": "5391ae56eb333dc9d9ac9021221321c3c703b1ba3a2ac22e5b9a4fe9ba4cd3b6",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_9391bc07746e4459aaddf798275ea5e4",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.InterruptedPublicationRecoversSameOperationWithoutAnotherCommitOrPush(point: \"before_push\", pushesBefore: 0)",
+          "outcome": "Passed",
+          "duration": "00:00:05.5190528",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "fbd90ec69057dd5ac2e136c0cc29ed64a0564a9d",
+              "Head": "db0ff14a95c01275dae66bf683b8e7edba25b2ad",
+              "CommitSha": "db0ff14a95c01275dae66bf683b8e7edba25b2ad",
+              "RemoteTip": "db0ff14a95c01275dae66bf683b8e7edba25b2ad",
+              "OperationId": "g_50c255b954494435ba00512b0c8f202d",
+              "PlanHash": "6203249809a6e5c3fad32c648b296aef28d22880e26dfa966e2da08cb01c6d61",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "ec45c32c0c8ff7431989d909025b0c1d1e979b8e6e9a724170060b8e697cbb1c",
+                  "JobId": "job_2f269437732e4e5eaffe166dd71836eb",
+                  "QueueItemId": "queue_7de67d4df7c74fd399a010b9c6bae2a8",
+                  "WorkflowAttemptId": "attempt_20322a897fe841cfad6b4c2424e6120f",
+                  "BatchId": "3ba5e75a1666ab579b613904db240859d66582005fed7105456169cb7e5460f2",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_c04eb93664a74f6289982ddc8e66c927",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 1
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.CommitPermissionNeverImpliesPush(mode: AutoCommitAndPushBatch)",
+          "outcome": "Passed",
+          "duration": "00:00:03.1383096",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "53990ad66273dd98bd40300f80bcb7d850047912",
+              "Head": "85fef77769944c019890256c8925688961f6de74",
+              "CommitSha": "85fef77769944c019890256c8925688961f6de74",
+              "RemoteTip": "53990ad66273dd98bd40300f80bcb7d850047912",
+              "OperationId": "g_5ffd8c7433984c22b5e702ffcb58de0d",
+              "PlanHash": "e49cc1495072b2b28013be70eebe42682e026346aa0db41f246b12e752fd8c0e",
+              "Receipt": "Committed",
+              "Outbox": "Committed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "1726a45715bcfae6800345e37dfbb1e7d24dc32d8c93ebc94e19bdd229b67191",
+                  "JobId": "job_5c46819c7fa84c1198207ca7adc148c8",
+                  "QueueItemId": "queue_9bc076e7c7104d3a85cc8980e52313b0",
+                  "WorkflowAttemptId": "attempt_a60df0bad8b64e9095e8df0709797f2f",
+                  "BatchId": "bcf00494ed96291f0b76624c9dbd1e37cc8e0858bb52c0327a8af515f738a55c",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_c32b960fc9734db4a3229983d56696af",
+                  "State": "Committed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ChangedBindingOrReceiptBlocksWithoutRemoteMutation(fault: \"corrupt-receipt\")",
+          "outcome": "Passed",
+          "duration": "00:00:32.4181709",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "8cc0005af24ef0c36737a0933bc33f4011912495",
+              "Head": "246163cfc352e9da4cc83b2d72a5e73d786dd752",
+              "CommitSha": "246163cfc352e9da4cc83b2d72a5e73d786dd752",
+              "RemoteTip": "8cc0005af24ef0c36737a0933bc33f4011912495",
+              "OperationId": "g_507535741da14ce784fc8aa11738832f",
+              "PlanHash": "51546db12d94eac0df34b684551c0e2b4f1add275ceed9453ada9c347bf1da63",
+              "Receipt": "Committed",
+              "Outbox": "Blocked",
+              "Diagnostic": "git_receipt_invalid",
+              "Intents": [
+                {
+                  "Id": "f19ec3ef98f8cee5bc8e37b7ac3c3c71a5a8555ccc1250b18159d8bb874fdafb",
+                  "JobId": "job_0f9990d5e9cf4138a74aa742c2a9f2d3",
+                  "QueueItemId": "queue_05c8e9a5a9364d73a3d78eaacec6b46f",
+                  "WorkflowAttemptId": "attempt_963879aada4849fda50146a6e7e2a359",
+                  "BatchId": "503fe405eadea1349797efb4a0f72d91b0e9a58bc14c2a2a029ad2c6eb2afb3a",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_2cf6d7122b6a4b819a6fdae80a7d462f",
+                  "State": "Blocked"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.ManualAndExternalPushReconcileOnlyTheExactBoundOperation(external: True)",
+          "outcome": "Passed",
+          "duration": "00:00:11.9310118",
+          "zip_inputs": 1,
+          "observations": [
+            {
+              "ZipCount": 1,
+              "Identity": "f72@example.invalid",
+              "Transport": "temporary-local-bare-only",
+              "BaseHead": "50d3df67d1be9cd05ef19bee56134d819cc8da8d",
+              "Head": "fab51e897c0a1cec4a8a9ca995bbf53d3e2099b7",
+              "CommitSha": "fab51e897c0a1cec4a8a9ca995bbf53d3e2099b7",
+              "RemoteTip": "fab51e897c0a1cec4a8a9ca995bbf53d3e2099b7",
+              "OperationId": "g_772dc4812f394589b1b5ddb6dc0f4280",
+              "PlanHash": "1e7560648d829d94fd98c23dfb164c64cfd1988544fd92ea45705ccefad98034",
+              "Receipt": "Pushed",
+              "Outbox": "Pushed",
+              "Diagnostic": null,
+              "Intents": [
+                {
+                  "Id": "be99829a8745e380befc4ae5d9d1e22f0d4d96669de8ba1c06cb3f8c1b8f12b9",
+                  "JobId": "job_3f1a40e4448141c98416ed757638a904",
+                  "QueueItemId": "queue_224fa44c1357452ea3904d1015b5a296",
+                  "WorkflowAttemptId": "attempt_1944a4670ea945979b1e945710e2e583",
+                  "BatchId": "baccf3d2f154c658a0ce50d17e02d624b86d3884cd3f18a4e59228248abcc85e",
+                  "PolicyRevision": 1,
+                  "AuthorizationId": "authorization_66867eb8cde2423f9ca64d5e0c700332",
+                  "State": "Pushed"
+                }
+              ],
+              "Jobs": "Completed",
+              "Queue": "Completed",
+              "NativePushCommands": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "f73-f72-guards",
+      "source_sha": "18fafeb810acb15d7ffdcee0fe06d1eef5f43322",
+      "raw_counters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_cases": 4,
+      "zip_inputs": 5,
+      "max_zip_inputs_per_case": 2,
+      "cases": [
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+          "outcome": "Passed",
+          "duration": "00:00:19.7211437",
+          "zip_inputs": 2,
+          "observations": []
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption",
+          "outcome": "Passed",
+          "duration": "00:00:05.6866424",
+          "zip_inputs": 1,
+          "observations": []
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox",
+          "outcome": "Passed",
+          "duration": "00:00:04.1776626",
+          "zip_inputs": 1,
+          "observations": []
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.FailedGitCommitKeepsPreparedAndExplicitRetryUsesSameExpectedCommit",
+          "outcome": "Passed",
+          "duration": "00:00:16.5528617",
+          "zip_inputs": 1,
+          "observations": []
+        }
+      ]
+    }
+  ],
+  "total_zip_inputs_all_iterations": 65,
+  "artifacts": [
+    {
+      "file": "f73-initial.trx",
+      "original_sha256": "bb11a90a65cb067314d0e28427e8281ed48c50a7306a0ef36ffa57bc63d3518e",
+      "sanitized_sha256": "a9612dac20936d497148d81bd148d6090dc0ab6d27eebdd6754f697e576f8123",
+      "bytes": 62409
+    },
+    {
+      "file": "f73-initial.log",
+      "original_sha256": "0dae0a721a552fc667d1f2d7b49429b1bc235533508c98729f072b1a2382722f",
+      "sanitized_sha256": "26e5b13932fcc5d9ca4ef53a9de2eb65ae871e2ffd62a511c22ccba15d19cc43",
+      "bytes": 5597
+    },
+    {
+      "file": "f73-final.trx",
+      "original_sha256": "d11b52c7f9d2c8453426eb0d9599293919b67b13095130b2fc3b351514a9dbad",
+      "sanitized_sha256": "43299df1b9a0731a03fdc7a9825a1da68ba3e5da281bb9a39e34ae91fb0c4ea8",
+      "bytes": 66645
+    },
+    {
+      "file": "f73-final.log",
+      "original_sha256": "f47e1d62c900018dcc0a18f5cfdd5bd81ff28d6da432bf0b4eea745bd9033512",
+      "sanitized_sha256": "c0392330f839fa05c1762244a2465faf2259321ba33289f488b29544dc530272",
+      "bytes": 2661
+    },
+    {
+      "file": "f73-f72-guards.trx",
+      "original_sha256": "0fa213063e3fb31f3b6699106abe4e8bce5de188644b7b94c2c23d70b007308d",
+      "sanitized_sha256": "7ba3ed4a7629f56fc06b73f190e56e79abe1324d30f98cca6b10bd2b41bfea33",
+      "bytes": 6431
+    },
+    {
+      "file": "f73-f72-guards.log",
+      "original_sha256": "fff2edfe6a2483c692270577320ec79aaa28f7637ecc041e68aea65ab0e5c391",
+      "sanitized_sha256": "f8aca5b8a09ea81f4e9cc608ba37927e2bd53f722a4bae0edab46e504c982935",
+      "bytes": 304
+    },
+    {
+      "file": "build-preliminary.log",
+      "original_sha256": "96a99c07dabdd874cf9936c0a81934a6f0eff50b6eb0e9d041881bc5d6a65a8e",
+      "sanitized_sha256": "8f35de168da9838c55fadeefe878a121410cb8215459481082776f6ec9cd7b0b",
+      "bytes": 8066
+    },
+    {
+      "file": "initial-binaries.sha256",
+      "original_sha256": "01ab305370b89668ca496867d4a347be4951176c5a462375ec351d5295de6fd4",
+      "sanitized_sha256": "01ab305370b89668ca496867d4a347be4951176c5a462375ec351d5295de6fd4",
+      "bytes": 222
+    },
+    {
+      "file": "final-binaries.sha256",
+      "original_sha256": "67871b3194d5d64c5373da90ddf03c7191862dc132ed7bb9db7bf5bbe3eb764b",
+      "sanitized_sha256": "67871b3194d5d64c5373da90ddf03c7191862dc132ed7bb9db7bf5bbe3eb764b",
+      "bytes": 222
+    }
+  ]
+}

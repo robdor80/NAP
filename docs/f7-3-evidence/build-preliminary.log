@@ -1,0 +1,70 @@
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.427
+
+Telemetry
+---------
+The .NET tools collect usage data in order to help us improve your experience. It is collected by Microsoft and shared with the community. You can opt-out of telemetry by setting the DOTNET_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+
+Read more about .NET CLI Tools telemetry: https://aka.ms/dotnet-cli-telemetry
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+  Determining projects to restore...
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+  Restored [repo]/src/NAP.Core/NAP.Core.csproj (in 8.9 sec).
+  Restored [repo]/src/NAP.AutomationHost/NAP.AutomationHost.csproj (in 8.91 sec).
+  Restored [repo]/tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj (in 11 ms).
+  Restored [repo]/src/NAP.AI/NAP.AI.csproj (in 11 ms).
+  Restored [repo]/src/NAP.Presentation/NAP.Presentation.csproj (in 29 ms).
+  Restored [repo]/tests/NAP.Tests/NAP.Tests.csproj (in 5.77 sec).
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: [repo]/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [[repo]/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> [repo]/src/NAP.Core/bin/Debug/net8.0/NAP.Core.dll
+  NAP.Presentation -> [repo]/src/NAP.Presentation/bin/Debug/net8.0/NAP.Presentation.dll
+  NAP.CoordinationProbe -> [repo]/tools/NAP.CoordinationProbe/bin/Debug/net8.0/NAP.CoordinationProbe.dll
+  NAP.AutomationHost -> [repo]/src/NAP.AutomationHost/bin/Debug/net8.0/NAP.AutomationHost.dll
+  NAP.AI -> [repo]/src/NAP.AI/bin/Debug/net8.0/NAP.AI.dll
+  NAP.Tests -> [repo]/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll
+
+Build succeeded.
+
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [[repo]/tests/NAP.Tests/NAP.Tests.csproj]
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+[repo]/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: [repo]/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [[repo]/src/NAP.Core/NAP.Core.csproj]
+[user]/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [[repo]/src/NAP.Core/NAP.Core.csproj]
+    11 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:04:34.78
