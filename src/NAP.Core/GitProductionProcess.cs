@@ -12,6 +12,7 @@ internal sealed class GitProductionProcess
     // Test-only seam. Runtime callers cannot enable the file transport.
     internal bool AllowLocalTestTransport { get; set; }
     internal Action<string>? Observer { get; set; }
+    internal Action<string>? CommandStarting { get; set; }
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, string[]> _filters = new(StringComparer.Ordinal);
     internal void DisableFilters(UniverseContext c, IEnumerable<string> names) => _filters[GitProductionSafety.Binding(c)] = names.Distinct(StringComparer.Ordinal).ToArray();
     internal string Root(UniverseContext c) => Text(c, "rev-parse", "--show-toplevel").TrimEnd('\r', '\n');
@@ -96,6 +97,7 @@ internal sealed class GitProductionProcess
         if (environment is not null) foreach (var pair in environment) start.Environment[pair.Key] = pair.Value;
         using var process = new Process { StartInfo = start };
         hooks?.RequireEmpty();
+        CommandStarting?.Invoke(args[0]);
         try { if (!process.Start()) throw GitProductionException.Stop(NapIssueCodes.GitUnavailable, "Git could not be started."); }
         catch (Win32Exception) { throw GitProductionException.Stop(NapIssueCodes.GitUnavailable, "Git is unavailable on this host."); }
         using var timeout = new CancellationTokenSource(Timeout);

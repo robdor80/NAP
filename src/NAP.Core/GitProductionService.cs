@@ -103,8 +103,15 @@ public sealed class GitProductionService
         return PushLocked(context, receipt);
     });
 
-    public GitPushResult Push(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
-    { using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context); return PushLocked(context, GitProductionReceiptStore.Read(context, operationId)); });
+    public GitPushResult Push(UniverseContext context, GitOperationId operationId) => PushBound(context, operationId, null);
+
+    // The composition retains its policy mutex. Recheck under Production at the last network boundary
+    // and before recording AlreadyPushed. Verification-only recovery can never issue Git.Push.
+    internal GitPushResult PushBound(UniverseContext context, GitOperationId operationId, Action<GitRepositoryStatus>? authorize, bool verificationOnly = false) => GitProductionSafety.Run(() =>
+    {
+        using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context);
+        return PushLocked(context, GitProductionReceiptStore.Read(context, operationId), authorize, verificationOnly);
+    });
 
     private GitCommitResult CommitLocked(UniverseContext c, GitOperationReceipt receipt, bool create, Action? authorize = null)
     {
@@ -181,14 +188,15 @@ public sealed class GitProductionService
             throw;
         }
     }
-    private GitPushResult PushLocked(UniverseContext c, GitOperationReceipt receipt)
+    private GitPushResult PushLocked(UniverseContext c, GitOperationReceipt receipt, Action<GitRepositoryStatus>? authorize = null, bool verificationOnly = false)
     {
-        if (receipt.State == GitReceiptState.Prepared || receipt.CommitSha is null)
+        if (receipt.State == GitReceiptState.Prepared || receipt.CommitSha is null || verificationOnly && receipt.State != GitReceiptState.Pushed)
             throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Push requires a verified Committed or Pushed receipt.");
         var status = Inspector.InspectLocked(c); RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid);
         VerifyCommit(c, receipt, status.Head);
         if (status.RemoteTip == receipt.CommitSha)
         {
+            authorize?.Invoke(status);
             if (receipt.State != GitReceiptState.Pushed) GitProductionReceiptStore.Write(c,
                 new(receipt.OperationId, receipt.Plan, GitReceiptState.Pushed, receipt.ExpectedTree, receipt.ExpectedCommitSha, receipt.CommitSha, receipt.AuthorIdentity, receipt.CommitterIdentity));
             return new(receipt.OperationId, receipt.CommitSha, GitPushOutcome.AlreadyPushed);
@@ -198,12 +206,17 @@ public sealed class GitProductionService
         Observer?.Invoke("before_push");
         status = Inspector.InspectLocked(c); RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid); VerifyCommit(c, receipt, status.Head);
         if (status.RemoteTip != receipt.BaseHead) throw GitProductionException.Stop(NapIssueCodes.GitRemoteChanged, "Remote changed before publication; local commit is retained.");
+        Observer?.Invoke("before_push_command");
+        authorize?.Invoke(status);
         Git.Push(c, receipt.RemoteName, receipt.Plan.Status.RemoteBranch);
+        Observer?.Invoke("after_push");
         var tip = Inspector.ReadTip(c, receipt.RemoteName, receipt.Plan.Status.RemoteBranch);
         if (tip != receipt.CommitSha) throw GitProductionException.Stop(NapIssueCodes.GitPushVerificationFailed, "Remote SHA could not confirm publication; receipt remains Committed.");
         var final = Inspector.InspectLocked(c); RequireBinding(receipt.Plan.Status, final, NapIssueCodes.GitReceiptInvalid); VerifyCommit(c, receipt, final.Head);
         if (final.RemoteTip != receipt.CommitSha) throw GitProductionException.Stop(NapIssueCodes.GitPushVerificationFailed, "Remote changed during post-push verification.");
+        authorize?.Invoke(final);
         GitProductionReceiptStore.Write(c, new(receipt.OperationId, receipt.Plan, GitReceiptState.Pushed, receipt.ExpectedTree, receipt.ExpectedCommitSha, receipt.CommitSha, receipt.AuthorIdentity, receipt.CommitterIdentity));
+        Observer?.Invoke("pushed");
         return new(receipt.OperationId, receipt.CommitSha, GitPushOutcome.Pushed);
     }
     private void Revalidate(UniverseContext c, GitCommitPlan plan)

@@ -25,6 +25,24 @@ public sealed class GitOutboxStore
         Validate(state); GitPublicationFiles.Inventory(_policy.OutboxDirectory, "outbox.json");
         GitPublicationFiles.Write(PathFor, state, _policy.Key(), File.Exists(PathFor));
     }
+    internal static void RequireReceipt(GitOutboxBatch batch, GitOperationReceipt receipt)
+    {
+        if (batch.OperationId != receipt.OperationId || batch.PlanHash != PlanHash(receipt.Plan) ||
+            receipt.State == GitReceiptState.Prepared || receipt.CommitSha is null ||
+            batch.CommitSha is not null && batch.CommitSha != receipt.CommitSha)
+            throw new InvalidDataException("Outbox operation, plan or commit differs from native receipt.");
+    }
+    // Caller holds owner + policy and has just verified the native Pushed receipt and exact remote tip.
+    internal void RecordPushedLocked(GitOutboxSnapshot state, GitOutboxBatch batch, GitOperationReceipt receipt)
+    {
+        RequireReceipt(batch, receipt);
+        if (receipt.State != GitReceiptState.Pushed) throw new InvalidDataException("Verified native Pushed receipt required.");
+        SaveLocked(state with
+        {
+            Intents = state.Intents.Select(i => i.BatchId == batch.Id ? i with { State = GitOutboxState.Pushed, Diagnostic = null } : i).ToArray(),
+            Batches = state.Batches.Select(b => b.Id == batch.Id ? b with { State = GitOutboxState.Pushed, CommitSha = receipt.CommitSha, Diagnostic = null } : b).ToArray()
+        });
+    }
     private void Validate(GitOutboxSnapshot s)
     {
         if (s.SchemaVersion != 1 || s.UniverseId != _context.Id || s.RepositoryBinding != GitProductionSafety.Binding(_context) ||

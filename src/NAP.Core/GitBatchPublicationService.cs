@@ -1,7 +1,7 @@
 namespace NAP.Core;
 
-/// <summary>Owner-thread orchestration only. No production execution, SQLite transaction across Git, or automatic push.</summary>
-public sealed class GitBatchPublicationService
+/// <summary>Owner-thread Git orchestration. No production execution or SQLite transaction across Git.</summary>
+public sealed partial class GitBatchPublicationService
 {
     private readonly UniverseContext _context;
     private readonly AutomationQueueStore _queue;
@@ -23,14 +23,19 @@ public sealed class GitBatchPublicationService
         var p = _policy.LoadLocked();
         if (p is null || p.Mode == GitPublicationMode.Disabled || p.Revoked || !p.AllowCommit) return "git-disabled";
         if (p.Mode == GitPublicationMode.Manual) return "git-manual";
-        var state = Reconcile(p, _outbox.LoadLocked(), pageSize, out var caughtUp);
+        var state = _outbox.LoadLocked();
+        var publication = PublishFirstCommitted(p, state);
+        if (publication is not null) return publication;
+        state = Reconcile(p, state, pageSize, out var caughtUp);
         // Do not form an incomplete batch while more completed evidence remains on the next page.
         if (!caughtUp) return "git-reconciling";
         var recovery = state.Batches.FirstOrDefault(b => b.State == GitOutboxState.Pending);
-        if (recovery is not null) return ExecuteBatch(p, state, recovery);
+        if (recovery is not null) return CommitThenPublish(p, state, recovery);
         var candidates = state.Intents.Where(i => i.State == GitOutboxState.Pending && i.BatchId is null)
             .OrderBy(i => i.Id, StringComparer.Ordinal).Take(p.MaxJobsPerBatch).ToArray();
         if (candidates.Length == 0) return "git-idle";
+        GitOutboxBatch reserved;
+        GitCommitPlan preparedPlan;
         try
         {
             if (candidates.Any(i => i.PolicyRevision != p.PolicyRevision || i.AuthorizationId != p.AuthorizationId))
@@ -47,7 +52,7 @@ public sealed class GitBatchPublicationService
                 Batches = state.Batches.Append(batch).ToArray() };
             // One atomic final reserves membership + exact operation ID + full native plan fingerprint, before Prepared.
             _outbox.SaveLocked(state); Checkpoint?.Invoke("batch-reserved");
-            return ExecuteBatch(p, state, batch, plan);
+            reserved = batch; preparedPlan = plan;
         }
         catch (Exception e) when (Controlled(e))
         {
@@ -59,6 +64,7 @@ public sealed class GitBatchPublicationService
                 ? i with { State = GitOutboxState.Blocked, Diagnostic = Diagnostic(e) } : i).ToArray() });
             return "git-blocked";
         }
+        return CommitThenPublish(p, state, reserved, preparedPlan);
     }
     private GitOutboxSnapshot Reconcile(GitPublicationPolicyV1 p, GitOutboxSnapshot state, int limit, out bool caughtUp)
     {
@@ -146,7 +152,11 @@ public sealed class GitBatchPublicationService
         if (p.Revoked || !p.AllowCommit || p.Mode is not (GitPublicationMode.AutoCommitBatch or GitPublicationMode.AutoCommitAndPushBatch)) throw new InvalidDataException("Automatic Git authorization inactive.");
         var s = _outbox.LoadLocked(); var i = s.Intents.Single(i => i.Id == intentId && i.State == GitOutboxState.Blocked);
         if (i.PolicyRevision != p.PolicyRevision || i.AuthorizationId != p.AuthorizationId) throw new InvalidDataException("Explicit new policy migration is required.");
-        if (i.BatchId is { } id) return ExecuteBatch(p, s, s.Batches.Single(b => b.Id == id));
+        if (i.BatchId is { } id)
+        {
+            var batch = s.Batches.Single(b => b.Id == id);
+            return batch.CommitSha is not null ? PublishCommitted(p, s, batch, explicitRetry: true) : CommitThenPublish(p, s, batch);
+        }
         Verify(i);
         _outbox.SaveLocked(s with { Intents = s.Intents.Select(v => v.Id == i.Id ? v with { State = GitOutboxState.Pending, Diagnostic = null } : v).ToArray() });
         return "git-pending";

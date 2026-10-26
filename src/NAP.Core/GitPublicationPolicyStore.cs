@@ -101,7 +101,8 @@ public sealed class GitPublicationPolicyStore
     {
         var current = LoadLocked();
         if (current is null || AutomationJson.Encode(current) != AutomationJson.Encode(p) || p.Revoked ||
-            p.Mode == GitPublicationMode.Disabled || !p.AllowCommit || push && (!p.AllowPush || automatic) ||
+            p.Mode == GitPublicationMode.Disabled || !p.AllowCommit ||
+            push && (!p.AllowPush || automatic && p.Mode != GitPublicationMode.AutoCommitAndPushBatch) ||
             automatic && p.Mode is not (GitPublicationMode.AutoCommitBatch or GitPublicationMode.AutoCommitAndPushBatch) ||
             status.RepositoryBinding != p.RepositoryBinding || status.UniverseId != p.UniverseId || status.Branch != p.LocalBranch ||
             status.Upstream != p.UpstreamRef || status.RemoteName != p.RemoteName || status.RemoteBranch != p.RemoteBranch ||
