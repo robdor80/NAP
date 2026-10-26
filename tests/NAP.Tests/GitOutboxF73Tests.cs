@@ -65,7 +65,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         Assert.Equal("", f.Run("status", "--porcelain"));
         Assert.DoesNotContain("foreign.txt", f.Run("diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"));
         f.Restart(); Assert.Equal("git-idle", f.Service.RunOnce(f.Owner));
-        Assert.Single(commands.Where(c => c == "push")); Assert.Single(f.Git.ListOperations(f.F.Context));
+        Assert.Single(commands, c => c == "push"); Assert.Single(f.Git.ListOperations(f.F.Context));
         Evidence(f, commands, jobs);
     }
 
@@ -100,7 +100,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         Assert.Equal(point is "pushed" or "push-returned" ? GitReceiptState.Pushed : GitReceiptState.Committed, receipt.State);
         f.Restart(); Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner));
         Assert.Equal(batch.OperationId, f.Outbox.Read().Batches.Single().OperationId);
-        Assert.Single(commands.Where(c => c == "push")); Assert.Equal(batch.CommitSha, f.RemoteHead);
+        Assert.Single(commands, c => c == "push"); Assert.Equal(batch.CommitSha, f.RemoteHead);
         Evidence(f, commands, 1);
     }
 
@@ -126,7 +126,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         }
         finally { Directory.Move(unavailable, f.Remote); }
         Assert.Equal("git-pushed", f.Service.RetryPublication(f.Owner, batch.Id));
-        Assert.Single(commands.Where(c => c == "push")); Evidence(f, commands, 1);
+        Assert.Single(commands, c => c == "push"); Evidence(f, commands, 1);
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         // Real rejection by the fictitious bare receiver, no authentication/credential changes.
         GitProductionFixture.Run(f.Remote, "config", "receive.hideRefs", "refs/heads/main");
         Assert.Equal("git-push-retry", f.Service.RunOnce(f.Owner));
-        Assert.Equal(f.BaseHead, f.RemoteHead); Assert.Single(commands.Where(c => c == "push"));
+        Assert.Equal(f.BaseHead, f.RemoteHead); Assert.Single(commands, c => c == "push");
         Assert.Equal(GitReceiptState.Committed, f.Git.ReadReceipt(f.F.Context, batch.OperationId).State);
         Assert.Equal(GitOutboxState.Committed, f.Outbox.Read().Batches.Single().State); f.CheckCompleted();
         GitProductionFixture.Run(f.Remote, "config", "--unset", "receive.hideRefs");
@@ -228,8 +228,40 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         Assert.Equal(f.BaseHead, f.RemoteHead); Assert.DoesNotContain("push", commands);
         Assert.Equal(GitPushOutcome.Pushed, manual.Push(f.F.Context, commit.OperationId).Outcome);
         Assert.Empty(f.Outbox.Read().Batches); Assert.Empty(f.Outbox.Read().Intents);
-        Assert.Equal(commit.CommitSha, f.RemoteHead); Assert.Single(commands.Where(c => c == "push")); f.CheckCompleted();
-        output.WriteLine("1 ZIP; Manual; separate explicit commit/push; empty Outbox; unrelated native receipt remains native only.");
+        Assert.Equal(commit.CommitSha, f.RemoteHead); Assert.Single(commands, c => c == "push"); f.CheckCompleted();
+        output.WriteLine(JsonSerializer.Serialize(new { ZipCount = 1, Identity = "f72@example.invalid", Transport = "temporary-local-bare-only",
+            f.BaseHead, Head = f.Run("rev-parse", "HEAD"), commit.CommitSha, RemoteTip = f.RemoteHead, OperationId = commit.OperationId.Value,
+            Receipt = f.Git.ReadReceipt(f.F.Context, commit.OperationId).State.ToString(), Outbox = "empty; unrelated operation not adopted",
+            Jobs = "Completed", Queue = "Completed", NativePushCommands = commands.Count(c => c == "push") }));
+    }
+
+    [Fact]
+    public void ExternalPushInCommitOnlyModeIsRecognizedWithoutPushPermission()
+    {
+        using var f = new Fixture(); f.Complete(); var commands = Commands(f);
+        Assert.Equal("git-committed", f.Service.RunOnce(f.Owner));
+        var batch = f.Outbox.Read().Batches.Single();
+        Assert.False(f.Policy.Load()!.AllowPush);
+        f.Run("push", "origin", "HEAD:refs/heads/main");
+        Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner));
+        Assert.Equal(GitOutboxState.Pushed, f.Outbox.Read().Batches.Single().State);
+        Assert.Equal(batch.CommitSha, f.RemoteHead); Assert.DoesNotContain("push", commands); Evidence(f, commands, 1);
+    }
+
+    [Fact]
+    public void NewManualGrantRequiresExplicitPushDecisionForOldBatch()
+    {
+        using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
+        var batch = CommitWithoutPush(f); var commands = Commands(f); var p = f.Policy.Load()!;
+        f.Policy.Save(p with { PolicyRevision = 2, AuthorizationId = "synthetic_explicit_manual_grant", Mode = GitPublicationMode.Manual }, 1);
+        f.Restart(); Assert.Equal("git-manual", f.Service.RunOnce(f.Owner));
+        Assert.Equal(f.BaseHead, f.RemoteHead); Assert.DoesNotContain("push", commands);
+        var result = new GitPublicationManualService(f.Git, f.Inspector, f.Policy).Push(f.F.Context, batch.OperationId);
+        Assert.Equal(GitPushOutcome.Pushed, result.Outcome);
+        Assert.Equal(GitOutboxState.Pushed, f.Outbox.Read().Batches.Single().State);
+        Assert.Equal(p.AuthorizationId, f.Outbox.Read().Intents.Single().AuthorizationId);
+        Assert.Equal(1, f.Outbox.Read().Intents.Single().PolicyRevision);
+        Assert.Single(commands, c => c == "push"); Evidence(f, commands, 1);
     }
 
     [Fact]
@@ -240,7 +272,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         var p = f.Policy.Load()!;
         f.Policy.Save(p with { PolicyRevision = 2, AuthorizationId = "synthetic_read_reconciliation", Mode = GitPublicationMode.AutoCommitBatch, AllowPush = false }, 1);
         f.Restart(); Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner));
-        Assert.Single(commands.Where(c => c == "push"));
+        Assert.Single(commands, c => c == "push");
         Assert.Equal(1, f.Outbox.Read().Intents.Single().PolicyRevision); Evidence(f, commands, 1);
     }
 
@@ -268,7 +300,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
             Assert.Throws<IOException>(() => f.Policy.Load()); // Same-thread policy reentry is also Busy.
         }));
         Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner)); Assert.True(checkpointReached);
-        Assert.Single(commands.Where(c => c == "push")); Evidence(f, commands, 1);
+        Assert.Single(commands, c => c == "push"); Evidence(f, commands, 1);
     }
 
     [Theory]
@@ -282,7 +314,7 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
         var invoked = false;
         Action<GitRepositoryStatus> reject = _ => { invoked = true; throw new InvalidDataException("synthetic last-boundary revocation"); };
         var method = typeof(GitProductionService).GetMethod("PushBound", BindingFlags.Instance | BindingFlags.NonPublic)!;
-        var error = Assert.Throws<TargetInvocationException>(() => method.Invoke(f.Git, [f.F.Context, batch.OperationId, reject, false]));
+        var error = Assert.Throws<TargetInvocationException>(() => method.Invoke(f.Git, [f.F.Context, batch.OperationId, reject, false, false]));
         Assert.IsType<InvalidDataException>(error.InnerException); Assert.True(invoked);
         Assert.DoesNotContain("push", commands);
         Assert.Equal(alreadyPushed ? batch.CommitSha : f.BaseHead, f.RemoteHead);

@@ -9,7 +9,7 @@ Esta entrega requiere auditoría independiente de ChatGPT. **No declara aceptada
 | Archivo | Cambio |
 | --- | --- |
 | `GitPublicationPolicyStore.cs` | `Require` permite push automático solamente con ambos permisos explícitos, modo exacto `AutoCommitAndPushBatch` y política vigente íntegra |
-| `GitProductionService.cs` | Seam interna `PushBound(context, operationId, Action<GitRepositoryStatus>?, verificationOnly)` llama al mismo `PushLocked`; API pública conservada |
+| `GitProductionService.cs` | Seam interna `PushBound(context, operationId, Action<GitRepositoryStatus>?, verificationOnly, requirePushedReceipt)` llama al mismo `PushLocked`; API pública conservada |
 | `GitBatchPublicationService.cs` | Examina Committed antes de reconciliar nuevos Completed/formar commits; frontera durable Committed previa al push; recuperación F7.2 conservada |
 | `GitBatchPublicationPush.cs` | Orquestación parcial del mismo servicio: autorización original, publicación, reconocimiento, presupuesto durable de retry y `RetryPublication(owner, batchId)` explícito |
 | `GitOutboxStore.cs` | `RequireReceipt` une OperationId, PlanHash y CommitSha; `RecordPushedLocked` publica batch e intents conjuntamente en el mismo final autenticado |
@@ -24,8 +24,8 @@ No hay un segundo motor Git, un runner shell nuevo ni nuevos comandos productivo
 
 1. Exigir el owner del universo en su hilo, entrar en `AutomationManualAccess`, adquirir mutex de política y cargar política + ancla Outbox cerradas.
 2. Ausencia/Disabled/revocación/sin AllowCommit: devolver `git-disabled`, sin comandos Git automáticos. Manual: `git-manual`, sin actividad automática. Corrupción: STOP, sin reparación.
-3. Examinar primero batches Committed. Para un receipt aún Committed, publicar únicamente con **AllowCommit + AllowPush**, modo exacto y todos los intents en la **revisión y AuthorizationId originales**, además de OperationId/PlanHash/CommitSha exactos.
-4. Si hay receipt Pushed durable, permitir solamente comprobación nativa `verificationOnly`: requiere ese estado bajo Production y jamás puede ejecutar `Git.Push`, incluso si el remoto volvió a BaseHead. Se conserva la autorización actual de inspección, fingerprints, identidad y prefijos. No se utiliza el permiso nuevo para republicar un lote antiguo.
+3. Examinar primero batches Committed. Para un receipt aún Committed, reconocer un push externo por comprobación sin escritura remota solo con autorización original vigente; publicar únicamente con **AllowCommit + AllowPush**, modo exacto y todos los intents en la **revisión y AuthorizationId originales**, además de OperationId/PlanHash/CommitSha exactos.
+4. Si hay receipt Pushed durable, permitir solamente comprobación nativa `verificationOnly`: para autorizaciones distintas exige ese estado bajo Production y jamás puede ejecutar `Git.Push`, incluso si el remoto volvió a BaseHead. Se conserva la autorización actual de inspección, fingerprints, identidad y prefijos. No se utiliza el permiso nuevo para republicar un lote antiguo.
 5. Solo cuando el turno no resuelve una publicación previa, continúa la reconciliación paginada F7.2 y la reserva/commit nativos. Tras un commit elegible, se guarda primero Committed y luego se entra en la fase independiente de push.
 
 La seam recibe el `GitRepositoryStatus` recién inspeccionado por el motor. Bajo el mutex Production, `Require` vuelve a cargar política/ancla y valida universo, binding de repositorio/roots, modo, revisión/autorización íntegra, identidad author/committer efectiva sin fechas, rama, upstream, remoto, fingerprints y prefijos. No se infiere permiso del modo, credenciales o consentimiento ZIP.
@@ -42,13 +42,13 @@ Se conserva la secuencia nativa: receipt Committed/Pushed válido, repo/HEAD/par
 
 | Situación | Estado/acción |
 | --- | --- |
-| AutoCommitBatch o AllowPush=false | Commit local Committed; ningún push automático. `RequireNoPending` continúa bloqueando commits posteriores |
+| AutoCommitBatch o AllowPush=false | Commit local Committed; ningún push automático. Puede reconocer el SHA externo exacto bajo autorización original vigente; `RequireNoPending` continúa bloqueando commits posteriores mientras siga pendiente |
 | AutoCommitAndPushBatch con permisos originales vigentes | Commit y publicación por lote; receipt y Outbox Pushed con SHA remoto exacto |
 | Caída antes de push/comando | Outbox Committed, mismo ID y SHA; reinicio comprueba remoto antes de publicar |
 | Remoto aceptó pero receipt aún Committed | PushBound reconoce CommitSha remoto, devuelve AlreadyPushed y genera receipt Pushed sin repetir escritura remota |
 | Receipt Pushed, Outbox Committed | Turno de verificación, sin otro push, seguido del final Outbox Pushed |
 | Push manual NAP | Conciliación inmediata del batch enlazado tras la verificación nativa |
-| Push manual externo del SHA exacto | Siguiente turno con permiso original de push usa AlreadyPushed; sin adopción por mensaje/autor/fecha |
+| Push manual externo del SHA exacto | Siguiente turno con autorización original vigente usa AlreadyPushed; sin AllowPush se usa exclusivamente la ruta sin escritura remota; sin adopción por mensaje/autor/fecha |
 | Política revocada/Disabled | Ningún nuevo comando automático; tampoco se intenta conciliar por red mientras esté deshabilitada |
 | Nueva autorización + receipt Pushed previo | Solo comprobación bajo autorización actual compatible; ninguna publicación remota nueva |
 | Remote ahead/divergente, config/identidad/upstream diferentes, receipt huérfano/corrupto, SHA/plan incompatibles | Blocked con código saneado, sin force/pull/rebase/reset ni adopción |
@@ -59,7 +59,7 @@ Se conserva la secuencia nativa: receipt Committed/Pushed válido, repo/HEAD/par
 
 Cada intento reserva su presupuesto durable **antes** de entrar al motor, en el diagnóstico codificado del batch y sus intents, sin ampliar schema v1. Máximo tres intentos automáticos; reiniciar el servicio no lo restablece. Códigos `git_push_attempt_1..3` / `git_push_retry_1..3`; una caída puede consumir un intento sin arrancar el comando. `git-push-retry-exhausted` conserva el commit. El host mantiene su cadencia mínima previa de cinco segundos; no hay bucle interno de retry.
 
-Un receipt Pushed tiene presupuesto separado de hasta tres comprobaciones (`git_verify_attempt_1..3` / `git_verify_retry_1..3`); ninguna puede publicar. `RetryPublication` renueva explícitamente el presupuesto de un batch Committed tras comprobar de nuevo política y vínculo. Para receipt aún Committed exige permiso original de push; para Pushed solo admite comprobación bajo política automática actual válida. `RetryBlocked` conserva ID/plan/SHA y usa esta ruta cuando el lote ya tiene commit. Busy detiene el turno; si ya se había reservado presupuesto pero el motor no pudo adquirir autoridad, restaura esa reserva sin tocar Completed.
+La ruta sin escritura remota tiene presupuesto separado de hasta tres fallos de comprobación (`git_verify_retry_1..3`); ninguna comprobación puede publicar. Un resultado BaseHead devuelve pendiente sin conceder push ni gastar un intento de escritura. `RetryPublication` renueva explícitamente el presupuesto de un batch Committed tras comprobar de nuevo política y vínculo. Para receipt aún Committed exige autorización original; si no hay AllowPush solo comprueba. Para Pushed admite únicamente comprobación bajo política automática actual válida. `RetryBlocked` conserva ID/plan/SHA y usa esta ruta cuando el lote ya tiene commit. Busy detiene el turno; si ya se había reservado presupuesto pero el motor no pudo adquirir autoridad, restaura esa reserva sin tocar Completed.
 
 Una publicación ambigua no autoriza una segunda escritura a ciegas: toda entrada a PushLocked consulta el tip real antes del comando. Errores durables de receipt/Outbox pueden exigir revisión explícita y quedan conservados; no se borran finales/temporales para desbloquearlos.
 

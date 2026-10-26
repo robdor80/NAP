@@ -51,7 +51,7 @@ public sealed class GitPublicationManualService
                 receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), push: true));
             // An unrelated manual operation never creates/adopts an Outbox batch.
             if (batch is not null) outbox.RecordPushedLocked(state, batch, _git.ReadReceipt(c, id));
-            return result;
+            return result!;
         });
     }
     public GitRepositoryStatus Inspect(UniverseContext c) => Authorized(c, [], false, (_, _) => _inspector.Inspect(c));

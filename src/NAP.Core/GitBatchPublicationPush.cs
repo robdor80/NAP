@@ -21,19 +21,8 @@ public sealed partial class GitBatchPublicationService
     {
         foreach (var batch in state.Batches.Where(b => b.State == GitOutboxState.Committed))
         {
-            // AutoCommitBatch does no publication. It may only confirm an already durable Pushed receipt.
-            if (AllowsAutomaticPush(p)) return PublishCommitted(p, state, batch);
-            try
-            {
-                var receipt = _git.ReadReceipt(_context, batch.OperationId);
-                GitOutboxStore.RequireReceipt(batch, receipt);
-                if (receipt.State == GitReceiptState.Pushed) return PublishCommitted(p, state, batch);
-            }
-            catch (Exception e) when (Controlled(e))
-            {
-                if (Busy(e)) return "git-busy";
-                BlockBatch(state, batch, Diagnostic(e)); return "git-blocked";
-            }
+            var result = PublishCommitted(p, state, batch);
+            if (result != "git-awaiting-push") return result;
         }
         return null;
     }
@@ -43,28 +32,32 @@ public sealed partial class GitBatchPublicationService
         GitOperationReceipt receipt;
         var verificationOnly = false;
         var originalState = state;
+        var attempts = 0;
         try
         {
             _ = _git.ListOperations(_context); // Reject orphan/corrupt inventory, including unrelated receipts.
             receipt = _git.ReadReceipt(_context, batch.OperationId);
             GitOutboxStore.RequireReceipt(batch, receipt);
-            verificationOnly = receipt.State == GitReceiptState.Pushed;
-            if (!verificationOnly && (!AllowsAutomaticPush(p) || !OriginalAuthorization(p, state, batch)))
+            var originalAuthorization = OriginalAuthorization(p, state, batch);
+            if (receipt.State != GitReceiptState.Pushed && !originalAuthorization)
                 return "git-authorization-required";
+            verificationOnly = receipt.State == GitReceiptState.Pushed || !AllowsAutomaticPush(p);
             // A durable Pushed receipt gets its own bounded verification budget, never another push budget.
-            var attempts = verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
+            attempts = explicitRetry || verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
             if (!explicitRetry && attempts >= MaxPushAttempts) return "git-push-retry-exhausted";
 
             void Authorize(GitRepositoryStatus status) => _policy.Require(p, status, _git.Git,
                 receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), push: !verificationOnly, automatic: true);
 
             Checkpoint?.Invoke("before-push");
-            // Persist the budget before attempting publication/verification; restarting cannot reset it.
-            var code = (verificationOnly ? "git_verify_attempt_" : "git_push_attempt_") + (explicitRetry ? 1 : attempts + 1);
-            state = WithPublicationDiagnostic(state, batch, code);
-            _outbox.SaveLocked(state);
-            batch = state.Batches.Single(b => b.Id == batch.Id);
-            _git.PushBound(_context, batch.OperationId, Authorize, verificationOnly);
+            if (!verificationOnly)
+            {
+                // Persist before any remote write. A crash may consume an attempt but cannot reset it.
+                state = WithPublicationDiagnostic(state, batch, "git_push_attempt_" + (attempts + 1));
+                _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+            }
+            var result = _git.PushBound(_context, batch.OperationId, Authorize, verificationOnly, requirePushedReceipt: !originalAuthorization);
+            if (result is null) return "git-awaiting-push";
             receipt = _git.ReadReceipt(_context, batch.OperationId);
         }
         catch (Exception e) when (Controlled(e))
@@ -77,8 +70,8 @@ public sealed partial class GitBatchPublicationService
             if (TransientPush(e))
             {
                 // The command may have reached the server. Every retry uses native ls-remote first.
-                var attempts = Math.Max(1, PushAttempts(batch.Diagnostic));
-                _outbox.SaveLocked(WithPublicationDiagnostic(state, batch, (verificationOnly ? "git_verify_retry_" : "git_push_retry_") + attempts));
+                var failures = verificationOnly ? attempts + 1 : Math.Max(1, PushAttempts(batch.Diagnostic));
+                _outbox.SaveLocked(WithPublicationDiagnostic(state, batch, (verificationOnly ? "git_verify_retry_" : "git_push_retry_") + failures));
                 return "git-push-retry";
             }
             BlockBatch(state, batch, Diagnostic(e)); return "git-blocked";
@@ -100,7 +93,7 @@ public sealed partial class GitBatchPublicationService
         var state = _outbox.LoadLocked();
         var batch = state.Batches.Single(b => b.Id == batchId && b.State == GitOutboxState.Committed);
         var receipt = _git.ReadReceipt(_context, batch.OperationId); GitOutboxStore.RequireReceipt(batch, receipt);
-        if (receipt.State != GitReceiptState.Pushed && (!AllowsAutomaticPush(p) || !OriginalAuthorization(p, state, batch)))
+        if (receipt.State != GitReceiptState.Pushed && !OriginalAuthorization(p, state, batch))
             throw new InvalidDataException("Original publication authorization is required.");
         return PublishCommitted(p, state, batch, explicitRetry: true);
     }

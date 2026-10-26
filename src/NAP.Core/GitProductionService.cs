@@ -100,17 +100,18 @@ public sealed class GitProductionService
         if (receipt.CommitSha != result.CommitSha || receipt.BaseHead != result.OldHead || receipt.Plan.Message != result.Message ||
             !receipt.Plan.Selection.Paths.SequenceEqual(result.CommittedPaths))
             throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Commit result differs from its durable receipt.");
-        return PushLocked(context, receipt);
+        return PushLocked(context, receipt)!;
     });
 
-    public GitPushResult Push(UniverseContext context, GitOperationId operationId) => PushBound(context, operationId, null);
+    public GitPushResult Push(UniverseContext context, GitOperationId operationId) => PushBound(context, operationId, null)!;
 
     // The composition retains its policy mutex. Recheck under Production at the last network boundary
     // and before recording AlreadyPushed. Verification-only recovery can never issue Git.Push.
-    internal GitPushResult PushBound(UniverseContext context, GitOperationId operationId, Action<GitRepositoryStatus>? authorize, bool verificationOnly = false) => GitProductionSafety.Run(() =>
+    internal GitPushResult? PushBound(UniverseContext context, GitOperationId operationId, Action<GitRepositoryStatus>? authorize,
+        bool verificationOnly = false, bool requirePushedReceipt = false) => GitProductionSafety.Run(() =>
     {
         using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context);
-        return PushLocked(context, GitProductionReceiptStore.Read(context, operationId), authorize, verificationOnly);
+        return PushLocked(context, GitProductionReceiptStore.Read(context, operationId), authorize, verificationOnly, requirePushedReceipt);
     });
 
     private GitCommitResult CommitLocked(UniverseContext c, GitOperationReceipt receipt, bool create, Action? authorize = null)
@@ -188,11 +189,20 @@ public sealed class GitProductionService
             throw;
         }
     }
-    private GitPushResult PushLocked(UniverseContext c, GitOperationReceipt receipt, Action<GitRepositoryStatus>? authorize = null, bool verificationOnly = false)
+    private GitPushResult? PushLocked(UniverseContext c, GitOperationReceipt receipt, Action<GitRepositoryStatus>? authorize = null,
+        bool verificationOnly = false, bool requirePushedReceipt = false)
     {
-        if (receipt.State == GitReceiptState.Prepared || receipt.CommitSha is null || verificationOnly && receipt.State != GitReceiptState.Pushed)
+        if (receipt.State == GitReceiptState.Prepared || receipt.CommitSha is null || requirePushedReceipt && receipt.State != GitReceiptState.Pushed)
             throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Push requires a verified Committed or Pushed receipt.");
+        // Reject a changed local binding before consulting even an unavailable replacement remote.
+        if (GitProductionSafety.ConfigurationHash(GitProductionSafety.Configuration(c, Git)) != receipt.Plan.Status.ConfigurationFingerprint)
+            throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Git configuration no longer matches the frozen operation.");
         var status = Inspector.InspectLocked(c); RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid);
+        // Merely observing that an original commit is still unpublished claims no publication and
+        // must not block its Outbox batch just because the next Completed job has produced outputs.
+        // Every actual push or AlreadyPushed acknowledgement still requires full VerifyCommit below.
+        if (verificationOnly && receipt.State == GitReceiptState.Committed && status.Head == receipt.CommitSha && status.RemoteTip == receipt.BaseHead)
+        { authorize?.Invoke(status); return null; }
         VerifyCommit(c, receipt, status.Head);
         if (status.RemoteTip == receipt.CommitSha)
         {
@@ -203,6 +213,7 @@ public sealed class GitProductionService
         }
         if (status.RemoteTip != receipt.BaseHead || receipt.State == GitReceiptState.Pushed)
             throw GitProductionException.Stop(NapIssueCodes.GitRemoteChanged, "Remote branch changed; local commit is retained for review.");
+        if (verificationOnly) { authorize?.Invoke(status); return null; } // Still unpublished; no network write is available on this path.
         Observer?.Invoke("before_push");
         status = Inspector.InspectLocked(c); RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid); VerifyCommit(c, receipt, status.Head);
         if (status.RemoteTip != receipt.BaseHead) throw GitProductionException.Stop(NapIssueCodes.GitRemoteChanged, "Remote changed before publication; local commit is retained.");
