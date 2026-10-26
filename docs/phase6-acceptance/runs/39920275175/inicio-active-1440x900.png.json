@@ -1,0 +1,23 @@
+{
+  "mode": "active",
+  "view": "",
+  "width": 1440,
+  "height": 900,
+  "page": "Inicio",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "5C54AE2649C5F0D01B770A9077D45C70AE7DB92B59F2A539D8815FCC0AF7DEA8"
+}

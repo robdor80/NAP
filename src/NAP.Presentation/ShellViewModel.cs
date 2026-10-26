@@ -9,6 +9,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
     private readonly IUserConfirmation _confirmation;
+    private readonly bool _syntheticReadOnly;
     private readonly IImageNormalizationUiService _normalization;
     private CancellationTokenSource? _normalizationPreparation;
     private readonly IUniverseProfileStore? _profilesStore;
@@ -18,21 +19,45 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private CancellationTokenSource? _read;
     private long _generation, _universeSwitchSequence;
     private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
+    private bool _toolsExpanded, _reviewExpanded;
+    private bool _compact;
+    public bool IsCompact { get=>_compact; set=>Set(ref _compact,value); }
+    public string PauseLabel=>"Pausar · "+UniverseLabel;
+    public string ResumeLabel=>"Reanudar · "+UniverseLabel;
     private ProfessionalPage _current;
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
+        _syntheticReadOnly = syntheticReadOnly;
         Automation = automation;
+        Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
+        History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
         _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
+        Settings.Licenses = licenses ?? new LicenseViewModel(null);
+        Settings.Diagnostics = new(diagnosticClient, () => Explorer.SelectedUniverse?.Id, LocalDiagnostics,
+            readLocalDiagnostics ? async ct =>
+            {
+                var context=Context;if(context is null)return Array.Empty<DiagnosticRow>();
+                var snapshot=await Task.Run(()=>LocalDiagnosticReader.Read(context,ct),ct);
+                var rows=snapshot.States.Select(s=>new DiagnosticRow(null,s==JobState.Failed?DiagnosticSeverity.Error:DiagnosticSeverity.Information,QueueStage.Preparation,null,null,null,null,ManualState:s)).ToList();
+                if(snapshot.ReadError)rows.Add(new(null,DiagnosticSeverity.Error,null,null,null,null,null));
+                return rows;
+            } : null);
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
-        Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Producción", "\uE895"), new("Catálogo", "\uE8F1"),
-            new("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Historial", "\uE81C"), new("RoDo", "\uE899"), new("Ajustes", "\uE713") };
-        Navigate = new(p => NavigateTo((string)p!), p => !_disposed && !IsExecuting && (p as string == "Git" || Navigation.Any(n => n.Name == p as string)));
+        Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
+        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        OpenIncident = new(p =>
+        {
+            Pipeline.Work!.Filter = Pipeline.Work.Filters.Single(f=>f.Value==WorkflowFilter.Review);
+            NavigateTo("Producción"); var reading=LastRefresh; var context=Context;
+            if(p is QueueItemId item) LastRefresh=OpenAfterRead(reading,context,item);
+        }, _=>!_disposed&&!IsExecuting);
+        Navigate = new(p => NavigateTo((string)p!), p => !_disposed && !IsExecuting && Navigation.Concat(Tools).Any(n => n.Name == p as string));
         Refresh = Command(RefreshCurrentAsync, () => !IsExecuting);
         SaveSettings = Command(async () =>
         {
@@ -165,6 +190,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public SettingsViewModel Settings { get; }
     public RodoViewModel Rodo { get; } = new();
     public IReadOnlyList<ShellNavigationItem> Navigation { get; }
+    public IReadOnlyList<ShellNavigationItem> Tools { get; }
+    public bool ToolsExpanded { get => _toolsExpanded; set => Set(ref _toolsExpanded, value); }
+    public bool ReviewExpanded { get => _reviewExpanded; set => Set(ref _reviewExpanded, value); }
     public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Backups, History, Git, Settings, Rodo];
     public UniverseContext? Context => Explorer.Context;
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
@@ -188,6 +216,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public bool AuditAvailable => _service.AuditAvailable;
     public bool MinimizeToTray { get => _trayOnMinimize; set => Set(ref _trayOnMinimize, value); }
     public string StatusText => IsExecuting ? "Operación explícita en curso · conserva esta sesión abierta" : CurrentPage.Status;
+    private async Task OpenAfterRead(Task read,UniverseContext? context,QueueItemId item)
+    { await read; if(!_disposed&&Context==context&&CurrentPage==Pipeline) await Pipeline.Work!.OpenItemAsync(item); }
+    public RelayCommand OpenIncident { get; }
     public RelayCommand Navigate { get; }
     public RelayCommand CancelRead { get; }
     public UiAsyncCommand Refresh { get; }
@@ -212,7 +243,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand PushGit { get; }
     public Task LastRefresh { get; private set; } = Task.CompletedTask;
     public async Task InitializeAsync()
-    { _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); if (Automation is not null) await Automation.RefreshAsync(); }
+    { await Settings.Licenses!.CheckAsync(); _initializing = true; try { await Explorer.InitializeAsync(); } finally { _initializing = false; _scopePending = false; } if (_disposed) return; Activate(Context is null ? Settings : Dashboard); await RefreshCurrentAsync(); }
     private async Task RefreshAfterSwitchAsync(Task switching, long sequence)
     {
         try { await switching; }
@@ -224,12 +255,13 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (!Navigate.CanExecute(name)) return; Activate(Pages.Single(p => p.Name == name)); LastRefresh = RefreshCurrentAsync();
     }
     private void Activate(ProfessionalPage page)
-    { CurrentPage = page; foreach (var item in Navigation) item.IsActive = item.Name == page.Name; RefreshCommands(); }
+    { CurrentPage = page; foreach (var item in Navigation.Concat(Tools)) item.IsActive = item.Name == page.Name; if (Tools.Any(t => t.IsActive)) ToolsExpanded = true; RefreshCommands(); }
     private UiAsyncCommand Command(Func<Task> action, Func<bool> allowed)
-    { UiAsyncCommand? command = null; command = new(action, () => !_disposed && allowed(), Fail, () => DisabledReason(command!)); _commands.Add(command); return command; }
+    { UiAsyncCommand? command = null; command = new(action, () => !_disposed && (!_syntheticReadOnly || command == Refresh) && allowed(), Fail, () => DisabledReason(command!)); _commands.Add(command); return command; }
     private string DisabledReason(UiAsyncCommand command)
     {
         if (_disposed) return "Esta sesión ya está cerrada.";
+        if (_syntheticReadOnly && command != Refresh) return "Aceptación sintética: operaciones productivas, archivos, perfiles y Git no disponibles.";
         if (IsExecuting) return "Operación en curso. Espera a que termine.";
         if (command == ImportProfile && (_profilesStore is null || _profilePicker is null)) return "La instalación de perfiles no está disponible en esta sesión.";
         if (!Explorer.SettingsReadable) return "La configuración local no se puede leer. Revisa el diagnóstico; no se sobrescribirá.";
@@ -284,14 +316,22 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         _read?.Cancel(); _read?.Dispose(); var source = _read = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
         var generation = ++_generation; var context = Context; var page = CurrentPage; page.Notice = null;
         if (page == Rodo) { page.State = UiPageState.Reserved; return; }
-        if (page == Settings) { page.State = !Explorer.SettingsReadable || (Context is null && Explorer.Error is not null) ? UiPageState.Stopped : Context is null ? UiPageState.Unconfigured : UiPageState.Ready; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
+        if (page == Settings) { if(Settings.Section=="Licencias")await Settings.Licenses!.CheckAsync();else if(Settings.Section=="Diagnóstico")await Settings.Diagnostics!.Refresh.ExecuteAsync(); page.State = !Explorer.SettingsReadable || (Context is null && Explorer.Error is not null) ? UiPageState.Stopped : Context is null ? UiPageState.Unconfigured : UiPageState.Ready; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
         if (context is null) { page.State = Explorer.Error is null ? UiPageState.Unconfigured : UiPageState.Stopped; page.Notice = Explorer.Error is null ? null : new(Explorer.Error.Message, Explorer.Error.Code, UiTone.Error); return; }
+        if (page == Dashboard && Automation is not null)
+        {
+            // Connected Inicio reads only the host projection, never manual journals or Inbox scans.
+            await Automation.RefreshAsync();
+            if (!_disposed && generation == _generation && context == Context) page.State = UiPageState.Ready;
+            return;
+        }
         page.State = UiPageState.Loading;
         bool Current() => !_disposed && !source.IsCancellationRequested && generation == _generation && context == Context;
         try
         {
             if (page == Dashboard)
             {
+                // Retain the original local read model for manual adapters; it is never an automation summary.
                 var value = await _service.DashboardAsync(context, source.Token); if (!Current()) return; Scope(value.UniverseId, context);
                 if (value.Planning is not null) CheckPlanning(value.Planning, context);
                 if (value.Pipeline is not null) CheckPipeline(value.Pipeline, context);
@@ -301,6 +341,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             }
             else if (page == Pipeline || page == History)
             {
+                var work = page == Pipeline ? Pipeline.Work! : History.Work!;
+                await work.LoadPageAsync(); if (!Current()) return;
                 var value = await _service.PipelineAsync(context, source.Token); if (!Current()) return; CheckPipeline(value, context);
                 if (page == Pipeline)
                 {
@@ -339,7 +381,8 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
             _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
-            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel));
+            Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged(); Settings.Historical.ContextChanged();
+            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }
         // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.
@@ -352,6 +395,15 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private void RefreshCommands() { foreach (var command in _commands) command.Refresh(); Navigate?.Refresh(); CancelRead?.Refresh(); }
     private void Fail(Exception error)
     { if (_disposed) return; var notice = UiNotice.From(error); CurrentPage.Notice = notice; CurrentPage.State = UiPageState.Stopped; if (Context is { } c) Record(c, notice.Message, notice.Tone, notice.Code); }
+    private IReadOnlyList<DiagnosticRow> LocalDiagnostics()
+    {
+        var id=Explorer.SelectedUniverse?.Id;
+        var rows=History.Activities.Where(a=>a.UniverseId==id).Take(100).Select(a=>new DiagnosticRow(a.ObservedUtc,
+            a.Tone==UiTone.Error?DiagnosticSeverity.Error:a.Tone==UiTone.Warning?DiagnosticSeverity.Warning:DiagnosticSeverity.Information,null,null,null,null,null,a.Code)).ToList();
+        if(Explorer.Error is not null)rows.Insert(0,new(null,DiagnosticSeverity.Error,null,null,null,null,null,Explorer.Error.Code));
+        foreach(var page in Pages.Where(p=>p.Notice is not null))rows.Add(new(null,page.Notice!.Tone==UiTone.Error?DiagnosticSeverity.Error:DiagnosticSeverity.Warning,null,null,null,null,null,page.Notice.Code));
+        return rows.Take(100).ToArray();
+    }
     private void Record(UniverseContext c, string message, UiTone tone, string? code = null)
     { if (_disposed || c != Context) return; History.Activities.Insert(0, new(DateTimeOffset.UtcNow, c.Id, message, tone, code)); while (History.Activities.Count > 100) History.Activities.RemoveAt(History.Activities.Count - 1); }
     private static int Parse(string value) => int.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
@@ -366,5 +418,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }

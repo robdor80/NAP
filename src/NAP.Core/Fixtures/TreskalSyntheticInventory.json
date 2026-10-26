@@ -1,0 +1,636 @@
+{
+  "version": 1,
+  "provenance": "SYNTHETIC_ONLY",
+  "audit_date": "2026-10-03",
+  "groups": {
+    "farmer": 10,
+    "carpenter": 5,
+    "blacksmith": 5,
+    "healer": 3,
+    "children": 6,
+    "elder": 6,
+    "fisher": 2,
+    "tavernkeeper": 2
+  },
+  "records": [
+    {
+      "reference": "portrait_p67_reference_001",
+      "group": "farmer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 001",
+      "identity_key": "synthetic_duplicate_pair",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_002",
+      "group": "farmer",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 002",
+      "identity_key": "synthetic_duplicate_pair",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_003",
+      "group": "farmer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 003",
+      "identity_key": "synthetic_identity_003",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "unknown"
+    },
+    {
+      "reference": "portrait_p67_reference_004",
+      "group": "farmer",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 004",
+      "identity_key": "synthetic_identity_004",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "sex": "female"
+      },
+      "candidates": [
+        "farmer",
+        "village_child"
+      ],
+      "documentation_complete": true,
+      "scenario": "ambiguous"
+    },
+    {
+      "reference": "portrait_p67_reference_005",
+      "group": "farmer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 005",
+      "identity_key": "synthetic_identity_005",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": false,
+      "scenario": "incomplete"
+    },
+    {
+      "reference": "portrait_p67_reference_006",
+      "group": "farmer",
+      "historical_segment": "female",
+      "identity": null,
+      "identity_key": null,
+      "classification": {},
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "unverifiable"
+    },
+    {
+      "reference": "portrait_p67_reference_007",
+      "group": "farmer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 007",
+      "identity_key": "synthetic_identity_007",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "unlisted_role",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "unknown_value"
+    },
+    {
+      "reference": "portrait_p67_reference_008",
+      "group": "farmer",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 008",
+      "identity_key": "synthetic_identity_008",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_009",
+      "group": "farmer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 009",
+      "identity_key": "synthetic_identity_009",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_010",
+      "group": "farmer",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 010",
+      "identity_key": "synthetic_identity_010",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_011",
+      "group": "carpenter",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 011",
+      "identity_key": "synthetic_identity_011",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "carpenter",
+        "sex": "boy"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "incompatible_sex"
+    },
+    {
+      "reference": "portrait_p67_reference_012",
+      "group": "carpenter",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 012",
+      "identity_key": "synthetic_identity_012",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "carpenter",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_013",
+      "group": "carpenter",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 013",
+      "identity_key": "synthetic_identity_013",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "carpenter",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_014",
+      "group": "carpenter",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 014",
+      "identity_key": "synthetic_identity_014",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "carpenter",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_015",
+      "group": "carpenter",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 015",
+      "identity_key": "synthetic_identity_015",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "carpenter",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_016",
+      "group": "blacksmith",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 016",
+      "identity_key": "synthetic_identity_016",
+      "classification": {
+        "location": "treskal",
+        "role": "blacksmith",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "missing_dimension"
+    },
+    {
+      "reference": "portrait_p67_reference_017",
+      "group": "blacksmith",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 017",
+      "identity_key": "synthetic_identity_017",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "blacksmith",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_018",
+      "group": "blacksmith",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 018",
+      "identity_key": "synthetic_identity_018",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "blacksmith",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_019",
+      "group": "blacksmith",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 019",
+      "identity_key": "synthetic_identity_019",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "blacksmith",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_020",
+      "group": "blacksmith",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 020",
+      "identity_key": "synthetic_identity_020",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "blacksmith",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_021",
+      "group": "healer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 021",
+      "identity_key": "synthetic_identity_021",
+      "classification": {
+        "culture": "Norgard",
+        "location": "treskal",
+        "role": "healer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "invalid_naming"
+    },
+    {
+      "reference": "portrait_p67_reference_022",
+      "group": "healer",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 022",
+      "identity_key": "synthetic_identity_022",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "healer",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_023",
+      "group": "healer",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 023",
+      "identity_key": "synthetic_identity_023",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "healer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_024",
+      "group": "children",
+      "historical_segment": "boy",
+      "identity": "Identidad sintética 024",
+      "identity_key": "synthetic_identity_024",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_025",
+      "group": "children",
+      "historical_segment": "boy",
+      "identity": "Identidad sintética 025",
+      "identity_key": "synthetic_identity_025",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "farmer",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_026",
+      "group": "children",
+      "historical_segment": "boy",
+      "identity": "Identidad sintética 026",
+      "identity_key": "synthetic_identity_026",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_child",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_027",
+      "group": "children",
+      "historical_segment": "girl",
+      "identity": "Identidad sintética 027",
+      "identity_key": "synthetic_identity_027",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_child",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_028",
+      "group": "children",
+      "historical_segment": "girl",
+      "identity": "Identidad sintética 028",
+      "identity_key": "synthetic_identity_028",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_child",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_029",
+      "group": "children",
+      "historical_segment": "girl",
+      "identity": "Identidad sintética 029",
+      "identity_key": "synthetic_identity_029",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_child",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_030",
+      "group": "elder",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 030",
+      "identity_key": "synthetic_identity_030",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "elder",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "incompatible_role"
+    },
+    {
+      "reference": "portrait_p67_reference_031",
+      "group": "elder",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 031",
+      "identity_key": "synthetic_identity_031",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_elder",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_032",
+      "group": "elder",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 032",
+      "identity_key": "synthetic_identity_032",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_elder",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_033",
+      "group": "elder",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 033",
+      "identity_key": "synthetic_identity_033",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_elder",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_034",
+      "group": "elder",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 034",
+      "identity_key": "synthetic_identity_034",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_elder",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_035",
+      "group": "elder",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 035",
+      "identity_key": "synthetic_identity_035",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "village_elder",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_036",
+      "group": "fisher",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 036",
+      "identity_key": "synthetic_identity_036",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "fisher",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_037",
+      "group": "fisher",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 037",
+      "identity_key": "synthetic_identity_037",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "fisher",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_038",
+      "group": "tavernkeeper",
+      "historical_segment": "male",
+      "identity": "Identidad sintética 038",
+      "identity_key": "synthetic_identity_038",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "tavernkeeper",
+        "sex": "male"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    },
+    {
+      "reference": "portrait_p67_reference_039",
+      "group": "tavernkeeper",
+      "historical_segment": "female",
+      "identity": "Identidad sintética 039",
+      "identity_key": "synthetic_identity_039",
+      "classification": {
+        "culture": "norgard",
+        "location": "treskal",
+        "role": "tavernkeeper",
+        "sex": "female"
+      },
+      "candidates": [],
+      "documentation_complete": true,
+      "scenario": "known"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "commit": "0a27b9c50e528db3e77f87f85e73eb266379cd96",
+  "run": "https://github.com/robdor80/NAP/actions/runs/40243110761",
+  "download": "https://github.com/robdor80/NAP/actions/runs/40243110761/artifacts/12618090727",
+  "artifactSha256": "7afdaab8b054b491ebe89ebce2608d680c6fa27acc882b6e733689b9f7723671",
+  "expiresAt": "2027-01-23T23:04:47Z",
+  "testsPassed": 49,
+  "bindingErrors": 0,
+  "pngBefore": 60,
+  "pngAfter": 60,
+  "toolEdgesPassed": 10,
+  "baselineClippedEdges": 10,
+  "search001": 1,
+  "reset": 39,
+  "farmer": 10,
+  "etwIsolationPassed": true,
+  "manifestFiles": 491,
+  "diagnosticEncodingRegression": "fixed in this build; final WPF captures reviewed",
+  "windows11HumanAcceptance": "pending"
+}

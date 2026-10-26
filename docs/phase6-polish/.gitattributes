@@ -1,0 +1,8 @@
+*.trx -text
+*.stdout.txt -text
+*.stderr.txt -text
+captures.sha256 -text
+source-sha.txt -text
+*.png binary
+*.zip binary
+*.pdf binary

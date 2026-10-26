@@ -1,0 +1,50 @@
+[
+  {
+    "license": "MIT",
+    "package": "Microsoft.Data.Sqlite.Core/8.0.31",
+    "copyright": "© Microsoft Corporation. All rights reserved.",
+    "redistributed": true
+  },
+  {
+    "license": "MIT",
+    "package": "Microsoft.Data.Sqlite/8.0.31",
+    "copyright": "© Microsoft Corporation. All rights reserved.",
+    "redistributed": true
+  },
+  {
+    "license": "Apache-2.0 (existing Community grant; official build validation)",
+    "package": "SixLabors.ImageSharp/3.2.0",
+    "copyright": "Copyright © Six Labors",
+    "redistributed": true
+  },
+  {
+    "license": "Apache-2.0",
+    "package": "SQLitePCLRaw.bundle_e_sqlite3/2.1.12",
+    "copyright": "Copyright 2014-2024 SourceGear, LLC",
+    "redistributed": true
+  },
+  {
+    "license": "Apache-2.0",
+    "package": "SQLitePCLRaw.core/2.1.12",
+    "copyright": "Copyright 2014-2024 SourceGear, LLC",
+    "redistributed": true
+  },
+  {
+    "license": "Apache-2.0; native SQLite public domain",
+    "package": "SQLitePCLRaw.lib.e_sqlite3/2.1.12",
+    "copyright": "Copyright 2014-2024 SourceGear, LLC",
+    "redistributed": true
+  },
+  {
+    "license": "Apache-2.0",
+    "package": "SQLitePCLRaw.provider.e_sqlite3/2.1.12",
+    "copyright": "Copyright 2014-2024 SourceGear, LLC",
+    "redistributed": true
+  },
+  {
+    "license": "MIT",
+    "package": "System.Memory/4.5.3",
+    "copyright": "© Microsoft Corporation. All rights reserved.",
+    "redistributed": true
+  }
+]

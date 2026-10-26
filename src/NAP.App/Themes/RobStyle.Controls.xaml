@@ -2,6 +2,7 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="RobStyle.Colors.xaml" />
     <ResourceDictionary Source="RobStyle.Buttons.xaml" />
+    <ResourceDictionary Source="RobStyle.Dates.xaml" />
   </ResourceDictionary.MergedDictionaries>
   <Style x:Key="Card" TargetType="Border">
     <Setter Property="Background" Value="{StaticResource PanelBrush}" />

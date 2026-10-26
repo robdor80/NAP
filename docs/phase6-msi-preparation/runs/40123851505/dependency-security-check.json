@@ -1,0 +1,12 @@
+{
+  "apphostX64": true,
+  "noBinaryUpload": true,
+  "selfContained": true,
+  "sourceCommit": "b2e9413f0d3b9d3eb4df79f07fce74685d861d7c",
+  "noPostTransferBinaryVerification": "not applicable; no transfer",
+  "boundedSecretPatternScanPassed": true,
+  "noArchiveCreated": true,
+  "noPdbOrObj": true,
+  "privateFileNameScanPassed": true,
+  "requiredDependenciesPresent": true
+}

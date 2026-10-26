@@ -1,0 +1,23 @@
+{
+  "mode": "historical",
+  "view": "",
+  "width": 1440,
+  "height": 900,
+  "page": "Ajustes",
+  "section": "Hist\u00F3rico sint\u00E9tico",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": 306.25999999999993,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "74EC7A41018B13F6FF6F1E14FA95E777848E22BAD4DAC09A1E447BC239AC418E"
+}

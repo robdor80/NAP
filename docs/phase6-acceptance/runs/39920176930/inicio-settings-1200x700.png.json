@@ -1,0 +1,23 @@
+{
+  "mode": "settings",
+  "view": "",
+  "width": 1200,
+  "height": 700,
+  "page": "Ajustes",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "E7024BCD778043C8FEAC01580A1030E5E324B4A2929FED6AA4C5379C64C64BF1"
+}

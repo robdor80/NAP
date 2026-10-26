@@ -1,0 +1,3 @@
+{"preview":"historical-elder","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1440,"height":900}
+omitted_unchanged_view:historical-elder-ruta-historica
+omitted_unchanged_view:historical-elder-ruta-propuesta

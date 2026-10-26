@@ -1,0 +1,9 @@
+NAP 2.0 · Diagnóstico anonimizado
+Fuente: automatización; universo anonimizado
+Consulta: 4 registros · página 1
+Registros: 4. Solo página consultada; no constituye un historial completo.
+Desde: ; hasta: ; gravedad: Todas las gravedades; categoría: Todas las categorías
+2026-10-22T10:30:00.0000000+00:00 | Error | Validación | La imagen no supera la validación | StageRecorded · Rejected · NeedsReview · AuditFail
+2026-10-22T10:29:00.0000000+00:00 | Aviso | Ajuste de imagen | Proporciones no admitidas | Transitioned · ReviewRequired · NeedsReview · RatioUnsupported
+2026-10-22T10:28:00.0000000+00:00 | Aviso | Producción | Almacenamiento no disponible | Transitioned · Waiting · RetryScheduled · StorageUnavailable
+2026-10-22T10:27:00.0000000+00:00 | Información | Catálogo | Actividad registrada | StageRecorded · Succeeded · Completed · None

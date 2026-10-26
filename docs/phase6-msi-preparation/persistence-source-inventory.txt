@@ -1,0 +1,155 @@
+src/NAP.Presentation/AutomationThumbnailCache.cs:12:    private readonly string _root = Path.Combine(Path.GetTempPath(), "nap-host-client-" + Guid.NewGuid().ToString("N"));
+src/NAP.Presentation/AutomationThumbnailCache.cs:35:                Directory.CreateDirectory(_root);
+src/NAP.Presentation/AutomationThumbnailCache.cs:38:            using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+src/NAP.Presentation/UniverseProfileStore.cs:30:    public static string DefaultLocalRoot => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "universes");
+src/NAP.Presentation/UniverseProfileStore.cs:101:            Directory.CreateDirectory(LocalRoot); RequireDirectory(Guard(LocalRoot, true));
+src/NAP.Presentation/UniverseProfileStore.cs:106:                Directory.CreateDirectory(temporary); created = true; RequireDirectory(Guard(temporary, true));
+src/NAP.Presentation/UniverseProfileStore.cs:107:                using (var output = new FileStream(file, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { output.Write(bytes); output.Flush(true); }
+src/NAP.Presentation/UniverseProfileStore.cs:112:                // Same-volume atomic directory publication; Directory.Move never overwrites.
+src/NAP.Presentation/UniverseProfileStore.cs:113:                Directory.Move(temporary, destination); created = false;
+src/NAP.Presentation/UniverseProfileStore.cs:122:                    Directory.Delete(temporary, recursive: false);
+src/NAP.Presentation/UniverseProfileStore.cs:142:            using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Presentation/AutomationDesktopBridge.cs:46:        Directory.CreateDirectory(_requestDirectory);
+src/NAP.Presentation/AutomationDesktopBridge.cs:128:            using (var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Presentation/AutomationDesktopBridge.cs:143:        using (var file = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.App/Phase6Preview.cs:19:        var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-phase6-preview-unused");
+src/NAP.App/Phase6Preview.cs:104:        System.IO.Directory.CreateDirectory(output);
+src/NAP.App/Phase6Preview.cs:142:            System.IO.File.WriteAllText(path + ".json", System.Text.Json.JsonSerializer.Serialize(state, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+src/NAP.App/Phase6Preview.cs:154:            DiagnosticReportWriter.Export(System.IO.Path.GetFullPath(System.IO.Path.Combine(output,$"diagnostic-report-{width}x{height}.txt")),shell.Settings.Diagnostics!.Report,[],System.IO.Path.Combine(System.IO.Path.GetTempPath(),"nap-preview-unused-admin"));
+src/NAP.App/Phase6Preview.cs:162:            DiagnosticReportWriter.Export(reportPath, shell.Settings.Historical.Report, shell.Explorer.Configurations, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "nap-preview-unused-admin"));
+src/NAP.App/Phase6Preview.cs:273:                System.IO.File.WriteAllText(path+".json",System.Text.Json.JsonSerializer.Serialize(new { mode="exception",view=zoom==1?"comparacion-ampliada":"comparacion-zoom-200",width,height,zoom,marginGuides=2,bindingErrors=diagnostics.Errors,
+src/NAP.App/VisualSmokeProbe.cs:129:                    System.IO.Directory.CreateDirectory(output);
+src/NAP.App/VisualSmokeProbe.cs:138:                    using var file = System.IO.File.Create(System.IO.Path.Combine(output, size.Item1 + "-" + page.Name + ".png")); png.Save(file);
+src/NAP.Core/LicenseRegister.cs:22:    public static string DefaultPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "license-reminders.json");
+src/NAP.Core/LicenseRegister.cs:61:        using var stream = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/LicenseRegister.cs:70:        Guard(); Directory.CreateDirectory(Path.GetDirectoryName(_path)!); Guard();
+src/NAP.Core/LicenseRegister.cs:79:            using (var file = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { file.Write(bytes); file.Flush(true); }
+src/NAP.Core/DiagnosticReportWriter.cs:14:        using var file=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.None);
+src/NAP.App/Controls/ThumbnailView.xaml.cs:46:                using var stream = File.OpenRead(path);
+src/NAP.App/AutomationSmokeProbe.cs:22:            System.IO.Directory.CreateDirectory(output);
+src/NAP.App/AutomationSmokeProbe.cs:24:            using var file = System.IO.File.Create(System.IO.Path.Combine(output, "automation-wpf.png")); encoder.Save(file);
+src/NAP.Core/UniverseProfileLoader.cs:11:        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/StagedPackageExtractor.cs:49:            Directory.CreateDirectory(root);
+src/NAP.Core/StagedPackageExtractor.cs:57:            using var source = new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/StagedPackageExtractor.cs:74:            Directory.CreateDirectory(candidateTemporaryPath);
+src/NAP.Core/StagedPackageExtractor.cs:90:                    Directory.CreateDirectory(destination);
+src/NAP.Core/StagedPackageExtractor.cs:95:                Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+src/NAP.Core/StagedPackageExtractor.cs:96:                await using var output = new FileStream(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+src/NAP.Core/StagedPackageExtractor.cs:139:                Directory.Move(temporaryPath, finalPath);
+src/NAP.Core/StagedPackageExtractor.cs:161:                Directory.Delete(temporaryPath, recursive: true);
+src/NAP.Core/Sha256Hasher.cs:13:        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.App/App.xaml.cs:47:            var registry = new UniverseProfileStore(System.IO.Path.Combine(AppContext.BaseDirectory, "config", "universes"), localProfiles);
+src/NAP.Core/ScenePngToWebpConverter.cs:17:        using var stream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ProductionThumbnailCache.cs:63:        await using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous);
+src/NAP.Core/ProductionThumbnailCache.cs:77:                await using var cached = File.OpenRead(target);
+src/NAP.Core/ProductionThumbnailCache.cs:94:        Directory.CreateDirectory(cache);
+src/NAP.Core/ProductionThumbnailCache.cs:100:            using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/ArchivePaths.cs:107:                Directory.CreateDirectory(current);
+src/NAP.Core/ArchiveMasterPlanner.cs:108:            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ArchiveMasterIndexStore.cs:24:            using var input = new FileStream(IndexPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ArchiveMasterIndexStore.cs:63:        using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/ArchiveMasterExecutor.cs:73:        using (var source = new FileStream(file.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+src/NAP.Core/ArchiveMasterExecutor.cs:74:        using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/ArchiveLock.cs:42:                lease._stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+src/NAP.Core/ArchiveLock.cs:56:        _stream = new FileStream(LockPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+src/NAP.Core/ProductionPaths.cs:99:                Directory.CreateDirectory(current);
+src/NAP.Core/ProductionPaths.cs:113:            using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ProductionImageEngine.cs:19:        using var input = new FileStream(conversion.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ProductionExecutionEvidence.cs:35:            using var input = new FileStream(evidence.ReceiptPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ProductionExecutionEvidence.cs:95:        if (attributes is null) Directory.CreateDirectory(DirectoryPath);
+src/NAP.Core/ProductionExecutionEvidence.cs:100:        using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/AutomationValidation.cs:83:    internal static void Relative(string? path) { if (path is not null) { Text(path, 2048); ProductionPaths.Resolve(Path.GetFullPath(Path.GetTempPath()), path); } }
+src/NAP.Core/AutomationRuntimeStateStore.cs:89:        using var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = DatabasePath, Pooling = false,
+src/NAP.Core/AutomationQueueStore.cs:39:        using (var reserved = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
+src/NAP.Core/AutomationQueueStore.cs:49:        using (var durable = new FileStream(temp, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) durable.Flush(true);
+src/NAP.Core/AutomationQueueStore.cs:81:        using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+src/NAP.Core/AutomationQueueSchema.cs:97:        if (a is null && create) { Directory.CreateDirectory(path); a = ProductionPaths.CheckPath(path, NapIssueCodes.CatalogInvalid); }
+src/NAP.Core/AutomationQueueSchema.cs:102:        var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = write ? SqliteOpenMode.ReadWrite : SqliteOpenMode.ReadOnly, Cache = SqliteCacheMode.Private, Pooling = false, ForeignKeys = true, DefaultTimeout = 1 }.ToString());
+src/NAP.Core/ProductionAssetExecutor.cs:90:        using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/ProductionAssetExecutor.cs:95:                using var input = new FileStream(file.SourcePath!, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/PreparationStateStore.cs:110:            using (var file = new FileStream(temp, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) file.Flush(true);
+src/NAP.Core/PreparationStateStore.cs:140:    { using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); return new Sha256Hasher().Compute(input); }
+src/NAP.Core/PreparationStateStore.cs:143:        var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = mode, Pooling = false, DefaultTimeout = 2 }.ToString());
+src/NAP.Core/PreparationFiles.cs:30:        Directory.CreateDirectory(temp); checkpoint?.Invoke(purpose + "-temporary");
+src/NAP.Core/PreparationFiles.cs:40:                using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/PreparationFiles.cs:41:                using var output = new FileStream(outputPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+src/NAP.Core/PreparationFiles.cs:57:        Directory.Move(temp, final); checkpoint?.Invoke(purpose + "-published"); Verify(record, purpose, bundle);
+src/NAP.Core/PreparationFiles.cs:95:        using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/PreparationFiles.cs:130:    { using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None); file.Write(bytes); file.Flush(true); }
+src/NAP.Core/AutomationHostControlStore.cs:153:        using var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = DatabasePath,
+src/NAP.Core/AutomationHost.cs:88:            !ProductionPaths.Within(Path.GetTempPath(), lab) || !ProductionPaths.Within(lab, _root))
+src/NAP.Core/PortraitPngToWebpConverter.cs:17:        using var stream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/PngMasterValidator.cs:17:        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/AssetManifestV2Loader.cs:12:        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/DurablePreparationService.cs:265:            using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/LocalUniverseSettingsStore.cs:8:    public static string DefaultPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "settings.json");
+src/NAP.Core/LocalUniverseSettingsStore.cs:19:        using var stream = new FileStream(SettingsPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/LocalUniverseSettingsStore.cs:42:        Directory.CreateDirectory(parent); Guard();
+src/NAP.Core/LocalUniverseSettingsStore.cs:57:            using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { output.Write(bytes); output.Flush(true); }
+src/NAP.Core/JobStateStore.cs:95:        try { return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete); }
+src/NAP.Core/JobStateStore.cs:115:        Directory.CreateDirectory(_context.Storage.StateRoot);
+src/NAP.Core/JobStateStore.cs:118:        using (var stream = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/DatabaseBackupService.cs:26:        using (var reserve = new FileStream(target, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
+src/NAP.Core/CatalogRecoveryStore.cs:29:        using (var manifest = new FileStream(Path.Combine(temp, "recovery_manifest.json"), FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/CatalogRecoveryStore.cs:34:        Directory.Move(temp, DirectoryPath(c, id));
+src/NAP.Core/CatalogRecoveryStore.cs:86:        using var a = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/CatalogRecoveryStore.cs:87:        using var b = new FileStream(copy, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/CatalogFileStamp.cs:13:        using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 100);
+src/NAP.Core/CatalogBoundary.cs:26:            if (state is null && createState) { Directory.CreateDirectory(storage.StateRoot); state = ProductionPaths.CheckPath(storage.StateRoot, NapIssueCodes.CatalogInvalid, NapIssueCodes.CatalogInvalid); }
+src/NAP.Core/CatalogBoundary.cs:66:        var connection = new SqliteConnection(new SqliteConnectionStringBuilder
+src/NAP.Core/CatalogBoundary.cs:81:        using var reserved = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None); return temp;
+src/NAP.Core/CatalogBoundary.cs:88:        using (var durable = new FileStream(temp, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) durable.Flush(flushToDisk: true);
+src/NAP.Core/CatalogAssetReader.cs:118:        using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/InboxPreparer.cs:19:        Directory.CreateDirectory(normalizedPath);
+src/NAP.Core/BackupStorage.cs:46:        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/BackupStorage.cs:54:    { Check(path); using var stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None); stream.Flush(true); }
+src/NAP.Core/BackupStorage.cs:58:        using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/BackupStorage.cs:59:        using var output = new FileStream(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+src/NAP.Core/BackupStorage.cs:84:        Directory.CreateDirectory(temp); RequireDirectory(temp); return temp;
+src/NAP.Core/BackupStorage.cs:101:        using (var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { file.Write(bytes); file.Flush(true); }
+src/NAP.Core/BackupStorage.cs:104:        Directory.Move(temp, DirectoryPath(c, manifest.Kind, manifest.BackupId)); return verified;
+src/NAP.Core/InboxPackageStager.cs:52:        Directory.CreateDirectory(normalizedStagingRoot);
+src/NAP.Core/InboxPackageStager.cs:84:            await using (var source = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+src/NAP.Core/InboxPackageStager.cs:85:            await using (var partial = new FileStream(partialPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/InboxPackageStager.cs:160:            await using (var output = new FileStream(partial, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+src/NAP.Core/BackupRetentionService.cs:64:                BackupStorage.Context(context); BackupStorage.Check(quarantine); Directory.Move(original, quarantine);
+src/NAP.Core/BackupRetentionService.cs:98:            { var path = BackupStorage.Resolve(tree, d); BackupStorage.RequireDirectory(path); Directory.Delete(path, recursive: false); }
+src/NAP.Core/BackupRetentionService.cs:99:            BackupStorage.RequireDirectory(tree); Directory.Delete(tree, recursive: false);
+src/NAP.Core/BackupRetentionService.cs:104:        BackupStorage.RequireDirectory(root); Directory.Delete(root, recursive: false);
+src/NAP.Core/InboxPackageReadinessChecker.cs:85:            using var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.None);
+src/NAP.Core/GitProductionReceiptStore.cs:16:            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/GitProductionReceiptStore.cs:67:        CheckState(c); var directory = Root(c); Directory.CreateDirectory(directory); CheckDirectory(directory);
+src/NAP.Core/GitProductionReceiptStore.cs:75:        using (var stream = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { stream.Write(bytes); stream.Flush(true); }
+src/NAP.Core/InboxAdmissionService.cs:78:            using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/InboxAdmissionService.cs:128:                using var input = new FileStream(item.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/InboxAdmissionService.cs:177:                    opened = new FileStream(item.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read); source = opened;
+src/NAP.Core/InboxAdmissionService.cs:224:            Directory.Move(root, canonical);
+src/NAP.Core/GitProductionHooks.cs:15:        var directory = Directory.CreateTempSubdirectory("nap-git-hooks-");
+src/NAP.Core/GitProductionHooks.cs:45:        if ((File.GetAttributes(Path) & FileAttributes.ReparsePoint) == 0) Directory.Delete(Path, recursive: false);
+src/NAP.Core/InboxAdmissionEvidence.cs:24:            ProductionPaths.CheckCasing(parent, Path.GetFileName(path)); Directory.CreateDirectory(path);
+src/NAP.Core/InboxAdmissionEvidence.cs:67:        using (var stream = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { stream.Write(bytes); stream.Flush(true); }
+src/NAP.Core/InboxAdmissionEvidence.cs:117:            using var input = new FileStream(entry, FileMode.Open, flush ? FileAccess.ReadWrite : FileAccess.Read, FileShare.Read);
+src/NAP.Core/GitBundleIntegrity.cs:14:        using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ExecutionStateStore.cs:73:            using (var file = new FileStream(temp, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) file.Flush(true);
+src/NAP.Core/ExecutionStateStore.cs:103:    { using var input = new FileStream(DatabasePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); return new Sha256Hasher().Compute(input); }
+src/NAP.Core/ExecutionStateStore.cs:106:        var db = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = path, Mode = mode, Pooling = false, DefaultTimeout = 2 }.ToString());
+src/NAP.Core/ImageNormalizationService.cs:51:            var snapshotRoot = Path.Combine(temporary, "snapshot"); Directory.CreateDirectory(snapshotRoot);
+src/NAP.Core/ImageNormalizationService.cs:83:                File.WriteAllBytes(manifestFiles[0].FullName, files[manifestFiles[0].Name]);
+src/NAP.Core/ImageNormalizationService.cs:88:            File.WriteAllBytes(pngPath, files[Path.GetFileName(pngPath)]);
+src/NAP.Core/ImageNormalizationService.cs:140:                var candidateRoot = Path.Combine(temporary, "candidate"); Directory.CreateDirectory(candidateRoot);
+src/NAP.Core/ImageNormalizationService.cs:144:                    Directory.CreateDirectory(validationRoot);
+src/NAP.Core/ImageNormalizationService.cs:173:            Directory.CreateDirectory(Path.Combine(temporary, "control"));
+src/NAP.Core/ImageNormalizationService.cs:178:            Directory.Move(temporary, final); // Single commit point, no overwrite. A cancelled late caller can recover this exact receipt.
+src/NAP.Core/ImageNormalizationService.cs:231:                using var zip = ZipFile.OpenRead(candidatePath);
+src/NAP.Core/ImageNormalizationService.cs:336:    private void EnsureRoot() { RequireRoot(); Directory.CreateDirectory(Root); RequireRoot(); }
+src/NAP.Core/ImageNormalizationService.cs:341:        Directory.CreateDirectory(path); return path;
+src/NAP.Core/ImageNormalizationService.cs:367:            ImageNormalizationFiles.Guard(failures); Directory.CreateDirectory(failures); ImageNormalizationFiles.Guard(failures);
+src/NAP.Core/ImageNormalizationService.cs:370:            temporary = NewTemporary("failure-pending"); Directory.CreateDirectory(Path.Combine(temporary, "control"));
+src/NAP.Core/ImageNormalizationService.cs:374:            Directory.Move(temporary, Path.Combine(failures, proposal.OperationId + "-" + Guid.NewGuid().ToString("N")));
+src/NAP.Core/ImageNormalizationService.cs:404:        using var file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
+src/NAP.Core/ExecutionFileLease.cs:110:            var common = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+src/NAP.Core/ExecutionFileLease.cs:137:            Directory.CreateDirectory(path, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+src/NAP.Core/ImageNormalizationFiles.cs:16:        using var source = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+src/NAP.Core/ImageNormalizationFiles.cs:36:        using var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+src/NAP.Core/ImageNormalizationFiles.cs:45:        CheckTree(path); Directory.Delete(path, true);
+src/NAP.Core/ImageNormalizationFiles.cs:52:        Guard(temporary); Guard(child); CheckTree(child); Directory.Delete(child, true);

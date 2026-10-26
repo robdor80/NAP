@@ -1,0 +1,580 @@
+{
+  "schemaVersion": 1,
+  "project": "NAP 2.0",
+  "phase": "P6.3 + P6.4",
+  "branch": "codex/nap-2-fase-6-ux",
+  "sourceCommit": "22134f4059cadfd7d31e2a222dbd985086b0854b",
+  "mainVerified": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "reviewStatus": "awaiting-human-visual-review-2",
+  "msiCertified": false,
+  "cutoverAuthorized": false,
+  "workflow": {
+    "runId": 39701832746,
+    "jobId": 119572634265,
+    "url": "https://github.com/robdor80/NAP/actions/runs/39701832746",
+    "runner": "windows-2022",
+    "conclusion": "success",
+    "buildConfiguration": "Release",
+    "appBuild": "passed",
+    "testAssemblyBuild": "passed",
+    "officialLicenseValidation": "unchanged; existing private helper; cleanup before artifacts",
+    "artifactId": 12393068300,
+    "artifactSha256": "e0cb1da8c995c7c4c5a637b4e7a56c0b3f4183fb554ba56777700dc794d554ce"
+  },
+  "testFilter": "FullyQualifiedName~Phase6Overview|FullyQualifiedName~Phase6Workflow|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo",
+  "counters": {
+    "total": "33",
+    "executed": "33",
+    "passed": "33",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "tests": [
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Duplicate, pending: 0, processing: 0, completed: 0, review: 0, duplicate: 1)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.RevokedOrMismatchedGrantNeverEnablesResume",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Running, pending: 0, processing: 1, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.IncomingProbesAreNotDurablePendingItemsAndCannotShowAllUpToDate",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ForeignControlOrQueueIsNeverDisplayed",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.LateOldUniverseReplyCannotReplaceNewSelection",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.OpeningAnIncidentOutsideTheVisiblePageKeepsItsExactIdentityAndPollingPreservesEdits",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Queued, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: RetryScheduled, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.ProfessionalUiTests.UnconfiguredNavigationNeverInventsCountsOrPerformsIo",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Completed, pending: 0, processing: 0, completed: 1, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.UniverseChangeWhileConfirmingNeverSendsAnApprovalForTheOldScreen",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.ExplicitApprovalBindsPreviewAndDoesNotInventHostOutcome",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: NeedsReview, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.PauseWaitsForHostAndSendsOnlySelectedScopeWithoutConfirmation",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Blocked, label: \"Automatización necesita revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: MissingSource, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Observed, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.LateDetailAndPageRepliesCannotCrossUniverseAndCancelTheOldRead",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: Rejected, pending: 0, processing: 0, completed: 0, review: 1, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(target: WaitingStable, pending: 1, processing: 0, completed: 0, review: 0, duplicate: 0)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.AutomationQueueTests.Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.AuthenticatedPagingFiltersAndEventsAreScopedBoundedAndReadOnly",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Paused, label: \"Automatización pausada\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Degraded, label: \"Automatización necesita revisión\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.PollsNeverOverlapAndDisposedRepliesCannotPublish",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.SelectedCountsStaySeparateFromExecutionScope",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.ForeignSnapshotsAndDisconnectedReadsClearActionsWithoutFallback",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.ControlStateHasPriorityOverCounts(state: Disabled, label: \"Automatización sin activar\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.DisconnectClearsCountsAndNeverFallsBackOrSendsCommands",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6OverviewTests.AuthenticatedOverviewReadsEmptyHostWithoutCreatingCommandsOrChangingQueue",
+      "outcome": "Passed"
+    },
+    {
+      "name": "NAP.Tests.Phase6WorkflowTests.RevokedPolicyBlocksIndividualContinuationBeforeAnyDecisionOrPreparationWrite",
+      "outcome": "Passed"
+    }
+  ],
+  "captures": {
+    "count": 29,
+    "method": "Native WPF RenderTargetBitmap of the product visual tree at a fixed logical client area, 96 DPI",
+    "data": "Purely in-memory, illustrative images; no host connection, settings load or real assets; mutation adapters reject writes",
+    "bindingErrors": 0,
+    "sizes": [
+      [
+        1440,
+        900
+      ],
+      [
+        1200,
+        700
+      ]
+    ],
+    "extraViews": "Lower scroll position for choice, exception, approved and history at both sizes; last Tools option at compact size"
+  },
+  "testScope": {
+    "syntheticFunctionalAssets": 1,
+    "policy": "PreparationOnly: Admit | Normalize",
+    "otherTests": "Metadata-only or in-memory projections; no asset volume",
+    "realAssets": false,
+    "production": false,
+    "cutover": false,
+    "generalRegression": false,
+    "benchmark": false,
+    "stress": false
+  },
+  "unresolvedIssues": [
+    47,
+    49
+  ],
+  "imageSharpAdvisories": [
+    "GHSA-gwg2-r3hj-4w44",
+    "GHSA-j3p4-wp97-rph4",
+    "GHSA-j9gm-c75j-xc9q",
+    "GHSA-jjfr-hcj7-qf5w",
+    "GHSA-wmxv-xphr-5c9g"
+  ],
+  "preliminaryRuns": [
+    {
+      "runId": 39699898292,
+      "sourceCommit": "b7c87dad49bb5ab0caba1c8b4b9f012df5a6bcfc",
+      "conclusion": "failure",
+      "url": "https://github.com/robdor80/NAP/actions/runs/39699898292",
+      "artifactId": 12391957728,
+      "artifactSha256": "811340226fc33cbe32ba3a2b471ce82e4a2cd3edd74613072800c730d6ea402c",
+      "trx": "preliminary-39699898292.trx",
+      "counters": {
+        "total": "31",
+        "executed": "31",
+        "passed": "30",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "failures": [
+        {
+          "name": "NAP.Tests.Phase6WorkflowTests.AuthenticatedPagingFiltersAndEventsAreScopedBoundedAndReadOnly",
+          "message": "Assert.Equal() Failure: Collections differ\r\n           ↓ (pos 0)\r\nExpected: [234, 126, 127, 46, 225, ···]\r\nActual:   [251, 75, 138, 23, 246, ···]\r\n           ↑ (pos 0)"
+        }
+      ]
+    },
+    {
+      "runId": 39700491027,
+      "sourceCommit": "04540dcec54665d25e6fff177fb45cf6963ee1fe",
+      "conclusion": "success",
+      "url": "https://github.com/robdor80/NAP/actions/runs/39700491027",
+      "artifactId": 12392138654,
+      "artifactSha256": "dcbec67184f989e7dda9963c587bfd544cc265cd79a1b4eedf070222037083fa",
+      "trx": "preliminary-39700491027.trx",
+      "counters": {
+        "total": "33",
+        "executed": "33",
+        "passed": "33",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "failures": []
+    },
+    {
+      "runId": 39701372593,
+      "sourceCommit": "57ce62b4754c1f9283c841347a97345847fa957d",
+      "conclusion": "failure",
+      "url": "https://github.com/robdor80/NAP/actions/runs/39701372593",
+      "artifactId": 12393311054,
+      "artifactSha256": "af2928bc4c97ec6d4d71f7d822582daf045f04a4dd3c4882d59c9f93fb36e5e4",
+      "trx": "preliminary-39701372593.trx",
+      "counters": {
+        "total": "33",
+        "executed": "33",
+        "passed": "32",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "failures": [
+        {
+          "name": "NAP.Tests.Phase6WorkflowTests.OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange",
+          "message": "Assert.Throws() Failure: Exception type was not an exact match\r\nExpected: typeof(NAP.Core.AutomationException)\r\nActual:   typeof(NAP.Core.AutomationRemoteOperationException)\r\n---- NAP.Core.AutomationRemoteOperationException : Host operation stopped: ProductionStorageException"
+        }
+      ]
+    },
+    {
+      "runId": 39701612672,
+      "sourceCommit": "2b536231d53348c6f6c786e4786dbff8696ccd7d",
+      "conclusion": "success",
+      "url": "https://github.com/robdor80/NAP/actions/runs/39701612672",
+      "artifactId": 12393555640,
+      "artifactSha256": "3ea42a23b1c4859ca785ca670f70a110135c5be22c437106b3cd6e727442cb1c",
+      "trx": "preliminary-39701612672.trx",
+      "counters": {
+        "total": "33",
+        "executed": "33",
+        "passed": "33",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "failures": []
+    }
+  ],
+  "files": [
+    {
+      "name": "captures.sha256",
+      "bytes": 2817,
+      "sha256": "d7f2887b4a3e4906e6f452a3b8b16fbfc24c174582601e7f5044f28218daf66c"
+    },
+    {
+      "name": "flujo-approved-1200x700.png",
+      "bytes": 75338,
+      "sha256": "a34ca433e0a2c67b867d9cf95da89dcd710fe618b05e68ccfe2050c342448045",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-approved-1440x900.png",
+      "bytes": 96404,
+      "sha256": "f5aa3ec1ef8e556c79c1d1aa0787c3a9d281d3212e3d60953e63ff5fee283147",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-approved-detalle-1200x700.png",
+      "bytes": 73921,
+      "sha256": "a5b08ef41f1aad6a40365f2e84689bfcab5df916f5f62419cba21b3217bbd03a",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-approved-detalle-1440x900.png",
+      "bytes": 94187,
+      "sha256": "8fdd552754dd56a6acc5388bda084a2ac093dc109169d59955ed6ac592a4a636",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-blocked-1200x700.png",
+      "bytes": 76340,
+      "sha256": "e32a1bc98a33919acfa3386a57ccf6a40b4d240031d2cb906fac72696cfdf2e4",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-blocked-1440x900.png",
+      "bytes": 93611,
+      "sha256": "3e6c1752b66c8ec86fbb9ad91b90302f4b9c0221cdf553a383c511df0a95010d",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-choice-1200x700.png",
+      "bytes": 75041,
+      "sha256": "cfa5fc2987963f4ff7a74415dbba254e0cd7ae11c8d466d3ea2413e84f17ebf9",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-choice-1440x900.png",
+      "bytes": 92794,
+      "sha256": "79caf52812e12141786ddfbb6dbfce50b66e829f06a5b39a77cb4f7494ae10f4",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-choice-detalle-1200x700.png",
+      "bytes": 71196,
+      "sha256": "4208970d416fec6244b5405cef3e38b56aa01edc6bf1450ac37440e18a69dc68",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-choice-detalle-1440x900.png",
+      "bytes": 89049,
+      "sha256": "d0be6833afd37446df04cebadb11e2fe8130432b276e1ca8213d2a4556fb4523",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-empty-1200x700.png",
+      "bytes": 51780,
+      "sha256": "559de83c1a1bdb97399bbef678856e716c4c49690fd582811e14b1c27b1b876c",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-empty-1440x900.png",
+      "bytes": 55361,
+      "sha256": "65ff1d5bd47ab96836c4430a15baf4a695b2aaf353cd241c8ff8934149fa41b2",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-exception-1200x700.png",
+      "bytes": 75930,
+      "sha256": "decdf1b8058571d2a2df41f549f80bfbbfc327625c9dc3c8ccd4c425c4a18047",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-exception-1440x900.png",
+      "bytes": 96953,
+      "sha256": "57fad0eda38ea12b0299681351388ff87b721da7a751e1a0945bf52df92c9202",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-exception-detalle-1200x700.png",
+      "bytes": 73427,
+      "sha256": "d262f8ccdef3f3faadef5c5a9190be1f7adc36445a52eaada1ddc3112a2bd899",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-exception-detalle-1440x900.png",
+      "bytes": 93922,
+      "sha256": "0b60929883fd0e3ad39fc53f848906b63ac8f09fab0c8d32f54abd71d1faa9ee",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-history-1200x700.png",
+      "bytes": 69890,
+      "sha256": "21c58f7ca136085ee50900cfa91f16fd34f1fcb7d2bba5c72d346fbd659ef107",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-history-1440x900.png",
+      "bytes": 88534,
+      "sha256": "2fa82f7eb6d009910a658d0acd5537c27e068a4d85824b594b273d188e63a5fe",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-history-detalle-1200x700.png",
+      "bytes": 72462,
+      "sha256": "4cd540906c33da2f9c30a9c53498732c3da127b7df61b2f085fba1bd6302e5ba",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-history-detalle-1440x900.png",
+      "bytes": 90290,
+      "sha256": "2ce9ecf47f8e254c3d01c2a47d1c729bb75c398322b2878c4596efb4f91b56d6",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-manual-1200x700.png",
+      "bytes": 65422,
+      "sha256": "21d8d719db5d13d5744b6da0929936a385a7bd563f767f3cad83852ea0577dc6",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-manual-1440x900.png",
+      "bytes": 70016,
+      "sha256": "3fa31ce3beb077db477947fe75fac7cd9a751fe2132f02634b32cdce9720d995",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-production-1200x700.png",
+      "bytes": 76501,
+      "sha256": "1cf6105d425e47c94b8e3409c5090a5a46cb23c6c073d96e88fa5e0c03237f59",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-production-1440x900.png",
+      "bytes": 94013,
+      "sha256": "168bff9f96be42d89bed1a88ac50fb52c54b28b7b00842cbea2e31b6536f6d05",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "flujo-read-error-1200x700.png",
+      "bytes": 51724,
+      "sha256": "9f175e8e3d08ec6d07f8e75d09cba195e3374949f7e4faac3b3e0b5df64de6cf",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "flujo-read-error-1440x900.png",
+      "bytes": 55442,
+      "sha256": "6b518192020c3132e09841299a947ff9c6e0c250024dba2e1a09a8c28d14613d",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "inicio-review-1200x700.png",
+      "bytes": 67813,
+      "sha256": "30d206e5e4c45b33f875662e4bed8649e207d59f93e98a2dae381b4a4523e019",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "inicio-review-1440x900.png",
+      "bytes": 67357,
+      "sha256": "add66ad9860cae6d57c82d75e9938bd5811345fa6b4d4f233bb9c30bdc452b6d",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "inicio-review-herramientas-1200x700.png",
+      "bytes": 67706,
+      "sha256": "aa88ce93003468938e24d2dcedf33b10d96e9710195bbb5cb48e39365965eedf",
+      "width": 1200,
+      "height": 700
+    },
+    {
+      "name": "phase6-review2.trx",
+      "bytes": 46077,
+      "sha256": "f86dfe0838e7620826090ec24aefc403437f92f03ac02b18a87945c4828642ce"
+    },
+    {
+      "name": "preliminary-39699898292.trx",
+      "bytes": 45706,
+      "sha256": "93220a8bb5c077918f11c48e1c71a02fc9b437be128b4cf5507e41253c292b7e"
+    },
+    {
+      "name": "preliminary-39700491027.trx",
+      "bytes": 46077,
+      "sha256": "7473314cfb32262c5bf69a9bc4ce4bb3508807649a06755b157c00cc0b65a1ea"
+    },
+    {
+      "name": "preliminary-39701372593.trx",
+      "bytes": 49275,
+      "sha256": "3c6a8b67bdaa42614d468827772c145678d012dc594a925dd8309c10a09a690a"
+    },
+    {
+      "name": "preliminary-39701612672.trx",
+      "bytes": 46077,
+      "sha256": "d35fddf4d597113665d275ff57573c45cffed206625a0c0576d1da5e5a1e7c0a"
+    },
+    {
+      "name": "source-sha.txt",
+      "bytes": 42,
+      "sha256": "3e126a8d22c44532a80bc45a2b388b5096da034cdb55dfcc5b83575f980ba039"
+    }
+  ]
+}

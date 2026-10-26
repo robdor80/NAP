@@ -1,0 +1,35 @@
+NAP 2.0 - Fase 6 - Aceptacion aislada Windows 11 x64
+
+1. Descomprime TODO el paquete en una carpeta nueva de tu usuario.
+2. Haz doble clic en Iniciar-prueba-NAP.cmd.
+3. Comprueba el titulo ACEPTACION AISLADA y el aviso DATOS FICTICIOS.
+
+El ejecutable de este paquete SOLO abre la aceptacion, incluso con doble clic
+sobre NAP.App.exe. No contiene una ruta de arranque productivo habilitada.
+No instala nada ni necesita Visual Studio, .NET instalado o administrador.
+No cambies configuraciones de Defender ni SmartScreen. Si Windows impide
+iniciarlo, conserva el mensaje y consultalo con ChatGPT.
+
+Puedes recorrer Inicio, Catalogo (vacio), Produccion e Historial (filas de
+muestra), Ajustes, Diagnostico, Licencias e Historico sintetico (39 referencias).
+Prueba filtros, detalles, comparacion de imagen sintetica, minimizar a bandeja
+y restaurar con doble clic en el icono NAP, o menu Abrir NAP. Para cerrar usa
+la X o el menu Salir de la bandeja. Los cambios de licencias solo duran la sesion.
+
+Objetivos y Backups muestran estados vacios; no crean ni restauran archivos.
+Git no inspecciona remotos ni ejecuta comandos; RoDo sigue reservado.
+Publicacion, normalizacion, borrado, importacion de perfiles, guardado de raices,
+AutomationHost y operaciones Git no estan disponibles. Exportar informes a
+archivos no esta disponible. Copiar diagnostico solo usa texto sintetico.
+No se leen tus perfiles ni configuraciones habituales ni se guardan cambios.
+Las raices mostradas son etiquetas inertes NAP-SYNTHETIC-NOT-A-WORKSPACE.
+
+No hacen falta Git ni programas externos para esta aceptacion. Las futuras
+herramientas Git productivas requieren Git externo; aqui estan bloqueadas.
+Esta prueba visual/sintetica no sustituye la aceptacion operativa real del MSI.
+No es un instalador, una Release definitiva ni un sistema de actualizacion.
+
+Procedencia y hashes: PROCEDENCIA.json, SHA256SUMS.txt, third-party-packages.json
+y third-party-notices. Retencion GitHub Actions solicitada: 90 dias.
+Los cinco avisos NU1902/NU1903 de ImageSharp siguen abiertos en #49.
+No se declara analisis de seguridad limpio. No abras imagenes ni ZIP externos.

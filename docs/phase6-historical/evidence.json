@@ -1,0 +1,82 @@
+{
+  "project": "NAP 2.0",
+  "phase": "P6.7",
+  "branch": "codex/nap-2-fase-6-ux",
+  "base": "e0ef903851b0679acf5c0263264f87471ff8df46",
+  "verified_source": "f3130ce7144644fb4179920c0332371ed0c5991c",
+  "main_unchanged": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "historical_audit_date": "2026-10-03",
+  "individual_records": "synthetic_only",
+  "states": {
+    "conforming_simulation": 28,
+    "documentation_review": 10,
+    "unverifiable_without_originals": 1
+  },
+  "real_assets_used": false,
+  "production_operations": false,
+  "cutover": false,
+  "issue_47_49_modified": false,
+  "runs": [
+    {
+      "id": 39870109208,
+      "sha": "c49c9e4328e2de67695db692e8f4aa4156b876c3",
+      "final": false,
+      "conclusion": "success",
+      "passed": 108,
+      "failed": 0,
+      "skipped": 0,
+      "captures": 28,
+      "artifact_id": 12466440137,
+      "artifact_sha256": "5831b5411f6ab8e6a6e2863f494ceb66588ae6e9fa8e0900ada9a3c78bac757b"
+    },
+    {
+      "id": 39870425854,
+      "sha": "f0f4ca3b146cf866bad489465b891691272bf58f",
+      "final": false,
+      "conclusion": "success",
+      "passed": 108,
+      "failed": 0,
+      "skipped": 0,
+      "captures": 28,
+      "artifact_id": 12466022405,
+      "artifact_sha256": "de6ce20392003cdda73ffde4aae6cb6c279b8f128bf7197b57b0ff29ab90956b"
+    },
+    {
+      "id": 39870560823,
+      "sha": "329b3ae85b9089328cd4f8496396aa04df0c8ed4",
+      "final": false,
+      "conclusion": "success",
+      "passed": 108,
+      "failed": 0,
+      "skipped": 0,
+      "captures": 28,
+      "artifact_id": 12466765169,
+      "artifact_sha256": "5c9b4d174ac81ca9c71844cc93ea193fcb3951adb5468fab4b372416308fd390"
+    },
+    {
+      "id": 39870877507,
+      "sha": "f3130ce7144644fb4179920c0332371ed0c5991c",
+      "final": true,
+      "conclusion": "success",
+      "passed": 108,
+      "failed": 0,
+      "skipped": 0,
+      "captures": 34,
+      "artifact_id": 12467030140,
+      "artifact_sha256": "5021f4131389637dbe5f172bfe3997312cfa7fc62d929292280ac5c50248377a"
+    }
+  ],
+  "advisories": [
+    "https://github.com/advisories/GHSA-gwg2-r3hj-4w44",
+    "https://github.com/advisories/GHSA-j3p4-wp97-rph4",
+    "https://github.com/advisories/GHSA-j9gm-c75j-xc9q",
+    "https://github.com/advisories/GHSA-jjfr-hcj7-qf5w",
+    "https://github.com/advisories/GHSA-wmxv-xphr-5c9g"
+  ],
+  "limitations": [
+    "Windows Server 2022 WPF offscreen renders; MSI Windows 11 acceptance pending",
+    "No original identity, metadata, image, integrity or production certification",
+    "Profile validates dimensions and Naming, not a complete role vocabulary"
+  ],
+  "stop": "Human review required. No P6.8."
+}

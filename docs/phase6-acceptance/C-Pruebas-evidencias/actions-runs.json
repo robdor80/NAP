@@ -1,0 +1,728 @@
+[
+  {
+    "conclusion": "failure",
+    "createdAt": "2026-10-23T07:35:23Z",
+    "databaseId": 39918769852,
+    "headSha": "15a52baa1967100a3ad748e593cf22c60b557d33",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T07:37:22Z",
+        "conclusion": "failure",
+        "databaseId": 120298614989,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:35:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 17,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 18,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39918769852/job/120298614989"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T07:37:23Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39918769852",
+    "artifacts": [
+      {
+        "id": 12486685373,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NjY4NTM3Mw==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 685177,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12486685373",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12486685373/zip",
+        "expired": false,
+        "digest": "sha256:681b55e31e0977c9a34192bbf97571199602286a9b50b1e49adea577f5a529ac",
+        "created_at": "2026-10-23T07:37:20Z",
+        "updated_at": "2026-10-23T07:37:20Z",
+        "expires_at": "2026-11-06T07:37:19Z",
+        "workflow_run": {
+          "id": 39918769852,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "15a52baa1967100a3ad748e593cf22c60b557d33"
+        }
+      }
+    ]
+  },
+  {
+    "conclusion": "failure",
+    "createdAt": "2026-10-23T07:40:14Z",
+    "databaseId": 39919314372,
+    "headSha": "00270c3d8a583acf1ad6b7c05a0c605336927fe3",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T07:44:00Z",
+        "conclusion": "failure",
+        "databaseId": 120300430225,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:40:16Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve exact synthetic bytes in the authorized branch",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39919314372/job/120300430225"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T07:44:01Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39919314372",
+    "artifacts": [
+      {
+        "id": 12485639823,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NTYzOTgyMw==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 7528775,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12485639823",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12485639823/zip",
+        "expired": false,
+        "digest": "sha256:96601fbc61811437a3784fe3afae08ed9329564220d1c5206bbb03b942bfa4dc",
+        "created_at": "2026-10-23T07:43:46Z",
+        "updated_at": "2026-10-23T07:43:46Z",
+        "expires_at": "2026-11-06T07:43:43Z",
+        "workflow_run": {
+          "id": 39919314372,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "00270c3d8a583acf1ad6b7c05a0c605336927fe3"
+        }
+      }
+    ]
+  },
+  {
+    "conclusion": "failure",
+    "createdAt": "2026-10-23T07:47:47Z",
+    "databaseId": 39920176930,
+    "headSha": "3f8dd62f667f923ccd29b58688189c26948b7cfd",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T07:50:20Z",
+        "conclusion": "failure",
+        "databaseId": 120303237759,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:47:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Preserve exact synthetic bytes in the authorized branch",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39920176930/job/120303237759"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T07:50:21Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39920176930",
+    "artifacts": [
+      {
+        "id": 12486598053,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NjU5ODA1Mw==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 5825596,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12486598053",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12486598053/zip",
+        "expired": false,
+        "digest": "sha256:556347945e81143c8ad3b76dd3c0c9bbad57e32c3afbbd88eefcae47a7f27521",
+        "created_at": "2026-10-23T07:50:13Z",
+        "updated_at": "2026-10-23T07:50:13Z",
+        "expires_at": "2026-11-06T07:50:11Z",
+        "workflow_run": {
+          "id": 39920176930,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "3f8dd62f667f923ccd29b58688189c26948b7cfd"
+        }
+      }
+    ]
+  },
+  {
+    "conclusion": "failure",
+    "createdAt": "2026-10-23T07:48:41Z",
+    "databaseId": 39920275175,
+    "headSha": "e588886f316598a02baa606d16b99e7aae87acec",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T07:51:44Z",
+        "conclusion": "failure",
+        "databaseId": 120303561899,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:48:43Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve exact synthetic bytes in the authorized branch",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39920275175/job/120303561899"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T07:51:45Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39920275175",
+    "artifacts": [
+      {
+        "id": 12487291440,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NzI5MTQ0MA==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 5824348,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487291440",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487291440/zip",
+        "expired": false,
+        "digest": "sha256:716fef903be7fa49b93b03256bc78c87e84d8fd9c78bb1f02a2b7ca52cca548c",
+        "created_at": "2026-10-23T07:51:38Z",
+        "updated_at": "2026-10-23T07:51:38Z",
+        "expires_at": "2026-11-06T07:51:37Z",
+        "workflow_run": {
+          "id": 39920275175,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "e588886f316598a02baa606d16b99e7aae87acec"
+        }
+      }
+    ]
+  },
+  {
+    "conclusion": "failure",
+    "createdAt": "2026-10-23T07:52:45Z",
+    "databaseId": 39920731413,
+    "headSha": "67693a04c3d2a79016dcd5cbfc808e1f3b62ea23",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T07:56:15Z",
+        "conclusion": "failure",
+        "databaseId": 120305041621,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:52:47Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve exact synthetic bytes in the authorized branch",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39920731413/job/120305041621"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T07:56:16Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39920731413",
+    "artifacts": [
+      {
+        "id": 12487431827,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NzQzMTgyNw==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 8764166,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487431827",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487431827/zip",
+        "expired": false,
+        "digest": "sha256:c75b664cc7b6353975bd54121eac011af7ef41aca42053ac657b45ce8b2900fd",
+        "created_at": "2026-10-23T07:55:59Z",
+        "updated_at": "2026-10-23T07:55:59Z",
+        "expires_at": "2026-11-06T07:55:57Z",
+        "workflow_run": {
+          "id": 39920731413,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "67693a04c3d2a79016dcd5cbfc808e1f3b62ea23"
+        }
+      }
+    ]
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-10-23T07:57:25Z",
+    "databaseId": 39921263656,
+    "headSha": "ed556bbbdf8a6971cd22d38f96ff88885a366225",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T08:01:02Z",
+        "conclusion": "success",
+        "databaseId": 120306785596,
+        "name": "focused-review",
+        "startedAt": "2026-10-23T07:57:27Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v6",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build WPF with the existing official license validation",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Build the test assembly without executing any tests",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Render only closed synthetic Phase 6 states at both client sizes",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean temporary license before artifacts",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve focused results and synthetic captures",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve exact synthetic bytes in the authorized branch",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-dotnet@v6",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/robdor80/NAP/actions/runs/39921263656/job/120306785596"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T08:01:03Z",
+    "url": "https://github.com/robdor80/NAP/actions/runs/39921263656",
+    "artifacts": [
+      {
+        "id": 12487925777,
+        "node_id": "MDg6QXJ0aWZhY3QxMjQ4NzkyNTc3Nw==",
+        "name": "phase6-acceptance",
+        "size_in_bytes": 8978375,
+        "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487925777",
+        "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12487925777/zip",
+        "expired": false,
+        "digest": "sha256:4a574d2c1daff68be6381ccda3c667b142f1fd37bdd8916b2220e9c861a07759",
+        "created_at": "2026-10-23T08:00:54Z",
+        "updated_at": "2026-10-23T08:00:54Z",
+        "expires_at": "2026-11-06T08:00:53Z",
+        "workflow_run": {
+          "id": 39921263656,
+          "repository_id": 1395904070,
+          "head_repository_id": 1395904070,
+          "head_branch": "codex/nap-2-fase-6-ux",
+          "head_sha": "ed556bbbdf8a6971cd22d38f96ff88885a366225"
+        }
+      }
+    ]
+  }
+]

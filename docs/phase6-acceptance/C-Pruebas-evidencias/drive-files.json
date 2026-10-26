@@ -1,0 +1,1153 @@
+{
+  "folder": "https://drive.google.com/drive/folders/1kvNzb-xWJ549TcxjYSEBrBMUtg_3Mold",
+  "documents": [
+    {
+      "path": "A-Informe/Matriz-P6.1-P6.7.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "12-V7f_oLUycpw9XDRu9JxPAaiYy8bqa5",
+      "title": "Matriz-P6.1-P6.7.md",
+      "file_name": "Matriz-P6.1-P6.7.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/12-V7f_oLUycpw9XDRu9JxPAaiYy8bqa5/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Defectos-y-correcciones.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1d0DYoXhWZdqgQNMOkbZ8EMop3kuoqtdk",
+      "title": "Defectos-y-correcciones.md",
+      "file_name": "Defectos-y-correcciones.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1d0DYoXhWZdqgQNMOkbZ8EMop3kuoqtdk/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Riesgos-y-limitaciones.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1HU_RSPV2mxxSwOdYNLo4sB_s1FeMehwO",
+      "title": "Riesgos-y-limitaciones.md",
+      "file_name": "Riesgos-y-limitaciones.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1HU_RSPV2mxxSwOdYNLo4sB_s1FeMehwO/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Informe-seguridad.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1KqavMOlHqbIwaAmCyUbNqKq4cACQJ5cf",
+      "title": "Informe-seguridad.md",
+      "file_name": "Informe-seguridad.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1KqavMOlHqbIwaAmCyUbNqKq4cACQJ5cf/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Decisiones-pendientes.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1BQWOsWmkVUfdK8jWDRmbValcaLcag9GF",
+      "title": "Decisiones-pendientes.md",
+      "file_name": "Decisiones-pendientes.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1BQWOsWmkVUfdK8jWDRmbValcaLcag9GF/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Revision-visual.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1_jGYFw2pO00t98oYXU77Cb7jW5Y6a6xg",
+      "title": "Revision-visual.md",
+      "file_name": "Revision-visual.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1_jGYFw2pO00t98oYXU77Cb7jW5Y6a6xg/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "A-Informe/Informe-tecnico.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1pnMdF8evtX7Rbf4HaLfPmuzoqpza0vre",
+      "title": "Informe-tecnico.md",
+      "file_name": "Informe-tecnico.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1pnMdF8evtX7Rbf4HaLfPmuzoqpza0vre/view?usp=drivesdk",
+      "parent_id": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "E-Cierre-distribucion/Preparacion-cierre-Fase6.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1gLr4RclwspKHqUi8RRQlPDT-VfCNrHcQ",
+      "title": "Preparacion-cierre-Fase6.md",
+      "file_name": "Preparacion-cierre-Fase6.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1gLr4RclwspKHqUi8RRQlPDT-VfCNrHcQ/view?usp=drivesdk",
+      "parent_id": "1SPNc4JuS-npTH1TsPHqMF5lLcq1Y5qhS"
+    },
+    {
+      "path": "E-Cierre-distribucion/Distribucion-futura.md",
+      "accepted_input": "file_uri",
+      "success": true,
+      "id": "1Gy9riwBGX2WGgHgyNebufVdmLmmNSFie",
+      "title": "Distribucion-futura.md",
+      "file_name": "Distribucion-futura.md",
+      "mime_type": "text/markdown",
+      "url": "https://drive.google.com/file/d/1Gy9riwBGX2WGgHgyNebufVdmLmmNSFie/view?usp=drivesdk",
+      "parent_id": "1SPNc4JuS-npTH1TsPHqMF5lLcq1Y5qhS"
+    }
+  ],
+  "pngs": [
+    {
+      "file": "ajustes-diagnostics-1440x900.png",
+      "success": true,
+      "id": "1_xe61RApLXudu7-_2jyiCMX4CK1iGV5W",
+      "url": "https://drive.google.com/file/d/1_xe61RApLXudu7-_2jyiCMX4CK1iGV5W/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-offline-1200x700.png",
+      "success": true,
+      "id": "1stSLBjlmfN2Y5v5Ltpe2hBZOHX5j7gf1",
+      "url": "https://drive.google.com/file/d/1stSLBjlmfN2Y5v5Ltpe2hBZOHX5j7gf1/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-error-1200x700.png",
+      "success": true,
+      "id": "1e6oTUwlkEpsG-Jo0diiYs5lZ1lKevZBz",
+      "url": "https://drive.google.com/file/d/1e6oTUwlkEpsG-Jo0diiYs5lZ1lKevZBz/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-1200x700.png",
+      "success": true,
+      "id": "1y51nUhPePZuSDbqBKpIxAT68HHWnShLK",
+      "url": "https://drive.google.com/file/d/1y51nUhPePZuSDbqBKpIxAT68HHWnShLK/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-offline-1440x900.png",
+      "success": true,
+      "id": "19pKWQn0dqDjsuI3-ohTwedQIghU5UT4k",
+      "url": "https://drive.google.com/file/d/19pKWQn0dqDjsuI3-ohTwedQIghU5UT4k/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-1200x700.png",
+      "success": true,
+      "id": "1jo9BfPWJAA25x9901DWb2pxIngzh_75F",
+      "url": "https://drive.google.com/file/d/1jo9BfPWJAA25x9901DWb2pxIngzh_75F/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-error-1440x900.png",
+      "success": true,
+      "id": "16gRH7IgfCkgFsv_ieHuSn15GUhBVg3S_",
+      "url": "https://drive.google.com/file/d/16gRH7IgfCkgFsv_ieHuSn15GUhBVg3S_/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-1440x900.png",
+      "success": true,
+      "id": "1Uomp6xeLcn286NLM-XxPr09BROsjAa0g",
+      "url": "https://drive.google.com/file/d/1Uomp6xeLcn286NLM-XxPr09BROsjAa0g/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-export-1200x700.png",
+      "success": true,
+      "id": "1F3EUfEPSGWrxioVQc7cgblixQH64gW7A",
+      "url": "https://drive.google.com/file/d/1F3EUfEPSGWrxioVQc7cgblixQH64gW7A/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-export-1440x900.png",
+      "success": true,
+      "id": "1CbASBJCYn3o0ykD9cdKL5fgrLWLsTxqC",
+      "url": "https://drive.google.com/file/d/1CbASBJCYn3o0ykD9cdKL5fgrLWLsTxqC/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-30-1200x700.png",
+      "success": true,
+      "id": "1TeNA6uGemFaG8goHODDfscxmCinWB3TP",
+      "url": "https://drive.google.com/file/d/1TeNA6uGemFaG8goHODDfscxmCinWB3TP/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-filtered-1200x700.png",
+      "success": true,
+      "id": "1zPlaY8RfsZmcAJap823gEPyy7W4-1QFy",
+      "url": "https://drive.google.com/file/d/1zPlaY8RfsZmcAJap823gEPyy7W4-1QFy/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-30-1440x900.png",
+      "success": true,
+      "id": "1IDgSzIxGMb7jFhGxZmlPEh5MvT7KV6iA",
+      "url": "https://drive.google.com/file/d/1IDgSzIxGMb7jFhGxZmlPEh5MvT7KV6iA/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-diagnostics-filtered-1440x900.png",
+      "success": true,
+      "id": "1I4xEaYgaAMcuRGlufF3pGntrJIZSkFg2",
+      "url": "https://drive.google.com/file/d/1I4xEaYgaAMcuRGlufF3pGntrJIZSkFg2/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-7-1200x700.png",
+      "success": true,
+      "id": "1_1SphTCjlVXaWNhus1qtqWHZfVQ24DMt",
+      "url": "https://drive.google.com/file/d/1_1SphTCjlVXaWNhus1qtqWHZfVQ24DMt/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-7-1440x900.png",
+      "success": true,
+      "id": "13M4WxGy7xQeEtxbVqDwEUxh28GK51yUd",
+      "url": "https://drive.google.com/file/d/13M4WxGy7xQeEtxbVqDwEUxh28GK51yUd/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "comparacion-ampliada-1440x900.png",
+      "success": true,
+      "id": "1XDJmSDZpY9MfnYsMKKID4eXJfQ3XPbF0",
+      "url": "https://drive.google.com/file/d/1XDJmSDZpY9MfnYsMKKID4eXJfQ3XPbF0/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-90-1200x700.png",
+      "success": true,
+      "id": "1Ht4Y-ZorS88kP1LbSsMQEmOcJ6qmVdp7",
+      "url": "https://drive.google.com/file/d/1Ht4Y-ZorS88kP1LbSsMQEmOcJ6qmVdp7/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "comparacion-zoom-200-1200x700.png",
+      "success": true,
+      "id": "1Ra3mjGrEyDbuk6bIcOiqRoAQNsYPqqj1",
+      "url": "https://drive.google.com/file/d/1Ra3mjGrEyDbuk6bIcOiqRoAQNsYPqqj1/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-90-1440x900.png",
+      "success": true,
+      "id": "1JdkNkpL56TG41uJDWVv47C3tOPVB_6tj",
+      "url": "https://drive.google.com/file/d/1JdkNkpL56TG41uJDWVv47C3tOPVB_6tj/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "comparacion-zoom-200-1440x900.png",
+      "success": true,
+      "id": "19ERj5D8v80LxrQoSiEscSlX051txhN90",
+      "url": "https://drive.google.com/file/d/19ERj5D8v80LxrQoSiEscSlX051txhN90/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-expired-1200x700.png",
+      "success": true,
+      "id": "16BSx4JO3ZjtkMmsU9oIN7zEeQxrH3e-_",
+      "url": "https://drive.google.com/file/d/16BSx4JO3ZjtkMmsU9oIN7zEeQxrH3e-_/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-1200x700.png",
+      "success": true,
+      "id": "1yOC0v3cCfYfJ9APC2xGYXd9DqsS71NFZ",
+      "url": "https://drive.google.com/file/d/1yOC0v3cCfYfJ9APC2xGYXd9DqsS71NFZ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-expired-1440x900.png",
+      "success": true,
+      "id": "1JQetfhNKKyxSsl6qrJ0-gZCl-Ld40IG0",
+      "url": "https://drive.google.com/file/d/1JQetfhNKKyxSsl6qrJ0-gZCl-Ld40IG0/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-1440x900.png",
+      "success": true,
+      "id": "1uqgRVzofyA1Z4Jw4157F7cmpfkL4FMLU",
+      "url": "https://drive.google.com/file/d/1uqgRVzofyA1Z4Jw4157F7cmpfkL4FMLU/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-renewed-1200x700.png",
+      "success": true,
+      "id": "1qWUcuG6A-gyXg14K8PSzWj2cSWFNWALL",
+      "url": "https://drive.google.com/file/d/1qWUcuG6A-gyXg14K8PSzWj2cSWFNWALL/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-actividad-1200x700.png",
+      "success": true,
+      "id": "1c63rsO7hFe_TK4O_bmwwZkJsvRIW0Woz",
+      "url": "https://drive.google.com/file/d/1c63rsO7hFe_TK4O_bmwwZkJsvRIW0Woz/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "ajustes-licenses-renewed-1440x900.png",
+      "success": true,
+      "id": "1UOcyCh0CvQmRLlVgIfbAdc8K4gFQM7ka",
+      "url": "https://drive.google.com/file/d/1UOcyCh0CvQmRLlVgIfbAdc8K4gFQM7ka/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-actividad-1440x900.png",
+      "success": true,
+      "id": "18qJgkdjPlZQCsu1szY1MfoZdsOiHK91I",
+      "url": "https://drive.google.com/file/d/18qJgkdjPlZQCsu1szY1MfoZdsOiHK91I/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "comparacion-ampliada-1200x700.png",
+      "success": true,
+      "id": "1WOLEWcWqOFNzUX02BDOA7-JBwNIFMi2d",
+      "url": "https://drive.google.com/file/d/1WOLEWcWqOFNzUX02BDOA7-JBwNIFMi2d/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisiones-1200x700.png",
+      "success": true,
+      "id": "1NEtxYVrCVbXiFTEBHyYIvH6oxz9sBP_S",
+      "url": "https://drive.google.com/file/d/1NEtxYVrCVbXiFTEBHyYIvH6oxz9sBP_S/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-decisiones-1440x900.png",
+      "success": true,
+      "id": "1rZl2DnnxDkhuxf78n0iQpN-WTrQCo1OZ",
+      "url": "https://drive.google.com/file/d/1rZl2DnnxDkhuxf78n0iQpN-WTrQCo1OZ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisiones-1440x900.png",
+      "success": true,
+      "id": "1NbBmb3Zjr9HtN4boYPCuxB3LuNhYCLnz",
+      "url": "https://drive.google.com/file/d/1NbBmb3Zjr9HtN4boYPCuxB3LuNhYCLnz/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-approved-1200x700.png",
+      "success": true,
+      "id": "1Dq67D9LQGPUAecSyKWxn0YxRsw1z0yts",
+      "url": "https://drive.google.com/file/d/1Dq67D9LQGPUAecSyKWxn0YxRsw1z0yts/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-1200x700.png",
+      "success": true,
+      "id": "12nIr9gZaoNeMjhIYol9daJKkuf7Mzkgk",
+      "url": "https://drive.google.com/file/d/12nIr9gZaoNeMjhIYol9daJKkuf7Mzkgk/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-approved-1440x900.png",
+      "success": true,
+      "id": "1BgJWsoUxMOJqgbpD0oAv2JuryXSNf1Wi",
+      "url": "https://drive.google.com/file/d/1BgJWsoUxMOJqgbpD0oAv2JuryXSNf1Wi/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-approved-detalle-1200x700.png",
+      "success": true,
+      "id": "1Oe8WDLdCqusKtM_a5jxGPlD81WEkAhxE",
+      "url": "https://drive.google.com/file/d/1Oe8WDLdCqusKtM_a5jxGPlD81WEkAhxE/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-1440x900.png",
+      "success": true,
+      "id": "1YkSUI-hgd9PoFF0s8LDvDPyi-3anpnVE",
+      "url": "https://drive.google.com/file/d/1YkSUI-hgd9PoFF0s8LDvDPyi-3anpnVE/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-approved-detalle-1440x900.png",
+      "success": true,
+      "id": "1c_bVylCkLE9I9MubdEoNybnjHX-lkTZo",
+      "url": "https://drive.google.com/file/d/1c_bVylCkLE9I9MubdEoNybnjHX-lkTZo/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-choice-1200x700.png",
+      "success": true,
+      "id": "1pVjUUrGOlfF9w_hb4qx70m6y5RBPhZqm",
+      "url": "https://drive.google.com/file/d/1pVjUUrGOlfF9w_hb4qx70m6y5RBPhZqm/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-choice-1440x900.png",
+      "success": true,
+      "id": "1Iv1Lejckw5eGvJUwv93Inpu1Pgez_ei2",
+      "url": "https://drive.google.com/file/d/1Iv1Lejckw5eGvJUwv93Inpu1Pgez_ei2/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-blocked-1200x700.png",
+      "success": true,
+      "id": "1OgC2EFdvXVxXoqXqznBea_2oOtYHveVC",
+      "url": "https://drive.google.com/file/d/1OgC2EFdvXVxXoqXqznBea_2oOtYHveVC/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-actividad-1200x700.png",
+      "success": true,
+      "id": "1SSXICjvL6XNFcyxUwAzeNe19RHL9ryY9",
+      "url": "https://drive.google.com/file/d/1SSXICjvL6XNFcyxUwAzeNe19RHL9ryY9/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-choice-detalle-1200x700.png",
+      "success": true,
+      "id": "1fB0Tp3vTHgZ_j3qKk-dOJTlySsghZlPy",
+      "url": "https://drive.google.com/file/d/1fB0Tp3vTHgZ_j3qKk-dOJTlySsghZlPy/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-blocked-1440x900.png",
+      "success": true,
+      "id": "1LgNNOSWOoaKj_O--l2SbvrRcYixjkodR",
+      "url": "https://drive.google.com/file/d/1LgNNOSWOoaKj_O--l2SbvrRcYixjkodR/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-actividad-1440x900.png",
+      "success": true,
+      "id": "1kPNPLIIJhA-bLJ6fNBNkjuQEcx6mZ2Qu",
+      "url": "https://drive.google.com/file/d/1kPNPLIIJhA-bLJ6fNBNkjuQEcx6mZ2Qu/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-choice-detalle-1440x900.png",
+      "success": true,
+      "id": "1EQR6R8IdodRvDOrFPLX_-en__oY2-lmu",
+      "url": "https://drive.google.com/file/d/1EQR6R8IdodRvDOrFPLX_-en__oY2-lmu/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-activity-decisions-decisiones-1200x700.png",
+      "success": true,
+      "id": "1FEr6ys-hsDADb789Fsdl1arbHi7p9Yj8",
+      "url": "https://drive.google.com/file/d/1FEr6ys-hsDADb789Fsdl1arbHi7p9Yj8/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-empty-1200x700.png",
+      "success": true,
+      "id": "1IRCiUxbew8oT4nNsomqtKvfKSwpnH2-h",
+      "url": "https://drive.google.com/file/d/1IRCiUxbew8oT4nNsomqtKvfKSwpnH2-h/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-empty-1440x900.png",
+      "success": true,
+      "id": "1uT0ojuFhF46qk1ihXH8QzP_QK5-HELJ0",
+      "url": "https://drive.google.com/file/d/1uT0ojuFhF46qk1ihXH8QzP_QK5-HELJ0/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-history-detalle-1200x700.png",
+      "success": true,
+      "id": "13X1905JFgPu1wbRTS-ist5tkWDqwe28H",
+      "url": "https://drive.google.com/file/d/13X1905JFgPu1wbRTS-ist5tkWDqwe28H/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-exception-1200x700.png",
+      "success": true,
+      "id": "1StUSx17gCE0SEgpcbDPKoJEq8Hz7LEL_",
+      "url": "https://drive.google.com/file/d/1StUSx17gCE0SEgpcbDPKoJEq8Hz7LEL_/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-history-detalle-1440x900.png",
+      "success": true,
+      "id": "1NuFb4fTNJyPQEoAAKk-B_skIMMlU5VuD",
+      "url": "https://drive.google.com/file/d/1NuFb4fTNJyPQEoAAKk-B_skIMMlU5VuD/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-exception-1440x900.png",
+      "success": true,
+      "id": "1LibGAPCRqfDuCG3avBHcpTYbb4y7rfYt",
+      "url": "https://drive.google.com/file/d/1LibGAPCRqfDuCG3avBHcpTYbb4y7rfYt/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-manual-1200x700.png",
+      "success": true,
+      "id": "1kb1FLiielcFYhtU9BQIX7pofnWLK0RDD",
+      "url": "https://drive.google.com/file/d/1kb1FLiielcFYhtU9BQIX7pofnWLK0RDD/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-manual-1440x900.png",
+      "success": true,
+      "id": "1chAG2jC-ohH9bbPq7VjD97cQA8p6Wd6T",
+      "url": "https://drive.google.com/file/d/1chAG2jC-ohH9bbPq7VjD97cQA8p6Wd6T/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-exception-detalle-1200x700.png",
+      "success": true,
+      "id": "1ejxWweWaW7GFvr14aXjP9MqA-wnf7ayr",
+      "url": "https://drive.google.com/file/d/1ejxWweWaW7GFvr14aXjP9MqA-wnf7ayr/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-production-1200x700.png",
+      "success": true,
+      "id": "1-TZ2zn3ICXiyGhsjRET8jAerNQm-dbj2",
+      "url": "https://drive.google.com/file/d/1-TZ2zn3ICXiyGhsjRET8jAerNQm-dbj2/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-exception-detalle-1440x900.png",
+      "success": true,
+      "id": "159LrGOhj-et7f7C1YUYuncGTxfhMgdHL",
+      "url": "https://drive.google.com/file/d/159LrGOhj-et7f7C1YUYuncGTxfhMgdHL/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-production-1440x900.png",
+      "success": true,
+      "id": "1roeiBl8KN1yqf_VJixBool3YeUN3nZMk",
+      "url": "https://drive.google.com/file/d/1roeiBl8KN1yqf_VJixBool3YeUN3nZMk/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-history-1200x700.png",
+      "success": true,
+      "id": "1oVcOa72yCeA5Sg-3cmqt3aG3XVtQm8Nn",
+      "url": "https://drive.google.com/file/d/1oVcOa72yCeA5Sg-3cmqt3aG3XVtQm8Nn/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-read-error-1200x700.png",
+      "success": true,
+      "id": "1KTPGGH4TZA3ehrktdtC68VTmFIHKH7OP",
+      "url": "https://drive.google.com/file/d/1KTPGGH4TZA3ehrktdtC68VTmFIHKH7OP/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-history-1440x900.png",
+      "success": true,
+      "id": "1sRyRT2SMhWZpfJtDxL4MtnPgm4o3e1GQ",
+      "url": "https://drive.google.com/file/d/1sRyRT2SMhWZpfJtDxL4MtnPgm4o3e1GQ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "flujo-read-error-1440x900.png",
+      "success": true,
+      "id": "1HrVX_VaFpMwLg7SnJKPEFwR-8wqtX1Ni",
+      "url": "https://drive.google.com/file/d/1HrVX_VaFpMwLg7SnJKPEFwR-8wqtX1Ni/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-1200x700.png",
+      "success": true,
+      "id": "15r73mrII_zgV1FNphCvJweRuanPQPWqb",
+      "url": "https://drive.google.com/file/d/15r73mrII_zgV1FNphCvJweRuanPQPWqb/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-1440x900.png",
+      "success": true,
+      "id": "1irGHE43z_QhwTkYqK6XMOygCN-oLYV4I",
+      "url": "https://drive.google.com/file/d/1irGHE43z_QhwTkYqK6XMOygCN-oLYV4I/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-1200x700.png",
+      "success": true,
+      "id": "1Nf52DTQ59fUkOf72fnKxnw1SQNYs6kh-",
+      "url": "https://drive.google.com/file/d/1Nf52DTQ59fUkOf72fnKxnw1SQNYs6kh-/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-1440x900.png",
+      "success": true,
+      "id": "1rhQnjRnhq8vax7wl7NHTXK_4zxw9Apb-",
+      "url": "https://drive.google.com/file/d/1rhQnjRnhq8vax7wl7NHTXK_4zxw9Apb-/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-incidencia-1200x700.png",
+      "success": true,
+      "id": "1LC7NWLSeh66RGpJtrzy5O8k1dN_YIjHQ",
+      "url": "https://drive.google.com/file/d/1LC7NWLSeh66RGpJtrzy5O8k1dN_YIjHQ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-incidencia-1440x900.png",
+      "success": true,
+      "id": "1JfQxQoNbl-MFso7jvEnCszatjkaoexz7",
+      "url": "https://drive.google.com/file/d/1JfQxQoNbl-MFso7jvEnCszatjkaoexz7/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-ruta-historica-1200x700.png",
+      "success": true,
+      "id": "1HOUiFDz8JiyDka8I4n6Luvz0S04F8jlI",
+      "url": "https://drive.google.com/file/d/1HOUiFDz8JiyDka8I4n6Luvz0S04F8jlI/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-context-1440x900.png",
+      "success": true,
+      "id": "1bBocDjujdMnJGSeYFLKl0kb7D7_v2UNX",
+      "url": "https://drive.google.com/file/d/1bBocDjujdMnJGSeYFLKl0kb7D7_v2UNX/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-1200x700.png",
+      "success": true,
+      "id": "113QcD6EZUI_1Gm4DaL96yFasifFDRb85",
+      "url": "https://drive.google.com/file/d/113QcD6EZUI_1Gm4DaL96yFasifFDRb85/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-ambiguous-ruta-propuesta-1200x700.png",
+      "success": true,
+      "id": "1DB_78z2RsXE-ohcIGMiBMigTl4nYV4uZ",
+      "url": "https://drive.google.com/file/d/1DB_78z2RsXE-ohcIGMiBMigTl4nYV4uZ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-children-1200x700.png",
+      "success": true,
+      "id": "1zwBAmP-VLyR4C7uRL8GmzJ__F1dB1x0A",
+      "url": "https://drive.google.com/file/d/1zwBAmP-VLyR4C7uRL8GmzJ__F1dB1x0A/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-1440x900.png",
+      "success": true,
+      "id": "1RmyyLkj6rZG-NljQ2_x3TnAF2M39oDKW",
+      "url": "https://drive.google.com/file/d/1RmyyLkj6rZG-NljQ2_x3TnAF2M39oDKW/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-children-1440x900.png",
+      "success": true,
+      "id": "1eaEiW4b_fWj_gO4_6U8mfMQUOFsVRVTL",
+      "url": "https://drive.google.com/file/d/1eaEiW4b_fWj_gO4_6U8mfMQUOFsVRVTL/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-incidencia-1200x700.png",
+      "success": true,
+      "id": "1I8J9FeJZ_fMdrm6EXOXzz80Ca2jegxZR",
+      "url": "https://drive.google.com/file/d/1I8J9FeJZ_fMdrm6EXOXzz80Ca2jegxZR/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-children-ruta-historica-1200x700.png",
+      "success": true,
+      "id": "1cJZru7_sBHV13SsAABFrh7zeJTkyDMxe",
+      "url": "https://drive.google.com/file/d/1cJZru7_sBHV13SsAABFrh7zeJTkyDMxe/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-incidencia-1440x900.png",
+      "success": true,
+      "id": "1zxIMZ4y1UAd71uI_xYV6jG8pR3e0Zxuh",
+      "url": "https://drive.google.com/file/d/1zxIMZ4y1UAd71uI_xYV6jG8pR3e0Zxuh/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-ruta-historica-1200x700.png",
+      "success": true,
+      "id": "15TTjSb2Qd9CbzKakCZTcCFoz9Yrcw4hn",
+      "url": "https://drive.google.com/file/d/15TTjSb2Qd9CbzKakCZTcCFoz9Yrcw4hn/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-children-ruta-propuesta-1200x700.png",
+      "success": true,
+      "id": "1kmvejfrP3ynfmm-GT9n2ySqRk3zDdmkZ",
+      "url": "https://drive.google.com/file/d/1kmvejfrP3ynfmm-GT9n2ySqRk3zDdmkZ/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-duplicate-ruta-propuesta-1200x700.png",
+      "success": true,
+      "id": "11cXtwvPcuZSeTxZ1moB2XEZTFr1C0nEE",
+      "url": "https://drive.google.com/file/d/11cXtwvPcuZSeTxZ1moB2XEZTFr1C0nEE/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-empty-1200x700.png",
+      "success": true,
+      "id": "1vbbIC6l_7jOpbYi7kse0659JejmWfpHj",
+      "url": "https://drive.google.com/file/d/1vbbIC6l_7jOpbYi7kse0659JejmWfpHj/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-context-1200x700.png",
+      "success": true,
+      "id": "1wlwsrVvvRUGTGnFu3NukMdk9jY3cS2F1",
+      "url": "https://drive.google.com/file/d/1wlwsrVvvRUGTGnFu3NukMdk9jY3cS2F1/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-empty-1440x900.png",
+      "success": true,
+      "id": "1Lga6UswSJnSlJOCiJZYoJdCR9xRnFiT1",
+      "url": "https://drive.google.com/file/d/1Lga6UswSJnSlJOCiJZYoJdCR9xRnFiT1/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-elder-1200x700.png",
+      "success": true,
+      "id": "1WycSxHimbyit0dvm6Q_fV_kS2CbGGz71",
+      "url": "https://drive.google.com/file/d/1WycSxHimbyit0dvm6Q_fV_kS2CbGGz71/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-export-1200x700.png",
+      "success": true,
+      "id": "1c40HTwmfsKMzJSt8LpBJENUEDDh7CZ5t",
+      "url": "https://drive.google.com/file/d/1c40HTwmfsKMzJSt8LpBJENUEDDh7CZ5t/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-elder-1440x900.png",
+      "success": true,
+      "id": "1AGLCvmwcTZdVebLQdpmj6X7xc9JOl2Cm",
+      "url": "https://drive.google.com/file/d/1AGLCvmwcTZdVebLQdpmj6X7xc9JOl2Cm/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-export-1440x900.png",
+      "success": true,
+      "id": "1xUf_0E0de521vdLO__GRk7Uq8xQib5Lo",
+      "url": "https://drive.google.com/file/d/1xUf_0E0de521vdLO__GRk7Uq8xQib5Lo/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-elder-ruta-historica-1200x700.png",
+      "success": true,
+      "id": "1FPPIGIkaVGvkTeLEF70u6EgEUknMITei",
+      "url": "https://drive.google.com/file/d/1FPPIGIkaVGvkTeLEF70u6EgEUknMITei/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-1200x700.png",
+      "success": true,
+      "id": "1bg2P5GdGRs8lfjA8Bvt0x19HiHFWioOS",
+      "url": "https://drive.google.com/file/d/1bg2P5GdGRs8lfjA8Bvt0x19HiHFWioOS/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-elder-ruta-propuesta-1200x700.png",
+      "success": true,
+      "id": "1NSmmBEnAraNOifv-F7vFo5OS1UGgQG-D",
+      "url": "https://drive.google.com/file/d/1NSmmBEnAraNOifv-F7vFo5OS1UGgQG-D/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-1440x900.png",
+      "success": true,
+      "id": "1lvB2sRP9q928lL1h-EFoRmUeU5QEE9dr",
+      "url": "https://drive.google.com/file/d/1lvB2sRP9q928lL1h-EFoRmUeU5QEE9dr/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-incidencia-1200x700.png",
+      "success": true,
+      "id": "1qWw1lmX5vOqpoWu_x007sTrhh2D03lVy",
+      "url": "https://drive.google.com/file/d/1qWw1lmX5vOqpoWu_x007sTrhh2D03lVy/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-incidencia-1440x900.png",
+      "success": true,
+      "id": "17IFrudY09jEu-nJbqjGk-SGMKFQ4otuv",
+      "url": "https://drive.google.com/file/d/17IFrudY09jEu-nJbqjGk-SGMKFQ4otuv/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-ruta-historica-1200x700.png",
+      "success": true,
+      "id": "1-eckE4PWFQJI6Wcts0Em-gLalIZrqdqf",
+      "url": "https://drive.google.com/file/d/1-eckE4PWFQJI6Wcts0Em-gLalIZrqdqf/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "historico-historical-unknown-ruta-propuesta-1200x700.png",
+      "success": true,
+      "id": "1vtegfLRPVuHyVOm__YamP-5XMm-7sFLU",
+      "url": "https://drive.google.com/file/d/1vtegfLRPVuHyVOm__YamP-5XMm-7sFLU/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-active-1200x700.png",
+      "success": true,
+      "id": "1t83twifrdOuD-G1hQ2pWz-3plMTYA7_a",
+      "url": "https://drive.google.com/file/d/1t83twifrdOuD-G1hQ2pWz-3plMTYA7_a/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-active-1440x900.png",
+      "success": true,
+      "id": "1V14v7g0Ennc3PCHUbwr4gwcW39p9fVzw",
+      "url": "https://drive.google.com/file/d/1V14v7g0Ennc3PCHUbwr4gwcW39p9fVzw/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-catalog-1200x700.png",
+      "success": true,
+      "id": "1_xFLZH744qG2CzVBqVmMUgTMjFg63nZh",
+      "url": "https://drive.google.com/file/d/1_xFLZH744qG2CzVBqVmMUgTMjFg63nZh/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-catalog-1440x900.png",
+      "success": true,
+      "id": "1DPGanjTMrSXWYLesqH3l1MYkE0qd2JcE",
+      "url": "https://drive.google.com/file/d/1DPGanjTMrSXWYLesqH3l1MYkE0qd2JcE/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-local-1200x700.png",
+      "success": true,
+      "id": "1fciHJguOYoVzTpi-evN3fUwBtoxPYqLA",
+      "url": "https://drive.google.com/file/d/1fciHJguOYoVzTpi-evN3fUwBtoxPYqLA/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-review-herramientas-1200x700.png",
+      "success": true,
+      "id": "1A9TVZ7eH-NGEjZuQ7eM0rLbYX7LlSj-o",
+      "url": "https://drive.google.com/file/d/1A9TVZ7eH-NGEjZuQ7eM0rLbYX7LlSj-o/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-local-1440x900.png",
+      "success": true,
+      "id": "1MVBS6AriN_-DK1a7_nRPC1XnzMLnUPgl",
+      "url": "https://drive.google.com/file/d/1MVBS6AriN_-DK1a7_nRPC1XnzMLnUPgl/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-settings-1200x700.png",
+      "success": true,
+      "id": "1PcIJEv8bnsmluT5k6coPwSebsLhxzAZz",
+      "url": "https://drive.google.com/file/d/1PcIJEv8bnsmluT5k6coPwSebsLhxzAZz/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-offline-1200x700.png",
+      "success": true,
+      "id": "1atXjNfirqf8MlUjBIVlwP6ucdiZ-_-62",
+      "url": "https://drive.google.com/file/d/1atXjNfirqf8MlUjBIVlwP6ucdiZ-_-62/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-settings-1440x900.png",
+      "success": true,
+      "id": "129BHWyGVTV_5uQ75re-6SjyFKFax46Ld",
+      "url": "https://drive.google.com/file/d/129BHWyGVTV_5uQ75re-6SjyFKFax46Ld/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-offline-1440x900.png",
+      "success": true,
+      "id": "1d4tXfDxWiro_KsUxIM2x3StRj3ZbI53Y",
+      "url": "https://drive.google.com/file/d/1d4tXfDxWiro_KsUxIM2x3StRj3ZbI53Y/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-paused-1200x700.png",
+      "success": true,
+      "id": "1_hgWKWXYd47Rjy_SyVMfvChuA2RcJK8d",
+      "url": "https://drive.google.com/file/d/1_hgWKWXYd47Rjy_SyVMfvChuA2RcJK8d/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-paused-1440x900.png",
+      "success": true,
+      "id": "1TpAAyTqYFqNwIngXKrD7KHx_qz-p5QjH",
+      "url": "https://drive.google.com/file/d/1TpAAyTqYFqNwIngXKrD7KHx_qz-p5QjH/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-review-1200x700.png",
+      "success": true,
+      "id": "1KkyCpIHmS2KYnMobyrCRqXggqZi72Zw3",
+      "url": "https://drive.google.com/file/d/1KkyCpIHmS2KYnMobyrCRqXggqZi72Zw3/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "file": "inicio-review-1440x900.png",
+      "success": true,
+      "id": "1rPi2e62-OZKncKajDuIG5zkU0Ey2S-jY",
+      "url": "https://drive.google.com/file/d/1rPi2e62-OZKncKajDuIG5zkU0Ey2S-jY/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    }
+  ],
+  "additional": [
+    {
+      "path": "D-Aceptacion-MSI/Guia-MSI.md",
+      "file": "Guia-MSI.md",
+      "success": true,
+      "id": "17eDCXlYjsH2nUKqnqNJmvjMi4jYHJiur",
+      "url": "https://drive.google.com/file/d/17eDCXlYjsH2nUKqnqNJmvjMi4jYHJiur/view?usp=drivesdk",
+      "parent": "1IzDw0nYL2XmhrYuetJS7EY-54UhdxG7x"
+    },
+    {
+      "path": "C-Pruebas-evidencias/Resultados.md",
+      "file": "Resultados.md",
+      "success": true,
+      "id": "1zuBLEAcTsoHWEx_lUx2RizwLWaao4_wb",
+      "url": "https://drive.google.com/file/d/1zuBLEAcTsoHWEx_lUx2RizwLWaao4_wb/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "A-Informe/Informe-ejecutivo.pdf",
+      "file": "Informe-ejecutivo.pdf",
+      "success": true,
+      "id": "1oroZTAWtK27YwXUHznoYTkD5cVI3869y",
+      "url": "https://drive.google.com/file/d/1oroZTAWtK27YwXUHznoYTkD5cVI3869y/view?usp=drivesdk",
+      "parent": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "C-Pruebas-evidencias/evidence.json",
+      "file": "evidence.json",
+      "success": true,
+      "id": "1ybZbuK0IhRIawHkUCS0swlZI3o374uvW",
+      "url": "https://drive.google.com/file/d/1ybZbuK0IhRIawHkUCS0swlZI3o374uvW/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "B-Capturas-WPF/Galeria-Drive.md",
+      "file": "Galeria-Drive.md",
+      "success": true,
+      "id": "1ydJ9OMAt-1r-CvEWngWsLYuoRKyyF_g9",
+      "url": "https://drive.google.com/file/d/1ydJ9OMAt-1r-CvEWngWsLYuoRKyyF_g9/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "path": "C-Pruebas-evidencias/actions-runs.json",
+      "file": "actions-runs.json",
+      "success": true,
+      "id": "110Zv5PD6VDMs1gbtr9WJkoxHDRiUthdI",
+      "url": "https://drive.google.com/file/d/110Zv5PD6VDMs1gbtr9WJkoxHDRiUthdI/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "B-Capturas-WPF/Galeria-WPF.pdf",
+      "file": "Galeria-WPF.pdf",
+      "success": true,
+      "id": "1wQq1B2bNDY8ZKNVKHUShwii5vfj6X8at",
+      "url": "https://drive.google.com/file/d/1wQq1B2bNDY8ZKNVKHUShwii5vfj6X8at/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "path": "C-Pruebas-evidencias/actions-preservation.json",
+      "file": "actions-preservation.json",
+      "success": true,
+      "id": "1eX39fqFQ_M1xcpudh9WbQCqBInwo-xQ5",
+      "url": "https://drive.google.com/file/d/1eX39fqFQ_M1xcpudh9WbQCqBInwo-xQ5/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "D-Aceptacion-MSI/Guia-MSI.pdf",
+      "file": "Guia-MSI.pdf",
+      "success": true,
+      "id": "13P8IhhzsVr7Iuv2IYZaYrXSjIwlaFoQH",
+      "url": "https://drive.google.com/file/d/13P8IhhzsVr7Iuv2IYZaYrXSjIwlaFoQH/view?usp=drivesdk",
+      "parent": "1IzDw0nYL2XmhrYuetJS7EY-54UhdxG7x"
+    },
+    {
+      "path": "C-Pruebas-evidencias/Duplicados-P6.7.md",
+      "file": "Duplicados-P6.7.md",
+      "success": true,
+      "id": "1T1L2Q6nhuJzZcCxUwvngO1yC5NzOwEMh",
+      "url": "https://drive.google.com/file/d/1T1L2Q6nhuJzZcCxUwvngO1yC5NzOwEMh/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "B-Capturas-WPF/Galeria-WPF.md",
+      "file": "Galeria-WPF.md",
+      "success": true,
+      "id": "11X0D6OOaiNhkUn2fTtzvTTPJYwz5pWsD",
+      "url": "https://drive.google.com/file/d/11X0D6OOaiNhkUn2fTtzvTTPJYwz5pWsD/view?usp=drivesdk",
+      "parent": "10I_B5JQ5qrx5f2l3zVVAwU3TYcCOtRdV"
+    },
+    {
+      "path": "C-Pruebas-evidencias/verified-source-files.json",
+      "file": "verified-source-files.json",
+      "success": true,
+      "id": "1yoYp8jd3ptw_L19WhNfMxCsYL3KGioMZ",
+      "url": "https://drive.google.com/file/d/1yoYp8jd3ptw_L19WhNfMxCsYL3KGioMZ/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "C-Pruebas-evidencias/verified-build-workflow.yml",
+      "file": "verified-build-workflow.yml",
+      "success": true,
+      "id": "1KWnQen1CkAjyGR1k1g4h7Av-N6w6nJbG",
+      "url": "https://drive.google.com/file/d/1KWnQen1CkAjyGR1k1g4h7Av-N6w6nJbG/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "D-Aceptacion-MSI/Lista-comprobacion.md",
+      "file": "Lista-comprobacion.md",
+      "success": true,
+      "id": "1Es0ldedyWE648hOTE4yxqkwTQS4Tc5re",
+      "url": "https://drive.google.com/file/d/1Es0ldedyWE648hOTE4yxqkwTQS4Tc5re/view?usp=drivesdk",
+      "parent": "1IzDw0nYL2XmhrYuetJS7EY-54UhdxG7x"
+    },
+    {
+      "path": "C-Pruebas-evidencias/preservacion-originales.log",
+      "file": "preservacion-originales.log",
+      "success": true,
+      "id": "1WywSNw4MvO-zLa7f6IIz69CpC4hweHJr",
+      "url": "https://drive.google.com/file/d/1WywSNw4MvO-zLa7f6IIz69CpC4hweHJr/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "A-Informe/Informe-ejecutivo.md",
+      "file": "Informe-ejecutivo.md",
+      "success": true,
+      "id": "135Uc5X2dTBZAHxJTpAZrzOdcny3ts7hA",
+      "url": "https://drive.google.com/file/d/135Uc5X2dTBZAHxJTpAZrzOdcny3ts7hA/view?usp=drivesdk",
+      "parent": "10l_02NmEvtharDHPbJCf9_pU6mJodvIH"
+    },
+    {
+      "path": "C-Pruebas-evidencias/Transferencia.md",
+      "file": "Transferencia-final.md",
+      "success": true,
+      "id": "1ym7xzVKpPnfioUp8tYV9WUgVoNPVxgUq",
+      "url": "https://drive.google.com/file/d/1ym7xzVKpPnfioUp8tYV9WUgVoNPVxgUq/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39921263656/phase6-acceptance.trx",
+      "file": "phase6-acceptance-final.trx",
+      "success": true,
+      "id": "1fKfb8qPq0O7I_gxDWPO2uJaIjC5Gyp4j",
+      "url": "https://drive.google.com/file/d/1fKfb8qPq0O7I_gxDWPO2uJaIjC5Gyp4j/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "Verify-evidence.py",
+      "file": "Verify-evidence.py",
+      "success": true,
+      "id": "1mhIlkBgNbb9A5lUDrdn-WgSXNUmejeo-",
+      "url": "https://drive.google.com/file/d/1mhIlkBgNbb9A5lUDrdn-WgSXNUmejeo-/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39918769852.zip",
+      "file": "actions-39918769852.zip",
+      "success": true,
+      "id": "1bOpuLZYMmQcLruAbHwS9A_bYn3Epkwkv",
+      "url": "https://drive.google.com/file/d/1bOpuLZYMmQcLruAbHwS9A_bYn3Epkwkv/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39920275175/build-and-review.log",
+      "file": "build-and-review-39920275175.log",
+      "success": true,
+      "id": "1vj0MHUYFrN95rpLKQK-44vrgjkW0d9Xv",
+      "url": "https://drive.google.com/file/d/1vj0MHUYFrN95rpLKQK-44vrgjkW0d9Xv/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39918769852/build-and-review.log",
+      "file": "build-and-review-39918769852.log",
+      "success": true,
+      "id": "1h-8nq0_Kh2gLCbIQUN4GSfDv_GNxasTL",
+      "url": "https://drive.google.com/file/d/1h-8nq0_Kh2gLCbIQUN4GSfDv_GNxasTL/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39920731413.zip",
+      "file": "actions-39920731413.zip",
+      "success": true,
+      "id": "1T9EHGZbCXrBZ0zSWOgBqiYg5Y9PAP2xm",
+      "url": "https://drive.google.com/file/d/1T9EHGZbCXrBZ0zSWOgBqiYg5Y9PAP2xm/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39919314372.zip",
+      "file": "actions-39919314372.zip",
+      "success": true,
+      "id": "1uxzPwGJ-vJrUa3__gwE-ZuS1no_4nLzj",
+      "url": "https://drive.google.com/file/d/1uxzPwGJ-vJrUa3__gwE-ZuS1no_4nLzj/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39920731413/build-and-review.log",
+      "file": "build-and-review-39920731413.log",
+      "success": true,
+      "id": "1GzdZ7WU5A-hSOLQWdewawSJMclKgKlQj",
+      "url": "https://drive.google.com/file/d/1GzdZ7WU5A-hSOLQWdewawSJMclKgKlQj/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39919314372/build-and-review.log",
+      "file": "build-and-review-39919314372.log",
+      "success": true,
+      "id": "1OzPVQrtPbHb8vaOymZ79duwvjSN9PXhZ",
+      "url": "https://drive.google.com/file/d/1OzPVQrtPbHb8vaOymZ79duwvjSN9PXhZ/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39921263656.zip",
+      "file": "actions-39921263656.zip",
+      "success": true,
+      "id": "1jkZ36VXdJuJ2fJgcciWWcW-GCo9m6F8W",
+      "url": "https://drive.google.com/file/d/1jkZ36VXdJuJ2fJgcciWWcW-GCo9m6F8W/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39920176930.zip",
+      "file": "actions-39920176930.zip",
+      "success": true,
+      "id": "12btlrbi0MB56PnCJVgNicqwX_bFd8JcT",
+      "url": "https://drive.google.com/file/d/12btlrbi0MB56PnCJVgNicqwX_bFd8JcT/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39921263656/build-and-review.log",
+      "file": "build-and-review-39921263656.log",
+      "success": true,
+      "id": "1KT7iOImsnxyb_f-mDDrdaqUCztqofBUT",
+      "url": "https://drive.google.com/file/d/1KT7iOImsnxyb_f-mDDrdaqUCztqofBUT/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "runs/39920176930/build-and-review.log",
+      "file": "build-and-review-39920176930.log",
+      "success": true,
+      "id": "1Nlnu5Nf8RfQ8RmDXNhv9d6EWXzNsOc5O",
+      "url": "https://drive.google.com/file/d/1Nlnu5Nf8RfQ8RmDXNhv9d6EWXzNsOc5O/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    },
+    {
+      "path": "archives/actions-39920275175.zip",
+      "file": "actions-39920275175.zip",
+      "success": true,
+      "id": "1qlt7oTBwrVHdcrs-ZMqAe4cdwZjck_ui",
+      "url": "https://drive.google.com/file/d/1qlt7oTBwrVHdcrs-ZMqAe4cdwZjck_ui/view?usp=drivesdk",
+      "parent": "1IGhrfhl6H5nxLS9o7Gri1uSWVoGBCzAj"
+    }
+  ],
+  "scope": "Receipts for content delivery; integrity/index files are uploaded after this manifest and are not self-referenced.",
+  "preliminaryTransfer": {
+    "id": "11Oj0Wgdk5_Xy5s1nV82SBRMotEm6eHcw",
+    "file": "Transferencia.md",
+    "supersededBy": "Transferencia-final.md"
+  }
+}

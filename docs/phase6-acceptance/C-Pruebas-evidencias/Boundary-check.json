@@ -1,0 +1,21 @@
+{
+  "main_sha": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "issues": [
+    {
+      "number": 47,
+      "state": "open",
+      "updated_at": "2026-10-16T08:46:16Z",
+      "url": "https://github.com/robdor80/NAP/issues/47"
+    },
+    {
+      "number": 49,
+      "state": "open",
+      "updated_at": "2026-10-20T20:28:59Z",
+      "url": "https://github.com/robdor80/NAP/issues/49"
+    }
+  ],
+  "product_code_unchanged_since_verified": true,
+  "previous_phase_evidence_unchanged": true,
+  "cutover_executed": false,
+  "real_assets_used": false
+}

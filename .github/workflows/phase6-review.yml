@@ -1,0 +1,143 @@
+name: Phase 6 focused UI review
+
+# Isolated branch only. Never invokes NAP.sln tests or ZIP/host volume fixtures.
+on:
+  # Automatic delivery now uses phase6-msi-preparation.yml on this branch.
+  workflow_dispatch:
+    inputs:
+      preserve_original_evidence:
+        description: Recover only original Actions evidence bytes; no build, render or tests
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # Commit synthetic evidence only to this same authorized branch.
+
+jobs:
+  focused-review:
+    if: ${{ inputs.preserve_original_evidence != true }}
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Build WPF with the existing official license validation
+        shell: pwsh
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release'
+      - name: Build the test assembly without executing any tests
+        shell: pwsh
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
+      - name: P6.8 targeted view models and read contracts; exclude the historical single-ZIP fixture
+        shell: pwsh
+        run: |
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6OverviewTests|FullyQualifiedName~Phase6WorkflowTests|FullyQualifiedName~Phase6PolishTests|FullyQualifiedName~Phase6SettingsTests|FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-acceptance --logger 'trx;LogFileName=phase6-acceptance.trx'
+          if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
+      - name: Render only closed synthetic Phase 6 states at both client sizes
+        shell: pwsh
+        run: |
+          $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
+          $captureRoot = Join-Path $PWD 'artifacts/phase6-acceptance'
+          foreach ($mode in @('active','paused','review','offline','local','catalog','settings','production','history','choice','exception','approved','blocked','empty','read-error','manual','activity','activity-decisions','diagnostics','diagnostics-filtered','diagnostics-export','diagnostics-offline','diagnostics-error','licenses','licenses-90','licenses-30','licenses-7','licenses-expired','licenses-renewed','historical','historical-children','historical-elder','historical-ambiguous','historical-duplicate','historical-unknown','historical-empty','historical-context','historical-export')) {
+            foreach ($compact in @($false,$true)) {
+              $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")
+              if ($compact) { $captureArguments += '--compact' }
+              $captureLabel = "$mode-$(if ($compact) {'compact'} else {'normal'})"
+              $errorPath = Join-Path $captureRoot "$captureLabel.stderr.txt"
+              $outputPath = Join-Path $captureRoot "$captureLabel.stdout.txt"
+              $process = Start-Process $appPath -ArgumentList $captureArguments -RedirectStandardError $errorPath -RedirectStandardOutput $outputPath -PassThru
+              if (-not $process.WaitForExit(60000)) { $process.Kill(); throw "Preview timed out: $mode" }
+              if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }
+            }
+          }
+          $captures = @(Get-ChildItem $captureRoot -Filter '*.png')
+          if ($captures.Count -lt 76) { throw 'Every requested state and size requires a primary render.' }
+          $duplicates = @($captures | Get-FileHash -Algorithm SHA256 | Group-Object Hash | Where-Object Count -gt 1)
+          if ($duplicates.Count -gt 0) { $duplicates | ForEach-Object { $_.Group.Path }; throw 'Different evidence names contain identical PNGs.' }
+          if (@(Get-ChildItem $captureRoot -Filter '*.png.json').Count -ne $captures.Count) { throw 'Missing per-image state metadata.' }
+          git diff --exit-code
+          git rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')
+          Get-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')
+      - name: Clean temporary license before artifacts
+        if: ${{ always() }}
+        shell: pwsh
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Preserve focused results and synthetic captures
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase6-acceptance
+          path: artifacts/phase6-acceptance/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Preserve exact synthetic bytes in the authorized branch
+        if: ${{ always() && github.ref == 'refs/heads/codex/nap-2-fase-6-ux' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $source = git rev-parse HEAD
+          $evidence = "docs/phase6-acceptance/runs/$env:GITHUB_RUN_ID"
+          New-Item -ItemType Directory -Force $evidence | Out-Null
+          if (Test-Path artifacts/phase6-acceptance) { Copy-Item artifacts/phase6-acceptance/* $evidence -Recurse }
+          $source | Out-File "$evidence/source-sha.txt"
+          foreach ($prior in @(
+            @('39918769852','15a52baa1967100a3ad748e593cf22c60b557d33'),
+            @('39920176930','3f8dd62f667f923ccd29b58688189c26948b7cfd'),
+            @('39920275175','e588886f316598a02baa606d16b99e7aae87acec'))) {
+            $previous = "docs/phase6-acceptance/runs/$($prior[0])"
+            if (-not (Test-Path $previous)) {
+              New-Item -ItemType Directory -Force $previous | Out-Null
+              gh run download $prior[0] --repo robdor80/NAP --name phase6-acceptance --dir $previous
+              if ($LASTEXITCODE -ne 0) { throw 'Could not preserve preliminary bytes.' }
+              $prior[1] | Out-File "$previous/source-sha.txt"
+            }
+          }
+          $files = @(Get-ChildItem docs/phase6-acceptance/runs -File -Recurse)
+          if (@($files | Where-Object { $_.Extension -notin @('.png','.json','.txt','.trx','.sha256','.log') }).Count -gt 0) { throw 'Unexpected evidence file type.' }
+          git add -- docs/phase6-acceptance/runs
+          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve exact focused runner evidence [skip ci]'
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }
+          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence push failed; artifacts remain available.' }
+
+  preserve-original-evidence:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.preserve_original_evidence == true && github.ref == 'refs/heads/codex/nap-2-fase-6-ux' }}
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Recover original evidence ZIPs and verify GitHub artifact digests
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.4') { throw 'Native binary redirection requires PowerShell 7.4 or later.' }
+          $archives = 'docs/phase6-acceptance/archives'
+          New-Item -ItemType Directory -Force $archives | Out-Null
+          $artifacts = @(
+            @('39918769852','12486685373','681b55e31e0977c9a34192bbf97571199602286a9b50b1e49adea577f5a529ac'),
+            @('39919314372','12485639823','96601fbc61811437a3784fe3afae08ed9329564220d1c5206bbb03b942bfa4dc'),
+            @('39920176930','12486598053','556347945e81143c8ad3b76dd3c0c9bbad57e32c3afbbd88eefcae47a7f27521'),
+            @('39920275175','12487291440','716fef903be7fa49b93b03256bc78c87e84d8fd9c78bb1f02a2b7ca52cca548c'),
+            @('39920731413','12487431827','c75b664cc7b6353975bd54121eac011af7ef41aca42053ac657b45ce8b2900fd'),
+            @('39921263656','12487925777','4a574d2c1daff68be6381ccda3c667b142f1fd37bdd8916b2220e9c861a07759'))
+          foreach ($entry in $artifacts) {
+            $zip = "$archives/actions-$($entry[0]).zip"
+            gh api "repos/robdor80/NAP/actions/artifacts/$($entry[1])/zip" > $zip
+            if ($LASTEXITCODE -ne 0) { throw 'Original artifact download failed.' }
+            $digest = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($digest -ne $entry[2]) { throw 'Original artifact SHA256 differs from GitHub.' }
+            Expand-Archive -LiteralPath $zip -DestinationPath "docs/phase6-acceptance/runs/$($entry[0])" -Force
+          }
+          git add -- docs/phase6-acceptance/archives docs/phase6-acceptance/runs
+          git -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve original artifact bytes and verified ZIP digests [skip ci]'
+          if ($LASTEXITCODE -ne 0) { throw 'Original evidence commit failed.' }
+          git push origin HEAD:refs/heads/codex/nap-2-fase-6-ux
+          if ($LASTEXITCODE -ne 0) { throw 'Original evidence push failed.' }

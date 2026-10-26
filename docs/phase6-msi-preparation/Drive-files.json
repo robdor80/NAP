@@ -1,0 +1,722 @@
+[
+  {
+    "name": "Informe-ejecutivo.pdf",
+    "folder": "A. Informe",
+    "id": "1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1",
+    "url": "https://drive.google.com/file/d/1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1/view?usp=drivesdk",
+    "bytes": 48557,
+    "sha256": "85bd132d6095fb63862a0c9c41530ccc26576318f248fe0916cd24508ea45df5",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Informe-ejecutivo.pdf"
+  },
+  {
+    "name": "Informe-ejecutivo.md",
+    "folder": "A. Informe",
+    "id": "1DuF8wbuZmup726g4ZQ0LAPhuTM1VXg4p",
+    "url": "https://drive.google.com/file/d/1DuF8wbuZmup726g4ZQ0LAPhuTM1VXg4p/view?usp=drivesdk",
+    "bytes": 4541,
+    "sha256": "82a2b86505d6e5100ea7da6c06d46651809492ef30396c6252df7e25d41104a7",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Informe-ejecutivo.md"
+  },
+  {
+    "name": "Informe-tecnico.md",
+    "folder": "A. Informe",
+    "id": "1I_luBagsuK77p_tpOrHvq22WanN4agrZ",
+    "url": "https://drive.google.com/file/d/1I_luBagsuK77p_tpOrHvq22WanN4agrZ/view?usp=drivesdk",
+    "bytes": 8955,
+    "sha256": "7979ae99ff148050a47c7f304c470da652e1d09e4cd68390817ca06201e2b1da",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Informe-tecnico.md"
+  },
+  {
+    "name": "Informe-tecnico.pdf",
+    "folder": "A. Informe",
+    "id": "1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut",
+    "url": "https://drive.google.com/file/d/1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut/view?usp=drivesdk",
+    "bytes": 52041,
+    "sha256": "47f7d56b2b3b19bf66b809324ea908d5012633b7e2ce8ddb06046bed2d21f582",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Informe-tecnico.pdf"
+  },
+  {
+    "name": "Canal-privado.md",
+    "folder": "A. Informe",
+    "id": "1nlRSilH6wlBYAqN8HEaNxWomBLA44l6S",
+    "url": "https://drive.google.com/file/d/1nlRSilH6wlBYAqN8HEaNxWomBLA44l6S/view?usp=drivesdk",
+    "bytes": 4552,
+    "sha256": "521e6e9eeaf00a1c941dd391cdfca1bf8b7ba16b6ae5b7b0a41b63a3e6e39e5c",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Canal-privado.md"
+  },
+  {
+    "name": "Mapa-almacenamiento.md",
+    "folder": "A. Informe",
+    "id": "1zL5kkni03SnTLI1i_PsrO1OTc0VFTlao",
+    "url": "https://drive.google.com/file/d/1zL5kkni03SnTLI1i_PsrO1OTc0VFTlao/view?usp=drivesdk",
+    "bytes": 6377,
+    "sha256": "e694ea0e4b037a477ee1a4d6d249ad22d50f2905b4205eba5411c536c0c3e919",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Mapa-almacenamiento.md"
+  },
+  {
+    "name": "Estado-del-programa.md",
+    "folder": "B. Programa",
+    "id": "179wupLjERRINJ-SmpEQ4w4IOAE52AHE4",
+    "url": "https://drive.google.com/file/d/179wupLjERRINJ-SmpEQ4w4IOAE52AHE4/view?usp=drivesdk",
+    "bytes": 1372,
+    "sha256": "4710c0ce97dd942b3f4582c877dacde80110d3c631507b7214305c8074e45b74",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Estado-del-programa.md"
+  },
+  {
+    "name": "Manifiesto-candidato-RETENIDO-no-descargable.json",
+    "folder": "B. Programa",
+    "id": "1JjI70BldfEItguBnGueB55lxEi7IXVOY",
+    "url": "https://drive.google.com/file/d/1JjI70BldfEItguBnGueB55lxEi7IXVOY/view?usp=drivesdk",
+    "bytes": 83150,
+    "sha256": "5f04cce8388111a4750850db7f6a8c25b7e4610b69eae709b8ace23783eadfb4",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/retained-candidate-manifest.json"
+  },
+  {
+    "name": "SHA256-candidato-RETENIDO.sha256",
+    "folder": "B. Programa",
+    "id": "19EVq5ZcInmK0MXiUh8CVtpQRjuJ4gv95",
+    "url": "https://drive.google.com/file/d/19EVq5ZcInmK0MXiUh8CVtpQRjuJ4gv95/view?usp=drivesdk",
+    "bytes": 47936,
+    "sha256": "fdbc6dd44d831ab35153a8feba12fe7ee34becfa5a9a4b1b470387c83650c5d9",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/retained-candidate.sha256"
+  },
+  {
+    "name": "ajustes-licenses-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "14wnPa3kmTkG_7_6S4qWzApsjGB8IC8qg",
+    "url": "https://drive.google.com/file/d/14wnPa3kmTkG_7_6S4qWzApsjGB8IC8qg/view?usp=drivesdk",
+    "bytes": 563,
+    "sha256": "00d62f81de046fdc342131317132d31e12ff6d74c5d92a50f78333f96bbccbff",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-1200x700.png.json"
+  },
+  {
+    "name": "flujo-history-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1xFmMIJZpaU_IMGayGa5HnHwxht4FoV0g",
+    "url": "https://drive.google.com/file/d/1xFmMIJZpaU_IMGayGa5HnHwxht4FoV0g/view?usp=drivesdk",
+    "bytes": 587,
+    "sha256": "a43f26c0d1491b6385cde5c0f91e4ac377f36e2d61086ba2407cdfe2d9875ee6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-history-1200x700.png.json"
+  },
+  {
+    "name": "historical.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1RNI_vBBpR6l_jo71z3tiPE95TdQTmu2B",
+    "url": "https://drive.google.com/file/d/1RNI_vBBpR6l_jo71z3tiPE95TdQTmu2B/view?usp=drivesdk",
+    "bytes": 119,
+    "sha256": "835fdab2472612129bac83579669088710b74f0c24df00ed082e58bbb9e022be",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historical.stdout.txt"
+  },
+  {
+    "name": "historico-historical-export-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1_F8W-BxY0m9Y_kScatrRrJXy3EYEuIdQ",
+    "url": "https://drive.google.com/file/d/1_F8W-BxY0m9Y_kScatrRrJXy3EYEuIdQ/view?usp=drivesdk",
+    "bytes": 606,
+    "sha256": "49cb707534ffb0dd9f027bd6d66da6abe9afb981609864410d920f798d917fb8",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historico-historical-export-1200x700.png.json"
+  },
+  {
+    "name": "ajustes-licenses-30-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1vNgYEY8mq_5NSBOFl_RuqMP_KGbEwnWR",
+    "url": "https://drive.google.com/file/d/1vNgYEY8mq_5NSBOFl_RuqMP_KGbEwnWR/view?usp=drivesdk",
+    "bytes": 72788,
+    "sha256": "87683e6073584a0dfc5686f3a57879f5feed2b5346b5c10c2da53e3e6d9d151e",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-30-1200x700.png"
+  },
+  {
+    "name": "historico-historical-export-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1-9n4CtgkQWCXDSB1Tsk7zSj-2QAj9Qwh",
+    "url": "https://drive.google.com/file/d/1-9n4CtgkQWCXDSB1Tsk7zSj-2QAj9Qwh/view?usp=drivesdk",
+    "bytes": 77778,
+    "sha256": "57fbf4395f66fdd785130b601252c1cf721f1df7b49cd65942d4e15c7f8d2909",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historico-historical-export-1200x700.png"
+  },
+  {
+    "name": "flujo-production-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1CN-uZna16SUuvy0oVyOeltoCoK8Et91f",
+    "url": "https://drive.google.com/file/d/1CN-uZna16SUuvy0oVyOeltoCoK8Et91f/view?usp=drivesdk",
+    "bytes": 597,
+    "sha256": "665f3723b7d55acaa2c373048ec7258204b857c6d23e99e2a4a843ec1057b73d",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-production-1200x700.png.json"
+  },
+  {
+    "name": "licenses-7.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "15g6nsdYPNGLgG4GqsAGQj32q4bu4CQnP",
+    "url": "https://drive.google.com/file/d/15g6nsdYPNGLgG4GqsAGQj32q4bu4CQnP/view?usp=drivesdk",
+    "bytes": 119,
+    "sha256": "a37ce8c75e7593112d3f2d11d18d9881fba8b1c2c7c1b92a36bb055cb759711a",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses-7.stdout.txt"
+  },
+  {
+    "name": "settings.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1vFWOwfd53NRUKIF09yd6nWgaNG917Fi1",
+    "url": "https://drive.google.com/file/d/1vFWOwfd53NRUKIF09yd6nWgaNG917Fi1/view?usp=drivesdk",
+    "bytes": 117,
+    "sha256": "84cf24ed14978c12c910bc91fad1b4a330be92e85ec2ec4bac958b9b59cade07",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/settings.stdout.txt"
+  },
+  {
+    "name": "historico-historical-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "18g8Z3TROCMnqahOigBWDr5UbFg7KVbrj",
+    "url": "https://drive.google.com/file/d/18g8Z3TROCMnqahOigBWDr5UbFg7KVbrj/view?usp=drivesdk",
+    "bytes": 76088,
+    "sha256": "8c7e499b5a41e865bd4a2588c905f73a4478e81cafbf772f90ced75b2ce36816",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historico-historical-1200x700.png"
+  },
+  {
+    "name": "ajustes-licenses-7-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1s3x1yFbBrmpW6Ad15aBS10UAXBRm7VIE",
+    "url": "https://drive.google.com/file/d/1s3x1yFbBrmpW6Ad15aBS10UAXBRm7VIE/view?usp=drivesdk",
+    "bytes": 597,
+    "sha256": "7774d933d94d8f7fa152c1e1e64ffd7bc0d871b11777948a5a4ff85c64903328",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-7-1200x700.png.json"
+  },
+  {
+    "name": "inicio-catalog-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1a9siTrUtA-JICst0BIJaIOM9u5chNIHA",
+    "url": "https://drive.google.com/file/d/1a9siTrUtA-JICst0BIJaIOM9u5chNIHA/view?usp=drivesdk",
+    "bytes": 57109,
+    "sha256": "4131e28359706b1569b2f777f2cd14635e140e242e4256cd70a866102914f333",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-catalog-1200x700.png"
+  },
+  {
+    "name": "licenses-30.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1Pqh39RD9fRFTq57v7IX6UoOu8FDhYCZn",
+    "url": "https://drive.google.com/file/d/1Pqh39RD9fRFTq57v7IX6UoOu8FDhYCZn/view?usp=drivesdk",
+    "bytes": 120,
+    "sha256": "92e8d49ebe7f5052d9512cce68ccb1a9a364320881940770afaf771875b8e5a3",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses-30.stdout.txt"
+  },
+  {
+    "name": "ajustes-licenses-expired-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1hnkhP9IC1ep6L4ClTZ-6HgBMKTQ4gRKv",
+    "url": "https://drive.google.com/file/d/1hnkhP9IC1ep6L4ClTZ-6HgBMKTQ4gRKv/view?usp=drivesdk",
+    "bytes": 72900,
+    "sha256": "8729adda71708e442afa3619e6d60ef683f5f65d37412dc7840d5864eeaea6c4",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-expired-1200x700.png"
+  },
+  {
+    "name": "flujo-history-detalle-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "10UAjwORPmz2QlEX8sAzy-_YBWuwkVv-4",
+    "url": "https://drive.google.com/file/d/10UAjwORPmz2QlEX8sAzy-_YBWuwkVv-4/view?usp=drivesdk",
+    "bytes": 72080,
+    "sha256": "09ba62c6411de40878975527311776439d30a18df9f8c8ed42ffc47229ee8f2c",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-history-detalle-1200x700.png"
+  },
+  {
+    "name": "source-sha.txt",
+    "folder": "C. Pruebas",
+    "id": "1gESgAMB_JzHGlqkpYQ0sS2PcPMQNjfUU",
+    "url": "https://drive.google.com/file/d/1gESgAMB_JzHGlqkpYQ0sS2PcPMQNjfUU/view?usp=drivesdk",
+    "bytes": 41,
+    "sha256": "f38b7e21cfe3dea7a8e2f38d17ecbeed20ee6cdd7b76d4bd3a5c951921bc11e3",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/source-sha.txt"
+  },
+  {
+    "name": "ajustes-licenses-90-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1ejyR62hxjIH9bnqt_BKvNfdPYWW2Vfy0",
+    "url": "https://drive.google.com/file/d/1ejyR62hxjIH9bnqt_BKvNfdPYWW2Vfy0/view?usp=drivesdk",
+    "bytes": 599,
+    "sha256": "923625823847752c0a4e38cc85669a15ffcf1ed69b6c244139a5737a690263cf",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-90-1200x700.png.json"
+  },
+  {
+    "name": "inicio-catalog-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1ddn5NqPKvWYspJL0vvOEnYvYXB9-6J44",
+    "url": "https://drive.google.com/file/d/1ddn5NqPKvWYspJL0vvOEnYvYXB9-6J44/view?usp=drivesdk",
+    "bytes": 566,
+    "sha256": "908045f64dc5e9c2b9520446af0544875b7c048a77b95f97be03434d0baada6b",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-catalog-1200x700.png.json"
+  },
+  {
+    "name": "inicio-settings-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1ESkoK60z52nCy2uoND1dim2U-0J2z18U",
+    "url": "https://drive.google.com/file/d/1ESkoK60z52nCy2uoND1dim2U-0J2z18U/view?usp=drivesdk",
+    "bytes": 77164,
+    "sha256": "75963bcd90c5ab07c716a9e62e1baea51eabf9a70b8de4ea26b13f619ae4aea6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-settings-1200x700.png"
+  },
+  {
+    "name": "ajustes-licenses-7-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1qBbU9ja_fcU_BpiWNKbxiOZbr6Fw4IcG",
+    "url": "https://drive.google.com/file/d/1qBbU9ja_fcU_BpiWNKbxiOZbr6Fw4IcG/view?usp=drivesdk",
+    "bytes": 72426,
+    "sha256": "883cbc3ad4eafead09fd86ab39d3df2dfec65a7d9ecb55b9ac1b808ba0732f23",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-7-1200x700.png"
+  },
+  {
+    "name": "inicio-local-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1YyMkRzLdMFnuixtQ3Suna1lYbvAMPLjk",
+    "url": "https://drive.google.com/file/d/1YyMkRzLdMFnuixtQ3Suna1lYbvAMPLjk/view?usp=drivesdk",
+    "bytes": 557,
+    "sha256": "f5dc438fe3840ed2c280296ff6a55a9e0dda6518b63c745506c24f9756d1160b",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-local-1200x700.png.json"
+  },
+  {
+    "name": "ajustes-diagnostics-offline-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "12UwZBKjjYc0CwjqU-d7m3i9Qwl4LzYId",
+    "url": "https://drive.google.com/file/d/12UwZBKjjYc0CwjqU-d7m3i9Qwl4LzYId/view?usp=drivesdk",
+    "bytes": 581,
+    "sha256": "21664a205d6deed5549d699694d08b62fe737e8108268b98aa9551551ffce6ce",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-diagnostics-offline-1200x700.png.json"
+  },
+  {
+    "name": "inicio-settings-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1ek04mci_MnIT_tyDzuZbxf_ng5i-nGKj",
+    "url": "https://drive.google.com/file/d/1ek04mci_MnIT_tyDzuZbxf_ng5i-nGKj/view?usp=drivesdk",
+    "bytes": 561,
+    "sha256": "3e4451438fb4b69d9b88c0935b374d5ee5124682af9986fcdef7f21480744c6c",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-settings-1200x700.png.json"
+  },
+  {
+    "name": "production.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1W1TnGiXaLrgQ-tCA1yOAHAWoyxQSJ_VQ",
+    "url": "https://drive.google.com/file/d/1W1TnGiXaLrgQ-tCA1yOAHAWoyxQSJ_VQ/view?usp=drivesdk",
+    "bytes": 119,
+    "sha256": "5092edafbac34244d18f72f2fb3ca077e10f6950cf3f024e866ea6e38062bfb7",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/production.stdout.txt"
+  },
+  {
+    "name": "ajustes-diagnostics-offline-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "15rO3ktxfhPvZqVvAzy3MTZ85HTgTVYly",
+    "url": "https://drive.google.com/file/d/15rO3ktxfhPvZqVvAzy3MTZ85HTgTVYly/view?usp=drivesdk",
+    "bytes": 72118,
+    "sha256": "88d7abcf018775e1d0e50fd7c213ef14edb0691207977e7d47f8b83f9ee3e298",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-diagnostics-offline-1200x700.png"
+  },
+  {
+    "name": "historico-historical-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1L9FQGyQjyi4b7nIcPFqSDXMFnn4389Gj",
+    "url": "https://drive.google.com/file/d/1L9FQGyQjyi4b7nIcPFqSDXMFnn4389Gj/view?usp=drivesdk",
+    "bytes": 599,
+    "sha256": "afff33935411a61f59ec5dc7bfd24106ae543d51efc411fb830239bad4436531",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historico-historical-1200x700.png.json"
+  },
+  {
+    "name": "ajustes-licenses-expired-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1Y7w2fvzyuvcpSMxVch66KCtIjZkie8Cg",
+    "url": "https://drive.google.com/file/d/1Y7w2fvzyuvcpSMxVch66KCtIjZkie8Cg/view?usp=drivesdk",
+    "bytes": 605,
+    "sha256": "2ef58cc17de2b0393b0de0a64548820648cbbaf891cbfd10e287faab12b862d6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-expired-1200x700.png.json"
+  },
+  {
+    "name": "flujo-history-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1ibBz_MKDUcfbLSJNffqxDZAitGx6Er7P",
+    "url": "https://drive.google.com/file/d/1ibBz_MKDUcfbLSJNffqxDZAitGx6Er7P/view?usp=drivesdk",
+    "bytes": 70821,
+    "sha256": "5c9bc844b2547e88f1439f71eceb78402c5282dfb75926a26308b7e54847cf4d",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-history-1200x700.png"
+  },
+  {
+    "name": "historical-simulation-1200x700.txt",
+    "folder": "C. Pruebas",
+    "id": "14xdBPKesGu4KawObxF7U5F9AHH5JB416",
+    "url": "https://drive.google.com/file/d/14xdBPKesGu4KawObxF7U5F9AHH5JB416/view?usp=drivesdk",
+    "bytes": 22309,
+    "sha256": "beec50e6dd3b5f690827fd348b7e182700769135fbd19561cdcf1c9456454571",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historical-simulation-1200x700.txt"
+  },
+  {
+    "name": "flujo-production-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "14D9VHiWwGN7sXpMpHVdHFwurhqvwUEKu",
+    "url": "https://drive.google.com/file/d/14D9VHiWwGN7sXpMpHVdHFwurhqvwUEKu/view?usp=drivesdk",
+    "bytes": 76906,
+    "sha256": "2fc80305298e0c697aef2588b4ca0247acc0023ab6ec30f0cdfd41d208247155",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-production-1200x700.png"
+  },
+  {
+    "name": "licenses-expired.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1oQUMYNTzOu3_3XeiKqqf6QkFyAxNmi7J",
+    "url": "https://drive.google.com/file/d/1oQUMYNTzOu3_3XeiKqqf6QkFyAxNmi7J/view?usp=drivesdk",
+    "bytes": 125,
+    "sha256": "71a37351108af192596c037b9fdff6cf6d57d301fc5d7683d672e1702e203875",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses-expired.stdout.txt"
+  },
+  {
+    "name": "ajustes-licenses-renewed-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "184yzZxu1J5SuJcxAu2Moitbyye10iAZn",
+    "url": "https://drive.google.com/file/d/184yzZxu1J5SuJcxAu2Moitbyye10iAZn/view?usp=drivesdk",
+    "bytes": 67571,
+    "sha256": "481dca2c9852c12b002aa13fdfb2c42dc1311edc5f629b170c23ddde22b338f5",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-renewed-1200x700.png"
+  },
+  {
+    "name": "ajustes-licenses-renewed-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "17PSIa5VwI50isJeY7qw9ritkC2jqJCUA",
+    "url": "https://drive.google.com/file/d/17PSIa5VwI50isJeY7qw9ritkC2jqJCUA/view?usp=drivesdk",
+    "bytes": 571,
+    "sha256": "933083b4b1c1ec85d8716e7d36533e1eabc27cd3a566be2288c9ecc3bbe6d6d9",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-renewed-1200x700.png.json"
+  },
+  {
+    "name": "runtime-probe.json",
+    "folder": "C. Pruebas",
+    "id": "1IKdpD4Gw3sMSU6SA_jsmslVvbkIuE_BS",
+    "url": "https://drive.google.com/file/d/1IKdpD4Gw3sMSU6SA_jsmslVvbkIuE_BS/view?usp=drivesdk",
+    "bytes": 330,
+    "sha256": "bf822ad6e50eeee424e84e5c764db2e28b90b50813eb09bc7e958cec4da01155",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/runtime-probe.json"
+  },
+  {
+    "name": "ajustes-licenses-90-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1LhT3-6Unbo7OYoj6SRBkorYegYui_hbk",
+    "url": "https://drive.google.com/file/d/1LhT3-6Unbo7OYoj6SRBkorYegYui_hbk/view?usp=drivesdk",
+    "bytes": 72891,
+    "sha256": "c919001765b5bc2fbada40b8be2b564212d579792d94a38788730bbee3e927d3",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-90-1200x700.png"
+  },
+  {
+    "name": "actions.log.txt",
+    "folder": "C. Pruebas",
+    "id": "1UMiu5R-jDVvLFHbimw7J0DsSE6idvK1A",
+    "url": "https://drive.google.com/file/d/1UMiu5R-jDVvLFHbimw7J0DsSE6idvK1A/view?usp=drivesdk",
+    "bytes": 42298,
+    "sha256": "00bef02c20826578d104bdd819cb01682ed5176b84e7304110cd5a957659ed7f",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/actions.log.txt"
+  },
+  {
+    "name": "licenses-renewed.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "164e3yB9VTmumkK472ZR34aH5bNxGn84x",
+    "url": "https://drive.google.com/file/d/164e3yB9VTmumkK472ZR34aH5bNxGn84x/view?usp=drivesdk",
+    "bytes": 125,
+    "sha256": "6d916069954688d3c0860466313067628b649cc0b5a52d0386c6b42596b141ac",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses-renewed.stdout.txt"
+  },
+  {
+    "name": "flujo-history-detalle-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "13qyf6pHedNRI61h5dowkGg5pSNQXTb3J",
+    "url": "https://drive.google.com/file/d/13qyf6pHedNRI61h5dowkGg5pSNQXTb3J/view?usp=drivesdk",
+    "bytes": 595,
+    "sha256": "c6c855b84f57cb043513fabd4b5fd0ef1449c1f1cd37bfe1865970a8b2f081df",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/flujo-history-detalle-1200x700.png.json"
+  },
+  {
+    "name": "focused.trx",
+    "folder": "C. Pruebas",
+    "id": "1B1EeGFJzkcGzK3pIBRBA6EoFCrkwsk4E",
+    "url": "https://drive.google.com/file/d/1B1EeGFJzkcGzK3pIBRBA6EoFCrkwsk4E/view?usp=drivesdk",
+    "bytes": 66734,
+    "sha256": "b6dc2fadf0b9f0ce81353fb19379a3ca9cc8d82ba89781e27a3ce21ac0abaa53",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/focused.trx"
+  },
+  {
+    "name": "diagnostics-offline.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1KKJiS6gAHj4BRd6Vi5_V8gu_xo9gsFjf",
+    "url": "https://drive.google.com/file/d/1KKJiS6gAHj4BRd6Vi5_V8gu_xo9gsFjf/view?usp=drivesdk",
+    "bytes": 128,
+    "sha256": "6302a6bf51cd6819157bc2045d12ad59ce74d7d3e2f5ecf0bf1a3846ce90b5a4",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/diagnostics-offline.stdout.txt"
+  },
+  {
+    "name": "verification.json",
+    "folder": "C. Pruebas",
+    "id": "1YeZQj_F6h4OkYzB8TWokDo2eVOQyMe8U",
+    "url": "https://drive.google.com/file/d/1YeZQj_F6h4OkYzB8TWokDo2eVOQyMe8U/view?usp=drivesdk",
+    "bytes": 614,
+    "sha256": "9dd5743a57dae451b4f76a9ed8ea4e41b6f64bb96a16b901952e7037acb353ab",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/verification.json"
+  },
+  {
+    "name": "dependency-security-check.json",
+    "folder": "C. Pruebas",
+    "id": "1Fln7BAUqLN3aS30wdD72vhuz5a_f-r1n",
+    "url": "https://drive.google.com/file/d/1Fln7BAUqLN3aS30wdD72vhuz5a_f-r1n/view?usp=drivesdk",
+    "bytes": 375,
+    "sha256": "cbe709bb006c04ad03e8c28dda28d281047b16f53e82a8d2edb7faf17d37b3f5",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/dependency-security-check.json"
+  },
+  {
+    "name": "local.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1qV7UKy0ARx44cTkkI0uZFRpNkWfkfpPS",
+    "url": "https://drive.google.com/file/d/1qV7UKy0ARx44cTkkI0uZFRpNkWfkfpPS/view?usp=drivesdk",
+    "bytes": 114,
+    "sha256": "edcdbdb9312c38fce1b941be0e372f1d7f6b4da2a59d7615fd7257039c15a380",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/local.stdout.txt"
+  },
+  {
+    "name": "inicio-local-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1GKr8EoJzTIpL9c7n_HApKzk0O4nbtyzI",
+    "url": "https://drive.google.com/file/d/1GKr8EoJzTIpL9c7n_HApKzk0O4nbtyzI/view?usp=drivesdk",
+    "bytes": 42010,
+    "sha256": "65e064bb86987b2331a1e707fbf322ad9cb718a19aa7115fc509c52bf44a5477",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/inicio-local-1200x700.png"
+  },
+  {
+    "name": "licenses-90.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1M5iri9QPHdyTvSY7KRYh7uhmh5StvVoc",
+    "url": "https://drive.google.com/file/d/1M5iri9QPHdyTvSY7KRYh7uhmh5StvVoc/view?usp=drivesdk",
+    "bytes": 120,
+    "sha256": "9dd167fdd91e9fd24d641c04f556e7567de686bf6ab25b58e2926ae9e81ed95c",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses-90.stdout.txt"
+  },
+  {
+    "name": "historical-export.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "16Qbl5Iun5y1AF6EBJm6uCWMDlmv4SQg1",
+    "url": "https://drive.google.com/file/d/16Qbl5Iun5y1AF6EBJm6uCWMDlmv4SQg1/view?usp=drivesdk",
+    "bytes": 126,
+    "sha256": "7928c65b75a4794341e557547bfab148b7921c3eb057b1f36e1b99cc812725ea",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/historical-export.stdout.txt"
+  },
+  {
+    "name": "licenses.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1uib8amVurDt13QOMuWz2_M8V2IeX2fBw",
+    "url": "https://drive.google.com/file/d/1uib8amVurDt13QOMuWz2_M8V2IeX2fBw/view?usp=drivesdk",
+    "bytes": 117,
+    "sha256": "0911ab311ec142e19862797c6ba7a29cc82a869e655c3ca4879c7656d0baa710",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/licenses.stdout.txt"
+  },
+  {
+    "name": "ajustes-licenses-1200x700.png",
+    "folder": "C. Pruebas",
+    "id": "1IVr3K2CvHckYI7WIrhmh5vcfyjtXktUg",
+    "url": "https://drive.google.com/file/d/1IVr3K2CvHckYI7WIrhmh5vcfyjtXktUg/view?usp=drivesdk",
+    "bytes": 67329,
+    "sha256": "6a2a6b31fb6396ababb4c40453c4919419c23cbb1cb925d0d620a8b025cf2db6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-1200x700.png"
+  },
+  {
+    "name": "ajustes-licenses-30-1200x700.png.json",
+    "folder": "C. Pruebas",
+    "id": "1HBWu7jnRskOdEai9DP2lwRU_b7PDZLmC",
+    "url": "https://drive.google.com/file/d/1HBWu7jnRskOdEai9DP2lwRU_b7PDZLmC/view?usp=drivesdk",
+    "bytes": 599,
+    "sha256": "fab42e1e93276b03f983a96ff5f45f54c2d325c1c04530664d09d60cd1d2e4b6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/ajustes-licenses-30-1200x700.png.json"
+  },
+  {
+    "name": "catalog.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1h4UWIXEFOLE1adFCr6QMmiN_9oG_EzGY",
+    "url": "https://drive.google.com/file/d/1h4UWIXEFOLE1adFCr6QMmiN_9oG_EzGY/view?usp=drivesdk",
+    "bytes": 116,
+    "sha256": "5cbd94fce5037faf667290f4f4de5f9218bce434501ba2a0e9e9e4ea73861508",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/catalog.stdout.txt"
+  },
+  {
+    "name": "history.stdout.txt",
+    "folder": "C. Pruebas",
+    "id": "1WL6no-QVdv_R-ASvI1DR3OBeYOXm7Wbj",
+    "url": "https://drive.google.com/file/d/1WL6no-QVdv_R-ASvI1DR3OBeYOXm7Wbj/view?usp=drivesdk",
+    "bytes": 240,
+    "sha256": "b47f392824d5455baa4cd5dec5d1ba6de3ed93116e5e493f8e412af66ec9186d",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/history.stdout.txt"
+  },
+  {
+    "name": "third-party-packages.json",
+    "folder": "C. Pruebas",
+    "id": "1w2q02xutiy8JbA_zy3bH27Qt7dLy8ZzN",
+    "url": "https://drive.google.com/file/d/1w2q02xutiy8JbA_zy3bH27Qt7dLy8ZzN/view?usp=drivesdk",
+    "bytes": 935,
+    "sha256": "e80b231ef08f9511c23b0ef5752ff1ee226de150d690a64913aef51e3e7d2727",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/runs/40123851505/third-party-packages.json"
+  },
+  {
+    "name": "Galeria-WPF.pdf",
+    "folder": "C. Pruebas",
+    "id": "1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0",
+    "url": "https://drive.google.com/file/d/1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0/view?usp=drivesdk",
+    "bytes": 954132,
+    "sha256": "e48827b287bfa92fd85c2815f40f5c65bf7392fa6c27071ab693f18bd4bfaf16",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Galeria-WPF.pdf"
+  },
+  {
+    "name": "actions-run.json",
+    "folder": "C. Pruebas",
+    "id": "1Dj4NRYnuc0A5TMQisT-_kRvhFSeX86-i",
+    "url": "https://drive.google.com/file/d/1Dj4NRYnuc0A5TMQisT-_kRvhFSeX86-i/view?usp=drivesdk",
+    "bytes": 440,
+    "sha256": "280a05cf0bce7448fdf3c780a715acae8547dbbaae42571f4d61fa6da40101ca",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/actions-run.json"
+  },
+  {
+    "name": "run-artifacts.json",
+    "folder": "C. Pruebas",
+    "id": "1rhmWbBCKo4rPaUEw2Iw0NFImucT1-ROT",
+    "url": "https://drive.google.com/file/d/1rhmWbBCKo4rPaUEw2Iw0NFImucT1-ROT/view?usp=drivesdk",
+    "bytes": 42,
+    "sha256": "f7417e1fb877d3f5934f143cc38ad9e2905476e8f5ac6776507d09441efcd6f6",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/run-artifacts.json"
+  },
+  {
+    "name": "persistence-source-inventory.txt",
+    "folder": "C. Pruebas",
+    "id": "1-XR35kOP3wIXPrPmYRZmVnSazHQDkmYI",
+    "url": "https://drive.google.com/file/d/1-XR35kOP3wIXPrPmYRZmVnSazHQDkmYI/view?usp=drivesdk",
+    "bytes": 23062,
+    "sha256": "5666dacc0212e1cb0b26b3c540b0b3b264815cdb0de60eb32aad9d7c9a0d790c",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/persistence-source-inventory.txt"
+  },
+  {
+    "name": "drive-canary-verification.json",
+    "folder": "C. Pruebas",
+    "id": "1FUOdomojo8Q1Roved4kjID7T8R_Zb8Yj",
+    "url": "https://drive.google.com/file/d/1FUOdomojo8Q1Roved4kjID7T8R_Zb8Yj/view?usp=drivesdk",
+    "bytes": 404,
+    "sha256": "98aff6e4e96572324160a0d00d7cd89d2b2564dda4803b836ad4fb41e304b218",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/drive-canary-verification.json"
+  },
+  {
+    "name": "Evidence-check.json",
+    "folder": "C. Pruebas",
+    "id": "1a9U7Km2oLthBNeClXkx_GX0MVoijI-aX",
+    "url": "https://drive.google.com/file/d/1a9U7Km2oLthBNeClXkx_GX0MVoijI-aX/view?usp=drivesdk",
+    "bytes": 384,
+    "sha256": "99aef1c34c949f9b2665e32c230a153171eea06e2dca2f97b6f72d0c76ff2e54",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Evidence-check.json"
+  },
+  {
+    "name": "Drive-folder-permissions.json",
+    "folder": "C. Pruebas",
+    "id": "1he3yoWks8wAm9g6iuFa9AOXPxwV5BJI8",
+    "url": "https://drive.google.com/file/d/1he3yoWks8wAm9g6iuFa9AOXPxwV5BJI8/view?usp=drivesdk",
+    "bytes": 2949,
+    "sha256": "b43c5ba2183727c0049e69936d85abe7e41545c2a4a97f9620d90d4136a3a88a",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Drive-folder-permissions.json"
+  },
+  {
+    "name": "Guia-MSI.pdf",
+    "folder": "D. Guía de usuario",
+    "id": "1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V",
+    "url": "https://drive.google.com/file/d/1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V/view?usp=drivesdk",
+    "bytes": 284697,
+    "sha256": "0ca5125c7086f18b79e4bc577496e9b6c4f9f090c5d8d440bce01aaf7c1647ad",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Guia-MSI.pdf"
+  },
+  {
+    "name": "Guia-MSI.md",
+    "folder": "D. Guía de usuario",
+    "id": "1-rLRY08cz8Ya0pT9o2JNLpnMmooM8EGv",
+    "url": "https://drive.google.com/file/d/1-rLRY08cz8Ya0pT9o2JNLpnMmooM8EGv/view?usp=drivesdk",
+    "bytes": 6137,
+    "sha256": "12d3b7eba99027e1b9aee6196082ce7a8698dc048e821230f8a1ea1144310229",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Guia-MSI.md"
+  },
+  {
+    "name": "Lista-responsable.txt",
+    "folder": "D. Guía de usuario",
+    "id": "1cDxAkkMEYECrtjpGdwD5dR-ax7AZ0ZjP",
+    "url": "https://drive.google.com/file/d/1cDxAkkMEYECrtjpGdwD5dR-ax7AZ0ZjP/view?usp=drivesdk",
+    "bytes": 877,
+    "sha256": "62dc13442b530401a219ef4233078f24ebf6f14beff6ecb5c2b81c0a51680e6f",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Lista-responsable.txt"
+  },
+  {
+    "name": "Ficha-incidencia.txt",
+    "folder": "D. Guía de usuario",
+    "id": "1iP4x38NH2x5s0nkb2fDFWjUKDkWZh7fw",
+    "url": "https://drive.google.com/file/d/1iP4x38NH2x5s0nkb2fDFWjUKDkWZh7fw/view?usp=drivesdk",
+    "bytes": 615,
+    "sha256": "770caf83cc5389acbad3441d438cc61d10a80289ffd41a0a1cde6a4b12d2a04d",
+    "ownerOnly": true,
+    "sourcePath": "docs/phase6-msi-preparation/Ficha-incidencia.txt"
+  }
+]

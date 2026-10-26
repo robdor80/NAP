@@ -1,0 +1,23 @@
+{
+  "mode": "diagnostics",
+  "view": "",
+  "width": 1440,
+  "height": 900,
+  "page": "Ajustes",
+  "section": "Diagn\u00F3stico",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "",
+  "decisions": "",
+  "diagnosticRows": 4,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "1B1A7C69F76622BCBC4B83DE9ECE8955C23D4D6E68A4634270CAED7C038017AB"
+}

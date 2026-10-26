@@ -1,0 +1,26 @@
+{
+  "acceptanceOnlyBuild": true,
+  "navigation": [
+    "Inicio",
+    "Cat\u00E1logo",
+    "Producci\u00F3n",
+    "Historial",
+    "Ajustes"
+  ],
+  "tools": [
+    "Objetivos",
+    "Estad\u00EDsticas",
+    "Backups",
+    "Git",
+    "RoDo"
+  ],
+  "syntheticDataOnly": true,
+  "persistentSessionStore": false,
+  "productionCommandsBlocked": true,
+  "noProfileStore": true,
+  "noLocalDiagnosticReader": true,
+  "noHostOrNetworkClient": true,
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "evidenceRoot": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio"
+}

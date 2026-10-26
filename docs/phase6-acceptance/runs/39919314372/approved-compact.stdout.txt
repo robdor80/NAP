@@ -1,0 +1,2 @@
+{"preview":"approved","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"approved","view":"-detalle","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}

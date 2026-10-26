@@ -1,0 +1,13 @@
+{
+  "authentication": "Normal GitHub sign-in required for browser artifact download",
+  "downloadedZipMatchesGitHubDigest": true,
+  "userDownloadUrl": "https://github.com/robdor80/NAP/actions/runs/40216835055/artifacts/12608231704",
+  "archiveSha256": "e0da9f472b333b8697868d62c621bf5e26ee46558c1b4f8dcfe1acdccaf0ace9",
+  "sourceCommit": "2f743c0fb580b8a859f5e503f6a14bf2afcf5383",
+  "allManifestFilesVerified": true,
+  "expiresAt": "2027-01-23T17:30:55Z",
+  "archiveDownloadEndpoint": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12608231704/zip",
+  "files": 491,
+  "artifactId": "12608231704",
+  "artifactName": "NAP-2.0-Fase6-UX-Corregida-Windows-x64"
+}

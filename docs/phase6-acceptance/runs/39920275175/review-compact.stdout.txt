@@ -1,0 +1,2 @@
+{"preview":"review","view":"","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}
+{"preview":"review","view":"-herramientas","synthetic":true,"offscreenLayout":true,"bindingErrors":0,"width":1200,"height":700}

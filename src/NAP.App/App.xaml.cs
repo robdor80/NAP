@@ -9,6 +9,11 @@ namespace NAP.App;
 
 public partial class App : Application
 {
+#if NAP_ACCEPTANCE_ONLY
+    internal static bool IsAcceptance => true;
+#else
+    internal static bool IsAcceptance => false;
+#endif
     private HttpClient? _auditTransport;
     private RemoteDesktopService? _remoteDesktop;
     protected override async void OnStartup(StartupEventArgs e)
@@ -16,6 +21,21 @@ public partial class App : Application
         base.OnStartup(e);
         try
         {
+#if NAP_ACCEPTANCE_ONLY
+            // This distribution cannot enter ordinary startup, regardless of arguments or launcher.
+            Phase6Acceptance.Start(this, e.Args);
+            return;
+#else
+            var preview = e.Args.FirstOrDefault(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))?[17..];
+            if (preview is not null)
+            {
+                var previewOutput = e.Args.FirstOrDefault(a => a.StartsWith("--phase6-output=", StringComparison.Ordinal))?[16..]
+                    ?? throw new ArgumentException("Synthetic preview requires an explicit capture directory.");
+                var previewWindow = new MainWindow(Phase6Preview.Create(preview), smokeOutput: previewOutput, phase6Preview: preview)
+                { Title = "NAP — Vista previa sintética de Fase 6", WindowState = WindowState.Normal, Tag = e.Args.Contains("--compact", StringComparer.Ordinal) };
+                if (e.Args.Contains("--compact", StringComparer.Ordinal)) { previewWindow.Width = 1200; previewWindow.Height = 700; }
+                MainWindow = previewWindow; previewWindow.Show(); return;
+            }
             var automationConfig = e.Args.FirstOrDefault(a => a.StartsWith("--automation-config=", StringComparison.Ordinal))?[20..];
             if (automationConfig is not null)
             {
@@ -26,7 +46,7 @@ public partial class App : Application
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
-                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls);
+                var remoteShell = new ShellViewModel(explorer, _remoteDesktop, confirmation, normalization: _remoteDesktop, automation: controls, workflowClient: new WorkflowDesktopClient(client), diagnosticClient: new DiagnosticDesktopClient(client), licenses: new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)));
                 var remoteOutput = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
                 var remoteWindow = new MainWindow(remoteShell, smokeOutput: remoteOutput, automationSmoke: e.Args.Contains("--smoke-automation", StringComparer.Ordinal));
                 MainWindow = remoteWindow; remoteWindow.Show(); return;
@@ -52,14 +72,16 @@ public partial class App : Application
                     auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
             }
             var importSource = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-import-profile=", StringComparison.Ordinal))?[23..] : null;
-            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot);
+            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot, licenses: smoke ? new LicenseViewModel(null) : new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true);
             var output = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
             var normalizationProfile = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-normalization-profile=", StringComparison.Ordinal))?[30..] : null;
             var window = new MainWindow(shell, smoke, output, importSource is not null, normalizationProfile); MainWindow = window; window.Show();
+#endif
         }
         catch (Exception ex)
         {
-            if (e.Args.Contains("--smoke-test", StringComparer.Ordinal)) { Console.Error.WriteLine(ex); Shutdown(1); return; }
+            if (IsAcceptance) { Console.Error.WriteLine("Aceptación detenida de forma segura: " + ex.Message); Shutdown(1); return; }
+            if (e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
             var error = ExplorerError.From(ex); MessageBox.Show(error.Message + "\nCódigo: " + error.Code, "NAP — Inicio detenido", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }

@@ -1,0 +1,34 @@
+[
+  {
+    "local": "README.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Guia-Windows11.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Informe-ejecutivo.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Informe-tecnico.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Aislamiento.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Dependencias-y-licencias.md",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "ZIP-SHA256.txt",
+    "textReadbackMatches": true
+  },
+  {
+    "local": "Resultados.md",
+    "textReadbackMatches": true
+  }
+]

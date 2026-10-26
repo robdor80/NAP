@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Phase6AcceptanceOnly)' == 'true'">
+    <DefineConstants>$(DefineConstants);NAP_ACCEPTANCE_ONLY</DefineConstants>
+    <ApplicationManifest>acceptance.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup><Using Remove="System.Windows.Forms" /><Using Remove="System.Drawing" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /><ProjectReference Include="../NAP.AI/NAP.AI.csproj" /></ItemGroup>
   <ItemGroup><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>

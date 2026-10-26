@@ -1,0 +1,1307 @@
+{
+  "processId": 2952,
+  "exitCode": 0,
+  "capturedFileEvents": 324,
+  "forbiddenNapAccess": [],
+  "writesOutsideLab": [],
+  "childProcesses": [],
+  "events": [
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\apphelp.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.exe"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\ntdll.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\KERNEL32.DLL"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\KERNELBASE.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\AppPatch\\sysmain.sdb"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\win32u.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\ucrtbase.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\msvcp_win.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\gdi32full.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\GDI32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\USER32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\SHELL32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\msvcrt.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\bcrypt.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\sechost.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\RPCRT4.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\ADVAPI32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\IMM32.DLL"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\System32\\IMM32.DLL"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\hostfxr.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.runtimeconfig.json"
+    },
+    {
+      "operation": "read",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.runtimeconfig.json"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.deps.json"
+    },
+    {
+      "operation": "read",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.deps.json"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\hostpolicy.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Program Files (x86)"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Program Files (x86)\\coreservicing"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\coreclr.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Private.CoreLib.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\clrjit.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\rpcss.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\kernel.appcore.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.App.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.bundle_e_sqlite3,2.1.12"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.provider.e_sqlite3"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy,8.0.32"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,Microsoft.Data.Sqlite.Core,8.0.31"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.bundle_e_sqlite3"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SixLabors.ImageSharp,3.2.0"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,Microsoft.Data.Sqlite.Core"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SixLabors.ImageSharp"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.core,2.1.12"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.core"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.provider.e_sqlite3,2.1.12"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.lib.e_sqlite3,2.1.12"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\PresentationFramework.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore\\netcore,SQLitePCLRaw.lib.e_sqlite3"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\WindowsBase.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Xaml.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\uxtheme.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\icu.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\globalization\\icu\\icudtl.dat"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.IO.Packaging.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Private.Uri.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\PresentationCore.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\DirectWriteForwarder.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.Extensions.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.InteropServices.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Diagnostics.Debug.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.CompilerServices.VisualC.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Threading.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\Microsoft.Win32.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\dwrite.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Collections.NonGeneric.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\Microsoft.Win32.Registry.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Collections.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Collections.Specialized.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Memory.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.ComponentModel.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Threading.Thread.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\PresentationNative_cor3.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Configuration.ConfigurationManager.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Xml.ReaderWriter.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Private.Xml.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Net.WebClient.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Text.Encoding.Extensions.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Linq.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Threading.ThreadPool.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Diagnostics.TraceSource.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.ComponentModel.TypeConverter.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Windows.Extensions.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.ComponentModel.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Collections.Concurrent.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.ObjectModel.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Net.Requests.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Net.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Net.WebHeaderCollection.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.Presentation.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\NAP.Core.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Console.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\wpfgfx_cor3.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\D3DCompiler_47_cor3.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\windows.storage.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\profapi.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\Globalization\\Sorting\\sortdefault.nls"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Users\\runneradmin\\AppData\\Local"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Reflection.DispatchProxy.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.Loader.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Reflection.Emit.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Reflection.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Reflection.Emit.ILGeneration.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Text.Json.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Text.Encodings.Web.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.Intrinsics.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Numerics.Vectors.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Reflection.Emit.Lightweight.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\UIAutomationTypes.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\DWMAPI.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\d3d9.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\d3d10warp.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\directxdatabasehelper.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Diagnostics.Process.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\PresentationFramework.Aero2.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Windows.Controls.Ribbon.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\WindowsFormsIntegration.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\urlmon.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\iertutil.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\srvcli.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\netutils.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\WindowsCodecs.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Windows.Forms.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Windows.Forms.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Drawing.Primitives.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Drawing.Common.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\WinSxS\\amd64_microsoft.windows.common-controls_6595b64144ccf1df_5.82.20348.5139_none_37738d8d16612594"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\WinSxS\\amd64_microsoft.windows.common-controls_6595b64144ccf1df_5.82.20348.5139_none_37738d8d16612594\\comctl32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\Microsoft.Win32.SystemEvents.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.ComponentModel.EventBasedAsync.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\WinSxS\\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.20348.5756_none_c562c10f49830848"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\WinSxS\\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.20348.5756_none_c562c10f49830848\\gdiplus.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\WinSxS\\SystemResources\\gdiplus.dll.mun"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\Fonts\\staticcache.dat"
+    },
+    {
+      "operation": "read",
+      "path": "C:\\Windows\\Fonts\\staticcache.dat"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\TextShaping.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\globalization\\icu\\timezoneTypes.res"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\globalization\\icu\\zoneinfo64.res"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\globalization\\icu\\windowsZones.res"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\tzres.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\en-US\\tzres.dll.mui"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\wtsapi32.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\WINSTA.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\powrprof.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\UMPDC.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\dataexchange.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\twinapi.appcore.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\SystemResources\\NAP.App.exe.mun"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\PresentationFramework-SystemXml.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\SEGOEUI.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\SEGOEUIB.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\UIAutomationProvider.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\SEGUISB.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\SEGUISYM.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\textinputframework.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\CoreMessaging.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\CoreUIComponents.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SystemResources\\USER32.dll.mun"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\msctfui.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\en-US\\msctfui.dll.mui"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\UIAutomationCore.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Inicio.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Inicio.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Cat\u00E1logo.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Cat\u00E1logo.png"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\en-US\\tzres.dll.mui"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\SixLabors.ImageSharp.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Runtime.CompilerServices.Unsafe.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Producci\u00F3n.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Producci\u00F3n.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Historial.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Historial.png"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\CONSOLA.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\WINDOWS\\FONTS\\SEGUIEMJ.TTF"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Ajustes.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Ajustes.png"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\WINMM.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Diagnostico.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Diagnostico.png"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\dcomp.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Licencias.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Licencias.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Historico.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Historico.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Diagnostics.StackTrace.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Bandeja-restaurada.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\Bandeja-restaurada.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-39-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-39-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-busqueda-001-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-busqueda-001-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-restablecido-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-restablecido-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-farmer-10-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-farmer-10-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\system32\\MLANG.DLL"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1440x900-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1440x900-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-foco-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-foco-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-foco-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-foco-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-foco-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-foco-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-foco-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-foco-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-foco-1440x900.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-foco-1440x900.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-39-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-39-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-grupos-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-estados-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-busqueda-001-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-busqueda-001-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-restablecido-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-restablecido-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-farmer-10-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-historico-farmer-10-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-dias-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-meses-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-licencias-anios-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-dias-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-meses-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1200x700-popup.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1200x700-popup.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-calendario-diagnostico-anios-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-foco-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Objetivos-foco-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-foco-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Estad\u00EDsticas-foco-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-foco-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Backups-foco-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-foco-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-Git-foco-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-foco-1200x700.png"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-herramientas-RoDo-foco-1200x700.png"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-verification.json"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\ux-verification.json"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\aceptacion.json"
+    },
+    {
+      "operation": "write",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\laboratorio\\aceptacion.json"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Diagnostics.Tracing.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\System.Net.Http.dll"
+    },
+    {
+      "operation": "open",
+      "path": "C:\\Windows\\SYSTEM32\\dxcore.dll"
+    },
+    {
+      "operation": "open",
+      "path": "D:\\a\\_temp\\nap-acceptance-extracted\\vcruntime140_cor3.dll"
+    }
+  ],
+  "eventsLost": 0
+}

@@ -1,0 +1,23 @@
+{
+  "mode": "activity-decisions",
+  "view": "-decisiones",
+  "width": 1200,
+  "height": 700,
+  "page": "Historial",
+  "section": "General",
+  "selectedUniverse": "Universo de muestra",
+  "historicalRows": 39,
+  "historicalViewport": null,
+  "historicalSelection": null,
+  "issue": null,
+  "workflowSelection": "Retrato de muestra",
+  "canApprove": false,
+  "canContinue": false,
+  "events": "21\u201324",
+  "decisions": "1\u201320",
+  "diagnosticRows": 0,
+  "license": "Sin avisos pendientes",
+  "trayRoundTrip": true,
+  "bindingErrors": 0,
+  "sha256": "0DB22E5C4A651FC2F0908D8DF3EBB384DD9DFC4BD698582C2EE89764DE6AFECA"
+}

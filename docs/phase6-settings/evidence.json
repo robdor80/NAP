@@ -1,0 +1,117 @@
+{
+  "project": "NAP 2.0",
+  "increments": [
+    "P6.5",
+    "P6.6"
+  ],
+  "branch": "codex/nap-2-fase-6-ux",
+  "base": "fbb88c2366ebfb1ec9f9812c10513863e4620b4f",
+  "verifiedSource": "55538c7669cce459a1ea039437abb51fd7193e31",
+  "run": 39853649755,
+  "job": 120086083070,
+  "artifact": 12458077738,
+  "runURL": "https://github.com/robdor80/NAP/actions/runs/39853649755",
+  "artifactFile": "nap-settings-39853649755.zip",
+  "artifactSHA256": "71ccb2373c5eb9e478ad51650edb44589602c48c711bd264aa4137313dcbcbfe",
+  "trxFile": "final/phase6-settings.trx",
+  "trxSHA256": "ea9fdc0e3dbc24c551a6a134af639330c0630565ed07baa8ff81266a4eeaf57b",
+  "tests": {
+    "executed": 61,
+    "passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "newSettingsCases": 18,
+    "previousFocusedCases": 43
+  },
+  "build": {
+    "platform": "windows-2022",
+    "configuration": "Release",
+    "application": "succeeded",
+    "testAssembly": "succeeded",
+    "officialLicenseHelperUnchanged": true,
+    "generalRegressionExecuted": false,
+    "zipAssetTestsExecuted": false
+  },
+  "renders": {
+    "count": 22,
+    "sizes": [
+      [
+        1440,
+        900
+      ],
+      [
+        1200,
+        700
+      ]
+    ],
+    "nativeWPF": true,
+    "syntheticData": true,
+    "bindingErrors": 0,
+    "stderrFiles": 22,
+    "nonemptyStderrFiles": 0,
+    "dateTextWidthAsserted": true,
+    "nativeClipboardReadbackVerified": true,
+    "newTextExportReadbackVerified": true,
+    "rawPngSHA256Verified": true
+  },
+  "privacy": {
+    "mode": "closed-field allowlist, free text excluded",
+    "rawIDsOrNamesInExport": false,
+    "privateLicenseContentReadByManager": false,
+    "twoSyntheticReportsIdentical": true
+  },
+  "mainObserved": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "branchProtectionRead": "403 integration permission; not changed",
+  "issuesLeftOpen": [
+    47,
+    49
+  ],
+  "preliminary": [
+    {
+      "run": "39851793980",
+      "archive": "preliminary/nap-settings-39851793980.zip",
+      "archiveSHA256": "7d79e1c26494955df33657f26bd3c6d58097cfd6f1b39f0d94147bd8b6b98406",
+      "trxSHA256": "8667823e73783593afb1fa6da949b90f2f0432110b44b5cc44ab40761ea7e3cb",
+      "passed": 58,
+      "failed": 2,
+      "finalEvidence": false
+    },
+    {
+      "run": "39852213416",
+      "archive": "preliminary/nap-settings-39852213416.zip",
+      "archiveSHA256": "0fc1335444c723bf1a9d1df73566706438fc1f29a354e9baba58112c6facd9f4",
+      "trxSHA256": "3e7ceed346f2f6544cb5c70c501c4fc986cc5d8ee72bc50bb9ae580d374c8f95",
+      "passed": 60,
+      "failed": 0,
+      "finalEvidence": false
+    },
+    {
+      "run": "39852801254",
+      "archive": "preliminary/nap-settings-39852801254.zip",
+      "archiveSHA256": "be9d6da4eb962351f1f342070de0c32985c549d246fd87a6c58c6374881fab76",
+      "trxSHA256": "99a5cb455605dcf56fe435b0424e58e8c3e16d8d67b103684c7fb45f441714c0",
+      "passed": 61,
+      "failed": 0,
+      "finalEvidence": false
+    },
+    {
+      "run": "39853145437",
+      "archive": "preliminary/nap-settings-39853145437.zip",
+      "archiveSHA256": "fedad04c0710363e07dce3eb9dd536c9af978da8b5db609211df21f20679bd5a",
+      "trxSHA256": "f6978e1a9d2b846cbc2355c877a0982f36ea8df2bc25e1e8e8e5039240030bb6",
+      "passed": 61,
+      "failed": 0,
+      "finalEvidence": false
+    },
+    {
+      "run": "39853332726",
+      "archive": "preliminary/nap-settings-39853332726.zip",
+      "archiveSHA256": "76b133a6a9739ed800c2c15a120cd9e53d7ab05600ebf5070834caf8d23c69c6",
+      "trxSHA256": "640a218de26b4eb864a83927a80c7adcf1dc80622b3be325e410c825d6a8db54",
+      "passed": 61,
+      "failed": 0,
+      "finalEvidence": false
+    }
+  ],
+  "acceptance": "Human review and MSI functional acceptance pending; stop before P6.7/P6.8"
+}

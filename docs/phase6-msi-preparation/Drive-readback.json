@@ -1,0 +1,79 @@
+{
+  "verifiedUtc": "2026-10-24T19:20:48.371869+00:00",
+  "uploadedFilesMetadataVerified": 72,
+  "ownerOnlyFilesVerified": 72,
+  "fullDownloadHashReadbacks": [
+    {
+      "name": "Informe-ejecutivo.pdf",
+      "id": "1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1",
+      "url": "https://drive.google.com/file/d/1u5coRtx2VocmiGMcG7OTzcXLLaonQUs1/view?usp=drivesdk",
+      "expectedSha256": "85bd132d6095fb63862a0c9c41530ccc26576318f248fe0916cd24508ea45df5",
+      "expectedBytes": 48557,
+      "downloadedSha256": "85bd132d6095fb63862a0c9c41530ccc26576318f248fe0916cd24508ea45df5",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "Informe-tecnico.pdf",
+      "id": "1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut",
+      "url": "https://drive.google.com/file/d/1HMo6PxHvHM3NmhtubfZ9mCzXz-Tkz7Ut/view?usp=drivesdk",
+      "expectedSha256": "47f7d56b2b3b19bf66b809324ea908d5012633b7e2ce8ddb06046bed2d21f582",
+      "expectedBytes": 52041,
+      "downloadedSha256": "47f7d56b2b3b19bf66b809324ea908d5012633b7e2ce8ddb06046bed2d21f582",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "Guia-MSI.pdf",
+      "id": "1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V",
+      "url": "https://drive.google.com/file/d/1mwx9Z-8XBA-L4nnAbfoDuL4KuZCx0z5V/view?usp=drivesdk",
+      "expectedSha256": "0ca5125c7086f18b79e4bc577496e9b6c4f9f090c5d8d440bce01aaf7c1647ad",
+      "expectedBytes": 284697,
+      "downloadedSha256": "0ca5125c7086f18b79e4bc577496e9b6c4f9f090c5d8d440bce01aaf7c1647ad",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "Galeria-WPF.pdf",
+      "id": "1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0",
+      "url": "https://drive.google.com/file/d/1YapVtujOlUmCRh3LEEsHLKenGxBnGY_0/view?usp=drivesdk",
+      "expectedSha256": "e48827b287bfa92fd85c2815f40f5c65bf7392fa6c27071ab693f18bd4bfaf16",
+      "expectedBytes": 954132,
+      "downloadedSha256": "e48827b287bfa92fd85c2815f40f5c65bf7392fa6c27071ab693f18bd4bfaf16",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "Manifiesto-candidato-RETENIDO-no-descargable.json",
+      "id": "1JjI70BldfEItguBnGueB55lxEi7IXVOY",
+      "url": "https://drive.google.com/file/d/1JjI70BldfEItguBnGueB55lxEi7IXVOY/view?usp=drivesdk",
+      "expectedSha256": "5f04cce8388111a4750850db7f6a8c25b7e4610b69eae709b8ace23783eadfb4",
+      "expectedBytes": 83150,
+      "downloadedSha256": "5f04cce8388111a4750850db7f6a8c25b7e4610b69eae709b8ace23783eadfb4",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "focused.trx",
+      "id": "1B1EeGFJzkcGzK3pIBRBA6EoFCrkwsk4E",
+      "url": "https://drive.google.com/file/d/1B1EeGFJzkcGzK3pIBRBA6EoFCrkwsk4E/view?usp=drivesdk",
+      "expectedSha256": "b6dc2fadf0b9f0ce81353fb19379a3ca9cc8d82ba89781e27a3ce21ac0abaa53",
+      "expectedBytes": 66734,
+      "downloadedSha256": "b6dc2fadf0b9f0ce81353fb19379a3ca9cc8d82ba89781e27a3ce21ac0abaa53",
+      "bytesMatched": true,
+      "sha256Matched": true
+    },
+    {
+      "name": "historico-historical-1200x700.png",
+      "id": "18g8Z3TROCMnqahOigBWDr5UbFg7KVbrj",
+      "url": "https://drive.google.com/file/d/18g8Z3TROCMnqahOigBWDr5UbFg7KVbrj/view?usp=drivesdk",
+      "expectedSha256": "8c7e499b5a41e865bd4a2588c905f73a4478e81cafbf772f90ced75b2ce36816",
+      "expectedBytes": 76088,
+      "downloadedSha256": "8c7e499b5a41e865bd4a2588c905f73a4478e81cafbf772f90ced75b2ce36816",
+      "bytesMatched": true,
+      "sha256Matched": true
+    }
+  ],
+  "binaryPackageTransferred": false,
+  "limitations": "Metadata, parent, size and permissions verified for all 72 files; complete downloaded byte hashes verified for the 7 listed items. No binary transfer was performed."
+}

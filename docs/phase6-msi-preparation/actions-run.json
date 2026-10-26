@@ -1,0 +1,13 @@
+{
+  "id": 40123851505,
+  "name": "Phase 6 MSI retained verification",
+  "head_sha": "b2e9413f0d3b9d3eb4df79f07fce74685d861d7c",
+  "head_branch": "codex/nap-2-fase-6-ux",
+  "event": "push",
+  "status": "completed",
+  "conclusion": "success",
+  "html_url": "https://github.com/robdor80/NAP/actions/runs/40123851505",
+  "created_at": "2026-10-24T19:07:30Z",
+  "updated_at": "2026-10-24T19:09:28Z",
+  "run_started_at": "2026-10-24T19:07:30Z"
+}

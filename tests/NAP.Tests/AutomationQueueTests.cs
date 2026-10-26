@@ -10,6 +10,66 @@ namespace NAP.Tests;
 
 public sealed class AutomationQueueTests
 {
+    // Metadata only: no ZIP is created, staged, extracted or processed.
+    [Theory]
+    [InlineData(QueueState.Observed, 1, 0, 0, 0, 0)]
+    [InlineData(QueueState.WaitingStable, 1, 0, 0, 0, 0)]
+    [InlineData(QueueState.Queued, 1, 0, 0, 0, 0)]
+    [InlineData(QueueState.RetryScheduled, 1, 0, 0, 0, 0)]
+    [InlineData(QueueState.Running, 0, 1, 0, 0, 0)]
+    [InlineData(QueueState.Completed, 0, 0, 1, 0, 0)]
+    [InlineData(QueueState.NeedsReview, 0, 0, 0, 1, 0)]
+    [InlineData(QueueState.Rejected, 0, 0, 0, 1, 0)]
+    [InlineData(QueueState.MissingSource, 0, 0, 0, 1, 0)]
+    [InlineData(QueueState.Duplicate, 0, 0, 0, 0, 1)]
+    public void Phase6OverviewCountsEveryDurableStateWithoutProcessingPackages(QueueState target, int pending, int processing, int completed, int review, int duplicate)
+    {
+        using var f = new Fixture(); using var owner = f.Store.AcquireOwner();
+        QueueItem item;
+        if (target is QueueState.Running or QueueState.Completed or QueueState.RetryScheduled)
+        {
+            (item, _) = f.Ready(owner);
+            f.Store.ReserveAsset(owner, item.Id, item.Revision, f.Asset, Fixture.Hash('b'));
+            item = f.Store.Get(item.Id); var claim = f.Store.Claim(owner, item.Id, item.Revision); item = f.Store.Get(item.Id);
+            if (target != QueueState.Running) item = f.Store.Transition(owner, item.Id, item.Revision, target,
+                target == QueueState.RetryScheduled ? QueueIncident.StorageUnavailable : QueueIncident.None,
+                target == QueueState.RetryScheduled ? DateTimeOffset.UtcNow.AddMinutes(1) : null, claim);
+        }
+        else
+        {
+            item = f.Observe(owner);
+            if (target != QueueState.Observed) item = f.Store.Transition(owner, item.Id, item.Revision, target,
+                target is QueueState.NeedsReview or QueueState.Rejected ? QueueIncident.InvalidManifest :
+                target == QueueState.MissingSource ? QueueIncident.MissingSource : QueueIncident.None);
+        }
+        var value = f.Store.Overview();
+        Assert.Equal(new AutomationQueueCounts(pending, processing, completed, review, duplicate), value.Counts);
+        Assert.Equal(review, value.Review.Count); Assert.Equal(f.Id, value.UniverseId);
+        Assert.DoesNotContain(value.Review, r => Path.IsPathFullyQualified(r.FileName));
+        Assert.False(File.Exists(item.SourcePath));
+    }
+
+    [Fact]
+    public void Phase6OverviewIsReadOnlyDurableAndScopedToItsUniverse()
+    {
+        using var a = new Fixture("alpha"); using var b = new Fixture("beta"); QueueItem item;
+        using (var owner = a.Store.AcquireOwner())
+        {
+            item = a.Observe(owner);
+            a.Store.Transition(owner, item.Id, item.Revision, QueueState.NeedsReview, QueueIncident.AuditFail);
+            // A second observation is an alias, not another pending asset.
+            a.Store.Observe(owner, a.Id, Path.Combine(a.Roots.InboxRoot, "alias.zip"), item.Zip);
+        }
+        using (b.Store.AcquireOwner()) { }
+        var before = SHA256.HashData(File.ReadAllBytes(a.Store.DatabasePath)); var events = a.Store.Events(item.Id).ToArray();
+        var reopened = new AutomationQueueStore(a.Roots); var value = reopened.Overview();
+        Assert.Equal(new AutomationQueueCounts(0, 0, 0, 1, 0), value.Counts);
+        Assert.Equal(QueueIncident.AuditFail, Assert.Single(value.Review).Incident);
+        Assert.Equal(new AutomationQueueCounts(0, 0, 0, 0, 0), b.Store.Overview().Counts);
+        Assert.Equal(before, SHA256.HashData(File.ReadAllBytes(a.Store.DatabasePath)));
+        Assert.Equal(events, reopened.Events(item.Id)); Assert.Equal(QueueState.NeedsReview, reopened.Get(item.Id).State);
+    }
+
     [Fact]
     public void ReopenPreservesExactItemsEventsObservationsAndBatches()
     {

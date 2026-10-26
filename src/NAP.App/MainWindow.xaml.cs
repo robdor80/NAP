@@ -4,18 +4,53 @@ namespace NAP.App;
 public partial class MainWindow : Window
 {
     private readonly TrayHost _tray;
-    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false)
+    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false, string? phase6Preview = null, bool acceptance = false, bool acceptanceProbe = false)
     {
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
-        var hostRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        hostRefresh.Tick += async (_, _) => { if (shell.Automation is not null) await shell.Automation.Refresh.ExecuteAsync(); };
+        if (acceptance) AcceptanceBanner.Visibility = Visibility.Visible;
+        if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
+        var licenseCheckDate=DateTime.Now.Date;
+        var licenseRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
+        licenseRefresh.Tick += async (_,_) =>
+        {
+            if(DateTime.Now.Date==licenseCheckDate)return;
+            licenseCheckDate=DateTime.Now.Date;
+            await shell.Settings.Licenses!.CheckAsync();
+        };
+        var hostRefresh = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+        hostRefresh.Tick += async (_, _) =>
+        {
+            if(shell.Automation is not null)await shell.Automation.Refresh.ExecuteAsync();
+            if(shell.CurrentPage==shell.Pipeline&&!shell.Pipeline.ManualExpanded)await shell.Pipeline.Work!.Poll.ExecuteAsync();
+            else if(shell.CurrentPage==shell.History)await shell.History.Work!.Poll.ExecuteAsync();
+        };
         Closing += (_, e) => { if (shell.IsExecuting && shell.Automation is null) { e.Cancel = true; MessageBox.Show(this, "Espera a que termine la operación explícita del Core.", "NAP", MessageBoxButton.OK, MessageBoxImage.Information); } };
-        Closed += (_, _) => { hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
+        Closed += (_, _) => { licenseRefresh.Stop(); hostRefresh.Stop(); _tray.Dispose(); diagnostics.Detach(); shell.Dispose(); };
+        SizeChanged += (_,_)=> { if(phase6Preview is null) shell.IsCompact=ActualWidth<=1220||ActualHeight<=760; };
         StateChanged += (_, _) => { if (WindowState == WindowState.Minimized && shell.MinimizeToTray) _tray.Hide(); };
         Loaded += async (_, _) =>
         {
             await shell.InitializeAsync();
+            if (acceptance)
+            {
+                shell.MinimizeToTray = true;
+                if (acceptanceProbe)
+                {
+                    try { await Phase6Acceptance.VerifyAsync(this, shell, diagnostics, smokeOutput!); Application.Current.Shutdown(0); }
+                    catch (Exception error) { Console.Error.WriteLine("acceptance_probe_failed:" + error); Application.Current.Shutdown(6); }
+                }
+                return;
+            }
+            if (phase6Preview is not null)
+            {
+                // Enable presentation for its capture; no input is dispatched before immediate shutdown.
+                if (Content is System.Windows.UIElement captureContent) captureContent.IsEnabled = true;
+                try { await Phase6Preview.CaptureAsync(this, diagnostics, phase6Preview, smokeOutput!); Application.Current.Shutdown(0); }
+                catch (Exception error) { Console.Error.WriteLine("phase6_preview_failed:" + error); Application.Current.Shutdown(5); }
+                return;
+            }
+            licenseRefresh.Start();
             if (shell.Automation is not null) hostRefresh.Start();
             if (automationSmoke)
             {
@@ -28,6 +63,7 @@ public partial class MainWindow : Window
             catch (Exception ex) { Console.WriteLine("smoke_failed: " + ex.Message); Application.Current.Shutdown(3); }
         };
     }
+    private void OpenLicenses(object sender,RoutedEventArgs e) { var shell=(ShellViewModel)DataContext; shell.Settings.Section="Licencias";shell.NavigateTo("Ajustes"); }
     private void HideToTray(object sender, RoutedEventArgs e) => _tray.Hide();
     internal void VerifyTrayRoundTrip()
     {

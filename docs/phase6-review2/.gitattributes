@@ -1,0 +1,3 @@
+*.trx -text
+captures.sha256 -text
+source-sha.txt -text

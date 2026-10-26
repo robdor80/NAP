@@ -1,0 +1,46 @@
+[
+  [
+    "diagnostics",
+    "Diagnóstico: consulta de eventos"
+  ],
+  [
+    "diagnostics-filtered",
+    "Filtros de fecha, gravedad y categoría"
+  ],
+  [
+    "diagnostics-export",
+    "Informe anonimizado: copia y exportación verificadas"
+  ],
+  [
+    "diagnostics-offline",
+    "Sin host: información local disponible, sin datos inventados"
+  ],
+  [
+    "diagnostics-error",
+    "Error de lectura: consulta fallida sin reparar trabajos"
+  ],
+  [
+    "licenses",
+    "Licencias: antes del umbral de 90 días"
+  ],
+  [
+    "licenses-90",
+    "Licencia: aviso de 90 días · 20/10/2027"
+  ],
+  [
+    "licenses-30",
+    "Licencia: aviso de 30 días · 19/12/2027"
+  ],
+  [
+    "licenses-7",
+    "Licencia: aviso de 7 días · 11/01/2028"
+  ],
+  [
+    "licenses-expired",
+    "Licencia: vencimiento administrativo superado · 20/01/2028"
+  ],
+  [
+    "licenses-renewed",
+    "Licencia: renovación registrada hasta 18/01/2029"
+  ]
+]

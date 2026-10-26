@@ -16,21 +16,20 @@
           <TextBlock Text="NAP" FontSize="32" FontWeight="Bold" />
           <TextBlock Text="NEXUS ASSET PLATFORM" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="18,0,0,0" />
         </StackPanel>
-        <TextBlock Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" Margin="0,4,0,0" />
+        <TextBlock x:Name="AcceptanceBanner" Visibility="Collapsed" Text="ACEPTACIÓN · DATOS FICTICIOS · SOLO MEMORIA" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
       </StackPanel>
       <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-        <Button Content="Git" Command="{Binding Navigate}" CommandParameter="Git" />
-        <Button Content="Bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />
+        <Button Content="Minimizar a bandeja" Click="HideToTray" IsEnabled="{Binding CanChangeContext}" />
       </StackPanel>
       <StackPanel Grid.Column="2">
-        <TextBlock Text="UNIVERSO ACTIVO" Style="{StaticResource Muted}" />
+        <TextBlock Text="UNIVERSO" Style="{StaticResource Muted}" />
         <Border x:Name="SingleUniverse" Background="{StaticResource DeepBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{StaticResource Stroke}" CornerRadius="{StaticResource Radius}" Padding="14,12" Margin="0,6,0,0">
           <Border.Style>
             <Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasSingleUniverse}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style>
           </Border.Style>
           <TextBlock Text="{Binding UniverseLabel}" />
         </Border>
-        <ComboBox x:Name="UniverseSelector" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedUniverse}" DisplayMemberPath="DisplayName" IsEnabled="{Binding CanChangeContext}">
+        <ComboBox x:Name="UniverseSelector" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedUniverse}" DisplayMemberPath="DisplayName" AutomationProperties.Name="Universo seleccionado" IsEnabled="{Binding CanChangeContext}">
           <ComboBox.Style>
             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding HasUniverseSelector}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style>
           </ComboBox.Style>
@@ -45,12 +44,18 @@
       </Grid.ColumnDefinitions>
       <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource Radius}" Padding="12,20">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Bottom" Text="RobDev · NAP v1" Style="{StaticResource Muted}" Margin="16,20,0,0" />
-          <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <Button DockPanel.Dock="Bottom" Click="OpenLicenses" HorizontalAlignment="Stretch" ToolTip="Consultar licencias">
+            <TextBlock Text="{Binding Settings.Licenses.PendingNotice}" TextWrapping="Wrap" />
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Margin" Value="0,10,0,0" /><Style.Triggers><DataTrigger Binding="{Binding Settings.Licenses.PendingNotice}" Value=""><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Button.Style>
+          </Button>
+          <TextBlock DockPanel.Dock="Bottom" Text="RobDev · NAP 2.0" Style="{StaticResource Muted}" Margin="16,20,0,0" />
+          <Grid>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
             <ItemsControl ItemsSource="{Binding Navigation}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                  <Button Style="{StaticResource Navigation}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}">
+                  <Button Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}">
+                    <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Navigation}"><Style.Triggers><DataTrigger Binding="{Binding DataContext.IsCompact,RelativeSource={RelativeSource AncestorType=Window}}" Value="True"><Setter Property="MinHeight" Value="32"/><Setter Property="Padding" Value="10,6"/><Setter Property="Margin" Value="0,0,0,2"/></DataTrigger></Style.Triggers></Style></Button.Style>
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Glyph}" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource IconSize}" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                       <TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
@@ -59,7 +64,28 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-          </ScrollViewer>
+            <Expander Grid.Row="1" Header="Herramientas" Margin="8,16,0,0" IsExpanded="{Binding ToolsExpanded}" VerticalContentAlignment="Stretch">
+              <Expander.Template>
+                <ControlTemplate TargetType="Expander">
+                  <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+                    <ToggleButton Style="{StaticResource Disclosure}" IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" Content="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"/>
+                    <ContentPresenter x:Name="ToolsBody" Grid.Row="1" Margin="8,12,0,0" Visibility="Collapsed"/>
+                  </Grid>
+                  <ControlTemplate.Triggers><Trigger Property="IsExpanded" Value="True"><Setter TargetName="ToolsBody" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Expander.Template>
+              <ScrollViewer x:Name="ToolsScroll" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+              <ItemsControl ItemsSource="{Binding Tools}" Margin="4,8,4,4">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Style="{StaticResource ToolsNavigation}" Content="{Binding Name}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              </ScrollViewer>
+            </Expander>
+          </Grid>
         </DockPanel>
       </Border>
       <Grid Grid.Column="2">
@@ -94,7 +120,6 @@
                 </Style>
               </TextBlock.Style>
             </TextBlock>
-            <TextBlock Text="{Binding CurrentPage.Description}" Style="{StaticResource Muted}" Margin="0,6,0,0" />
           </StackPanel>
           <StackPanel x:Name="PageActions" Grid.Column="1" Orientation="Horizontal">
             <StackPanel.Style>
@@ -126,6 +151,8 @@
           </c:RodoMascot>
         </Grid>
         <StackPanel Grid.Row="1">
+
+          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding CurrentPage.Name}" Value="Ajustes"/><Condition Binding="{Binding Settings.IsGeneral}" Value="False"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Collapsed"/></MultiDataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Producción"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Historial"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></StackPanel.Style>
           <TextBlock Text="{Binding CurrentPage.Status}" Margin="0,0,0,16">
             <TextBlock.Style>
               <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
@@ -159,18 +186,20 @@
       </Grid>
     </Grid>
     <Border Grid.Row="2" BorderBrush="{StaticResource CardBrush}" BorderThickness="0,1,0,0" Margin="0,16,0,0" Padding="0,12,0,0">
+      <Border.Style><Style TargetType="Border"><Style.Triggers><DataTrigger Binding="{Binding Automation}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Border.Style>
       <DockPanel>
-        <ContentControl DockPanel.Dock="Right" Content="{Binding Automation}">
-          <ContentControl.ContentTemplate><DataTemplate>
-            <StackPanel><TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" TextWrapping="Wrap" MaxWidth="720" />
-              <StackPanel Orientation="Horizontal"><Button Content="Host" Command="{Binding Refresh}" /><Button Content="Activar universo" Command="{Binding Activate}" />
-                <Button Content="Pausar" Command="{Binding Pause}" /><Button Content="Reanudar" Command="{Binding Resume}" /><Button Content="Detener host" Command="{Binding Stop}" /></StackPanel>
-            </StackPanel>
-          </DataTemplate></ContentControl.ContentTemplate>
-          <ContentControl.Style><Style TargetType="ContentControl"><Setter Property="Visibility" Value="Visible" /><Style.Triggers><DataTrigger Binding="{Binding Automation}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></ContentControl.Style>
-        </ContentControl>
-        <TextBlock DockPanel.Dock="Right" Text="{Binding UniverseLabel}" Style="{StaticResource Muted}" Margin="12,0" />
-        <TextBlock Text="{Binding StatusText}" Style="{StaticResource Muted}" />
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" DataContext="{Binding Automation}">
+          <Button Content="{Binding DataContext.PauseLabel,RelativeSource={RelativeSource AncestorType=Window}}" Command="{Binding Pause}" ToolTip="Pausar el universo seleccionado">
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding CanPause}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></Button.Style>
+          </Button>
+          <Button Content="{Binding DataContext.ResumeLabel,RelativeSource={RelativeSource AncestorType=Window}}" Command="{Binding Resume}" ToolTip="Reanudar el universo seleccionado">
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding CanResume}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></Button.Style>
+          </Button>
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Right" Text="{Binding Automation.ExecutionScope}" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="24,0" />
+        <TextBlock Text="{Binding Automation.Status}" VerticalAlignment="Center" AutomationProperties.LiveSetting="Polite">
+          <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Muted}"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="Inicio"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+        </TextBlock>
       </DockPanel>
     </Border>
   </Grid>

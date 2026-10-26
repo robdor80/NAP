@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "id": 12582093724,
+      "name": "NAP-2.0-Fase6-Aceptacion-Windows-x64",
+      "size_in_bytes": 75284275,
+      "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12582093724",
+      "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12582093724/zip",
+      "expired": false,
+      "created_at": "2026-10-25T01:21:22Z",
+      "expires_at": "2027-01-23T01:19:10Z",
+      "updated_at": "2026-10-25T01:21:22Z",
+      "digest": "sha256:065db1e57a41e93bb572fe7bbe26db99dbae3c186349260c7d4d0e9a459ea147",
+      "workflow_run": {
+        "id": 40150158408,
+        "repository_id": 1395904070,
+        "head_repository_id": 1395904070,
+        "head_branch": "codex/nap-2-fase-6-ux",
+        "head_sha": "2fccda5558dc486e5b9e4168b88b8d37050e0ef0"
+      }
+    },
+    {
+      "id": 12581988898,
+      "name": "NAP-Fase6-evidencias-2fccda5558dc486e5b9e4168b88b8d37050e0ef0",
+      "size_in_bytes": 666663,
+      "url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12581988898",
+      "archive_download_url": "https://api.github.com/repos/robdor80/NAP/actions/artifacts/12581988898/zip",
+      "expired": false,
+      "created_at": "2026-10-25T01:21:34Z",
+      "expires_at": "2027-01-23T01:19:10Z",
+      "updated_at": "2026-10-25T01:21:34Z",
+      "digest": "sha256:49456cc11740e941092248b3eb9fbea66791a05d2b3e0283d0f84bdeea151c7c",
+      "workflow_run": {
+        "id": 40150158408,
+        "repository_id": 1395904070,
+        "head_repository_id": 1395904070,
+        "head_branch": "codex/nap-2-fase-6-ux",
+        "head_sha": "2fccda5558dc486e5b9e4168b88b8d37050e0ef0"
+      }
+    }
+  ]
+}

@@ -86,7 +86,7 @@ public sealed class AutomationDesktopBridge
     private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
-        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl;
+        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics;
 
     public async Task<JsonElement> HandleAsync(AutomationRequest request, string principal)
     {
@@ -128,7 +128,7 @@ public sealed class AutomationDesktopBridge
             using (var file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             { JsonSerializer.Serialize(file, new { SchemaVersion = 1, Fingerprint = fingerprint }); file.Flush(true); }
             _recordedRequests++;
-            var pending = ExecuteRecordedAsync(request, fingerprint, path);
+            var pending = ExecuteRecordedAsync(request, fingerprint, path, principal);
             _requests[request.RequestId] = pending;
             _ = pending.ContinueWith(t => { _ = t.Exception; lock (_requestGate) _requests.TryRemove(request.RequestId, out _); },
                 CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
@@ -136,16 +136,16 @@ public sealed class AutomationDesktopBridge
         }
     }
 
-    private async Task<JsonElement> ExecuteRecordedAsync(AutomationRequest request, string fingerprint, string path)
+    private async Task<JsonElement> ExecuteRecordedAsync(AutomationRequest request, string fingerprint, string path, string principal)
     {
-        var response = await DispatchAsync(request).ConfigureAwait(false);
+        var response = await DispatchAsync(request, principal).ConfigureAwait(false);
         var temporary = path + ".response.tmp";
         using (var file = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None))
         { JsonSerializer.Serialize(file, new { SchemaVersion = 1, Fingerprint = fingerprint, Response = response }); file.Flush(true); }
         File.Move(temporary, path, true); return response;
     }
 
-    private async Task<JsonElement> DispatchAsync(AutomationRequest request)
+    private async Task<JsonElement> DispatchAsync(AutomationRequest request, string? principal = null)
     {
         if (request.Operation == AutomationOperation.Status) return AutomationProtocol.Payload(_host.Snapshot());
         if (request.Operation == AutomationOperation.ShutdownHost)
@@ -162,6 +162,33 @@ public sealed class AutomationDesktopBridge
         }
         switch (request.Operation)
         {
+            case AutomationOperation.Diagnostics:
+                var diagnosticQuery = Arg<DiagnosticQuery>();
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseDiagnostics(diagnosticQuery)));
+            case AutomationOperation.WorkflowBatches:
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseWorkflowBatches()));
+            case AutomationOperation.WorkflowPage:
+                var pageRequest = Arg<WorkflowPageRequest>();
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Browse(pageRequest)));
+            case AutomationOperation.WorkflowDetail:
+                var detailRequest = Arg<WorkflowDetailRequest>();
+                var capabilities = await _host.ReviewCapabilitiesAsync(id, detailRequest.ItemId);
+                return AutomationProtocol.Payload(await _host.QueryHeavyAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Detail(detailRequest, capabilities)));
+            case AutomationOperation.ReviewPropose:
+                var proposal = Arg<ReviewProposalRequest>();
+                await _host.RunReviewAsync(id, proposal.ItemId, false, (s, preparation) => preparation.ProposeReviewChoice(s.Owner, proposal, principal!));
+                return AutomationProtocol.Payload(true);
+            case AutomationOperation.ReviewApprove:
+                var approval = Arg<ReviewDecisionRequest>();
+                await _host.RunReviewAsync(id, approval.ItemId, false, (s, preparation) => { preparation.ApproveReview(s.Owner, approval, principal!); return true; });
+                return AutomationProtocol.Payload(true);
+            case AutomationOperation.ReviewContinue:
+                var continuation = Arg<ReviewDecisionRequest>();
+                return AutomationProtocol.Payload(await _host.RunReviewAsync(id, continuation.ItemId, true, (s, preparation) => preparation.ContinueReview(s.Owner, continuation)));
+
+            case AutomationOperation.Overview:
+                var overview = await _host.QueryAsync(id, s => s.Queue.Overview());
+                return AutomationProtocol.Payload(new AutomationDesktopOverview(_host.Snapshot(), overview, _host.ReadControl(id)));
             case AutomationOperation.ReleaseBlob:
                 var release = Arg<AutomationReference>().Reference;
                 if (_blobs.TryGetValue(release, out var released) && released.Universe == id && _blobs.TryRemove(release, out var removed))

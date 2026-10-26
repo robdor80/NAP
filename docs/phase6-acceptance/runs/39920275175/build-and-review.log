@@ -1,0 +1,613 @@
+﻿2026-10-23T07:48:44.0144747Z Current runner version: '2.338.0'
+2026-10-23T07:48:44.0182258Z ##[group]Runner Image Provisioner
+2026-10-23T07:48:44.0183560Z Hosted Compute Agent
+2026-10-23T07:48:44.0184449Z Version: 20261012.601
+2026-10-23T07:48:44.0185454Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T07:48:44.0186699Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T07:48:44.0188068Z Worker ID: {091fa82d-9d4b-455d-add3-142a57b4cff6}
+2026-10-23T07:48:44.0189466Z Region: eastus
+2026-10-23T07:48:44.0190383Z Cloud: Azure
+2026-10-23T07:48:44.0191251Z ##[endgroup]
+2026-10-23T07:48:44.0193851Z ##[group]Operating System
+2026-10-23T07:48:44.0194872Z Microsoft Windows Server 2022
+2026-10-23T07:48:44.0195818Z 10.0.20348
+2026-10-23T07:48:44.0196661Z Datacenter
+2026-10-23T07:48:44.0197478Z ##[endgroup]
+2026-10-23T07:48:44.0198512Z ##[group]Runner Image
+2026-10-23T07:48:44.0199450Z Image: windows-2022
+2026-10-23T07:48:44.0200322Z Version: 20261012.333.1
+2026-10-23T07:48:44.0202815Z Included Software: https://github.com/actions/runner-images/blob/win22/20261012.333/images/windows/Windows2022-Readme.md
+2026-10-23T07:48:44.0205622Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261012.333
+2026-10-23T07:48:44.0207193Z ##[endgroup]
+2026-10-23T07:48:44.0208969Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T07:48:44.0211708Z Contents: write
+2026-10-23T07:48:44.0212909Z Metadata: read
+2026-10-23T07:48:44.0213977Z ##[endgroup]
+2026-10-23T07:48:44.0217094Z Secret source: Actions
+2026-10-23T07:48:44.0218551Z Cache mode: write
+2026-10-23T07:48:44.0219758Z Prepare workflow directory
+2026-10-23T07:48:44.0544221Z Prepare all required actions
+2026-10-23T07:48:44.0591122Z Getting action download info
+2026-10-23T07:48:44.2447277Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-23T07:48:44.3842821Z Download action repository 'actions/setup-dotnet@v6' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-10-23T07:48:44.6316526Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-23T07:48:44.9849336Z Complete job name: focused-review
+2026-10-23T07:48:45.1701841Z ##[group]Run actions/checkout@v5
+2026-10-23T07:48:45.1703162Z with:
+2026-10-23T07:48:45.1703737Z   repository: robdor80/NAP
+2026-10-23T07:48:45.1709090Z   token: ***
+2026-10-23T07:48:45.1709647Z   ssh-strict: true
+2026-10-23T07:48:45.1710197Z   ssh-user: git
+2026-10-23T07:48:45.1710694Z   persist-credentials: true
+2026-10-23T07:48:45.1711183Z   clean: true
+2026-10-23T07:48:45.1711624Z   sparse-checkout-cone-mode: true
+2026-10-23T07:48:45.1712146Z   fetch-depth: 1
+2026-10-23T07:48:45.1712586Z   fetch-tags: false
+2026-10-23T07:48:45.1713035Z   show-progress: true
+2026-10-23T07:48:45.1713485Z   lfs: false
+2026-10-23T07:48:45.1713905Z   submodules: false
+2026-10-23T07:48:45.1714380Z   set-safe-directory: true
+2026-10-23T07:48:45.1714906Z   allow-unsafe-pr-checkout: false
+2026-10-23T07:48:45.1715658Z ##[endgroup]
+2026-10-23T07:48:45.3147126Z Syncing repository: robdor80/NAP
+2026-10-23T07:48:45.3149143Z ##[group]Getting Git version info
+2026-10-23T07:48:45.3149897Z Working directory is 'D:\a\NAP\NAP'
+2026-10-23T07:48:45.4216529Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T07:48:45.8201479Z git version 2.56.0.windows.2
+2026-10-23T07:48:45.8240069Z ##[endgroup]
+2026-10-23T07:48:45.8258192Z Temporarily overriding HOME='D:\a\_temp\c6b4add5-def6-44a7-b434-81e0dc301f97' before making global git config changes
+2026-10-23T07:48:45.8260121Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T07:48:45.8269414Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\NAP\NAP
+2026-10-23T07:48:45.8913456Z Deleting the contents of 'D:\a\NAP\NAP'
+2026-10-23T07:48:45.8918659Z ##[group]Initializing the repository
+2026-10-23T07:48:45.8927764Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\NAP\NAP
+2026-10-23T07:48:45.9928521Z Initialized empty Git repository in D:/a/NAP/NAP/.git/
+2026-10-23T07:48:45.9975682Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/robdor80/NAP
+2026-10-23T07:48:46.0641959Z ##[endgroup]
+2026-10-23T07:48:46.0644509Z ##[group]Disabling automatic garbage collection
+2026-10-23T07:48:46.0654919Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-23T07:48:46.0948055Z ##[endgroup]
+2026-10-23T07:48:46.0949925Z ##[group]Setting up auth
+2026-10-23T07:48:46.0960164Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T07:48:46.1264521Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T07:48:47.6009995Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T07:48:47.6300571Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T07:48:48.0773914Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T07:48:48.1065228Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T07:48:48.5993391Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-23T07:48:48.6296060Z ##[endgroup]
+2026-10-23T07:48:48.6296987Z ##[group]Fetching the repository
+2026-10-23T07:48:48.6309334Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e588886f316598a02baa606d16b99e7aae87acec:refs/remotes/origin/codex/nap-2-fase-6-ux
+2026-10-23T07:48:52.2245543Z From https://github.com/robdor80/NAP
+2026-10-23T07:48:52.2251016Z  * [new ref]         e588886f316598a02baa606d16b99e7aae87acec -> origin/codex/nap-2-fase-6-ux
+2026-10-23T07:48:52.2274992Z ##[endgroup]
+2026-10-23T07:48:52.2275368Z ##[group]Determining the checkout info
+2026-10-23T07:48:52.2278652Z ##[endgroup]
+2026-10-23T07:48:52.2292777Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-23T07:48:52.2761619Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-23T07:48:52.3042208Z ##[group]Checking out the ref
+2026-10-23T07:48:52.3050866Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/nap-2-fase-6-ux refs/remotes/origin/codex/nap-2-fase-6-ux
+2026-10-23T07:48:52.9904616Z Switched to a new branch 'codex/nap-2-fase-6-ux'
+2026-10-23T07:48:52.9925820Z branch 'codex/nap-2-fase-6-ux' set up to track 'origin/codex/nap-2-fase-6-ux'.
+2026-10-23T07:48:53.0018450Z ##[endgroup]
+2026-10-23T07:48:53.0408583Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-23T07:48:53.0671034Z e588886f316598a02baa606d16b99e7aae87acec
+2026-10-23T07:48:53.1130705Z ##[group]Run actions/setup-dotnet@v6
+2026-10-23T07:48:53.1131065Z with:
+2026-10-23T07:48:53.1131258Z   dotnet-version: 8.0.x
+2026-10-23T07:48:53.1131478Z   cache: false
+2026-10-23T07:48:53.1131659Z ##[endgroup]
+2026-10-23T07:48:53.3678633Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+2026-10-23T07:48:55.6587180Z dotnet-install: Downloaded file https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.13/dotnet-runtime-10.0.13-win-x64.zip size is 36970749 bytes.
+2026-10-23T07:48:55.6591432Z dotnet-install: Either downloaded or local package size can not be measured. One of them may be corrupted.
+2026-10-23T07:48:55.6620892Z dotnet-install: Extracting the archive.
+2026-10-23T07:48:56.5122650Z dotnet-install: Note that the script does not ensure your Windows version is supported during the installation.
+2026-10-23T07:48:56.5128627Z dotnet-install: To check the list of supported versions, go to https://learn.microsoft.com/dotnet/core/install/windows#supported-versions
+2026-10-23T07:48:56.5134247Z dotnet-install: Installed version is 10.0.13
+2026-10-23T07:48:56.5142366Z dotnet-install: Installation finished
+2026-10-23T07:48:56.6620155Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Channel 8.0
+2026-10-23T07:49:03.8080001Z dotnet-install: Downloaded file https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.426/dotnet-sdk-8.0.426-win-x64.zip size is 285292840 bytes.
+2026-10-23T07:49:03.8088749Z dotnet-install: Either downloaded or local package size can not be measured. One of them may be corrupted.
+2026-10-23T07:49:03.8116769Z dotnet-install: Extracting the archive.
+2026-10-23T07:49:21.4298306Z dotnet-install: Note that the script does not ensure your Windows version is supported during the installation.
+2026-10-23T07:49:21.4303424Z dotnet-install: To check the list of supported versions, go to https://learn.microsoft.com/dotnet/core/install/windows#supported-versions
+2026-10-23T07:49:21.4308458Z dotnet-install: Installed version is 8.0.426
+2026-10-23T07:49:21.4314176Z dotnet-install: Installation finished
+2026-10-23T07:49:21.4935290Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release'
+2026-10-23T07:49:21.4936340Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release'[0m
+2026-10-23T07:49:21.5043971Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:49:21.5044390Z env:
+2026-10-23T07:49:21.5044610Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:49:21.5046899Z   SIXLABORS_LICENSE_B64: ***
+2026-10-23T07:49:21.5047168Z ##[endgroup]
+2026-10-23T07:49:31.4963042Z   Determining projects to restore...
+2026-10-23T07:49:34.9980775Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:34.9984142Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:34.9987268Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:34.9990303Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:34.9993784Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:35.1177162Z   Restored D:\a\NAP\NAP\src\NAP.AI\NAP.AI.csproj (in 2.22 sec).
+2026-10-23T07:49:35.1193807Z   Restored D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj (in 2.22 sec).
+2026-10-23T07:49:35.1194804Z   Restored D:\a\NAP\NAP\src\NAP.Presentation\NAP.Presentation.csproj (in 2.22 sec).
+2026-10-23T07:49:35.1540470Z   Restored D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj (in 2.22 sec).
+2026-10-23T07:49:36.4285661Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-23T07:49:36.4288898Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-23T07:49:36.4291600Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-23T07:49:36.4293667Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-23T07:49:36.4295397Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-23T07:49:49.2245880Z   NAP.Core -> D:\a\NAP\NAP\src\NAP.Core\bin\Release\net8.0\NAP.Core.dll
+2026-10-23T07:49:50.2684171Z   NAP.AI -> D:\a\NAP\NAP\src\NAP.AI\bin\Release\net8.0\NAP.AI.dll
+2026-10-23T07:49:51.1932474Z   NAP.Presentation -> D:\a\NAP\NAP\src\NAP.Presentation\bin\Release\net8.0\NAP.Presentation.dll
+2026-10-23T07:49:55.0459066Z   NAP.App -> D:\a\NAP\NAP\src\NAP.App\bin\Release\net8.0-windows\NAP.App.dll
+2026-10-23T07:49:55.0626652Z 
+2026-10-23T07:49:55.0638171Z Build succeeded.
+2026-10-23T07:49:55.0638903Z 
+2026-10-23T07:49:55.0648089Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:55.0651265Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:55.0654195Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:55.0662208Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:55.0668427Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\src\NAP.App\NAP.App.csproj]
+2026-10-23T07:49:55.0684461Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-23T07:49:55.0687115Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-23T07:49:55.0689603Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-23T07:49:55.0692195Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-23T07:49:55.0694753Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-23T07:49:55.0696252Z     10 Warning(s)
+2026-10-23T07:49:55.0698152Z     0 Error(s)
+2026-10-23T07:49:55.0702872Z 
+2026-10-23T07:49:55.0714356Z Time Elapsed 00:00:27.68
+2026-10-23T07:49:55.1402699Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
+2026-10-23T07:49:55.1403816Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'[0m
+2026-10-23T07:49:55.1443857Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:49:55.1444223Z env:
+2026-10-23T07:49:55.1444441Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:49:55.1446326Z   SIXLABORS_LICENSE_B64: ***
+2026-10-23T07:49:55.1446571Z ##[endgroup]
+2026-10-23T07:49:56.4773973Z   Determining projects to restore...
+2026-10-23T07:49:57.8484715Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:49:57.8494320Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:49:57.8522524Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:49:57.8529334Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:49:57.8535905Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:49:58.1795546Z   Restored D:\a\NAP\NAP\tools\NAP.CoordinationProbe\NAP.CoordinationProbe.csproj (in 433 ms).
+2026-10-23T07:49:58.1800261Z   Restored D:\a\NAP\NAP\src\NAP.AutomationHost\NAP.AutomationHost.csproj (in 349 ms).
+2026-10-23T07:50:02.1752261Z   Restored D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj (in 4.38 sec).
+2026-10-23T07:50:02.1818614Z   3 of 6 projects are up-to-date for restore.
+2026-10-23T07:50:02.9403151Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-23T07:50:02.9405868Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-23T07:50:02.9408453Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-23T07:50:02.9410999Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-23T07:50:02.9413548Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-23T07:50:03.3699985Z   NAP.Core -> D:\a\NAP\NAP\src\NAP.Core\bin\Release\net8.0\NAP.Core.dll
+2026-10-23T07:50:04.6409148Z   NAP.Presentation -> D:\a\NAP\NAP\src\NAP.Presentation\bin\Release\net8.0\NAP.Presentation.dll
+2026-10-23T07:50:04.8317873Z   NAP.CoordinationProbe -> D:\a\NAP\NAP\tools\NAP.CoordinationProbe\bin\Release\net8.0\NAP.CoordinationProbe.dll
+2026-10-23T07:50:05.4339845Z   NAP.AutomationHost -> D:\a\NAP\NAP\src\NAP.AutomationHost\bin\Release\net8.0\NAP.AutomationHost.dll
+2026-10-23T07:50:05.8882532Z   NAP.AI -> D:\a\NAP\NAP\src\NAP.AI\bin\Release\net8.0\NAP.AI.dll
+2026-10-23T07:50:13.7802408Z   NAP.Tests -> D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll
+2026-10-23T07:50:13.8362241Z 
+2026-10-23T07:50:13.8380554Z Build succeeded.
+2026-10-23T07:50:13.8399280Z 
+2026-10-23T07:50:13.8417025Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:50:13.8434688Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:50:13.8460206Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:50:13.8485858Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:50:13.8496383Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [D:\a\NAP\NAP\tests\NAP.Tests\NAP.Tests.csproj]
+2026-10-23T07:50:13.8500490Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+2026-10-23T07:50:13.8507668Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+2026-10-23T07:50:13.8536607Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+2026-10-23T07:50:13.8640206Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+2026-10-23T07:50:13.8643187Z D:\a\NAP\NAP\src\NAP.Core\NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+2026-10-23T07:50:13.8650290Z     10 Warning(s)
+2026-10-23T07:50:13.8650618Z     0 Error(s)
+2026-10-23T07:50:13.8650813Z 
+2026-10-23T07:50:13.8650983Z Time Elapsed 00:00:17.86
+2026-10-23T07:50:13.9375727Z ##[group]Run dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6OverviewTests|FullyQualifiedName~Phase6WorkflowTests|FullyQualifiedName~Phase6PolishTests|FullyQualifiedName~Phase6SettingsTests|FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-acceptance --logger 'trx;LogFileName=phase6-acceptance.trx'
+2026-10-23T07:50:13.9385432Z [36;1mdotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~Phase6OverviewTests|FullyQualifiedName~Phase6WorkflowTests|FullyQualifiedName~Phase6PolishTests|FullyQualifiedName~Phase6SettingsTests|FullyQualifiedName~Phase6HistoricalTests|FullyQualifiedName~ProductionDestinationResolverTests|FullyQualifiedName~UnconfiguredNavigationNeverInventsCountsOrPerformsIo)&FullyQualifiedName!~OneSyntheticAssetPersistsVerifiedDecisionAndContinuesWithoutAuditOverrideOrGlobalChange' --results-directory artifacts/phase6-acceptance --logger 'trx;LogFileName=phase6-acceptance.trx'[0m
+2026-10-23T07:50:13.9390961Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }[0m
+2026-10-23T07:50:13.9436922Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:50:13.9437287Z env:
+2026-10-23T07:50:13.9437495Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:50:13.9437759Z ##[endgroup]
+2026-10-23T07:50:15.1411968Z Test run for D:\a\NAP\NAP\tests\NAP.Tests\bin\Release\net8.0\NAP.Tests.dll (.NETCoreApp,Version=v8.0)
+2026-10-23T07:50:15.9883626Z A total of 1 test files matched the specified pattern.
+2026-10-23T07:50:31.4314651Z Results File: D:\a\NAP\NAP\artifacts\phase6-acceptance\phase6-acceptance.trx
+2026-10-23T07:50:31.4317682Z 
+2026-10-23T07:50:31.4361156Z Passed!  - Failed:     0, Passed:   157, Skipped:     0, Total:   157, Duration: 13 s - NAP.Tests.dll (net8.0)
+2026-10-23T07:50:31.6054950Z ##[group]Run $appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'
+2026-10-23T07:50:31.6055783Z [36;1m$appPath = Join-Path $PWD 'src/NAP.App/bin/Release/net8.0-windows/NAP.App.exe'[0m
+2026-10-23T07:50:31.6056344Z [36;1m$captureRoot = Join-Path $PWD 'artifacts/phase6-acceptance'[0m
+2026-10-23T07:50:31.6058598Z [36;1mforeach ($mode in @('active','paused','review','offline','local','catalog','settings','production','history','choice','exception','approved','blocked','empty','read-error','manual','activity','activity-decisions','diagnostics','diagnostics-filtered','diagnostics-export','diagnostics-offline','diagnostics-error','licenses','licenses-90','licenses-30','licenses-7','licenses-expired','licenses-renewed','historical','historical-children','historical-elder','historical-ambiguous','historical-duplicate','historical-unknown','historical-empty','historical-context','historical-export')) {[0m
+2026-10-23T07:50:31.6060934Z [36;1m  foreach ($compact in @($false,$true)) {[0m
+2026-10-23T07:50:31.6061429Z [36;1m    $captureArguments = @("--phase6-preview=$mode", "--phase6-output=$captureRoot")[0m
+2026-10-23T07:50:31.6061944Z [36;1m    if ($compact) { $captureArguments += '--compact' }[0m
+2026-10-23T07:50:31.6062389Z [36;1m    $captureLabel = "$mode-$(if ($compact) {'compact'} else {'normal'})"[0m
+2026-10-23T07:50:31.6062895Z [36;1m    $errorPath = Join-Path $captureRoot "$captureLabel.stderr.txt"[0m
+2026-10-23T07:50:31.6063386Z [36;1m    $outputPath = Join-Path $captureRoot "$captureLabel.stdout.txt"[0m
+2026-10-23T07:50:31.6064237Z [36;1m    $process = Start-Process $appPath -ArgumentList $captureArguments -RedirectStandardError $errorPath -RedirectStandardOutput $outputPath -PassThru[0m
+2026-10-23T07:50:31.6065156Z [36;1m    if (-not $process.WaitForExit(60000)) { $process.Kill(); throw "Preview timed out: $mode" }[0m
+2026-10-23T07:50:31.6065897Z [36;1m    if ($process.ExitCode -ne 0) { Get-Content $errorPath; throw "Preview failed: $mode ($($process.ExitCode))" }[0m
+2026-10-23T07:50:31.6066427Z [36;1m  }[0m
+2026-10-23T07:50:31.6066621Z [36;1m}[0m
+2026-10-23T07:50:31.6066900Z [36;1m$captures = @(Get-ChildItem $captureRoot -Filter '*.png')[0m
+2026-10-23T07:50:31.6067467Z [36;1mif ($captures.Count -lt 76) { throw 'Every requested state and size requires a primary render.' }[0m
+2026-10-23T07:50:31.6068197Z [36;1m$duplicates = @($captures | Get-FileHash -Algorithm SHA256 | Group-Object Hash | Where-Object Count -gt 1)[0m
+2026-10-23T07:50:31.6069063Z [36;1mif ($duplicates.Count -gt 0) { $duplicates | ForEach-Object { $_.Group.Path }; throw 'Different evidence names contain identical PNGs.' }[0m
+2026-10-23T07:50:31.6070057Z [36;1mif (@(Get-ChildItem $captureRoot -Filter '*.png.json').Count -ne $captures.Count) { throw 'Missing per-image state metadata.' }[0m
+2026-10-23T07:50:31.6070645Z [36;1mgit diff --exit-code[0m
+2026-10-23T07:50:31.6071022Z [36;1mgit rev-parse HEAD | Out-File (Join-Path $captureRoot 'source-sha.txt')[0m
+2026-10-23T07:50:31.6072184Z [36;1mGet-ChildItem $captureRoot -Filter '*.png' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Out-File (Join-Path $captureRoot 'captures.sha256')[0m
+2026-10-23T07:50:31.6112443Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:50:31.6112826Z env:
+2026-10-23T07:50:31.6113055Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:50:31.6113340Z ##[endgroup]
+2026-10-23T07:51:36.5874907Z phase6_preview_failed:System.InvalidOperationException: Historical viewport too small: 106.25999999999993
+2026-10-23T07:51:36.5878457Z    at NAP.App.Phase6Preview.CaptureAsync(MainWindow window, BindingDiagnostics diagnostics, String mode, String output) in D:\a\NAP\NAP\src\NAP.App\Phase6Preview.cs:line 170
+2026-10-23T07:51:36.5881166Z    at NAP.App.MainWindow.<>c__DisplayClass1_1.<<-ctor>b__6>d.MoveNext() in D:\a\NAP\NAP\src\NAP.App\MainWindow.xaml.cs:line 38
+2026-10-23T07:51:36.7712625Z [31;1mException: [0mD:\a\_temp\9b520b5b-d26b-4de5-9c9f-e40a5fe46c09.ps1:13[0m
+2026-10-23T07:51:36.7713921Z [31;1m[0m[36;1mLine |[0m
+2026-10-23T07:51:36.7714850Z [31;1m[0m[36;1m[36;1m  13 | [0m … nt $errorPath; [36;1mthrow "Preview failed: $mode ($($process.ExitCode))"[0m }[0m
+2026-10-23T07:51:36.7716281Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2026-10-23T07:51:36.7717975Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mPreview failed: historical (5)[0m
+2026-10-23T07:51:36.7929356Z ##[error]Process completed with exit code 1.
+2026-10-23T07:51:36.8083668Z ##[group]Run ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+2026-10-23T07:51:36.8084395Z [36;1m./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup[0m
+2026-10-23T07:51:36.8123445Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:51:36.8123838Z env:
+2026-10-23T07:51:36.8124071Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:51:36.8124350Z ##[endgroup]
+2026-10-23T07:51:37.2098432Z ##[group]Run actions/upload-artifact@v4
+2026-10-23T07:51:37.2098820Z with:
+2026-10-23T07:51:37.2099026Z   name: phase6-acceptance
+2026-10-23T07:51:37.2099292Z   path: artifacts/phase6-acceptance/
+2026-10-23T07:51:37.2099558Z   if-no-files-found: warn
+2026-10-23T07:51:37.2099781Z   retention-days: 14
+2026-10-23T07:51:37.2099985Z   compression-level: 6
+2026-10-23T07:51:37.2100201Z   overwrite: false
+2026-10-23T07:51:37.2100408Z   include-hidden-files: false
+2026-10-23T07:51:37.2100645Z env:
+2026-10-23T07:51:37.2100836Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:51:37.2101092Z ##[endgroup]
+2026-10-23T07:51:37.3926705Z (node:636) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-23T07:51:37.3927440Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-23T07:51:37.4841734Z With the provided path, there will be 279 files uploaded
+2026-10-23T07:51:37.4848260Z Artifact name is valid!
+2026-10-23T07:51:37.4850254Z Root directory input is valid!
+2026-10-23T07:51:37.7212573Z Beginning upload of artifact content to blob storage
+2026-10-23T07:51:38.1830153Z (node:636) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-23T07:51:38.3153264Z Uploaded bytes 5824348
+2026-10-23T07:51:38.3330161Z Finished uploading artifact content to blob storage!
+2026-10-23T07:51:38.3332285Z SHA256 digest of uploaded artifact zip is 716fef903be7fa49b93b03256bc78c87e84d8fd9c78bb1f02a2b7ca52cca548c
+2026-10-23T07:51:38.3334684Z Finalizing artifact upload
+2026-10-23T07:51:38.7640274Z Artifact phase6-acceptance.zip successfully finalized. Artifact ID 12487291440
+2026-10-23T07:51:38.7641687Z Artifact phase6-acceptance has been successfully uploaded! Final size is 5824348 bytes. Artifact ID is 12487291440
+2026-10-23T07:51:38.7650111Z Artifact download URL: https://github.com/robdor80/NAP/actions/runs/39920275175/artifacts/12487291440
+2026-10-23T07:51:38.7947898Z ##[group]Run $source = git rev-parse HEAD
+2026-10-23T07:51:38.7948313Z [36;1m$source = git rev-parse HEAD[0m
+2026-10-23T07:51:38.7948697Z [36;1m$evidence = "docs/phase6-acceptance/runs/$env:GITHUB_RUN_ID"[0m
+2026-10-23T07:51:38.7949168Z [36;1mNew-Item -ItemType Directory -Force $evidence | Out-Null[0m
+2026-10-23T07:51:38.7949799Z [36;1mif (Test-Path artifacts/phase6-acceptance) { Copy-Item artifacts/phase6-acceptance/* $evidence -Recurse }[0m
+2026-10-23T07:51:38.7950392Z [36;1m$source | Out-File "$evidence/source-sha.txt"[0m
+2026-10-23T07:51:38.7950786Z [36;1m$previous = 'docs/phase6-acceptance/runs/39918769852'[0m
+2026-10-23T07:51:38.7951158Z [36;1mif (-not (Test-Path $previous)) {[0m
+2026-10-23T07:51:38.7951537Z [36;1m  New-Item -ItemType Directory -Force $previous | Out-Null[0m
+2026-10-23T07:51:38.7952095Z [36;1m  gh run download 39918769852 --repo robdor80/NAP --name phase6-acceptance --dir $previous[0m
+2026-10-23T07:51:38.7952722Z [36;1m  if ($LASTEXITCODE -ne 0) { throw 'Could not preserve preliminary bytes.' }[0m
+2026-10-23T07:51:38.7953325Z [36;1m  '15a52baa1967100a3ad748e593cf22c60b557d33' | Out-File "$previous/source-sha.txt"[0m
+2026-10-23T07:51:38.7953776Z [36;1m}[0m
+2026-10-23T07:51:38.7954095Z [36;1m$files = @(Get-ChildItem docs/phase6-acceptance/runs -File -Recurse)[0m
+2026-10-23T07:51:38.7954798Z [36;1mif (@($files | Where-Object { $_.Extension -notin @('.png','.json','.txt','.trx') }).Count -gt 0) { throw 'Unexpected evidence file type.' }[0m
+2026-10-23T07:51:38.7955402Z [36;1mgit add -- docs/phase6-acceptance/runs[0m
+2026-10-23T07:51:38.7956136Z [36;1mgit -c user.name='NAP evidence bot' -c user.email='nap-evidence@users.noreply.github.com' commit -m 'docs(phase6): preserve exact focused runner evidence [skip ci]'[0m
+2026-10-23T07:51:38.7956923Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Evidence commit failed.' }[0m
+2026-10-23T07:51:38.7957351Z [36;1mgit push origin HEAD:refs/heads/codex/nap-2-fase-6-ux[0m
+2026-10-23T07:51:38.7957907Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Evidence push failed; artifacts remain available.' }[0m
+2026-10-23T07:51:38.7996004Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-23T07:51:38.7996361Z env:
+2026-10-23T07:51:38.7996573Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-23T07:51:38.7999673Z   GH_TOKEN: ***
+2026-10-23T07:51:38.7999896Z ##[endgroup]
+2026-10-23T07:51:39.5749010Z warning: in the working copy of 'docs/phase6-acceptance/runs/39920275175/diagnostic-report-1200x700.txt', LF will be replaced by CRLF the next time Git touches it
+2026-10-23T07:51:39.5751457Z warning: in the working copy of 'docs/phase6-acceptance/runs/39920275175/diagnostic-report-1440x900.txt', LF will be replaced by CRLF the next time Git touches it
+2026-10-23T07:51:39.6549441Z warning: in the working copy of 'docs/phase6-acceptance/runs/39920275175/phase6-acceptance.trx', LF will be replaced by CRLF the next time Git touches it
+2026-10-23T07:51:40.1891204Z [codex/nap-2-fase-6-ux 6b23201] docs(phase6): preserve exact focused runner evidence [skip ci]
+2026-10-23T07:51:40.1892220Z  280 files changed, 2822 insertions(+)
+2026-10-23T07:51:40.1893228Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/active-compact.stderr.txt
+2026-10-23T07:51:40.1894244Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/active-compact.stdout.txt
+2026-10-23T07:51:40.1895690Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/active-normal.stderr.txt
+2026-10-23T07:51:40.1896805Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/active-normal.stdout.txt
+2026-10-23T07:51:40.1897859Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-compact.stderr.txt
+2026-10-23T07:51:40.1898925Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-compact.stdout.txt
+2026-10-23T07:51:40.1901308Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-decisions-compact.stderr.txt
+2026-10-23T07:51:40.1905175Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-decisions-compact.stdout.txt
+2026-10-23T07:51:40.1906502Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-decisions-normal.stderr.txt
+2026-10-23T07:51:40.1907674Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-decisions-normal.stdout.txt
+2026-10-23T07:51:40.1908782Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-normal.stderr.txt
+2026-10-23T07:51:40.1909787Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/activity-normal.stdout.txt
+2026-10-23T07:51:40.1910785Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-1200x700.png
+2026-10-23T07:51:40.1911793Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-1200x700.png.json
+2026-10-23T07:51:40.1912809Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-1440x900.png
+2026-10-23T07:51:40.1913807Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-1440x900.png.json
+2026-10-23T07:51:40.1914845Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-error-1200x700.png
+2026-10-23T07:51:40.1915922Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-error-1200x700.png.json
+2026-10-23T07:51:40.1916984Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-error-1440x900.png
+2026-10-23T07:51:40.1918048Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-error-1440x900.png.json
+2026-10-23T07:51:40.1919247Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-export-1200x700.png
+2026-10-23T07:51:40.1920952Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-export-1200x700.png.json
+2026-10-23T07:51:40.1921843Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-export-1440x900.png
+2026-10-23T07:51:40.1922656Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-export-1440x900.png.json
+2026-10-23T07:51:40.1923458Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-filtered-1200x700.png
+2026-10-23T07:51:40.1924273Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-filtered-1200x700.png.json
+2026-10-23T07:51:40.1925230Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-filtered-1440x900.png
+2026-10-23T07:51:40.1926314Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-filtered-1440x900.png.json
+2026-10-23T07:51:40.1927134Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-offline-1200x700.png
+2026-10-23T07:51:40.1927942Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-offline-1200x700.png.json
+2026-10-23T07:51:40.1928774Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-offline-1440x900.png
+2026-10-23T07:51:40.1929634Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-diagnostics-offline-1440x900.png.json
+2026-10-23T07:51:40.1930410Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-1200x700.png
+2026-10-23T07:51:40.1931336Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-1200x700.png.json
+2026-10-23T07:51:40.1931993Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-1440x900.png
+2026-10-23T07:51:40.1933214Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-1440x900.png.json
+2026-10-23T07:51:40.1933900Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-30-1200x700.png
+2026-10-23T07:51:40.1934567Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-30-1200x700.png.json
+2026-10-23T07:51:40.1935443Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-30-1440x900.png
+2026-10-23T07:51:40.1936721Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-30-1440x900.png.json
+2026-10-23T07:51:40.1937453Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-7-1200x700.png
+2026-10-23T07:51:40.1938144Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-7-1200x700.png.json
+2026-10-23T07:51:40.1938818Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-7-1440x900.png
+2026-10-23T07:51:40.1939476Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-7-1440x900.png.json
+2026-10-23T07:51:40.1940145Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-90-1200x700.png
+2026-10-23T07:51:40.1940807Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-90-1200x700.png.json
+2026-10-23T07:51:40.1941487Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-90-1440x900.png
+2026-10-23T07:51:40.1942141Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-90-1440x900.png.json
+2026-10-23T07:51:40.1942816Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-expired-1200x700.png
+2026-10-23T07:51:40.1943534Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-expired-1200x700.png.json
+2026-10-23T07:51:40.1944243Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-expired-1440x900.png
+2026-10-23T07:51:40.1944955Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-expired-1440x900.png.json
+2026-10-23T07:51:40.1945659Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-renewed-1200x700.png
+2026-10-23T07:51:40.1946352Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-renewed-1200x700.png.json
+2026-10-23T07:51:40.1947053Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-renewed-1440x900.png
+2026-10-23T07:51:40.1947753Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/ajustes-licenses-renewed-1440x900.png.json
+2026-10-23T07:51:40.1948409Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/approved-compact.stderr.txt
+2026-10-23T07:51:40.1949016Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/approved-compact.stdout.txt
+2026-10-23T07:51:40.1949607Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/approved-normal.stderr.txt
+2026-10-23T07:51:40.1950187Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/approved-normal.stdout.txt
+2026-10-23T07:51:40.1950771Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/blocked-compact.stderr.txt
+2026-10-23T07:51:40.1951348Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/blocked-compact.stdout.txt
+2026-10-23T07:51:40.1951921Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/blocked-normal.stderr.txt
+2026-10-23T07:51:40.1952508Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/blocked-normal.stdout.txt
+2026-10-23T07:51:40.1953094Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/catalog-compact.stderr.txt
+2026-10-23T07:51:40.1953669Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/catalog-compact.stdout.txt
+2026-10-23T07:51:40.1954247Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/catalog-normal.stderr.txt
+2026-10-23T07:51:40.1954817Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/catalog-normal.stdout.txt
+2026-10-23T07:51:40.1955381Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/choice-compact.stderr.txt
+2026-10-23T07:51:40.1955955Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/choice-compact.stdout.txt
+2026-10-23T07:51:40.1956526Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/choice-normal.stderr.txt
+2026-10-23T07:51:40.1957237Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/choice-normal.stdout.txt
+2026-10-23T07:51:40.1957935Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/comparacion-ampliada-1200x700.png
+2026-10-23T07:51:40.1958595Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/comparacion-ampliada-1440x900.png
+2026-10-23T07:51:40.1959233Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/comparacion-zoom-200-1200x700.png
+2026-10-23T07:51:40.1959873Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/comparacion-zoom-200-1440x900.png
+2026-10-23T07:51:40.1960498Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostic-report-1200x700.txt
+2026-10-23T07:51:40.1961125Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostic-report-1440x900.txt
+2026-10-23T07:51:40.1961745Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-compact.stderr.txt
+2026-10-23T07:51:40.1962360Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-compact.stdout.txt
+2026-10-23T07:51:40.1963025Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-error-compact.stderr.txt
+2026-10-23T07:51:40.1963711Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-error-compact.stdout.txt
+2026-10-23T07:51:40.1964390Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-error-normal.stderr.txt
+2026-10-23T07:51:40.1965064Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-error-normal.stdout.txt
+2026-10-23T07:51:40.1965751Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-export-compact.stderr.txt
+2026-10-23T07:51:40.1966431Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-export-compact.stdout.txt
+2026-10-23T07:51:40.1967113Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-export-normal.stderr.txt
+2026-10-23T07:51:40.1967785Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-export-normal.stdout.txt
+2026-10-23T07:51:40.1968480Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-filtered-compact.stderr.txt
+2026-10-23T07:51:40.1969196Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-filtered-compact.stdout.txt
+2026-10-23T07:51:40.1969898Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-filtered-normal.stderr.txt
+2026-10-23T07:51:40.1970585Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-filtered-normal.stdout.txt
+2026-10-23T07:51:40.1971235Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-normal.stderr.txt
+2026-10-23T07:51:40.1971850Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-normal.stdout.txt
+2026-10-23T07:51:40.1972495Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-offline-compact.stderr.txt
+2026-10-23T07:51:40.1973487Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-offline-compact.stdout.txt
+2026-10-23T07:51:40.1974195Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-offline-normal.stderr.txt
+2026-10-23T07:51:40.1974892Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/diagnostics-offline-normal.stdout.txt
+2026-10-23T07:51:40.1975520Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/empty-compact.stderr.txt
+2026-10-23T07:51:40.1976099Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/empty-compact.stdout.txt
+2026-10-23T07:51:40.1976682Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/empty-normal.stderr.txt
+2026-10-23T07:51:40.1977724Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/empty-normal.stdout.txt
+2026-10-23T07:51:40.1978804Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/exception-compact.stderr.txt
+2026-10-23T07:51:40.1979914Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/exception-compact.stdout.txt
+2026-10-23T07:51:40.1981175Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/exception-normal.stderr.txt
+2026-10-23T07:51:40.1982399Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/exception-normal.stdout.txt
+2026-10-23T07:51:40.1983504Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-1200x700.png
+2026-10-23T07:51:40.1984664Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-1200x700.png.json
+2026-10-23T07:51:40.1985810Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-1440x900.png
+2026-10-23T07:51:40.1986891Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-1440x900.png.json
+2026-10-23T07:51:40.1988048Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-actividad-1200x700.png
+2026-10-23T07:51:40.1989317Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-actividad-1200x700.png.json
+2026-10-23T07:51:40.1990541Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-actividad-1440x900.png
+2026-10-23T07:51:40.1991291Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-actividad-1440x900.png.json
+2026-10-23T07:51:40.1992020Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisiones-1200x700.png
+2026-10-23T07:51:40.1992743Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisiones-1200x700.png.json
+2026-10-23T07:51:40.1993460Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisiones-1440x900.png
+2026-10-23T07:51:40.1994174Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisiones-1440x900.png.json
+2026-10-23T07:51:40.1994880Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-1200x700.png
+2026-10-23T07:51:40.1995589Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-1200x700.png.json
+2026-10-23T07:51:40.1996287Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-1440x900.png
+2026-10-23T07:51:40.1996988Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-1440x900.png.json
+2026-10-23T07:51:40.1997738Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-actividad-1200x700.png
+2026-10-23T07:51:40.1998548Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-actividad-1200x700.png.json
+2026-10-23T07:51:40.1999344Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-actividad-1440x900.png
+2026-10-23T07:51:40.2000143Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-actividad-1440x900.png.json
+2026-10-23T07:51:40.2000945Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-decisiones-1200x700.png
+2026-10-23T07:51:40.2001748Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-decisiones-1200x700.png.json
+2026-10-23T07:51:40.2002558Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-decisiones-1440x900.png
+2026-10-23T07:51:40.2003370Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-activity-decisions-decisiones-1440x900.png.json
+2026-10-23T07:51:40.2004076Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-1200x700.png
+2026-10-23T07:51:40.2004698Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-1200x700.png.json
+2026-10-23T07:51:40.2005828Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-1440x900.png
+2026-10-23T07:51:40.2006968Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-1440x900.png.json
+2026-10-23T07:51:40.2008143Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-detalle-1200x700.png
+2026-10-23T07:51:40.2009145Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-detalle-1200x700.png.json
+2026-10-23T07:51:40.2010047Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-detalle-1440x900.png
+2026-10-23T07:51:40.2011421Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-approved-detalle-1440x900.png.json
+2026-10-23T07:51:40.2012140Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-blocked-1200x700.png
+2026-10-23T07:51:40.2012783Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-blocked-1200x700.png.json
+2026-10-23T07:51:40.2013395Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-blocked-1440x900.png
+2026-10-23T07:51:40.2013991Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-blocked-1440x900.png.json
+2026-10-23T07:51:40.2014584Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-1200x700.png
+2026-10-23T07:51:40.2015180Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-1200x700.png.json
+2026-10-23T07:51:40.2015780Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-1440x900.png
+2026-10-23T07:51:40.2016385Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-1440x900.png.json
+2026-10-23T07:51:40.2017020Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-detalle-1200x700.png
+2026-10-23T07:51:40.2017695Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-detalle-1200x700.png.json
+2026-10-23T07:51:40.2018361Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-detalle-1440x900.png
+2026-10-23T07:51:40.2019026Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-choice-detalle-1440x900.png.json
+2026-10-23T07:51:40.2019646Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-empty-1200x700.png
+2026-10-23T07:51:40.2020239Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-empty-1200x700.png.json
+2026-10-23T07:51:40.2020835Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-empty-1440x900.png
+2026-10-23T07:51:40.2021418Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-empty-1440x900.png.json
+2026-10-23T07:51:40.2022095Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-1200x700.png
+2026-10-23T07:51:40.2022718Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-1200x700.png.json
+2026-10-23T07:51:40.2023330Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-1440x900.png
+2026-10-23T07:51:40.2023948Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-1440x900.png.json
+2026-10-23T07:51:40.2024610Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-detalle-1200x700.png
+2026-10-23T07:51:40.2025306Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-detalle-1200x700.png.json
+2026-10-23T07:51:40.2026002Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-detalle-1440x900.png
+2026-10-23T07:51:40.2026700Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-exception-detalle-1440x900.png.json
+2026-10-23T07:51:40.2027342Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-1200x700.png
+2026-10-23T07:51:40.2027951Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-1200x700.png.json
+2026-10-23T07:51:40.2028556Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-1440x900.png
+2026-10-23T07:51:40.2029151Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-1440x900.png.json
+2026-10-23T07:51:40.2029789Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-detalle-1200x700.png
+2026-10-23T07:51:40.2030462Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-detalle-1200x700.png.json
+2026-10-23T07:51:40.2031142Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-detalle-1440x900.png
+2026-10-23T07:51:40.2031934Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-history-detalle-1440x900.png.json
+2026-10-23T07:51:40.2032689Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-manual-1200x700.png
+2026-10-23T07:51:40.2033296Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-manual-1200x700.png.json
+2026-10-23T07:51:40.2033891Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-manual-1440x900.png
+2026-10-23T07:51:40.2034487Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-manual-1440x900.png.json
+2026-10-23T07:51:40.2035095Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-production-1200x700.png
+2026-10-23T07:51:40.2035727Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-production-1200x700.png.json
+2026-10-23T07:51:40.2036708Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-production-1440x900.png
+2026-10-23T07:51:40.2037360Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-production-1440x900.png.json
+2026-10-23T07:51:40.2037994Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-read-error-1200x700.png
+2026-10-23T07:51:40.2038619Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-read-error-1200x700.png.json
+2026-10-23T07:51:40.2039231Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-read-error-1440x900.png
+2026-10-23T07:51:40.2039850Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/flujo-read-error-1440x900.png.json
+2026-10-23T07:51:40.2040471Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historical-compact.stderr.txt
+2026-10-23T07:51:40.2041072Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historical-compact.stdout.txt
+2026-10-23T07:51:40.2041832Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historical-normal.stderr.txt
+2026-10-23T07:51:40.2042515Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historical-normal.stdout.txt
+2026-10-23T07:51:40.2043273Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historico-historical-1440x900.png
+2026-10-23T07:51:40.2044024Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/historico-historical-1440x900.png.json
+2026-10-23T07:51:40.2044666Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/history-compact.stderr.txt
+2026-10-23T07:51:40.2045573Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/history-compact.stdout.txt
+2026-10-23T07:51:40.2046161Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/history-normal.stderr.txt
+2026-10-23T07:51:40.2046739Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/history-normal.stdout.txt
+2026-10-23T07:51:40.2047311Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-active-1200x700.png
+2026-10-23T07:51:40.2047913Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-active-1200x700.png.json
+2026-10-23T07:51:40.2048511Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-active-1440x900.png
+2026-10-23T07:51:40.2049336Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-active-1440x900.png.json
+2026-10-23T07:51:40.2050453Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-catalog-1200x700.png
+2026-10-23T07:51:40.2051611Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-catalog-1200x700.png.json
+2026-10-23T07:51:40.2052746Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-catalog-1440x900.png
+2026-10-23T07:51:40.2053872Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-catalog-1440x900.png.json
+2026-10-23T07:51:40.2054969Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-local-1200x700.png
+2026-10-23T07:51:40.2056105Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-local-1200x700.png.json
+2026-10-23T07:51:40.2057224Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-local-1440x900.png
+2026-10-23T07:51:40.2058497Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-local-1440x900.png.json
+2026-10-23T07:51:40.2059680Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-offline-1200x700.png
+2026-10-23T07:51:40.2060798Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-offline-1200x700.png.json
+2026-10-23T07:51:40.2061749Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-offline-1440x900.png
+2026-10-23T07:51:40.2062382Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-offline-1440x900.png.json
+2026-10-23T07:51:40.2063004Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-paused-1200x700.png
+2026-10-23T07:51:40.2063620Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-paused-1200x700.png.json
+2026-10-23T07:51:40.2064228Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-paused-1440x900.png
+2026-10-23T07:51:40.2064830Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-paused-1440x900.png.json
+2026-10-23T07:51:40.2065434Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-1200x700.png
+2026-10-23T07:51:40.2066040Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-1200x700.png.json
+2026-10-23T07:51:40.2066645Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-1440x900.png
+2026-10-23T07:51:40.2067245Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-1440x900.png.json
+2026-10-23T07:51:40.2067937Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-herramientas-1200x700.png
+2026-10-23T07:51:40.2068691Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-review-herramientas-1200x700.png.json
+2026-10-23T07:51:40.2069371Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-settings-1200x700.png
+2026-10-23T07:51:40.2070004Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-settings-1200x700.png.json
+2026-10-23T07:51:40.2070637Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-settings-1440x900.png
+2026-10-23T07:51:40.2071261Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/inicio-settings-1440x900.png.json
+2026-10-23T07:51:40.2071891Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-30-compact.stderr.txt
+2026-10-23T07:51:40.2072803Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-30-compact.stdout.txt
+2026-10-23T07:51:40.2073680Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-30-normal.stderr.txt
+2026-10-23T07:51:40.2074792Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-30-normal.stdout.txt
+2026-10-23T07:51:40.2075941Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-7-compact.stderr.txt
+2026-10-23T07:51:40.2077215Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-7-compact.stdout.txt
+2026-10-23T07:51:40.2078378Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-7-normal.stderr.txt
+2026-10-23T07:51:40.2079586Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-7-normal.stdout.txt
+2026-10-23T07:51:40.2080455Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-90-compact.stderr.txt
+2026-10-23T07:51:40.2081173Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-90-compact.stdout.txt
+2026-10-23T07:51:40.2082324Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-90-normal.stderr.txt
+2026-10-23T07:51:40.2083430Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-90-normal.stdout.txt
+2026-10-23T07:51:40.2084236Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-compact.stderr.txt
+2026-10-23T07:51:40.2085133Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-compact.stdout.txt
+2026-10-23T07:51:40.2085781Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-expired-compact.stderr.txt
+2026-10-23T07:51:40.2087101Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-expired-compact.stdout.txt
+2026-10-23T07:51:40.2088729Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-expired-normal.stderr.txt
+2026-10-23T07:51:40.2089428Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-expired-normal.stdout.txt
+2026-10-23T07:51:40.2090069Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-normal.stderr.txt
+2026-10-23T07:51:40.2090662Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-normal.stdout.txt
+2026-10-23T07:51:40.2091293Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-renewed-compact.stderr.txt
+2026-10-23T07:51:40.2091964Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-renewed-compact.stdout.txt
+2026-10-23T07:51:40.2092633Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-renewed-normal.stderr.txt
+2026-10-23T07:51:40.2093285Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/licenses-renewed-normal.stdout.txt
+2026-10-23T07:51:40.2093915Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/local-compact.stderr.txt
+2026-10-23T07:51:40.2094493Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/local-compact.stdout.txt
+2026-10-23T07:51:40.2095055Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/local-normal.stderr.txt
+2026-10-23T07:51:40.2095615Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/local-normal.stdout.txt
+2026-10-23T07:51:40.2096184Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/manual-compact.stderr.txt
+2026-10-23T07:51:40.2096753Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/manual-compact.stdout.txt
+2026-10-23T07:51:40.2097321Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/manual-normal.stderr.txt
+2026-10-23T07:51:40.2097885Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/manual-normal.stdout.txt
+2026-10-23T07:51:40.2098460Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/offline-compact.stderr.txt
+2026-10-23T07:51:40.2099047Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/offline-compact.stdout.txt
+2026-10-23T07:51:40.2099619Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/offline-normal.stderr.txt
+2026-10-23T07:51:40.2100186Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/offline-normal.stdout.txt
+2026-10-23T07:51:40.2100751Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/paused-compact.stderr.txt
+2026-10-23T07:51:40.2101323Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/paused-compact.stdout.txt
+2026-10-23T07:51:40.2101886Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/paused-normal.stderr.txt
+2026-10-23T07:51:40.2102451Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/paused-normal.stdout.txt
+2026-10-23T07:51:40.2103002Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/phase6-acceptance.trx
+2026-10-23T07:51:40.2103598Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/production-compact.stderr.txt
+2026-10-23T07:51:40.2104218Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/production-compact.stdout.txt
+2026-10-23T07:51:40.2104823Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/production-normal.stderr.txt
+2026-10-23T07:51:40.2105435Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/production-normal.stdout.txt
+2026-10-23T07:51:40.2106041Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/read-error-compact.stderr.txt
+2026-10-23T07:51:40.2106641Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/read-error-compact.stdout.txt
+2026-10-23T07:51:40.2107247Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/read-error-normal.stderr.txt
+2026-10-23T07:51:40.2107847Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/read-error-normal.stdout.txt
+2026-10-23T07:51:40.2108425Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/review-compact.stderr.txt
+2026-10-23T07:51:40.2109580Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/review-compact.stdout.txt
+2026-10-23T07:51:40.2110523Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/review-normal.stderr.txt
+2026-10-23T07:51:40.2111131Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/review-normal.stdout.txt
+2026-10-23T07:51:40.2111723Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/settings-compact.stderr.txt
+2026-10-23T07:51:40.2112325Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/settings-compact.stdout.txt
+2026-10-23T07:51:40.2112908Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/settings-normal.stderr.txt
+2026-10-23T07:51:40.2113495Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/settings-normal.stdout.txt
+2026-10-23T07:51:40.2114038Z  create mode 100644 docs/phase6-acceptance/runs/39920275175/source-sha.txt
+2026-10-23T07:51:41.8422837Z To https://github.com/robdor80/NAP
+2026-10-23T07:51:41.8423578Z    e588886..6b23201  HEAD -> codex/nap-2-fase-6-ux
+2026-10-23T07:51:41.9198002Z Post job cleanup.
+2026-10-23T07:51:42.1031987Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T07:51:42.1304414Z git version 2.56.0.windows.2
+2026-10-23T07:51:42.1375944Z Temporarily overriding HOME='D:\a\_temp\4f28cb94-d5df-4ece-8d66-b5507a4011c9' before making global git config changes
+2026-10-23T07:51:42.1377389Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T07:51:42.1389583Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\NAP\NAP
+2026-10-23T07:51:42.1704016Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T07:51:42.1994897Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T07:51:42.6998015Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T07:51:42.7254166Z http.https://github.com/.extraheader
+2026-10-23T07:51:42.7287983Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-23T07:51:42.7593181Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T07:51:43.2439198Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T07:51:43.2725489Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T07:51:43.7566397Z Cleaning up orphan processes
+2026-10-23T07:51:43.7823191Z Terminate orphan process: pid (6132) (VBCSCompiler)
+2026-10-23T07:51:43.8012243Z Terminate orphan process: pid (7220) (conhost)
+2026-10-23T07:51:43.8021817Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

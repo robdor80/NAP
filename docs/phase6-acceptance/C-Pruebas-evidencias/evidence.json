@@ -1,0 +1,103 @@
+{
+  "project": "NAP 2.0",
+  "phase": "P6.8",
+  "date": "2026-10-23",
+  "branch": "codex/nap-2-fase-6-ux",
+  "base": "35625eeb872069c9e0447d0b226011218f61b512",
+  "verified_source": "ed556bbbdf8a6971cd22d38f96ff88885a366225",
+  "final_run": 39921263656,
+  "captures": 113,
+  "scenarios": 38,
+  "processes": 76,
+  "tests_passed": 157,
+  "tests_failed": 0,
+  "runs": [
+    {
+      "id": 39918769852,
+      "sha": "15a52baa1967100a3ad748e593cf22c60b557d33",
+      "conclusion": "failure",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 13,
+      "artifact_id": 12486685373,
+      "artifact_digest": "sha256:681b55e31e0977c9a34192bbf97571199602286a9b50b1e49adea577f5a529ac"
+    },
+    {
+      "id": 39919314372,
+      "sha": "00270c3d8a583acf1ad6b7c05a0c605336927fe3",
+      "conclusion": "failure",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 97,
+      "artifact_id": 12485639823,
+      "artifact_digest": "sha256:96601fbc61811437a3784fe3afae08ed9329564220d1c5206bbb03b942bfa4dc"
+    },
+    {
+      "id": 39920176930,
+      "sha": "3f8dd62f667f923ccd29b58688189c26948b7cfd",
+      "conclusion": "failure",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 80,
+      "artifact_id": 12486598053,
+      "artifact_digest": "sha256:556347945e81143c8ad3b76dd3c0c9bbad57e32c3afbbd88eefcae47a7f27521"
+    },
+    {
+      "id": 39920275175,
+      "sha": "e588886f316598a02baa606d16b99e7aae87acec",
+      "conclusion": "failure",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 80,
+      "artifact_id": 12487291440,
+      "artifact_digest": "sha256:716fef903be7fa49b93b03256bc78c87e84d8fd9c78bb1f02a2b7ca52cca548c"
+    },
+    {
+      "id": 39920731413,
+      "sha": "67693a04c3d2a79016dcd5cbfc808e1f3b62ea23",
+      "conclusion": "failure",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 111,
+      "artifact_id": 12487431827,
+      "artifact_digest": "sha256:c75b664cc7b6353975bd54121eac011af7ef41aca42053ac657b45ce8b2900fd"
+    },
+    {
+      "id": 39921263656,
+      "sha": "ed556bbbdf8a6971cd22d38f96ff88885a366225",
+      "conclusion": "success",
+      "passed": 157,
+      "failed": 0,
+      "notExecuted": 0,
+      "captures": 113,
+      "artifact_id": 12487925777,
+      "artifact_digest": "sha256:4a574d2c1daff68be6381ccda3c667b142f1fd37bdd8916b2220e9c861a07759"
+    }
+  ],
+  "main_unchanged": "5f81950275098881fd0befac0a13cde08c9d751f",
+  "advisories": [
+    "GHSA-gwg2-r3hj-4w44",
+    "GHSA-j3p4-wp97-rph4",
+    "GHSA-j9gm-c75j-xc9q",
+    "GHSA-jjfr-hcj7-qf5w",
+    "GHSA-wmxv-xphr-5c9g"
+  ],
+  "real_assets_used": false,
+  "zip_tests_executed": false,
+  "productive_operations": false,
+  "cutover": false,
+  "issue_47_49_modified": false,
+  "msi_acceptance": "pending_human",
+  "private_binary_package": "blocked_no_validated_private_channel",
+  "public_distribution": false,
+  "phase7": false,
+  "preservation_run": 39922236605,
+  "original_artifact_digests_verified": true,
+  "verified_source_file_count": 522,
+  "workflow_after_tests": "archive-only recovery added; exact build workflow preserved separately"
+}
