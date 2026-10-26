@@ -1,0 +1,304 @@
+[
+  {
+    "run": "f72-initial",
+    "tested_commit": null,
+    "cases": 14,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently",
+        "outcome": "Passed",
+        "duration": "00:00:07.0945035"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"identity\")",
+        "outcome": "Failed",
+        "duration": "00:00:01.0434819"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"tampered-output\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.9970080"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption",
+        "outcome": "Passed",
+        "duration": "00:00:01.1061182"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"commit-returned\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.7243407"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-index\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.0399629"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.CorruptPolicyAndRevocationFailClosed",
+        "outcome": "Passed",
+        "duration": "00:00:01.0204796"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"after_commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.0403805"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox",
+        "outcome": "Passed",
+        "duration": "00:00:00.8889217"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+        "outcome": "Failed",
+        "duration": "00:00:02.5464349"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"reconciled\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.3858520"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-worktree\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.1020194"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"prepared\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.9340169"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"batch-reserved\")",
+        "outcome": "Passed",
+        "duration": "00:00:03.9345850"
+      }
+    ]
+  },
+  {
+    "run": "f72-corrected",
+    "tested_commit": null,
+    "cases": 14,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+        "outcome": "Passed",
+        "duration": "00:00:02.5301967"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-index\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.0338935"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"prepared\")",
+        "outcome": "Passed",
+        "duration": "00:00:04.2091041"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"identity\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.0393400"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"commit-returned\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.7784930"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"tampered-output\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.0291838"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.CorruptPolicyAndRevocationFailClosed",
+        "outcome": "Passed",
+        "duration": "00:00:00.9652443"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-worktree\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.0522646"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently",
+        "outcome": "Passed",
+        "duration": "00:00:07.2130367"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"reconciled\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.0675257"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"batch-reserved\")",
+        "outcome": "Passed",
+        "duration": "00:00:04.3192297"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption",
+        "outcome": "Passed",
+        "duration": "00:00:01.0374774"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"after_commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.9561505"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox",
+        "outcome": "Passed",
+        "duration": "00:00:00.8825014"
+      }
+    ]
+  },
+  {
+    "run": "f72-additional",
+    "tested_commit": null,
+    "cases": 4,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.ForeignOwnerThreadCannotEnterManualGit",
+        "outcome": "Failed",
+        "duration": "00:00:00.2124522"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.LateCompletionIsReconciledByBoundedPagesWithoutRepeatingProduction",
+        "outcome": "Passed",
+        "duration": "00:00:03.9894503"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.FailedGitCommitKeepsPreparedAndExplicitRetryUsesSameExpectedCommit",
+        "outcome": "Passed",
+        "duration": "00:00:03.0763675"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.ManualCommitNeedsNewGrantAndPushNeedsIndependentPermission",
+        "outcome": "Passed",
+        "duration": "00:00:03.9809479"
+      }
+    ]
+  },
+  {
+    "run": "f72-owner-corrected",
+    "tested_commit": null,
+    "cases": 1,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.ForeignOwnerThreadCannotEnterManualGit",
+        "outcome": "Passed",
+        "duration": "00:00:01.1866851"
+      }
+    ]
+  },
+  {
+    "run": "f72-final-core",
+    "tested_commit": "b2636106488d1de252b59ba9303137e0425428d2",
+    "cases": 14,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.CorruptPolicyAndRevocationFailClosed",
+        "outcome": "Passed",
+        "duration": "00:00:01.0973789"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently",
+        "outcome": "Passed",
+        "duration": "00:00:08.0153050"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"commit-returned\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.1453781"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+        "outcome": "Passed",
+        "duration": "00:00:02.9784272"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.OrphanReceiptTempBlocksWithoutAdoption",
+        "outcome": "Passed",
+        "duration": "00:00:01.2422276"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-index\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.9322168"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"after_commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.8826409"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"batch-reserved\")",
+        "outcome": "Passed",
+        "duration": "00:00:05.4999836"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.DisabledCompletedHasNoGitEffectsAndNoOutbox",
+        "outcome": "Passed",
+        "duration": "00:00:01.0276390"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"identity\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.1469342"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"tampered-output\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.1342369"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"reconciled\")",
+        "outcome": "Passed",
+        "duration": "00:00:02.1750945"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.InterruptedPublicationResumesExactReservedOperation(point: \"prepared\")",
+        "outcome": "Passed",
+        "duration": "00:00:04.1508595"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.UnsafeEvidenceOrGitChangeBlocksAndPreservesCompleted(fault: \"foreign-worktree\")",
+        "outcome": "Passed",
+        "duration": "00:00:01.1632604"
+      }
+    ]
+  },
+  {
+    "run": "f72-final-guards",
+    "tested_commit": "b2636106488d1de252b59ba9303137e0425428d2",
+    "cases": 5,
+    "results": [
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.ManualCommitNeedsNewGrantAndPushNeedsIndependentPermission",
+        "outcome": "Passed",
+        "duration": "00:00:04.6307872"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.CatalogAndFilesAloneNeverSubstituteForNativeOwnership",
+        "outcome": "Passed",
+        "duration": "00:00:02.2529647"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.ForeignOwnerThreadCannotEnterManualGit",
+        "outcome": "Passed",
+        "duration": "00:00:00.1238876"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.FailedGitCommitKeepsPreparedAndExplicitRetryUsesSameExpectedCommit",
+        "outcome": "Passed",
+        "duration": "00:00:03.2116873"
+      },
+      {
+        "name": "NAP.Tests.GitOutboxF72Tests.LateCompletionIsReconciledByBoundedPagesWithoutRepeatingProduction",
+        "outcome": "Passed",
+        "duration": "00:00:03.4056419"
+      }
+    ]
+  }
+]
