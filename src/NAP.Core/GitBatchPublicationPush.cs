@@ -43,34 +43,44 @@ public sealed partial class GitBatchPublicationService
             var originalAuthorization = OriginalAuthorization(p, state, batch);
             if (receipt.State != GitReceiptState.Pushed && !originalAuthorization)
                 return "git-authorization-required";
-            exhaustedPushBudget = !explicitRetry && (batch.Diagnostic is "git_push_attempt_3" or "git_push_retry_3" ||
-                ExhaustedVerifications(batch.Diagnostic) > 0);
-            verificationOnly = exhaustedPushBudget || receipt.State == GitReceiptState.Pushed || !AllowsAutomaticPush(p);
-            // A durable Pushed receipt gets its own bounded verification budget, never another push budget.
-            attempts = exhaustedPushBudget ? ExhaustedVerifications(batch.Diagnostic) :
-                explicitRetry || verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
-            if (!explicitRetry && attempts >= (exhaustedPushBudget ? MaxExhaustedVerifications : MaxPushAttempts)) return "git-push-retry-exhausted";
-
+            verificationOnly = receipt.State == GitReceiptState.Pushed;
             void Authorize(GitRepositoryStatus status) => _policy.Require(p, status, _git.Git,
                 receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), push: !verificationOnly, automatic: true);
 
-            Checkpoint?.Invoke("before-push");
-            if (exhaustedPushBudget)
+            if (verificationOnly)
             {
-                // Preserve the exhausted write budget while reserving every read-only turn, even
-                // BaseHead/offline/crash outcomes. Restarting cannot enable a fourth push or endless polling.
-                state = WithPublicationDiagnostic(state, batch, "git_push_exhausted_verify_" + (attempts + 1));
-                _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+                // A Pushed receipt already durably proves publication. Complete Outbox using the
+                // native local verifier before any remote budget gate, even after repeated crashes.
+                receipt = _git.VerifyDurablePushedBound(_context, batch.OperationId, Authorize);
             }
-            else if (!verificationOnly)
+            else
             {
-                // Persist before any remote write. A crash may consume an attempt but cannot reset it.
-                state = WithPublicationDiagnostic(state, batch, "git_push_attempt_" + (attempts + 1));
-                _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+                exhaustedPushBudget = !explicitRetry && (batch.Diagnostic is "git_push_attempt_3" or "git_push_retry_3" ||
+                    ExhaustedVerifications(batch.Diagnostic) > 0);
+                verificationOnly = exhaustedPushBudget || receipt.State == GitReceiptState.Pushed || !AllowsAutomaticPush(p);
+                // Only Committed receipts need a budget for remote discovery.
+                attempts = exhaustedPushBudget ? ExhaustedVerifications(batch.Diagnostic) :
+                    explicitRetry || verificationOnly && batch.Diagnostic?.StartsWith("git_push_", StringComparison.Ordinal) == true ? 0 : PushAttempts(batch.Diagnostic);
+                if (!explicitRetry && attempts >= (exhaustedPushBudget ? MaxExhaustedVerifications : MaxPushAttempts)) return "git-push-retry-exhausted";
+
+                Checkpoint?.Invoke("before-push");
+                if (exhaustedPushBudget)
+                {
+                    // Preserve the exhausted write budget while reserving every read-only turn, even
+                    // BaseHead/offline/crash outcomes. Restarting cannot enable a fourth push or endless polling.
+                    state = WithPublicationDiagnostic(state, batch, "git_push_exhausted_verify_" + (attempts + 1));
+                    _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+                }
+                else if (!verificationOnly)
+                {
+                    // Persist before any remote write. A crash may consume an attempt but cannot reset it.
+                    state = WithPublicationDiagnostic(state, batch, "git_push_attempt_" + (attempts + 1));
+                    _outbox.SaveLocked(state); batch = state.Batches.Single(b => b.Id == batch.Id);
+                }
+                var result = _git.PushBound(_context, batch.OperationId, Authorize, verificationOnly, requirePushedReceipt: !originalAuthorization);
+                if (result is null) return exhaustedPushBudget ? "git-push-retry-exhausted" : "git-awaiting-push";
+                receipt = _git.ReadReceipt(_context, batch.OperationId);
             }
-            var result = _git.PushBound(_context, batch.OperationId, Authorize, verificationOnly, requirePushedReceipt: !originalAuthorization);
-            if (result is null) return exhaustedPushBudget ? "git-push-retry-exhausted" : "git-awaiting-push";
-            receipt = _git.ReadReceipt(_context, batch.OperationId);
         }
         catch (Exception e) when (Controlled(e))
         {

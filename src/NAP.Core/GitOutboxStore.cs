@@ -32,7 +32,8 @@ public sealed class GitOutboxStore
             batch.CommitSha is not null && batch.CommitSha != receipt.CommitSha)
             throw new InvalidDataException("Outbox operation, plan or commit differs from native receipt.");
     }
-    // Caller holds owner + policy and has just verified the native Pushed receipt and exact remote tip.
+    // Caller holds owner + policy and has verified either fresh remote publication or a durable
+    // Pushed fact revalidated locally by the native engine. This does not assert a permanent remote tip.
     internal void RecordPushedLocked(GitOutboxSnapshot state, GitOutboxBatch batch, GitOperationReceipt receipt)
     {
         RequireReceipt(batch, receipt);

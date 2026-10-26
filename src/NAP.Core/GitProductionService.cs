@@ -57,6 +57,21 @@ public sealed class GitProductionService
     public GitOperationReceipt ReadReceipt(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
     { using var lease = GitProductionSafety.Acquire(context); return GitProductionReceiptStore.Read(context, operationId); });
 
+    // Revalidate an already durable publication fact without rediscovering it over the network.
+    // The caller retains the policy mutex; this seam cannot publish or modify native receipts.
+    internal GitOperationReceipt VerifyDurablePushedBound(UniverseContext context, GitOperationId operationId,
+        Action<GitRepositoryStatus> authorize) => GitProductionSafety.Run(() =>
+    {
+        using var access = AutomationManualAccess.EnterLegacy(context); using var lease = GitProductionSafety.Acquire(context);
+        var receipt = GitProductionReceiptStore.Read(context, operationId);
+        if (receipt.State != GitReceiptState.Pushed)
+            throw GitProductionException.Stop(NapIssueCodes.GitReceiptInvalid, "Local publication recovery requires a durable Pushed receipt.");
+        var status = Inspector.InspectLocked(context, queryRemote: false);
+        RequireBinding(receipt.Plan.Status, status, NapIssueCodes.GitReceiptInvalid);
+        VerifyCommit(context, receipt, status.Head); authorize(status);
+        return receipt;
+    });
+
     /// <summary>Explicit recovery never moves HEAD. Base HEAD leaves Prepared for an explicit RetryCommit.</summary>
     public GitOperationReceipt Recover(UniverseContext context, GitOperationId operationId) => GitProductionSafety.Run(() =>
     {

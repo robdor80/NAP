@@ -6,7 +6,7 @@ public sealed class GitProductionInspector
     public GitRepositoryStatus Inspect(UniverseContext context) => GitProductionSafety.Run(() =>
     { using var lease = GitProductionSafety.Acquire(context); return InspectLocked(context); });
 
-    internal GitRepositoryStatus InspectLocked(UniverseContext c)
+    internal GitRepositoryStatus InspectLocked(UniverseContext c, bool queryRemote = true)
     {
         var config = GitProductionSafety.Configuration(c, Git); GitProductionSafety.NoLocalScripts(c, false); GitProductionSafety.Operation(c);
         var porcelain = Git.Status(c); var parsed = Parse(porcelain);
@@ -20,10 +20,11 @@ public sealed class GitProductionInspector
         var remote = upstream[2]; var remoteBranch = upstream[3][11..]; GitProductionSafety.RefName(remote); GitProductionSafety.RefName(remoteBranch);
         if (parsed.Branch != remoteBranch) throw GitProductionException.Stop(NapIssueCodes.GitRemoteInvalid, "Local and upstream branch names must match.");
         var fingerprint = GitProductionSafety.RemoteFingerprint(config, remote, Git.AllowLocalTestTransport);
-        var tip = ReadTip(c, remote, remoteBranch); var sync = GitSynchronization.Unknown;
-        if (tip is null) sync = GitSynchronization.RemoteBranchMissing;
+        // Local recovery must not invent a current remote tip from a durable publication fact.
+        var tip = queryRemote ? ReadTip(c, remote, remoteBranch) : null; var sync = GitSynchronization.Unknown;
+        if (queryRemote && tip is null) sync = GitSynchronization.RemoteBranchMissing;
         else if (tip == parsed.Head) sync = GitSynchronization.Synchronized;
-        else
+        else if (tip is not null)
         {
             // Only classify a remotely observed tip when that object is already available locally. Never fetch.
             var remoteInLocal = false;
