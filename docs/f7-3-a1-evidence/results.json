@@ -1,0 +1,208 @@
+{
+  "scope": "F73-A1 only; final independent audit pending",
+  "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+  "base_sha": "8f18893bc8724eb5e29b65b972e175a4042f0d5c",
+  "platform": "Linux x64 Debug",
+  "sdk": "8.0.427",
+  "git": "2.52.0",
+  "raw_counters": {
+    "total": "5",
+    "executed": "5",
+    "passed": "5",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "zip_inputs": 6,
+  "max_zip_per_case": 2,
+  "new_cases_zip_inputs": 2,
+  "cases": [
+    {
+      "name": "NAP.Tests.GitOutboxF73Tests.OfflineRetryIsDurablyBoundedAndExplicitRetryRechecksRemote",
+      "outcome": "Passed",
+      "duration": "00:00:06.3965898",
+      "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+      "zip_inputs": 1,
+      "observations": [
+        {
+          "ZipCount": 1,
+          "Identity": "f72@example.invalid",
+          "Transport": "temporary-local-bare-only",
+          "BaseHead": "95a225bb05157f6b5d434fe5b6ef855ae38bfdc9",
+          "Head": "00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71",
+          "CommitSha": "00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71",
+          "RemoteTip": "00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71",
+          "OperationId": "g_cfe788970dd748378000cb491371aae2",
+          "PlanHash": "36c3780db83d0085ce72f5d1c1849376f8182da8a8a6399ee5d0b066375dfb7d",
+          "Receipt": "Pushed",
+          "Outbox": "Pushed",
+          "Diagnostic": null,
+          "Intents": [
+            {
+              "Id": "5a2da02df5c1fce627a1a9f5adec057b629f7067df335b4dae0b04f930c3417a",
+              "JobId": "job_78c43f549ffb4b8b8f2dff39da6e2ab8",
+              "QueueItemId": "queue_986b96a42af64e3a8977a9656686afe9",
+              "WorkflowAttemptId": "attempt_5494400de8f04d40b5dbc14e46f9d68c",
+              "BatchId": "6c7e6c37d1d8a450d16c68e3c76bf78e642f4e46505957ef9c6805ac03b69a48",
+              "PolicyRevision": 1,
+              "AuthorizationId": "authorization_fab65cd99026409b8dd42ddeca6b6e91",
+              "State": "Pushed"
+            }
+          ],
+          "Jobs": "Completed",
+          "Queue": "Completed",
+          "NativePushCommands": 1
+        }
+      ],
+      "stdout": "{\"ZipCount\":1,\"Identity\":\"f72@example.invalid\",\"Transport\":\"temporary-local-bare-only\",\"BaseHead\":\"95a225bb05157f6b5d434fe5b6ef855ae38bfdc9\",\"Head\":\"00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71\",\"CommitSha\":\"00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71\",\"RemoteTip\":\"00e4639b56ff4d4fe25ff23fafb2bc18b6a9ef71\",\"OperationId\":\"g_cfe788970dd748378000cb491371aae2\",\"PlanHash\":\"36c3780db83d0085ce72f5d1c1849376f8182da8a8a6399ee5d0b066375dfb7d\",\"Receipt\":\"Pushed\",\"Outbox\":\"Pushed\",\"Diagnostic\":null,\"Intents\":[{\"Id\":\"5a2da02df5c1fce627a1a9f5adec057b629f7067df335b4dae0b04f930c3417a\",\"JobId\":\"job_78c43f549ffb4b8b8f2dff39da6e2ab8\",\"QueueItemId\":\"queue_986b96a42af64e3a8977a9656686afe9\",\"WorkflowAttemptId\":\"attempt_5494400de8f04d40b5dbc14e46f9d68c\",\"BatchId\":\"6c7e6c37d1d8a450d16c68e3c76bf78e642f4e46505957ef9c6805ac03b69a48\",\"PolicyRevision\":1,\"AuthorizationId\":\"authorization_fab65cd99026409b8dd42ddeca6b6e91\",\"State\":\"Pushed\"}],\"Jobs\":\"Completed\",\"Queue\":\"Completed\",\"NativePushCommands\":1}"
+    },
+    {
+      "name": "NAP.Tests.GitOutboxF73Tests.F73A1ExhaustedPushBudgetRecognizesExactExternalPublicationAfterRestart",
+      "outcome": "Passed",
+      "duration": "00:00:04.3355863",
+      "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+      "zip_inputs": 1,
+      "observations": [
+        {
+          "ZipCount": 1,
+          "Identity": "f72@example.invalid",
+          "Transport": "temporary-local-bare-only",
+          "BaseHead": "11ac104e5730d8dea07cfd2e32d38dedf4b0765e",
+          "Head": "c316e0bebdbadf54628465162c96c24b2da12e4a",
+          "CommitSha": "c316e0bebdbadf54628465162c96c24b2da12e4a",
+          "RemoteTip": "c316e0bebdbadf54628465162c96c24b2da12e4a",
+          "OperationId": "g_c385f7d253fa40b0b10125cdca2ba94e",
+          "PlanHash": "d222b7c25afb1c08f2f96c3870552a7bf7cdce7c3b676611ec84b5cd614040c4",
+          "Receipt": "Pushed",
+          "Outbox": "Pushed",
+          "Diagnostic": null,
+          "Intents": [
+            {
+              "Id": "e3689fc1d3e17e9fa62da84a7900ceaad76631dabfdb5aee1d804d9315578c1d",
+              "JobId": "job_78c7c2213d014abd87df3f0a0fa0aab4",
+              "QueueItemId": "queue_9a08b154e6974eaca5d16b6b29bb195a",
+              "WorkflowAttemptId": "attempt_9afad79c310443e0bd7bcac45acfc40b",
+              "BatchId": "5c79560ebcc5c5d09909c506a21fbdf09688a3e582f180b4439a5d1a8a3c9254",
+              "PolicyRevision": 1,
+              "AuthorizationId": "authorization_3145cb9346754cdb800d6bd5c34cfa15",
+              "State": "Pushed"
+            }
+          ],
+          "Jobs": "Completed",
+          "Queue": "Completed",
+          "NativePushCommands": 0
+        }
+      ],
+      "stdout": "F73-A1: exhausted writes=3; subsequent native push commands=0; exact external SHA recognized after restart.\n{\"ZipCount\":1,\"Identity\":\"f72@example.invalid\",\"Transport\":\"temporary-local-bare-only\",\"BaseHead\":\"11ac104e5730d8dea07cfd2e32d38dedf4b0765e\",\"Head\":\"c316e0bebdbadf54628465162c96c24b2da12e4a\",\"CommitSha\":\"c316e0bebdbadf54628465162c96c24b2da12e4a\",\"RemoteTip\":\"c316e0bebdbadf54628465162c96c24b2da12e4a\",\"OperationId\":\"g_c385f7d253fa40b0b10125cdca2ba94e\",\"PlanHash\":\"d222b7c25afb1c08f2f96c3870552a7bf7cdce7c3b676611ec84b5cd614040c4\",\"Receipt\":\"Pushed\",\"Outbox\":\"Pushed\",\"Diagnostic\":null,\"Intents\":[{\"Id\":\"e3689fc1d3e17e9fa62da84a7900ceaad76631dabfdb5aee1d804d9315578c1d\",\"JobId\":\"job_78c7c2213d014abd87df3f0a0fa0aab4\",\"QueueItemId\":\"queue_9a08b154e6974eaca5d16b6b29bb195a\",\"WorkflowAttemptId\":\"attempt_9afad79c310443e0bd7bcac45acfc40b\",\"BatchId\":\"5c79560ebcc5c5d09909c506a21fbdf09688a3e582f180b4439a5d1a8a3c9254\",\"PolicyRevision\":1,\"AuthorizationId\":\"authorization_3145cb9346754cdb800d6bd5c34cfa15\",\"State\":\"Pushed\"}],\"Jobs\":\"Completed\",\"Queue\":\"Completed\",\"NativePushCommands\":0}"
+    },
+    {
+      "name": "NAP.Tests.GitOutboxF73Tests.F73A1ExhaustedPushBudgetKeepsCommittedAndDurablyBoundsReadOnlyChecks",
+      "outcome": "Passed",
+      "duration": "00:00:13.2829673",
+      "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+      "zip_inputs": 1,
+      "observations": [
+        {
+          "ZipCount": 1,
+          "Identity": "f72@example.invalid",
+          "Transport": "temporary-local-bare-only",
+          "BaseHead": "04e4f0072da0af2d352dbadb12e000809e61bb2f",
+          "Head": "4031078acfb9af71946f22f3b506833fa13c8891",
+          "CommitSha": "4031078acfb9af71946f22f3b506833fa13c8891",
+          "RemoteTip": "04e4f0072da0af2d352dbadb12e000809e61bb2f",
+          "OperationId": "g_f48faedba778404da9fca88c84fd71c6",
+          "PlanHash": "d3a197f69e0b4411c4a946dd4368ee038ae4210399ca097e0c53328bcba5f465",
+          "Receipt": "Committed",
+          "Outbox": "Committed",
+          "Diagnostic": "git_push_exhausted_verify_3",
+          "Intents": [
+            {
+              "Id": "583b3350b456cfb0635c3b02ccdbdc60916df599b8d4a7dbf8ac815bff6e7519",
+              "JobId": "job_6a1d13bf4c7c4f77bd50b2fa7abbf67a",
+              "QueueItemId": "queue_95310597c9314d7ca5a8a3f4cad64426",
+              "WorkflowAttemptId": "attempt_d043fb6fd1db4fac90a1ea5aa524a848",
+              "BatchId": "cd9cf34810b2699c76830f6873de34fbeccf966e43bb626a622a27a7f17eb5de",
+              "PolicyRevision": 1,
+              "AuthorizationId": "authorization_03546dee00f64275965e5e75def7d476",
+              "State": "Committed"
+            }
+          ],
+          "Jobs": "Completed",
+          "Queue": "Completed",
+          "NativePushCommands": 0
+        }
+      ],
+      "stdout": "F73-A1: exhausted writes=3; checks=3 (BaseHead/offline/BaseHead); restart at cap queries=0; revoked queries=0; native push commands=0.\n{\"ZipCount\":1,\"Identity\":\"f72@example.invalid\",\"Transport\":\"temporary-local-bare-only\",\"BaseHead\":\"04e4f0072da0af2d352dbadb12e000809e61bb2f\",\"Head\":\"4031078acfb9af71946f22f3b506833fa13c8891\",\"CommitSha\":\"4031078acfb9af71946f22f3b506833fa13c8891\",\"RemoteTip\":\"04e4f0072da0af2d352dbadb12e000809e61bb2f\",\"OperationId\":\"g_f48faedba778404da9fca88c84fd71c6\",\"PlanHash\":\"d3a197f69e0b4411c4a946dd4368ee038ae4210399ca097e0c53328bcba5f465\",\"Receipt\":\"Committed\",\"Outbox\":\"Committed\",\"Diagnostic\":\"git_push_exhausted_verify_3\",\"Intents\":[{\"Id\":\"583b3350b456cfb0635c3b02ccdbdc60916df599b8d4a7dbf8ac815bff6e7519\",\"JobId\":\"job_6a1d13bf4c7c4f77bd50b2fa7abbf67a\",\"QueueItemId\":\"queue_95310597c9314d7ca5a8a3f4cad64426\",\"WorkflowAttemptId\":\"attempt_d043fb6fd1db4fac90a1ea5aa524a848\",\"BatchId\":\"cd9cf34810b2699c76830f6873de34fbeccf966e43bb626a622a27a7f17eb5de\",\"PolicyRevision\":1,\"AuthorizationId\":\"authorization_03546dee00f64275965e5e75def7d476\",\"State\":\"Committed\"}],\"Jobs\":\"Completed\",\"Queue\":\"Completed\",\"NativePushCommands\":0}"
+    },
+    {
+      "name": "NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch",
+      "outcome": "Passed",
+      "duration": "00:00:15.0252512",
+      "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+      "zip_inputs": 1,
+      "observations": [
+        {
+          "ZipCount": 1,
+          "Identity": "f72@example.invalid",
+          "Transport": "temporary-local-bare-only",
+          "BaseHead": "fdd8b1bd05f9ee5b41f3a2f7fb04b52815966d1a",
+          "Head": "8c53049e82adfc5025dae1f31cb505d3a342645f",
+          "CommitSha": "8c53049e82adfc5025dae1f31cb505d3a342645f",
+          "RemoteTip": "fdd8b1bd05f9ee5b41f3a2f7fb04b52815966d1a",
+          "OperationId": "g_a110d25bf33147f28f06aabb15f818e7",
+          "PlanHash": "07880dace4853a6678a7a6df159b0973cecce9519b4132da88f7229bfd2ace49",
+          "Receipt": "Committed",
+          "Outbox": "Committed",
+          "Diagnostic": null,
+          "Intents": [
+            {
+              "Id": "9b2364413f311a1eed0869e764f7be921a1d6014f52318bee01b2f5cbbae8435",
+              "JobId": "job_bddbb8eab49b442490de466ba5d88e70",
+              "QueueItemId": "queue_dbc767418bd44960be9b679bc52707ba",
+              "WorkflowAttemptId": "attempt_93f63a4f70364ecc804b98bb1251672f",
+              "BatchId": "5f30feec89766a2938670ce1feecd602384f9f03cd8fd63c9f8cd0a2d411f747",
+              "PolicyRevision": 1,
+              "AuthorizationId": "authorization_2822bbcaa58b405e83fb8fa6ebd92961",
+              "State": "Committed"
+            }
+          ],
+          "Jobs": "Completed",
+          "Queue": "Completed",
+          "NativePushCommands": 0
+        }
+      ],
+      "stdout": "{\"ZipCount\":1,\"Identity\":\"f72@example.invalid\",\"Transport\":\"temporary-local-bare-only\",\"BaseHead\":\"fdd8b1bd05f9ee5b41f3a2f7fb04b52815966d1a\",\"Head\":\"8c53049e82adfc5025dae1f31cb505d3a342645f\",\"CommitSha\":\"8c53049e82adfc5025dae1f31cb505d3a342645f\",\"RemoteTip\":\"fdd8b1bd05f9ee5b41f3a2f7fb04b52815966d1a\",\"OperationId\":\"g_a110d25bf33147f28f06aabb15f818e7\",\"PlanHash\":\"07880dace4853a6678a7a6df159b0973cecce9519b4132da88f7229bfd2ace49\",\"Receipt\":\"Committed\",\"Outbox\":\"Committed\",\"Diagnostic\":null,\"Intents\":[{\"Id\":\"9b2364413f311a1eed0869e764f7be921a1d6014f52318bee01b2f5cbbae8435\",\"JobId\":\"job_bddbb8eab49b442490de466ba5d88e70\",\"QueueItemId\":\"queue_dbc767418bd44960be9b679bc52707ba\",\"WorkflowAttemptId\":\"attempt_93f63a4f70364ecc804b98bb1251672f\",\"BatchId\":\"5f30feec89766a2938670ce1feecd602384f9f03cd8fd63c9f8cd0a2d411f747\",\"PolicyRevision\":1,\"AuthorizationId\":\"authorization_2822bbcaa58b405e83fb8fa6ebd92961\",\"State\":\"Committed\"}],\"Jobs\":\"Completed\",\"Queue\":\"Completed\",\"NativePushCommands\":0}"
+    },
+    {
+      "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+      "outcome": "Passed",
+      "duration": "00:00:26.5913846",
+      "source_sha": "7f29cbbe89b19838b6b64989893fa942533b2b28",
+      "zip_inputs": 2,
+      "observations": [],
+      "stdout": ""
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "f73-a1.trx",
+      "original_sha256": "9ac85725f2e523ed10ab70703b77f4d8dcd3131d2828d5e2292d37ad049c86a0",
+      "published_sha256": "7e26dd5fe4b7e4553b8530332dff365be7b5f9e937c3a31a619cce9c42eeb849"
+    },
+    {
+      "file": "f73-a1.log",
+      "original_sha256": "b3d664fb134278a6a5ef4985343b5e23f74ddd0348593893f6cacc5823ac154c",
+      "published_sha256": "da04f033cc151cfa64df6fbd74e442bec7d086b622f9db87db27962c72c79798"
+    }
+  ]
+}

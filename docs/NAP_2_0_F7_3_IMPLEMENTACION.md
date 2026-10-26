@@ -4,6 +4,8 @@ Fecha: 2026-10-26. Repositorio `robdor80/NAP`. Rama exclusiva `chatgpt/nap-2-f7-
 Base comprobada `main`: `809fe00b5397c38ff6031987fbc7058f9b238d5b`; preparación F7.3: `670966e1b0be82fb10983a64d0bfa7fe4a70f1b1`.
 Esta entrega requiere auditoría independiente de ChatGPT. **No declara aceptada ni cerrada F7.3.**
 
+Adenda posterior: [corrección focalizada F73-A1](NAP_2_0_F7_3_F73_A1.md), sobre la reconciliación nativa sin escritura remota después de agotar los tres intentos de publicación. Sus SHA y pruebas se registran separadamente; las evidencias iniciales se conservan.
+
 ## Cambios y API
 
 | Archivo | Cambio |
