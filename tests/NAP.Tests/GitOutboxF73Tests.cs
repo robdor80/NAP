@@ -105,6 +105,44 @@ public sealed class GitOutboxF73Tests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption()
+    {
+        using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
+        var batch = CommitWithoutPush(f); var commands = Commands(f);
+        ExhaustPushBudget(f);
+        for (var n = 1; n <= 2; n++)
+        {
+            Assert.Equal("git-push-retry-exhausted", f.Service.RunOnce(f.Owner));
+            Assert.Equal("git_push_exhausted_verify_" + n, f.Outbox.Read().Batches.Single().Diagnostic);
+            f.Restart();
+        }
+        f.Run("push", "origin", "HEAD:refs/heads/main"); // Exact publication by the external local fixture actor.
+        Cut(f, "push-returned");
+        Assert.Throws<Interruption>(() => f.Service.RunOnce(f.Owner));
+        var interrupted = f.Outbox.Read(); var pending = interrupted.Batches.Single();
+        Assert.Equal("git_push_exhausted_verify_3", pending.Diagnostic);
+        Assert.Equal(GitOutboxState.Committed, pending.State);
+        Assert.All(interrupted.Intents, i => Assert.Equal(GitOutboxState.Committed, i.State));
+        Assert.Equal(GitReceiptState.Pushed, f.Git.ReadReceipt(f.F.Context, batch.OperationId).State);
+        Assert.Equal(batch.CommitSha, f.RemoteHead); f.CheckCompleted();
+
+        f.Restart(); var before = commands.Count;
+        Assert.Equal("git-pushed", f.Service.RunOnce(f.Owner));
+        var recovered = f.Outbox.Read(); var pushed = recovered.Batches.Single();
+        Assert.Equal(batch.OperationId, pushed.OperationId); Assert.Equal(batch.PlanHash, pushed.PlanHash);
+        Assert.Equal(batch.Id, pushed.Id); Assert.Equal(batch.CommitSha, pushed.CommitSha);
+        Assert.Equal(GitOutboxState.Pushed, pushed.State); Assert.Equal(pending.IntentIds, pushed.IntentIds);
+        Assert.Equal(interrupted.Intents.Select(i => i with { State = GitOutboxState.Pushed, Diagnostic = null }), recovered.Intents);
+        Assert.Equal(GitReceiptState.Pushed, f.Git.ReadReceipt(f.F.Context, batch.OperationId).State);
+        Assert.DoesNotContain("ls-remote", commands.Skip(before)); Assert.DoesNotContain("push", commands);
+        f.Restart(); var after = commands.Count;
+        Assert.Equal("git-idle", f.Service.RunOnce(f.Owner));
+        Assert.DoesNotContain("ls-remote", commands.Skip(after)); Assert.DoesNotContain("push", commands);
+        output.WriteLine("F73-A2: third read-only slot interrupted after durable Pushed receipt; restart recovers original Outbox/IDs locally; new pushes=0; new remote queries=0.");
+        Evidence(f, commands, 1);
+    }
+
+    [Fact]
     public void F73A1ExhaustedPushBudgetRecognizesExactExternalPublicationAfterRestart()
     {
         using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch); f.Complete();
