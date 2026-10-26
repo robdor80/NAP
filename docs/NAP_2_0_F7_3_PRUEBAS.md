@@ -78,7 +78,7 @@ Terminó con **0 errores / 11 warnings**; no ejecutó tests y no se le atribuye 
 
 ## Evidencia, advertencias y límites
 
-`docs/f7-3-evidence/` conserva TRX, logs, resumen JSON por escenario, SHA de código y manifiesto SHA-256 de artefactos saneados. Solo se sustituyen prefijos locales/hostname; se preservan resultados, fallos y warnings. No se incluyen binarios, ZIP/outputs de assets, configuración de lanzamiento, claves HMAC, licencias ni credenciales.
+`docs/f7-3-evidence/` conserva TRX, logs, resumen JSON por escenario, SHA de código y manifiesto SHA-256 de artefactos saneados. Se sustituyen prefijos locales/hostname y se normalizan finales de línea a LF para que los hashes correspondan a los bytes publicados por Git; se preservan resultados, fallos y warnings. El resumen conserva también el SHA-256 de cada original previo al saneamiento. No se incluyen binarios, ZIP/outputs de assets, configuración de lanzamiento, claves HMAC, licencias ni credenciales.
 
 Persisten los cinco avisos NU1902/NU1903 de ImageSharp 3.2.0 y las advertencias de licencia ausente para Release. No se suprimen, no se cambian paquetes ni se usa una licencia. No se declara análisis de seguridad limpio.
 

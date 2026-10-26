@@ -2086,8 +2086,8 @@
     {
       "file": "build-preliminary.log",
       "original_sha256": "96a99c07dabdd874cf9936c0a81934a6f0eff50b6eb0e9d041881bc5d6a65a8e",
-      "sanitized_sha256": "8f35de168da9838c55fadeefe878a121410cb8215459481082776f6ec9cd7b0b",
-      "bytes": 8066
+      "sanitized_sha256": "20307e0d26d9f6d89e59965d4d50ef526ef4e8f767203f059f70b41627001eec",
+      "bytes": 8052
     },
     {
       "file": "initial-binaries.sha256",
