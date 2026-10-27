@@ -34,9 +34,12 @@ public sealed class GitVisualLabService : IGitManagementUiService
             GitVisualLabScenario.AutoCommitAndPushBatch or GitVisualLabScenario.Recovery => GitPublicationMode.AutoCommitAndPushBatch,
             _ => GitPublicationMode.Disabled };
         var revoked = scenario == GitVisualLabScenario.Revoked;
-        var revision = scenario is GitVisualLabScenario.Disabled or GitVisualLabScenario.Empty ? 0 : revoked ? 2 : 1;
+        // Existing batches originate in an automatic grant. Manual/commit-only/revoked displays
+        // retain that history under a NEW revision; they never invent publication under AllowPush=false.
+        var revision = scenario is GitVisualLabScenario.Disabled or GitVisualLabScenario.Empty ? 0 :
+            scenario is GitVisualLabScenario.Manual or GitVisualLabScenario.AutoCommitBatch or GitVisualLabScenario.Revoked ? 2 : 1;
         var originalGrant = "authorization_" + new string('1', 32);
-        var currentGrant = revoked ? "authorization_" + new string('2', 32) : originalGrant;
+        var currentGrant = revision == 2 ? "authorization_" + new string('2', 32) : originalGrant;
         var configuration = new GitConfigurationView(Context.Id, mode, revision, revision == 0 ? null : currentGrant,
             mode != GitPublicationMode.Disabled, mode is GitPublicationMode.Manual or GitPublicationMode.AutoCommitAndPushBatch,
             revoked, "FICTICIO-NO-REPOSITORIO", "f81-fiction", "origin/f81-fiction", "origin",
@@ -70,8 +73,8 @@ public sealed class GitVisualLabService : IGitManagementUiService
             }
         }
         var history = revision == 0 ? Array.Empty<GitPolicyRevision>() : new[] {
-            new GitPolicyRevision(1, new string('d', 64), originalGrant, "Actor ficticio", new(2026, 10, 27, 0, 0, 0, TimeSpan.Zero), revoked ? GitPublicationMode.Manual : mode, false) };
-        if (revoked) history = [..history, new(2, new string('e', 64), currentGrant, "Actor ficticio", new(2026, 10, 27, 1, 0, 0, TimeSpan.Zero), GitPublicationMode.Disabled, true)];
+            new GitPolicyRevision(1, new string('d', 64), originalGrant, "Actor ficticio", new(2026, 10, 27, 0, 0, 0, TimeSpan.Zero), GitPublicationMode.AutoCommitAndPushBatch, false) };
+        if (revision == 2) history = [..history, new(2, new string('e', 64), currentGrant, "Actor ficticio", new(2026, 10, 27, 1, 0, 0, TimeSpan.Zero), mode, revoked)];
         return new(configuration, new(Context.Id, rows.AsReadOnly(), Array.AsReadOnly(history)), repository, receipts.AsReadOnly());
     }
 

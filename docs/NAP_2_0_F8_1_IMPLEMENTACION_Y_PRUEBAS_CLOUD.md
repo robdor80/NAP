@@ -20,8 +20,8 @@
 | Escenario visual | Datos de los contratos existentes |
 |---|---|
 | Disabled | Modo Disabled, revisión 0, sin autorización ni registros. |
-| Manual | Modo Manual; permisos commit/push ficticios; 24 lotes, 24 intents y 24 receipts. Ningún permiso habilita una acción del laboratorio. |
-| AutoCommitBatch | Commit autorizado ficticio, AllowPush=false; mismos estados para mostrar mensajes de permiso independiente. |
+| Manual | Modo Manual, revisión 2/grant nuevo; historial automático anterior; permisos commit/push ficticios; 24 lotes, 24 intents y 24 receipts. Ningún permiso habilita una acción del laboratorio. |
+| AutoCommitBatch | Revisión 2/grant nuevo, commit autorizado ficticio, AllowPush=false; filas históricas de la autorización automática anterior; mismos estados para mostrar mensajes de permiso independiente. |
 | AutoCommitAndPushBatch | Ambos permisos ficticios, modo oficial exacto; continúa sin capacidad operativa. |
 | Revoked | Disabled, Revoked=true, revisión 2 y AuthorizationId nuevo; historial 1/2; operaciones antiguas conservan revisión/autorización original. |
 | Recovery | AutoCommitAndPushBatch, Prepared/Committed/Pushed; filas Blocked por política/evidencia, Committed con `git_push_retry_3`; guía original de intervención/agotamiento. No ejecuta recuperación. |
@@ -55,9 +55,9 @@ dotnet build src/NAP.App/NAP.App.csproj -c Debug \
 | Verificación | Resultado y evidencia |
 |---|---|
 | WPF lab Debug cruzada | **0 errores**, 7 avisos reportados; `build-lab-debug.log`. Incluye avisos oficiales de licencia ausente y CS1998/CS0649 por ramas excluidas. No se suprimen. |
-| Tests finales | **7/7 Passed, 0 Failed, 0 Skipped**; entrega final tras ajuste de viewport: `f81-cloud-viewport.trx`, `tests-viewport.log`; entrega anterior conservada en `f81-cloud-delivery.trx`. |
+| Tests finales | **7/7 Passed, 0 Failed, 0 Skipped**; entrega final tras coherencia de historial: `f81-cloud-contract.trx`, `tests-contract.log`; viewport anterior `f81-cloud-viewport.trx` conservado; entrega anterior conservada en `f81-cloud-delivery.trx`. |
 | IL de arranque compilado | PASS, `probe-il.log`; llama Phase81GitLab y valida contrato, sin composición productiva en los métodos inspeccionados. No ejecuta el ensamblado WPF. |
-| Publish Windows x64 Debug | Cero errores; `publish-winx64-debug.log`. Genera `NAP.GitVisualLab.exe`, sin config/perfiles ni .lic; hashes en `publish-winx64-hashes.json`. IL de ese DLL publicado: PASS (`probe-il-viewport.log`). No se ejecuta en Linux. |
+| Publish Windows x64 Debug | Cero errores; final `publish-winx64-contract.log` (anterior `publish-winx64-debug.log` conservado). Genera `NAP.GitVisualLab.exe`, sin config/perfiles ni .lic; hashes finales en `publish-winx64-contract-hashes.json` (hashes anteriores conservados). IL de ese DLL publicado: PASS (`probe-il-contract.log`, anterior `probe-il-viewport.log` conservado). No se ejecuta en Linux. |
 | Binario normal Debug | **0 errores**, `build-normal-debug.log`; compila la rama ordinaria y guarda F8.1. No se abre NAP normal. |
 | Propiedades F6+F81 simultáneas | Error esperado `RejectConflictingLaboratories`, `conflicting-build.log`; no es una compilación aprobada. |
 | PowerShell 7.4.7 | Parser y construcción de argumentos con espacios PASS, `powershell-parse.log`. Guard no-Windows rechaza ejecución Linux antes de crear directorios/compilar/lanzar (`nonwindows-rejection.log`). No acredita Start-Process/Win32 en MSI. |
@@ -69,7 +69,7 @@ El test de symlinks solo crea enlace real en Linux; en Windows no solicita privi
 
 ## Fallos intermedios conservados
 
-Primera compilación de tests: acceso indebido al plan interno del receipt y overload xUnit síncrono para Task; corregidos antes de ejecutar tests. Primera ejecución: 3 Passed/4 Failed por ID sintético con guion incompatible con Naming v1 y búsqueda de fuentes fuera del checkout; conservada en `f81-cloud-before.trx`. Después 7/7 (`f81-cloud.trx`), y 8/8 con la comprobación IL entonces integrada (`f81-cloud-final.trx`). Después se ajustó el contenedor al mismo Horizontal/VerticalContentAlignment=Stretch del shell para respetar viewport/scroll y se repitieron únicamente build/publish, IL y los siete tests focalizados (`f81-cloud-viewport.trx`). La entrega separa ese chequeo como herramienta portátil: **7 tests + probe IL**, no ocho escenarios finales de xUnit. El primer `dotnet run --artifacts-path` del probe buscó el executable en ruta predeterminada y falló sin ejecutar NAP (`probe-launch-before.log`); se corrigió invocando explícitamente el DLL construido. No se borran estos resultados ni se agregan como cobertura independiente.
+Primera compilación de tests: acceso indebido al plan interno del receipt y overload xUnit síncrono para Task; corregidos antes de ejecutar tests. Primera ejecución: 3 Passed/4 Failed por ID sintético con guion incompatible con Naming v1 y búsqueda de fuentes fuera del checkout; conservada en `f81-cloud-before.trx`. Después 7/7 (`f81-cloud.trx`), y 8/8 con la comprobación IL entonces integrada (`f81-cloud-final.trx`). Después se ajustó el contenedor al mismo Horizontal/VerticalContentAlignment=Stretch del shell para respetar viewport/scroll y se repitieron únicamente build/publish, IL y los siete tests focalizados (`f81-cloud-viewport.trx`). La revisión contractual final liga todos los lotes a un historial AutoCommitAndPushBatch y usa revisión/grant nuevos bajo Manual, AutoCommitBatch o Revoked, sin atribuirles una publicación bajo AllowPush=false. Se repitieron únicamente los siete tests, publish win-x64 e IL (`f81-cloud-contract.trx`), todos correctos. La entrega separa ese chequeo como herramienta portátil: **7 tests + probe IL**, no ocho escenarios finales de xUnit. El primer `dotnet run --artifacts-path` del probe buscó el executable en ruta predeterminada y falló sin ejecutar NAP (`probe-launch-before.log`); se corrigió invocando explícitamente el DLL construido. No se borran estos resultados ni se agregan como cobertura independiente.
 
 ## Límites y bloqueos
 

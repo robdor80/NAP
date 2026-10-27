@@ -102,6 +102,17 @@ public sealed class GitVisualLabF81Tests : IDisposable
         Assert.NotEqual(revoked.Outbox.History[0].AuthorizationId, revoked.Configuration.AuthorizationId);
         Assert.Equal(revoked.Outbox.History[1].AuthorizationId, revoked.Configuration.AuthorizationId);
         Assert.All(revoked.Outbox.Rows, r => Assert.Equal(1, r.Revision)); // Old authorization remains historical.
+        foreach (var scenario in new[] { GitVisualLabScenario.Manual, GitVisualLabScenario.AutoCommitBatch, GitVisualLabScenario.Revoked })
+        {
+            var snapshot = service.Read(scenario);
+            Assert.Equal(2, snapshot.Configuration.Revision);
+            Assert.Equal(GitPublicationMode.AutoCommitAndPushBatch, snapshot.Outbox.History[0].Mode);
+            Assert.Equal(snapshot.Configuration.Mode, snapshot.Outbox.History[1].Mode);
+            Assert.All(snapshot.Outbox.Rows, row => {
+                Assert.Equal(snapshot.Outbox.History[0].AuthorizationId, row.AuthorizationId);
+                Assert.NotEqual(snapshot.Configuration.AuthorizationId, row.AuthorizationId);
+            });
+        }
         Assert.Throws<InvalidDataException>(() => service.Read((GitVisualLabScenario)999));
     }
     [Fact]
