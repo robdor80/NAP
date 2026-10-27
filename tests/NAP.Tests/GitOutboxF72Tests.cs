@@ -7,7 +7,7 @@ namespace NAP.Tests;
 public sealed class GitOutboxF72Tests
 {
     private sealed class Interruption : Exception;
-    private sealed class Fixture : IDisposable
+    internal sealed class Fixture : IDisposable
     {
         internal PreparationTestFixture F { get; } = new();
         internal AutomationQueueOwner Owner { get; }
@@ -19,7 +19,7 @@ public sealed class GitOutboxF72Tests
         internal string Remote => Path.Combine(F.Root, "bare.git");
         internal string BaseHead { get; }
         internal readonly List<InboxAdmissionResult> Jobs = [];
-        internal Fixture(bool authorize = true, int maxJobs = 5, GitPublicationMode mode = GitPublicationMode.AutoCommitBatch)
+        internal Fixture(bool authorize = true, int maxJobs = 5, GitPublicationMode mode = GitPublicationMode.AutoCommitBatch, bool? allowPush = null)
         {
             Owner = F.Queue.AcquireOwner(); DurableExecutionTests.Enable(F, Owner);
             GitProductionFixture.Enable(Git); GitProductionFixture.Enable(Inspector);
@@ -31,7 +31,7 @@ public sealed class GitOutboxF72Tests
             if (authorize)
             {
                 var proposed = Policy.Propose(mode, "synthetic responsible", ["assets"], maxJobs, Inspector);
-                Policy.Save(proposed with { AllowCommit = true, AllowPush = mode == GitPublicationMode.AutoCommitAndPushBatch }, 0);
+                Policy.Save(proposed with { AllowCommit = true, AllowPush = allowPush ?? mode == GitPublicationMode.AutoCommitAndPushBatch }, 0);
             }
             Service = new(F.Context, F.Queue, Policy, Git);
         }
@@ -69,7 +69,7 @@ public sealed class GitOutboxF72Tests
     [Fact]
     public void FiveCompletedJobsBecomeOneExactBatchAndReconcileIdempotently()
     {
-        using var f = new Fixture(mode: GitPublicationMode.AutoCommitAndPushBatch);
+        using var f = new Fixture();
         for (var i = 1; i <= 5; i++) f.Complete(i);
         string Assets() => string.Join("\n", DurableExecutionTests.Inventory(f.F.Roots.ProductionRoot, f.F.Roots.ArchiveRoot, f.F.Roots.CatalogPath).Split('\n').Where(p => !p.Contains("/.git/")));
         var before = Assets();

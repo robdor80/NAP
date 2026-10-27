@@ -42,7 +42,17 @@ public sealed class GitPublicationManualService
     {
         using var owner = AutomationManualAccess.Enter(c);
         var receipt = _git.ReadReceipt(c, id);
-        return Authorized(c, receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), true, (_, _) => _git.Push(c, id));
+        return Authorized(c, receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), true, (store, p) =>
+        {
+            var outbox = new GitOutboxStore(c, store); var state = outbox.LoadLocked();
+            var batch = state.Batches.SingleOrDefault(b => b.OperationId == id);
+            if (batch is not null) GitOutboxStore.RequireReceipt(batch, receipt);
+            var result = _git.PushBound(c, id, status => store.Require(p, status, _git.Git,
+                receipt.Plan.Selection.OwnedFiles.Select(f => f.RelativePath), push: true));
+            // An unrelated manual operation never creates/adopts an Outbox batch.
+            if (batch is not null) outbox.RecordPushedLocked(state, batch, _git.ReadReceipt(c, id));
+            return result!;
+        });
     }
     public GitRepositoryStatus Inspect(UniverseContext c) => Authorized(c, [], false, (_, _) => _inspector.Inspect(c));
 }
