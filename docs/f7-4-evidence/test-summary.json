@@ -1,0 +1,398 @@
+{
+  "environment": {
+    "os": "Linux x86_64",
+    "sdk": "8.0.427",
+    "git": "2.52.0",
+    "configuration": "Debug",
+    "real_git_remotes_used_by_tests": false
+  },
+  "runs": [
+    {
+      "run": "initial",
+      "tested_commit": "1f3b93c313e1e51006f59dbcd77ead06c557f8c6",
+      "synthetic_zip_inputs": 4,
+      "counters": {
+        "total": "11",
+        "executed": "11",
+        "passed": "9",
+        "failed": "2",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.8087162"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:01.2724892"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit",
+          "outcome": "Passed",
+          "duration": "00:00:00.4106443"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair",
+          "outcome": "Passed",
+          "duration": "00:00:00.8373541"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.2436450"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:00.2125224"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal",
+          "outcome": "Passed",
+          "duration": "00:00:00.0667107"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner",
+          "outcome": "Failed",
+          "duration": "00:00:00.3694930"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly",
+          "outcome": "Passed",
+          "duration": "00:00:02.4993172"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence",
+          "outcome": "Passed",
+          "duration": "00:00:00.4112646"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence",
+          "outcome": "Failed",
+          "duration": "00:00:01.2347649"
+        }
+      ]
+    },
+    {
+      "run": "corrected",
+      "tested_commit": "fe0c6e255749d98b8e26c7b6726b71d70b27fc8e",
+      "synthetic_zip_inputs": 2,
+      "counters": {
+        "total": "3",
+        "executed": "3",
+        "passed": "2",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence",
+          "outcome": "Failed",
+          "duration": "00:00:03.3642060"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner",
+          "outcome": "Passed",
+          "duration": "00:00:02.9842641"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal",
+          "outcome": "Passed",
+          "duration": "00:00:00.0972770"
+        }
+      ]
+    },
+    {
+      "run": "manual-diagnostic",
+      "tested_commit": "fc3f3a38a5e2746a711508130a5be9871a0a5663",
+      "synthetic_zip_inputs": 1,
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence",
+          "outcome": "Failed",
+          "duration": "00:00:01.4905381"
+        }
+      ]
+    },
+    {
+      "run": "final",
+      "tested_commit": "2995a77948dc6fbc709a1f0f774a285b2414bc93",
+      "synthetic_zip_inputs": 11,
+      "counters": {
+        "total": "17",
+        "executed": "17",
+        "passed": "17",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly",
+          "outcome": "Passed",
+          "duration": "00:00:03.0047821"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit",
+          "outcome": "Passed",
+          "duration": "00:00:00.7483479"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal",
+          "outcome": "Passed",
+          "duration": "00:00:00.0876694"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:00.3675335"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: False)",
+          "outcome": "Passed",
+          "duration": "00:00:01.3157960"
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch",
+          "outcome": "Passed",
+          "duration": "00:00:04.5697026"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner",
+          "outcome": "Passed",
+          "duration": "00:00:02.8771456"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.3278785"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence",
+          "outcome": "Passed",
+          "duration": "00:00:00.6145434"
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption",
+          "outcome": "Passed",
+          "duration": "00:00:03.5439531"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.5414525"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: True)",
+          "outcome": "Passed",
+          "duration": "00:00:02.4734862"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.RealZipPublishesOnlyAfterRealAuditAndExplicitConfirmation",
+          "outcome": "Passed",
+          "duration": "00:00:01.0824339"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence",
+          "outcome": "Passed",
+          "duration": "00:00:02.4418317"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair",
+          "outcome": "Passed",
+          "duration": "00:00:01.3075348"
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+          "outcome": "Passed",
+          "duration": "00:00:02.9329399"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:02.6423283"
+        }
+      ]
+    },
+    {
+      "run": "delivery",
+      "tested_commit": "9fb4f1703f5b7fa8c62bac0822898834d02d4e46",
+      "synthetic_zip_inputs": 11,
+      "counters": {
+        "total": "17",
+        "executed": "17",
+        "passed": "17",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption",
+          "outcome": "Passed",
+          "duration": "00:00:08.0106017"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:00.4122935"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit",
+          "outcome": "Passed",
+          "duration": "00:00:02.1757197"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.4758396"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner",
+          "outcome": "Passed",
+          "duration": "00:00:03.5425366"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal",
+          "outcome": "Passed",
+          "duration": "00:00:00.1044974"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence",
+          "outcome": "Passed",
+          "duration": "00:00:03.4303311"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair",
+          "outcome": "Passed",
+          "duration": "00:00:00.9739841"
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending",
+          "outcome": "Passed",
+          "duration": "00:00:02.6107358"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: False)",
+          "outcome": "Passed",
+          "duration": "00:00:01.6365597"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)",
+          "outcome": "Passed",
+          "duration": "00:00:00.4102642"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly",
+          "outcome": "Passed",
+          "duration": "00:00:05.6965768"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence",
+          "outcome": "Passed",
+          "duration": "00:00:00.6936714"
+        },
+        {
+          "name": "NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)",
+          "outcome": "Passed",
+          "duration": "00:00:01.7829018"
+        },
+        {
+          "name": "NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch",
+          "outcome": "Passed",
+          "duration": "00:00:05.2814232"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.RealZipPublishesOnlyAfterRealAuditAndExplicitConfirmation",
+          "outcome": "Passed",
+          "duration": "00:00:01.0864231"
+        },
+        {
+          "name": "NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: True)",
+          "outcome": "Passed",
+          "duration": "00:00:03.4359690"
+        }
+      ]
+    }
+  ],
+  "raw_sha256_before_redaction": {
+    "f74-initial.trx": "2beeec7a1654ee21b1fa9db853aeacd2918ef18479f3a13f4aff42a40724ffa1",
+    "f74-initial.log": "66992a73a70ee7dbd25530734d9dae2a863d5178ab254c7f3085033654f03d34",
+    "f74-corrected.trx": "ea1f6d45541a3176288c47c54ca57718889138d55453e39d52026ecd1675090c",
+    "f74-corrected.log": "6d1b8481bb092c6029a8432c956b513c4452089466a6b12fd40c580ee17a6b27",
+    "f74-manual-diagnostic.trx": "98cc6eebf35f927e2cea6957dd01ab37940c074f0d2187c2c675bfa8f64aba6c",
+    "f74-manual-diagnostic.log": "f539bdd1150721a1b15f59db088f1b41e42c7a37da34cd730730fb57a558d0b8",
+    "f74-final.trx": "3e1aa7060ec0f8a5947f308717cbafcd31129038d456434876e2bc656837acfa",
+    "f74-final.log": "f23ef2e02f6018787aac8a49148bf899250a98a9c2fc93baf55f99a56369ba94",
+    "f74-delivery.trx": "fc6e66cef49dec6d61d92f1e8747d8549c7a09001daf0d225a62a43f461aa5d6",
+    "f74-delivery.log": "78f8ee68c72f353dcd22d44d5f23f5c61aeed1684103687b65dfcb321aca5ca6",
+    "nap-f74-restore.log": "f184ea63b08aa30c01e2b87e8778ba4983da8a2b5f25051275c6ba39b60c249b",
+    "nap-f74-build.log": "4cff1db285755de84498fe0eb0fd9a2a882490f546f10dd2745c3879ed84c873",
+    "nap-f74-tests-build.log": "165df55b285b49b13555f9a7abfb923ff60d0169d3d8af2a1d74aae84745c2f3",
+    "nap-f74-wpf-crossbuild.log": "106ebfbb31d7b9f0c11419da52cc8fb11be3106cc607eb1cfd2087ff47579e5e",
+    "nap-f74-wpf-delivery.log": "8be510776576be0d7bb248c0afe5cffffd27fca46848a239f44e641c7ae66436"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-27 03:19:30 UTC",
+  "url": "https://github.com/robdor80/NAP/pull/56",
+  "state": "open",
+  "draft": true,
+  "merged": false,
+  "base": "main",
+  "base_sha": "c4a053226f6f27c0cf109ef89cf1a92be1117f36",
+  "head": "chatgpt/nap-2-f7-4-git-ui",
+  "head_sha": "ca73d7677ddc4878f6ec2f34dc3548ac778b58f8"
+}

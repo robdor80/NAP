@@ -1,0 +1,27 @@
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> /workspace/NAP/src/NAP.Core/bin/Debug/net8.0/NAP.Core.dll
+  NAP.CoordinationProbe -> /workspace/NAP/tools/NAP.CoordinationProbe/bin/Debug/net8.0/NAP.CoordinationProbe.dll
+  NAP.Presentation -> /workspace/NAP/src/NAP.Presentation/bin/Debug/net8.0/NAP.Presentation.dll
+  NAP.AutomationHost -> /workspace/NAP/src/NAP.AutomationHost/bin/Debug/net8.0/NAP.AutomationHost.dll
+  NAP.AI -> /workspace/NAP/src/NAP.AI/bin/Debug/net8.0/NAP.AI.dll
+  NAP.Tests -> /workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll
+Test run for /workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:04.18]     NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence [FAIL]
+  Failed NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence [3 s]
+  Error Message:
+   Publica primero un asset: el commit requiere outputs físicamente verificados de esta sesión.
+  Stack Trace:
+     at NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 154
+--- End of stack trace from previous location ---
+Results File: /tmp/nap-f74-results/f74-corrected.trx
+
+Failed!  - Failed:     1, Passed:     2, Skipped:     0, Total:     3, Duration: 3 s - NAP.Tests.dll (net8.0)

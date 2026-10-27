@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6edd63fc-262b-4584-9791-a911b7b0ec13" name="@synthetic-linux 2026-10-27 03:06:34" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T03:06:34.8141908+00:00" queuing="2026-10-27T03:06:34.8141909+00:00" start="2026-10-27T03:06:30.5666055+00:00" finish="2026-10-27T03:06:40.8216459+00:00" />
+  <TestSettings name="default" id="27ed465c-42bb-466f-b7b8-223af289600a">
+    <Deployment runDeploymentRoot="_synthetic-linux_2026-10-27_03_06_34" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d19dd18c-2260-44e6-a020-e8bc72b6f39a" testId="06f975df-367d-d97b-2db9-31a9c9331b0b" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)" computerName="synthetic-linux" duration="00:00:00.8087162" startTime="2026-10-27T03:06:34.9270666+00:00" endTime="2026-10-27T03:06:34.9270669+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d19dd18c-2260-44e6-a020-e8bc72b6f39a" />
+    <UnitTestResult executionId="656f52b2-e6ea-4ef3-b5e9-83152697e90b" testId="5fda0e9e-8e53-17b4-666a-642312a62e89" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)" computerName="synthetic-linux" duration="00:00:01.2724892" startTime="2026-10-27T03:06:33.6582928+00:00" endTime="2026-10-27T03:06:33.6583141+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="656f52b2-e6ea-4ef3-b5e9-83152697e90b" />
+    <UnitTestResult executionId="e084171b-85ba-4f07-8c78-92fb4daba871" testId="680264b1-83cf-2b86-735b-a6170d308eb7" testName="NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" computerName="synthetic-linux" duration="00:00:00.4106443" startTime="2026-10-27T03:06:37.8345059+00:00" endTime="2026-10-27T03:06:37.8345065+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e084171b-85ba-4f07-8c78-92fb4daba871" />
+    <UnitTestResult executionId="961db260-919b-4bb4-af56-791ef3d7a706" testId="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c" testName="NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" computerName="synthetic-linux" duration="00:00:00.8373541" startTime="2026-10-27T03:06:40.7635325+00:00" endTime="2026-10-27T03:06:40.7635329+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="961db260-919b-4bb4-af56-791ef3d7a706" />
+    <UnitTestResult executionId="e35c7cb4-9c37-4e83-baea-ec40401a4353" testId="d47c4ac4-53c5-a7d8-8466-78811c599650" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)" computerName="synthetic-linux" duration="00:00:00.2436450" startTime="2026-10-27T03:06:33.9004393+00:00" endTime="2026-10-27T03:06:33.9004396+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e35c7cb4-9c37-4e83-baea-ec40401a4353" />
+    <UnitTestResult executionId="2ecc171d-d6f8-439b-9bb9-0551090d6cfb" testId="475ad8a5-f8a5-8621-ba7c-550c3bd81b54" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)" computerName="synthetic-linux" duration="00:00:00.2125224" startTime="2026-10-27T03:06:34.1131259+00:00" endTime="2026-10-27T03:06:34.1131263+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2ecc171d-d6f8-439b-9bb9-0551090d6cfb" />
+    <UnitTestResult executionId="3ee17191-71b0-4c2f-8374-158c5b0a75cd" testId="0ff61874-570c-3fef-aa51-dec21884323e" testName="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" computerName="synthetic-linux" duration="00:00:00.0667107" startTime="2026-10-27T03:06:39.9255669+00:00" endTime="2026-10-27T03:06:39.9255671+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ee17191-71b0-4c2f-8374-158c5b0a75cd" />
+    <UnitTestResult executionId="9e5ea79e-32a9-4913-8699-f452c81c17f1" testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" testName="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" computerName="synthetic-linux" duration="00:00:00.3694930" startTime="2026-10-27T03:06:39.8603421+00:00" endTime="2026-10-27T03:06:39.8603427+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e5ea79e-32a9-4913-8699-f452c81c17f1">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ
+Expected: AuditPass
+Actual:   PolicyInactive</Message>
+          <StackTrace>   at NAP.Tests.GitUiF74Tests.&lt;&gt;c__DisplayClass15_0.&lt;AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner&gt;b__7(AutomationUniverseScope scope) in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 212
+   at NAP.Core.AutomationHost.&lt;&gt;c__DisplayClass43_0`1.&lt;RunManualAsync&gt;b__0(AutomationUniverseScope s) in /workspace/NAP/src/NAP.Core/AutomationHost.cs:line 133
+   at NAP.Core.AutomationUniverseRuntime.&lt;&gt;c__DisplayClass16_0`1.&lt;InvokeAsync&gt;b__0(AutomationUniverseScope scope) in /workspace/NAP/src/NAP.Core/AutomationUniverseRuntime.cs:line 39
+--- End of stack trace from previous location ---
+   at NAP.Core.AutomationHost.RunManualAsync[T](UniverseId universe, Func`2 operation, CancellationToken cancellation) in /workspace/NAP/src/NAP.Core/AutomationHost.cs:line 120
+   at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 209
+   at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 231
+   at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 231
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5fdff313-aef2-44e8-bc66-8718d58f24bf" testId="9ab83f9d-ce7e-0f6e-1b83-26e91514418f" testName="NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" computerName="synthetic-linux" duration="00:00:02.4993172" startTime="2026-10-27T03:06:37.4217944+00:00" endTime="2026-10-27T03:06:37.4217947+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5fdff313-aef2-44e8-bc66-8718d58f24bf" />
+    <UnitTestResult executionId="0df3a257-d19d-4e5a-b3a1-898058b875f3" testId="8a171833-ec88-2889-aabe-395995df44a0" testName="NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" computerName="synthetic-linux" duration="00:00:00.4112646" startTime="2026-10-27T03:06:39.4915557+00:00" endTime="2026-10-27T03:06:39.4915560+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0df3a257-d19d-4e5a-b3a1-898058b875f3" />
+    <UnitTestResult executionId="53431e62-db8b-4c45-add6-c7e96875a9bf" testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" testName="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" computerName="synthetic-linux" duration="00:00:01.2347649" startTime="2026-10-27T03:06:39.0798678+00:00" endTime="2026-10-27T03:06:39.0798681+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53431e62-db8b-4c45-add6-c7e96875a9bf">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Single() Failure: The collection was empty</Message>
+          <StackTrace>   at NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 154
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="475ad8a5-f8a5-8621-ba7c-550c3bd81b54">
+      <Execution id="2ecc171d-d6f8-439b-9bb9-0551090d6cfb" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="06f975df-367d-d97b-2db9-31a9c9331b0b">
+      <Execution id="d19dd18c-2260-44e6-a020-e8bc72b6f39a" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="8a171833-ec88-2889-aabe-395995df44a0">
+      <Execution id="0df3a257-d19d-4e5a-b3a1-898058b875f3" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="3dff3485-2fde-d8fe-3f41-9d4733861a42">
+      <Execution id="53431e62-db8b-4c45-add6-c7e96875a9bf" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="5fda0e9e-8e53-17b4-666a-642312a62e89">
+      <Execution id="656f52b2-e6ea-4ef3-b5e9-83152697e90b" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="0ff61874-570c-3fef-aa51-dec21884323e">
+      <Execution id="3ee17191-71b0-4c2f-8374-158c5b0a75cd" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="LateGitReadCannotCrossUniversesAndResetDropsTheProposal" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c">
+      <Execution id="961db260-919b-4bb4-af56-791ef3d7a706" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="680264b1-83cf-2b86-735b-a6170d308eb7">
+      <Execution id="e084171b-85ba-4f07-8c78-92fb4daba871" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="d47c4ac4-53c5-a7d8-8466-78811c599650">
+      <Execution id="e35c7cb4-9c37-4e83-baea-ec40401a4353" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="b992f627-e8da-2898-c5e5-e7e37e1b2f64">
+      <Execution id="9e5ea79e-32a9-4913-8699-f452c81c17f1" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="9ab83f9d-ce7e-0f6e-1b83-26e91514418f">
+      <Execution id="5fdff313-aef2-44e8-bc66-8718d58f24bf" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="06f975df-367d-d97b-2db9-31a9c9331b0b" executionId="d19dd18c-2260-44e6-a020-e8bc72b6f39a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fda0e9e-8e53-17b4-666a-642312a62e89" executionId="656f52b2-e6ea-4ef3-b5e9-83152697e90b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="680264b1-83cf-2b86-735b-a6170d308eb7" executionId="e084171b-85ba-4f07-8c78-92fb4daba871" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c" executionId="961db260-919b-4bb4-af56-791ef3d7a706" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d47c4ac4-53c5-a7d8-8466-78811c599650" executionId="e35c7cb4-9c37-4e83-baea-ec40401a4353" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="475ad8a5-f8a5-8621-ba7c-550c3bd81b54" executionId="2ecc171d-d6f8-439b-9bb9-0551090d6cfb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ff61874-570c-3fef-aa51-dec21884323e" executionId="3ee17191-71b0-4c2f-8374-158c5b0a75cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" executionId="9e5ea79e-32a9-4913-8699-f452c81c17f1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9ab83f9d-ce7e-0f6e-1b83-26e91514418f" executionId="5fdff313-aef2-44e8-bc66-8718d58f24bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a171833-ec88-2889-aabe-395995df44a0" executionId="0df3a257-d19d-4e5a-b3a1-898058b875f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" executionId="53431e62-db8b-4c45-add6-c7e96875a9bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="11" executed="11" passed="9" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.19]   Discovering: NAP.Tests
+[xUnit.net 00:00:00.95]   Discovered:  NAP.Tests
+[xUnit.net 00:00:01.00]   Starting:    NAP.Tests
+[xUnit.net 00:00:07.73]       Assert.Single() Failure: The collection was empty
+[xUnit.net 00:00:07.74]       Stack Trace:
+[xUnit.net 00:00:07.74]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(154,0): at NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence()
+[xUnit.net 00:00:07.74]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:08.52]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:08.52]       Expected: AuditPass
+[xUnit.net 00:00:08.52]       Actual:   PolicyInactive
+[xUnit.net 00:00:08.52]       Stack Trace:
+[xUnit.net 00:00:08.52]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(212,0): at NAP.Tests.GitUiF74Tests.&lt;&gt;c__DisplayClass15_0.&lt;AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner&gt;b__7(AutomationUniverseScope scope)
+[xUnit.net 00:00:08.52]         /workspace/NAP/src/NAP.Core/AutomationHost.cs(133,0): at NAP.Core.AutomationHost.&lt;&gt;c__DisplayClass43_0`1.&lt;RunManualAsync&gt;b__0(AutomationUniverseScope s)
+[xUnit.net 00:00:08.52]         /workspace/NAP/src/NAP.Core/AutomationUniverseRuntime.cs(39,0): at NAP.Core.AutomationUniverseRuntime.&lt;&gt;c__DisplayClass16_0`1.&lt;InvokeAsync&gt;b__0(AutomationUniverseScope scope)
+[xUnit.net 00:00:08.52]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:08.52]         /workspace/NAP/src/NAP.Core/AutomationHost.cs(120,0): at NAP.Core.AutomationHost.RunManualAsync[T](UniverseId universe, Func`2 operation, CancellationToken cancellation)
+[xUnit.net 00:00:08.52]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(209,0): at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner()
+[xUnit.net 00:00:08.52]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(231,0): at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner()
+[xUnit.net 00:00:08.52]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(231,0): at NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner()
+[xUnit.net 00:00:08.52]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:09.43]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="synthetic-linux" outcome="Error" timestamp="2026-10-27T03:06:39.0795330+00:00">
+        <Text>[xUnit.net 00:00:07.73]     NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="synthetic-linux" outcome="Error" timestamp="2026-10-27T03:06:39.8614810+00:00">
+        <Text>[xUnit.net 00:00:08.52]     NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
