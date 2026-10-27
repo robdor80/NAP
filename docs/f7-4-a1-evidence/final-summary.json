@@ -1,0 +1,55 @@
+{
+  "tested_commit": "c19d307166c5dc1eb0a839a0a8ff242d59c71df5",
+  "base_reviewed_head": "5a41c8184c3fac81d8993127a41e2856a75522bb",
+  "test_invocations_in_patch": 2,
+  "unique_tests": 2,
+  "final_counters": {
+    "total": "2",
+    "executed": "2",
+    "passed": "2",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "final_cases": [
+    {
+      "name": "NAP.Tests.GitUiF74A1Tests.KnownUnknownAndHistoricalDiagnosticsGiveSpecificSafeGuidanceWithoutChangingEvidence",
+      "outcome": "Passed",
+      "duration": "00:00:00.0150885"
+    },
+    {
+      "name": "NAP.Tests.GitUiF74A1Tests.RepositoryIdentityShowsOnlyFolderAndCurrentUniverseWithoutAncestorsOrIpcData",
+      "outcome": "Passed",
+      "duration": "00:00:00.0320454"
+    }
+  ],
+  "initial_passed_commit": "f37451026ecbd8aa8c255897c0145d4f8407723d",
+  "initial_summary": "summary.json",
+  "reason_for_repeat": "Keep the existing historical Pushed wording in NextStep and assert its compatibility, without running legacy ZIP tests.",
+  "environment": {
+    "os": "Linux x86_64",
+    "sdk": "8.0.427",
+    "git": "2.52.0",
+    "configuration": "Debug"
+  },
+  "zip_inputs_total": 0,
+  "test_git_invocations_total": 0,
+  "test_filesystem_fixtures_total": 0,
+  "prior_f74_or_f73_tests_rerun": false,
+  "wpf_cross_build": "Passed, 0 errors, 16.22 seconds; no Windows/WPF execution",
+  "raw_sha256_before_redaction": {
+    "f74-a1-final.trx": "69aa71951d9836c7ae91461618bf30785eeb2f401b87190b7e5df885c4a2c6e7",
+    "f74-a1-final-test.log": "ea4af06de1065610ab9bb17e694b65d90408bbade9d8af28412c5f7da63a5e41",
+    "f74-a1-final-wpf-build.log": "a591902227359dd4e1101a26b9988b7ff8b122e0f622adcecc9360b3b56022ac"
+  }
+}

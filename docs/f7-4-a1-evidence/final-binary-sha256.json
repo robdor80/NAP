@@ -1,0 +1,9 @@
+{
+  "tested_commit": "c19d307166c5dc1eb0a839a0a8ff242d59c71df5",
+  "sha256": {
+    "src/NAP.Core/bin/Debug/net8.0/NAP.Core.dll": "1ef92b0bef0a0c9d0cef0b3c3c9227110d3aaba108bc9ec9e4044ed68f396344",
+    "src/NAP.Presentation/bin/Debug/net8.0/NAP.Presentation.dll": "f6d919e0ef465dbdcf75c15b2ec9a178257036ad1582cb7f243af1e6c3b6868d",
+    "src/NAP.App/bin/Debug/net8.0-windows/NAP.App.dll": "b70e7ad1f37c39c24d4ba48b313971bc5803abea54b0684b75d3c832416a54fb",
+    "tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll": "8335844df0b14488744df3748ab99a2b3ca47eb897e41dca6aec75a095b7e1d8"
+  }
+}
