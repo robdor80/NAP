@@ -14,13 +14,15 @@ public sealed record UiNotice(string Message, string Code, UiTone Tone)
 {
     public static UiNotice From(Exception error)
     {
+        if (error is GitUiStoppedException gitUi) return gitUi.Notice;
+        if (error is AutomationException { Code: AutomationError.Busy }) return new("El host o el escritor está ocupado. Pausa el universo, resuelve Running y actualiza antes de reintentar; no se acredita ningún cambio.", "automation_busy", UiTone.Error);
         if (error is ImageNormalizationException normalization) return new(normalization.Message, normalization.Code, UiTone.Error);
         if (error is UniverseProfileStoreException profile) return new(profile.Message, profile.Code, UiTone.Error);
         var report = error switch { BackupException e => e.Issues, GitProductionException e => e.Issues,
             CatalogException e => e.Issues, ProductionStorageException e => e.Issues, ArchiveStorageException e => e.Issues, UiStoppedException e => e.Issues,
             AutomationRemoteOperationException e => e.Issues, _ => null };
         var code = report?.Issues.FirstOrDefault(i => i.StopsProcessing)?.Code ?? "ui_operation_unavailable";
-        return new("Operación detenida. Revisa la configuración o el diagnóstico antes de reintentar.", code, UiTone.Error);
+        return GitUiStoppedException.FromCode(code) ?? new("Operación detenida. Revisa la configuración o el diagnóstico antes de reintentar.", code, UiTone.Error);
     }
 }
 public sealed record UiConfirmation(string Title, string Explanation, UniverseId UniverseId, IReadOnlyList<string> Details, string? UniverseName = null);

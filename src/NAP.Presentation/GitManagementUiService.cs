@@ -9,26 +9,26 @@ public sealed partial class ProfessionalUiService
     private GitPublicationPolicyStore Policy(UniverseContext c) => gitPolicy?.Invoke(c) ?? new(c);
     private GitPublicationManagementService Management(UniverseContext c) => new(c, Policy(c), _gitInspector, _git);
     public Task<GitConfigurationView> ReadGitConfigurationAsync(UniverseContext c, CancellationToken ct) => Run(c, ct,
-        () => GitConfigurationView.From(c, Management(c).ReadConfiguration()));
-    public Task<GitAuthorizationReview> ProposeGitAuthorizationAsync(UniverseContext c, GitAuthorizationInput input, CancellationToken ct) => Run(c, ct, () =>
+        () => GitUiStoppedException.Guard(GitUiFailure.ConfigurationIntegrity, () => GitConfigurationView.From(c, Management(c).ReadConfiguration())));
+    public Task<GitAuthorizationReview> ProposeGitAuthorizationAsync(UniverseContext c, GitAuthorizationInput input, CancellationToken ct) => Run(c, ct, () => GitUiStoppedException.Guard(GitUiFailure.AuthorizationInput, () =>
     {
         var p = Management(c).Propose(input.Mode, input.Actor, input.Prefixes, input.MaximumJobs, input.AllowCommit, input.AllowPush);
         var view = new GitAuthorizationReview(GitConfigurationView.From(c, p.ReadPolicy()), input.Actor, p.Author, p.Committer);
         _gitReviews.Add(view, p); return view;
-    });
-    public async Task SaveGitAuthorizationAsync(UniverseContext c, GitAuthorizationReview review, CancellationToken ct) => await Run(c, ct, () =>
+    }));
+    public async Task SaveGitAuthorizationAsync(UniverseContext c, GitAuthorizationReview review, CancellationToken ct) => await Run(c, ct, () => GitUiStoppedException.Guard(GitUiFailure.AuthorizationSave, () =>
     {
         if (review.Configuration.UniverseId != c.Id || !_gitReviews.TryGetValue(review, out var native))
             throw new InvalidDataException("Git review is not an owned proposal in this universe.");
         _gitReviews.Remove(review); // A failed/stale decision must be reviewed anew, never silently refreshed.
         Management(c).Save(native); return true;
-    }).ConfigureAwait(false);
+    })).ConfigureAwait(false);
     public async Task RevokeGitAuthorizationAsync(UniverseContext c, long revision, string actor, CancellationToken ct) =>
-        await Run(c, ct, () => { Management(c).Revoke(revision, actor); return true; }).ConfigureAwait(false);
-    public Task<GitOutboxView> ReadGitOutboxAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () =>
+        await Run(c, ct, () => GitUiStoppedException.Guard(GitUiFailure.Revocation, () => { Management(c).Revoke(revision, actor); return true; })).ConfigureAwait(false);
+    public Task<GitOutboxView> ReadGitOutboxAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => GitUiStoppedException.Guard(GitUiFailure.OutboxIntegrity, () =>
     {
         var state = Management(c).ReadOutbox(); return new GitOutboxView(c.Id, GitOutboxRow.From(state), state.PolicyHistory);
-    });
+    }));
     public Task<GitHostAccess> GitHostAccessAsync(UniverseContext c, CancellationToken ct) => dispatcher is HostedUniverseOperationDispatcher hosted
         ? hosted.GitAccessAsync(c, ct) : Task.FromResult(new GitHostAccess(false, "Sin owner de AutomationHost: reintentos Outbox bloqueados. El host actual solo admite laboratorio."));
     public Task<string> RetryGitOutboxAsync(UniverseContext c, GitRetryRequest request, CancellationToken ct)

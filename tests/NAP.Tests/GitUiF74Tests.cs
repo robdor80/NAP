@@ -137,6 +137,11 @@ public sealed class GitUiF74Tests(ITestOutputHelper output)
         Assert.True(p.Load()!.Revoked); Assert.False(shell.Git.CanCommit); Assert.Equal(head, f.Git("rev-parse", "HEAD"));
         Assert.Contains("Autorizar y guardar Git", confirmation.Titles); Assert.Contains("Revocar autorización Git", confirmation.Titles);
         Directory.Move(offline, f.Remote);
+        var policyPath = Path.Combine(p.DirectoryPath, "policy.json"); File.AppendAllText(policyPath, "corrupt");
+        var corrupt = File.ReadAllBytes(policyPath); await shell.RefreshCurrentAsync();
+        Assert.Equal(UiPageState.Stopped, shell.Git.State); Assert.Equal("git_ui_configuration_integrity", shell.Git.Notice!.Code);
+        Assert.Null(shell.Git.Configuration); Assert.False(shell.RevokeGitAuthorization.CanExecute(null));
+        Assert.Equal(corrupt, File.ReadAllBytes(policyPath));
     }
 
     [Fact]

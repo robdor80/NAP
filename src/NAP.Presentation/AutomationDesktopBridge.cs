@@ -93,6 +93,8 @@ public sealed class AutomationDesktopBridge
     {
         try { return await HandleCoreAsync(request, principal).ConfigureAwait(false); }
         catch (UiStoppedException stopped) { throw new AutomationRemoteOperationException("validation_stopped", stopped.Issues.Issues); }
+        catch (GitUiStoppedException stopped)
+        { throw new AutomationRemoteOperationException(stopped.Notice.Code, [new(stopped.Notice.Code, NapIssueSeverity.Error, NapIssueDisposition.Stop, stopped.Notice.Message)]); }
     }
     private Task<JsonElement> HandleCoreAsync(AutomationRequest request, string principal)
     {
