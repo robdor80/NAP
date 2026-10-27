@@ -5,7 +5,9 @@
         <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" />
         <TextBlock Text="{Binding Id}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
         <TextBlock Text="{Binding JobId, StringFormat='Job: {0}'}" Style="{StaticResource Technical}" TextWrapping="Wrap" />
-        <TextBlock Text="{Binding Diagnostic}" Foreground="{StaticResource WarningBrush}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding Reason}" Foreground="{StaticResource WarningBrush}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding NextStep}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding Intervention}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
       </StackPanel>
     </DataTemplate>
   </UserControl.Resources>
@@ -15,7 +17,8 @@
         <StackPanel>
           <TextBlock Text="{Binding DataContext.UniverseLabel, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Heading}" />
           <TextBlock Text="{Binding ConfigurationSummary}" TextWrapping="Wrap" />
-          <TextBlock Text="Repositorio: ProductionRoot del universo activo; no se admite una ruta Git independiente." Style="{StaticResource Muted}" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding DataContext.GitRepositoryLabel, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap" />
+          <TextBlock Text="Repositorio ligado a ProductionRoot; no se admite una ruta Git independiente." Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Configuration.Branch, StringFormat='Rama autorizada: {0}'}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Configuration.Upstream, StringFormat='Upstream autorizado: {0}'}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Configuration.RemoteName, StringFormat='Remoto autorizado: {0}'}" TextWrapping="Wrap" />
@@ -85,7 +88,9 @@
           <ListBox ItemsSource="{Binding Batches}" SelectedItem="{Binding SelectedBatch}" ItemTemplate="{StaticResource OutboxRow}" Height="200" ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" />
           <TextBlock Text="Intenciones por Job (distintas de los recibos nativos)" />
           <ListBox ItemsSource="{Binding Intents}" SelectedItem="{Binding SelectedIntent}" ItemTemplate="{StaticResource OutboxRow}" Height="200" ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" />
+          <TextBlock Text="{Binding SelectedOutbox.Reason}" Foreground="{StaticResource WarningBrush}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding SelectedOutbox.NextStep}" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding SelectedOutbox.Intervention}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <Expander Header="Detalle técnico de la selección">
             <StackPanel DataContext="{Binding SelectedOutbox}">
               <TextBlock Text="{Binding JobId, StringFormat='JobId: {0}'}" TextWrapping="Wrap" />

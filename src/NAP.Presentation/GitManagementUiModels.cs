@@ -32,12 +32,20 @@ public sealed record GitOutboxRow(string Id, bool IsBatch, GitOutboxState State,
     long Revision, string AuthorizationId, string? JobId, string? ItemId, string? AttemptId, string? BatchId,
     string? OperationId, string? PlanHash, string? CommitSha, string? Diagnostic)
 {
+    private GitConfigurationView? _displayConfiguration;
+    [System.Text.Json.Serialization.JsonIgnore]
+    public GitOutboxGuidance Guidance => GitOutboxGuidance.For(State, Diagnostic, _displayConfiguration, Revision, AuthorizationId);
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string Reason => Guidance.Reason;
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string Intervention => Guidance.InterventionLabel;
+    public GitOutboxRow WithDisplayConfiguration(GitConfigurationView? configuration)
+    { var row = this with { }; row._displayConfiguration = configuration; return row; }
     public string HumanState => State switch { GitOutboxState.Pending => "Pendiente de commit",
         GitOutboxState.Committed => "Commit local; remoto pendiente", GitOutboxState.Pushed => "Publicación acreditada según receipt",
         _ => "Revisión necesaria" };
     public string Summary => $"{HumanState} · {Jobs} Job(s) · revisión {Revision}";
-    public string NextStep => State == GitOutboxState.Blocked ? "Inspecciona y revisa configuración, identidad y evidencia. Una autorización nueva solo sirve para operaciones futuras; puede requerirse revisión administrativa." :
-        State == GitOutboxState.Pushed ? "Evidencia durable histórica; no garantiza el tip remoto actual." : "Selecciona el recibo para revisar recuperación o publicación explícita.";
+    public string NextStep => Guidance.RecommendedAction;
     public static IReadOnlyList<GitOutboxRow> From(GitOutboxSnapshot s)
     {
         static string? Code(string? code) => code is null ? null : code.Length <= 100 && code.All(c => char.IsAsciiLetterOrDigit(c) || c == '_') ? code : "git_review_required";

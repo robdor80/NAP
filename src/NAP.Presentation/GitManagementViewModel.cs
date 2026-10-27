@@ -67,7 +67,7 @@ public sealed partial class GitViewModel
     {
         var selected = SelectedOutbox;
         Batches.Clear(); Intents.Clear(); PolicyHistory.Clear();
-        foreach (var row in value.Rows) (row.IsBatch ? Batches : Intents).Add(row);
+        foreach (var row in value.Rows) (row.IsBatch ? Batches : Intents).Add(row.WithDisplayConfiguration(Configuration));
         foreach (var entry in value.History) PolicyHistory.Add(entry);
         SelectedBatch = selected?.IsBatch == true ? Batches.FirstOrDefault(r => r.Id == selected.Id) : null;
         SelectedIntent = selected?.IsBatch == false ? Intents.FirstOrDefault(r => r.Id == selected.Id) : null;

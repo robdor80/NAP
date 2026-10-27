@@ -403,7 +403,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         {
             _read?.Cancel(); _action?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
             Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged(); Settings.Historical.ContextChanged();
-            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
+            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(GitRepositoryLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }
         // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.

@@ -4,6 +4,7 @@ namespace NAP.Presentation;
 
 public sealed partial class ShellViewModel
 {
+    public string GitRepositoryLabel => GitRepositoryIdentity.Label(Context?.Id, Context?.Storage.ProductionRoot);
     public UiAsyncCommand ProposeGitAuthorization { get; private set; } = null!;
     public UiAsyncCommand SaveGitAuthorization { get; private set; } = null!;
     public UiAsyncCommand RevokeGitAuthorization { get; private set; } = null!;
