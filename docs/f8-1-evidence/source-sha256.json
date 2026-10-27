@@ -1,0 +1,12 @@
+{
+  "src/NAP.App/App.xaml.cs": "14a6235ec7706a018ec16b137f2653e387daccd72ac4af729ef23e718772185e",
+  "src/NAP.App/NAP.App.csproj": "2c563191d4f700e4a3603cda2f27ae1a6051135726c6d606959414a4a6aa7a0c",
+  "src/NAP.App/Phase81GitLab.cs": "90c6f0710411120a5c9df4c76dc9c19e349e39541774d550e5fe9cbd96a38f7a",
+  "src/NAP.Presentation/GitVisualLabContract.cs": "58104be95dc310a4278312c92fe4072f21ab000d3256e20fb0abede185087363",
+  "src/NAP.Presentation/GitVisualLabService.cs": "571eb8df6dcc0d80049f3f6549691ba97962ca4a8614649d2975b5f5716a15f0",
+  "src/NAP.Presentation/GitVisualLabViewModel.cs": "e952fc40ce9c51a07e50e64b8727fbc22d0d8c1f2c617f5eb7d6e475250f3283",
+  "tests/NAP.Tests/GitVisualLabF81Tests.cs": "a389fe049a4b821481f05eab9ef814342ec672793d44c07810bdfdba5424aed9",
+  "tools/NAP.GitVisualLabProbe/Program.cs": "2b827b5ee347425bda35b5ab1bb00a50af9ff19b77e72f437a85bb9ca097a46e",
+  "tools/NAP.GitVisualLabProbe/NAP.GitVisualLabProbe.csproj": "031da6a6f6d810b9f23ffe7818f3acefb7b0ff54b0eb8c6752735ad58d254904",
+  "scripts/Start-F81GitVisualLab.ps1": "41da122f404cf83e5a82880e0dc3b4639099d5830992f14b76fa69229bf3e3c9"
+}

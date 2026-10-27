@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1f63956a-0d97-448c-8589-9bce92c493b8" name="@9f231272ef9a 2026-10-27 20:42:50" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T20:42:50.9173737+00:00" queuing="2026-10-27T20:42:50.9173738+00:00" start="2026-10-27T20:42:48.9413031+00:00" finish="2026-10-27T20:42:50.9340326+00:00" />
+  <TestSettings name="default" id="c2b11432-c168-4738-a457-d0d942def426">
+    <Deployment runDeploymentRoot="_9f231272ef9a_2026-10-27_20_42_50" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6e517d16-c2ee-4694-a82a-6d84707dda9d" testId="8aa4145f-d28e-09e9-f193-68eb18dcc406" testName="NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants" computerName="9f231272ef9a" duration="00:00:00.0012202" startTime="2026-10-27T20:42:50.7629660+00:00" endTime="2026-10-27T20:42:50.7629661+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e517d16-c2ee-4694-a82a-6d84707dda9d">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')</Message>
+          <StackTrace>   at NAP.Core.UniverseId..ctor(String value) in /workspace/NAP/src/NAP.Core/UniverseId.cs:line 10
+   at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract) in /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs:line 18
+   at NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants() in /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs:line 94
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="763cd41f-7009-4d56-ad2c-d7e803722267" testId="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7" testName="NAP.Tests.GitVisualLabF81Tests.MissingOrInvalidContractAndUnexpectedDataFailClosed" computerName="9f231272ef9a" duration="00:00:00.0008072" startTime="2026-10-27T20:42:50.7593604+00:00" endTime="2026-10-27T20:42:50.7593605+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="763cd41f-7009-4d56-ad2c-d7e803722267" />
+    <UnitTestResult executionId="3fde13fb-55a8-4526-9053-2748e90bdda9" testId="39a2358d-acaa-e6b9-8e1b-272afc02e4b8" testName="NAP.Tests.GitVisualLabF81Tests.RepositoryAncestorsAndReparsePointsAreRejected" computerName="9f231272ef9a" duration="00:00:00.0011592" startTime="2026-10-27T20:42:50.7645368+00:00" endTime="2026-10-27T20:42:50.7645368+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fde13fb-55a8-4526-9053-2748e90bdda9" />
+    <UnitTestResult executionId="0c070cf7-f0d3-4d9d-be8f-fb0db3cc22b5" testId="e663a56e-16da-636e-8451-6e2b2b173f58" testName="NAP.Tests.GitVisualLabF81Tests.ExplicitActivationRequiresDedicatedLocationAndExactConsent" computerName="9f231272ef9a" duration="00:00:00.0121636" startTime="2026-10-27T20:42:50.7409174+00:00" endTime="2026-10-27T20:42:50.7409428+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c070cf7-f0d3-4d9d-be8f-fb0db3cc22b5" />
+    <UnitTestResult executionId="909832ff-88cc-4826-9b63-3eaeaca95557" testId="fcb9a1a2-113c-e58d-bd2a-25266554a274" testName="NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" computerName="9f231272ef9a" duration="00:00:00.0054939" startTime="2026-10-27T20:42:50.7631835+00:00" endTime="2026-10-27T20:42:50.7631836+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="909832ff-88cc-4826-9b63-3eaeaca95557">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : Repository sources missing.</Message>
+          <StackTrace>   at NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators() in /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs:line 137
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0b3a27e5-5ee8-4b4e-b720-25a4a86f48a5" testId="f716c19c-6fce-93b2-5ad5-d2df837f961b" testName="NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" computerName="9f231272ef9a" duration="00:00:00.0029487" startTime="2026-10-27T20:42:50.7626220+00:00" endTime="2026-10-27T20:42:50.7626221+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b3a27e5-5ee8-4b4e-b720-25a4a86f48a5">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')</Message>
+          <StackTrace>   at NAP.Core.UniverseId..ctor(String value) in /workspace/NAP/src/NAP.Core/UniverseId.cs:line 10
+   at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract) in /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs:line 18
+   at NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched() in /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs:line 60
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="356a6900-7c47-4ccd-a7a7-ac1fc74ab201" testId="6b031c17-d740-2a08-979a-5f41f0f11d93" testName="NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" computerName="9f231272ef9a" duration="00:00:00.0026928" startTime="2026-10-27T20:42:50.7577074+00:00" endTime="2026-10-27T20:42:50.7577077+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="356a6900-7c47-4ccd-a7a7-ac1fc74ab201">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')</Message>
+          <StackTrace>   at NAP.Core.UniverseId..ctor(String value) in /workspace/NAP/src/NAP.Core/UniverseId.cs:line 10
+   at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract) in /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs:line 18
+   at NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback() in /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs:line 108
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="fcb9a1a2-113c-e58d-bd2a-25266554a274">
+      <Execution id="909832ff-88cc-4826-9b63-3eaeaca95557" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.MissingOrInvalidContractAndUnexpectedDataFailClosed" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7">
+      <Execution id="763cd41f-7009-4d56-ad2c-d7e803722267" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="MissingOrInvalidContractAndUnexpectedDataFailClosed" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="f716c19c-6fce-93b2-5ad5-d2df837f961b">
+      <Execution id="0b3a27e5-5ee8-4b4e-b720-25a4a86f48a5" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.RepositoryAncestorsAndReparsePointsAreRejected" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="39a2358d-acaa-e6b9-8e1b-272afc02e4b8">
+      <Execution id="3fde13fb-55a8-4526-9053-2748e90bdda9" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="RepositoryAncestorsAndReparsePointsAreRejected" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.ExplicitActivationRequiresDedicatedLocationAndExactConsent" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="e663a56e-16da-636e-8451-6e2b2b173f58">
+      <Execution id="0c070cf7-f0d3-4d9d-be8f-fb0db3cc22b5" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="ExplicitActivationRequiresDedicatedLocationAndExactConsent" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="6b031c17-d740-2a08-979a-5f41f0f11d93">
+      <Execution id="356a6900-7c47-4ccd-a7a7-ac1fc74ab201" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="8aa4145f-d28e-09e9-f193-68eb18dcc406">
+      <Execution id="6e517d16-c2ee-4694-a82a-6d84707dda9d" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="FixturesRetainOfficialModesAndSeparateGrants" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8aa4145f-d28e-09e9-f193-68eb18dcc406" executionId="6e517d16-c2ee-4694-a82a-6d84707dda9d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7" executionId="763cd41f-7009-4d56-ad2c-d7e803722267" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="39a2358d-acaa-e6b9-8e1b-272afc02e4b8" executionId="3fde13fb-55a8-4526-9053-2748e90bdda9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e663a56e-16da-636e-8451-6e2b2b173f58" executionId="0c070cf7-f0d3-4d9d-be8f-fb0db3cc22b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcb9a1a2-113c-e58d-bd2a-25266554a274" executionId="909832ff-88cc-4826-9b63-3eaeaca95557" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f716c19c-6fce-93b2-5ad5-d2df837f961b" executionId="0b3a27e5-5ee8-4b4e-b720-25a4a86f48a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b031c17-d740-2a08-979a-5f41f0f11d93" executionId="356a6900-7c47-4ccd-a7a7-ac1fc74ab201" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="7" executed="7" passed="3" failed="4" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.11]   Discovering: NAP.Tests
+[xUnit.net 00:00:00.95]   Discovered:  NAP.Tests
+[xUnit.net 00:00:00.96]   Starting:    NAP.Tests
+[xUnit.net 00:00:01.05]       System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')
+[xUnit.net 00:00:01.05]       Stack Trace:
+[xUnit.net 00:00:01.05]         /workspace/NAP/src/NAP.Core/UniverseId.cs(10,0): at NAP.Core.UniverseId..ctor(String value)
+[xUnit.net 00:00:01.05]         /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs(18,0): at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract)
+[xUnit.net 00:00:01.05]         /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs(108,0): at NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback()
+[xUnit.net 00:00:01.05]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:01.06]       System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')
+[xUnit.net 00:00:01.06]       Stack Trace:
+[xUnit.net 00:00:01.06]         /workspace/NAP/src/NAP.Core/UniverseId.cs(10,0): at NAP.Core.UniverseId..ctor(String value)
+[xUnit.net 00:00:01.06]         /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs(18,0): at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract)
+[xUnit.net 00:00:01.06]         /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs(60,0): at NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched()
+[xUnit.net 00:00:01.06]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:01.06]       System.ArgumentException : The universe ID must be a Naming v1 machine identifier. (Parameter 'value')
+[xUnit.net 00:00:01.06]       Stack Trace:
+[xUnit.net 00:00:01.06]         /workspace/NAP/src/NAP.Core/UniverseId.cs(10,0): at NAP.Core.UniverseId..ctor(String value)
+[xUnit.net 00:00:01.06]         /workspace/NAP/src/NAP.Presentation/GitVisualLabService.cs(18,0): at NAP.Presentation.GitVisualLabService..ctor(GitVisualLabContract contract)
+[xUnit.net 00:00:01.06]         /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs(94,0): at NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants()
+[xUnit.net 00:00:01.06]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:01.06]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:01.06]       System.IO.InvalidDataException : Repository sources missing.
+[xUnit.net 00:00:01.06]       Stack Trace:
+[xUnit.net 00:00:01.06]         /workspace/NAP/tests/NAP.Tests/GitVisualLabF81Tests.cs(137,0): at NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators()
+[xUnit.net 00:00:01.06]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:01.06]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:01.06]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="9f231272ef9a" outcome="Error" timestamp="2026-10-27T20:42:50.7608354+00:00">
+        <Text>[xUnit.net 00:00:01.05]     NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="9f231272ef9a" outcome="Error" timestamp="2026-10-27T20:42:50.7615684+00:00">
+        <Text>[xUnit.net 00:00:01.05]     NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="9f231272ef9a" outcome="Error" timestamp="2026-10-27T20:42:50.7637528+00:00">
+        <Text>[xUnit.net 00:00:01.06]     NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="9f231272ef9a" outcome="Error" timestamp="2026-10-27T20:42:50.7643696+00:00">
+        <Text>[xUnit.net 00:00:01.06]     NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

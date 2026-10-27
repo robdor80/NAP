@@ -1,0 +1,19 @@
+{
+  "Microsoft.Data.Sqlite.dll": "88551560cc4857c1ad24280850eb0ce68286d19339692c96ad34abc0d43b4b94",
+  "NAP.AI.dll": "ebcea8a6907e0cd1f761f49d526d27d449c7a42cd3ba77bcdb824a99c68e55e0",
+  "NAP.AI.pdb": "3644bb5f5643e361729431d1a0d14980186994830c66541c0fe4a0763e5ce765",
+  "NAP.Core.dll": "b1c1f7a8c554998c02a962c6ea272fef378287e2968ddf5fb8adcc29abbf4187",
+  "NAP.Core.pdb": "543e8e7c44e643cc66b4f4d3dee2119f89cfcac4c12385fccd788632e6d029f1",
+  "NAP.GitVisualLab.deps.json": "61525a45d7e179601f6e71e07702adeeff780087b2e1c67ee417cb5371104550",
+  "NAP.GitVisualLab.dll": "46ffcf3617bd082049823b42fadb7963a1d897f200b6917fdc7b158e2476582d",
+  "NAP.GitVisualLab.exe": "750f72ae3e3196aba326021e1edf6ce87d51ae4e317a30bf4db7c976892fdcae",
+  "NAP.GitVisualLab.pdb": "e7079dd37004819ee1c8e95ecd0e05c884db6eb404e927e47b70b0ad333158eb",
+  "NAP.GitVisualLab.runtimeconfig.json": "b827f2d6fea12fa31f4cc801932901a626cf0d5873e35f46e01eb560a34113fd",
+  "NAP.Presentation.dll": "4d3a82db9bad9e62f34fb84e9ee4f46d6eac18a5e382d41db7ed039f0727ec17",
+  "NAP.Presentation.pdb": "89e50771456fc74e85ba53a615461acc710074899b8a1eecdb86b3af3313927e",
+  "SQLitePCLRaw.batteries_v2.dll": "815ce410c9eab531dd219318e3ba16c5e38e83d361cfbbdbb4bbca222c497b0b",
+  "SQLitePCLRaw.core.dll": "af340ac9eb9195795660d7fc1114f486b6ab63998f33176e2f24c8e0acb9aa84",
+  "SQLitePCLRaw.provider.e_sqlite3.dll": "eb6696e55882c3000333146b1cd4970439601e11fdedae941105ca921f615bd6",
+  "SixLabors.ImageSharp.dll": "60d345f55451db74bbefb3231950c2524c12fe038173b08dabce4a844f22b179",
+  "e_sqlite3.dll": "b7385d722c83fb52142a00477a726723745916d22a555711ee89834c1111fb2e"
+}

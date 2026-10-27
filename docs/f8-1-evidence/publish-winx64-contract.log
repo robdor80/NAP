@@ -1,0 +1,17 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> /tmp/nap-f81-win-build/bin/NAP.Core/debug/NAP.Core.dll
+  NAP.AI -> /tmp/nap-f81-win-build/bin/NAP.AI/debug/NAP.AI.dll
+  NAP.Presentation -> /tmp/nap-f81-win-build/bin/NAP.Presentation/debug/NAP.Presentation.dll
+/workspace/NAP/src/NAP.App/App.xaml.cs(19,35): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread. [/workspace/NAP/src/NAP.App/NAP.App_vgo5pam3_wpftmp.csproj]
+/workspace/NAP/src/NAP.App/App.xaml.cs(18,35): warning CS0649: Field 'App._remoteDesktop' is never assigned to, and will always have its default value null [/workspace/NAP/src/NAP.App/NAP.App_vgo5pam3_wpftmp.csproj]
+/workspace/NAP/src/NAP.App/App.xaml.cs(17,25): warning CS0649: Field 'App._auditTransport' is never assigned to, and will always have its default value null [/workspace/NAP/src/NAP.App/NAP.App_vgo5pam3_wpftmp.csproj]
+/workspace/NAP/src/NAP.App/App.xaml.cs(19,35): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread. [/workspace/NAP/src/NAP.App/NAP.App.csproj]
+/workspace/NAP/src/NAP.App/App.xaml.cs(18,35): warning CS0649: Field 'App._remoteDesktop' is never assigned to, and will always have its default value null [/workspace/NAP/src/NAP.App/NAP.App.csproj]
+/workspace/NAP/src/NAP.App/App.xaml.cs(17,25): warning CS0649: Field 'App._auditTransport' is never assigned to, and will always have its default value null [/workspace/NAP/src/NAP.App/NAP.App.csproj]
+  NAP.App -> /tmp/nap-f81-win-build/bin/NAP.App/debug_win-x64/NAP.GitVisualLab.dll
+  NAP.App -> /tmp/nap-f81-win-publish/

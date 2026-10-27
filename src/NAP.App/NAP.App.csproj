@@ -12,8 +12,16 @@
     <DefineConstants>$(DefineConstants);NAP_ACCEPTANCE_ONLY</DefineConstants>
     <ApplicationManifest>acceptance.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Phase81GitLabOnly)' == 'true'">
+    <DefineConstants>$(DefineConstants);NAP_F81_LAB</DefineConstants>
+    <AssemblyName>NAP.GitVisualLab</AssemblyName>
+    <ApplicationManifest>acceptance.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <Target Name="RejectConflictingLaboratories" BeforeTargets="PrepareForBuild" Condition="'$(Phase81GitLabOnly)' == 'true' and '$(Phase6AcceptanceOnly)' == 'true'">
+    <Error Text="F8.1 and F6 acceptance are distinct distributions; select exactly one." />
+  </Target>
   <ItemGroup><Using Remove="System.Windows.Forms" /><Using Remove="System.Drawing" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /><ProjectReference Include="../NAP.AI/NAP.AI.csproj" /></ItemGroup>
-  <ItemGroup><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup Condition="'$(Phase81GitLabOnly)' != 'true'"><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Resource Include="Assets/RoDo/rodo_v0_1.png" /></ItemGroup>
 </Project>
