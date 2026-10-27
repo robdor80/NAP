@@ -1,0 +1,11 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> /tmp/nap-f81-tests/bin/NAP.Core/debug/NAP.Core.dll
+  NAP.Presentation -> /tmp/nap-f81-tests/bin/NAP.Presentation/debug/NAP.Presentation.dll
+  NAP.CoordinationProbe -> /tmp/nap-f81-tests/bin/NAP.CoordinationProbe/debug/NAP.CoordinationProbe.dll
+  NAP.AutomationHost -> /tmp/nap-f81-tests/bin/NAP.AutomationHost/debug/NAP.AutomationHost.dll
+  NAP.AI -> /tmp/nap-f81-tests/bin/NAP.AI/debug/NAP.AI.dll

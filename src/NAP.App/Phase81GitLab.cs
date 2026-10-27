@@ -37,7 +37,8 @@ internal static class Phase81GitLab
         header.Children.Add(scenarios);
         layout.Children.Add(header);
         // The production DataTemplate creates Views/GitView.xaml with its real controls and bindings.
-        layout.Children.Add(new ContentControl { Content = model.Git });
+        layout.Children.Add(new ContentControl { Content = model.Git,
+            HorizontalContentAlignment = HorizontalAlignment.Stretch, VerticalContentAlignment = VerticalAlignment.Stretch });
         window.Content = layout;
         window.Closed += (_, _) => {
             Console.Error.WriteLine("F81_WPF_BINDING_ERRORS=" + diagnostics.Errors);

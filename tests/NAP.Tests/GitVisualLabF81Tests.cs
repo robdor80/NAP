@@ -144,7 +144,7 @@ public sealed class GitVisualLabF81Tests : IDisposable
         Assert.DoesNotContain("new MainWindow", composition);
         Assert.DoesNotContain("new ShellViewModel", composition);
         Assert.True(composition.IndexOf("GitVisualLabContract.Validate", StringComparison.Ordinal) < composition.IndexOf("new GitVisualLabService", StringComparison.Ordinal));
-        Assert.Contains("new ContentControl { Content = model.Git }", composition);
+        Assert.Contains("new ContentControl { Content = model.Git,", composition);
         var view = File.ReadAllText(Path.Combine(repo, "src/NAP.App/Views/GitView.xaml"));
         foreach (System.Text.RegularExpressions.Match match in System.Text.RegularExpressions.Regex.Matches(view, @"Binding DataContext\.(\w+)"))
             Assert.NotNull(typeof(GitVisualLabViewModel).GetProperty(match.Groups[1].Value));
