@@ -66,6 +66,7 @@ public sealed class GitUiF74A1Tests(ITestOutputHelper output)
             Assert.DoesNotContain("password", row.Reason + row.NextStep); Assert.DoesNotContain("stderr", row.Reason + row.NextStep);
         }
         Assert.Contains("histórica", Row(GitOutboxState.Pushed, null).Reason);
+        Assert.Contains("histórica", Row(GitOutboxState.Pushed, null).NextStep);
         Assert.Contains("no garantiza el tip remoto actual", Row(GitOutboxState.Pushed, null).NextStep, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Guidance", JsonSerializer.Serialize(revoked));
         output.WriteLine("12 representative code/cause/action checks; policy revocation/history/permissions, Committed exhausted budgets, unknown/hostile codes and Pushed historical fact. Evidence and authorization fields preserved; ZIP=0, Git=0, filesystem=0.");

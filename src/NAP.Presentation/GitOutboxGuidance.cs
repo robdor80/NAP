@@ -30,7 +30,7 @@ public sealed record GitOutboxGuidance(string Reason, string RecommendedAction, 
         }
         return code switch
         {
-            null when state == GitOutboxState.Pushed => Explicit("Publicación acreditada por evidencia durable histórica.", "No garantiza el tip remoto actual. Consulta el recibo; no se necesita otra publicación de esta operación."),
+            null when state == GitOutboxState.Pushed => Explicit("Publicación acreditada por evidencia durable histórica.", "Evidencia durable histórica; no garantiza el tip remoto actual. Consulta el recibo; no se necesita otra publicación de esta operación."),
             null when state == GitOutboxState.Committed => Explicit("El commit es local; la publicación remota está pendiente.", "Revisa el recibo y AllowPush antes de una publicación manual confirmada. AutoCommitBatch no concede push automático."),
             null when state == GitOutboxState.Pending => Explicit("La intención está pendiente de commit.", "Espera al turno autorizado del host o revisa el recibo anterior si el progreso está detenido. RequireNoPending sigue vigente."),
             "git_policy_changed" => Configuration("La política de esta operación fue sustituida o revocada.", "Consulta la revisión original y la política actual. El lote no se reactiva con una autorización nueva; puede necesitar revisión administrativa."),
