@@ -7,7 +7,7 @@ NAP 2.0 · F8.1 · EJECUCIÓN FÍSICA VISUAL AISLADA · 27/10/2026
 
 Estás en Codex Local sobre el MSI Raider GE78 HX con Windows 11. Tienes autorización únicamente para completar las comprobaciones físicas pendientes del laboratorio visual F8.1. No certifiques cierre de F8.1: ChatGPT debe auditar las evidencias y aprobarlo después.
 
-Código exacto autorizado: 47b76af46b266795647618aa34ee5eee190bc33e del repositorio https://github.com/robdor80/NAP. No ejecutar main, el arranque normal de NAP.App, la antigua carpeta F7, CLI ni AutomationHost. No usar Phase6AcceptanceOnly=true. La variante contiene el GitView WPF y GitViewModel originales de F7.4 con datos ficticios; la ventana contenedora y el selector sirven para navegar estos controles reales, no para sustituirlos.
+Código exacto autorizado: 9f15b796f7d6ae597e813f725091e5fc00eeab2e del repositorio https://github.com/robdor80/NAP. No ejecutar main, el arranque normal de NAP.App, la antigua carpeta F7, CLI ni AutomationHost. No usar Phase6AcceptanceOnly=true. La variante contiene el GitView WPF y GitViewModel originales de F7.4 con datos ficticios; la ventana contenedora y el selector sirven para navegar estos controles reales, no para sustituirlos.
 
 Restricciones: no Actions, merge, instalación/sustitución de NAP, NAP 1.0, CUTOVER, servicios/cuentas/ACL/tareas/secretos, Git desde NAP, repos/assets/ZIP reales ni automatizaciones. No borrar carpetas, journals, Outbox, recibos, backups o evidencias. No cerrar #47/#49. No modificar el código durante este ensayo; reportar defectos y detener. No instalar drivers/herramientas que exijan cambiar servicios. No asumir que la carpeta histórica del laboratorio sigue existiendo.
 
@@ -15,7 +15,7 @@ Trabaja sin elevación. Verifica físicamente modelo, Windows 11, PowerShell 7 x
 
 Crear clone nuevo bajo TEMP, previamente verificando que TEMP y todos sus padres existen, no son reparse points y no están dentro de un repo. No tocar TEMP/HOME/USERPROFILE. En PowerShell 7:
 
-$pin = '47b76af46b266795647618aa34ee5eee190bc33e'
+$pin = '9f15b796f7d6ae597e813f725091e5fc00eeab2e'
 $source = Join-Path ([IO.Path]::GetTempPath()) ('NAP-F81-Source-' + [guid]::NewGuid().ToString('N'))
 if (Test-Path -LiteralPath $source) { throw 'Destino debe ser nuevo.' }
 for ($dir = [IO.DirectoryInfo]::new([IO.Path]::GetTempPath()); $null -ne $dir; $dir = $dir.Parent) {

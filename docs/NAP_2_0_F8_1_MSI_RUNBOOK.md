@@ -1,6 +1,6 @@
 # F8.1 · Procedimiento físico para Codex Local · MSI Raider GE78 HX
 
-**Código exacto que ejecutar: `47b76af46b266795647618aa34ee5eee190bc33e`.** Base oficial de partida: `ae6aa5b05a47917e7c53f854c4506725cc7c1bf8`. Los documentos de entrega posteriores no cambian ese código. No usar main por aproximación ni la antigua carpeta F7. No es instalación, CUTOVER ni autorización productiva.
+**Código exacto que ejecutar: `9f15b796f7d6ae597e813f725091e5fc00eeab2e`.** Base oficial de partida: `ae6aa5b05a47917e7c53f854c4506725cc7c1bf8`. Los documentos de entrega posteriores no cambian ese código. No usar main por aproximación ni la antigua carpeta F7. No es instalación, CUTOVER ni autorización productiva.
 
 ## 1. Precondiciones y límites
 
@@ -15,7 +15,7 @@ La licencia original ImageSharp 3.2.0 Community ya fue validada en Fase 5. **No 
 En PowerShell 7, sin administrador, crear únicamente un destino temporal nuevo. No alterar variables HOME/USERPROFILE/TEMP ni usar un checkout productivo. Estos son comandos Git de desarrollo del laboratorio, nunca operaciones desde NAP:
 
 ```powershell
-$pin = '47b76af46b266795647618aa34ee5eee190bc33e'
+$pin = '9f15b796f7d6ae597e813f725091e5fc00eeab2e'
 $source = Join-Path ([IO.Path]::GetTempPath()) ('NAP-F81-Source-' + [guid]::NewGuid().ToString('N'))
 if (Test-Path -LiteralPath $source) { throw 'El destino debe ser nuevo.' }
 # Antes de clonar: verificar que TEMP y sus padres existen y no son reparse points ni están dentro de un repo.
