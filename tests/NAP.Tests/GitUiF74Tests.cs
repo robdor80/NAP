@@ -4,11 +4,13 @@ using System.Security.Cryptography;
 using NAP.Core;
 using NAP.Presentation;
 using Xunit;
+using Xunit.Abstractions;
+using System.Text.Json;
 
 namespace NAP.Tests;
 
 public interface IGitUiTestService : IProfessionalUiService, IGitManagementUiService;
-public sealed class GitUiF74Tests
+public sealed class GitUiF74Tests(ITestOutputHelper output)
 {
     private sealed class Picker : IFolderPicker { public string? Pick(string title, string current) => null; }
     private sealed class Confirmation : IUserConfirmation
@@ -47,6 +49,7 @@ public sealed class GitUiF74Tests
         service.Save(proposed); var saved = f.Policy.Load()!;
         Assert.Equal(mode, saved.Mode); Assert.Equal(commit, saved.AllowCommit); Assert.Equal(push, saved.AllowPush);
         Assert.Equal(1, saved.PolicyRevision); Assert.Equal(f.BaseHead, f.RemoteHead);
+        output.WriteLine(JsonSerializer.Serialize(new { ZipCount = 0, Mode = mode.ToString(), saved.PolicyRevision, saved.AllowCommit, saved.AllowPush, saved.RepositoryBinding, BaseHead = f.BaseHead, RemoteTip = f.RemoteHead, GrantCreatedOnlyAfterSave = true }));
         var unchanged = Inventory(f); _ = service.ReadConfiguration(); _ = service.ReadOutbox(); Assert.Equal(unchanged, Inventory(f));
     }
 
@@ -146,7 +149,12 @@ public sealed class GitUiF74Tests
         new AssetCatalog(f.Context).Initialize();
         var zip = Path.Combine(f.Context.Storage.InboxRoot, "f74-synthetic.zip"); ZipFile.CreateFromDirectory(f.Production.Source.PackageRoot, zip);
         await shell.InitializeAsync(); shell.NavigateTo("Producción"); await shell.LastRefresh;
-        shell.Pipeline.SelectedCandidate = shell.Pipeline.Candidates.Single(); await shell.PreparePackage.ExecuteAsync(); await shell.AuditPackage.ExecuteAsync(); await shell.ExecutePackage.ExecuteAsync();
+        shell.Pipeline.SelectedCandidate = shell.Pipeline.Candidates.Single();
+        Assert.True(shell.PreparePackage.CanExecute(null), shell.PreparePackage.DisabledReason);
+        await shell.PreparePackage.ExecuteAsync(); Assert.True(shell.Pipeline.Prepared is not null, "prepare: " + shell.Pipeline.Notice?.Code);
+        await shell.AuditPackage.ExecuteAsync(); Assert.True(shell.Pipeline.Audit?.Passed, "audit: " + shell.Pipeline.Notice?.Code);
+        Assert.True(shell.ExecutePackage.CanExecute(null), shell.ExecutePackage.DisabledReason);
+        await shell.ExecutePackage.ExecuteAsync(); Assert.True(shell.Pipeline.Prepared is null, "execute: " + shell.Pipeline.Notice?.Code);
         shell.NavigateTo("Git"); await shell.LastRefresh; shell.Git.Subject = "Synthetic F74 verified session";
         var head = f.Git("rev-parse", "HEAD"); var before = ArchiveTestFixture.Snapshot(f.Context.Storage.StateRoot);
         confirmation.Accept = false; await shell.CommitGit.ExecuteAsync(); Assert.Equal(head, f.Git("rev-parse", "HEAD"));
@@ -214,6 +222,8 @@ public sealed class GitUiF74Tests
         var first = await client.CallAsync(AutomationOperation.GitAuthorizationSave, c.Id.Value, reference, requestId: command);
         var replay = await client.CallAsync(AutomationOperation.GitAuthorizationSave, c.Id.Value, reference, requestId: command);
         Assert.Equal(first.GetRawText(), replay.GetRawText()); Assert.Equal(1, Policy(c).Load()!.PolicyRevision);
+        Assert.DoesNotContain(Directory.EnumerateFiles(Path.Combine(f.Root, "desktop-requests")), path => File.ReadAllText(path).Contains("f74@example.invalid", StringComparison.Ordinal));
+        var commands = new List<string>(); BackupTestSupport.Set(BackupTestSupport.Get(git, "Git"), "CommandStarting", (Action<string>)commands.Add);
         var originalRemote = Path.Combine(f.Root, "bare.git"); var offline = originalRemote + ".offline";
         var row = await host.RunManualAsync(c.Id, scope =>
         {
@@ -238,6 +248,10 @@ public sealed class GitUiF74Tests
         var revoked = DurableExecutionTests.Inventory(c.Storage.ProductionRoot, c.Storage.StateRoot, Policy(c).DirectoryPath, originalRemote);
         await Assert.ThrowsAnyAsync<Exception>(() => remote.RetryGitOutboxAsync(c, new(batch.Id, p.PolicyRevision, p.AuthorizationId, true), default));
         Assert.Equal(revoked, DurableExecutionTests.Inventory(c.Storage.ProductionRoot, c.Storage.StateRoot, Policy(c).DirectoryPath, originalRemote));
+        Assert.Single(commands, command => command == "push");
+        output.WriteLine(JsonSerializer.Serialize(new { ZipCount = 1, Transport = "temporary-local-bare-only", batch.Id,
+            OperationId = batch.OperationId.Value, batch.PlanHash, batch.CommitSha, RemoteTip = GitProductionFixture.Run(originalRemote, "rev-parse", "main"),
+            NativePushCommands = commands.Count(command => command == "push"), Outbox = "Pushed", OriginalAuthorization = p.AuthorizationId, RevokedRevision = Policy(c).Load()!.PolicyRevision }));
         Assert.True(Policy(c).Load()!.Revoked);
         var processing = await host.QueryAsync(c.Id, scope => scope.Queue.CurrentPolicy());
         await host.ActivateAsync(c.Id, processing.Reference, false);

@@ -87,7 +87,7 @@ public sealed class AutomationDesktopBridge
     private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
-        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics or AutomationOperation.GitConfiguration or AutomationOperation.GitOutbox or AutomationOperation.GitHostAccess;
+        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics or AutomationOperation.GitConfiguration or AutomationOperation.GitOutbox or AutomationOperation.GitHostAccess or AutomationOperation.GitAuthorizationPropose;
 
     public async Task<JsonElement> HandleAsync(AutomationRequest request, string principal)
     {
