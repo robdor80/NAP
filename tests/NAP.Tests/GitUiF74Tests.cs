@@ -147,7 +147,7 @@ public sealed class GitUiF74Tests(ITestOutputHelper output)
         management.Save(management.Propose(GitPublicationMode.Manual, "actor", ["icons"], 1, true, true));
         var confirmation = new Confirmation { Accept = true }; using var shell = Shell(f.Context, f.Production.Root, Local(f, p), confirmation);
         new AssetCatalog(f.Context).Initialize();
-        var zip = Path.Combine(f.Context.Storage.InboxRoot, "f74-synthetic.zip"); ZipFile.CreateFromDirectory(f.Production.Source.PackageRoot, zip);
+        var zip = Path.Combine(f.Context.Storage.InboxRoot, f.Production.Package.AssetKey.AssetId + ".zip"); ZipFile.CreateFromDirectory(f.Production.Source.PackageRoot, zip);
         await shell.InitializeAsync(); shell.NavigateTo("Producción"); await shell.LastRefresh;
         shell.Pipeline.SelectedCandidate = shell.Pipeline.Candidates.Single();
         Assert.True(shell.PreparePackage.CanExecute(null), shell.PreparePackage.DisabledReason);
@@ -263,6 +263,7 @@ public sealed class GitUiF74Tests(ITestOutputHelper output)
         using var absent = new RemoteDesktopService(new(new AutomationConnection("nap-absent-" + Guid.NewGuid().ToString("N"), connection.KeyBase64)), false);
         using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => absent.RevokeGitAuthorizationAsync(c, 2, "actor", timeout.Token));
+        Assert.Equal(policyBytes, File.ReadAllBytes(Path.Combine(Policy(c).DirectoryPath, "policy.json")));
     }
     private static void InitializeGit(UniverseContext c, string root)
     {
