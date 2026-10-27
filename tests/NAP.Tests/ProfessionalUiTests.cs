@@ -101,12 +101,13 @@ public sealed class ProfessionalUiTests
     {
         using var g = new GitProductionFixture(); var store = new LocalUniverseSettingsStore(Path.Combine(g.Production.Root, "ui-git-settings.json")); store.Save([g.Context.Storage]);
         var explorer = new ExplorerViewModel([g.Context.Profile], store, new ExplorerService(), new Picker());
-        var service = DispatchProxy.Create<IProfessionalUiService, ProfessionalServiceProxy>(); var proxy = (ProfessionalServiceProxy)service;
-        proxy.Inner = new ProfessionalUiService(new Auditor(ProductionTestFixture.Pass));
-        // Test-only local transport is enabled by the existing temporary Git fixture, never by the app.
-        proxy.Overrides[nameof(IProfessionalUiService.PlanCommitAsync)] = args => Task.Run(() => g.Service.PrepareCommit((UniverseContext)args[0]!, (IReadOnlyList<ProductionAssetResult>)args[1]!, (string)args[2]!));
-        proxy.Overrides[nameof(IProfessionalUiService.CommitAsync)] = args => Task.Run(() => g.Service.Commit((UniverseContext)args[0]!, (GitCommitPlan)args[1]!));
-        proxy.Overrides[nameof(IProfessionalUiService.PushAsync)] = args => Task.Run(() => g.Service.Push((UniverseContext)args[0]!, (GitOperationId)args[1]!));
+        var service = DispatchProxy.Create<IGitUiTestService, ProfessionalServiceProxy>(); var proxy = (ProfessionalServiceProxy)service;
+        var policy = new GitPublicationPolicyStore(g.Context, Path.Combine(g.Production.Root, "ui-git-policy"));
+        var management = new GitPublicationManagementService(g.Context, policy, g.Inspector, g.Service);
+        management.Save(management.Propose(GitPublicationMode.Manual, "synthetic responsible", ["icons"], 1, true, true));
+        // The UI regression now traverses the real F7 grant service, without overriding native authorization.
+        proxy.Inner = new ProfessionalUiService(new Auditor(ProductionTestFixture.Pass), gitService: g.Service,
+            gitInspector: g.Inspector, gitPolicy: _ => policy);
         var confirm = new Confirmation { Accepted = true }; using var shell = new ShellViewModel(explorer, service, confirm);
         new AssetCatalog(g.Context).Initialize();
         var zip = Path.Combine(g.Context.Storage.InboxRoot, g.Production.Package.AssetKey.AssetId + ".zip"); ZipFile.CreateFromDirectory(g.Production.Source.PackageRoot, zip);
@@ -140,8 +141,8 @@ public sealed class ProfessionalUiTests
         var store = new LocalUniverseSettingsStore(Path.Combine(f.Root, "ui-settings.json"));
         if (configured) store.Save(second is null ? [f.Context.Storage] : [f.Context.Storage, second.Context.Storage]);
         var explorer = new ExplorerViewModel(second is null ? [f.Context.Profile] : [f.Context.Profile, second.Context.Profile], store, new ExplorerService(), new Picker());
-        var service = DispatchProxy.Create<IProfessionalUiService, ProfessionalServiceProxy>(); var proxy = (ProfessionalServiceProxy)service;
-        proxy.Inner = new ProfessionalUiService(auditor); var confirmation = new Confirmation();
+        var service = DispatchProxy.Create<IGitUiTestService, ProfessionalServiceProxy>(); var proxy = (ProfessionalServiceProxy)service;
+        proxy.Inner = new ProfessionalUiService(auditor, gitPolicy: c => new(c, Path.Combine(f.Root, "ui-git-policy-" + c.Id.Value))); var confirmation = new Confirmation();
         return (new(explorer, service, confirmation), proxy, confirmation);
     }
     private static InboxPackageCandidate Zip(CatalogTestFixture f)
@@ -250,7 +251,8 @@ public sealed class ProfessionalUiTests
             confirm.Accepted = true; await shell.ExecutePackage.ExecuteAsync();
             Assert.Equal(JobState.Completed, new JobStateStore(f.Context).Load(job).State); Assert.Equal(1, new CatalogExplorerReader(f.Context).Statistics().TotalAssets);
             Assert.Null(shell.Pipeline.Prepared); Assert.Equal(original, File.ReadAllBytes(candidate.FullPath));
-            shell.NavigateTo("Git"); await shell.LastRefresh; shell.Git.Subject = "Explicit session outputs"; Assert.True(shell.CommitGit.CanExecute(null));
+            shell.NavigateTo("Git"); await shell.LastRefresh; shell.Git.Subject = "Explicit session outputs"; Assert.False(shell.CommitGit.CanExecute(null));
+            Assert.Contains("autorización vigente", shell.CommitGit.DisabledReason);
         }
     }
     [Fact] public async Task AbsentAuditorCannotManufacturePassOrEnablePublication()

@@ -6,6 +6,7 @@ using NAP.Core;
 
 namespace NAP.Presentation;
 
+public sealed record GitRevocationRequest(long Revision, string Actor);
 public sealed record AutomationReference(string Reference);
 public sealed record AutomationPrepare(string FileName);
 public sealed record AutomationExecute(string Prepared, string Audit);
@@ -35,10 +36,10 @@ public sealed class AutomationDesktopBridge
     public const long MaximumHandleBytes = 128L * 1024 * 1024;
 
     public AutomationDesktopBridge(AutomationHost host, IEnumerable<UniverseContext> contexts, string requestDirectory, IAiAuditClient? auditor = null,
-        GitProductionService? git = null, GitProductionInspector? gitInspector = null)
+        GitProductionService? git = null, GitProductionInspector? gitInspector = null, Func<UniverseContext, GitPublicationPolicyStore>? gitPolicy = null)
     {
         _host = host; _contexts = contexts.ToDictionary(c => c.Id);
-        _manual = new(auditor, new HostedUniverseOperationDispatcher(host), git, gitInspector); _read = new(auditor, new HostedUniverseOperationDispatcher(host, true), git, gitInspector);
+        _manual = new(auditor, new HostedUniverseOperationDispatcher(host), git, gitInspector, gitPolicy); _read = new(auditor, new HostedUniverseOperationDispatcher(host, true), git, gitInspector, gitPolicy);
         _normalization = new(new HostedUniverseOperationDispatcher(host)); _requestDirectory = Path.GetFullPath(requestDirectory);
         var lab = Path.GetDirectoryName(host.Controls.DatabasePath)!.TrimEnd(Path.DirectorySeparatorChar);
         if (!Path.GetDirectoryName(_requestDirectory)!.Equals(Path.GetDirectoryName(lab), OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ||
@@ -86,12 +87,14 @@ public sealed class AutomationDesktopBridge
     private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
-        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics;
+        AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics or AutomationOperation.GitConfiguration or AutomationOperation.GitOutbox or AutomationOperation.GitHostAccess or AutomationOperation.GitAuthorizationPropose;
 
     public async Task<JsonElement> HandleAsync(AutomationRequest request, string principal)
     {
         try { return await HandleCoreAsync(request, principal).ConfigureAwait(false); }
         catch (UiStoppedException stopped) { throw new AutomationRemoteOperationException("validation_stopped", stopped.Issues.Issues); }
+        catch (GitUiStoppedException stopped)
+        { throw new AutomationRemoteOperationException(stopped.Notice.Code, [new(stopped.Notice.Code, NapIssueSeverity.Error, NapIssueDisposition.Stop, stopped.Notice.Message)]); }
     }
     private Task<JsonElement> HandleCoreAsync(AutomationRequest request, string principal)
     {
@@ -240,6 +243,15 @@ public sealed class AutomationDesktopBridge
                         throw new AutomationException(AutomationError.ReservationOccupied, "Automatic workflow owns this asset reservation."); return 0;
                 });
                 return View(c, await _manual.ExecuteAsync(c, preparedNative, Get<AiAuditReport>(c, execute.Audit), ct), true);
+            case AutomationOperation.GitConfiguration: return View(c, await _read.ReadGitConfigurationAsync(c, ct));
+            case AutomationOperation.GitOutbox: return View(c, await _read.ReadGitOutboxAsync(c, ct));
+            case AutomationOperation.GitHostAccess: return View(c, await _read.GitHostAccessAsync(c, ct));
+            case AutomationOperation.GitAuthorizationPropose: return View(c, await _manual.ProposeGitAuthorizationAsync(c, Arg<GitAuthorizationInput>(), ct), true);
+            case AutomationOperation.GitAuthorizationSave:
+                await _manual.SaveGitAuthorizationAsync(c, Get<GitAuthorizationReview>(c, Reference()), ct); return View(c, true);
+            case AutomationOperation.GitAuthorizationRevoke:
+                var revoke = Arg<GitRevocationRequest>(); await _manual.RevokeGitAuthorizationAsync(c, revoke.Revision, revoke.Actor, ct); return View(c, true);
+            case AutomationOperation.GitOutboxRetry: return View(c, await _manual.RetryGitOutboxAsync(c, Arg<GitRetryRequest>(), ct));
             case AutomationOperation.InspectGit: return View(c, await _read.InspectGitAsync(c, ct));
             case AutomationOperation.GitReceipts: return View(c, await _read.ReceiptsAsync(c, ct));
             case AutomationOperation.PlanCommit:

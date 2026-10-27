@@ -1,0 +1,52 @@
+{
+  "tested_commit": "f37451026ecbd8aa8c255897c0145d4f8407723d",
+  "base_reviewed_head": "5a41c8184c3fac81d8993127a41e2856a75522bb",
+  "audit_comment": "https://github.com/robdor80/NAP/pull/56#issuecomment-6432979385",
+  "environment": {
+    "os": "Linux x86_64",
+    "sdk": "8.0.427",
+    "git": "2.52.0",
+    "configuration": "Debug"
+  },
+  "test_invocations": 1,
+  "counters": {
+    "total": "2",
+    "executed": "2",
+    "passed": "2",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "cases": [
+    {
+      "name": "NAP.Tests.GitUiF74A1Tests.RepositoryIdentityShowsOnlyFolderAndCurrentUniverseWithoutAncestorsOrIpcData",
+      "outcome": "Passed",
+      "duration": "00:00:00.0318582"
+    },
+    {
+      "name": "NAP.Tests.GitUiF74A1Tests.KnownUnknownAndHistoricalDiagnosticsGiveSpecificSafeGuidanceWithoutChangingEvidence",
+      "outcome": "Passed",
+      "duration": "00:00:00.0132013"
+    }
+  ],
+  "zip_inputs": 0,
+  "test_git_invocations": 0,
+  "test_filesystem_fixtures": 0,
+  "prior_f74_or_f73_tests_rerun": false,
+  "wpf_cross_build": "Passed, 0 errors, 17.68 seconds; no Windows/WPF execution",
+  "raw_sha256_before_redaction": {
+    "f74-a1.trx": "5fff68d0501ab5007f400f7e3375096480380a83fdc8b0ae505986a8d76c24f2",
+    "f74-a1-test.log": "6a97277fd2964032045749f7137317034bc0718f12556770cab8f847659c3506",
+    "f74-a1-wpf-build.log": "176dcca52aaf3d0469365c6a9907c3425f9044a7d105379e1cae42fcf3451d99"
+  }
+}

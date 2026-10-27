@@ -1,0 +1,65 @@
+{
+  "tested_commit": "9fb4f1703f5b7fa8c62bac0822898834d02d4e46",
+  "base_main": "c4a053226f6f27c0cf109ef89cf1a92be1117f36",
+  "changed_source_blobs": {
+    "src/NAP.App/Views/GitView.xaml": "a948117c22d194a3f93e998415d384c164425ec8",
+    "src/NAP.Core/AutomationProtocol.cs": "3c88cc3bf13d14f05248e6199765e974ea046476",
+    "src/NAP.Core/GitPublicationManagementService.cs": "2dbccb9d02830cb673d46cb1c9e89cfe5135e0b3",
+    "src/NAP.Presentation/AutomationDesktopBridge.cs": "33d20fa4b7134d86012e0202040967a56bc9787a",
+    "src/NAP.Presentation/GitManagementUiModels.cs": "edcf620091b78816a5f133d2b12b4e41f7606bb2",
+    "src/NAP.Presentation/GitManagementUiService.cs": "42a4df2c413df451b0e64b9e8b034f7fe4bac597",
+    "src/NAP.Presentation/GitManagementViewModel.cs": "571aa597f8b1036e68ac36bc9cb79445137466ee",
+    "src/NAP.Presentation/GitUiDiagnostics.cs": "b6320adc9ae181f4c1f38ba1ce1807caa40b5a73",
+    "src/NAP.Presentation/ProfessionalPages.cs": "e5ea9d66796b5a28f0b80fad30306a9b0625b9bc",
+    "src/NAP.Presentation/ProfessionalUiModels.cs": "5edf0a1d5e77b71427a145a28dc49c8eeb78935a",
+    "src/NAP.Presentation/ProfessionalUiServices.cs": "0e28343d31f6a46987c5a665b66ee6c75f56b3d3",
+    "src/NAP.Presentation/RemoteDesktopService.cs": "65726dcf43985e7b724bc402325f91f1b2575409",
+    "src/NAP.Presentation/ShellGitManagement.cs": "e2a71f6a37cc01b5c1be1860659f6af27e4ea4d4",
+    "src/NAP.Presentation/ShellViewModel.cs": "56642164887e3710206752ecde1ad8753694e078",
+    "src/NAP.Presentation/UniverseOperationDispatcher.cs": "3f6adb7cf4e2a2c58beb0708b29d25a36aa7be0d",
+    "tests/NAP.Tests/GitUiF74Tests.cs": "3dff1c2d5ed4de7d9a0b974be5f2c0a1fdc1537a",
+    "tests/NAP.Tests/ProfessionalUiTests.cs": "c6070a26840306dd788e6f13475b47548878ab34"
+  },
+  "protected_engine_blobs": {
+    "GitPublicationPolicyStore.cs": {
+      "base": "2a80d96a91f5228b592bbb174959286132031695",
+      "tested": "2a80d96a91f5228b592bbb174959286132031695"
+    },
+    "GitOutboxStore.cs": {
+      "base": "fb1c91a3c0700df236bfe3396001f03480a807e1",
+      "tested": "fb1c91a3c0700df236bfe3396001f03480a807e1"
+    },
+    "GitBatchPublicationService.cs": {
+      "base": "b2f85aae71620d4a4cf6c8ce2d79c76c187af012",
+      "tested": "b2f85aae71620d4a4cf6c8ce2d79c76c187af012"
+    },
+    "GitBatchPublicationPush.cs": {
+      "base": "97de28e07717c13b102c7b4f523b18e0954a9942",
+      "tested": "97de28e07717c13b102c7b4f523b18e0954a9942"
+    },
+    "GitProductionService.cs": {
+      "base": "e21a77f4bf2fb8504e9d6a02fe656110f13344cc",
+      "tested": "e21a77f4bf2fb8504e9d6a02fe656110f13344cc"
+    },
+    "GitProductionReceiptStore.cs": {
+      "base": "6356c9027b1e7b8c210ba4da81eba9a3be9db453",
+      "tested": "6356c9027b1e7b8c210ba4da81eba9a3be9db453"
+    },
+    "GitProductionInspector.cs": {
+      "base": "a15d1cb6aea0010ed64a07bd528fd95577603d02",
+      "tested": "a15d1cb6aea0010ed64a07bd528fd95577603d02"
+    },
+    "GitProductionSafety.cs": {
+      "base": "0b08a8783bfba905a3dfb802d9163a3efd68b29f",
+      "tested": "0b08a8783bfba905a3dfb802d9163a3efd68b29f"
+    },
+    "AutomationHost.cs": {
+      "base": "aa99f84c5803c99329641b5e0643ffd078e2c000",
+      "tested": "aa99f84c5803c99329641b5e0643ffd078e2c000"
+    },
+    "AutomationUniverseRuntime.cs": {
+      "base": "f101fbe926f4a099f6051674c1056deb40c4bcc7",
+      "tested": "f101fbe926f4a099f6051674c1056deb40c4bcc7"
+    }
+  }
+}

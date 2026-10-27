@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ff971bab-57a3-46bf-89c0-8db65dd7ab63" name="@synthetic-linux 2026-10-27 03:08:23" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T03:08:23.6347820+00:00" queuing="2026-10-27T03:08:23.6347820+00:00" start="2026-10-27T03:08:18.8688709+00:00" finish="2026-10-27T03:08:26.7465051+00:00" />
+  <TestSettings name="default" id="53b57d1d-6637-4413-97a6-1db456d7fb70">
+    <Deployment runDeploymentRoot="_synthetic-linux_2026-10-27_03_08_23" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="17f54bb3-71b9-4670-bed4-0b932b779e44" testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" testName="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" computerName="synthetic-linux" duration="00:00:03.3642060" startTime="2026-10-27T03:08:23.6062524+00:00" endTime="2026-10-27T03:08:23.6062652+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17f54bb3-71b9-4670-bed4-0b932b779e44">
+      <Output>
+        <ErrorInfo>
+          <Message>Publica primero un asset: el commit requiere outputs físicamente verificados de esta sesión.</Message>
+          <StackTrace>   at NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence() in /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs:line 154
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4790f011-9487-4fda-9542-1c57e7a1737f" testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" testName="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" computerName="synthetic-linux" duration="00:00:02.9842641" startTime="2026-10-27T03:08:26.5885287+00:00" endTime="2026-10-27T03:08:26.5885289+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4790f011-9487-4fda-9542-1c57e7a1737f" />
+    <UnitTestResult executionId="0d03eba0-6fb6-42b5-b560-f255765e9c63" testId="0ff61874-570c-3fef-aa51-dec21884323e" testName="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" computerName="synthetic-linux" duration="00:00:00.0972770" startTime="2026-10-27T03:08:26.6875456+00:00" endTime="2026-10-27T03:08:26.6875458+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d03eba0-6fb6-42b5-b560-f255765e9c63" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="3dff3485-2fde-d8fe-3f41-9d4733861a42">
+      <Execution id="17f54bb3-71b9-4670-bed4-0b932b779e44" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="0ff61874-570c-3fef-aa51-dec21884323e">
+      <Execution id="0d03eba0-6fb6-42b5-b560-f255765e9c63" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="LateGitReadCannotCrossUniversesAndResetDropsTheProposal" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="b992f627-e8da-2898-c5e5-e7e37e1b2f64">
+      <Execution id="4790f011-9487-4fda-9542-1c57e7a1737f" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" executionId="17f54bb3-71b9-4670-bed4-0b932b779e44" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" executionId="4790f011-9487-4fda-9542-1c57e7a1737f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ff61874-570c-3fef-aa51-dec21884323e" executionId="0d03eba0-6fb6-42b5-b560-f255765e9c63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.09]   Discovering: NAP.Tests
+[xUnit.net 00:00:00.74]   Discovered:  NAP.Tests
+[xUnit.net 00:00:00.77]   Starting:    NAP.Tests
+[xUnit.net 00:00:04.18]       Publica primero un asset: el commit requiere outputs físicamente verificados de esta sesión.
+[xUnit.net 00:00:04.18]       Stack Trace:
+[xUnit.net 00:00:04.18]         /workspace/NAP/tests/NAP.Tests/GitUiF74Tests.cs(154,0): at NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence()
+[xUnit.net 00:00:04.18]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:07.27]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="synthetic-linux" outcome="Error" timestamp="2026-10-27T03:08:23.6042777+00:00">
+        <Text>[xUnit.net 00:00:04.18]     NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

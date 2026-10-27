@@ -1,0 +1,29 @@
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> /workspace/NAP/src/NAP.Core/bin/Debug/net8.0/NAP.Core.dll
+  NAP.Presentation -> /workspace/NAP/src/NAP.Presentation/bin/Debug/net8.0/NAP.Presentation.dll
+  NAP.AI -> /workspace/NAP/src/NAP.AI/bin/Debug/net8.0/NAP.AI.dll
+  NAP.App -> /workspace/NAP/src/NAP.App/bin/Debug/net8.0-windows/NAP.App.dll
+
+Build succeeded.
+
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/synthetic/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+    6 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:09.16

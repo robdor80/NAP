@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="04a16b68-f993-4e4d-bbba-41779e8006dd" name="@synthetic-linux 2026-10-27 03:13:08" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T03:13:08.5695235+00:00" queuing="2026-10-27T03:13:08.5695235+00:00" start="2026-10-27T03:13:04.9587797+00:00" finish="2026-10-27T03:13:28.2146474+00:00" />
+  <TestSettings name="default" id="cfcb41bb-a586-4a92-bd1d-7e234e06f617">
+    <Deployment runDeploymentRoot="_synthetic-linux_2026-10-27_03_13_08" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="dfd15ca2-aba5-4b7e-a1dd-98ea681fb380" testId="06927808-740e-0b05-9338-0d9e932efea6" testName="NAP.Tests.GitOutboxF73Tests.F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption" computerName="synthetic-linux" duration="00:00:08.0106017" startTime="2026-10-27T03:13:19.3656170+00:00" endTime="2026-10-27T03:13:19.3656172+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfd15ca2-aba5-4b7e-a1dd-98ea681fb380">
+      <Output>
+        <StdOut>F73-A2: third read-only slot interrupted after durable Pushed receipt; restart recovers original Outbox/IDs locally; new pushes=0; new remote queries=0.
+{"ZipCount":1,"Identity":"f72@example.invalid","Transport":"temporary-local-bare-only","BaseHead":"8988fc6da49d1ff8bea4e6625076e11ed5886f44","Head":"6da1afc54bdb83f1f69e94d0e777553e0d6d160f","CommitSha":"6da1afc54bdb83f1f69e94d0e777553e0d6d160f","RemoteTip":"6da1afc54bdb83f1f69e94d0e777553e0d6d160f","OperationId":"g_afad60fd41794f22a7dd0ecc20fa9a2f","PlanHash":"681b4067f65a7c8018c30566303ce6f275db93d1472a04bb8f8fd820272d7ac6","Receipt":"Pushed","Outbox":"Pushed","Diagnostic":null,"Intents":[{"Id":"d9be81454b1accff94d645559ce5a71e1df33f235a108341f7eb80279df4e0b1","JobId":"job_cfdd3d3dde4c4a96b54ab72fdde61611","QueueItemId":"queue_ab7f612ad4ca46ffbd1048e1fdfdd05d","WorkflowAttemptId":"attempt_aca3bc60171a42b8b2fcaa448cd609fb","BatchId":"12facda9cc2707f1fa13dfc778955d6ccc038bc055eda2fc9bb33e32b62c1dd4","PolicyRevision":1,"AuthorizationId":"authorization_b69d0963c82c4d84a13a7fb864e70528","State":"Pushed"}],"Jobs":"Completed","Queue":"Completed","NativePushCommands":0}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a920bf16-93c0-48fc-941c-6b5a0b09d812" testId="475ad8a5-f8a5-8621-ba7c-550c3bd81b54" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)" computerName="synthetic-linux" duration="00:00:00.4122935" startTime="2026-10-27T03:13:08.6843967+00:00" endTime="2026-10-27T03:13:08.6843969+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a920bf16-93c0-48fc-941c-6b5a0b09d812">
+      <Output>
+        <StdOut>{"ZipCount":0,"Mode":"Disabled","PolicyRevision":1,"AllowCommit":false,"AllowPush":false,"RepositoryBinding":"f72f383e2b2ffae288ccca95ad7b14ae7e2b1fd776f0f7cb9a20cb52ade1bf0d","BaseHead":"e7971ef4a010e2961ba2359c6d1ce8028e8e1001","RemoteTip":"e7971ef4a010e2961ba2359c6d1ce8028e8e1001","GrantCreatedOnlyAfterSave":true}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f2fe6010-90fd-4091-8006-9bc646483d2a" testId="680264b1-83cf-2b86-735b-a6170d308eb7" testName="NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" computerName="synthetic-linux" duration="00:00:02.1757197" startTime="2026-10-27T03:13:17.0435508+00:00" endTime="2026-10-27T03:13:17.0435510+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2fe6010-90fd-4091-8006-9bc646483d2a" />
+    <UnitTestResult executionId="731b1fc4-168a-4293-a322-adcef484eed9" testId="06f975df-367d-d97b-2db9-31a9c9331b0b" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)" computerName="synthetic-linux" duration="00:00:00.4758396" startTime="2026-10-27T03:13:09.1603958+00:00" endTime="2026-10-27T03:13:09.1603960+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="731b1fc4-168a-4293-a322-adcef484eed9">
+      <Output>
+        <StdOut>{"ZipCount":0,"Mode":"AutoCommitAndPushBatch","PolicyRevision":1,"AllowCommit":true,"AllowPush":true,"RepositoryBinding":"b33da75f2f79665c6511fe5444d39330da91591144c65256def09dcb781b233b","BaseHead":"e7971ef4a010e2961ba2359c6d1ce8028e8e1001","RemoteTip":"e7971ef4a010e2961ba2359c6d1ce8028e8e1001","GrantCreatedOnlyAfterSave":true}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a9356b12-d01e-4515-92e2-eef802ec3194" testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" testName="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" computerName="synthetic-linux" duration="00:00:03.5425366" startTime="2026-10-27T03:13:24.7103435+00:00" endTime="2026-10-27T03:13:24.7103437+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9356b12-d01e-4515-92e2-eef802ec3194">
+      <Output>
+        <StdOut>{"ZipCount":1,"Transport":"temporary-local-bare-only","Id":"51e30dbe3e806408dc3bbd06864e43cd2bcb9a02409947ceacffa1469a507313","OperationId":"g_f2ae28676ce54d67869b603988df37d8","PlanHash":"7cbb086da3b86c19d116964870ee67adedd0162d2bd73c1de9e3ecf7e1dd3f70","CommitSha":"020b9f8dbc382d763b41fa1f7e2c524089d3b021","RemoteTip":"020b9f8dbc382d763b41fa1f7e2c524089d3b021","NativePushCommands":1,"Outbox":"Pushed","OriginalAuthorization":"authorization_ce055f33f7c641b4bcc98445a8e826c8","RevokedRevision":2}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="67a171b9-7ed2-430b-b75a-b8c83f86f3b7" testId="0ff61874-570c-3fef-aa51-dec21884323e" testName="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" computerName="synthetic-linux" duration="00:00:00.1044974" startTime="2026-10-27T03:13:24.8152439+00:00" endTime="2026-10-27T03:13:24.8152443+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="67a171b9-7ed2-430b-b75a-b8c83f86f3b7" />
+    <UnitTestResult executionId="6f07d0ba-34fb-4e21-9b1e-ba2ec04d2e89" testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" testName="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" computerName="synthetic-linux" duration="00:00:03.4303311" startTime="2026-10-27T03:13:20.4729461+00:00" endTime="2026-10-27T03:13:20.4729465+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f07d0ba-34fb-4e21-9b1e-ba2ec04d2e89" />
+    <UnitTestResult executionId="a69b3fbe-9614-4ca5-9a36-dd14abd4246e" testId="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c" testName="NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" computerName="synthetic-linux" duration="00:00:00.9739841" startTime="2026-10-27T03:13:25.7893984+00:00" endTime="2026-10-27T03:13:25.7893987+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a69b3fbe-9614-4ca5-9a36-dd14abd4246e" />
+    <UnitTestResult executionId="d10d538b-e732-4ca4-b3d0-c0f5156ebabf" testId="32047481-2b08-bc99-87fc-29f5f1bd10bb" testName="NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending" computerName="synthetic-linux" duration="00:00:02.6107358" startTime="2026-10-27T03:13:28.1639194+00:00" endTime="2026-10-27T03:13:28.1639197+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d10d538b-e732-4ca4-b3d0-c0f5156ebabf" />
+    <UnitTestResult executionId="4bf5f526-9fdd-48eb-8f89-c737ac7cbe84" testId="9db14e44-2c58-3273-af70-37e20489497b" testName="NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: False)" computerName="synthetic-linux" duration="00:00:01.6365597" startTime="2026-10-27T03:13:21.0276418+00:00" endTime="2026-10-27T03:13:21.0276422+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bf5f526-9fdd-48eb-8f89-c737ac7cbe84" />
+    <UnitTestResult executionId="806e9efa-a4f0-44b4-a6b2-9648d496bfe2" testId="d47c4ac4-53c5-a7d8-8466-78811c599650" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)" computerName="synthetic-linux" duration="00:00:00.4102642" startTime="2026-10-27T03:13:08.2720025+00:00" endTime="2026-10-27T03:13:08.2720030+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="806e9efa-a4f0-44b4-a6b2-9648d496bfe2">
+      <Output>
+        <StdOut>{"ZipCount":0,"Mode":"Manual","PolicyRevision":1,"AllowCommit":true,"AllowPush":true,"RepositoryBinding":"9f5089420d6c552f3b65d0b61856c2e2f27a27c0d9a0db13368503c707ecaa6d","BaseHead":"dfd806b7914fac89fd034106fc6f578dac971d9f","RemoteTip":"dfd806b7914fac89fd034106fc6f578dac971d9f","GrantCreatedOnlyAfterSave":true}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="11e13a54-1b4e-4ec6-9175-4b9772660cdd" testId="9ab83f9d-ce7e-0f6e-1b83-26e91514418f" testName="NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" computerName="synthetic-linux" duration="00:00:05.6965768" startTime="2026-10-27T03:13:14.8574740+00:00" endTime="2026-10-27T03:13:14.8574743+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11e13a54-1b4e-4ec6-9175-4b9772660cdd" />
+    <UnitTestResult executionId="2670f5f5-7c29-448d-8935-729e2c7b7b58" testId="8a171833-ec88-2889-aabe-395995df44a0" testName="NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" computerName="synthetic-linux" duration="00:00:00.6936714" startTime="2026-10-27T03:13:21.1670789+00:00" endTime="2026-10-27T03:13:21.1670791+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2670f5f5-7c29-448d-8935-729e2c7b7b58" />
+    <UnitTestResult executionId="1bcc5061-8ae5-4fb1-a056-1f638639208a" testId="5fda0e9e-8e53-17b4-666a-642312a62e89" testName="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)" computerName="synthetic-linux" duration="00:00:01.7829018" startTime="2026-10-27T03:13:07.8561176+00:00" endTime="2026-10-27T03:13:07.8561835+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1bcc5061-8ae5-4fb1-a056-1f638639208a">
+      <Output>
+        <StdOut>{"ZipCount":0,"Mode":"AutoCommitBatch","PolicyRevision":1,"AllowCommit":true,"AllowPush":false,"RepositoryBinding":"55d4c5cf0a264e6f8ac2c0870db621eb7ad5bf7ea50d0be51467d02d43b700bc","BaseHead":"f12ae5edc30c3e536ed0db2985a6b235ef45c51e","RemoteTip":"f12ae5edc30c3e536ed0db2985a6b235ef45c51e","GrantCreatedOnlyAfterSave":true}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7186fbc2-f163-483a-8f39-2dd3b0bacc08" testId="6deae4a1-7ab9-aba1-19d9-01dd42a94fe1" testName="NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch" computerName="synthetic-linux" duration="00:00:05.2814232" startTime="2026-10-27T03:13:11.3532055+00:00" endTime="2026-10-27T03:13:11.3532056+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7186fbc2-f163-483a-8f39-2dd3b0bacc08">
+      <Output>
+        <StdOut>{"ZipCount":1,"Identity":"f72@example.invalid","Transport":"temporary-local-bare-only","BaseHead":"f12ae5edc30c3e536ed0db2985a6b235ef45c51e","Head":"3d16b4d22f98d7024080a27b6ddb16b694cfae4d","CommitSha":"3d16b4d22f98d7024080a27b6ddb16b694cfae4d","RemoteTip":"f12ae5edc30c3e536ed0db2985a6b235ef45c51e","OperationId":"g_6d244871d4a344f8bb8da1da260c11cb","PlanHash":"4b21097fafa0ddc952f6095926f4cf44ce0b32d03e6d50863bcd5b4962146295","Receipt":"Committed","Outbox":"Committed","Diagnostic":null,"Intents":[{"Id":"3a1e33df3b4b04c1ce1883a40c9dca9d9c1e5360ad9e5fd46e595246333257ba","JobId":"job_d9ffe558d80845b0b44488e48be54b93","QueueItemId":"queue_39dd075ad70f485bae17ff94f022d2a6","WorkflowAttemptId":"attempt_7daf1a16a6de49c0a0b72b5cb820e4b1","BatchId":"b0f594c5a7782ffb828df9f187644b24da3ee95eb697de2b74741f9d62680fe4","PolicyRevision":1,"AuthorizationId":"authorization_52143a4e59a6481dad0638a072a206d6","State":"Committed"}],"Jobs":"Completed","Queue":"Completed","NativePushCommands":0}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bbe39230-e186-4bdf-aef3-9a1c839b2367" testId="e76c4f94-4efe-8e05-e396-b8ace5cf64d1" testName="NAP.Tests.ProfessionalUiTests.RealZipPublishesOnlyAfterRealAuditAndExplicitConfirmation" computerName="synthetic-linux" duration="00:00:01.0864231" startTime="2026-10-27T03:13:25.5516723+00:00" endTime="2026-10-27T03:13:25.5516725+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bbe39230-e186-4bdf-aef3-9a1c839b2367" />
+    <UnitTestResult executionId="6e5bd2bb-fe3c-4842-8914-af5a96e07cac" testId="3e49805f-db79-8876-4d3e-f73f4c813453" testName="NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: True)" computerName="synthetic-linux" duration="00:00:03.4359690" startTime="2026-10-27T03:13:24.4647737+00:00" endTime="2026-10-27T03:13:24.4647741+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e5bd2bb-fe3c-4842-8914-af5a96e07cac" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Disabled, commit: False, push: False)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="475ad8a5-f8a5-8621-ba7c-550c3bd81b54">
+      <Execution id="a920bf16-93c0-48fc-941c-6b5a0b09d812" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.ProfessionalUiTests.RealZipPublishesOnlyAfterRealAuditAndExplicitConfirmation" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="e76c4f94-4efe-8e05-e396-b8ace5cf64d1">
+      <Execution id="bbe39230-e186-4bdf-aef3-9a1c839b2367" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.ProfessionalUiTests" name="RealZipPublishesOnlyAfterRealAuditAndExplicitConfirmation" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF72Tests.SecondBatchIsBlockedByNativeRequireNoPending" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="32047481-2b08-bc99-87fc-29f5f1bd10bb">
+      <Execution id="d10d538b-e732-4ca4-b3d0-c0f5156ebabf" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF72Tests" name="SecondBatchIsBlockedByNativeRequireNoPending" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitAndPushBatch, commit: True, push: True)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="06f975df-367d-d97b-2db9-31a9c9331b0b">
+      <Execution id="731b1fc4-168a-4293-a322-adcef484eed9" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="8a171833-ec88-2889-aabe-395995df44a0">
+      <Execution id="2670f5f5-7c29-448d-8935-729e2c7b7b58" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="InvalidPermissionsPrefixesAndChangedReviewNeverGrantOrRewriteEvidence" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF73Tests.RevocationAndNewGrantNeverReactivateOldCommittedBatch" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="6deae4a1-7ab9-aba1-19d9-01dd42a94fe1">
+      <Execution id="7186fbc2-f163-483a-8f39-2dd3b0bacc08" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF73Tests" name="RevocationAndNewGrantNeverReactivateOldCommittedBatch" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="3dff3485-2fde-d8fe-3f41-9d4733861a42">
+      <Execution id="6f07d0ba-34fb-4e21-9b1e-ba2ec04d2e89" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="ManualCommitAndPushHaveIndependentCancelPathsAndNativeEvidence" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: AutoCommitBatch, commit: True, push: False)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="5fda0e9e-8e53-17b4-666a-642312a62e89">
+      <Execution id="1bcc5061-8ae5-4fb1-a056-1f638639208a" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.LateGitReadCannotCrossUniversesAndResetDropsTheProposal" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="0ff61874-570c-3fef-aa51-dec21884323e">
+      <Execution id="67a171b9-7ed2-430b-b75a-b8c83f86f3b7" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="LateGitReadCannotCrossUniversesAndResetDropsTheProposal" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: False)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="9db14e44-2c58-3273-af70-37e20489497b">
+      <Execution id="4bf5f526-9fdd-48eb-8f89-c737ac7cbe84" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.ProfessionalUiTests" name="GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitOutboxF73Tests.F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="06927808-740e-0b05-9338-0d9e932efea6">
+      <Execution id="dfd15ca2-aba5-4b7e-a1dd-98ea681fb380" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitOutboxF73Tests" name="F73A2DurablePushedReceiptRecoversOutboxAfterThirdVerificationInterruption" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c">
+      <Execution id="a69b3fbe-9614-4ca5-9a36-dd14abd4246e" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="RevocationWithoutRemoteBlocksPendingAndCorruptAnchorStopsWithoutRepair" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.ProfessionalUiTests.GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations(commitAccepted: True)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="3e49805f-db79-8876-4d3e-f73f4c813453">
+      <Execution id="6e5bd2bb-fe3c-4842-8914-af5a96e07cac" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.ProfessionalUiTests" name="GitRequiresRealSessionEvidenceAndIndependentCommitPushConfirmations" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="680264b1-83cf-2b86-735b-a6170d308eb7">
+      <Execution id="f2fe6010-90fd-4091-8006-9bc646483d2a" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="EditorSelectionCancellationRevocationAndOwnerReasonsAreExplicit" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.FourModesRequireAReviewedExplicitSave(mode: Manual, commit: True, push: True)" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="d47c4ac4-53c5-a7d8-8466-78811c599650">
+      <Execution id="806e9efa-a4f0-44b4-a6b2-9648d496bfe2" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="FourModesRequireAReviewedExplicitSave" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="b992f627-e8da-2898-c5e5-e7e37e1b2f64">
+      <Execution id="a9356b12-d01e-4515-92e2-eef802ec3194" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="AuthenticatedIpcKeepsProposalOnHostDeduplicatesSaveAndRetriesWithRealOwner" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitUiF74Tests.OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" storage="/workspace/nap/tests/nap.tests/bin/debug/net8.0/nap.tests.dll" id="9ab83f9d-ce7e-0f6e-1b83-26e91514418f">
+      <Execution id="11e13a54-1b4e-4ec6-9175-4b9772660cdd" />
+      <TestMethod codeBase="/workspace/NAP/tests/NAP.Tests/bin/Debug/net8.0/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitUiF74Tests" name="OutboxProjectionPreservesCorrelationAndRejectsReceiptDiscordanceReadOnly" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="06927808-740e-0b05-9338-0d9e932efea6" executionId="dfd15ca2-aba5-4b7e-a1dd-98ea681fb380" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="475ad8a5-f8a5-8621-ba7c-550c3bd81b54" executionId="a920bf16-93c0-48fc-941c-6b5a0b09d812" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="680264b1-83cf-2b86-735b-a6170d308eb7" executionId="f2fe6010-90fd-4091-8006-9bc646483d2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06f975df-367d-d97b-2db9-31a9c9331b0b" executionId="731b1fc4-168a-4293-a322-adcef484eed9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b992f627-e8da-2898-c5e5-e7e37e1b2f64" executionId="a9356b12-d01e-4515-92e2-eef802ec3194" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ff61874-570c-3fef-aa51-dec21884323e" executionId="67a171b9-7ed2-430b-b75a-b8c83f86f3b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3dff3485-2fde-d8fe-3f41-9d4733861a42" executionId="6f07d0ba-34fb-4e21-9b1e-ba2ec04d2e89" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a350fc1-8bc4-2f2b-184a-e7e0be9a637c" executionId="a69b3fbe-9614-4ca5-9a36-dd14abd4246e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="32047481-2b08-bc99-87fc-29f5f1bd10bb" executionId="d10d538b-e732-4ca4-b3d0-c0f5156ebabf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9db14e44-2c58-3273-af70-37e20489497b" executionId="4bf5f526-9fdd-48eb-8f89-c737ac7cbe84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d47c4ac4-53c5-a7d8-8466-78811c599650" executionId="806e9efa-a4f0-44b4-a6b2-9648d496bfe2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9ab83f9d-ce7e-0f6e-1b83-26e91514418f" executionId="11e13a54-1b4e-4ec6-9175-4b9772660cdd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a171833-ec88-2889-aabe-395995df44a0" executionId="2670f5f5-7c29-448d-8935-729e2c7b7b58" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fda0e9e-8e53-17b4-666a-642312a62e89" executionId="1bcc5061-8ae5-4fb1-a056-1f638639208a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6deae4a1-7ab9-aba1-19d9-01dd42a94fe1" executionId="7186fbc2-f163-483a-8f39-2dd3b0bacc08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e76c4f94-4efe-8e05-e396-b8ace5cf64d1" executionId="bbe39230-e186-4bdf-aef3-9a1c839b2367" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e49805f-db79-8876-4d3e-f73f4c813453" executionId="6e5bd2bb-fe3c-4842-8914-af5a96e07cac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="17" executed="17" passed="17" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.09]   Discovering: NAP.Tests
+[xUnit.net 00:00:00.55]   Discovered:  NAP.Tests
+[xUnit.net 00:00:00.57]   Starting:    NAP.Tests
+[xUnit.net 00:00:22.70]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -4,7 +4,7 @@ using NAP.Core;
 namespace NAP.Presentation;
 
 /// <summary>Desktop session. Scope/generation protect every result; mutations retain their typed Core plans and explicit confirmation.</summary>
-public sealed class ShellViewModel : ObservableObject, IDisposable
+public sealed partial class ShellViewModel : ObservableObject, IDisposable
 {
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
@@ -16,7 +16,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private readonly IProfileFilePicker? _profilePicker;
     private readonly List<UiAsyncCommand> _commands = [];
     private readonly CancellationTokenSource _lifetime = new();
-    private CancellationTokenSource? _read;
+    private CancellationTokenSource? _read, _action;
     private long _generation, _universeSwitchSequence;
     private bool _executing, _disposed, _trayOnMinimize, _scopePending, _initializing, _switchingUniverse;
     private bool _toolsExpanded, _reviewExpanded;
@@ -162,19 +162,20 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             if (!await Confirm(c, "Aplicar retención", "Se eliminarán únicamente los backups reconocidos que aparecen en este plan. Core comprobará que el inventario siga intacto.", deletes.Select(d => UiTerminology.Backup(d.Backup.Kind) + " · " + d.Backup.BackupId.Value).ToArray(), ct)) return;
             var result = await _service.RetainAsync(c, plan, ct); Record(c, $"Retención completada: {result.DeletedBackupIds.Count} backups eliminados", UiTone.Warning);
         }), () => Writable(Backups) && new[] { Backups.Newest, Backups.Daily, Backups.Weekly, Backups.Monthly }.All(v => int.TryParse(v, out var n) && n >= 0));
-        InspectGit = Command(() => ActionAsync(async (c, ct) => { var repository = await _service.InspectGitAsync(c, ct); if (!Active(c)) return; Scope(repository.UniverseId, c); Git.Repository = repository; Record(c, "Estado Git inspeccionado", UiTone.Neutral); }), () => Context is not null && !IsExecuting);
+        InspectGit = Command(() => ActionAsync(async (c, ct) => { Git.Repository = null; var repository = await _service.InspectGitAsync(c, ct); if (!Active(c)) return; Scope(repository.UniverseId, c); Git.Repository = repository; Record(c, "Estado Git inspeccionado", UiTone.Neutral); }), () => Context is not null && !IsExecuting);
         CommitGit = Command(() => ActionAsync(async (c, ct) =>
         {
             var plan = await _service.PlanCommitAsync(c, _verified.ToArray(), Git.Subject, ct);
             Scope(plan.UniverseId, c);
             if (!await Confirm(c, "Crear commit", "Solo se incluirán outputs verificados de esta sesión. El commit no hace push.", new[] { "Rama: " + plan.Status.Branch, "HEAD base: " + plan.Status.Head, "Mensaje: " + plan.Message }.Concat(plan.Selection.Paths).ToArray(), ct)) return;
             var result = await _service.CommitAsync(c, plan, ct); if (!Active(c)) return; Scope(result.UniverseId, c); _verified.Clear(); Git.Repository = null; Record(c, "Commit verificado: " + result.CommitSha, UiTone.Success);
-        }), () => Writable(Git) && _verified.Count > 0 && !string.IsNullOrWhiteSpace(Git.Subject));
-        RecoverGit = Command(() => ActionAsync(async (c, ct) => { var receipt = await _service.RecoverAsync(c, Git.SelectedReceipt!.OperationId, ct); Record(c, "Recibo verificado: " + receipt.State, UiTone.Neutral); }), () => Writable(Git) && Git.SelectedReceipt is not null);
+        }), () => GitWritable() && Git.CanCommit && _verified.Count > 0 && !string.IsNullOrWhiteSpace(Git.Subject));
+        RecoverGit = Command(() => ActionAsync(async (c, ct) => { var selected = Git.SelectedReceipt!; if (!await Confirm(c, "Recuperar recibo Git", "Verifica evidencia nativa y puede actualizar el recibo. No crea un commit ni mueve HEAD; Prepared sigue requiriendo retry explícito.", [selected.OperationId.Value, "Estado: " + selected.State], ct)) return; var receipt = await _service.RecoverAsync(c, selected.OperationId, ct); Record(c, "Recibo verificado: " + receipt.State, UiTone.Neutral); }), () => GitWritable() && Git.CanCommit && Git.SelectedReceipt is not null);
         RetryGit = Command(() => ActionAsync(async (c, ct) =>
-        { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Reintentar commit", "Core revalidará la operación Prepared y su index propio.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "HEAD base: " + receipt.BaseHead], ct)) { var result = await _service.RetryCommitAsync(c, receipt.OperationId, ct); Record(c, "Commit recuperado: " + result.CommitSha, UiTone.Success); } }), () => Writable(Git) && Git.SelectedReceipt?.State == GitReceiptState.Prepared);
+        { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Reintentar commit", "Core revalidará la operación Prepared y su index propio.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "HEAD base: " + receipt.BaseHead], ct)) { var result = await _service.RetryCommitAsync(c, receipt.OperationId, ct); Record(c, "Commit recuperado: " + result.CommitSha, UiTone.Success); } }), () => GitWritable() && Git.CanCommit && Git.SelectedReceipt?.State == GitReceiptState.Prepared);
         PushGit = Command(() => ActionAsync(async (c, ct) =>
-        { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Publicar commit", "Push normal a la rama y remoto congelados. Nunca force, upstream nuevo ni todas las ramas.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "Remoto: " + receipt.RemoteName, "Commit: " + receipt.CommitSha], ct)) { var result = await _service.PushAsync(c, receipt.OperationId, ct); Record(c, "Push: " + result.Outcome, UiTone.Success); } }), () => Writable(Git) && Git.SelectedReceipt?.State == GitReceiptState.Committed);
+        { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Publicar commit", "Push normal a la rama y remoto congelados. Nunca force, upstream nuevo ni todas las ramas.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "Remoto: " + receipt.RemoteName, "Commit: " + receipt.CommitSha], ct)) { var result = await _service.PushAsync(c, receipt.OperationId, ct); Record(c, "Push: " + result.Outcome, UiTone.Success); } }), () => GitWritable() && Git.CanPush && Git.SelectedReceipt?.State == GitReceiptState.Committed);
+        InitializeGitCommands();
         foreach (var page in Pages) page.PropertyChanged += PageChanged;
         Explorer.PropertyChanged += ExplorerChanged; Activate(Dashboard);
     }
@@ -280,6 +281,7 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (command == PreparePackage) return "Selecciona un paquete ZIP del Inbox.";
         if (command == AuditPackage) return Pipeline.Prepared is null ? "Prepara primero un paquete para obtener su plan." : "Configura un auditor de producción real antes de auditar.";
         if (command == ExecutePackage) return Pipeline.Prepared is null ? "Prepara primero un paquete para obtener su plan." : Pipeline.Audit is null ? "Audita el plan y obtén PASS antes de publicar." : "La auditoría no ha dado PASS; no se puede publicar.";
+        var gitReason = GitDisabledReason(command); if (gitReason is not null) return gitReason;
         if (command == CommitGit) return _verified.Count == 0 ? "Publica primero un asset: el commit requiere outputs físicamente verificados de esta sesión." : "Escribe el mensaje del commit.";
         if (command == RecoverGit || command == RetryGit || command == PushGit) return Git.SelectedReceipt is null ? "No hay una operación Git seleccionada." : command == RetryGit ? "Solo se puede reintentar una operación Prepared." : "Selecciona una operación con commit verificado pendiente de push.";
         return "Espera a que la operación actual termine.";
@@ -301,15 +303,16 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     private async Task ActionAsync(Func<UniverseContext, CancellationToken, Task> action)
     {
         var context = Context ?? throw new InvalidOperationException("No active context."); _read?.Cancel(); ++_generation; IsExecuting = true;
-        try { await action(context, _lifetime.Token); }
+        using var actionSource = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token); _action = actionSource;
+        try { await action(context, actionSource.Token); }
         catch (OperationCanceledException) { return; }
         catch (Exception error) { if (Active(context)) Fail(error); return; }
-        finally { IsExecuting = false; }
+        finally { _action = null; IsExecuting = false; }
         if (!_disposed) await RefreshCurrentAsync();
     }
     private bool Active(UniverseContext context) => !_disposed && context == Context && !_lifetime.IsCancellationRequested;
     private async Task<bool> Confirm(UniverseContext c, string title, string explanation, IReadOnlyList<string> details, CancellationToken ct)
-    { var accepted = await _confirmation.ConfirmAsync(new(title, explanation, c.Id, details), ct); return accepted && !_disposed && Context == c && !ct.IsCancellationRequested; }
+    { var generation = _generation; if (!Active(c) || ct.IsCancellationRequested) return false; var accepted = await _confirmation.ConfirmAsync(new(title, explanation, c.Id, details), ct); return accepted && generation == _generation && !_disposed && Context == c && !ct.IsCancellationRequested; }
     public async Task RefreshCurrentAsync()
     {
         if (_disposed || IsExecuting) return;
@@ -366,7 +369,25 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
             else if (page == Backups)
             { var value = await _service.BackupsAsync(context, source.Token); if (!Current()) return; foreach (var entry in value.Entries) Scope(entry.UniverseId, context); Replace(Backups.Entries, value.Entries); Backups.Selected = null; var issue = value.Issues.Issues.FirstOrDefault(i => i.StopsProcessing) ?? value.Issues.Issues.FirstOrDefault(); page.Notice = issue is null ? null : new(issue.Message, issue.Code, issue.StopsProcessing ? UiTone.Error : UiTone.Warning); page.State = value.Issues.ShouldStop ? UiPageState.Stopped : value.Entries.Count == 0 ? UiPageState.Empty : UiPageState.Ready; }
             else if (page == Git)
-            { var receipts = await _service.ReceiptsAsync(context, source.Token); if (!Current()) return; CheckReceipts(receipts, context); Replace(Git.Receipts, receipts); Git.SelectedReceipt = null; page.State = UiPageState.Ready; }
+            {
+                if (_service is IGitManagementUiService management)
+                {
+                    GitConfigurationView configuration;
+                    try { configuration = await management.ReadGitConfigurationAsync(context, source.Token); }
+                    catch { if (Current()) Git.InvalidateConfiguration(); throw; }
+                    if (!Current()) return;
+                    Scope(configuration.UniverseId, context); Git.ApplyConfiguration(configuration);
+                    var access = await management.GitHostAccessAsync(context, source.Token); if (!Current()) return; Git.HostAccess = access;
+                    GitOutboxView outbox;
+                    try { outbox = await management.ReadGitOutboxAsync(context, source.Token); }
+                    catch { if (Current()) Git.ClearOutbox(); throw; }
+                    if (!Current()) return;
+                    Scope(outbox.UniverseId, context); Git.ApplyOutbox(outbox);
+                }
+                var receipts = await _service.ReceiptsAsync(context, source.Token); if (!Current()) return; CheckReceipts(receipts, context);
+                var selected = Git.SelectedReceipt?.OperationId;
+                Replace(Git.Receipts, receipts); Git.SelectedReceipt = receipts.FirstOrDefault(r => r.OperationId == selected); page.State = UiPageState.Ready;
+            }
             else
             { await Explorer.RefreshAsync(); if (!Current()) return; page.State = Explorer.State == ExplorerState.Error ? UiPageState.Stopped : Explorer.State == ExplorerState.Empty ? UiPageState.Empty : UiPageState.Ready; if (Explorer.Error is { } error) page.Notice = new(error.Message, error.Code, UiTone.Error); }
         }
@@ -380,9 +401,9 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
         if (e.PropertyName == nameof(ExplorerViewModel.Profiles)) { Notify(nameof(Profiles)); Notify(nameof(HasSingleUniverse)); Notify(nameof(HasUniverseSelector)); }
         if (e.PropertyName is nameof(ExplorerViewModel.Context) or nameof(ExplorerViewModel.SelectedUniverse))
         {
-            _read?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
+            _read?.Cancel(); _action?.Cancel(); ++_generation; _verified.Clear(); foreach (var page in Pages) page.Reset();
             Automation?.ContextChanged(); Pipeline.Work?.ContextChanged(); History.Work?.ContextChanged(); Settings.Diagnostics?.ContextChanged(); Settings.Historical.ContextChanged();
-            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
+            Notify(nameof(Context)); Notify(nameof(SelectedUniverse)); Notify(nameof(UniverseLabel)); Notify(nameof(GitRepositoryLabel)); Notify(nameof(PauseLabel)); Notify(nameof(ResumeLabel));
             _scopePending = true;
         }
         // The explicit switch owns the refresh: terminal Explorer state must not replace/cancel LastRefresh.
@@ -418,5 +439,5 @@ public sealed class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _action?.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }

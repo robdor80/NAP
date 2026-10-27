@@ -1,0 +1,34 @@
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.427
+
+Telemetry
+---------
+The .NET tools collect usage data in order to help us improve your experience. It is collected by Microsoft and shared with the community. You can opt-out of telemetry by setting the DOTNET_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+
+Read more about .NET CLI Tools telemetry: https://aka.ms/dotnet-cli-telemetry
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+  Determining projects to restore...
+  Restored /workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj (in 2.85 sec).
+  Restored /workspace/NAP/tools/NAP.CoordinationProbe/NAP.CoordinationProbe.csproj (in 2.85 sec).
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44 [/workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj]
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4 [/workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj]
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q [/workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj]
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1903: Package 'SixLabors.ImageSharp' 3.2.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w [/workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj]
+/workspace/NAP/src/NAP.Core/NAP.Core.csproj : warning NU1902: Package 'SixLabors.ImageSharp' 3.2.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g [/workspace/NAP/tests/NAP.Tests/NAP.Tests.csproj]
+  Restored /workspace/NAP/src/NAP.Presentation/NAP.Presentation.csproj (in 3 ms).
+  Restored /workspace/NAP/src/NAP.Core/NAP.Core.csproj (in 7 ms).
+  Restored /workspace/NAP/src/NAP.AutomationHost/NAP.AutomationHost.csproj (in 2 ms).
+  Restored /workspace/NAP/src/NAP.AI/NAP.AI.csproj (in 2 ms).

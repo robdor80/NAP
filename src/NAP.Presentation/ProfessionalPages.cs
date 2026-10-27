@@ -114,7 +114,7 @@ public sealed class HistoryViewModel : ProfessionalPage
     public string? EmptyActivity => Activities.Count == 0 ? "Todavía no hay actividad registrada en esta sesión." : null;
     internal override void Reset() { base.Reset(); Jobs.Clear(); Receipts.Clear(); Activities.Clear(); }
 }
-public sealed class GitViewModel() : ProfessionalPage("Git", "Estado humano y operaciones explícitas sobre el repositorio de producción.")
+public sealed partial class GitViewModel() : ProfessionalPage("Git", "Estado humano y operaciones explícitas sobre el repositorio de producción.")
 {
     private GitRepositoryStatus? _repository;
     private GitOperationReceipt? _receipt;
@@ -127,7 +127,7 @@ public sealed class GitViewModel() : ProfessionalPage("Git", "Estado humano y op
     public GitOperationReceipt? SelectedReceipt { get => _receipt; set => Set(ref _receipt, value); }
     public string Subject { get => _subject; set => Set(ref _subject, value); }
     public override string? EmptyMessage => EvidenceMessage(Receipts.Count == 0 ? "No hay operaciones Git registradas para este universo." : null);
-    internal override void Reset() { base.Reset(); Repository = null; Receipts.Clear(); SelectedReceipt = null; Subject = ""; }
+    internal override void Reset() { base.Reset(); Repository = null; Receipts.Clear(); SelectedReceipt = null; Subject = ""; ResetManagement(); }
 }
 public sealed class SettingsViewModel(ExplorerViewModel explorer) : ProfessionalPage("Ajustes", "Raíces locales explícitas, independientes y recordadas por universo.")
 {
