@@ -1,0 +1,50 @@
+{
+  "base_reviewed_head": "5a41c8184c3fac81d8993127a41e2856a75522bb",
+  "tested_commit": "f37451026ecbd8aa8c255897c0145d4f8407723d",
+  "changed_source_blobs": {
+    "src/NAP.App/Views/GitView.xaml": "514d8e6f9d00ac28cf4739c10c5237803c918df3",
+    "src/NAP.Presentation/GitManagementUiModels.cs": "6c7a4aea11e1359a2a1b464746b5778491a5f0ac",
+    "src/NAP.Presentation/GitManagementViewModel.cs": "ba5e77b2b5c7394e4c2df1e4b583a8ac3e13f901",
+    "src/NAP.Presentation/GitOutboxGuidance.cs": "4467bb7313d799cb358b39d2fe49e0bb4826d88b",
+    "src/NAP.Presentation/GitRepositoryIdentity.cs": "414939ffdc530476e6b43917c869975c06bddf95",
+    "src/NAP.Presentation/ShellGitManagement.cs": "9ab03bf58527a7e90e16e2870e2b5cedf56ea1a4",
+    "src/NAP.Presentation/ShellViewModel.cs": "6b7fbbe2110c97f44c538cccfd95902796f05375",
+    "tests/NAP.Tests/GitUiF74A1Tests.cs": "07b9fdaac668bfacfd279982648e1b6cc2455809"
+  },
+  "unchanged_trees": {
+    "src/NAP.Core": {
+      "base": "9d9830840ada7256f3f68b45d68e11e1d861ca2e",
+      "tested": "9d9830840ada7256f3f68b45d68e11e1d861ca2e"
+    },
+    "src/NAP.AutomationHost": {
+      "base": "ed5e163a4ff4cdddeffce9b70e4446d2dd0c5e5e",
+      "tested": "ed5e163a4ff4cdddeffce9b70e4446d2dd0c5e5e"
+    },
+    ".github": {
+      "base": "d76bfb746964ee59c0eed8dcaf1463352de6c013",
+      "tested": "d76bfb746964ee59c0eed8dcaf1463352de6c013"
+    }
+  },
+  "unchanged_service_and_ipc_blobs": {
+    "src/NAP.Presentation/AutomationDesktopBridge.cs": {
+      "base": "33d20fa4b7134d86012e0202040967a56bc9787a",
+      "tested": "33d20fa4b7134d86012e0202040967a56bc9787a"
+    },
+    "src/NAP.Presentation/RemoteDesktopService.cs": {
+      "base": "65726dcf43985e7b724bc402325f91f1b2575409",
+      "tested": "65726dcf43985e7b724bc402325f91f1b2575409"
+    },
+    "src/NAP.Presentation/ProfessionalUiServices.cs": {
+      "base": "0e28343d31f6a46987c5a665b66ee6c75f56b3d3",
+      "tested": "0e28343d31f6a46987c5a665b66ee6c75f56b3d3"
+    },
+    "src/NAP.Presentation/GitManagementUiService.cs": {
+      "base": "42a4df2c413df451b0e64b9e8b034f7fe4bac597",
+      "tested": "42a4df2c413df451b0e64b9e8b034f7fe4bac597"
+    },
+    "src/NAP.Presentation/UniverseOperationDispatcher.cs": {
+      "base": "3f6adb7cf4e2a2c58beb0708b29d25a36aa7be0d",
+      "tested": "3f6adb7cf4e2a2c58beb0708b29d25a36aa7be0d"
+    }
+  }
+}

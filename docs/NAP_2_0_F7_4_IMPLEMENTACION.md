@@ -1,5 +1,7 @@
 # F7.4 — Implementación para auditoría independiente
 
+Adenda posterior: [corrección focalizada F74-A1 y su evidencia](NAP_2_0_F7_4_F74_A1.md). Los SHA/resultados siguientes describen la entrega inicial y se conservan como referencia histórica.
+
 27-10-2026. Repositorio `robdor80/NAP`, rama exclusiva `chatgpt/nap-2-f7-4-git-ui`, PR **#56 Draft**. **No se declara F7.4 aceptada, cerrada ni certificada para producción.**
 
 Código final probado: **`9fb4f1703f5b7fa8c62bac0822898834d02d4e46`**. Los commits posteriores solo añaden documentación/evidencia. El HEAD entregado es el commit que contiene este informe y se comunica con su SHA completo en la entrega y PR, evitando autorreferencia dentro del propio commit.

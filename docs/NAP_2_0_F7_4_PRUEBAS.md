@@ -1,5 +1,7 @@
 # F7.4 — Pruebas focalizadas y evidencia
 
+Adenda posterior: [corrección focalizada F74-A1 y su evidencia](NAP_2_0_F7_4_F74_A1.md). Los SHA/resultados siguientes describen la entrega inicial y se conservan como referencia histórica.
+
 27-10-2026. Rama `chatgpt/nap-2-f7-4-git-ui`, PR #56 Draft. **Código final probado: `9fb4f1703f5b7fa8c62bac0822898834d02d4e46`.** No aceptación de fase ni certificación productiva.
 
 Entrega: **17 Passed, 0 Failed, 0 Skipped**, VSTest 20 s. Compilación cruzada WPF/Debug correcta, cero errores (9,16 s). Linux x86_64, SDK .NET 8.0.427, Git 2.52.0. Solo bare temporales locales e identidades ficticias `.invalid`; máximo dos ZIP por caso. No GitHub como remoto de prueba.
