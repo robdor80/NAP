@@ -1,0 +1,15 @@
+{
+  "main": "ae6aa5b05a47917e7c53f854c4506725cc7c1bf8",
+  "branchProtectedFlag": true,
+  "workflowBlobs": {
+    "ci.yml": "2f40cdc3176a1a3ca343c9a57a721d49167a0f35",
+    "cutover-laboratory.yml": "41353750eaefecdd48bed3f2cf35e6047e6d373e",
+    "phase6-msi-preparation.yml": "e2d4f089ad7b90718175d5ac8584c4d615476f0a",
+    "phase6-review.yml": "ecdd4a5ace305f0f75a5cf2a587973dd0ce360e8"
+  },
+  "triggers": "Three workflow_dispatch only; phase6-msi-preparation also push on codex/nap-2-fase-6-ux only. No pull_request trigger.",
+  "targetBranch": "chatgpt/nap-2-f8-safe-msi-lab",
+  "workflowsModified": false,
+  "workflowsDispatched": 0,
+  "administrativeWorkflowState": "not certified; no changes"
+}

@@ -55,8 +55,9 @@ dotnet build src/NAP.App/NAP.App.csproj -c Debug \
 | Verificación | Resultado y evidencia |
 |---|---|
 | WPF lab Debug cruzada | **0 errores**, 7 avisos reportados; `build-lab-debug.log`. Incluye avisos oficiales de licencia ausente y CS1998/CS0649 por ramas excluidas. No se suprimen. |
-| Tests finales | **7/7 Passed, 0 Failed, 0 Skipped**; `f81-cloud-delivery.trx`, `tests-delivery.log`. |
+| Tests finales | **7/7 Passed, 0 Failed, 0 Skipped**; entrega final tras ajuste de viewport: `f81-cloud-viewport.trx`, `tests-viewport.log`; entrega anterior conservada en `f81-cloud-delivery.trx`. |
 | IL de arranque compilado | PASS, `probe-il.log`; llama Phase81GitLab y valida contrato, sin composición productiva en los métodos inspeccionados. No ejecuta el ensamblado WPF. |
+| Publish Windows x64 Debug | Cero errores; `publish-winx64-debug.log`. Genera `NAP.GitVisualLab.exe`, sin config/perfiles ni .lic; hashes en `publish-winx64-hashes.json`. IL de ese DLL publicado: PASS (`probe-il-viewport.log`). No se ejecuta en Linux. |
 | Binario normal Debug | **0 errores**, `build-normal-debug.log`; compila la rama ordinaria y guarda F8.1. No se abre NAP normal. |
 | Propiedades F6+F81 simultáneas | Error esperado `RejectConflictingLaboratories`, `conflicting-build.log`; no es una compilación aprobada. |
 | PowerShell 7.4.7 | Parser y construcción de argumentos con espacios PASS, `powershell-parse.log`. Guard no-Windows rechaza ejecución Linux antes de crear directorios/compilar/lanzar (`nonwindows-rejection.log`). No acredita Start-Process/Win32 en MSI. |
@@ -68,7 +69,7 @@ El test de symlinks solo crea enlace real en Linux; en Windows no solicita privi
 
 ## Fallos intermedios conservados
 
-Primera compilación de tests: acceso indebido al plan interno del receipt y overload xUnit síncrono para Task; corregidos antes de ejecutar tests. Primera ejecución: 3 Passed/4 Failed por ID sintético con guion incompatible con Naming v1 y búsqueda de fuentes fuera del checkout; conservada en `f81-cloud-before.trx`. Después 7/7 (`f81-cloud.trx`), y 8/8 con la comprobación IL entonces integrada (`f81-cloud-final.trx`). La entrega separa ese chequeo como herramienta portátil: **7 tests + probe IL**, no ocho escenarios finales de xUnit. El primer `dotnet run --artifacts-path` del probe buscó el executable en ruta predeterminada y falló sin ejecutar NAP (`probe-launch-before.log`); se corrigió invocando explícitamente el DLL construido. No se borran estos resultados ni se agregan como cobertura independiente.
+Primera compilación de tests: acceso indebido al plan interno del receipt y overload xUnit síncrono para Task; corregidos antes de ejecutar tests. Primera ejecución: 3 Passed/4 Failed por ID sintético con guion incompatible con Naming v1 y búsqueda de fuentes fuera del checkout; conservada en `f81-cloud-before.trx`. Después 7/7 (`f81-cloud.trx`), y 8/8 con la comprobación IL entonces integrada (`f81-cloud-final.trx`). Después se ajustó el contenedor al mismo Horizontal/VerticalContentAlignment=Stretch del shell para respetar viewport/scroll y se repitieron únicamente build/publish, IL y los siete tests focalizados (`f81-cloud-viewport.trx`). La entrega separa ese chequeo como herramienta portátil: **7 tests + probe IL**, no ocho escenarios finales de xUnit. El primer `dotnet run --artifacts-path` del probe buscó el executable en ruta predeterminada y falló sin ejecutar NAP (`probe-launch-before.log`); se corrigió invocando explícitamente el DLL construido. No se borran estos resultados ni se agregan como cobertura independiente.
 
 ## Límites y bloqueos
 
