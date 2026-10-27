@@ -29,8 +29,9 @@ public interface IProfessionalUiService
 }
 
 /// <summary>Typed Core adapters. Heavy work runs away from the UI; no repair, implicit initialization or inferred evidence.</summary>
-public sealed class ProfessionalUiService(IAiAuditClient? auditor = null, IUniverseOperationDispatcher? dispatcher = null,
-    GitProductionService? gitService = null, GitProductionInspector? gitInspector = null) : IProfessionalUiService
+public sealed partial class ProfessionalUiService(IAiAuditClient? auditor = null, IUniverseOperationDispatcher? dispatcher = null,
+    GitProductionService? gitService = null, GitProductionInspector? gitInspector = null,
+    Func<UniverseContext, GitPublicationPolicyStore>? gitPolicy = null) : IProfessionalUiService, IGitManagementUiService
 {
     private readonly GitProductionService _git = gitService ?? new();
     private readonly GitProductionInspector _gitInspector = gitInspector ?? new();
@@ -68,14 +69,14 @@ public sealed class ProfessionalUiService(IAiAuditClient? auditor = null, IUnive
     public Task<DatabaseRestoreResult> RestoreAsync(UniverseContext c, DatabaseRestorePlan plan, CancellationToken ct) => Run(c, ct, () => new DatabaseRestoreService().Execute(c, plan));
     public Task<BackupRetentionPlan> PlanRetentionAsync(UniverseContext c, BackupRetentionPolicy policy, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Plan(c, policy));
     public Task<BackupRetentionResult> RetainAsync(UniverseContext c, BackupRetentionPlan plan, CancellationToken ct) => Run(c, ct, () => new BackupRetentionService().Execute(c, plan));
-    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Inspect(c));
+    public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Run(c, ct, () => Management(c).InspectForSetup());
     public Task<IReadOnlyList<GitOperationReceipt>> ReceiptsAsync(UniverseContext c, CancellationToken ct) => Run<IReadOnlyList<GitOperationReceipt>>(c, ct, () =>
     { return _git.ListOperations(c).Select(id => _git.ReadReceipt(c, id)).ToArray(); });
-    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).PrepareCommit(c, results, subject));
-    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Commit(c, plan));
-    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Recover(c, id));
-    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).RetryCommit(c, id));
-    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector).Push(c, id));
+    public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector, Policy(c)).PrepareCommit(c, results, subject));
+    public Task<GitCommitResult> CommitAsync(UniverseContext c, GitCommitPlan plan, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector, Policy(c)).Commit(c, plan));
+    public Task<GitOperationReceipt> RecoverAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector, Policy(c)).Recover(c, id));
+    public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector, Policy(c)).RetryCommit(c, id));
+    public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Run(c, ct, () => new GitPublicationManualService(_git, _gitInspector, Policy(c)).Push(c, id));
 
     public Task<PreparedPipelineAsset> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, CancellationToken ct) => Run<PreparedPipelineAsset>(c, ct, () =>
     {

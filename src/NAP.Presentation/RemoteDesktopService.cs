@@ -7,7 +7,7 @@ namespace NAP.Presentation;
 
 /// <summary>WPF adapters for the authenticated host. Never fall back to a local writer after an RPC failure.</summary>
 public sealed record AutomationThumbnailView(byte[] Bytes, int Width, int Height, bool CacheHit);
-public sealed class RemoteDesktopService(AutomationHostClient client, bool auditAvailable) : IProfessionalUiService, IExplorerService, IImageNormalizationUiService, IDisposable
+public sealed class RemoteDesktopService(AutomationHostClient client, bool auditAvailable) : IProfessionalUiService, IExplorerService, IImageNormalizationUiService, IGitManagementUiService, IDisposable
 {
     private readonly AutomationThumbnailCache _cache = new();
     private sealed record Reference(string SessionId, string Value, UniverseId Universe);
@@ -62,6 +62,13 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
     public Task<DatabaseRestoreResult> RestoreAsync(UniverseContext c, DatabaseRestorePlan plan, CancellationToken ct) => Call<DatabaseRestoreResult>(c, AutomationOperation.Restore, new AutomationReference(Ref(c, plan)), ct);
     public Task<BackupRetentionPlan> PlanRetentionAsync(UniverseContext c, BackupRetentionPolicy policy, CancellationToken ct) => Call<BackupRetentionPlan>(c, AutomationOperation.PlanRetention, policy, ct);
     public Task<BackupRetentionResult> RetainAsync(UniverseContext c, BackupRetentionPlan plan, CancellationToken ct) => Call<BackupRetentionResult>(c, AutomationOperation.Retain, new AutomationReference(Ref(c, plan)), ct);
+    public Task<GitConfigurationView> ReadGitConfigurationAsync(UniverseContext c, CancellationToken ct) => Call<GitConfigurationView>(c, AutomationOperation.GitConfiguration, new { }, ct);
+    public Task<GitOutboxView> ReadGitOutboxAsync(UniverseContext c, CancellationToken ct) => Call<GitOutboxView>(c, AutomationOperation.GitOutbox, new { }, ct);
+    public Task<GitHostAccess> GitHostAccessAsync(UniverseContext c, CancellationToken ct) => Call<GitHostAccess>(c, AutomationOperation.GitHostAccess, new { }, ct);
+    public Task<GitAuthorizationReview> ProposeGitAuthorizationAsync(UniverseContext c, GitAuthorizationInput input, CancellationToken ct) => Call<GitAuthorizationReview>(c, AutomationOperation.GitAuthorizationPropose, input, ct);
+    public async Task SaveGitAuthorizationAsync(UniverseContext c, GitAuthorizationReview review, CancellationToken ct) => _ = await Call<bool>(c, AutomationOperation.GitAuthorizationSave, new AutomationReference(Ref(c, review)), ct);
+    public async Task RevokeGitAuthorizationAsync(UniverseContext c, long revision, string actor, CancellationToken ct) => _ = await Call<bool>(c, AutomationOperation.GitAuthorizationRevoke, new GitRevocationRequest(revision, actor), ct);
+    public Task<string> RetryGitOutboxAsync(UniverseContext c, GitRetryRequest request, CancellationToken ct) => Call<string>(c, AutomationOperation.GitOutboxRetry, request, ct);
     public Task<GitRepositoryStatus> InspectGitAsync(UniverseContext c, CancellationToken ct) => Call<GitRepositoryStatus>(c, AutomationOperation.InspectGit, new { }, ct);
     public Task<IReadOnlyList<GitOperationReceipt>> ReceiptsAsync(UniverseContext c, CancellationToken ct) => Call<IReadOnlyList<GitOperationReceipt>>(c, AutomationOperation.GitReceipts, new { }, ct);
     public Task<GitCommitPlan> PlanCommitAsync(UniverseContext c, IReadOnlyList<ProductionAssetResult> results, string subject, CancellationToken ct) => Call<GitCommitPlan>(c, AutomationOperation.PlanCommit, new AutomationCommitSelection(results.Select(r => Ref(c, r)).ToArray(), subject), ct);
