@@ -102,7 +102,7 @@ En los siete TRX finales relacionados arriba se leyó directamente `Counters` y 
 
 ## 7. Riesgos, reservas y puertas que permanecen cerradas
 
-1. **#47 — BLOQUEO PRODUCTIVO:** falta certificación/operación real en MSI Raider, instalación y CUTOVER autorizado; no tocar raíces reales, ACL, cuentas Windows, servicios ni ejecutables productivos; no activar Git automático.
+1. **#47 — BLOQUEO PRODUCTIVO:** falta certificación/operación real en MSI, instalación y CUTOVER autorizado; no tocar raíces reales, ACL, cuentas Windows, servicios ni ejecutables productivos; no activar Git automático.
 2. **#49 — ABIERTA:** timeout/cancelación IPC, StorageUnavailable histórico sin causa cerrada y advertencias NU1902/NU1903 de ImageSharp 3.2.0. Ni la compilación ni la presente auditoría resuelven estos problemas.
 3. **Entorno y UX:** Linux x64/Debug y build cruzado WPF no prueban Windows 11/NTFS, escalado 125–200 %, navegación teclado, capturas reales, MSI, instalación o Release con licencia.
 4. **Resistencia a interrupciones:** checkpoints y servicios reconstruidos no equivalen a matar proceso en un punto arbitrario, fallo eléctrico, fallo de disco, fsync portable de directorios ni transacción física única entre `policy.json`, ancla Outbox y receipts. La discordancia entre finales debe BLOQUEAR y requerir revisión administrativa; no se borra/recrea estado.
