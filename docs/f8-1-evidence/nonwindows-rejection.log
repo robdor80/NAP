@@ -1,0 +1,6 @@
+Exception: /workspace/NAP/scripts/Start-F81GitVisualLab.ps1:9
+Line |
+   9 |      throw 'Requires Windows 11 and PowerShell 7. Do not run on produc …
+     |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Requires Windows 11 and PowerShell 7. Do not run on production or in
+     | Cloud.

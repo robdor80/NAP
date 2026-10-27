@@ -1,0 +1,7 @@
+Unhandled exception: System.ComponentModel.Win32Exception (2): An error occurred trying to start process '/workspace/NAP/tools/NAP.GitVisualLabProbe/bin/Debug/net8.0/NAP.GitVisualLabProbe' with working directory '/workspace/NAP'. No such file or directory
+   at System.Diagnostics.Process.ForkAndExecProcess(ProcessStartInfo startInfo, String resolvedFilename, String[] argv, String[] envp, String cwd, Boolean setCredentials, UInt32 userId, UInt32 groupId, UInt32[] groups, Int32& stdinFd, Int32& stdoutFd, Int32& stderrFd, Boolean usesTerminal, Boolean throwOnNoExec)
+   at System.Diagnostics.Process.StartCore(ProcessStartInfo startInfo)
+   at Microsoft.DotNet.Cli.Utils.Command.Execute(Action`1 processStarted)
+   at Microsoft.DotNet.Tools.Run.RunCommand.Execute()
+   at System.CommandLine.Invocation.InvocationPipeline.Invoke(ParseResult parseResult)
+   at Microsoft.DotNet.Cli.Program.ProcessArgs(String[] args, TimeSpan startupTime, ITelemetry telemetryClient)

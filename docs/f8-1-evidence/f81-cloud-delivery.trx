@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="de82def4-8d48-4ea5-9408-6154330b2a8e" name="@9f231272ef9a 2026-10-27 20:47:13" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T20:47:13.5417244+00:00" queuing="2026-10-27T20:47:13.5417244+00:00" start="2026-10-27T20:47:12.1136359+00:00" finish="2026-10-27T20:47:13.5518726+00:00" />
+  <TestSettings name="default" id="57f1f3f1-0a53-4268-a30c-d1762772f820">
+    <Deployment runDeploymentRoot="_9f231272ef9a_2026-10-27_20_47_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="17c84557-6b45-4194-87f6-eca0e648240d" testId="8aa4145f-d28e-09e9-f193-68eb18dcc406" testName="NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants" computerName="9f231272ef9a" duration="00:00:00.0271982" startTime="2026-10-27T20:47:13.4133688+00:00" endTime="2026-10-27T20:47:13.4133689+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17c84557-6b45-4194-87f6-eca0e648240d" />
+    <UnitTestResult executionId="98f3429a-f49b-4099-83ec-004979a6531b" testId="6b031c17-d740-2a08-979a-5f41f0f11d93" testName="NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" computerName="9f231272ef9a" duration="00:00:00.0087781" startTime="2026-10-27T20:47:13.2737952+00:00" endTime="2026-10-27T20:47:13.2737953+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98f3429a-f49b-4099-83ec-004979a6531b" />
+    <UnitTestResult executionId="c522b8ea-9327-483f-8f18-0d04d886a3d2" testId="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7" testName="NAP.Tests.GitVisualLabF81Tests.MissingOrInvalidContractAndUnexpectedDataFailClosed" computerName="9f231272ef9a" duration="00:00:00.0007370" startTime="2026-10-27T20:47:13.2746149+00:00" endTime="2026-10-27T20:47:13.2746150+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c522b8ea-9327-483f-8f18-0d04d886a3d2" />
+    <UnitTestResult executionId="d73da135-3e75-4c5c-b6f0-bf394528a69b" testId="fcb9a1a2-113c-e58d-bd2a-25266554a274" testName="NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" computerName="9f231272ef9a" duration="00:00:00.0139942" startTime="2026-10-27T20:47:13.4274863+00:00" endTime="2026-10-27T20:47:13.4274863+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d73da135-3e75-4c5c-b6f0-bf394528a69b" />
+    <UnitTestResult executionId="57ab9ade-2373-44ca-a4ff-aaa5e767acb1" testId="e663a56e-16da-636e-8451-6e2b2b173f58" testName="NAP.Tests.GitVisualLabF81Tests.ExplicitActivationRequiresDedicatedLocationAndExactConsent" computerName="9f231272ef9a" duration="00:00:00.0086902" startTime="2026-10-27T20:47:13.2655048+00:00" endTime="2026-10-27T20:47:13.2655208+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57ab9ade-2373-44ca-a4ff-aaa5e767acb1" />
+    <UnitTestResult executionId="cae2e5fc-a6d8-44aa-9051-810c377ef2cb" testId="39a2358d-acaa-e6b9-8e1b-272afc02e4b8" testName="NAP.Tests.GitVisualLabF81Tests.RepositoryAncestorsAndReparsePointsAreRejected" computerName="9f231272ef9a" duration="00:00:00.0007776" startTime="2026-10-27T20:47:13.4283473+00:00" endTime="2026-10-27T20:47:13.4283474+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cae2e5fc-a6d8-44aa-9051-810c377ef2cb" />
+    <UnitTestResult executionId="bd76b63c-9fe5-4514-a6da-3980870e7ea5" testId="f716c19c-6fce-93b2-5ad5-d2df837f961b" testName="NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" computerName="9f231272ef9a" duration="00:00:00.1112946" startTime="2026-10-27T20:47:13.3860520+00:00" endTime="2026-10-27T20:47:13.3860520+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd76b63c-9fe5-4514-a6da-3980870e7ea5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="fcb9a1a2-113c-e58d-bd2a-25266554a274">
+      <Execution id="d73da135-3e75-4c5c-b6f0-bf394528a69b" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="SyntheticCompositionHasNoOperationalDependenciesOrCoordinators" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.MissingOrInvalidContractAndUnexpectedDataFailClosed" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7">
+      <Execution id="c522b8ea-9327-483f-8f18-0d04d886a3d2" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="MissingOrInvalidContractAndUnexpectedDataFailClosed" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="f716c19c-6fce-93b2-5ad5-d2df837f961b">
+      <Execution id="bd76b63c-9fe5-4514-a6da-3980870e7ea5" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="EveryScenarioUsesRealViewModelAndLeavesFilesystemUntouched" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.RepositoryAncestorsAndReparsePointsAreRejected" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="39a2358d-acaa-e6b9-8e1b-272afc02e4b8">
+      <Execution id="cae2e5fc-a6d8-44aa-9051-810c377ef2cb" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="RepositoryAncestorsAndReparsePointsAreRejected" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.ExplicitActivationRequiresDedicatedLocationAndExactConsent" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="e663a56e-16da-636e-8451-6e2b2b173f58">
+      <Execution id="57ab9ade-2373-44ca-a4ff-aaa5e767acb1" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="ExplicitActivationRequiresDedicatedLocationAndExactConsent" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="6b031c17-d740-2a08-979a-5f41f0f11d93">
+      <Execution id="98f3429a-f49b-4099-83ec-004979a6531b" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="AdapterDeniesDirectMutationsAndForeignContextWithoutFallback" />
+    </UnitTest>
+    <UnitTest name="NAP.Tests.GitVisualLabF81Tests.FixturesRetainOfficialModesAndSeparateGrants" storage="/tmp/nap-f81-tests/bin/nap.tests/debug/nap.tests.dll" id="8aa4145f-d28e-09e9-f193-68eb18dcc406">
+      <Execution id="17c84557-6b45-4194-87f6-eca0e648240d" />
+      <TestMethod codeBase="/tmp/nap-f81-tests/bin/NAP.Tests/debug/NAP.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="NAP.Tests.GitVisualLabF81Tests" name="FixturesRetainOfficialModesAndSeparateGrants" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8aa4145f-d28e-09e9-f193-68eb18dcc406" executionId="17c84557-6b45-4194-87f6-eca0e648240d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b031c17-d740-2a08-979a-5f41f0f11d93" executionId="98f3429a-f49b-4099-83ec-004979a6531b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bd8cd9e1-c124-0eed-5c4c-30ed1f10acc7" executionId="c522b8ea-9327-483f-8f18-0d04d886a3d2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcb9a1a2-113c-e58d-bd2a-25266554a274" executionId="d73da135-3e75-4c5c-b6f0-bf394528a69b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e663a56e-16da-636e-8451-6e2b2b173f58" executionId="57ab9ade-2373-44ca-a4ff-aaa5e767acb1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="39a2358d-acaa-e6b9-8e1b-272afc02e4b8" executionId="cae2e5fc-a6d8-44aa-9051-810c377ef2cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f716c19c-6fce-93b2-5ad5-d2df837f961b" executionId="bd76b63c-9fe5-4514-a6da-3980870e7ea5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.33)
+[xUnit.net 00:00:00.10]   Discovering: NAP.Tests
+[xUnit.net 00:00:00.70]   Discovered:  NAP.Tests
+[xUnit.net 00:00:00.71]   Starting:    NAP.Tests
+[xUnit.net 00:00:00.93]   Finished:    NAP.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

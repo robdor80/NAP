@@ -1,0 +1,24 @@
+  Determining projects to restore...
+  Restored /workspace/NAP/src/NAP.Presentation/NAP.Presentation.csproj (in 346 ms).
+  Restored /workspace/NAP/src/NAP.Core/NAP.Core.csproj (in 346 ms).
+  Restored /workspace/NAP/src/NAP.AI/NAP.AI.csproj (in 3 ms).
+  Restored /workspace/NAP/src/NAP.App/NAP.App.csproj (in 15 ms).
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+  NAP.Core -> /tmp/nap-f81-normal-build/bin/NAP.Core/debug/NAP.Core.dll
+  NAP.Presentation -> /tmp/nap-f81-normal-build/bin/NAP.Presentation/debug/NAP.Presentation.dll
+  NAP.AI -> /tmp/nap-f81-normal-build/bin/NAP.AI/debug/NAP.AI.dll
+  NAP.App -> /tmp/nap-f81-normal-build/bin/NAP.App/debug/NAP.App.dll
+
+Build succeeded.
+
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Six Labors license file not found at: /workspace/NAP/src/NAP.Core/../../sixlabors.lic. This Debug build can continue, but Release builds require a valid license. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Set SixLaborsLicenseKey, set SixLaborsLicenseFile, or add 'sixlabors.lic' to your project. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : If you use an assembly-scoped community key, ensure it covers this project's exact AssemblyName. [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+/home/agent/.nuget/packages/sixlabors.imagesharp/3.2.0/build/SixLabors.ImageSharp.targets(35,5): warning : Please obtain a license from https://sixlabors.com/pricing/ [/workspace/NAP/src/NAP.Core/NAP.Core.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:22.80

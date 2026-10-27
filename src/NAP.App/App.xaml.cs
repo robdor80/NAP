@@ -9,7 +9,7 @@ namespace NAP.App;
 
 public partial class App : Application
 {
-#if NAP_ACCEPTANCE_ONLY
+#if NAP_ACCEPTANCE_ONLY || NAP_F81_LAB
     internal static bool IsAcceptance => true;
 #else
     internal static bool IsAcceptance => false;
@@ -21,11 +21,17 @@ public partial class App : Application
         base.OnStartup(e);
         try
         {
-#if NAP_ACCEPTANCE_ONLY
+#if NAP_F81_LAB
+            Phase81GitLab.Start(this, e.Args);
+            return;
+#elif NAP_ACCEPTANCE_ONLY
             // This distribution cannot enter ordinary startup, regardless of arguments or launcher.
             Phase6Acceptance.Start(this, e.Args);
             return;
 #else
+            // A laboratory request must never fall through into ordinary startup.
+            if (e.Args.Any(a => a.StartsWith("--f81", StringComparison.OrdinalIgnoreCase)))
+                throw new ArgumentException("F8.1 requires the dedicated GitVisualLab distribution.");
             var preview = e.Args.FirstOrDefault(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))?[17..];
             if (preview is not null)
             {
