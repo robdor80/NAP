@@ -141,7 +141,7 @@ public sealed class GitUiF74Tests
     {
         using var f = new GitProductionFixture(); var p = new GitPublicationPolicyStore(f.Context, Path.Combine(f.Production.Root, "f74-policy"));
         var management = new GitPublicationManagementService(f.Context, p, f.Inspector, f.Service);
-        management.Save(management.Propose(GitPublicationMode.Manual, "actor", ["assets"], 1, true, true));
+        management.Save(management.Propose(GitPublicationMode.Manual, "actor", ["icons"], 1, true, true));
         var confirmation = new Confirmation { Accept = true }; using var shell = Shell(f.Context, f.Production.Root, Local(f, p), confirmation);
         new AssetCatalog(f.Context).Initialize();
         var zip = Path.Combine(f.Context.Storage.InboxRoot, "f74-synthetic.zip"); ZipFile.CreateFromDirectory(f.Production.Source.PackageRoot, zip);
@@ -151,7 +151,8 @@ public sealed class GitUiF74Tests
         var head = f.Git("rev-parse", "HEAD"); var before = ArchiveTestFixture.Snapshot(f.Context.Storage.StateRoot);
         confirmation.Accept = false; await shell.CommitGit.ExecuteAsync(); Assert.Equal(head, f.Git("rev-parse", "HEAD"));
         Assert.Equal(before.OrderBy(p => p.Key), ArchiveTestFixture.Snapshot(f.Context.Storage.StateRoot).OrderBy(p => p.Key)); Assert.Empty(shell.Git.Receipts);
-        confirmation.Accept = true; await shell.CommitGit.ExecuteAsync(); var receipt = Assert.Single(shell.Git.Receipts); Assert.Equal(GitReceiptState.Committed, receipt.State);
+        Assert.True(shell.CommitGit.CanExecute(null), shell.CommitGit.DisabledReason);
+        confirmation.Accept = true; await shell.CommitGit.ExecuteAsync(); Assert.Equal(UiPageState.Ready, shell.Git.State); var receipt = Assert.Single(shell.Git.Receipts); Assert.Equal(GitReceiptState.Committed, receipt.State);
         shell.Git.SelectedReceipt = receipt; confirmation.Accept = false; await shell.PushGit.ExecuteAsync(); Assert.Equal(head, f.RemoteGit("rev-parse", "main"));
         confirmation.Accept = true; await shell.PushGit.ExecuteAsync(); Assert.Equal(receipt.CommitSha, f.RemoteGit("rev-parse", "main"));
         Assert.Equal(GitReceiptState.Pushed, Assert.Single(shell.Git.Receipts).State); Assert.Equal(receipt.OperationId, shell.Git.SelectedReceipt!.OperationId);
@@ -167,6 +168,14 @@ public sealed class GitUiF74Tests
         proxy.Inner = new ProfessionalUiService(gitPolicy: c => c.Id == a.Context.Id ? pa : new(c, Path.Combine(b.Production.Root, "f74-policy")));
         var confirmation = new Confirmation { Accept = true }; using var shell = Shell(a.Context, a.Production.Root, service, confirmation, b.Context);
         await shell.InitializeAsync(); shell.NavigateTo("Git"); await shell.LastRefresh;
+        var syntheticRows = Enum.GetValues<GitOutboxState>().Select((state, n) => new GitOutboxRow(new string((char)('a' + n), 64), false, state, 1, 1, "synthetic_authorization", "job", "item", "attempt", null, null, null, null, null)).ToArray();
+        proxy.Overrides[nameof(IGitManagementUiService.ReadGitOutboxAsync)] = args => Task.FromResult(new GitOutboxView(((UniverseContext)args[0]!).Id, syntheticRows.Select(r => r with { }).ToArray(), []));
+        await shell.RefreshCurrentAsync(); shell.Git.SelectedIntent = shell.Git.Intents[1]; var selected = shell.Git.SelectedIntent.Id;
+        await shell.RefreshCurrentAsync(); Assert.Equal(selected, shell.Git.SelectedIntent!.Id); Assert.Empty(shell.Git.Batches);
+        Assert.Equal("Pending: 1 · Committed: 1 · Blocked: 1 · Pushed: 1", shell.Git.OutboxCounts);
+        proxy.Overrides[nameof(IGitManagementUiService.ProposeGitAuthorizationAsync)] = _ => Task.FromResult(new GitAuthorizationReview(GitConfigurationView.From(a.Context, null), "old actor", "synthetic author", "synthetic committer"));
+        shell.Git.Mode = GitPublicationMode.Manual; shell.Git.Actor = "old actor"; shell.Git.Prefixes = "icons";
+        await shell.ProposeGitAuthorization.ExecuteAsync(); Assert.NotNull(shell.Git.Review);
         var gate = new TaskCompletionSource<GitConfigurationView>(TaskCreationOptions.RunContinuationsAsynchronously);
         var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         proxy.Overrides[nameof(IGitManagementUiService.ReadGitConfigurationAsync)] = args =>
@@ -208,6 +217,7 @@ public sealed class GitUiF74Tests
         var originalRemote = Path.Combine(f.Root, "bare.git"); var offline = originalRemote + ".offline";
         var row = await host.RunManualAsync(c.Id, scope =>
         {
+            DurableExecutionTests.Enable(f.A, scope.Owner);
             var admitted = f.A.Admit(scope.Owner, f.A.Zip("f74-one.zip"));
             Assert.Equal(PreparationCode.AuditPass, f.A.Service.Audit(scope.Owner, admitted.ItemId!, auditor).Code);
             Assert.Equal(DurableExecutionCode.Completed, new DurableExecutionService(c, scope.Queue).Execute(scope.Owner, admitted.ItemId!).Code);
@@ -229,6 +239,16 @@ public sealed class GitUiF74Tests
         await Assert.ThrowsAnyAsync<Exception>(() => remote.RetryGitOutboxAsync(c, new(batch.Id, p.PolicyRevision, p.AuthorizationId, true), default));
         Assert.Equal(revoked, DurableExecutionTests.Inventory(c.Storage.ProductionRoot, c.Storage.StateRoot, Policy(c).DirectoryPath, originalRemote));
         Assert.True(Policy(c).Load()!.Revoked);
+        var processing = await host.QueryAsync(c.Id, scope => scope.Queue.CurrentPolicy());
+        await host.ActivateAsync(c.Id, processing.Reference, false);
+        var active = await remote.GitHostAccessAsync(c, default); Assert.False(active.MutationsAllowed); Assert.False(active.Available);
+        var policyBytes = File.ReadAllBytes(Path.Combine(Policy(c).DirectoryPath, "policy.json"));
+        var busy = await Assert.ThrowsAsync<AutomationException>(() => remote.ProposeGitAuthorizationAsync(c, Input(), default));
+        Assert.Equal(AutomationError.Busy, busy.Code); Assert.Equal(policyBytes, File.ReadAllBytes(Path.Combine(Policy(c).DirectoryPath, "policy.json")));
+        host.Control(c.Id, AutomationControlAction.Pause);
+        using var absent = new RemoteDesktopService(new(new AutomationConnection("nap-absent-" + Guid.NewGuid().ToString("N"), connection.KeyBase64)), false);
+        using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => absent.RevokeGitAuthorizationAsync(c, 2, "actor", timeout.Token));
     }
     private static void InitializeGit(UniverseContext c, string root)
     {
