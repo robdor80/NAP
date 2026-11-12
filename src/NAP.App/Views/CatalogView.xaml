@@ -21,7 +21,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="200" />
       <ColumnDefinition />
-      <ColumnDefinition Width="280" />
+      <ColumnDefinition Width="450" MinWidth="360" />
     </Grid.ColumnDefinitions>
     <controls:RobTitledFrame Header="FILTROS">
       <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -54,7 +54,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition />
       </Grid.RowDefinitions>
-      <Button Grid.Row="0" Content="Consultar retratos históricos (legado)" Click="OpenHistoricalPortraits" HorizontalAlignment="Left" Margin="4,0,0,12" />
+      <Button Grid.Row="0" Content="Importar retratos históricos al catálogo" Click="ImportHistoricalPortraits" HorizontalAlignment="Left" Margin="4,0,0,12" />
       <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
         <ListBox.ItemsPanel>
           <ItemsPanelTemplate>
@@ -83,7 +83,18 @@
     <controls:RobTitledFrame Grid.Column="2" Header="FICHA" Padding="20,28,20,20">
       <Grid>
         <StackPanel>
-          <StackPanel.Style><Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding Detail}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers><Setter Property="Visibility" Value="Collapsed" /></Style></StackPanel.Style>
+          <StackPanel.Style><Style TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Detail}" Value="{x:Null}" />
+                  <Condition Binding="{Binding LegacyDetail}" Value="{x:Null}" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Visibility" Value="Visible" />
+              </MultiDataTrigger>
+            </Style.Triggers>
+          </Style></StackPanel.Style>
           <TextBlock Text="{Binding DetailTitle}" Style="{StaticResource Heading}" />
           <TextBlock Text="{Binding DetailMessage}" Style="{StaticResource EmptyState}" />
         </StackPanel>
@@ -140,21 +151,21 @@
             <StackPanel>
               <TextBlock Text="{Binding Detail.AssetKey}" />
               <TextBlock Text="Archivo (relativa)" FontWeight="SemiBold" />
-              <TextBlock Text="{Binding Detail.ArchiveRelativeDirectory}" />
+              <TextBlock Text="{Binding Detail.ArchiveRelativeDirectory}" TextWrapping="Wrap"  />
               <TextBlock Text="Producción (relativa)" FontWeight="SemiBold" />
-              <TextBlock Text="{Binding Detail.ProductionRelativeDirectory}" />
+              <TextBlock Text="{Binding Detail.ProductionRelativeDirectory}" TextWrapping="Wrap"  />
               <TextBlock Text="Maestro · bytes / SHA-256" FontWeight="SemiBold" />
               <TextBlock Text="{Binding Detail.MasterSizeBytes}" />
-              <TextBlock Text="{Binding Detail.MasterDigest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+              <TextBlock Text="{Binding Detail.MasterDigest.Hex}" TextWrapping="Wrap" FontSize="{StaticResource TechnicalSize}" />
               <TextBlock Text="Producción · bytes / SHA-256" FontWeight="SemiBold" />
               <TextBlock Text="{Binding Detail.ProductionSizeBytes}" />
-              <TextBlock Text="{Binding Detail.ProductionDigest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+              <TextBlock Text="{Binding Detail.ProductionDigest.Hex}" TextWrapping="Wrap" FontSize="{StaticResource TechnicalSize}" />
               <ItemsControl ItemsSource="{Binding Detail.Files}">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
                     <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,8">
                       <StackPanel>
-                        <TextBlock Text="{Binding RelativePath}" />
+                        <TextBlock Text="{Binding RelativePath}" TextWrapping="Wrap"  />
                         <TextBlock>
                           <Run Text="{Binding Mode=OneWay, Path=Location}" />
                           <Run Text=" · " />
@@ -163,7 +174,7 @@
                           <Run Text="{Binding Mode=OneWay, Path=Kind}" />
                         </TextBlock>
                         <TextBlock Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}" />
-                        <TextBlock Text="{Binding Digest.Hex}" FontSize="{StaticResource TechnicalSize}" />
+                        <TextBlock Text="{Binding Digest.Hex}" TextWrapping="Wrap" FontSize="{StaticResource TechnicalSize}" />
                       </StackPanel>
                     </Border>
                   </DataTemplate>
@@ -173,6 +184,45 @@
             </StackPanel>
           </Expander>
         </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <ScrollViewer.Style>
+            <Style TargetType="ScrollViewer">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding LegacyDetail}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ScrollViewer.Style>
+          <StackPanel>
+            <TextBlock Text="Retrato histórico" Style="{StaticResource Heading}" />
+            <TextBlock Text="Aprobado en Nimroel. Sin auditoría NAP ni PNG maestro acreditado." TextWrapping="Wrap" Style="{StaticResource Muted}" Margin="0,6,0,10" />
+            <TextBlock Text="{Binding LegacyDetail.AssetId}" TextWrapping="Wrap" FontWeight="SemiBold" />
+            <controls:ThumbnailView DataContext="{Binding Preview}" Height="290" Margin="0,14" />
+            <TextBlock Text="Clasificación" FontWeight="SemiBold" Margin="0,8,0,4" />
+            <TextBlock Text="{Binding LegacyDetail.Culture, StringFormat='Cultura: {0}'}" />
+            <TextBlock Text="{Binding LegacyDetail.Location, StringFormat='Localidad: {0}'}" />
+            <TextBlock Text="{Binding LegacyDetail.Profession, StringFormat='Profesión: {0}'}" />
+            <TextBlock Text="{Binding LegacyDetail.Sex, StringFormat='Sexo: {0}'}" />
+            <TextBlock Text="WebP original" FontWeight="SemiBold" Margin="0,14,0,4" />
+            <TextBlock Text="{Binding LegacyDetail.RelativeDirectory}" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding LegacyDetail.WebpBytes, StringFormat=Bytes: {0:N0}}" />
+            <TextBlock Text="SHA-256" FontWeight="SemiBold" Margin="0,10,0,4" />
+            <TextBlock Text="{Binding LegacyDetail.WebpSha256}" FontSize="{StaticResource TechnicalSize}" TextWrapping="Wrap" />
+            <Expander Header="Documentos originales" Margin="0,14,0,0">
+              <ItemsControl ItemsSource="{Binding Documents}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Expander Header="{Binding Role}">
+                      <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True"
+                        TextWrapping="Wrap" MaxHeight="350" VerticalScrollBarVisibility="Auto" />
+                    </Expander>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Expander>
+          </StackPanel>
         </ScrollViewer>
       </Grid>
     </controls:RobTitledFrame>

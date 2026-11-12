@@ -47,6 +47,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private AssetTileViewModel? _selectedAsset;
     private AssetTileViewModel? _preview;
     private CatalogAssetSnapshot? _detail;
+    private LegacyPortrait? _legacyDetail;
     private CatalogStatistics? _statistics;
     private CatalogPlanningReadModel? _planning;
     private bool _settingsReadable = true;
@@ -111,7 +112,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public string StatusText => State switch { ExplorerState.Loading => "Cargando catálogo…", ExplorerState.Empty => "Sin assets. Configura las raíces o ajusta los filtros.", ExplorerState.Error => "Lectura detenida. Consulta el diagnóstico.", _ => $"{Assets?.Count ?? 0:N0} assets · solo lectura" };
     public string CatalogStatus => Context is null ? "Estado: sin catálogo disponible" : State switch { ExplorerState.Loading => "Estado: consultando catálogo", ExplorerState.Error => "Estado: lectura detenida", ExplorerState.Empty => Statistics is null ? "Estado: sin catálogo disponible" : "Estado: catálogo sin assets para estos filtros", _ => "Estado: catálogo disponible" };
     private string UnavailableText => Error?.Message ?? (Context is null ? "Configura las raíces del universo en Ajustes." : State == ExplorerState.Loading ? "Consultando el catálogo…" : "No hay una lectura del catálogo disponible.");
-    public string DetailTitle => Context is null ? "Catálogo no disponible" : DetailState switch { ExplorerState.Loading => "Consultando ficha", ExplorerState.Error => "Ficha no disponible", _ => Detail is null ? "Sin selección" : "Ficha del asset" };
+    public string DetailTitle => Context is null ? "Catálogo no disponible" : DetailState switch { ExplorerState.Loading => "Consultando ficha", ExplorerState.Error => "Ficha no disponible", _ => Detail is null && LegacyDetail is null ? "Sin selección" : "Ficha del asset" };
     public string DetailMessage => Context is null ? UnavailableText : DetailState == ExplorerState.Loading ? "Consultando la ficha del asset…" : DetailState == ExplorerState.Error ? DetailError?.Message ?? "No se puede consultar la ficha." : "Selecciona un asset del catálogo para consultar su ficha.";
     public string DetailStatusText => DetailState == ExplorerState.Ready ? "Ficha disponible" : "";
     public string StatisticsAssets => Statistics?.TotalAssets.ToString("N0") ?? "—";
@@ -124,6 +125,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public AssetTileViewModel? SelectedAsset { get => _selectedAsset; set { if (Set(ref _selectedAsset, value)) _ = SelectAsync(value?.Asset); } }
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
     public CatalogAssetSnapshot? Detail { get => _detail; private set { Set(ref _detail, value); NotifyCatalogText(); } }
+    public LegacyPortrait? LegacyDetail { get => _legacyDetail; private set { Set(ref _legacyDetail, value); NotifyCatalogText(); } }
     public CatalogStatistics? Statistics { get => _statistics; private set { Set(ref _statistics, value); NotifyCatalogText(); } }
     public CatalogPlanningReadModel? Planning { get => _planning; private set { Set(ref _planning, value); NotifyCatalogText(); } }
     public AsyncCommand ApplyFilters { get; }
@@ -157,6 +159,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         Facets.Where(f => f.IsTrait && f.Selected is not null).Select(f => new CatalogVisualTrait(f.Dimension, f.Selected!.Value, f.Selected!.TraitType!.Value)));
     private static string? Null(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
     public Task RefreshAsync() => RefreshAsync(false);
+    public Task RefreshAllAsync() => RefreshAsync(true);
     public void CancelRead()
     {
         ++_generation; _load?.Cancel(); _detailLoad?.Cancel();
@@ -166,7 +169,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private async Task RefreshAsync(bool loadFacets)
     {
         _load?.Cancel(); _load?.Dispose(); var source = _load = new(); var generation = ++_generation; var context = _context;
-        _detailLoad?.Cancel(); Detail = null; Preview = null; Documents.Clear(); DetailError = null; DetailState = ExplorerState.Empty;
+        _detailLoad?.Cancel(); Detail = null; LegacyDetail = null; Preview = null; Documents.Clear(); DetailError = null; DetailState = ExplorerState.Empty;
         Assets = null; SelectedAsset = null; Statistics = null; Planning = null; Distributions.Clear(); Error = null;
         if (context is null) { State = ExplorerState.Empty; return; }
         State = ExplorerState.Loading;
@@ -200,11 +203,24 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public async Task SelectAsync(CatalogAssetSummary? asset)
     {
         _detailLoad?.Cancel(); _detailLoad?.Dispose(); var source = _detailLoad = new(); var context = _context;
-        Detail = null; Documents.Clear(); Preview = null; DetailError = null;
+        Detail = null; LegacyDetail = null; Documents.Clear(); Preview = null; DetailError = null;
         if (asset is null || context is null) { DetailState = ExplorerState.Empty; return; }
         DetailState = ExplorerState.Loading;
         try
         {
+            var legacy = await _service.LegacyDetailAsync(context, asset.AssetKey.AssetId, source.Token);
+            if (source.IsCancellationRequested || context != _context) return;
+            if (legacy is not null)
+            {
+                var info = await Task.Run(() => System.IO.File.ReadAllText(legacy.InfoPath), source.Token);
+                var prompt = await Task.Run(() => System.IO.File.ReadAllText(legacy.PromptPath), source.Token);
+                if (source.IsCancellationRequested || context != _context) return;
+                LegacyDetail = legacy;
+                Documents.Add(new("info", info)); Documents.Add(new("prompt", prompt));
+                Preview = new(_service, context); Preview.Populate(asset);
+                DetailState = ExplorerState.Ready;
+                return;
+            }
             var detail = await _service.DetailAsync(context, asset.AssetKey.AssetId, source.Token);
             if (source.IsCancellationRequested || context != _context) return;
             if (detail is null) throw new InvalidDataException("Selected asset is no longer cataloged.");
@@ -230,14 +246,14 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void Fail(Exception ex)
     {
         _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; Preview = null;
-        Detail = null; Documents.Clear(); Statistics = null; Planning = null; Distributions.Clear();
+        Detail = null; LegacyDetail = null; Documents.Clear(); Statistics = null; Planning = null; Distributions.Clear();
         Error = ExplorerError.From(ex); State = ExplorerState.Error;
     }
     private void CancelScope()
     {
         _validatedRoots = null; _rootValidationStopped = false; NotifyRoots();
         ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; SelectedAsset = null;
-        Detail = null; Preview = null; Documents.Clear(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
+        Detail = null; LegacyDetail = null; Preview = null; Documents.Clear(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
         DetailError = null; DetailState = ExplorerState.Empty;
         Statistics = null; Planning = null; Distributions.Clear(); Error = null;
     }
