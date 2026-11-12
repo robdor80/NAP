@@ -54,6 +54,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition />
       </Grid.RowDefinitions>
+      <Button Grid.Row="0" Content="Consultar retratos históricos (legado)" Click="OpenHistoricalPortraits" HorizontalAlignment="Left" Margin="4,0,0,12" />
       <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
         <ListBox.ItemsPanel>
           <ItemsPanelTemplate>
