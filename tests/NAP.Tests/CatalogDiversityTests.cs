@@ -94,6 +94,32 @@ public sealed class CatalogDiversityTests
     }
 
     [Fact]
+    public void ArbitraryTraitsAndFilesystemPathsAreNeverExportedToGemini()
+    {
+        var item = Entry("portrait_farmer_001", "farmer", "male", "adult") with
+        {
+            Traits =
+            [
+                new CatalogVisualTrait("/untrusted/secret", "private_secret_token", CatalogTraitType.String),
+                new CatalogVisualTrait("/eyes/color/value", @"C:\Users\private\secret.txt", CatalogTraitType.String),
+                new CatalogVisualTrait("/hair/color/value", "brown", CatalogTraitType.String)
+            ]
+        };
+        var json = CatalogDiversityAnalyzer.Analyze(new("nimroel"), [item]).ToJson();
+        Assert.DoesNotContain("private_secret_token", json, StringComparison.Ordinal);
+        Assert.DoesNotContain("C:\\", json, StringComparison.Ordinal);
+        Assert.Contains("brown", json, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void DuplicateNativeIdsCannotBeSilentlyMerged()
+    {
+        var entry = Entry("portrait_farmer_001", "farmer", "male", "adult");
+        Assert.Throws<InvalidDataException>(() =>
+            CatalogDiversityAnalyzer.Analyze(new("nimroel"), [entry, entry]));
+    }
+
+    [Fact]
     public void EmptyReportHasNoFictionalGapsAndCanBeSerialized()
     {
         var report = CatalogDiversityAnalyzer.Analyze(new("nimroel"), Array.Empty<CatalogDiversityEntry>());
