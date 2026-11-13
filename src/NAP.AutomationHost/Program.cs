@@ -20,7 +20,7 @@ try
     var checkpointReached = 0;
     var storageFailures = 0;
     await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
-        Admission = config.Admission ?? new(),
+        Admission = config.Admission ?? new(), MixedInboxRoot = config.MixedInboxRoot,
         LaboratoryStorageFailure = (universe, item, error) =>
         {
             // This executable validates temporary synthetic laboratory roots before starting.

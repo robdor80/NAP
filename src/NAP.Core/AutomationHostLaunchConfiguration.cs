@@ -3,7 +3,7 @@ namespace NAP.Core;
 public sealed record AutomationUniverseDefinition(UniverseStorageConfig Storage, string ProfileJson);
 public sealed record AutomationHostLaunchConfiguration(int SchemaVersion, string LaboratoryRoot, string ControlRoot,
     AutomationConnection Connection, IReadOnlyList<AutomationUniverseDefinition> Universes, bool SyntheticAudit = false,
-    string? LaboratoryCheckpoint = null, InboxAdmissionOptions? Admission = null)
+    string? LaboratoryCheckpoint = null, InboxAdmissionOptions? Admission = null, string? MixedInboxRoot = null)
 {
     public IReadOnlyList<UniverseContext> Contexts()
     {

@@ -31,6 +31,10 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private long _generation;
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
+    public string MixedInboxStatus => _overview?.Host.MixedInbox is { } m
+        ? m.NeedsReview > 0 ? $"Bandeja compartida: {m.NeedsReview} paquetes necesitan revisión ({m.Diagnostic})."
+        : $"Bandeja compartida: {m.Forwarded} distribuidos, {m.AlreadyPresent} reconocidos."
+        : "";
     public string Pending => _overview?.Queue.Counts.Pending.ToString("N0") ?? "—";
     public string Processing => _overview?.Queue.Counts.Processing.ToString("N0") ?? "—";
     public string Completed => _overview?.Queue.Counts.Completed.ToString("N0") ?? "—";
@@ -109,7 +113,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private void Clear() { _overview = null; Review.Clear(); Changed(); }
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        foreach (var name in new[] { nameof(Pending), nameof(MixedInboxStatus), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)

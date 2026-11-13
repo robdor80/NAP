@@ -5,6 +5,7 @@ public sealed record AutomationHostOptions
 {
     public required string LaboratoryRoot { get; init; }
     public InboxAdmissionOptions Admission { get; init; } = new();
+    public string? MixedInboxRoot { get; init; }
     public long MaxMemoryBytes { get; init; } = 512L * 1024 * 1024;
     public long MaxRetainedBytes { get; init; } = 4L * 1024 * 1024 * 1024;
     public int PageSize { get; init; } = 32;
@@ -17,7 +18,7 @@ public sealed record AutomationHostOptions
 public sealed record AutomationUniverseStatus(UniverseId UniverseId, AutomationHostState State, long Turns,
     int PendingCandidates, string? Stage, string? Diagnostic, QueueBatchId? BatchId);
 public sealed record AutomationHostSnapshot(string? InstallationId, string? SessionId, AutomationHostState State,
-    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic);
+    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic, MixedInboxRoutingReport? MixedInbox = null);
 
 /// <summary>Laboratory-only host composition. No default settings, service install, credentials or policy activation.
 /// One controller schedules bounded work on dedicated universe owners; HTTP/readiness never own workflow leases.</summary>
@@ -67,6 +68,11 @@ public sealed partial class AutomationHost : IAsyncDisposable
     private Task? _remote;
     private Slot? _auditSlot;
     private DurableAuditDispatch? _dispatch;
+    private readonly MixedUniverseInboxRouter? _mixedInbox;
+    private Task<MixedInboxRoutingReport>? _mixedWork;
+    private MixedInboxRoutingReport? _mixedReport;
+    private volatile bool _mixedScanRequested = true;
+    private DateTimeOffset _nextMixedScan;
     private volatile bool _stopping;
     private AutomationHostState _state = AutomationHostState.Starting;
     private string? _diagnostic, _installation, _session;
@@ -96,12 +102,22 @@ public sealed partial class AutomationHost : IAsyncDisposable
             _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }.Any(r => !ProductionPaths.Within(lab, r))))
             throw AutomationValidation.Invalid("All host roots and budgets must belong to the isolated laboratory.");
         options.Admission.Validate();
+        if (options.MixedInboxRoot is { } mixed)
+        {
+            if (!Path.IsPathFullyQualified(mixed) || !ProductionPaths.Within(lab, mixed) ||
+                ProductionPaths.Overlaps(mixed, _root) ||
+                _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }
+                    .Any(r => ProductionPaths.Overlaps(mixed, r))))
+                throw AutomationValidation.Invalid("Shared Inbox must be explicit, disjoint and inside the isolated laboratory.");
+            InboxAdmissionEvidence.DirectoryBoundary(mixed);
+            _mixedInbox = new MixedUniverseInboxRouter(mixed, _slots.Select(s => s.Context), options.Admission);
+        }
         Controls = new(_root, _slots.Select(s => s.Context));
         _controller = new(Run) { IsBackground = true, Name = "NAP AutomationHost controller" }; _controller.Start();
     }
 
     public AutomationHostSnapshot Snapshot()
-    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic); }
+    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic, _mixedReport); }
     public AutomationHostControl ReadControl(UniverseId universe)
     { _ = Find(universe); lock (_controlsGate) return Controls.Read(universe); }
 
@@ -217,6 +233,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
         if (!Allowed(slot)) throw new AutomationException(AutomationError.Disabled,
             "Process pending requires an active, authorized universe; activate or resume it first.");
         slot.ScanRequested = true;
+        _mixedScanRequested = true;
         Signal();
         return true;
     }
@@ -273,6 +290,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
             while (!_stopping)
             {
                 HarvestAudit();
+                TickMixedInbox();
                 for (var n = 0; n < _slots.Length; n++)
                 {
                     var slot = _slots[(_turn + n) % _slots.Length];
@@ -292,6 +310,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
             _stopping = true; _transportStop.Cancel();
             try
             {
+                if (_mixedWork is not null)
+                { try { _mixedWork.GetAwaiter().GetResult(); } catch (OperationCanceledException) { } }
                 foreach (var slot in _slots) { slot.Watcher?.Dispose(); slot.Scan?.Dispose(); }
                 foreach (var slot in _slots)
                 {
@@ -307,6 +327,40 @@ public sealed partial class AutomationHost : IAsyncDisposable
             lock (_gate) { if (fatal is null) _state = AutomationHostState.Stopped; else { _state = AutomationHostState.Blocked; _diagnostic = Code(fatal); } }
             if (fatal is null) _stopped.TrySetResult(); else _stopped.TrySetException(fatal);
         }
+    }
+
+    private void TickMixedInbox()
+    {
+        if (_mixedInbox is null) return;
+        if (_mixedWork is { IsCompleted: true } previous)
+        {
+            _mixedWork = null;
+            try
+            {
+                var report = previous.GetAwaiter().GetResult();
+                lock (_gate) _mixedReport = report;
+                foreach (var universe in report.RoutedUniverses) Find(universe).ScanRequested = true;
+            }
+            catch (OperationCanceledException) when (_stopping) { return; }
+            catch (Exception error)
+            {
+                lock (_gate) _mixedReport = new(0, 0, 0, 1,
+                    error is ProductionStorageException ? "unsafe_storage" : "mixed_inbox_unavailable", []);
+            }
+        }
+        if (_mixedWork is not null || !_mixedScanRequested && DateTimeOffset.UtcNow < _nextMixedScan ||
+            !_slots.Any(s => Allowed(s)) || !_heavy.Wait(0)) return;
+        try
+        {
+            var active = _slots.Where(s => Allowed(s)).Select(s => s.Context.Id).ToHashSet();
+            _mixedScanRequested = false; _nextMixedScan = DateTimeOffset.UtcNow + _options.Admission.RescanInterval;
+            _mixedWork = Task.Run(async () =>
+            {
+                try { return await _mixedInbox.RouteAsync(active, _transportStop.Token).ConfigureAwait(false); }
+                finally { _heavy.Release(); Signal(); }
+            });
+        }
+        catch { _heavy.Release(); throw; }
     }
 
     private void Tick(Slot slot)
