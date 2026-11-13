@@ -571,9 +571,17 @@ public sealed partial class AutomationHost : IAsyncDisposable
             try
             {
                 if (_session is not null)
-                    foreach (var slot in _slots) Change(slot.Context.Id, AutomationControlAction.Stop, null);
+                {
+                    // A failed commit for one universe must not prevent a durable STOP
+                    // attempt for the other universes. The first failure remains
+                    // visible: an uncommitted STOP is never reported as successful.
+                    foreach (var slot in _slots)
+                    {
+                        try { Change(slot.Context.Id, AutomationControlAction.Stop, null); }
+                        catch (Exception error) { failure ??= error; }
+                    }
+                }
             }
-            catch (Exception error) { failure = error; }
             finally { _stopping = true; }
         }
         lock (_gate) { _state = AutomationHostState.Stopping; if (failure is not null) _diagnostic = "stop_not_persisted:" + Code(failure); }
