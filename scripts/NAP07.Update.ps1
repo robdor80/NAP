@@ -140,7 +140,7 @@ function Get-InstalledSnapshot {
         foreach ($item in $items) {
             Assert-Plain $item.FullName
             $relative = $item.FullName.Substring($install.TrimEnd('\').Length).TrimStart('\').Replace('\','/')
-            if ($relative -match '^unins[0-9]{3,}\\.') { continue }
+            if ($relative -match '^unins[0-9]{3,}\.') { continue }
             [pscustomobject]@{
                 path = $relative
                 bytes = [long]$item.Length
