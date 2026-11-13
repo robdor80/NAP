@@ -22,4 +22,6 @@
 
 ## Evidencia
 
-Pendiente de comprobar el resultado del workflow específico NAP03 y revisión del diff antes de cualquier fusión.
+Primera ejecución Windows x64: [Actions #43473121749](https://github.com/robdor80/NAP/actions/runs/43473121749) compila Release (0 errores; dos CA2014 históricos y aviso xUnit2031 nuevo), 23 PASS y 2 FAIL. El nuevo caso mixto leyó la cola SQLite directamente mientras el Host la poseía; se corrige el test para consultar mediante el owner remoto. El otro fallo es `AutomationDesktopTests.RemoteGitCommitAndPushUseNativeServerPlanAndExplicitLocalBareFixture` (plan Git manual, fuera de NAP03) con `InvalidDataException`; no se marca reparado ni se modifica Git. Se aíslan las otras tres pruebas del mismo grupo y se incluyen las regresiones de IPC, auditor Gemini y UI en la matriz NAP03.
+
+Validación revisada pendiente del próximo run; NAP CI general permanece desactivada.
