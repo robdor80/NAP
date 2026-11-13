@@ -26,8 +26,8 @@ $expected = (Get-Content -LiteralPath "$setup.sha256" -Raw).Trim().Split(' ')[0]
 if ((Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) {
     throw 'Hash del instalador no coincide.'
 }
-& (Join-Path $work 'payload/host/NAP.AutomationHost.exe') --unconfigured
-if ($LASTEXITCODE -ne 2) { throw 'El Host no rechazo argumentos sin configuracion.' }
+$hostRefusal = Start-Process -FilePath (Join-Path $work 'payload/host/NAP.AutomationHost.exe') -ArgumentList '--unconfigured' -NoNewWindow -Wait -PassThru
+if ($hostRefusal.ExitCode -ne 2) { throw 'El Host no rechazo argumentos sin configuracion.' }
 
 [System.IO.Directory]::CreateDirectory($userData) | Out-Null
 [System.IO.File]::WriteAllText($marker, 'NAP06: los datos del usuario deben sobrevivir')
