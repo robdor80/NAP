@@ -99,7 +99,7 @@
           <TextBlock Text="Consulta versiones estables en GitHub Releases. Las descargas e instalaciones requieren SHA-256 independiente y confirmación manual." TextWrapping="Wrap" Style="{StaticResource Muted}" />
           <Button Content="Consultar actualizaciones (solo lectura)" Click="CheckUpdates_Click" Style="{StaticResource Secondary}" HorizontalAlignment="Left" Margin="0,8,0,8" />
           <TextBlock Text="Antes de aplicar: Detener automatización para drenar el Host, cerrar NAP y seguir la guía NAP07. Sin firma de producto, SmartScreen puede advertir." TextWrapping="Wrap" Style="{StaticResource Muted}" />
-        </Stack>
+        </StackPanel>
       </c:RobTitledFrame>
       <c:RobTitledFrame Header="APLICACIÓN">
         <StackPanel>
