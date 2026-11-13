@@ -114,7 +114,10 @@ public sealed class GeminiCatalogDiversityClient : ICatalogDiversityAiClient
             foreach (var step in steps.EnumerateArray())
             {
                 if (Required(step, "type").GetString() != "model_output") continue;
-                foreach (var entry in Required(step, "content").EnumerateArray())
+                pieces.Clear(); // Only the last final output is authoritative.
+                var content = Required(step, "content");
+                if (content.ValueKind != JsonValueKind.Array) throw new InvalidDataException("Contenido de Gemini no válido.");
+                foreach (var entry in content.EnumerateArray())
                     if (Required(entry, "type").GetString() == "text") pieces.Append(Required(entry, "text").GetString());
             }
             if (pieces.Length == 0 || pieces.Length > MaxResponse) throw new InvalidDataException("Gemini no devolvió un informe válido.");
