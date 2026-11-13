@@ -15,7 +15,7 @@ public sealed class NimroelCartographyProfileTests
     public void RealNimroelProfileDeclaresCartographyWithoutChangingPortrait()
     {
         var profile = UniverseProfileLoader.Load(UniverseProfileLoaderTests.ConfigPath);
-        Assert.Equal(2, profile.AssetRules.Count);
+        Assert.Equal(3, profile.AssetRules.Count);
         Assert.True(profile.TryGetAssetRule("portrait", "portrait_npc", out var portrait));
         Assert.True(profile.TryGetAssetRule("scene", "scene_cartography", out var cartography));
         Assert.False(profile.TryGetAssetRule("scene", "scene_narrative", out _));

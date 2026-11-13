@@ -8,7 +8,7 @@ comprobaciones de ratio exacto, frame completo y ausencia de crop/pad/distorsió
 5.1 — Portrait, 5.2 — Validar salida Portrait y 5.3 — Scene HECHOS.
 5.4 — Perfiles genéricos HECHO. 5.5 — No recorte silencioso HECHO.**
 
-Scene conversion capability exists, but no canonical Nimroel Scene production profile has been defined yet.
+Scene conversion is provider-neutral and supports two configured Nimroel profiles: `scene_cartography` (16:10, 1600×1000 Q90) and `scene_environment` (16:9, 1920×1080 Q90). Their ratios and routes live in the universe profile; no conversion code is duplicated.
 
 5.3 añade conversión gráfica real y validación de output en memoria. No decide
 resolución, proporción, quality, production_profile, routing o clasificación
@@ -169,10 +169,12 @@ fidelidad visual o quality efectiva desde el bitstream. Los contratos públicos
 Scene/Portrait conservan sus contratos públicos separados. Desde
 [5.4 — Profile v4](UNIVERSE_PROFILE_V4.md), la declaración y resolución son
 genéricas por asset rule, sin converter genérico público ni ejecución automática.
-Nimroel declara ahora **scene + scene_cartography**, con PNG 16:10 exacto y
-WebP 1600×1000 Q90; [protocolo cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md).
-La regla narrativa sigue sin habilitarse; los fixtures 16:9 y 3:2 anteriores
-son ejemplos técnicos genéricos, no perfiles cartográficos ni canon de Nimroel.
+Nimroel declara **scene + scene_cartography** con PNG 16:10 exacto y WebP
+1600×1000 Q90 ([protocolo cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md)),
+y **scene + scene_environment** con PNG 16:9 exacto y WebP 1920×1080 Q90
+([protocolo ambiental](NIMROEL_ENVIRONMENT_PACKAGE_V1.md)). La antigua
+etiqueta `scene_narrative` continúa sin estar habilitada. Los fixtures genéricos
+16:9 y 3:2 de la Fase 5 siguen siendo pruebas técnicas independientes del canon.
 Fase 5 HECHA; 5.4 — Perfiles genéricos HECHO,
 [5.5 — No recorte silencioso](NO_SILENT_CROP.md) HECHO formaliza frame completo,
 sin crop/pad/BoxPad/letterbox/distorsión. Ratio exacto + Stretch + ausencia de
