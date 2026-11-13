@@ -89,7 +89,7 @@ public sealed class DiversityViewModel() : ProfessionalPage("Auditor IA", "Varie
     private CatalogDiversityReport? _report;
     private CatalogDiversityAnswer? _answer;
     private string _question = "¿Qué categorías están menos representadas y qué variedad de assets convendría ampliar?";
-    public CatalogDiversityReport? Report { get => _report; internal set { Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); } }
+    public CatalogDiversityReport? Report { get => _report; internal set { if (_report?.ToJson() != value?.ToJson()) Answer = null; Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); } }
     public CatalogDiversityAnswer? Answer { get => _answer; internal set => Set(ref _answer, value); }
     public string Question { get => _question; set => Set(ref _question, value); }
     public string Total => Report is null ? "—" : Report.TotalAssets.ToString("N0");
