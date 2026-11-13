@@ -42,9 +42,11 @@ public sealed class AutomationManagedWpfTests
             using var window = Process.Start(start)!;
             // Host deliberately survives WPF. Do not redirect stderr into the WPF pipe:
             // the child Host would keep that handle open and ReadToEndAsync could block.
-            var stdout = window.StandardOutput.ReadToEndAsync();
+            // Consume one complete smoke receipt, NOT EOF: a surviving Host may retain
+            // inherited console handles beyond WPF exit, and ReadToEndAsync would hang.
+            var receipt = window.StandardOutput.ReadLineAsync();
             await window.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(60));
-            var output = await stdout;
+            var output = await receipt.WaitAsync(TimeSpan.FromSeconds(5)) ?? "";
             Assert.True(window.ExitCode == 0, output);
             Assert.Contains("\"automationConnected\":true", output);
             Assert.Contains("\"bindingErrors\":0", output);
@@ -67,7 +69,12 @@ public sealed class AutomationManagedWpfTests
         finally
         {
             // Host deliberately outlives WPF: the fixture must explicitly shut it down.
-            try { await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }); await Task.Delay(300); }
+            try
+            {
+                using var shutdown = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+                await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }, shutdown.Token);
+                await Task.Delay(300);
+            }
             catch (Exception error) when (error is IOException or TimeoutException or OperationCanceledException) { }
         }
     }

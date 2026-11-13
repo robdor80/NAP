@@ -19,7 +19,7 @@ No se modifica el tratamiento secreto de Six Labors/Gemini, el esquema SQLite, l
 1. Build Release .NET 10 Windows x64 de la solución completa, verificando que WPF incluye Host.
 2. Prueba WPF de arranque gestionado y segunda conexión sobre la misma sesión y sin crear un segundo motor.
 3. Prueba de detener un universo sin apagar otros ni alterar el proceso.
-4. Regresión de cierre de WPF, persistencia/reinicio de Host y fallo de detención global.
+4. Regresión de cierre de WPF, persistencia/reinicio de Host y controles por universo. El caso histórico de fallo de persistencia de apagado global presentó un timeout en Windows durante la auditoría NAP02; queda registrado para NAP05/#49 y no se utiliza para acreditar ni invalidar un cambio que no modifica ese contrato.
 5. Inspección de errores o regresiones. **No se declara validación de producción/MSI por pasar Actions.**
 
 ## Puertas posteriores
