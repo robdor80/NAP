@@ -87,7 +87,7 @@ internal static class Phase6Preview
             if(mode=="choice"&&(!work.HasOptions||work.HasPreview))throw new InvalidOperationException("Missing compatible choice state.");
             if(mode=="blocked"&&(work.CanApprove||work.CanContinue||work.HasOptions))throw new InvalidOperationException("A failed audit must not offer an override.");
         }
-        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&!Phase6SettingsPreview.Modes.Contains(mode)&&!HistoricalModes.Contains(mode)&& mode is not ("catalog" or "settings") && shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 5)
+        if ((!Phase6WorkflowPreview.Modes.Contains(mode)&&!Phase6SettingsPreview.Modes.Contains(mode)&&!HistoricalModes.Contains(mode)&& mode is not ("catalog" or "settings") && shell.CurrentPage != shell.Dashboard) || shell.Navigation.Count != 5 || shell.Tools.Count != 6 || !shell.Tools.Any(t => t.Name == "RoDo"))
             throw new InvalidOperationException("Preview navigation differs from the reviewed shell.");
         if (mode is "active" or "paused" or "review" && shell.Automation?.Completed != "14")
             throw new InvalidOperationException("Synthetic projection was not displayed.");
