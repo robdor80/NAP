@@ -149,6 +149,7 @@ public sealed class CatalogDiversityTests
     public async Task GeminiOnlyReceivesAggregateAndQuestionAndReturnsVerifiedEvidence()
     {
         var report = Sample();
+        var carpenterEvidence = Fact(report, "profesion", "carpenter");
         string? sent = null;
         using var http = new HttpClient(new Handler(async request =>
         {
@@ -163,13 +164,14 @@ public sealed class CatalogDiversityTests
             Assert.Equal("none", root.GetProperty("generation_config").GetProperty("tool_choice").GetString());
             var input = root.GetProperty("input").GetString()!;
             Assert.Contains("carpinteros", input, StringComparison.Ordinal);
-            Assert.Contains("e0001", input, StringComparison.Ordinal);
+            Assert.Contains(carpenterEvidence.Id, input, StringComparison.Ordinal);
             Assert.DoesNotContain("C:\\\\", input, StringComparison.Ordinal);
-            return Ok(Outer(Model("{\"summary\":\"Conviene ampliar la variedad de profesiones.\",\"observations\":[{\"comment\":\"Hay menos carpinteros que herreros.\",\"evidence_ids\":[\"e0001\"]}]}")));
+            return Ok(Outer(Model("{\"summary\":\"Hay una profesión registrada.\",\"observations\":[{\"comment\":\"La profesión de carpintero está documentada.\",\"evidence_ids\":[\"" + carpenterEvidence.Id + "\"]}]}")));
         }));
         var answer = await new GeminiCatalogDiversityClient(http, "TEST_KEY", "gemini-test").AskAsync(report, "¿Faltan carpinteros?");
         Assert.Single(answer.Observations);
         Assert.Single(answer.Observations[0].Evidence);
+        Assert.Equal(carpenterEvidence.Id, answer.Observations[0].Evidence[0].Id);
         Assert.Contains(" de ", answer.Observations[0].EvidenceLabel, StringComparison.Ordinal);
         Assert.NotNull(sent);
         Assert.False(http.DefaultRequestHeaders.Contains("x-goog-api-key"));
