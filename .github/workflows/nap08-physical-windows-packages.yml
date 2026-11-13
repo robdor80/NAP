@@ -1,0 +1,109 @@
+# NAP08: solo paquetes de laboratorio. No NAP CI, Releases ni CUTOVER.
+name: NAP08 - paquetes Windows para certificacion fisica
+on:
+  push:
+    branches:
+      - feature/nap08-certificacion-fisica-msi-20261113
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap08-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-nap08-packages:
+    runs-on: windows-2022
+    timeout-minutes: 65
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validar sintaxis PowerShell de auditoria NAP08
+        run: |
+          $tokens=$null; $errors=$null
+          [void][System.Management.Automation.Language.Parser]::ParseFile(
+            (Join-Path $pwd 'scripts/NAP08.PhysicalAudit.ps1'),[ref]$tokens,[ref]$errors)
+          if ($errors.Count -ne 0) { throw ($errors | Out-String) }
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Preparar Inno Setup oficial 6.7.4 verificando attestation y Authenticode
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src=Join-Path $env:RUNNER_TEMP 'nap08-inno'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Inno download FAIL' }
+          $setup=Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Inno attestation FAIL' }
+          $sig=Get-AuthenticodeSignature -LiteralPath $setup
+          if ($sig.Status -ne 'Valid' -or $sig.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Inno vendor signature FAIL'
+          }
+          $root=Join-Path $env:RUNNER_TEMP 'nap08-inno-compiler'
+          $p=Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$root") -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw 'Inno compiler setup FAIL' }
+          $iscc=Join-Path $root 'ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC missing' }
+          "NAP08_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Construir paquete de laboratorio 2.0.0
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP08_ISCC -Version '2.0.0'
+      - name: Ensayar instalacion y desinstalacion de 2.0.0 en runner TEMP
+        run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.0'
+      - name: Retener paquete inicial fuera de artifacts/nap06
+        run: |
+          New-Item -ItemType Directory -Force 'artifacts/nap08' | Out-Null
+          Move-Item -LiteralPath 'artifacts/nap06' -Destination 'artifacts/nap08/base'
+      - name: Construir paquete de laboratorio 2.0.1 con mismo codigo
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP08_ISCC -Version '2.0.1'
+          Move-Item -LiteralPath 'artifacts/nap06' -Destination 'artifacts/nap08/next'
+      - name: Emitir hashes independientes y manifest de procedencia
+        run: |
+          $rows=@()
+          foreach ($p in @(@{version='2.0.0';dir='base'},@{version='2.0.1';dir='next'})) {
+            $exe=Join-Path $pwd "artifacts/nap08/$($p.dir)/output/NAP-Setup-$($p.version).exe"
+            $sha=(Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+            $check=(Get-Content -LiteralPath "$exe.sha256" -Raw).Trim().Split(' ')[0]
+            $inventory=Get-Content -LiteralPath "artifacts/nap08/$($p.dir)/inventory.json" -Raw | ConvertFrom-Json
+            if ($sha -cne $check -or $inventory.version -ne $p.version -or @($inventory.files).Count -lt 20) {
+              throw "Integrity failed: $($p.version)"
+            }
+            $rows+=@{ version=$p.version; setup_file="NAP-Setup-$($p.version).exe";
+              sha256=$sha; inventory_file="$($p.dir)/inventory.json"; installed_files=@($inventory.files).Count }
+          }
+          $manifest=@{ phase='NAP08'; source_commit=$env:GITHUB_SHA; os='windows-2022';
+            physical_test='PENDIENTE'; cutover=$false; product_signed=$false;
+            note='Ambas versiones comparten codigo. Instalador Inno solamente; no NAP07 Stage/Apply fisico ni Release.';
+            packages=$rows }
+          [IO.File]::WriteAllText((Join-Path $pwd 'artifacts/nap08/NAP08-MANIFEST.json'),
+             ($manifest | ConvertTo-Json -Depth 6),[Text.UTF8Encoding]::new($false))
+          $manifest | ConvertTo-Json -Depth 6 | Write-Host
+      - name: Eliminar material privado temporal
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Subir solo los instaladores/inventarios de laboratorio
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap08-msi-physical-test-${{ github.sha }}
+          path: |
+            artifacts/nap08/NAP08-MANIFEST.json
+            artifacts/nap08/base/output/NAP-Setup-2.0.0.exe
+            artifacts/nap08/base/output/NAP-Setup-2.0.0.exe.sha256
+            artifacts/nap08/base/inventory.json
+            artifacts/nap08/base/provenance.json
+            artifacts/nap08/base/test-results.json
+            artifacts/nap08/next/output/NAP-Setup-2.0.1.exe
+            artifacts/nap08/next/output/NAP-Setup-2.0.1.exe.sha256
+            artifacts/nap08/next/inventory.json
+            artifacts/nap08/next/provenance.json
+          if-no-files-found: error
+          retention-days: 30
