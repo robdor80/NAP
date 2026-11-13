@@ -40,6 +40,8 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string ReviewRemainder => _overview is { Queue: var q } && q.Counts.NeedsReview > q.Review.Count
         ? q.Counts.NeedsReview - q.Review.Count == 1 ? "1 más pendiente de revisión" : $"{q.Counts.NeedsReview - q.Review.Count:N0} más pendientes de revisión" : "";
     public ObservableCollection<AutomationReviewRow> Review { get; } = [];
+    public bool CanActivate => !_disposed && !_changing && Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Stopped;
+    public bool CanStopUniverse => !_disposed && !_changing && Current() && !_overview!.Control.Stopped;
     public bool CanPause => !_disposed && !_changing && Current() && _overview!.Control is { Grant: not null, Paused: false, Stopped: false } && SelectedState() == AutomationHostState.Running;
     private bool AuthorizedGrant => Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Grant is { } grant &&
         grant.Policy == _overview.Queue.Policy.Reference && grant.PolicyAuthorizationId == _overview.Queue.Policy.Authorization?.AuthorizationId &&
@@ -51,6 +53,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public UiAsyncCommand Pause { get; }
     public UiAsyncCommand Resume { get; }
     public UiAsyncCommand Stop { get; }
+    public UiAsyncCommand StopUniverse { get; }
     public AutomationControlViewModel(AutomationHostClient client, Func<UniverseContext?> context, IUserConfirmation confirmation)
         : this(context, confirmation, new AutomationOverviewClient(client)) { }
     public AutomationControlViewModel(Func<UniverseContext?> context, IUserConfirmation confirmation, IAutomationOverviewClient client)
@@ -61,6 +64,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         Pause = new(() => Change(AutomationOperation.Pause), () => CanPause, _ => Unavailable());
         Resume = new(() => Change(AutomationOperation.Resume), () => CanResume, _ => Unavailable());
         Stop = new(StopAsync, () => !_disposed && !_changing && Current(), _ => Unavailable());
+        StopUniverse = new(StopUniverseAsync, () => CanStopUniverse, _ => Unavailable());
     }
     private bool Current() => _overview is not null && _overview.Queue.UniverseId == _context()?.Id;
     private AutomationHostState? SelectedState() => _overview?.Host.Universes.SingleOrDefault(s => s.UniverseId == _overview.Queue.UniverseId)?.State;
@@ -101,14 +105,19 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private void Clear() { _overview = null; Review.Clear(); Changed(); }
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume) }) Notify(name);
-        Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh();
+        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse) }) Notify(name);
+        Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh();
     }
     private async Task Change(AutomationOperation operation)
     {
         if (!Current()) return;
         var context = _context()!; _changing = true; ++_generation;
-        Clear(); Status = operation == AutomationOperation.Pause ? "Pausando automatización…" : "Reanudando automatización…";
+        Clear(); Status = operation switch
+        {
+            AutomationOperation.Pause => "Pausando automatización…",
+            AutomationOperation.StopUniverse => "Deteniendo el universo seleccionado…",
+            _ => "Reanudando automatización…"
+        };
         try { await _client.SendAsync(operation, context.Id, new { }, _lifetime.Token); }
         catch { Unavailable(); throw; }
         finally { _changing = false; }
@@ -124,6 +133,16 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         try { await _client.SendAsync(AutomationOperation.Activate, context.Id, new AutomationActivation(policy.Reference, false), _lifetime.Token); }
         finally { _changing = false; }
         await RefreshAsync();
+    }
+    private async Task StopUniverseAsync()
+    {
+        var context = _context();
+        if (!CanStopUniverse || context is null) return;
+        if (!await _confirmation.ConfirmAsync(new("Detener universo",
+            "Se drenará únicamente la automatización del universo seleccionado. El Host y los demás universos continuarán disponibles.",
+            context.Id, []), _lifetime.Token)) return;
+        if (!CanStopUniverse || context != _context()) return;
+        await Change(AutomationOperation.StopUniverse);
     }
     private async Task StopAsync()
     {

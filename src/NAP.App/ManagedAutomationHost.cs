@@ -1,0 +1,124 @@
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using NAP.Core;
+
+namespace NAP.App;
+
+/// <summary>
+/// Owns the desktop launch/attachment handshake, not the durable workflow or its authority.
+/// Closing WPF deliberately leaves an active Host running so the next UI can reattach.
+/// NAP02 never changes the Host's existing TEMP laboratory/authorization boundary.
+/// </summary>
+internal sealed class ManagedAutomationHost : IDisposable
+{
+    private readonly Process? _spawned;
+    internal AutomationHostLaunchConfiguration Configuration { get; }
+    internal AutomationHostClient Client { get; }
+
+    private ManagedAutomationHost(AutomationHostLaunchConfiguration configuration, AutomationHostClient client, Process? spawned)
+    {
+        Configuration = configuration;
+        Client = client;
+        _spawned = spawned;
+    }
+
+    internal static async Task<ManagedAutomationHost> OpenAsync(string configPath, CancellationToken cancellation = default)
+    {
+        if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("WPF Host management requires Windows.");
+        var path = Path.GetFullPath(configPath);
+        var file = new FileInfo(path);
+        if (!file.Exists || file.Length is < 1 or > 2 * 1024 * 1024 ||
+            (file.Attributes & FileAttributes.ReparsePoint) != 0)
+            throw new InvalidDataException("Host launch configuration is missing, linked, or too large.");
+
+        using var document = JsonDocument.Parse(await File.ReadAllBytesAsync(path, cancellation));
+        var configuration = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement);
+        var contexts = configuration.Contexts();
+        var client = new AutomationHostClient(configuration.Connection);
+
+        // Launches are serialized across WPF processes. The Host's native writer mutex is an
+        // independent final guard; UI synchronization cannot grant filesystem authority.
+        var gateName = @"Local\NAPHostLaunch_" +
+            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(path.ToUpperInvariant())));
+        using var gate = new Semaphore(1, 1, gateName);
+        if (!await Task.Run(() => gate.WaitOne(TimeSpan.FromSeconds(25)), cancellation))
+            throw new TimeoutException("Another desktop is still starting this Host.");
+        try
+        {
+            if (await CanAttachAsync(client, contexts, cancellation))
+                return new ManagedAutomationHost(configuration, client, null);
+
+            var executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
+            var assembly = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.dll");
+            if (!File.Exists(executable) && !File.Exists(assembly))
+                throw new FileNotFoundException("NAP.AutomationHost is absent from the application package.");
+
+            var start = new ProcessStartInfo(File.Exists(executable) ? executable : "dotnet")
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                WorkingDirectory = AppContext.BaseDirectory
+            };
+            if (!File.Exists(executable)) start.ArgumentList.Add(assembly);
+            start.ArgumentList.Add("--laboratory-config");
+            start.ArgumentList.Add(path);
+
+            var spawned = Process.Start(start) ?? throw new InvalidOperationException("Host process did not start.");
+            try
+            {
+                var ready = await spawned.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(25), cancellation);
+                if (ready is null || !ready.StartsWith("NAP laboratory host ready: ", StringComparison.Ordinal))
+                    throw new InvalidOperationException("Host did not report a valid startup handshake.");
+                if (!await CanAttachAsync(client, contexts, cancellation))
+                    throw new InvalidDataException("Host IPC scope did not match its launch configuration.");
+                return new ManagedAutomationHost(configuration, client, spawned);
+            }
+            catch
+            {
+                if (!spawned.HasExited) spawned.Kill(entireProcessTree: true);
+                spawned.Dispose();
+                throw;
+            }
+        }
+        finally { gate.Release(); }
+    }
+
+    private static async Task<bool> CanAttachAsync(AutomationHostClient client,
+        IReadOnlyList<UniverseContext> contexts, CancellationToken cancellation)
+    {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellation);
+        deadline.CancelAfter(TimeSpan.FromSeconds(6));
+        try
+        {
+            var snapshot = AutomationProtocol.Read<AutomationHostSnapshot>(
+                await client.CallAsync(AutomationOperation.Status, null, new { }, deadline.Token));
+            if (string.IsNullOrEmpty(snapshot.SessionId) || string.IsNullOrEmpty(snapshot.InstallationId) ||
+                snapshot.Universes.Count != contexts.Count ||
+                !snapshot.Universes.Select(s => s.UniverseId).OrderBy(s => s.Value, StringComparer.Ordinal)
+                    .SequenceEqual(contexts.Select(c => c.Id).OrderBy(s => s.Value, StringComparer.Ordinal)))
+                throw new InvalidDataException("Host universe identities do not match the desktop configuration.");
+
+            foreach (var context in contexts)
+            {
+                var overview = AutomationProtocol.Read<AutomationDesktopOverview>(
+                    await client.CallAsync(AutomationOperation.Overview, context.Id.Value, new { }, deadline.Token));
+                if (overview.Queue.UniverseId != context.Id || overview.Control.UniverseId != context.Id ||
+                    overview.Queue.Policy.Definition.Roots != context.Storage)
+                    throw new InvalidDataException("Host storage scope differs from the configured desktop universe.");
+            }
+            return true;
+        }
+        catch (Exception error) when (!cancellation.IsCancellationRequested &&
+            error is IOException or TimeoutException or OperationCanceledException)
+        {
+            // An absent endpoint is not an authorization failure. Authentication/scope failures
+            // must instead abort startup, never silently launch a competing writer.
+            return false;
+        }
+    }
+
+    public void Dispose() => _spawned?.Dispose(); // Does not stop, kill or orphan-claim a running Host.
+}

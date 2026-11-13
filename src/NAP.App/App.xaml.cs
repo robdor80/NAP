@@ -16,6 +16,7 @@ public partial class App : Application
 #endif
     private HttpClient? _auditTransport;
     private RemoteDesktopService? _remoteDesktop;
+    private ManagedAutomationHost? _managedAutomation;
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -37,12 +38,25 @@ public partial class App : Application
                 MainWindow = previewWindow; previewWindow.Show(); return;
             }
             var automationConfig = e.Args.FirstOrDefault(a => a.StartsWith("--automation-config=", StringComparison.Ordinal))?[20..];
+            var managedArgument = e.Args.FirstOrDefault(a => a.StartsWith("--automation-managed-config=", StringComparison.Ordinal))?[28..];
+            if (automationConfig is not null && managedArgument is not null)
+                throw new ArgumentException("Choose either Host attachment or managed Host startup, not both.");
+            var installedHostConfig = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "Host", "launch.json");
+            var managedConfig = managedArgument ?? (automationConfig is null && System.IO.File.Exists(installedHostConfig) ? installedHostConfig : null);
+            if (managedConfig is not null)
+            {
+                // A present configuration is authoritative. Never fall back to local writers
+                // when this Host cannot be started or its universe/IPC identity disagrees.
+                _managedAutomation = await ManagedAutomationHost.OpenAsync(managedConfig);
+                automationConfig = managedConfig;
+            }
             if (automationConfig is not null)
             {
                 var file = new System.IO.FileInfo(automationConfig); if (file.Length > 2 * 1024 * 1024) throw new System.IO.InvalidDataException("Host config exceeds its bound.");
                 using var document = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(file.FullName));
                 var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
-                var client = new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
+                var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
@@ -86,7 +100,7 @@ public partial class App : Application
             Shutdown(1);
         }
     }
-    protected override void OnExit(ExitEventArgs e) { _auditTransport?.Dispose(); _remoteDesktop?.Dispose(); base.OnExit(e); }
+    protected override void OnExit(ExitEventArgs e) { _auditTransport?.Dispose(); _remoteDesktop?.Dispose(); _managedAutomation?.Dispose(); base.OnExit(e); }
     private sealed class ProfilePicker(string? diagnosticSource) : IProfileFilePicker
     {
         public string? Pick()

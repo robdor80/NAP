@@ -16,4 +16,15 @@
   <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /><ProjectReference Include="../NAP.AI/NAP.AI.csproj" /></ItemGroup>
   <ItemGroup><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Resource Include="Assets/RoDo/rodo_v0_1.png" /></ItemGroup>
+  <!-- Host is shipped with the ordinary WPF application; no separate DEV edition. -->
+  <ItemGroup><ProjectReference Include="../NAP.AutomationHost/NAP.AutomationHost.csproj" ReferenceOutputAssembly="false" /></ItemGroup>
+  <Target Name="CopyManagedAutomationHost" AfterTargets="Build">
+    <ItemGroup>
+      <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.dll" />
+      <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.deps.json" />
+      <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.runtimeconfig.json" />
+      <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.exe" Condition="Exists('../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.exe')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ManagedHostFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
