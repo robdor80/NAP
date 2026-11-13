@@ -153,7 +153,9 @@ function Get-Release([string]$v,[string]$channel) {
     }
     throw "No se encontro una Release valida en el canal $channel$(if($v){" para v$v"})."
 }
-function Run-Setup([string]$path) {
+function Run-Setup([string]$path,[string]$pin) {
+    # Reducir la ventana entre comprobacion de integridad y ejecucion.
+    [void](Assert-TrustedFile $path $pin -unsigned:$AllowUnsigned)
     Assert-Plain $path
     $p = Start-Process -FilePath $path -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES',
         '/NORESTART','/NOCLOSEAPPLICATIONS') -Wait -PassThru
@@ -164,7 +166,7 @@ function Restore-Previous($tx) {
     [void](Assert-TrustedFile $old ([string]$tx.PreviousSha256) -unsigned:$AllowUnsigned)
     Assert-Closed
     $tx.State='restoring'; Save-Json $journalFile $tx
-    Run-Setup $old
+    Run-Setup $old ([string]$tx.PreviousSha256)
     Verify-Installed ([string]$tx.PreviousVersion)
     $tx.State='rolled_back'; Save-Json $journalFile $tx
 }
@@ -217,6 +219,7 @@ try {
         [IO.Directory]::CreateDirectory($tool) | Out-Null
         $this = [IO.Path]::GetFullPath($MyInvocation.MyCommand.Path)
         $toolCopy = Join-Path $tool 'NAP07.Update.ps1'
+        Assert-Plain $toolCopy
         if (-not $this.Equals($toolCopy,[StringComparison]::OrdinalIgnoreCase)) {
             Copy-Item -LiteralPath $this -Destination $toolCopy -Force
         }
@@ -267,7 +270,7 @@ try {
         if ($Fault -eq 'BeforeSetup') { throw 'Fallo sintetico antes de ejecutar el instalador; Recover permite volver al estado verificado.' }
         $tx.State='applying'; Save-Json $journalFile $tx
         try {
-            Run-Setup $new
+            Run-Setup $new $TrustedSha256
             if ($Fault -eq 'AfterSetup') { throw 'Fallo sintetico tras instalacion nueva.' }
             Verify-Installed $Version
             $tx.State='committed'; Save-Json $journalFile $tx
