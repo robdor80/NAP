@@ -8,6 +8,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
 {
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
+    private readonly ICatalogInsightClient? _insightClient;
     private readonly IUserConfirmation _confirmation;
     private readonly bool _syntheticReadOnly;
     private readonly IImageNormalizationUiService _normalization;
@@ -28,9 +29,9 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false, ICatalogInsightClient? insightClient = null)
     {
-        Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
+        Explorer = explorer; _service = service; _insightClient = insightClient; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
         _syntheticReadOnly = syntheticReadOnly;
         Automation = automation;
         Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
@@ -50,7 +51,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
         Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
-        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Consultar IA", "\uE8B0"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
         OpenIncident = new(p =>
         {
             Pipeline.Work!.Filter = Pipeline.Work.Filters.Single(f=>f.Value==WorkflowFilter.Review);
@@ -139,6 +140,18 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
             var result = await _service.ExecuteAsync(c, prepared, audit, ct); if (!Active(c)) return; Scope(result.AssetKey.UniverseId, c); _verified.RemoveAll(r => r.AssetKey == result.AssetKey); _verified.Add(result);
             Pipeline.Prepared = null; Pipeline.Audit = null; Record(c, "Asset COMPLETED y físicamente verificado", UiTone.Success); await Explorer.RefreshAsync();
         }), () => Writable(Pipeline) && Pipeline.Prepared is not null && Pipeline.Audit?.Passed == true);
+        AskCatalog = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var report = Intelligence.Report!;
+            if (report.UniverseId != c.Id) throw new InvalidDataException("La evidencia pertenece a otro universo.");
+            var answer = await _insightClient!.AskAsync(report, Intelligence.Question, ct);
+            if (!Active(c) || Intelligence.Report != report) return;
+            Intelligence.Answer = answer.Answer;
+            Replace(Intelligence.Evidence, answer.Evidence);
+            Record(c, "Consulta de diversidad completada; catálogo sin cambios", UiTone.Neutral);
+        }), () => Context is not null && !IsExecuting && Intelligence.State is UiPageState.Ready or UiPageState.Empty &&
+            Intelligence.Report is not null && _insightClient is not null &&
+            !string.IsNullOrWhiteSpace(Intelligence.Question) && Intelligence.Question.Length <= 1000);
         SaveObjective = Command(() => ActionAsync(async (c, ct) =>
         {
             var target = long.Parse(Objectives.Target, System.Globalization.CultureInfo.InvariantCulture);
@@ -185,6 +198,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public CatalogViewModel Catalog { get; }
     public ObjectivesViewModel Objectives { get; } = new();
     public StatisticsViewModel Statistics { get; }
+    public CatalogIntelligenceViewModel Intelligence { get; } = new();
     public BackupsViewModel Backups { get; } = new();
     public HistoryViewModel History { get; } = new();
     public GitViewModel Git { get; } = new();
@@ -194,7 +208,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public IReadOnlyList<ShellNavigationItem> Tools { get; }
     public bool ToolsExpanded { get => _toolsExpanded; set => Set(ref _toolsExpanded, value); }
     public bool ReviewExpanded { get => _reviewExpanded; set => Set(ref _reviewExpanded, value); }
-    public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Backups, History, Git, Settings, Rodo];
+    public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Intelligence, Backups, History, Git, Settings, Rodo];
     public UniverseContext? Context => Explorer.Context;
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
     public bool HasSingleUniverse => Profiles.Count == 1;
@@ -234,6 +248,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand AuditPackage { get; }
     public UiAsyncCommand ExecutePackage { get; }
     public UiAsyncCommand SaveObjective { get; }
+    public UiAsyncCommand AskCatalog { get; }
     public UiAsyncCommand CreateBackup { get; }
     public UiAsyncCommand RestoreBackup { get; }
     public UiAsyncCommand RetainBackups { get; }
@@ -275,6 +290,8 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         if (page.State == UiPageState.Loading) return "Espera a que termine la lectura del universo.";
         if (page.State == UiPageState.Stopped) return "Lectura detenida. Revisa el diagnóstico antes de reintentar.";
         if (page.State is UiPageState.Cancelled or UiPageState.Unconfigured) return "Actualiza esta sección para consultar los datos del universo.";
+        if (command == AskCatalog) return _insightClient is null ? "Configura NAP_GEMINI_API_KEY y NAP_GEMINI_MODEL para consultar Gemini." :
+            "Abre Consultar IA, carga las estadísticas y escribe una pregunta de hasta 1000 caracteres.";
         if (command == SaveObjective) return "Completa identificador, nombre y un número de assets mayor que cero.";
         if (command == RestoreBackup) return Backups.Selected is null ? "Selecciona una copia verificada." : "La restauración está disponible para copias de Base de datos (SQLite).";
         if (command == RetainBackups) return "Los valores de retención deben ser números enteros mayores o iguales que cero.";
@@ -363,6 +380,14 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
                 }
                 else { var receipts = await _service.ReceiptsAsync(context, source.Token); if (!Current()) return; CheckReceipts(receipts, context); Replace(History.Jobs, value.Jobs); Replace(History.Receipts, receipts); }
                 page.Notice = value.Notices.FirstOrDefault(n => n.Tone == UiTone.Error) ?? value.Notices.FirstOrDefault() ?? page.Notice; page.State = value.Notices.Any(n => n.Tone == UiTone.Error) ? UiPageState.Stopped : value.Jobs.Count + value.Candidates.Count == 0 ? UiPageState.Empty : UiPageState.Ready;
+            }
+            else if (page == Intelligence)
+            {
+                var snapshot = await Task.Run(() => new CatalogDiversityReader(context).Read(source.Token), source.Token);
+                if (!Current()) return;
+                Scope(snapshot.UniverseId, context);
+                Intelligence.Report = snapshot;
+                page.State = snapshot.TotalAssets == 0 ? UiPageState.Empty : UiPageState.Ready;
             }
             else if (page == Objectives)
             { var value = await _service.PlanningAsync(context, source.Token); if (!Current()) return; CheckPlanning(value, context); Replace(Objectives.Objectives, value.Objectives.Select(o => new ObjectiveCard(o))); Replace(Objectives.Campaigns, value.Campaigns); page.State = value.Objectives.Count == 0 ? UiPageState.Empty : UiPageState.Ready; }
