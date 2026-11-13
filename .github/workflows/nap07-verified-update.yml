@@ -1,0 +1,76 @@
+# NAP07: solo rama dedicada. No NAP CI, no releases productivas ni CUTOVER.
+name: NAP07 - verified update and rollback Windows laboratory
+on:
+  push:
+    branches:
+      - feature/nap07-verified-updates-rollback-20261113
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap07-verified-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-nap07:
+    runs-on: windows-2022
+    timeout-minutes: 65
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Fetch pinned official Inno Setup 6.7.4, verify attestation and vendor signature
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src = Join-Path $env:RUNNER_TEMP 'nap07-inno-official'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Inno download failed' }
+          $setup = Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Attestation failed' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $setup
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Inno vendor signature invalid'
+          }
+          $root = Join-Path $env:RUNNER_TEMP 'nap07-inno-compiler'
+          $p = Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$root") -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw 'Inno compiler install failed' }
+          $iscc = Join-Path $root 'ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC missing' }
+          "NAP07_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build N old installer (2.0.0) and retain locally
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP07_ISCC -Version '2.0.0'
+          $old = Join-Path $env:RUNNER_TEMP 'nap07-old'
+          Move-Item -LiteralPath artifacts/nap06 -Destination $old
+          "NAP07_OLD=$old" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build N+1 installer (2.0.1)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP07_ISCC -Version '2.0.1'
+      - name: Exercise staging, intentional failures, recovery, upgrade and rollback in TEMP
+        run: |
+          ./scripts/Test-Nap07Update.ps1 -OldWork $env:NAP07_OLD -NewWork (Join-Path $pwd 'artifacts/nap06')
+      - name: Delete ephemeral private license material
+        if: ${{ always() }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Keep focused results only, never publish a product release
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap07-windows-laboratory-${{ github.sha }}
+          path: |
+            artifacts/nap06/nap07-test-results.json
+            artifacts/nap06/inventory.json
+            artifacts/nap06/provenance.json
+          if-no-files-found: warn
+          retention-days: 30
