@@ -24,3 +24,15 @@ No se modifica el tratamiento secreto de Six Labors/Gemini, el esquema SQLite, l
 
 ## Puertas posteriores
 NAP03 integra la cadena de assets sobre el Host existente. NAP04 cierra UI y revisión visual. NAP05 trata #49. NAP06/NAP07 distribuyen y actualizan el instalador. NAP08 valida físicamente el MSI. NAP09 decide y ejecuta CUTOVER, con #47 abierto hasta entonces.
+
+## Evidencia Windows x64 — 13 de noviembre de 2026
+
+- **Ejecución controlada:** [GitHub Actions NAP02 #43469800109](https://github.com/robdor80/NAP/actions/runs/43469800109).
+- **Commit funcional verificado:** `37ea5b665198edf5007b8a6fe5c569c2b8a3f870`.
+- **Build:** solución completa Release .NET 10, 0 errores; ejecutable Host y metadatos presentes en salida WPF.
+- **Pruebas focalizadas:** 7/7 PASS, 0 FAIL, 0 SKIP. Incluyen arranque WPF y reconexión manteniendo la sesión Host, tray/render/bindings, control de universos y ledger.
+- **Advertencias no nuevas:** 2 × CA2014 en `LegacyPortraitReader.cs` y `LegacyMasterEvidenceIndex.cs`; no se refactorizan fuera de alcance.
+- **Antecedentes de validación:** la primera prueba gestionada esperaba erróneamente EOF de una salida heredada por el Host superviviente. Se corrigió para leer un recibo completo sin exigir que el Host muera al cerrarse WPF. La prueba histórica `StopPersistenceFailureRemainsDiagnosedAfterOwnerDrain` tuvo timeout al incluirla en una matriz extendida y queda **sin certificación**, para investigar en NAP05/#49. No hay evidencia que autorice cerrar #49.
+- **Límite de aceptación:** este PASS es técnico y sintético en Windows Server 2022. No significa instalación validada en el MSI Raider, licencias productivas, permisos sobre raíces reales ni CUTOVER.
+
+**Dictamen NAP02:** integración de código apta para fusión de fase, con ejecución productiva todavía condicionada por #47 y las fases NAP06–NAP09. No se entrega ni anuncia una distribución DEV.
