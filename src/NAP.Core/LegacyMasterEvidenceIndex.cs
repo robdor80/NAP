@@ -88,7 +88,9 @@ public sealed class LegacyMasterEvidenceIndex(UniverseContext context)
             var expected = entry.GetProperty("sha256_copia_local").GetString() ?? "";
             if (!ShaPattern.IsMatch(expected) || digest != expected)
                 throw new InvalidDataException("SHA-256 de PNG distinto del manifiesto: " + id);
-            using var image = Image.Load(path);
+            var image = Image.Identify(path) ?? throw new InvalidDataException("PNG ilegible: " + id);
+            if (image.Width < 1 || image.Height < 1 || (long)image.Width * image.Height > 40_000_000)
+                throw new InvalidDataException("Dimensiones PNG fuera del límite: " + id);
             var oldElement = entry.GetProperty("sha256_registro_septiembre_2026");
             var old = oldElement.ValueKind == JsonValueKind.Null ? null : oldElement.GetString();
             if (old is not null && !ShaPattern.IsMatch(old)) throw new InvalidDataException("SHA histórico mal formado.");
