@@ -109,3 +109,39 @@ o evaluar un entorno efímero aislado para ensayos destructivos. Toda alternativ
 primero sus condiciones reales de uso; no crear cuentas, no exigir cambios de sesión, no
 instalar componentes de Windows automáticamente y no garantizar certificación física antes
 de obtener pruebas reales. Mantener NAP08 PR en Draft y #47/#49 abiertos.
+
+## 10. Conexión física de AutomationHost desde la instalación existente
+
+El código de NAP 2.0.1 admite actualmente AutomationHost solo en laboratorios
+de TEMP cuyo nombre comienza por nap-host-. El despliegue sobre rutas reales
+Nimroel/Star Trek es una tarea diferente que necesita eliminar o sustituir
+de forma explícita esa limitación en NAP09.
+
+Para comprobar Host ↔ WPF en el MSI ya instalado, sin reinstalar ni cambiar de cuenta:
+
+- scripts/NAP08.ConectarHostLab.cmd: lanzador de doble clic.
+- scripts/NAP08.ConectarHostLab.ps1: prepara bajo TEMP el laboratorio exclusivo
+  nap-host-nap08-msi con workspace, producción, archivo y control separados;
+  copia la definición del perfil Nimroel instalada y cambia solo su nombre
+  visible por Nimroel (laboratorio NAP08). Genera una clave IPC aleatoria
+  y abre el NAP.App.exe 2.0.1 instalado con --automation-managed-config.
+
+La herramienta no escribe sobre settings.json de la cuenta, no manipula
+catálogos reales, ni altera Gemini persistente. Solo retira variables Gemini
+del entorno del hijo sintético durante el arranque (contrato HostGeminiAuditor).
+La política inicial permanece sin activar; la prueba busca una conexión y
+estado visible en WPF, no procesar assets.
+
+Guía para el propietario: cerrar NAP normal desde el icono de bandeja con Salir;
+hacer Pull de la rama NAP08; doble clic en scripts/NAP08.ConectarHostLab.cmd;
+comprobar que el universo lleva el identificador visible de laboratorio y que
+el estado pasa de Automatización sin configurar a Automatización sin activar,
+u otra respuesta remota acreditable, y aportar captura.
+
+El Host puede permanecer activo tras cerrar WPF por contrato de NAP02.
+Se detiene mediante la orden normal de Detener automatización desde WPF
+cuando proceda; no usar tareas de Windows para forzar el cierre en una prueba
+que pretenda validar la parada durable.
+
+Estado: scripts preparados y publicados; ejecución física del Host pendiente
+de evidencia. NAP09/CUTOVER no forma parte de esta prueba.
