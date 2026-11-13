@@ -1,0 +1,90 @@
+<UserControl x:Class="NAP.App.Views.CatalogIntelligenceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0" Margin="0,0,0,12">
+      <TextBlock Text="DIVERSIDAD DEL CATÁLOGO" Style="{StaticResource Muted}" />
+      <TextBlock Text="{Binding Total, StringFormat='{}{0} assets verificados'}"
+          Style="{StaticResource Heading}" Margin="0,6,0,4" />
+      <TextBlock Text="Datos agregados de SQLite, sin leer imágenes ni modificar archivos."
+          Style="{StaticResource Muted}" TextWrapping="Wrap" />
+    </StackPanel>
+
+    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+      <StackPanel>
+        <TextBlock Text="Pregunta a Gemini sobre profesiones, edades, sexos, territorios o escenas"
+            TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,8"/>
+        <TextBox Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}"
+            AcceptsReturn="True" TextWrapping="Wrap" Height="72" VerticalScrollBarVisibility="Auto"
+            AutomationProperties.Name="Pregunta sobre los assets del catálogo"/>
+        <Button Content="Consultar IA" HorizontalAlignment="Left" Margin="0,12,0,0"
+            Style="{StaticResource Primary}"
+            Command="{Binding DataContext.AskCatalog, RelativeSource={RelativeSource AncestorType=Window}}"
+            ToolTip="{Binding DataContext.AskCatalog.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <TextBlock Text="{Binding Answer}" TextWrapping="Wrap" Margin="0,14,0,6" FontSize="14"/>
+        <ItemsControl ItemsSource="{Binding Evidence}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" TextWrapping="Wrap" Style="{StaticResource Muted}"
+                  Margin="0,2,0,2"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock Text="Las cifras referenciadas vienen de SQLite; las conclusiones de Gemini son recomendaciones, no cuotas."
+            Margin="0,12,0,0" Style="{StaticResource Muted}" TextWrapping="Wrap"/>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" Style="{StaticResource Card}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="Posibles carencias de variedad"
+              FontWeight="SemiBold" Margin="0,0,0,12"/>
+          <ListBox ItemsSource="{Binding Opportunities}" Background="Transparent"
+              BorderThickness="0" ScrollViewer.CanContentScroll="True"
+              VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Margin="0,5,8,9">
+                  <TextBlock Text="{Binding Dimension}" Style="{StaticResource Muted}" />
+                  <TextBlock FontWeight="SemiBold" TextWrapping="Wrap">
+                    <Run Text="{Binding Value}" />
+                    <Run Text=" · " />
+                    <Run Text="{Binding Count}" />
+                  </TextBlock>
+                  <TextBlock Text="{Binding ComparedTo, StringFormat='Comparar con: {0}'}" Style="{StaticResource Muted}"/>
+                  <TextBlock Text="{Binding ComparedCount, StringFormat='Assets de comparación: {0}'}" Style="{StaticResource Muted}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+      <Border Grid.Column="1" Style="{StaticResource Card}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="Recuentos verificados por dimensión"
+              FontWeight="SemiBold" Margin="0,0,0,12"/>
+          <ListBox ItemsSource="{Binding CountRows}" Background="Transparent"
+              BorderThickness="0" ScrollViewer.CanContentScroll="True"
+              VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Display}" TextWrapping="Wrap" Margin="0,5,6,5"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>
