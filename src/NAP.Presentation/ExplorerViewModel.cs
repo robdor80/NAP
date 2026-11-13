@@ -125,6 +125,18 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public PagedAssetCollection? Assets { get => _assets; private set { if (_assets == value) return; _assets?.Dispose(); _assets = value; Notify(); Notify(nameof(StatusText)); } }
     public AssetTileViewModel? SelectedAsset { get => _selectedAsset; set { if (Set(ref _selectedAsset, value)) _ = SelectAsync(value?.Asset); } }
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
+    /// <summary>Separate read-only preview tile for visual comparisons; caller owns disposal.</summary>
+    public AssetTileViewModel CreateComparisonTile(CatalogAssetSummary asset)
+    {
+        ArgumentNullException.ThrowIfNull(asset);
+        var context = Context ?? throw new InvalidOperationException("Selecciona un universo disponible.");
+        if (asset.AssetKey.UniverseId != context.Id)
+            throw new InvalidDataException("No se pueden comparar assets de universos diferentes.");
+        var tile = new AssetTileViewModel(_service, context);
+        tile.Populate(asset);
+        return tile;
+    }
+
     public CatalogAssetSnapshot? Detail { get => _detail; private set { Set(ref _detail, value); NotifyCatalogText(); } }
     public LegacyPortrait? LegacyDetail { get => _legacyDetail; private set { Set(ref _legacyDetail, value); NotifyCatalogText(); } }
     public LegacyMasterEvidence? MasterEvidence { get => _masterEvidence; private set => Set(ref _masterEvidence, value); }

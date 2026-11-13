@@ -36,7 +36,7 @@ public sealed class VisualExplorerWindowsSmokeTests
         using var result = await Run(settings.SettingsPath, Environment.GetEnvironmentVariable("NAP_UI_SMOKE_OUTPUT"));
         Assert.Equal(1, result.RootElement.GetProperty("assets").GetInt32()); Assert.True(result.RootElement.GetProperty("documents").GetInt32() > 0);
         Assert.Equal("Ready", result.RootElement.GetProperty("state").GetString());
-        Assert.Equal(20, result.RootElement.GetProperty("pages").GetInt32());
+        Assert.Equal(22, result.RootElement.GetProperty("pages").GetInt32()); // 11 páginas, incluida Diversidad, en dos resoluciones WPF.
         Assert.Equal(0, result.RootElement.GetProperty("bindingErrors").GetInt32());
         Assert.Equal("restored", result.RootElement.GetProperty("tray").GetString());
         Assert.Equal("static", result.RootElement.GetProperty("selectorMode").GetString());

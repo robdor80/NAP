@@ -78,6 +78,9 @@ public sealed class CatalogExplorerReader(UniverseContext context)
         }, cancellation);
     }
 
+    public IReadOnlyList<CatalogDiversityEntry> DiversityEntries(CancellationToken cancellation = default) =>
+        Read(c => CatalogDiversitySql.Select(c, context.Id, cancellation), cancellation);
+
     public CatalogStatistics Statistics(CatalogFilter? filter = null, CancellationToken cancellation = default) =>
         Read(c => Statistics(c, context.Id, filter ?? new(), cancellation), cancellation);
 
