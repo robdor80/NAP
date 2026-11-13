@@ -43,48 +43,60 @@ internal sealed class ManagedAutomationHost : IDisposable
         // independent final guard; UI synchronization cannot grant filesystem authority.
         var gateName = @"Local\NAPHostLaunch_" +
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(path.ToUpperInvariant())));
-        using var gate = new Semaphore(1, 1, gateName);
-        if (!await Task.Run(() => gate.WaitOne(TimeSpan.FromSeconds(25)), cancellation))
-            throw new TimeoutException("Another desktop is still starting this Host.");
+        // Mutex abandonment is recoverable after an abrupt desktop crash; unlike a named
+        // semaphore it does not leave a zero count behind when its owner disappears.
+        // All acquire/release operations stay on ONE worker thread.
+        return await Task.Run(() =>
+        {
+            using var gate = new Mutex(false, gateName);
+            bool held;
+            try { held = gate.WaitOne(TimeSpan.FromSeconds(25)); }
+            catch (AbandonedMutexException) { held = true; }
+            if (!held) throw new TimeoutException("Another desktop is still starting this Host.");
+            try { return ConnectOrStartAsync(configuration, client, contexts, path, cancellation).GetAwaiter().GetResult(); }
+            finally { gate.ReleaseMutex(); }
+        }, cancellation);
+    }
+
+    private static async Task<ManagedAutomationHost> ConnectOrStartAsync(
+        AutomationHostLaunchConfiguration configuration, AutomationHostClient client,
+        IReadOnlyList<UniverseContext> contexts, string path, CancellationToken cancellation)
+    {
+        if (await CanAttachAsync(client, contexts, cancellation))
+            return new ManagedAutomationHost(configuration, client, null);
+
+        var executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
+        var assembly = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.dll");
+        if (!File.Exists(executable) && !File.Exists(assembly))
+            throw new FileNotFoundException("NAP.AutomationHost is absent from the application package.");
+
+        var start = new ProcessStartInfo(File.Exists(executable) ? executable : "dotnet")
+        {
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true,
+            WorkingDirectory = AppContext.BaseDirectory
+        };
+        if (!File.Exists(executable)) start.ArgumentList.Add(assembly);
+        start.ArgumentList.Add("--laboratory-config");
+        start.ArgumentList.Add(path);
+
+        var spawned = Process.Start(start) ?? throw new InvalidOperationException("Host process did not start.");
         try
         {
-            if (await CanAttachAsync(client, contexts, cancellation))
-                return new ManagedAutomationHost(configuration, client, null);
-
-            var executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
-            var assembly = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.dll");
-            if (!File.Exists(executable) && !File.Exists(assembly))
-                throw new FileNotFoundException("NAP.AutomationHost is absent from the application package.");
-
-            var start = new ProcessStartInfo(File.Exists(executable) ? executable : "dotnet")
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true,
-                WorkingDirectory = AppContext.BaseDirectory
-            };
-            if (!File.Exists(executable)) start.ArgumentList.Add(assembly);
-            start.ArgumentList.Add("--laboratory-config");
-            start.ArgumentList.Add(path);
-
-            var spawned = Process.Start(start) ?? throw new InvalidOperationException("Host process did not start.");
-            try
-            {
-                var ready = await spawned.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(25), cancellation);
-                if (ready is null || !ready.StartsWith("NAP laboratory host ready: ", StringComparison.Ordinal))
-                    throw new InvalidOperationException("Host did not report a valid startup handshake.");
-                if (!await CanAttachAsync(client, contexts, cancellation))
-                    throw new InvalidDataException("Host IPC scope did not match its launch configuration.");
-                return new ManagedAutomationHost(configuration, client, spawned);
-            }
-            catch
-            {
-                if (!spawned.HasExited) spawned.Kill(entireProcessTree: true);
-                spawned.Dispose();
-                throw;
-            }
+            var ready = await spawned.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(25), cancellation);
+            if (ready is null || !ready.StartsWith("NAP laboratory host ready: ", StringComparison.Ordinal))
+                throw new InvalidOperationException("Host did not report a valid startup handshake.");
+            if (!await CanAttachAsync(client, contexts, cancellation))
+                throw new InvalidDataException("Host IPC scope did not match its launch configuration.");
+            return new ManagedAutomationHost(configuration, client, spawned);
         }
-        finally { gate.Release(); }
+        catch
+        {
+            if (!spawned.HasExited) spawned.Kill(entireProcessTree: true);
+            spawned.Dispose();
+            throw;
+        }
     }
 
     private static async Task<bool> CanAttachAsync(AutomationHostClient client,

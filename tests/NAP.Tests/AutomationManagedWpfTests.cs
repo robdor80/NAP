@@ -66,7 +66,7 @@ public sealed class AutomationManagedWpfTests
         finally
         {
             // Host deliberately outlives WPF: the fixture must explicitly shut it down.
-            try { await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }); }
+            try { await f.Client.CallAsync(AutomationOperation.ShutdownHost, null, new { }); await Task.Delay(300); }
             catch (Exception error) when (error is IOException or TimeoutException or OperationCanceledException) { }
         }
     }

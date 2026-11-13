@@ -281,7 +281,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             if(operation==AutomationOperation.ReviewContinue){await LoadPageAsync();DetailStatus="Continuación solicitada";}
         }
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
-        finally{_changing=false;RefreshCommands();}
+        finally{_changing=false;Notify(nameof(CanCancelItem));Notify(nameof(CanResumeItem));RefreshCommands();}
     }
     private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CanCancelItem),nameof(CanResumeItem)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;_controlReadable=false;_itemInhibited=false;Events.Clear();Decisions.Clear();NotifyDetail();}

@@ -3,7 +3,7 @@
 ## Alcance de producto
 NAP02 incorpora **al binario WPF ordinario** la composición y localización del ejecutable AutomationHost, un gestor de arranque/reconexión y controles por universo. No crea una versión DEV, una segunda aplicación ni un motor paralelo.
 
-- Al iniciar NAP, si existe una configuración de Host previamente instalada en `%LOCALAPPDATA%\\NAP\\Host\\launch.json`, se intenta **conectar primero** al proceso existente. Si no existe, se lanza una única instancia con bloqueo de arranque entre sesiones WPF.
+- Al iniciar NAP, si existe una configuración de Host previamente instalada en `%LOCALAPPDATA%\\NAP\\Host\\launch.json`, se intenta **conectar primero** al proceso existente. Si no existe, se lanza una única instancia con mutex interproceso recuperable tras cierre abrupto entre sesiones WPF.
 - Es posible seleccionar explícitamente el mismo archivo mediante `--automation-managed-config=<ruta>`; el modo de conexión `--automation-config=<ruta>` se conserva para procesos Host ya gestionados externamente. No se permiten ambos a la vez.
 - El gestor verifica challenge IPC, sesión, instalación, universo y raíces antes de entregar los servicios remotos a la interfaz. Ante fallo de autenticación, desajuste de identidad o error de configuración **no vuelve** a un escritor local ni inventa un estado operativo.
 - Cerrar WPF no mata el Host que mantiene trabajo durable. Un nuevo WPF puede reconectarse al mismo Host. La detención por universo usa `StopUniverse` y conserva disponibles los demás; el apagado global anterior continúa existiendo como operación separada y explícita.
