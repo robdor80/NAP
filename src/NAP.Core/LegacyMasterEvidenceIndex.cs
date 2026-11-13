@@ -105,6 +105,22 @@ public sealed class LegacyMasterEvidenceIndex(UniverseContext context)
                     kind = "new_local_fingerprint"; break;
                 default: throw new InvalidDataException("Estado o comparación histórica incoherente: " + id);
             }
+            if (kind == "git_20260926_match")
+            {
+                var reference = entry.GetProperty("referencia");
+                if (reference.GetProperty("type").GetString() != "git_history_binary_exact" ||
+                    reference.GetProperty("commit").GetString() != GitReference ||
+                    reference.GetProperty("matched").GetBoolean() != true ||
+                    reference.GetProperty("historical_sha256").GetString() != digest)
+                    throw new InvalidDataException("La evidencia del Git histórico de 001 es inconsistente.");
+                var exception = root.GetProperty("exceptions").EnumerateArray().SingleOrDefault(x =>
+                    x.GetProperty("asset_id").GetString() == id);
+                if (exception.ValueKind != JsonValueKind.Object ||
+                    exception.GetProperty("registry_sha256").GetString() != old ||
+                    exception.GetProperty("git_historical_sha256").GetString() != digest ||
+                    exception.GetProperty("git_historical_commit").GetString() != GitReference)
+                    throw new InvalidDataException("El anexo de la discrepancia histórica 001 no coincide.");
+            }
             if (entry.GetProperty("cloud_api_verificada").GetBoolean())
                 throw new InvalidDataException("No se admite afirmar verificación remota sin prueba independiente.");
             rows.Add(new LegacyMasterEvidence(id, digest, old, kind,
