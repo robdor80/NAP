@@ -1,0 +1,536 @@
+{
+  "schema": "nimroel_historical_master_reconciliation",
+  "schema_version": "1.0",
+  "generated_on": "2026-11-13",
+  "universe": "nimroel",
+  "location": "Treskal",
+  "origin_attribution": "user_provided_local_download_not_remote_verified",
+  "scope": "39 master PNG hashes; no native NAP approval and no cloud API verification",
+  "counts": {
+    "expected": 39,
+    "matching_existing_hash": 14,
+    "bitwise_matching_previous_git": 1,
+    "valid_local_new_hash": 24,
+    "remotely_verified_by_TeraBox_API": 0
+  },
+  "exceptions": [
+    {
+      "asset_id": "portrait_treskal_farmer_female_001",
+      "registry_sha256": "b9d20e27eed3603222d1b69f391c7ae0eb8077e7666039539dd58492afcb11ec",
+      "git_historical_sha256": "f8710a8ae9ffde7776f19d465b7a5400d26d4aea7f61262f04512f09b2a4d63b",
+      "git_historical_commit": "66c2de7dae0625dda21b6073da688e28e1ccbcb8",
+      "status": "local_equal_git_prior"
+    }
+  ],
+  "entries": [
+    {
+      "asset_id": "portrait_treskal_blacksmith_male_001",
+      "png_file": "portrait_treskal_blacksmith_male_001.png",
+      "sha256_copia_local": "c06fc372dbbaee102019a3cc0773cb49aae19054bf6f565095dd1e53b2bd3b7a",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_blacksmith_male_002",
+      "png_file": "portrait_treskal_blacksmith_male_002.png",
+      "sha256_copia_local": "29d6cc071de05cc118648b274e8c8e89259706498c16cd6d4f5e75d1ce90bbc3",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_blacksmith_male_003",
+      "png_file": "portrait_treskal_blacksmith_male_003.png",
+      "sha256_copia_local": "e8402c25a50c0729520aa940ddcc083ebb35a725b1df5f8350c8df11f6fb7166",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_blacksmith_male_004",
+      "png_file": "portrait_treskal_blacksmith_male_004.png",
+      "sha256_copia_local": "63adceccbc1b333294fc736375049538ce316522830eafba5595e571530be3f1",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_blacksmith_male_005",
+      "png_file": "portrait_treskal_blacksmith_male_005.png",
+      "sha256_copia_local": "06bdc8a1b8dc3d3bd92ebdae55e821757cf90f904a2d7fcb58e9ee5125665e1b",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_boy_001",
+      "png_file": "portrait_treskal_boy_001.png",
+      "sha256_copia_local": "7d203ad825dd69e7cf335dea3bad69531071f17cbc4c842a825b8c069a989e30",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_carpenter_male_001",
+      "png_file": "portrait_treskal_carpenter_male_001.png",
+      "sha256_copia_local": "6c5aff216ec92841990c52a3e9cb8af4e09e1a0771df2aca9cea452e8a10818f",
+      "sha256_registro_septiembre_2026": "6c5aff216ec92841990c52a3e9cb8af4e09e1a0771df2aca9cea452e8a10818f",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_carpenter_male_002",
+      "png_file": "portrait_treskal_carpenter_male_002.png",
+      "sha256_copia_local": "82f3626d777ac0776cffc59b7d3147ff1e22af7b2c2c12ff63bf5626744516fe",
+      "sha256_registro_septiembre_2026": "82f3626d777ac0776cffc59b7d3147ff1e22af7b2c2c12ff63bf5626744516fe",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_carpenter_male_003",
+      "png_file": "portrait_treskal_carpenter_male_003.png",
+      "sha256_copia_local": "dcfc1d6893a770a73b5520aa47938b4498c6c3b87d35a977814437ac944b001e",
+      "sha256_registro_septiembre_2026": "dcfc1d6893a770a73b5520aa47938b4498c6c3b87d35a977814437ac944b001e",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_carpenter_male_004",
+      "png_file": "portrait_treskal_carpenter_male_004.png",
+      "sha256_copia_local": "b754b949e0a35be7ac0cc2db745d3b39f0bf31f75742526c8650126f1919906c",
+      "sha256_registro_septiembre_2026": "b754b949e0a35be7ac0cc2db745d3b39f0bf31f75742526c8650126f1919906c",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_carpenter_male_005",
+      "png_file": "portrait_treskal_carpenter_male_005.png",
+      "sha256_copia_local": "7bf82a355b98ed966ec107279a500c25472899813dd02c53292cf53112385551",
+      "sha256_registro_septiembre_2026": "7bf82a355b98ed966ec107279a500c25472899813dd02c53292cf53112385551",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_female_001",
+      "png_file": "portrait_treskal_elder_female_001.png",
+      "sha256_copia_local": "4dcfb02d4db33fe1ef9ded8cbabc9728d522f75dc98818482af8f08eb7f52158",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_female_002",
+      "png_file": "portrait_treskal_elder_female_002.png",
+      "sha256_copia_local": "4e8ec6eb55118b16e1811d9f3593679001168746d01a93cdd20b1d6e4a469e51",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_female_003",
+      "png_file": "portrait_treskal_elder_female_003.png",
+      "sha256_copia_local": "19abe93105d267043b13f68cfe6c87a9b0e90db748742feb29214739cc6f97eb",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_male_001",
+      "png_file": "portrait_treskal_elder_male_001.png",
+      "sha256_copia_local": "a31634baf65a57e6556a975f592d5dcf69e15b36282341eda10d29adb594f8fa",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_male_002",
+      "png_file": "portrait_treskal_elder_male_002.png",
+      "sha256_copia_local": "0fd51455ae142049eadee58dcb79411052b2dcdedf665210f1b04315526baf9f",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_elder_male_003",
+      "png_file": "portrait_treskal_elder_male_003.png",
+      "sha256_copia_local": "e8cd786f3c4720b957e6f1dd23ea796ef8788a58e38da905d3dc080b9aaa7284",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_boy_001",
+      "png_file": "portrait_treskal_farmer_boy_001.png",
+      "sha256_copia_local": "0d0aa36ce4a706401d2bf15d5dd39c95676f0d652dcd72e3df209903274e98cf",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_boy_002",
+      "png_file": "portrait_treskal_farmer_boy_002.png",
+      "sha256_copia_local": "b12810c7efb95c7e46961ae5747473f6b1a2d7ecc6ce6fd3f75faa5d98bb707c",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_female_001",
+      "png_file": "portrait_treskal_farmer_female_001.png",
+      "sha256_copia_local": "f8710a8ae9ffde7776f19d465b7a5400d26d4aea7f61262f04512f09b2a4d63b",
+      "sha256_registro_septiembre_2026": "b9d20e27eed3603222d1b69f391c7ae0eb8077e7666039539dd58492afcb11ec",
+      "estado_conciliacion": "identico_a_png_git_2026_09_26",
+      "referencia": {
+        "type": "git_history_binary_exact",
+        "commit": "66c2de7dae0625dda21b6073da688e28e1ccbcb8",
+        "matched": true,
+        "historical_sha256": "f8710a8ae9ffde7776f19d465b7a5400d26d4aea7f61262f04512f09b2a4d63b"
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_female_002",
+      "png_file": "portrait_treskal_farmer_female_002.png",
+      "sha256_copia_local": "b9604a7a7dae258632cafe65ea814a543c9cb94e9280c88c8bcab377ed18c855",
+      "sha256_registro_septiembre_2026": "b9604a7a7dae258632cafe65ea814a543c9cb94e9280c88c8bcab377ed18c855",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_female_003",
+      "png_file": "portrait_treskal_farmer_female_003.png",
+      "sha256_copia_local": "3c86a7d8b9b658b7e266408411189667e25c686f68c46c7a59e3e0969e98fdd3",
+      "sha256_registro_septiembre_2026": "3c86a7d8b9b658b7e266408411189667e25c686f68c46c7a59e3e0969e98fdd3",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_female_004",
+      "png_file": "portrait_treskal_farmer_female_004.png",
+      "sha256_copia_local": "9736b1814dd69b6bbff2da21a59ff2f33b8819a482821cb4e9a083ed3bc3b98f",
+      "sha256_registro_septiembre_2026": "9736b1814dd69b6bbff2da21a59ff2f33b8819a482821cb4e9a083ed3bc3b98f",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_female_005",
+      "png_file": "portrait_treskal_farmer_female_005.png",
+      "sha256_copia_local": "8d8db6346451625aa5c48726dc406f90d2aafda7b91d7ed210a549feb684f9b8",
+      "sha256_registro_septiembre_2026": "8d8db6346451625aa5c48726dc406f90d2aafda7b91d7ed210a549feb684f9b8",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_male_001",
+      "png_file": "portrait_treskal_farmer_male_001.png",
+      "sha256_copia_local": "15b05b567cee583951151d2fe9842628783d9fe6472439517e5813c6a02f9183",
+      "sha256_registro_septiembre_2026": "15b05b567cee583951151d2fe9842628783d9fe6472439517e5813c6a02f9183",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_male_002",
+      "png_file": "portrait_treskal_farmer_male_002.png",
+      "sha256_copia_local": "f031a58440200e357e17da748749fcdc7c1b2c35b36e16b0ee4c924495062768",
+      "sha256_registro_septiembre_2026": "f031a58440200e357e17da748749fcdc7c1b2c35b36e16b0ee4c924495062768",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_male_003",
+      "png_file": "portrait_treskal_farmer_male_003.png",
+      "sha256_copia_local": "e47764517ced65f28f06b18d7be100f8dbdc96bddd26565f424090ac1129ff37",
+      "sha256_registro_septiembre_2026": "e47764517ced65f28f06b18d7be100f8dbdc96bddd26565f424090ac1129ff37",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_male_004",
+      "png_file": "portrait_treskal_farmer_male_004.png",
+      "sha256_copia_local": "0c37be442c975243699446a2de1a0f5e752e341b806ec633a2f252587188c8a2",
+      "sha256_registro_septiembre_2026": "0c37be442c975243699446a2de1a0f5e752e341b806ec633a2f252587188c8a2",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_farmer_male_005",
+      "png_file": "portrait_treskal_farmer_male_005.png",
+      "sha256_copia_local": "65d3dbb2577080f39333f2fd0323b545ab55e177279d56f67761541dba399925",
+      "sha256_registro_septiembre_2026": "65d3dbb2577080f39333f2fd0323b545ab55e177279d56f67761541dba399925",
+      "estado_conciliacion": "coincide_sha_registro_historico",
+      "referencia": {
+        "type": "historical_registry_sha256",
+        "matched": true
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_fisher_male_001",
+      "png_file": "portrait_treskal_fisher_male_001.png",
+      "sha256_copia_local": "d90cb9c66cacf61266b3b3658ae586dccbb3723d136c18593b5cbf1ce4ef7c2a",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_fisher_male_002",
+      "png_file": "portrait_treskal_fisher_male_002.png",
+      "sha256_copia_local": "062ffa258425246e498cd2ceafe8da373a02163b8471564936958a67719097a6",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_girl_001",
+      "png_file": "portrait_treskal_girl_001.png",
+      "sha256_copia_local": "80c18e9a9dfbabbf50f01ad7f03b14de9d7cf588d5f5fc69bc9b91c9405e3b1c",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_girl_002",
+      "png_file": "portrait_treskal_girl_002.png",
+      "sha256_copia_local": "9ac665e157b6f24f77980bc8420f6ad5289a026ccf205cee4a118158b0692835",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_girl_003",
+      "png_file": "portrait_treskal_girl_003.png",
+      "sha256_copia_local": "9b7afd82105ce9541a0f93bb779e2fc51d6e935f32818ca9b70c40c2e6dd761b",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_healer_female_001",
+      "png_file": "portrait_treskal_healer_female_001.png",
+      "sha256_copia_local": "c2a33e779bece12bd00f7535b88d6acd8df6e7dcb91637d47317930cc56ee3ee",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_healer_female_002",
+      "png_file": "portrait_treskal_healer_female_002.png",
+      "sha256_copia_local": "1ef16a7bd357b752024ff17f8ab08e7b46f74ece1e7bc20bd81fd2e2716dc41d",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_healer_female_003",
+      "png_file": "portrait_treskal_healer_female_003.png",
+      "sha256_copia_local": "bc95a501b737a7837d3e02782ecd0c97f575f442b4c55ab9567775a3846d43cc",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_tavernkeeper_female_001",
+      "png_file": "portrait_treskal_tavernkeeper_female_001.png",
+      "sha256_copia_local": "ada9896c4ae6d0abafbc142ee00a97206943f8f65e865b2b8edee209358d40d5",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    },
+    {
+      "asset_id": "portrait_treskal_tavernkeeper_male_001",
+      "png_file": "portrait_treskal_tavernkeeper_male_001.png",
+      "sha256_copia_local": "0cb322a3ee493a4981452fd7f53c9f0e80a9e54cf8f0929abd3f2338f6c5cbbb",
+      "sha256_registro_septiembre_2026": null,
+      "estado_conciliacion": "png_valido_sha_nuevo_sin_referencia_previa",
+      "referencia": {
+        "type": "new_local_fingerprint",
+        "matched": null
+      },
+      "origen_archivos": "descarga_local_declarada_de_TeraBox_2026_11_13",
+      "cloud_api_verificada": false
+    }
+  ]
+}
