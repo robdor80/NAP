@@ -46,15 +46,15 @@ public partial class CatalogView : UserControl
             var count = await Task.Run(() => new LegacyMasterEvidenceIndex(context)
                 .Import(evidence.FileName, originals.FolderName));
             await explorer!.RefreshAllAsync();
-            MessageBox.Show($"{count} evidencias de PNG históricos incorporadas a NAP.\\n\\n" +
+            MessageBox.Show($"{count} evidencias de PNG históricos incorporadas a NAP.\n\n" +
                 "14 coincidencias con SHA histórico; 1 coincidencia con PNG de Git histórico documentada; " +
-                "24 líneas base nuevas. Los archivos originales y AssetCatalog.db no se han modificado.\\n" +
+                "24 líneas base nuevas. Los archivos originales y AssetCatalog.db no se han modificado.\n" +
                 "TeraBox remoto NO ha sido verificado por API.",
                 "NAP — Maestros históricos", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception error)
         {
-            MessageBox.Show("No se completó la vinculación:\\n" + error.Message,
+            MessageBox.Show("No se completó la vinculación:\n" + error.Message,
                 "NAP — Maestros históricos", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally { if (button is not null) button.IsEnabled = true; }
