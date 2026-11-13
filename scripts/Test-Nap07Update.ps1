@@ -33,7 +33,7 @@ function Check([string]$version) {
     }
     $a=[Diagnostics.FileVersionInfo]::GetVersionInfo($app).ProductVersion
     $h=[Diagnostics.FileVersionInfo]::GetVersionInfo($hostExe).ProductVersion
-    if ($a -notmatch "^$([regex]::Escape($version))(\.|$)" -or $h -notmatch "^$([regex]::Escape($version))(\.|$)") {
+    if ($a -notmatch "^$([regex]::Escape($version))([.+]|$)" -or $h -notmatch "^$([regex]::Escape($version))([.+]|$)") {
         throw "Versiones no coinciden con $version, App=$a, Host=$h"
     }
     if ([IO.File]::ReadAllText($marker) -cne 'NAP07 USER DATA NEVER MODIFIED') {
