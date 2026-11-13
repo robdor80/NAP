@@ -1,0 +1,70 @@
+<Window x:Class="NAP.App.CatalogComparisonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:NAP.App.Controls"
+        Title="NAP · Laboratorio visual" Width="1160" Height="760" MinWidth="840" MinHeight="560"
+        WindowStartupLocation="CenterOwner">
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel>
+      <TextBlock Text="Comparar assets del catálogo" Style="{StaticResource Heading}"/>
+      <TextBlock Text="Comparación de miniaturas regenerables y de solo lectura. No modifica originales, catálogo ni estado de publicación."
+                 Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,16"/>
+    </StackPanel>
+    <WrapPanel Grid.Row="1" Margin="0,0,0,12">
+      <TextBlock Text="Ampliación" VerticalAlignment="Center" Margin="0,0,16,0"/>
+      <Slider x:Name="ZoomSlider" Width="220" Minimum="1" Maximum="4" Value="1" TickFrequency="0.5" IsSnapToTickEnabled="True"
+              AutomationProperties.Name="Ampliación de miniaturas"/>
+      <TextBlock Text="{Binding Value,ElementName=ZoomSlider,StringFormat={}{0:F1}×}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+    </WrapPanel>
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="16"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" Style="{StaticResource Card}" Padding="12">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Referencia fijada" Foreground="{StaticResource SuccessBrush}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding Left.Title}" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" Margin="0,6,0,4"/>
+            <TextBlock Text="{Binding Left.Subtitle}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+          </StackPanel>
+          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="{StaticResource DeepBrush}">
+            <c:ThumbnailView DataContext="{Binding Left}" Width="420" Height="390">
+              <c:ThumbnailView.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Value,ElementName=ZoomSlider}" ScaleY="{Binding Value,ElementName=ZoomSlider}"/>
+              </c:ThumbnailView.LayoutTransform>
+            </c:ThumbnailView>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+      <Border Grid.Column="2" Style="{StaticResource Card}" Padding="12">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Selección actual" Foreground="{StaticResource SuccessBrush}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding Right.Title}" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" Margin="0,6,0,4"/>
+            <TextBlock Text="{Binding Right.Subtitle}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+          </StackPanel>
+          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="{StaticResource DeepBrush}">
+            <c:ThumbnailView DataContext="{Binding Right}" Width="420" Height="390">
+              <c:ThumbnailView.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Value,ElementName=ZoomSlider}" ScaleY="{Binding Value,ElementName=ZoomSlider}"/>
+              </c:ThumbnailView.LayoutTransform>
+            </c:ThumbnailView>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+    </Grid>
+    <DockPanel Grid.Row="3" Margin="0,16,0,0">
+      <Button DockPanel.Dock="Right" Content="Cerrar comparación" Click="CloseComparison" HorizontalAlignment="Right"/>
+      <TextBlock Text="Para inspeccionar documentos y procedencia, utiliza la ficha del Catálogo."
+                 Style="{StaticResource Muted}" VerticalAlignment="Center"/>
+    </DockPanel>
+  </Grid>
+</Window>
