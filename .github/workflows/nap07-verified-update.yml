@@ -19,6 +19,14 @@ jobs:
         shell: pwsh
     steps:
       - uses: actions/checkout@v5
+      - name: Parse updater and test PowerShell before building
+        run: |
+          foreach ($file in @('scripts/NAP07.Update.ps1','scripts/Test-Nap07Update.ps1')) {
+            $tokens=$null; $errors=$null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Join-Path $pwd $file), [ref]$tokens, [ref]$errors)
+            if ($errors.Count -ne 0) { throw ($errors | Out-String) }
+          }
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
