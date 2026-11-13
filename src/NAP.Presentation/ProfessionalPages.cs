@@ -84,6 +84,29 @@ public sealed class ObjectivesViewModel() : ProfessionalPage("Objetivos", "Cober
 }
 public sealed class StatisticsViewModel(ExplorerViewModel explorer) : ProfessionalPage("Estadísticas", "Distribuciones actuales del catálogo. Sin tendencias temporales inferidas.")
 { public ExplorerViewModel Explorer { get; } = explorer; }
+/// <summary>Read-only catalog diversity and optional Gemini analysis. No production authority.</summary>
+public sealed class CatalogIntelligenceViewModel() : ProfessionalPage("Consultar IA",
+    "Variedad de assets verificados y consultas en castellano; no modifica SQLite.")
+{
+    private CatalogDiversitySnapshot? _report;
+    private string _question = "¿Qué profesiones, edades o sexos están menos representados en nuestros assets?";
+    private string _answer = "";
+    public CatalogDiversitySnapshot? Report
+    {
+        get => _report;
+        internal set { if (Set(ref _report, value)) { Notify(nameof(Total)); Notify(nameof(Opportunities)); Notify(nameof(CountRows)); } }
+    }
+    public string Total => Report?.TotalAssets.ToString("N0") ?? "—";
+    public IReadOnlyList<CatalogDiversityOpportunity> Opportunities => Report?.Opportunities ?? [];
+    public IReadOnlyList<CatalogDiversityCount> CountRows => Report?.Counts ?? [];
+    public string Question { get => _question; set => Set(ref _question, value); }
+    public string Answer { get => _answer; internal set => Set(ref _answer, value); }
+    public ObservableCollection<string> Evidence { get; } = [];
+    public override string? EmptyMessage => EvidenceMessage(Report?.TotalAssets == 0 ?
+        "No hay assets verificados en el catálogo seleccionado." : null);
+    internal override void Reset()
+    { base.Reset(); Report = null; Answer = ""; Evidence.Clear(); }
+}
 public sealed class BackupsViewModel() : ProfessionalPage("Backups", "Copias locales verificadas de catálogo, repositorio y Git.")
 {
     public ObservableCollection<BackupHistoryEntry> Entries { get; } = [];
