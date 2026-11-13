@@ -214,12 +214,11 @@
             <TextBlock Text="SHA-256" FontWeight="SemiBold" Margin="0,10,0,4" />
             <TextBlock Text="{Binding LegacyDetail.WebpSha256}" FontSize="{StaticResource TechnicalSize}" TextWrapping="Wrap" />
             <TextBlock Text="PNG maestro histórico" FontWeight="SemiBold" Margin="0,14,0,4" />
-            <TextBlock Text="Sin evidencia de PNG vinculada todavía" Style="{StaticResource Muted}">
+            <TextBlock Text="Sin evidencia de PNG vinculada todavía">
               <TextBlock.Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
-                  <Style.Triggers><DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger>
-                    <DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Static sys:String.Empty}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger>
-                  </Style.Triggers>
+                  <Setter Property="Visibility" Value="Collapsed" />
+                  <Style.Triggers><DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers>
                 </Style>
               </TextBlock.Style>
             </TextBlock>
