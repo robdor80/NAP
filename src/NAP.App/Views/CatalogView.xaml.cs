@@ -11,6 +11,55 @@ public partial class CatalogView : UserControl
 {
     public CatalogView() => InitializeComponent();
 
+
+    private async void ImportHistoricalMasters(object sender, RoutedEventArgs e)
+    {
+        var explorer = (Content as FrameworkElement)?.DataContext as ExplorerViewModel;
+        var context = explorer?.Context;
+        if (context is null || context.Id.Value != "nimroel")
+        {
+            MessageBox.Show("Configura Nimroel y sus raíces antes de vincular maestros.", "NAP — Maestros");
+            return;
+        }
+        var evidence = new OpenFileDialog
+        {
+            Title = "Selecciona MAESTROS_39_CONCILIACION_20261113.json",
+            Filter = "Evidencia de maestros (*.json)|*.json",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+        if (evidence.ShowDialog() != true) return;
+        var suggested = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "Downloads", "Videojuego Nimroel - ASSETS MAESTROS PNG");
+        var originals = new OpenFolderDialog
+        {
+            Title = "Selecciona la carpeta descargada con los 39 PNG originales (solo lectura)",
+            InitialDirectory = Directory.Exists(suggested) ? suggested :
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            Multiselect = false
+        };
+        if (originals.ShowDialog() != true) return;
+        var button = sender as Button;
+        try
+        {
+            if (button is not null) button.IsEnabled = false;
+            var count = await Task.Run(() => new LegacyMasterEvidenceIndex(context)
+                .Import(evidence.FileName, originals.FolderName));
+            await explorer!.RefreshAllAsync();
+            MessageBox.Show($"{count} evidencias de PNG históricos incorporadas a NAP.\\n\\n" +
+                "14 coincidencias con SHA histórico; 1 coincidencia con PNG de Git histórico documentada; " +
+                "24 líneas base nuevas. Los archivos originales y AssetCatalog.db no se han modificado.\\n" +
+                "TeraBox remoto NO ha sido verificado por API.",
+                "NAP — Maestros históricos", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception error)
+        {
+            MessageBox.Show("No se completó la vinculación:\\n" + error.Message,
+                "NAP — Maestros históricos", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally { if (button is not null) button.IsEnabled = true; }
+    }
+
     private async void ImportHistoricalPortraits(object sender, RoutedEventArgs e)
     {
         var explorer = (Content as FrameworkElement)?.DataContext as ExplorerViewModel;
