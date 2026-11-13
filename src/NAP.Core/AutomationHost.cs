@@ -349,17 +349,16 @@ public sealed partial class AutomationHost : IAsyncDisposable
             }
         }
         if (_mixedWork is not null || !_mixedScanRequested && DateTimeOffset.UtcNow < _nextMixedScan ||
-            !_slots.Any(s => Allowed(s)) || !_heavy.Wait(0)) return;
-        try
+            !_slots.Any(s => Allowed(s))) return;
+        // Routing copies exclusively into the target Inbox through a verified atomic rename.
+        // It neither owns SQLite nor runs a production stage: it must NOT monopolize the
+        // Host's one-slot heavy-work budget while waiting for source file stability.
+        _mixedScanRequested = false; _nextMixedScan = DateTimeOffset.UtcNow + _options.Admission.RescanInterval;
+        _mixedWork = Task.Run(async () =>
         {
-            _mixedScanRequested = false; _nextMixedScan = DateTimeOffset.UtcNow + _options.Admission.RescanInterval;
-            _mixedWork = Task.Run(async () =>
-            {
-                try { return await _mixedInbox.RouteAsync(id => Allowed(Find(id)), _transportStop.Token).ConfigureAwait(false); }
-                finally { _heavy.Release(); Signal(); }
-            });
-        }
-        catch { _heavy.Release(); throw; }
+            try { return await _mixedInbox.RouteAsync(id => Allowed(Find(id)), _transportStop.Token).ConfigureAwait(false); }
+            finally { Signal(); }
+        });
     }
 
     private void Tick(Slot slot)
