@@ -107,7 +107,7 @@ function Verify-Installed([string]$expected) {
     $hostExe = Join-Path $install 'host/NAP.AutomationHost.exe'
     if (-not (Test-Path -LiteralPath $hostExe -PathType Leaf)) { throw 'Falta AutomationHost instalado.' }
     $hostVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($hostExe).ProductVersion
-    if ($hostVersion -notmatch "^$([regex]::Escape($expected))(\.|$)") {
+    if ($hostVersion -notmatch "^$([regex]::Escape($expected))([.+]|$)") {
         throw "Version de Host no coincide: $hostVersion"
     }
 }
