@@ -31,7 +31,7 @@ jobs:
           gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
           if ($LASTEXITCODE -ne 0) { throw 'Official Inno download failed' }
           $setup = Join-Path $src 'innosetup-6.7.4.exe'
-          gh release verify-asset $setup --repo jrsoftware/issrc
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
           if ($LASTEXITCODE -ne 0) { throw 'Official Inno attestation failed' }
           $signature = Get-AuthenticodeSignature -LiteralPath $setup
           if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
