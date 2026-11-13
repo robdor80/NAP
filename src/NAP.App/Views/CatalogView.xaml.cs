@@ -21,12 +21,17 @@ public partial class CatalogView : UserControl
             MessageBox.Show("Configura Nimroel y sus raíces antes de vincular maestros.", "NAP — Maestros");
             return;
         }
+        var bundledManifest = Path.Combine(AppContext.BaseDirectory,
+            "NIMROEL_TRESKAL_39_MAESTROS_LOCAL_20261113.json");
         var evidence = new OpenFileDialog
         {
-            Title = "Selecciona MAESTROS_39_CONCILIACION_20261113.json",
+            Title = "Selecciona el expediente de los 39 PNG maestros",
             Filter = "Evidencia de maestros (*.json)|*.json",
             CheckFileExists = true,
-            Multiselect = false
+            Multiselect = false,
+            InitialDirectory = File.Exists(bundledManifest) ? AppContext.BaseDirectory :
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            FileName = File.Exists(bundledManifest) ? Path.GetFileName(bundledManifest) : ""
         };
         if (evidence.ShowDialog() != true) return;
         var suggested = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
