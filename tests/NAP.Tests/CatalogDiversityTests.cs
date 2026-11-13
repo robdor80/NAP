@@ -112,6 +112,27 @@ public sealed class CatalogDiversityTests
     }
 
     [Fact]
+    public void UnsafeClassificationAndProfileValuesAreNotExportedToGemini()
+    {
+        var entry = Entry("portrait_safe_001", "farmer", "female", "adult") with
+        {
+            AssetType = @"C:\private\asset",
+            ProductionProfile = "private@domain.com",
+            Classification = new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["role"] = @"C:\private\profession",
+                ["sex"] = "female",
+                ["culture"] = "safe_culture"
+            }
+        };
+        var json = CatalogDiversityAnalyzer.Analyze(new("nimroel"), [entry]).ToJson();
+        Assert.DoesNotContain(@"C:\private", json, StringComparison.Ordinal);
+        Assert.DoesNotContain("private@domain.com", json, StringComparison.Ordinal);
+        Assert.Contains("safe_culture", json, StringComparison.Ordinal);
+        Assert.Contains("female", json, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void DuplicateNativeIdsCannotBeSilentlyMerged()
     {
         var entry = Entry("portrait_farmer_001", "farmer", "male", "adult");
