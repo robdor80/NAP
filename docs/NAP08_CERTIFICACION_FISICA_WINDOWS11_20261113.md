@@ -83,3 +83,29 @@ Reinstalacion: comprobar por separado y registrar si realmente se realiza. No de
 Acta minima: fecha, Windows build, version MSI y escala, workflow/run y HEAD, hashes independientemente verificados, JSON Antes/Instalado-2.0.0/Instalado-2.0.1/Desinstalado, capturas inocuas, nota SmartScreen, prueba de bandeja, prueba del Host cuando corresponda, regresiones observadas y confirmacion expresa de CERO operaciones productivas.
 
 **Resultado actual: PENDIENTE.** No hay prueba fisica en el MSI ni aceptacion del propietario acreditadas. Mantener PR NAP08 Draft y no fusionar/cerrar #47/#49, ni afirmar certificacion operativa. Proxima barrera: NAP09 con autorizacion propia.
+
+## 9. Incidencia de ejecución física — replanificación 14/11/2026
+
+El propietario verificó en su MSI real y desde PowerShell de Windows 11 los SHA-256 de ambos
+instaladores: 2.0.0 `acba41477de7b266fa8203977f9461986b88c5bb0aa5659f4852de9c52ac940a`
+y 2.0.1 `0648c6d71737f80a546bad643a3e3c8fc4bb6d9e517eb39f111b19624afcecdc`.
+La auditoría `Antes` de `andro` bloqueó por configuración NAP/Gemini preexistente; es
+un **bloqueo preventivo correcto**, no un defecto demostrado del instalador.
+
+Se creó temporalmente un usuario local `NAP08_Lab`, pero el propietario decidió eliminarlo.
+**No existe ya autorización ni base operativa para lanzar pruebas con esa cuenta.**
+Los dos lanzadores de doble clic que dependían de ella se retiraron del repositorio.
+No instalar en `andro`, no eliminar ni renombrar `%LOCALAPPDATA%\\NAP`, ni tocar claves,
+servicios, ACL o configuraciones preexistentes para falsear un PASS.
+
+El resultado acreditado hasta la fecha es: **integridad física de los instaladores: PASS;
+instalación/actualización/WPF/Host/desinstalación física: NO PROBADAS**. Las pruebas
+sintéticas PASS en Windows Server 2022 (Actions) permanecen registradas aparte y no sustituyen
+la certificación real en Windows 11 ni el CUTOVER.
+
+**Siguiente vía técnica:** preparar, por ChatGPT y sin cambios locales del propietario,
+un paquete portable para pruebas físicas de interfaz en modo sintético y lectura exclusiva,
+o evaluar un entorno efímero aislado para ensayos destructivos. Toda alternativa debe validar
+primero sus condiciones reales de uso; no crear cuentas, no exigir cambios de sesión, no
+instalar componentes de Windows automáticamente y no garantizar certificación física antes
+de obtener pruebas reales. Mantener NAP08 PR en Draft y #47/#49 abiertos.
