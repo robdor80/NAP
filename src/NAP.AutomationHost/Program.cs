@@ -1,5 +1,6 @@
 using System.Text.Json;
 using NAP.Core;
+using NAP.AI;
 using NAP.Presentation;
 
 if (args.Length != 2 || args[0] != "--laboratory-config")
@@ -9,11 +10,17 @@ try
     var info = new FileInfo(args[1]); if (info.Length > 2 * 1024 * 1024) throw new InvalidDataException("Launch configuration exceeds its bound.");
     using var document = JsonDocument.Parse(File.ReadAllBytes(info.FullName));
     var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
-    var auditor = config.SyntheticAudit ? new SyntheticAuditor() : null;
+    // Credentials are supplied privately at runtime; neither launch.json nor GitHub stores them.
+    // No configured Gemini means no automatic PASS: the host parks at the audit boundary.
+    using var auditTransport = new HttpClient();
+    var gemini = HostGeminiAuditor.Create(auditTransport,
+        Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY"),
+        Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL"), config.SyntheticAudit);
+    IIdentifiedAiAuditClient? auditor = config.SyntheticAudit ? new SyntheticAuditor() : gemini;
     var checkpointReached = 0;
     var storageFailures = 0;
     await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
-        Admission = config.Admission ?? new(),
+        Admission = config.Admission ?? new(), MixedInboxRoot = config.MixedInboxRoot,
         LaboratoryStorageFailure = (universe, item, error) =>
         {
             // This executable validates temporary synthetic laboratory roots before starting.

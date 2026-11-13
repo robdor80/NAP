@@ -180,7 +180,13 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             if(page.UniverseId!=c.Id||page.Items.Any(r=>r.UniverseId!=c.Id)||batches.Any(b=>b.UniverseId!=c.Id))throw new InvalidDataException("Workflow scope mismatch.");
             _total=page.Total;_offset=page.Offset;Rows.Clear();foreach(var row in page.Items)Rows.Add(new(row,c.Profile.DisplayName));
             var prior=Batch.Id;Batches.Clear();Batches.Add(new(null,"Todos los lotes"));
-            foreach(var b in batches)Batches.Add(new(b.Id,$"{b.CreatedUtc.ToLocalTime():dd/MM HH:mm:ss} · {b.Items} assets"));
+            foreach(var b in batches)
+            {
+                var summary=b.Summary;
+                var outcome=summary is null? $"{b.Items} assets" :
+                    $"{summary.Completed+summary.Duplicates+summary.Incidents}/{b.Items} resueltos · {summary.Pending} pendientes";
+                Batches.Add(new(b.Id,$"{b.CreatedUtc.ToLocalTime():dd/MM HH:mm:ss} · {outcome}"));
+            }
             _batch=Batches.FirstOrDefault(b=>b.Id==prior)??Batches[0];Notify(nameof(Batch));Notify(nameof(HasBatches));
             var match=Rows.FirstOrDefault(r=>r.Value.ItemId==selected);
             if(match!=null)Selected=match;

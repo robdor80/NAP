@@ -31,6 +31,10 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private long _generation;
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
+    public string MixedInboxStatus => _overview?.Host.MixedInbox is { } m
+        ? m.NeedsReview > 0 ? $"Bandeja compartida: {m.NeedsReview} paquetes necesitan revisión. Último: {m.LastProblemFile} ({m.Diagnostic})."
+        : $"Último análisis de bandeja compartida: {m.Forwarded} distribuidos, {m.AlreadyPresent} ya existentes."
+        : "";
     public string Pending => _overview?.Queue.Counts.Pending.ToString("N0") ?? "—";
     public string Processing => _overview?.Queue.Counts.Processing.ToString("N0") ?? "—";
     public string Completed => _overview?.Queue.Counts.Completed.ToString("N0") ?? "—";
@@ -48,6 +52,9 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         grant.Actor == _overview.Queue.Policy.Authorization?.Actor;
     public bool CanResume => !_disposed && !_changing && AuthorizedGrant &&
         _overview!.Control is { Grant: not null, Paused: true, Stopped: false } && SelectedState() == AutomationHostState.Paused;
+    public bool CanProcessPending => !_disposed && !_changing && AuthorizedGrant &&
+        _overview!.Control is { Paused: false, Stopped: false } && SelectedState() == AutomationHostState.Running;
+    public UiAsyncCommand ProcessPending { get; }
     public UiAsyncCommand Refresh { get; }
     public UiAsyncCommand Activate { get; }
     public UiAsyncCommand Pause { get; }
@@ -60,6 +67,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     {
         _client = client; _context = context; _confirmation = confirmation;
         Refresh = new(RefreshAsync, () => !_disposed, _ => Unavailable());
+        ProcessPending = new(() => Change(AutomationOperation.ScanPending), () => CanProcessPending, _ => Unavailable());
         Activate = new(ActivateAsync, () => !_disposed && !_changing && Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Stopped, _ => Unavailable());
         Pause = new(() => Change(AutomationOperation.Pause), () => CanPause, _ => Unavailable());
         Resume = new(() => Change(AutomationOperation.Resume), () => CanResume, _ => Unavailable());
@@ -105,8 +113,8 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private void Clear() { _overview = null; Review.Clear(); Changed(); }
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse) }) Notify(name);
-        Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh();
+        foreach (var name in new[] { nameof(Pending), nameof(MixedInboxStatus), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)
     {
@@ -115,6 +123,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         Clear(); Status = operation switch
         {
             AutomationOperation.Pause => "Pausando automatización…",
+            AutomationOperation.ScanPending => "Buscando recursos pendientes…",
             AutomationOperation.StopUniverse => "Deteniendo el universo seleccionado…",
             _ => "Reanudando automatización…"
         };
