@@ -8,6 +8,7 @@ internal sealed class TrayHost : IDisposable
     private readonly MainWindow _window;
     private readonly ShellViewModel _shell;
     private readonly Forms.NotifyIcon _icon;
+    private readonly System.Drawing.Icon? _appIcon;
     internal TrayHost(MainWindow window, ShellViewModel shell)
     {
         _window = window; _shell = shell;
@@ -15,7 +16,8 @@ internal sealed class TrayHost : IDisposable
         Add(menu, "Abrir NAP", null); Add(menu, "Inicio", "Inicio"); Add(menu, "Producción", "Producción"); Add(menu, "Historial", "Historial");
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add("Salir", null, (_, _) => _window.Dispatcher.Invoke(_window.Close));
-        _icon = new Forms.NotifyIcon { Icon = System.Drawing.SystemIcons.Application, Text = "NAP · Nexus Asset Platform", ContextMenuStrip = menu };
+        _appIcon = System.Drawing.Icon.ExtractAssociatedIcon(Environment.ProcessPath!);
+        _icon = new Forms.NotifyIcon { Icon = _appIcon ?? System.Drawing.SystemIcons.Application, Text = "NAP · Nexus Asset Platform", ContextMenuStrip = menu };
         _icon.DoubleClick += (_, _) => Restore();
     }
     private void Add(Forms.ContextMenuStrip menu, string title, string? page) => menu.Items.Add(title, null, (_, _) => _window.Dispatcher.Invoke(() => { Restore(); if (page is not null) _shell.NavigateTo(page); }));
@@ -29,5 +31,5 @@ internal sealed class TrayHost : IDisposable
     {
         _window.Dispatcher.Invoke(() => { _window.Show(); _window.WindowState = WindowState.Maximized; _window.Activate(); _icon.Visible = false; });
     }
-    public void Dispose() { _icon.Visible = false; _icon.ContextMenuStrip?.Dispose(); _icon.Dispose(); }
+    public void Dispose() { _icon.Visible = false; _icon.ContextMenuStrip?.Dispose(); _icon.Dispose(); _appIcon?.Dispose(); }
 }
