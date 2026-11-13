@@ -89,7 +89,8 @@ public sealed class CatalogDiversityTests
         using var f = new CatalogTestFixture(nimroel: true);
         f.Publish("portrait_treskal_farmer_male_001", "{\"age_group\":\"adult\",\"eye_color\":\"brown\"}", automatic: true);
         f.Publish("portrait_treskal_farmer_male_002", "{\"age_group\":\"elder\"}", automatic: true);
-        var before = ArchiveTestFixture.Snapshot(f.Root);
+        var originalAssets = f.Sources();
+        var dbBefore = System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(f.Catalog.CatalogPath));
         var report = new CatalogDiversityReader(f.Context).Read();
         Assert.Equal(f.Context.Id, report.UniverseId);
         Assert.Equal(2, report.TotalAssets);
@@ -100,6 +101,7 @@ public sealed class CatalogDiversityTests
             c.SecondDimension == "visual:/age_group" && c.SecondValue == "adult" && c.Count == 1);
         Assert.DoesNotContain("eye_color", report.Crosses.Select(c => c.FirstDimension + c.SecondDimension));
         f.Catalog.CheckIntegrity();
-        ArchiveTestFixture.AssertSnapshot(before, f.Root);
+        f.AssertSources(originalAssets);
+        Assert.Equal(dbBefore, System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(f.Catalog.CatalogPath)));
     }
 }
