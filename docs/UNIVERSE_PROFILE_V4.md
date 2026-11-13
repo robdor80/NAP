@@ -133,7 +133,12 @@ Ahora añade una regla independiente **scene + scene_cartography**: maestro PNG
 16:10 exacto, WebP 1600×1000 Q90, culture/location obligatorias y realm/region
 opcionales; ruta `scenes/cartography/<culture>/<location>/<asset_id>/`.
 Se reutilizan los contratos v4 y el motor existente sin cambiar schemas ni Core.
-**scene_narrative sigue sin habilitarse**. Véase
+**scene_narrative sigue sin habilitarse**. La tercera regla vigente de Nimroel,
+**scene + scene_environment**, reutiliza la misma infraestructura `png_to_webp`,
+con 1920×1080 Q90, relación exacta 16:9 y routing
+`scenes/environment/<culture>/<location>/<asset_id>`; véase
+[Nimroel Environment Package v1](NIMROEL_ENVIRONMENT_PACKAGE_V1.md).
+Véase
 [protocolo cartográfico](NIMROEL_CARTOGRAPHY_PACKAGE_V1.md).
 
 El [fixture v4](../test-data/phase5/universe-profile-v4/profile.json) pertenece a
