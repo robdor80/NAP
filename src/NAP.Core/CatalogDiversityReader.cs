@@ -40,7 +40,7 @@ internal static class CatalogDiversitySql
             {
                 cancellation.ThrowIfCancellationRequested();
                 if (rows.Count >= 50_000) throw new InvalidDataException("Catálogo demasiado grande para la auditoría de diversidad.");
-                rows.Add(reader.GetString(0), (reader.GetString(1), reader.GetString(2), new(StringComparer.Ordinal), []));
+                rows.Add(reader.GetString(0), (reader.GetString(1), reader.GetString(2), new Dictionary<string, string>(StringComparer.Ordinal), new List<CatalogVisualTrait>()));
             }
 
         using (var cmd = CatalogSql.Command(connection, null,
