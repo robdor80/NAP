@@ -110,7 +110,7 @@ internal static class VisualSmokeProbe
                 }
                 foreach (var button in FindAll<Button>(window).Where(b => b.IsVisible && b.Command is UiAsyncCommand && !b.IsEnabled))
                 {
-                    if (!ToolTipService.GetShowOnDisabled(button) || string.IsNullOrWhiteSpace(button.ToolTip as string)) throw new InvalidOperationException("Disabled action has no usable explanation.");
+                    if (!ToolTipService.GetShowOnDisabled(button) || string.IsNullOrWhiteSpace(button.ToolTip as string)) throw new InvalidOperationException($"Disabled action has no usable explanation. Page={page.Name}; Button={button.Name}; Content={button.Content}; TooltipType={button.ToolTip?.GetType().Name ?? "null"}; ShowOnDisabled={ToolTipService.GetShowOnDisabled(button)}; Reason={((UiAsyncCommand)button.Command).DisabledReason}");
                     tooltipChecks++;
                 }
                 foreach (var text in FindAll<TextBlock>(window).Where(t => t.IsVisible))

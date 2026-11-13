@@ -60,7 +60,7 @@ public partial class MainWindow : Window
             }
             if (!smokeTest) return;
             try { await VisualSmokeProbe.RunAsync(this, shell.Explorer, shell, diagnostics, smokeOutput, smokeImport, smokeNormalizationProfile); Application.Current.Shutdown(shell.Explorer.State == ExplorerState.Error ? 2 : 0); }
-            catch (Exception ex) { Console.WriteLine("smoke_failed: " + ex.Message); Application.Current.Shutdown(3); }
+            catch (Exception ex) { Console.WriteLine("smoke_failed: " + ex); Application.Current.Shutdown(3); }
         };
     }
     private void OpenLicenses(object sender,RoutedEventArgs e) { var shell=(ShellViewModel)DataContext; shell.Settings.Section="Licencias";shell.NavigateTo("Ajustes"); }
