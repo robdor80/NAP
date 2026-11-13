@@ -168,7 +168,8 @@ function Restore-Previous($tx) {
 try {
     if ($Action -eq 'Check') {
         $current = try { Read-InstalledVersion } catch { 'no detectada' }
-        $r = Get-Release '' $Channel
+        try { $r = Get-Release '' $Channel }
+        catch { Write-Host "NAP instalado: $current; canal: $Channel; sin Release candidata actualmente. $($_.Exception.Message)"; return }
         Write-Host "NAP instalado: $current; canal: $Channel; Release: v$($r.Version)"
         Write-Host "Fuente fija: https://github.com/$repo/releases"
         Write-Host 'NO SE HA DESCARGADO NI EJECUTADO NADA. Se requiere SHA-256 independiente para Stage y confirmacion expresa para Apply.'
@@ -190,7 +191,7 @@ try {
         if (Test-Path -LiteralPath $target) {
             [void](Assert-TrustedFile $target $TrustedSha256 -unsigned:$AllowUnsigned)
         } else {
-            $partial = "$target.partial"
+            $partial = Join-Path $staging "NAP-Setup-$Version.download.exe"
             if (Test-Path -LiteralPath $partial) { throw "Descarga interrumpida; revisar y borrar manualmente: $partial" }
             if ($FixtureSetup) { Copy-Item -LiteralPath $FixtureSetup -Destination $partial }
             else { Invoke-WebRequest -Uri $release.Url -OutFile $partial -TimeoutSec 600 -UseBasicParsing }
@@ -231,7 +232,8 @@ try {
         if ([version]$Version -le [version]$oldVersion) { throw 'No se permite actualizar a una version igual o inferior.' }
         $receipt = Read-Json (Join-Path $staging "NAP-Setup-$Version.receipt.json")
         if ($receipt.Schema -ne 1 -or $receipt.Repository -cne $repo -or $receipt.Version -cne $Version -or
-            $receipt.TrustedSha256 -cne $TrustedSha256.ToLowerInvariant() -or $receipt.State -cne 'staged') {
+            $receipt.TrustedSha256 -cne $TrustedSha256.ToLowerInvariant() -or
+            $receipt.Channel -cne $Channel -or $receipt.State -cne 'staged') {
             throw 'Recibo de staging no corresponde a los datos confirmados.'
         }
         $new = Join-Path $staging "NAP-Setup-$Version.exe"
