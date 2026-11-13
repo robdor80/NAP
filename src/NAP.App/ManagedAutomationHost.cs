@@ -65,8 +65,16 @@ internal sealed class ManagedAutomationHost : IDisposable
         if (await CanAttachAsync(client, contexts, configuration.MixedInboxRoot, cancellation))
             return new ManagedAutomationHost(configuration, client, null);
 
-        var executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
-        var assembly = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.dll");
+        // NAP06 keeps two self-contained processes isolated in one installation.
+        // Developer builds still ship the Host beside NAP.App.exe.
+        var hostDirectory = Path.Combine(AppContext.BaseDirectory, "host");
+        var executable = Path.Combine(hostDirectory, "NAP.AutomationHost.exe");
+        var assembly = Path.Combine(hostDirectory, "NAP.AutomationHost.dll");
+        if (!File.Exists(executable) && !File.Exists(assembly))
+        {
+            executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
+            assembly = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.dll");
+        }
         if (!File.Exists(executable) && !File.Exists(assembly))
             throw new FileNotFoundException("NAP.AutomationHost is absent from the application package.");
 

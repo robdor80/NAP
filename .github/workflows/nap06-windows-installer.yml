@@ -1,0 +1,71 @@
+# NAP06 laboratory installer only. No NAP CI, production, service or CUTOVER.
+name: NAP06 - Windows x64 installer and non-destructive uninstall
+on:
+  push:
+    branches:
+      - feature/nap06-windows-installer-20261113
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap06-release-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-nap06:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Download pinned Inno Setup 6.7.4 from immutable official release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src = Join-Path $env:RUNNER_TEMP 'nap06-inno-official'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Official Inno download failed' }
+          $setup = Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Official Inno attestation failed' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $setup
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Inno vendor signature invalid'
+          }
+          $root = Join-Path $env:RUNNER_TEMP 'nap06-inno-compiler'
+          $p = Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$root") -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw 'Inno compiler installer failed' }
+          $iscc = Join-Path $root 'ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC missing from pinned compiler' }
+          "NAP06_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build self-contained WPF and Host, validate payload, compile installer
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP06_ISCC -Version '2.0.0'
+      - name: Verify package and isolated install/uninstall preserving user data
+        run: |
+          ./scripts/Test-Nap06Installer.ps1 -Version '2.0.0'
+      - name: Clean private license material
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Upload unsigned laboratory installer and inventories
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap06-windows-x64-laboratory-${{ github.sha }}
+          path: |
+            artifacts/nap06/output/NAP-Setup-*.exe
+            artifacts/nap06/output/*.sha256
+            artifacts/nap06/inventory.json
+            artifacts/nap06/provenance.json
+            artifacts/nap06/test-results.json
+            artifacts/nap06/preview-stdout.txt
+            artifacts/nap06/preview-stderr.txt
+          if-no-files-found: warn
+          retention-days: 30

@@ -16,9 +16,9 @@
   <ItemGroup><ProjectReference Include="../NAP.Presentation/NAP.Presentation.csproj" /><ProjectReference Include="../NAP.AI/NAP.AI.csproj" /></ItemGroup>
   <ItemGroup><Content Include="../../config/universes/**/profile.json" Link="config/universes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Resource Include="Assets/RoDo/rodo_v0_1.png" /></ItemGroup>
-  <!-- Host is shipped with the ordinary WPF application; no separate DEV edition. -->
+  <!-- Host shipped next to WPF for developer builds; NAP06 publishes it independently in host/. -->
   <ItemGroup><ProjectReference Include="../NAP.AutomationHost/NAP.AutomationHost.csproj" ReferenceOutputAssembly="false" /></ItemGroup>
-  <Target Name="CopyManagedAutomationHost" AfterTargets="Build">
+  <Target Name="CopyManagedAutomationHost" AfterTargets="Build" Condition="'$(NapReleaseBundle)' != 'true'">
     <ItemGroup>
       <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.dll" />
       <ManagedHostFiles Include="../NAP.AutomationHost/bin/$(Configuration)/net10.0/NAP.AutomationHost.deps.json" />
