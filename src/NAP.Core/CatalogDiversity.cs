@@ -132,6 +132,7 @@ public static class CatalogDiversityAnalyzer
             var pairs = facets.Where(f => f[left] != Unknown && f[right] != Unknown)
                 .Select(f => (Left: f[left], Right: f[right])).ToArray();
             var total = pairs.LongLength;
+            var counts = pairs.GroupBy(p => p).ToDictionary(g => g.Key, g => g.LongCount());
             // Report all observed combinations and, for sex/age within professions, zeros
             // only among values actually observed globally. No imaginary professions.
             var valuesLeft = pairs.Select(p => p.Left).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
@@ -141,7 +142,7 @@ public static class CatalogDiversityAnalyzer
             foreach (var l in valuesLeft)
             foreach (var v in valuesRight)
             {
-                var count = pairs.LongCount(p => p.Left == l && p.Right == v);
+                counts.TryGetValue((l, v), out var count);
                 if (count != 0 || left == "profesion" && right is "sexo" or "edad")
                     rows.Add(($"{left} × {right}", $"{l} | {v}", count, total));
             }
