@@ -1,0 +1,55 @@
+# NAP02 only. This branch does not run NAP CI, CUTOVER or a product installer.
+name: NAP02 - managed AutomationHost and WPF Windows validation
+on:
+  push:
+    branches:
+      - feature/nap02-managed-host-wpf-20261113
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-host-wpf:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Verify Windows x64 and .NET SDK
+        run: |
+          if ($env:RUNNER_OS -ne 'Windows' -or $env:PROCESSOR_ARCHITECTURE -ne 'AMD64') { throw 'Windows x64 required' }
+          if (-not ((& dotnet --list-sdks) -match '10\\.0\\.')) { throw '.NET 10 SDK required' }
+          New-Item -ItemType Directory -Force artifacts/nap02 | Out-Null
+      - name: Restore .NET 10 solution
+        run: dotnet restore NAP.sln --verbosity minimal
+      - name: Build complete WPF and Host Release
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
+          if ($LASTEXITCODE -ne 0) { throw 'NAP02 Release build failed' }
+          foreach ($name in @('NAP.AutomationHost.dll','NAP.AutomationHost.deps.json','NAP.AutomationHost.runtimeconfig.json')) {
+            if (-not (Test-Path ("src/NAP.App/bin/Release/net10.0-windows/" + $name))) { throw ("WPF package is missing " + $name) }
+          }
+      - name: Run focused Host WPF and durable control tests (TEMP only)
+        run: |
+          $filter = 'FullyQualifiedName~NAP.Tests.AutomationManagedWpfTests|FullyQualifiedName~NAP.Tests.AutomationWpfTests|FullyQualifiedName~NAP.Tests.AutomationHostControlTests|FullyQualifiedName~NAP.Tests.AutomationAcceptanceTests.StopPersistenceFailureRemainsDiagnosedAfterOwnerDrain'
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter $filter --settings tests/functional.runsettings --results-directory artifacts/nap02 --logger 'trx;LogFileName=nap02-windows-x64.trx'
+          if ($LASTEXITCODE -ne 0) { throw 'NAP02 focused tests failed' }
+      - name: Clean private license material
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Preserve bounded technical evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap02-managed-host-wpf-${{ github.sha }}
+          path: artifacts/nap02/
+          if-no-files-found: warn
+          retention-days: 30
