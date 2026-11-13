@@ -65,8 +65,19 @@ function Save-Json([string]$path,$data) {
     $json = $data | ConvertTo-Json -Depth 12
     [IO.File]::WriteAllText($tmp, $json, [Text.UTF8Encoding]::new($false))
     if (Test-Path -LiteralPath $path) {
-        [IO.File]::Replace($tmp, $path, $null)
+        # File.Replace exige una ruta de backup no vacia en Windows.
+        # El respaldo tambien permite investigar una interrupcion de escritura.
+        $backup = "$path.previous"
+        Assert-Plain $tmp
+        Assert-Plain $backup
+        if (Test-Path -LiteralPath $backup) {
+            throw "Existe un journal anterior pendiente de revision: $backup"
+        }
+        [IO.File]::Replace($tmp, $path, $backup)
+        # El reemplazo ya se ha confirmado: mantener el backup solo hasta este punto.
+        if (Test-Path -LiteralPath $backup) { Remove-Item -LiteralPath $backup -Force }
     } else {
+        Assert-Plain $tmp
         [IO.File]::Move($tmp, $path)
     }
 }
