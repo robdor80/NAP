@@ -48,6 +48,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private AssetTileViewModel? _preview;
     private CatalogAssetSnapshot? _detail;
     private LegacyPortrait? _legacyDetail;
+    private LegacyMasterEvidence? _masterEvidence;
     private CatalogStatistics? _statistics;
     private CatalogPlanningReadModel? _planning;
     private bool _settingsReadable = true;
@@ -126,6 +127,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
     public CatalogAssetSnapshot? Detail { get => _detail; private set { Set(ref _detail, value); NotifyCatalogText(); } }
     public LegacyPortrait? LegacyDetail { get => _legacyDetail; private set { Set(ref _legacyDetail, value); NotifyCatalogText(); } }
+    public LegacyMasterEvidence? MasterEvidence { get => _masterEvidence; private set => Set(ref _masterEvidence, value); }
     public CatalogStatistics? Statistics { get => _statistics; private set { Set(ref _statistics, value); NotifyCatalogText(); } }
     public CatalogPlanningReadModel? Planning { get => _planning; private set { Set(ref _planning, value); NotifyCatalogText(); } }
     public AsyncCommand ApplyFilters { get; }
@@ -169,7 +171,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private async Task RefreshAsync(bool loadFacets)
     {
         _load?.Cancel(); _load?.Dispose(); var source = _load = new(); var generation = ++_generation; var context = _context;
-        _detailLoad?.Cancel(); Detail = null; LegacyDetail = null; Preview = null; Documents.Clear(); DetailError = null; DetailState = ExplorerState.Empty;
+        _detailLoad?.Cancel(); Detail = null; LegacyDetail = null; MasterEvidence = null; Preview = null; Documents.Clear(); DetailError = null; DetailState = ExplorerState.Empty;
         Assets = null; SelectedAsset = null; Statistics = null; Planning = null; Distributions.Clear(); Error = null;
         if (context is null) { State = ExplorerState.Empty; return; }
         State = ExplorerState.Loading;
@@ -203,7 +205,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public async Task SelectAsync(CatalogAssetSummary? asset)
     {
         _detailLoad?.Cancel(); _detailLoad?.Dispose(); var source = _detailLoad = new(); var context = _context;
-        Detail = null; LegacyDetail = null; Documents.Clear(); Preview = null; DetailError = null;
+        Detail = null; LegacyDetail = null; MasterEvidence = null; Documents.Clear(); Preview = null; DetailError = null;
         if (asset is null || context is null) { DetailState = ExplorerState.Empty; return; }
         DetailState = ExplorerState.Loading;
         try
@@ -216,6 +218,8 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
                 var prompt = await Task.Run(() => System.IO.File.ReadAllText(legacy.PromptPath), source.Token);
                 if (source.IsCancellationRequested || context != _context) return;
                 LegacyDetail = legacy;
+                MasterEvidence = await Task.Run(() => new LegacyMasterEvidenceIndex(context).Get(legacy.AssetId), source.Token);
+                if (source.IsCancellationRequested || context != _context) return;
                 Documents.Add(new("info", info)); Documents.Add(new("prompt", prompt));
                 Preview = new(_service, context); Preview.Populate(asset);
                 DetailState = ExplorerState.Ready;
