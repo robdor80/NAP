@@ -27,6 +27,9 @@ function Invoke-BuildCommand([string[]]$Arguments) {
     }
     if ($LASTEXITCODE -ne 0) { throw 'Fallo el comando .NET de publicacion autorizada.' }
 }
+# La rutina de licencia borra la variable del entorno tras cada invocacion.
+# Conservamos la cadena solo en memoria local para el segundo publish, sin logs ni archivos.
+$licenseForSecondPublish = if ($env:GITHUB_ACTIONS -eq 'true') { $env:SIXLABORS_LICENSE_B64 } else { $null }
 Push-Location $repo
 try {
     & dotnet restore 'src/NAP.App/NAP.App.csproj' -r win-x64 --verbosity minimal
@@ -34,9 +37,14 @@ try {
     & dotnet restore 'src/NAP.AutomationHost/NAP.AutomationHost.csproj' -r win-x64 --verbosity minimal
     if ($LASTEXITCODE -ne 0) { throw 'Fallo restauracion Host win-x64.' }
     Invoke-BuildCommand -Arguments @('publish','src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true','--no-restore','-o',$payload,'-p:NapReleaseBundle=true',"-p:Version=$Version",'-p:PublishSingleFile=false','-p:PublishReadyToRun=false','-p:DebugType=None','-p:DebugSymbols=false',"-p:ApplicationIcon=$icon")
+    if ($env:GITHUB_ACTIONS -eq 'true') { $env:SIXLABORS_LICENSE_B64 = $licenseForSecondPublish }
     Invoke-BuildCommand -Arguments @('publish','src/NAP.AutomationHost/NAP.AutomationHost.csproj','-c','Release','-r','win-x64','--self-contained','true','--no-restore','-o',$hostStage,'-p:NapReleaseBundle=true',"-p:Version=$Version",'-p:PublishSingleFile=false','-p:PublishReadyToRun=false','-p:DebugType=None','-p:DebugSymbols=false')
 }
-finally { Pop-Location }
+finally {
+    Remove-Item Env:SIXLABORS_LICENSE_B64 -ErrorAction SilentlyContinue
+    $licenseForSecondPublish = $null
+    Pop-Location
+}
 
 $installedHost = Join-Path $payload 'host'
 [System.IO.Directory]::CreateDirectory($installedHost) | Out-Null
