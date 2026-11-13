@@ -19,7 +19,7 @@ public sealed class UniverseProfileLoaderTests
         Assert.Equal(new UniverseId("nimroel"), profile.Id);
         Assert.Equal("Nimroel", profile.DisplayName);
         Assert.Equal(new[] { "culture", "realm", "region", "location", "role", "sex" }, profile.ClassificationDimensions);
-        Assert.Equal(2, profile.AssetRules.Count);
+        Assert.Equal(3, profile.AssetRules.Count);
         var rule = Assert.Single(profile.AssetRules, r => r.AssetType == "portrait" && r.ProductionProfile == "portrait_npc");
         Assert.True(profile.TryGetAssetRule("portrait", "portrait_npc", out var found));
         Assert.Same(rule, found);
