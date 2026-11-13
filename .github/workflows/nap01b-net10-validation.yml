@@ -38,14 +38,24 @@ jobs:
         run: |
           ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
           if ($LASTEXITCODE -ne 0) { throw 'Release solution build failed.' }
-      - name: Build standalone tool projects not listed in NAP.sln
+      - name: Build NAP.AcceptanceIoProbe (not in NAP.sln)
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: |
-          foreach ($project in @('tools/NAP.AcceptanceIoProbe/NAP.AcceptanceIoProbe.csproj','tools/NAP.LiveBootstrap/NAP.LiveBootstrap.csproj','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj')) {
-            ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build',$project,'-c','Release'
-            if ($LASTEXITCODE -ne 0) { throw "Auxiliary build failed: $project" }
-          }
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.AcceptanceIoProbe/NAP.AcceptanceIoProbe.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'AcceptanceIoProbe build failed.' }
+      - name: Build NAP.LiveBootstrap (not in NAP.sln)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.LiveBootstrap/NAP.LiveBootstrap.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'LiveBootstrap build failed.' }
+      - name: Build NAP.PrivatePackageProbe (not in NAP.sln)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'PrivatePackageProbe build failed.' }
       - name: Execute only synthetic Core, AutomationHost, SQLite, Gemini and Windows/WPF tests
         run: |
           $filter = '(FullyQualifiedName~NAP.Tests.AutomationHostTests|FullyQualifiedName~NAP.Tests.AutomationHostControlTests|FullyQualifiedName~NAP.Tests.AutomationProtocolTests|FullyQualifiedName~NAP.Tests.AutomationWpfTests|FullyQualifiedName~NAP.Tests.CatalogQueryTests|FullyQualifiedName~NAP.Tests.CatalogSafetyTests|FullyQualifiedName~NAP.Tests.GeminiOperationAuditClientTests|FullyQualifiedName~NAP.Tests.VisualExplorerWindowsSmokeTests)&FullyQualifiedName!~RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender'
