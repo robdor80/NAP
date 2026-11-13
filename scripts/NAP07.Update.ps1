@@ -125,6 +125,47 @@ function Verify-Installed([string]$expected) {
         throw "Version de Host no coincide: $hostVersion"
     }
 }
+# Inventario de contenido instalado ANTES de actualizar. No se almacenan datos personales:
+# solo ficheros de binarios del directorio fijo de Inno (excluidos unins*.dat/exe/log).
+function Get-InstalledSnapshot {
+    Assert-Plain $install
+    if (-not (Test-Path -LiteralPath $install -PathType Container)) {
+        throw 'No existe la carpeta de binarios de NAP.'
+    }
+    foreach ($dir in @(Get-ChildItem -LiteralPath $install -Directory -Recurse -Force)) {
+        Assert-Plain $dir.FullName
+    }
+    $items = @(Get-ChildItem -LiteralPath $install -File -Recurse -Force)
+    $snapshot = @(
+        foreach ($item in $items) {
+            Assert-Plain $item.FullName
+            $relative = $item.FullName.Substring($install.TrimEnd('\').Length).TrimStart('\').Replace('\','/')
+            if ($relative -match '^unins[0-9]{3,}\\.') { continue }
+            [pscustomobject]@{
+                path = $relative
+                bytes = [long]$item.Length
+                sha256 = (Get-FileHash -LiteralPath $item.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            }
+        }
+    )
+    if ($snapshot.Count -lt 20) { throw 'Inventario instalado demasiado pequeno o incompleto.' }
+    return @($snapshot | Sort-Object path)
+}
+function Assert-RestoredSnapshot($tx) {
+    $expected = @($tx.Files)
+    if ($expected.Count -lt 20) { throw 'No se conserva inventario original para verificar la reversión.' }
+    $current = @(Get-InstalledSnapshot)
+    if ($current.Count -ne $expected.Count) {
+        throw "Reversion no exacta: esperados $($expected.Count) archivos, encontrados $($current.Count). Posibles binarios de ambas versiones."
+    }
+    for ($i=0; $i -lt $expected.Count; $i++) {
+        if ($expected[$i].path -cne $current[$i].path -or
+            $expected[$i].sha256 -cne $current[$i].sha256 -or
+            [long]$expected[$i].bytes -ne [long]$current[$i].bytes) {
+            throw "Reversion no exacta en el fichero $($current[$i].path). Se mantiene recovery_needed."
+        }
+    }
+}
 function Assert-Closed {
     # NAP02 deja el Host vivo al cerrar WPF. La parada/drain debe solicitarse
     # desde Ajustes > Detener automatizacion; nunca matar el proceso ni tocar IPC ajeno.
@@ -179,6 +220,7 @@ function Restore-Previous($tx) {
     $tx.State='restoring'; Save-Json $journalFile $tx
     Run-Setup $old ([string]$tx.PreviousSha256)
     Verify-Installed ([string]$tx.PreviousVersion)
+    Assert-RestoredSnapshot $tx
     $tx.State='rolled_back'; Save-Json $journalFile $tx
 }
 try {
@@ -274,9 +316,11 @@ try {
             [void](Assert-TrustedFile $old $PreviousSha256 -unsigned:$AllowUnsigned)
         } else { Copy-Item -LiteralPath $PreviousSetup -Destination $old }
         [void](Assert-TrustedFile $old $PreviousSha256 -unsigned:$AllowUnsigned)
+        $snapshot = @(Get-InstalledSnapshot)
         $tx = [ordered]@{ Schema=1; State='prepared'; PreviousVersion=$oldVersion; NewVersion=$Version;
             PreviousSha256=$PreviousSha256.ToLowerInvariant(); NewSha256=$TrustedSha256.ToLowerInvariant();
-            Channel=$Channel; CreatedUtc=[DateTime]::UtcNow.ToString('o'); Source='explicit-human-confirmation' }
+            Channel=$Channel; CreatedUtc=[DateTime]::UtcNow.ToString('o'); Source='explicit-human-confirmation';
+            Files=$snapshot }
         Save-Json $journalFile $tx
         if ($Fault -eq 'BeforeSetup') { throw 'Fallo sintetico antes de ejecutar el instalador; Recover permite volver al estado verificado.' }
         $tx.State='applying'; Save-Json $journalFile $tx
