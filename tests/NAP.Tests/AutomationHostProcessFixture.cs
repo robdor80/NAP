@@ -27,7 +27,7 @@ internal sealed class AutomationHostProcessFixture : IAsyncDisposable
                 true, checkpoint, fastAdmission ? Files.Options.Admission : null);
             File.WriteAllText(ConfigurationPath, JsonSerializer.Serialize(config, AutomationProtocol.Json));
         }
-        var executable = Path.Combine(Repository, "src/NAP.AutomationHost/bin", BuildConfiguration, "net8.0/NAP.AutomationHost.dll");
+        var executable = Path.Combine(Repository, "src/NAP.AutomationHost/bin", BuildConfiguration, "net10.0/NAP.AutomationHost.dll");
         Assert.True(File.Exists(executable));
         var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
         start.ArgumentList.Add(executable); start.ArgumentList.Add("--laboratory-config"); start.ArgumentList.Add(ConfigurationPath);

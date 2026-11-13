@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)..\functional.runsettings</RunSettingsFilePath>
@@ -27,7 +27,7 @@
 
   <Target Name="CopyCoordinationPeer" AfterTargets="Build">
     <ItemGroup>
-      <CoordinationPeer Include="..\..\tools\NAP.CoordinationProbe\bin\$(Configuration)\net8.0\**\*" />
+      <CoordinationPeer Include="..\..\tools\NAP.CoordinationProbe\bin\$(Configuration)\net10.0\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(CoordinationPeer)" DestinationFiles="@(CoordinationPeer->'$(TargetDir)coordination-peer\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
