@@ -54,7 +54,10 @@
         <RowDefinition Height="Auto" />
         <RowDefinition />
       </Grid.RowDefinitions>
-      <Button Grid.Row="0" Content="Importar retratos históricos al catálogo" Click="ImportHistoricalPortraits" HorizontalAlignment="Left" Margin="4,0,0,12" />
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="4,0,0,12">
+        <Button Content="Importar retratos históricos" Click="ImportHistoricalPortraits" Margin="0,0,8,0" />
+        <Button Content="Vincular 39 PNG maestros" Click="ImportHistoricalMasters" />
+      </StackPanel>
       <ListBox x:Name="AssetGrid" Grid.Row="1" ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset}" Background="Transparent" BorderThickness="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ItemContainerStyle="{StaticResource CatalogTileContainer}">
         <ListBox.ItemsPanel>
           <ItemsPanelTemplate>
@@ -197,7 +200,7 @@
           </ScrollViewer.Style>
           <StackPanel>
             <TextBlock Text="Retrato histórico" Style="{StaticResource Heading}" />
-            <TextBlock Text="Aprobado en Nimroel. Sin auditoría NAP ni PNG maestro acreditado." TextWrapping="Wrap" Style="{StaticResource Muted}" Margin="0,6,0,10" />
+            <TextBlock Text="Aprobado en Nimroel. Sin auditoría de publicación NAP. La evidencia de maestros se almacena por separado." TextWrapping="Wrap" Style="{StaticResource Muted}" Margin="0,6,0,10" />
             <TextBlock Text="{Binding LegacyDetail.AssetId}" TextWrapping="Wrap" FontWeight="SemiBold" />
             <controls:ThumbnailView DataContext="{Binding Preview}" Height="290" Margin="0,14" />
             <TextBlock Text="Clasificación" FontWeight="SemiBold" Margin="0,8,0,4" />
@@ -210,6 +213,28 @@
             <TextBlock Text="{Binding LegacyDetail.WebpBytes, StringFormat=Bytes: {0:N0}}" />
             <TextBlock Text="SHA-256" FontWeight="SemiBold" Margin="0,10,0,4" />
             <TextBlock Text="{Binding LegacyDetail.WebpSha256}" FontSize="{StaticResource TechnicalSize}" TextWrapping="Wrap" />
+            <TextBlock Text="PNG maestro histórico" FontWeight="SemiBold" Margin="0,14,0,4" />
+            <TextBlock Text="Sin evidencia de PNG vinculada todavía" Style="{StaticResource Muted}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                  <Style.Triggers><DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger>
+                    <DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Static sys:String.Empty}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <StackPanel>
+              <StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Visible" />
+                <Style.Triggers><DataTrigger Binding="{Binding MasterEvidence}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers>
+              </Style></StackPanel.Style>
+              <TextBlock Text="{Binding MasterEvidence.StatusLabel}" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding MasterEvidence.CloudStatus}" Style="{StaticResource Muted}" />
+              <TextBlock Text="{Binding MasterEvidence.RelativeSourcePath}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
+              <TextBlock Text="SHA-256 del PNG descargado" FontWeight="SemiBold" Margin="0,6,0,2" />
+              <TextBlock Text="{Binding MasterEvidence.PngSha256}" TextWrapping="Wrap" FontSize="{StaticResource TechnicalSize}" />
+              <TextBlock Text="{Binding MasterEvidence.HistoricalSha256, StringFormat=SHA anterior: {0}}" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding MasterEvidence.GitCommit, StringFormat=Commit histórico: {0}}" TextWrapping="Wrap" />
+            </StackPanel>
             <Expander Header="Documentos originales" Margin="0,14,0,0">
               <ItemsControl ItemsSource="{Binding Documents}">
                 <ItemsControl.ItemTemplate>
