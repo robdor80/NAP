@@ -180,7 +180,7 @@ try {
         if ([version]$Version -le [version](Read-InstalledVersion)) { throw 'Solo se admite version superior a la instalada.' }
         $target = Join-Path $staging "NAP-Setup-$Version.exe"
         $receiptPath = Join-Path $staging "NAP-Setup-$Version.receipt.json"
-        if ((Test-Path -LiteralPath $journalFile) -and (Read-Json $journalFile).State -in @('applying','restoring','recovery_needed')) {
+        if ((Test-Path -LiteralPath $journalFile) -and (Read-Json $journalFile).State -in @('prepared','applying','restoring','recovery_needed')) {
             throw 'Hay una transaccion pendiente de recuperacion. No se permite un nuevo staging.'
         }
         if ($FixtureSetup) {
@@ -255,7 +255,7 @@ try {
             PreviousSha256=$PreviousSha256.ToLowerInvariant(); NewSha256=$TrustedSha256.ToLowerInvariant();
             Channel=$Channel; CreatedUtc=[DateTime]::UtcNow.ToString('o'); Source='explicit-human-confirmation' }
         Save-Json $journalFile $tx
-        if ($Fault -eq 'BeforeSetup') { throw 'Fallo sintentico antes de ejecutar el instalador.' }
+        if ($Fault -eq 'BeforeSetup') { throw 'Fallo sintetico antes de ejecutar el instalador; Recover permite volver al estado verificado.' }
         $tx.State='applying'; Save-Json $journalFile $tx
         try {
             Run-Setup $new
@@ -287,7 +287,7 @@ try {
         throw 'Journal no conforme: no aplicar recuperacion.'
     }
     if ($Action -eq 'Recover') {
-        if ($tx.State -notin @('applying','restoring','recovery_needed')) { throw 'No hay transaccion interrumpida pendiente.' }
+        if ($tx.State -notin @('prepared','applying','restoring','recovery_needed')) { throw 'No hay transaccion interrumpida pendiente.' }
         if ($Confirm -cne "RECUPERAR-$($tx.PreviousVersion)") { throw "Exige -Confirm RECUPERAR-$($tx.PreviousVersion)" }
         Restore-Previous $tx
         Write-Host "RECUPERACION COMPLETADA: v$($tx.PreviousVersion). Datos no modificados."
