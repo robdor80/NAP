@@ -46,6 +46,9 @@ finally {
     Pop-Location
 }
 
+$updaterDirectory = Join-Path $payload 'updater'
+[System.IO.Directory]::CreateDirectory($updaterDirectory) | Out-Null
+Copy-Item -LiteralPath (Join-Path $repo 'scripts/NAP07.Update.ps1') -Destination (Join-Path $updaterDirectory 'NAP07.Update.ps1')
 $installedHost = Join-Path $payload 'host'
 [System.IO.Directory]::CreateDirectory($installedHost) | Out-Null
 Copy-Item -Path (Join-Path $hostStage '*') -Destination $installedHost -Recurse -Force
@@ -55,7 +58,8 @@ foreach ($file in @('NAP.AutomationHost.exe','NAP.AutomationHost.dll','NAP.Autom
 }
 foreach ($relative in @('NAP.App.exe','NAP.App.dll','NAP.App.runtimeconfig.json',
     'config/universes/nimroel/profile.json','host/NAP.AutomationHost.exe',
-    'host/NAP.AutomationHost.dll','host/NAP.AutomationHost.runtimeconfig.json')) {
+    'host/NAP.AutomationHost.dll','host/NAP.AutomationHost.runtimeconfig.json',
+    'updater/NAP07.Update.ps1')) {
     if (-not (Test-Path -LiteralPath (Join-Path $payload $relative) -PathType Leaf)) {
         throw "Falta componente obligatorio del paquete: $relative"
     }
