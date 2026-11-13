@@ -106,6 +106,8 @@ public sealed class LegacyPortraitIndex(UniverseContext context)
         if (!CatalogBoundary.Regular(DatabasePath)) return [];
         var entries = new List<CatalogDiversityEntry>();
         using var db = OpenRead();
+        if (!string.Equals(Scalar(db, "PRAGMA integrity_check")?.ToString(), "ok", StringComparison.Ordinal))
+            throw new InvalidDataException("El índice histórico no supera su comprobación de integridad.");
         using var command = db.CreateCommand();
         command.CommandText = "SELECT asset_id,culture,location,profession,sex,traits_json FROM portraits ORDER BY asset_id COLLATE BINARY";
         using var reader = command.ExecuteReader();
