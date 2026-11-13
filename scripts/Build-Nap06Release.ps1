@@ -13,9 +13,9 @@ $compiler = (Resolve-Path -LiteralPath $InnoCompiler).Path
 $work = Join-Path $repo 'artifacts/nap06'
 if (Test-Path -LiteralPath $work) { throw 'El directorio de trabajo de NAP06 ya existe. Use un checkout limpio para evitar artefactos antiguos.' }
 $payload = Join-Path $work 'payload'
-$host = Join-Path $work 'host-staging'
+$hostStage = Join-Path $work 'host-staging'
 $output = Join-Path $work 'output'
-foreach ($dir in @($payload, $host, $output)) { [System.IO.Directory]::CreateDirectory($dir) | Out-Null }
+foreach ($dir in @($payload, $hostStage, $output)) { [System.IO.Directory]::CreateDirectory($dir) | Out-Null }
 $icon = Join-Path $work 'NAP.ico'
 & (Join-Path $PSScriptRoot 'New-Nap06Icon.ps1') -SourcePng (Join-Path $repo 'src/NAP.App/Assets/RoDo/rodo_v0_1.png') -DestinationIco $icon
 
@@ -34,13 +34,13 @@ try {
     & dotnet restore 'src/NAP.AutomationHost/NAP.AutomationHost.csproj' -r win-x64 --verbosity minimal
     if ($LASTEXITCODE -ne 0) { throw 'Fallo restauracion Host win-x64.' }
     Invoke-BuildCommand -Arguments @('publish','src/NAP.App/NAP.App.csproj','-c','Release','-r','win-x64','--self-contained','true','--no-restore','-o',$payload,'-p:NapReleaseBundle=true',"-p:Version=$Version",'-p:PublishSingleFile=false','-p:PublishReadyToRun=false','-p:DebugType=None','-p:DebugSymbols=false',"-p:ApplicationIcon=$icon")
-    Invoke-BuildCommand -Arguments @('publish','src/NAP.AutomationHost/NAP.AutomationHost.csproj','-c','Release','-r','win-x64','--self-contained','true','--no-restore','-o',$host,'-p:NapReleaseBundle=true',"-p:Version=$Version",'-p:PublishSingleFile=false','-p:PublishReadyToRun=false','-p:DebugType=None','-p:DebugSymbols=false')
+    Invoke-BuildCommand -Arguments @('publish','src/NAP.AutomationHost/NAP.AutomationHost.csproj','-c','Release','-r','win-x64','--self-contained','true','--no-restore','-o',$hostStage,'-p:NapReleaseBundle=true',"-p:Version=$Version",'-p:PublishSingleFile=false','-p:PublishReadyToRun=false','-p:DebugType=None','-p:DebugSymbols=false')
 }
 finally { Pop-Location }
 
 $installedHost = Join-Path $payload 'host'
 [System.IO.Directory]::CreateDirectory($installedHost) | Out-Null
-Copy-Item -Path (Join-Path $host '*') -Destination $installedHost -Recurse -Force
+Copy-Item -Path (Join-Path $hostStage '*') -Destination $installedHost -Recurse -Force
 foreach ($file in @('NAP.AutomationHost.exe','NAP.AutomationHost.dll','NAP.AutomationHost.deps.json','NAP.AutomationHost.runtimeconfig.json')) {
     $orphan = Join-Path $payload $file
     if (Test-Path -LiteralPath $orphan) { Remove-Item -LiteralPath $orphan -Force }
