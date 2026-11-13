@@ -84,6 +84,19 @@ public sealed class ObjectivesViewModel() : ProfessionalPage("Objetivos", "Cober
 }
 public sealed class StatisticsViewModel(ExplorerViewModel explorer) : ProfessionalPage("Estadísticas", "Distribuciones actuales del catálogo. Sin tendencias temporales inferidas.")
 { public ExplorerViewModel Explorer { get; } = explorer; }
+public sealed class DiversityViewModel() : ProfessionalPage("Auditor IA", "Variedad visual por profesión, sexo, edad y territorio; cifras verificables del catálogo.")
+{
+    private CatalogDiversityReport? _report;
+    private CatalogDiversityAnswer? _answer;
+    private string _question = "¿Qué categorías están menos representadas y qué variedad de assets convendría ampliar?";
+    public CatalogDiversityReport? Report { get => _report; internal set { if (_report?.ToJson() != value?.ToJson()) Answer = null; Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); } }
+    public CatalogDiversityAnswer? Answer { get => _answer; internal set => Set(ref _answer, value); }
+    public string Question { get => _question; set => Set(ref _question, value); }
+    public string Total => Report is null ? "—" : Report.TotalAssets.ToString("N0");
+    public string Origin => Report is null ? "" : $"{Report.NativeAssets:N0} publicaciones NAP · {Report.HistoricalAssets:N0} retratos históricos";
+    public override string? EmptyMessage => EvidenceMessage(Report?.TotalAssets == 0 ? "Todavía no hay assets indexados. No se pueden medir diferencias de variedad." : null);
+    internal override void Reset() { base.Reset(); Report = null; Answer = null; }
+}
 public sealed class BackupsViewModel() : ProfessionalPage("Backups", "Copias locales verificadas de catálogo, repositorio y Git.")
 {
     public ObservableCollection<BackupHistoryEntry> Entries { get; } = [];
