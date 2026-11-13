@@ -245,6 +245,22 @@ public sealed class NimroelEnvironmentProfileTests
     }
 
     [Fact]
+    public void LargerSixteenNineMasterDownscalesWithoutChangingTheSource()
+    {
+        using var f = EnvironmentScene(2560, 1440);
+        var master = Path.Combine(f.PackageRoot, TestAsset + ".png");
+        var original = File.ReadAllBytes(master);
+        var package = Assert.IsType<ValidatedAssetPackage>(f.ValidateReadOnly().Package);
+        var resolved = new ImageConversionResolver().Resolve(package, PixelBudget)!;
+        var result = new ScenePngToWebpConverter().Convert(resolved.SourcePath, Settings(resolved));
+        Assert.True(result.IsConverted);
+        Assert.True(new SceneWebpOutputValidator().Validate(result.Image!, Settings(resolved)).IsClean);
+        using (var output = Image.Load<Rgba32>(result.Image!.ToArray()))
+            Assert.Equal((1920, 1080), (output.Width, output.Height));
+        Assert.Equal(original, File.ReadAllBytes(master));
+    }
+
+    [Fact]
     public void FullFrameCornerAndEdgeColorsSurviveSixteenNineResize()
     {
         using var f = EnvironmentScene(160, 90);
