@@ -231,8 +231,8 @@
               <TextBlock Text="{Binding MasterEvidence.RelativeSourcePath}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
               <TextBlock Text="SHA-256 del PNG descargado" FontWeight="SemiBold" Margin="0,6,0,2" />
               <TextBlock Text="{Binding MasterEvidence.PngSha256}" TextWrapping="Wrap" FontSize="{StaticResource TechnicalSize}" />
-              <TextBlock Text="{Binding MasterEvidence.HistoricalSha256, StringFormat=SHA anterior: {0}}" TextWrapping="Wrap" />
-              <TextBlock Text="{Binding MasterEvidence.GitCommit, StringFormat=Commit histórico: {0}}" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding MasterEvidence.HistoricalSha256, StringFormat='SHA anterior: {0}'}" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding MasterEvidence.GitCommit, StringFormat='Commit histórico: {0}'}" TextWrapping="Wrap" />
             </StackPanel>
             <Expander Header="Documentos originales" Margin="0,14,0,0">
               <ItemsControl ItemsSource="{Binding Documents}">
