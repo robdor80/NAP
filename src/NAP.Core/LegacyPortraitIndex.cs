@@ -97,6 +97,36 @@ public sealed class LegacyPortraitIndex(UniverseContext context)
         return result.AsReadOnly();
     }
 
+    /// <summary>Historical SQLite contributes only indexed classification and scalar traits.
+    /// No WebP, PNG, physical path or document is read or sent to an AI service.</summary>
+    public IReadOnlyList<CatalogDiversityEntry> DiversityEntries(CancellationToken cancellation = default)
+    {
+        cancellation.ThrowIfCancellationRequested();
+        CatalogBoundary.Paths(context);
+        if (!CatalogBoundary.Regular(DatabasePath)) return [];
+        var entries = new List<CatalogDiversityEntry>();
+        using var db = OpenRead();
+        if (!string.Equals(Scalar(db, "PRAGMA integrity_check")?.ToString(), "ok", StringComparison.Ordinal))
+            throw new InvalidDataException("El índice histórico no supera su comprobación de integridad.");
+        using var command = db.CreateCommand();
+        command.CommandText = "SELECT asset_id,culture,location,profession,sex,traits_json FROM portraits ORDER BY asset_id COLLATE BINARY";
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            cancellation.ThrowIfCancellationRequested();
+            if (entries.Count >= 50_000) throw new InvalidDataException("Índice histórico demasiado grande para la auditoría.");
+            var traits = JsonSerializer.Deserialize<CatalogVisualTrait[]>(reader.GetString(5))
+                ?? throw new InvalidDataException("Metadatos históricos no disponibles.");
+            entries.Add(new CatalogDiversityEntry(reader.GetString(0), "portrait", "portrait_npc",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["culture"] = reader.GetString(1), ["location"] = reader.GetString(2),
+                    ["role"] = reader.GetString(3), ["sex"] = reader.GetString(4)
+                }, Array.AsReadOnly(traits), true));
+        }
+        return entries.AsReadOnly();
+    }
+
     public LegacyPortrait? Get(string assetId) =>
         Query(new CatalogFilter(assetId: assetId)).FirstOrDefault();
 
