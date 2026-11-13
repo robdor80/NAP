@@ -10,7 +10,7 @@
       <TextBox Width="190" MaxLength="80" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar por nombre del paquete" AutomationProperties.Name="Buscar por nombre del paquete"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding Apply}"/></TextBox.InputBindings></TextBox>
       <ComboBox Width="180" Margin="8,6,8,12" ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter}" DisplayMemberPath="Label" AutomationProperties.Name="Estado"/>
       <ComboBox Width="235" Margin="0,6,8,12" ItemsSource="{Binding Batches}" SelectedItem="{Binding Batch}" DisplayMemberPath="Label" Visibility="{Binding HasBatches,Converter={StaticResource Visible}}" AutomationProperties.Name="Lote" ToolTip="Los 40 lotes más recientes"/>
-      <Button Content="Filtrar" Command="{Binding Apply}" Margin="0,6,0,12"/>
+      <Button Content="Filtrar" Command="{Binding Apply}" ToolTip="{Binding Apply.DisabledReason}" Margin="0,6,0,12"/>
     </WrapPanel>
     <TextBlock Grid.Row="1" Text="{Binding Status}" Style="{StaticResource EmptyState}"/>
     <Grid Grid.Row="2">
@@ -42,7 +42,7 @@
             <Expander Header="Cambiar corrección" IsExpanded="{Binding EditExpanded}" Visibility="{Binding HasOptions,Converter={StaticResource Visible}}" Margin="0,12,0,0"><StackPanel>
               <TextBlock Text="Corrección para este asset" FontWeight="SemiBold"/>
               <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Choice}" DisplayMemberPath="Label" AutomationProperties.Name="Corrección compatible"/>
-              <Button Content="Preparar vista previa" Command="{Binding Propose}"/>
+              <Button Content="Preparar vista previa" Command="{Binding Propose}" ToolTip="{Binding Propose.DisabledReason}"/>
             </StackPanel></Expander>
             <StackPanel Visibility="{Binding HasPreview,Converter={StaticResource Visible}}" Margin="0,12,0,0">
               <TextBlock Text="{Binding ProfileChange}" Margin="0,0,0,8"/>
@@ -53,23 +53,23 @@
               <Button Content="Ampliar comparación" Click="OpenComparison" HorizontalAlignment="Left" Margin="0,8,0,4"/>
               <TextBlock Text="{Binding CandidateSize}" Margin="0,8,0,4"/>
               <TextBlock Text="{Binding Transformation}" Style="{StaticResource Muted}"/>
-              <Button Content="Aprobar corrección" Command="{Binding Approve}" Margin="0,12,8,8" Visibility="{Binding CanApprove,Converter={StaticResource Visible}}"/>
-              <Button Content="Continuar este asset" Command="{Binding Continue}" Visibility="{Binding CanContinue,Converter={StaticResource Visible}}"/>
+              <Button Content="Aprobar corrección" Command="{Binding Approve}" ToolTip="{Binding Approve.DisabledReason}" Margin="0,12,8,8" Visibility="{Binding CanApprove,Converter={StaticResource Visible}}"/>
+              <Button Content="Continuar este asset" Command="{Binding Continue}" ToolTip="{Binding Continue.DisabledReason}" Visibility="{Binding CanContinue,Converter={StaticResource Visible}}"/>
             </StackPanel>
             <Expander Header="Actividad" Margin="0,20,0,12" IsExpanded="{Binding ActivityExpanded}">
               <StackPanel Margin="0,8,0,0"><TextBlock Text="{Binding Dates}" Style="{StaticResource Muted}" Margin="0,0,0,8"/><TextBlock Text="{Binding PackageName}" Style="{StaticResource Muted}" Margin="0,0,0,12"/>
                 <StackPanel Visibility="{Binding HasDecisions,Converter={StaticResource Visible}}"><TextBlock x:Name="DecisionsHeading" Text="Decisiones guardadas" FontWeight="SemiBold" Margin="0,0,0,12"/><ItemsControl ItemsSource="{Binding Decisions}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
-                  <WrapPanel x:Name="DecisionsPaging" Visibility="{Binding HasDecisionPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding DecisionPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousDecisions}" AutomationProperties.Name="Decisiones más recientes"/><Button Content="Anteriores" Command="{Binding NextDecisions}" AutomationProperties.Name="Decisiones anteriores"/></WrapPanel>
+                  <WrapPanel x:Name="DecisionsPaging" Visibility="{Binding HasDecisionPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding DecisionPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousDecisions}" ToolTip="{Binding PreviousDecisions.DisabledReason}" AutomationProperties.Name="Decisiones más recientes"/><Button Content="Anteriores" Command="{Binding NextDecisions}" ToolTip="{Binding NextDecisions.DisabledReason}" AutomationProperties.Name="Decisiones anteriores"/></WrapPanel>
                 </StackPanel>
                 <TextBlock Text="Actividad del asset" FontWeight="SemiBold" Margin="0,12,0,12"/>
                 <ItemsControl ItemsSource="{Binding Events}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}" FontWeight="SemiBold"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
-                <WrapPanel x:Name="EventsPaging" Visibility="{Binding HasEventPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding EventPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousEvents}" AutomationProperties.Name="Actividad más reciente"/><Button Content="Anteriores" Command="{Binding NextEvents}" AutomationProperties.Name="Actividad anterior"/></WrapPanel>
+                <WrapPanel x:Name="EventsPaging" Visibility="{Binding HasEventPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding EventPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousEvents}" ToolTip="{Binding PreviousEvents.DisabledReason}" AutomationProperties.Name="Actividad más reciente"/><Button Content="Anteriores" Command="{Binding NextEvents}" ToolTip="{Binding NextEvents.DisabledReason}" AutomationProperties.Name="Actividad anterior"/></WrapPanel>
               </StackPanel>
             </Expander>
           </StackPanel>
         </ScrollViewer>
       </Grid>
     </Grid>
-    <DockPanel Grid.Row="3" Margin="0,12,0,0"><WrapPanel DockPanel.Dock="Right"><Button Content="Anterior" Command="{Binding Previous}"/><Button Content="Siguiente" Command="{Binding Next}"/></WrapPanel><TextBlock Text="{Binding PageLabel}" VerticalAlignment="Center" Style="{StaticResource Muted}"/></DockPanel>
+    <DockPanel Grid.Row="3" Margin="0,12,0,0"><WrapPanel DockPanel.Dock="Right"><Button Content="Anterior" Command="{Binding Previous}" ToolTip="{Binding Previous.DisabledReason}"/><Button Content="Siguiente" Command="{Binding Next}" ToolTip="{Binding Next.DisabledReason}"/></WrapPanel><TextBlock Text="{Binding PageLabel}" VerticalAlignment="Center" Style="{StaticResource Muted}"/></DockPanel>
   </Grid>
 </UserControl>

@@ -52,6 +52,8 @@ internal static class VisualSmokeProbe
             await shell.PrepareNormalization.ExecuteAsync();
             if (shell.Pipeline.Normalization is null || shell.Pipeline.Prepared is not null || shell.ExecutePackage.CanExecute(null))
                 throw new InvalidOperationException("Normalization preview bypassed a human or production gate.");
+            // The normalization review lives inside the collapsed manual-work expander; expand it as a user would.
+            shell.Pipeline.ManualExpanded = true;
         }
         var pages = 0; var mascotChecks = 0; var tooltipChecks = 0; RodoMascot? lastMascot = null;
         foreach (var size in new[] { (1200d, 700d), (2560d, 1600d) })
@@ -70,7 +72,8 @@ internal static class VisualSmokeProbe
                     var view = Find<Views.PipelineView>(window) ?? throw new InvalidOperationException("Production view missing.");
                     foreach (var name in new[] { "NormalizationOriginal", "NormalizationCandidate" })
                     {
-                        var preview = (Image)view.FindName(name);
+                        var preview = FindAll<Image>(view).FirstOrDefault(image => image.Name == name)
+                            ?? throw new InvalidOperationException($"Normalization image control missing from the rendered tree: {name}.");
                         if (preview.Source is not BitmapSource { IsFrozen: true } || !preview.IsVisible || preview.ActualWidth <= 0 || preview.ActualHeight <= 0)
                             throw new InvalidOperationException("Normalization comparison image did not render.");
                     }
@@ -78,7 +81,10 @@ internal static class VisualSmokeProbe
                         throw new InvalidOperationException("Normalization approval/rejection controls are incorrect.");
                     foreach (var (scrollName, buttonName) in new[] { ("NormalizationInboxScroll", "CancelNormalizationButton"), ("NormalizationProductionScroll", "RejectNormalizationButton") })
                     {
-                        var scroll = (ScrollViewer)view.FindName(scrollName); var button = (Button)view.FindName(buttonName);
+                        var scroll = FindAll<ScrollViewer>(view).FirstOrDefault(item => item.Name == scrollName)
+                            ?? throw new InvalidOperationException($"Normalization scroll control missing from the rendered tree: {scrollName}.");
+                        var button = FindAll<Button>(view).FirstOrDefault(item => item.Name == buttonName)
+                            ?? throw new InvalidOperationException($"Normalization action missing from the rendered tree: {buttonName}.");
                         button.BringIntoView(); await RenderAsync(window, new Size(size.Item1, size.Item2));
                         var bounds = button.TransformToAncestor(scroll).TransformBounds(new Rect(0, 0, button.ActualWidth, button.ActualHeight));
                         if (bounds.Top < -1 || bounds.Bottom > scroll.ActualHeight + 1)
