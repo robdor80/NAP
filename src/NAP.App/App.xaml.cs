@@ -95,7 +95,7 @@ public partial class App : Application
         catch (Exception ex)
         {
             if (IsAcceptance) { Console.Error.WriteLine("Aceptación detenida de forma segura: " + ex.Message); Shutdown(1); return; }
-            if (e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
+            if (e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Contains("--smoke-automation", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
             var error = ExplorerError.From(ex); MessageBox.Show(error.Message + "\nCódigo: " + error.Code, "NAP — Inicio detenido", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }

@@ -24,7 +24,7 @@ jobs:
       - name: Verify Windows x64 and .NET SDK
         run: |
           if ($env:RUNNER_OS -ne 'Windows' -or $env:PROCESSOR_ARCHITECTURE -ne 'AMD64') { throw 'Windows x64 required' }
-          if (-not ((& dotnet --list-sdks) -match '10\\.0\\.')) { throw '.NET 10 SDK required' }
+          if (-not ((& dotnet --list-sdks) -match '10\.0\.')) { throw '.NET 10 SDK required' }
           New-Item -ItemType Directory -Force artifacts/nap02 | Out-Null
       - name: Restore .NET 10 solution
         run: dotnet restore NAP.sln --verbosity minimal
