@@ -1,0 +1,79 @@
+# NAP01-B only: isolated .NET 10 validation for this migration branch.
+# Does NOT invoke NAP CI, CUTOVER, production, Phase 6 acceptance or bulk ZIP tests.
+name: NAP01-B - .NET 10 LTS focused Windows validation
+on:
+  push:
+    branches:
+      - feature/nap01b-dotnet10-lts-20261113
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  net10-windows-x64:
+    name: Windows 2022 x64 - build + isolated smoke
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Verify runner and capture SDK metadata
+        run: |
+          if ($env:RUNNER_OS -ne 'Windows' -or $env:PROCESSOR_ARCHITECTURE -ne 'AMD64') { throw 'Expected Windows x64 runner.' }
+          New-Item -ItemType Directory -Force artifacts/nap01b | Out-Null
+          dotnet --info | Out-File artifacts/nap01b/dotnet-info.txt
+          dotnet --list-runtimes | Out-File artifacts/nap01b/runtimes.txt
+          if (-not ((& dotnet --list-sdks) -match '10\.0\.')) { throw 'Missing .NET 10 SDK.' }
+      - name: Restore migration solution
+        run: dotnet restore NAP.sln --verbosity minimal
+      - name: Build complete solution Release (existing private license gate)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
+          if ($LASTEXITCODE -ne 0) { throw 'Release solution build failed.' }
+      - name: Build NAP.AcceptanceIoProbe (not in NAP.sln)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.AcceptanceIoProbe/NAP.AcceptanceIoProbe.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'AcceptanceIoProbe build failed.' }
+      - name: Build NAP.LiveBootstrap (not in NAP.sln)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.LiveBootstrap/NAP.LiveBootstrap.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'LiveBootstrap build failed.' }
+      - name: Build NAP.PrivatePackageProbe (not in NAP.sln)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tools/NAP.PrivatePackageProbe/NAP.PrivatePackageProbe.csproj','-c','Release'
+          if ($LASTEXITCODE -ne 0) { throw 'PrivatePackageProbe build failed.' }
+      - name: Execute only synthetic Core, AutomationHost, SQLite, Gemini and Windows/WPF tests
+        run: |
+          $filter = '(FullyQualifiedName~NAP.Tests.AutomationHostTests|FullyQualifiedName~NAP.Tests.AutomationHostControlTests|FullyQualifiedName~NAP.Tests.AutomationProtocolTests|FullyQualifiedName~NAP.Tests.AutomationWpfTests|FullyQualifiedName~NAP.Tests.CatalogQueryTests|FullyQualifiedName~NAP.Tests.CatalogSafetyTests|FullyQualifiedName~NAP.Tests.GeminiOperationAuditClientTests|FullyQualifiedName~NAP.Tests.VisualExplorerWindowsSmokeTests)&FullyQualifiedName!~RealCatalogFiltersDetailStatisticsAndThirtyThousandRecycledItemsRender'
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter $filter --settings tests/functional.runsettings --results-directory artifacts/nap01b --logger 'trx;LogFileName=nap01b-windows-x64.trx'
+          if ($LASTEXITCODE -ne 0) { throw 'NAP01-B focused test failure.' }
+      - name: Inventory restored packages and audit advisories (diagnostic only)
+        continue-on-error: true
+        run: |
+          dotnet list src/NAP.Core/NAP.Core.csproj package --include-transitive | Out-File artifacts/nap01b/packages.txt
+          dotnet list src/NAP.Core/NAP.Core.csproj package --include-transitive --vulnerable | Out-File artifacts/nap01b/advisories.txt
+      - name: Always remove transient licensed-build files
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Preserve synthetic build/test evidence only
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap01b-net10-windows-x64-${{ github.sha }}
+          path: artifacts/nap01b/
+          if-no-files-found: warn
+          retention-days: 30

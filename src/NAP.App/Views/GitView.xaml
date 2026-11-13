@@ -25,7 +25,7 @@
           <TextBlock Text="{Binding HumanStatus}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Recommendation}" Foreground="{Binding RecommendationTone, Converter={StaticResource ToneBrush}}" TextWrapping="Wrap" />
           <WrapPanel>
-            <Button Content="Actualizar política, Outbox y recibos" Style="{StaticResource Secondary}" Command="{Binding DataContext.Refresh, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Actualizar política, Outbox y recibos" Style="{StaticResource Secondary}" Command="{Binding DataContext.Refresh, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.Refresh.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
             <Button Content="Inspeccionar local y remoto" Style="{StaticResource Primary}" Command="{Binding DataContext.InspectGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.InspectGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           </WrapPanel>
           <TextBlock Text="La lectura local no consulta el remoto. Inspeccionar sí lo consulta, sin conceder permisos ni crear política." Style="{StaticResource Muted}" TextWrapping="Wrap" />
@@ -63,14 +63,14 @@
             <TextBox Text="{Binding Prefixes, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" MinHeight="70" MaxHeight="180" VerticalScrollBarVisibility="Auto" AutomationProperties.Name="Prefijos Git permitidos" />
             <TextBlock Text="Máximo Jobs por lote (1–20)" /><TextBox Text="{Binding MaximumJobs, UpdateSourceTrigger=PropertyChanged}" MaxLength="2" AutomationProperties.Name="Máximo Jobs por lote" />
           </StackPanel>
-          <Button Content="Generar propuesta y revisar vínculos" Style="{StaticResource Secondary}" Command="{Binding DataContext.ProposeGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <Button Content="Generar propuesta y revisar vínculos" Style="{StaticResource Secondary}" Command="{Binding DataContext.ProposeGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ProposeGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="{Binding DataContext.ProposeGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <Expander Header="Propuesta inmutable revisada (editar invalida la propuesta)" IsExpanded="True">
             <ItemsControl ItemsSource="{Binding Review.Details}"><ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" Style="{StaticResource Technical}" /></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
           </Expander>
-          <Button Content="Autorizar y guardar" Style="{StaticResource Danger}" Command="{Binding DataContext.SaveGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <Button Content="Autorizar y guardar" Style="{StaticResource Danger}" Command="{Binding DataContext.SaveGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.SaveGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="{Binding DataContext.SaveGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
-          <Button Content="Revocar autorización Git" Style="{StaticResource Danger}" Command="{Binding DataContext.RevokeGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <Button Content="Revocar autorización Git" Style="{StaticResource Danger}" Command="{Binding DataContext.RevokeGitAuthorization, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RevokeGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="{Binding DataContext.RevokeGitAuthorization.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="Revocar no necesita consultar el remoto. Conserva historial y Outbox; una autorización nueva no reactiva lotes antiguos." TextWrapping="Wrap" />
           <Expander Header="Historial de revisiones autenticado">
@@ -106,9 +106,9 @@
             </StackPanel>
           </Expander>
           <WrapPanel>
-            <Button Content="Seleccionar recibo nativo" Style="{StaticResource Secondary}" Command="{Binding DataContext.ViewOutboxReceipt, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <Button Content="Reintentar intent bloqueado" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryBlockedGit, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <Button Content="Reintentar publicación del lote" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryPublicationGit, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Seleccionar recibo nativo" Style="{StaticResource Secondary}" Command="{Binding DataContext.ViewOutboxReceipt, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.ViewOutboxReceipt.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Reintentar intent bloqueado" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryBlockedGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RetryBlockedGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Reintentar publicación del lote" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryPublicationGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RetryPublicationGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           </WrapPanel>
           <TextBlock Text="{Binding DataContext.RetryBlockedGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding DataContext.RetryPublicationGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
@@ -119,15 +119,15 @@
       <c:RobTitledFrame Header="OPERACIONES MANUALES · CONFIRMACIONES INDEPENDIENTES">
         <StackPanel>
           <TextBlock Text="Mensaje del commit" /><TextBox Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged}" />
-          <Button Content="Preparar y revisar commit" Style="{StaticResource Primary}" Command="{Binding DataContext.CommitGit, RelativeSource={RelativeSource AncestorType=Window}}" />
+          <Button Content="Preparar y revisar commit" Style="{StaticResource Primary}" Command="{Binding DataContext.CommitGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.CommitGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           <TextBlock Text="{Binding DataContext.CommitGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="Commit manual requiere outputs físicamente verificados de esta sesión. La lista de sesión no reconstruye Outbox." Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding EmptyMessage}" Style="{StaticResource EmptyState}" />
           <ListBox ItemsSource="{Binding Receipts}" SelectedItem="{Binding SelectedReceipt}" ItemTemplate="{StaticResource Receipt}" Height="230" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" />
           <WrapPanel>
-            <Button Content="Recuperar y verificar recibo" Style="{StaticResource Secondary}" Command="{Binding DataContext.RecoverGit, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <Button Content="Reintentar commit Prepared" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryGit, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <Button Content="Publicar manualmente: revisar push" Style="{StaticResource Danger}" Command="{Binding DataContext.PushGit, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Recuperar y verificar recibo" Style="{StaticResource Secondary}" Command="{Binding DataContext.RecoverGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RecoverGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Reintentar commit Prepared" Style="{StaticResource Danger}" Command="{Binding DataContext.RetryGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.RetryGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <Button Content="Publicar manualmente: revisar push" Style="{StaticResource Danger}" Command="{Binding DataContext.PushGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.PushGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           </WrapPanel>
           <TextBlock Text="{Binding DataContext.RecoverGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding DataContext.RetryGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Muted}" TextWrapping="Wrap" />

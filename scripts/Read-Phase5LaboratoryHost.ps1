@@ -1,5 +1,5 @@
 param([Parameter(Mandatory)][string]$LaunchConfiguration,
-      [string]$CorePath = (Join-Path (Split-Path $PSScriptRoot -Parent) 'src/NAP.Core/bin/Release/net8.0/NAP.Core.dll'))
+      [string]$CorePath = (Join-Path (Split-Path $PSScriptRoot -Parent) 'src/NAP.Core/bin/Release/net10.0/NAP.Core.dll'))
 $ErrorActionPreference = 'Stop'
 $taskLaunchPath = [IO.Path]::GetFullPath($LaunchConfiguration)
 $taskLabRoot = [IO.Path]::GetDirectoryName($taskLaunchPath)

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NAP.Tests;
 
-/// <summary>The test project remains net8.0. Only this subprocess rendering test needs the Windows desktop runtime.</summary>
+/// <summary>The test project targets net10.0. Only this subprocess rendering test needs the Windows desktop runtime.</summary>
 public sealed class VisualExplorerWindowsFactAttribute : FactAttribute
 {
     public VisualExplorerWindowsFactAttribute() { if (!OperatingSystem.IsWindows()) Skip = "WPF rendering requires Windows; portable explorer tests run on Linux."; }
@@ -64,7 +64,7 @@ public sealed class VisualExplorerWindowsSmokeTests
     private static async Task<JsonDocument> Run(string settings, string? outputDirectory = null, string? importSource = null, string? normalizationProfile = null)
     {
         var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../"));
-        var app = Path.Combine(root, "src/NAP.App/bin", AutomationHostProcessFixture.BuildConfiguration, "net8.0-windows/NAP.App.dll"); Assert.True(File.Exists(app), "Build NAP.sln in the test configuration before the Windows smoke tests.");
+        var app = Path.Combine(root, "src/NAP.App/bin", AutomationHostProcessFixture.BuildConfiguration, "net10.0-windows/NAP.App.dll"); Assert.True(File.Exists(app), "Build NAP.sln in the test configuration before the Windows smoke tests.");
         var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
         start.ArgumentList.Add(app); start.ArgumentList.Add("--smoke-test"); start.ArgumentList.Add("--settings=" + settings);
         start.ArgumentList.Add("--profiles-root=" + Path.Combine(Path.GetDirectoryName(settings)!, "installed-profiles"));
