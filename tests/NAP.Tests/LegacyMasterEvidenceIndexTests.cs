@@ -48,7 +48,12 @@ public sealed class LegacyMasterEvidenceIndexTests
                 "png_valido_sha_nuevo_sin_referencia_previa";
             examples.Add(new { asset_id = id, png_file = id + ".png", sha256_copia_local = digest,
                 sha256_registro_septiembre_2026 = old, estado_conciliacion = status,
-                cloud_api_verificada = false });
+                cloud_api_verificada = false,
+                referencia = i == 0 ? (object)new {
+                    type = "git_history_binary_exact",
+                    commit = "66c2de7dae0625dda21b6073da688e28e1ccbcb8",
+                    matched = true, historical_sha256 = digest
+                } : new { type = "new_local_fingerprint", matched = false } });
         }
         Assert.Equal(39, new LegacyPortraitIndex(f.Context).Import(assets));
         var legacyPath = new LegacyPortraitIndex(f.Context).DatabasePath;
@@ -56,7 +61,12 @@ public sealed class LegacyMasterEvidenceIndexTests
         var report = Path.Combine(f.Root, "evidence.json");
         File.WriteAllText(report, JsonSerializer.Serialize(new {
             schema = "nimroel_historical_master_reconciliation", schema_version = "1.0",
-            universe = "nimroel", entries = examples
+            universe = "nimroel", entries = examples,
+            exceptions = new[] { new { asset_id = ids[0], registry_sha256 = new string('0', 64),
+                git_historical_sha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(
+                    Path.Combine(source, "Assets", "portraits", "Norgard", "Treskal",
+                        "farmer", "female", ids[0], ids[0] + ".png")))).ToLowerInvariant(),
+                git_historical_commit = "66c2de7dae0625dda21b6073da688e28e1ccbcb8" } }
         }));
 
         var index = new LegacyMasterEvidenceIndex(f.Context);
