@@ -11,7 +11,7 @@
               Command="{Binding DataContext.Automation.ProcessPending, RelativeSource={RelativeSource AncestorType=Window}}"
               ToolTip="Revisa de nuevo la bandeja del universo activo. No evita permisos ni reescribe recursos terminados."
               HorizontalAlignment="Left" Margin="0,0,0,12" />
-      <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+      <Border Margin="0,0,0,12">
         <StackPanel>
           <DockPanel Margin="0,0,0,10">
             <TextBlock Text="Universos conectados" FontWeight="SemiBold" FontSize="16" />
@@ -24,7 +24,7 @@
                   <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="170"/><ColumnDefinition Width="125"/><ColumnDefinition/></Grid.ColumnDefinitions>
                     <TextBlock Text="{Binding Universe}" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding State}" Foreground="{StaticResource SuccessBrush}" />
+                    <TextBlock Grid.Column="1" Text="{Binding State}" Foreground="{StaticResource TextBrush}" />
                     <TextBlock Grid.Column="2" Text="{Binding Detail}" Style="{StaticResource Muted}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
                   </Grid>
                 </Border>
