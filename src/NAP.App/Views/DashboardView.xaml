@@ -5,6 +5,10 @@
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel>
       <TextBlock Text="{Binding DataContext.Automation.Status, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Automatización sin configurar', TargetNullValue='Automatización sin configurar'}" Style="{StaticResource Heading}" FontSize="{StaticResource CompactTitleSize}" Margin="0,0,0,16" AutomationProperties.LiveSetting="Polite" />
+      <Button Content="Procesar pendientes"
+              Command="{Binding DataContext.Automation.ProcessPending, RelativeSource={RelativeSource AncestorType=Window}}"
+              ToolTip="Revisa de nuevo la bandeja del universo activo. No evita permisos ni reescribe recursos terminados."
+              HorizontalAlignment="Left" Margin="0,0,0,12" />
       <UniformGrid Columns="4">
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Pendientes" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Pending, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Procesando" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Processing, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>

@@ -30,8 +30,21 @@ public sealed partial class AutomationQueueStore
         // Cohorts already belong to the queue; browsing must not initialize a runtime ledger.
         using var tx=db.BeginTransaction(deferred:true);
         var batches=Payloads<QueueBatch>(db,tx,"SELECT payload FROM batches ORDER BY rowid DESC LIMIT 40");
-        return batches.Select(b=>new WorkflowBatch(UniverseId,b.Id,b.CreatedUtc,
-            Convert.ToInt32(Scalar(db,tx,"SELECT COUNT(DISTINCT item_id) FROM observations WHERE batch_id=$b","$b",b.Id.Value)))).ToArray();
+        return batches.Select(b =>
+        {
+            // Read progress in the same read transaction as the batch list; no second
+            // ledger, no double counting when one ZIP has repeated observations.
+            var items = Payloads<QueueItem>(db, tx,
+                "SELECT DISTINCT i.payload FROM items i JOIN observations o ON o.item_id=i.id WHERE o.batch_id=$b", "$b", b.Id.Value);
+            var observations = Convert.ToInt32(Scalar(db, tx,
+                "SELECT COUNT(*) FROM observations WHERE batch_id=$b", "$b", b.Id.Value));
+            var summary = new QueueBatchSummary(observations, items.Count,
+                items.Count(i => i.State == QueueState.Completed),
+                items.Count(i => i.State == QueueState.Duplicate),
+                items.Count(i => i.State is QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource),
+                items.Count(i => i.State is QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled));
+            return new WorkflowBatch(UniverseId, b.Id, b.CreatedUtc, items.Count, summary);
+        }).ToArray();
     });
     public IReadOnlyList<ExceptionalConfigurationDecision> BrowseDecisions(QueueItemId item, int offset)
     {

@@ -209,6 +209,18 @@ public sealed partial class AutomationHost : IAsyncDisposable
         }
     }
 
+    /// <summary>Request a fresh Inbox capture for one already-active, authorized universe.
+    /// A scheduling signal only: grants, profile and filesystem gates are rechecked by the owner.</summary>
+    public bool RequestPendingScan(UniverseId universe)
+    {
+        var slot = Find(universe);
+        if (!Allowed(slot)) throw new AutomationException(AutomationError.Disabled,
+            "Process pending requires an active, authorized universe; activate or resume it first.");
+        slot.ScanRequested = true;
+        Signal();
+        return true;
+    }
+
     private Slot Find(UniverseId universe) => _slots.SingleOrDefault(s => s.Context.Id == universe)
         ?? throw AutomationValidation.Invalid("Universe is not configured in this host.");
 

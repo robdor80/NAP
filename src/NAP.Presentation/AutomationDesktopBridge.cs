@@ -204,6 +204,8 @@ public sealed class AutomationDesktopBridge
                 if (!_blobs.TryGetValue(read.BlobId, out var blob) || blob.Universe != id || read.Offset < 0 || read.Count is < 1 or > 65536 || read.Offset > blob.Bytes.Length - read.Count)
                     throw new InvalidDataException("Invalid bounded read blob request.");
                 return AutomationProtocol.Payload(blob.Bytes.AsSpan(read.Offset, read.Count).ToArray());
+            case AutomationOperation.ScanPending:
+                return AutomationProtocol.Payload(_host.RequestPendingScan(id));
             case AutomationOperation.Activate:
                 var a = Arg<AutomationActivation>(); return AutomationProtocol.Payload(await _host.ActivateAsync(id, a.Policy, a.ResumeOnRestart, request.RequestId));
             case AutomationOperation.Pause: case AutomationOperation.Resume: case AutomationOperation.StopUniverse: case AutomationOperation.CancelItem: case AutomationOperation.ResumeItem:

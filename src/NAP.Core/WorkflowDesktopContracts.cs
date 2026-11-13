@@ -20,6 +20,6 @@ public sealed record ReviewPreview(string DecisionId, int Version, Sha256Digest 
     int Left, int Top, int Right, int Bottom, string Profile, byte[] OriginalImage, byte[] CandidateImage, string OriginalProfile = "");
 public sealed record ReviewCapability(bool CanPropose, bool CanApprove, bool CanContinue);
 
-public sealed record WorkflowBatch(UniverseId UniverseId, QueueBatchId Id, DateTimeOffset CreatedUtc, int Items);
+public sealed record WorkflowBatch(UniverseId UniverseId, QueueBatchId Id, DateTimeOffset CreatedUtc, int Items, QueueBatchSummary? Summary = null);
 
 public sealed record WorkflowDecisionEntry(DateTimeOffset Utc, ExceptionalDecisionState State, string Profile, int Width, int Height);
