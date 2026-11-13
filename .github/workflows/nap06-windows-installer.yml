@@ -65,5 +65,7 @@ jobs:
             artifacts/nap06/inventory.json
             artifacts/nap06/provenance.json
             artifacts/nap06/test-results.json
+            artifacts/nap06/preview-stdout.txt
+            artifacts/nap06/preview-stderr.txt
           if-no-files-found: warn
           retention-days: 30
