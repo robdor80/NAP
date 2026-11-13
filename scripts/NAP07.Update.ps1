@@ -77,6 +77,9 @@ function Read-Json([string]$path) {
 }
 function Lock-Updates {
     Assert-Plain $updates
+    Assert-Plain $staging
+    Assert-Plain $rollback
+    Assert-Plain (Join-Path $updates 'nap07.lock')
     [IO.Directory]::CreateDirectory($updates) | Out-Null
     [IO.Directory]::CreateDirectory($staging) | Out-Null
     [IO.Directory]::CreateDirectory($rollback) | Out-Null
@@ -181,6 +184,8 @@ try {
         if ([version]$Version -le [version](Read-InstalledVersion)) { throw 'Solo se admite version superior a la instalada.' }
         $target = Join-Path $staging "NAP-Setup-$Version.exe"
         $receiptPath = Join-Path $staging "NAP-Setup-$Version.receipt.json"
+        Assert-Plain $target
+        Assert-Plain $receiptPath
         if ((Test-Path -LiteralPath $journalFile) -and (Read-Json $journalFile).State -in @('prepared','applying','restoring','recovery_needed')) {
             throw 'Hay una transaccion pendiente de recuperacion. No se permite un nuevo staging.'
         }
@@ -192,6 +197,7 @@ try {
             [void](Assert-TrustedFile $target $TrustedSha256 -unsigned:$AllowUnsigned)
         } else {
             $partial = Join-Path $staging "NAP-Setup-$Version.download.exe"
+            Assert-Plain $partial
             if (Test-Path -LiteralPath $partial) { throw "Descarga interrumpida; revisar y borrar manualmente: $partial" }
             if ($FixtureSetup) { Copy-Item -LiteralPath $FixtureSetup -Destination $partial }
             else { Invoke-WebRequest -Uri $release.Url -OutFile $partial -TimeoutSec 600 -UseBasicParsing }
@@ -249,6 +255,7 @@ try {
             if ($previousTx.State -notin @('committed','rolled_back')) { throw 'Transaccion anterior sin recuperar.' }
         }
         $old = Join-Path $rollback "NAP-Setup-$oldVersion.exe"
+        Assert-Plain $old
         if (Test-Path -LiteralPath $old) {
             [void](Assert-TrustedFile $old $PreviousSha256 -unsigned:$AllowUnsigned)
         } else { Copy-Item -LiteralPath $PreviousSetup -Destination $old }
