@@ -10,6 +10,8 @@ NAP07 incorpora una herramienta PowerShell sin privilegios, distribuida como `up
 
 La comprobación en Ajustes abre una ventana PowerShell para **Check**: no descarga ni instala ni desactiva Host. El script permite operaciones explícitas Stage, Apply, Recover y Rollback fuera del proceso WPF. Sin releases aún, Check indicará que no hay una versión candidata verificada.
 
+**Arranque inicial desde NAP06:** el instalador original 2.0.0 publicado antes de NAP07 no contiene este script ni el boton de Ajustes. Es necesario instalar una primera version NAP07 mediante un paquete validado manualmente, o ejecutar el script obtenido de un commit del repositorio previamente verificado. **No hay actualizacion automatica desde una instalacion NAP06 sin updater.**
+
 ## 2. Modelo de confianza
 
 - El instalador sigue **sin firma del producto**; la validación del compilador Inno de NAP06 no es una firma de NAP ni elimina avisos SmartScreen.
