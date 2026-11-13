@@ -178,7 +178,7 @@ public sealed class CatalogDiversityTests
         var classes = new Dictionary<string, string>(StringComparer.Ordinal)
         { ["culture"] = "norgard", ["location"] = "treskal", ["role"] = role };
         if (sex is not null) classes["sex"] = sex;
-        var traits = age is null ? Array.Empty<CatalogVisualTrait>() :
+        CatalogVisualTrait[] traits = age is null ? [] :
             [new CatalogVisualTrait("/age/life_stage/value", age, CatalogTraitType.String)];
         return new(id, "portrait", "portrait_npc", classes, traits, false);
     }
