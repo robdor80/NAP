@@ -80,6 +80,26 @@ public sealed class AutomationManagedWpfTests
     }
 
     [VisualExplorerWindowsFact]
+    public async Task WpfGlobalShutdownShowsStoppedWithoutQueryingAnExitedHost()
+    {
+        await using var f = new AutomationHostProcessFixture();
+        await f.StartAsync();
+        using var controls = new AutomationControlViewModel(f.Client, () => f.Files.A.Context, new Accept());
+        await controls.RefreshAsync();
+        Assert.Equal("Automatización sin activar", controls.Status);
+
+        await controls.Stop.ExecuteAsync();
+
+        // ShutdownHost returns only after the durable host shutdown completes.
+        // WPF must not issue Overview against the now-closed IPC pipe.
+        await f.Process!.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(15));
+        Assert.Equal(0, f.Process.ExitCode);
+        Assert.Equal("Automatización detenida", controls.Status);
+        Assert.Equal("En marcha: 0 universos", controls.ExecutionScope);
+        Assert.False(controls.CanStopUniverse);
+    }
+
+    [VisualExplorerWindowsFact]
     public async Task WpfControlStopsOnlySelectedUniverseAndKeepsHostAlive()
     {
         await using var f = new AutomationHostProcessFixture();
