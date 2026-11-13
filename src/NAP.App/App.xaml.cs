@@ -64,15 +64,20 @@ public partial class App : Application
             });
             var vm = new ExplorerViewModel(snapshot.Installed.Select(p => p.Profile), new(settings), new ExplorerService(), new FolderPicker(), registry);
             IAiAuditClient? auditor = null;
+            ICatalogInsightClient? catalogInsight = null;
             if (!smoke)
             {
                 var key = Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY");
                 var model = Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL");
                 if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(model))
-                    auditor = new GeminiOperationAuditClient(_auditTransport = new HttpClient(), key, model);
+                {
+                    _auditTransport = new HttpClient();
+                    auditor = new GeminiOperationAuditClient(_auditTransport, key, model);
+                    catalogInsight = new GeminiCatalogInsightClient(_auditTransport, key, model);
+                }
             }
             var importSource = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-import-profile=", StringComparison.Ordinal))?[23..] : null;
-            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot, licenses: smoke ? new LicenseViewModel(null) : new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true);
+            var shell = new ShellViewModel(vm, new ProfessionalUiService(auditor), new WpfConfirmation(), registry, new ProfilePicker(importSource), snapshot, licenses: smoke ? new LicenseViewModel(null) : new LicenseViewModel(new LicenseRegister(LicenseRegister.DefaultPath)), readLocalDiagnostics: true, insightClient: catalogInsight);
             var output = e.Args.FirstOrDefault(a => a.StartsWith("--smoke-output=", StringComparison.Ordinal))?[15..];
             var normalizationProfile = smoke ? e.Args.FirstOrDefault(a => a.StartsWith("--smoke-normalization-profile=", StringComparison.Ordinal))?[30..] : null;
             var window = new MainWindow(shell, smoke, output, importSource is not null, normalizationProfile); MainWindow = window; window.Show();
