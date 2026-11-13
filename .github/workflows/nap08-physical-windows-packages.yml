@@ -1,9 +1,8 @@
 # NAP08: solo paquetes de laboratorio. No NAP CI, Releases ni CUTOVER.
 name: NAP08 - paquetes Windows para certificacion fisica
+# Los dos instaladores de laboratorio ya se construyeron y verificaron.
+# Recompilar 160 MB en cada ajuste documental/UI de NAP08 no aporta evidencia.
 on:
-  push:
-    branches:
-      - feature/nap08-certificacion-fisica-msi-20261113
   workflow_dispatch:
 permissions:
   contents: read
