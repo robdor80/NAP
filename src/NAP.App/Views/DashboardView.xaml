@@ -11,6 +11,42 @@
               Command="{Binding DataContext.Automation.ProcessPending, RelativeSource={RelativeSource AncestorType=Window}}"
               ToolTip="Revisa de nuevo la bandeja del universo activo. No evita permisos ni reescribe recursos terminados."
               HorizontalAlignment="Left" Margin="0,0,0,12" />
+      <Border Margin="0,0,0,12">
+        <Border.Style>
+          <Style TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding DataContext.Automation, RelativeSource={RelativeSource AncestorType=Window}}" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <StackPanel>
+          <DockPanel Margin="0,0,0,10">
+            <TextBlock Text="Universos conectados" FontWeight="SemiBold" FontSize="16" />
+            <TextBlock Text="Estado informado por el Host" DockPanel.Dock="Right" Style="{StaticResource Muted}" />
+          </DockPanel>
+          <ItemsControl ItemsSource="{Binding DataContext.Automation.UniverseStatuses, RelativeSource={RelativeSource AncestorType=Window}}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="{StaticResource CardBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                  <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="170"/><ColumnDefinition Width="125"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Universe}" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding State}" Foreground="{StaticResource TextBrush}" />
+                    <TextBlock Grid.Column="2" Text="{Binding Detail}" Style="{StaticResource Muted}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Text="Los estados se muestran solo para los universos registrados en el Host; no representan un inventario de archivos externos."
+                     Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0" />
+        </StackPanel>
+      </Border>
+      <TextBlock Text="{Binding DataContext.Automation.ExistingMixedPackages, RelativeSource={RelativeSource AncestorType=Window}, StringFormat='Paquetes ya presentes en la bandeja mixta: {0}'}"
+                 Style="{StaticResource Muted}" Margin="0,0,0,8" />
       <UniformGrid Columns="4">
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Pendientes" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Pending, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Procesando" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Processing, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>

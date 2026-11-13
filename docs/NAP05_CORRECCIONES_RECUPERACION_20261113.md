@@ -75,3 +75,8 @@ El fichero `.github/workflows/nap05-recovery-validation.yml` está limitado a la
 ## 7. Dictamen
 
 **NAP05 técnicamente validada en el alcance focalizado, pendiente de auditoría de PR e integración controlada con NAP04.** El defecto de parada identificado quedó corregido y probado. La resiliencia existente se mantuvo, sin reconstruir motores ni tocar datos reales. Los fallos históricos sin reproducción suficiente **permanecen abiertos** y documentados. No hay certificación MSI ni autorización de CUTOVER.
+
+
+## 8. Integración aprobada con NAP04
+
+El propietario confirmó aceptación funcional de NAP04 y autorizó fusionar ambas fases por orden. La [PR #68](https://github.com/robdor80/NAP/pull/68) fue fusionada en `main` mediante `8e05c42f89bbb999288bcb70bbe8d6a863fdeed1` antes de integrar NAP05. Se han combinado expresamente las filas de estado RobStyle NAP04 y los mensajes de diagnóstico NAP05 en `AutomationControlViewModel.cs`, preservando ambas funcionalidades. Se ejecutará validación focalizada conjunta antes de fusionar la PR #69. Los pendientes #47/#49 y las pruebas físicas F7 no se cierran ni se convierten en PASS por esta integración.

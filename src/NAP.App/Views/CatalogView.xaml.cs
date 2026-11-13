@@ -9,7 +9,65 @@ namespace NAP.App.Views;
 
 public partial class CatalogView : UserControl
 {
-    public CatalogView() => InitializeComponent();
+    private AssetTileViewModel? _reference;
+    private UniverseContext? _referenceContext;
+
+    public CatalogView()
+    {
+        InitializeComponent();
+        Unloaded += (_, _) => ReleaseReference();
+    }
+
+    private ExplorerViewModel? CurrentExplorer() => (Content as FrameworkElement)?.DataContext as ExplorerViewModel;
+
+    private void ReleaseReference()
+    {
+        _reference?.Dispose();
+        _reference = null;
+        _referenceContext = null;
+        ComparisonHint.Text = "Primero fija un asset y después selecciona otro";
+    }
+
+    private void PinComparison(object sender, RoutedEventArgs e)
+    {
+        var explorer = CurrentExplorer();
+        if (explorer?.SelectedAsset?.Asset is not { } asset || explorer.Context is null)
+        {
+            MessageBox.Show("Selecciona primero un asset del catálogo.", "NAP · Laboratorio visual");
+            return;
+        }
+        ReleaseReference();
+        _reference = explorer.CreateComparisonTile(asset);
+        _referenceContext = explorer.Context;
+        ComparisonHint.Text = "Fijado: " + asset.AssetKey.AssetId;
+    }
+
+    private void OpenCatalogComparison(object sender, RoutedEventArgs e)
+    {
+        var explorer = CurrentExplorer();
+        if (_reference is null || explorer is null || !ReferenceEquals(_referenceContext, explorer.Context))
+        {
+            ReleaseReference();
+            MessageBox.Show("Fija una referencia del universo actual antes de comparar.", "NAP · Laboratorio visual");
+            return;
+        }
+        if (explorer.SelectedAsset?.Asset is not { } asset)
+        {
+            MessageBox.Show("Selecciona un segundo asset para comparar.", "NAP · Laboratorio visual");
+            return;
+        }
+        if (asset.AssetKey.AssetId == _reference.Asset?.AssetKey.AssetId)
+        {
+            MessageBox.Show("Selecciona un asset diferente a la referencia fijada.", "NAP · Laboratorio visual");
+            return;
+        }
+        var right = explorer.CreateComparisonTile(asset);
+        try
+        {
+            new CatalogComparisonWindow(_reference, right) { Owner = Window.GetWindow(this) }.ShowDialog();
+        }
+        finally { right.Dispose(); }
+    }
 
 
     private async void ImportHistoricalMasters(object sender, RoutedEventArgs e)

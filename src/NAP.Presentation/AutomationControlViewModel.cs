@@ -16,6 +16,7 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
         _ = await client.CallAsync(operation, universe?.Value, payload, cancellation);
 }
 public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
+public sealed record AutomationUniverseStatusRow(string Universe, string State, string Detail);
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
 public sealed class AutomationControlViewModel : ObservableObject, IDisposable
@@ -44,6 +45,9 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string ReviewRemainder => _overview is { Queue: var q } && q.Counts.NeedsReview > q.Review.Count
         ? q.Counts.NeedsReview - q.Review.Count == 1 ? "1 más pendiente de revisión" : $"{q.Counts.NeedsReview - q.Review.Count:N0} más pendientes de revisión" : "";
     public ObservableCollection<AutomationReviewRow> Review { get; } = [];
+    public ObservableCollection<AutomationUniverseStatusRow> UniverseStatuses { get; } = [];
+    public string ExistingMixedPackages => _overview?.Host.MixedInbox is { } mixed
+        ? mixed.AlreadyPresent.ToString("N0") : "—";
     public bool CanActivate => !_disposed && !_changing && Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Stopped;
     public bool CanStopUniverse => !_disposed && !_changing && Current() && !_overview!.Control.Stopped;
     public bool CanPause => !_disposed && !_changing && Current() && _overview!.Control is { Grant: not null, Paused: false, Stopped: false } && SelectedState() == AutomationHostState.Running;
@@ -103,6 +107,10 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
             foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
+            UniverseStatuses.Clear();
+            foreach (var universe in value.Host.Universes.OrderBy(u => u.UniverseId.Value, StringComparer.Ordinal))
+                UniverseStatuses.Add(new(universe.UniverseId.Value, UniverseState(universe.State),
+                    universe.PendingCandidates == 1 ? "1 paquete esperando admisión" : $"{universe.PendingCandidates:N0} paquetes esperando admisión"));
             Changed();
         }
         catch (OperationCanceledException) when (_disposed) { }
@@ -130,10 +138,20 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         finally { _read = null; _reading = false; }
     }
     private void Unavailable(string? message = null) { Clear(); Status = message ?? "No se pudo consultar la automatización"; ExecutionScope = ""; }
-    private void Clear() { _overview = null; Review.Clear(); Changed(); }
+    private void Clear() { _overview = null; Review.Clear(); UniverseStatuses.Clear(); Changed(); }
+    private static string UniverseState(AutomationHostState state) => state switch
+    {
+        AutomationHostState.Running => "En marcha",
+        AutomationHostState.Paused or AutomationHostState.Pausing => "En pausa",
+        AutomationHostState.Stopped or AutomationHostState.Stopping => "Detenido",
+        AutomationHostState.Blocked or AutomationHostState.Degraded => "Requiere revisión",
+        AutomationHostState.Disabled => "Sin activar",
+        AutomationHostState.Starting => "Iniciando",
+        _ => "Sin confirmar"
+    };
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(MixedInboxStatus), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        foreach (var name in new[] { nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)

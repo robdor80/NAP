@@ -8,6 +8,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
 {
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
+    private readonly ICatalogDiversityAiClient? _diversityClient;
     private readonly IUserConfirmation _confirmation;
     private readonly bool _syntheticReadOnly;
     private readonly IImageNormalizationUiService _normalization;
@@ -28,10 +29,10 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false, ICatalogDiversityAiClient? catalogDiversityAi = null)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
-        _syntheticReadOnly = syntheticReadOnly;
+        _syntheticReadOnly = syntheticReadOnly; _diversityClient = catalogDiversityAi;
         Automation = automation;
         Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
         History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
@@ -50,7 +51,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
         Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
-        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Auditor IA", "\uE9CE"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
         OpenIncident = new(p =>
         {
             Pipeline.Work!.Filter = Pipeline.Work.Filters.Single(f=>f.Value==WorkflowFilter.Review);
@@ -175,6 +176,19 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Reintentar commit", "Core revalidará la operación Prepared y su index propio.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "HEAD base: " + receipt.BaseHead], ct)) { var result = await _service.RetryCommitAsync(c, receipt.OperationId, ct); Record(c, "Commit recuperado: " + result.CommitSha, UiTone.Success); } }), () => GitWritable() && Git.CanCommit && Git.SelectedReceipt?.State == GitReceiptState.Prepared);
         PushGit = Command(() => ActionAsync(async (c, ct) =>
         { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Publicar commit", "Push normal a la rama y remoto congelados. Nunca force, upstream nuevo ni todas las ramas.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "Remoto: " + receipt.RemoteName, "Commit: " + receipt.CommitSha], ct)) { var result = await _service.PushAsync(c, receipt.OperationId, ct); Record(c, "Push: " + result.Outcome, UiTone.Success); } }), () => GitWritable() && Git.CanPush && Git.SelectedReceipt?.State == GitReceiptState.Committed);
+        AskDiversity = Command(() => ActionAsync(async (c, ct) =>
+        {
+            var report = await Task.Run(() => new CatalogDiversityReader(c).Read(ct), ct);
+            if (!Active(c)) return;
+            if (report.TotalAssets == 0) { Diversity.Report = report; Diversity.Answer = null; return; }
+            var reply = await _diversityClient!.AskAsync(report, Diversity.Question.Trim(), ct);
+            if (!Active(c)) return;
+            Diversity.Report = report; Diversity.Answer = reply;
+            Record(c, "Consulta de variedad visual completada sin modificar SQLite", UiTone.Ai);
+        }), () => Context is not null && !IsExecuting && !Explorer.SettingsManagedByHost &&
+            Diversity.State == UiPageState.Ready && Diversity.Report?.TotalAssets > 0 &&
+            _diversityClient is not null && !string.IsNullOrWhiteSpace(Diversity.Question) && Diversity.Question.Length <= 1200);
+        Diversity.PropertyChanged += DiversityChanged;
         InitializeGitCommands();
         foreach (var page in Pages) page.PropertyChanged += PageChanged;
         Explorer.PropertyChanged += ExplorerChanged; Activate(Dashboard);
@@ -184,6 +198,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public PipelineViewModel Pipeline { get; } = new();
     public CatalogViewModel Catalog { get; }
     public ObjectivesViewModel Objectives { get; } = new();
+    public DiversityViewModel Diversity { get; } = new();
     public StatisticsViewModel Statistics { get; }
     public BackupsViewModel Backups { get; } = new();
     public HistoryViewModel History { get; } = new();
@@ -194,7 +209,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public IReadOnlyList<ShellNavigationItem> Tools { get; }
     public bool ToolsExpanded { get => _toolsExpanded; set => Set(ref _toolsExpanded, value); }
     public bool ReviewExpanded { get => _reviewExpanded; set => Set(ref _reviewExpanded, value); }
-    public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Backups, History, Git, Settings, Rodo];
+    public IReadOnlyList<ProfessionalPage> Pages => [Dashboard, Pipeline, Catalog, Objectives, Statistics, Diversity, Backups, History, Git, Settings, Rodo];
     public UniverseContext? Context => Explorer.Context;
     public IReadOnlyList<UniverseProfile> Profiles => Explorer.Profiles;
     public bool HasSingleUniverse => Profiles.Count == 1;
@@ -215,6 +230,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public bool IsExecuting { get => _executing; private set { Set(ref _executing, value); Notify(nameof(CanChangeContext)); StatusChanged(); RefreshCommands(); } }
     public bool CanChangeContext => !_disposed && !IsExecuting;
     public bool AuditAvailable => _service.AuditAvailable;
+    public bool DiversityAiAvailable => _diversityClient is not null;
     public bool MinimizeToTray { get => _trayOnMinimize; set => Set(ref _trayOnMinimize, value); }
     public string StatusText => IsExecuting ? "Operación explícita en curso · conserva esta sesión abierta" : CurrentPage.Status;
     private async Task OpenAfterRead(Task read,UniverseContext? context,QueueItemId item)
@@ -231,6 +247,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public UiAsyncCommand ApproveNormalization { get; }
     public UiAsyncCommand RejectNormalization { get; }
     public UiAsyncCommand PrepareNormalizedCandidate { get; }
+    public UiAsyncCommand AskDiversity { get; }
     public UiAsyncCommand AuditPackage { get; }
     public UiAsyncCommand ExecutePackage { get; }
     public UiAsyncCommand SaveObjective { get; }
@@ -268,6 +285,13 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         if (!Explorer.SettingsReadable) return "La configuración local no se puede leer. Revisa el diagnóstico; no se sobrescribirá.";
         if (command == SaveSettings) return SelectedUniverse is null ? "Selecciona primero un universo." : "Completa las tres raíces con rutas absolutas existentes.";
         if (Context is null) return Explorer.Error is null ? "Configura primero las raíces del universo." : "Las raíces configuradas no están disponibles o no son seguras. Revisa Ajustes.";
+        if (command == AskDiversity)
+            return Explorer.SettingsManagedByHost ? "Este auditor solo está disponible en sesión local." :
+                _diversityClient is null ? "Configura NAP_GEMINI_API_KEY y NAP_GEMINI_MODEL para hacer preguntas a Gemini." :
+                Diversity.State != UiPageState.Ready ? "Actualiza primero los recuentos del catálogo." :
+                Diversity.Report?.TotalAssets == 0 ? "No hay assets indexados que consultar." :
+                string.IsNullOrWhiteSpace(Diversity.Question) || Diversity.Question.Length > 1200 ? "Escribe una pregunta de hasta 1200 caracteres." :
+                "Consulta no disponible en este momento.";
         if (command == PrepareNormalization) return !NormalizationPolicyValid() ? "Los límites deben estar entre 0 y 5 %, con hasta dos decimales." : "Selecciona un ZIP del Inbox; los perfiles incompatibles requieren selección explícita.";
         if (command == ApproveNormalization || command == RejectNormalization) return "Prepara y compara primero la vista previa de normalización.";
         if (command == PrepareNormalizedCandidate) return "Selecciona un ZIP candidato aprobado y verificado; una vista previa o rechazo no sirve para producción.";
@@ -364,6 +388,19 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
                 else { var receipts = await _service.ReceiptsAsync(context, source.Token); if (!Current()) return; CheckReceipts(receipts, context); Replace(History.Jobs, value.Jobs); Replace(History.Receipts, receipts); }
                 page.Notice = value.Notices.FirstOrDefault(n => n.Tone == UiTone.Error) ?? value.Notices.FirstOrDefault() ?? page.Notice; page.State = value.Notices.Any(n => n.Tone == UiTone.Error) ? UiPageState.Stopped : value.Jobs.Count + value.Candidates.Count == 0 ? UiPageState.Empty : UiPageState.Ready;
             }
+            else if (page == Diversity)
+            {
+                if (Explorer.SettingsManagedByHost)
+                {
+                    page.State = UiPageState.Reserved;
+                    page.Notice = new("La consulta de diversidad no está habilitada sobre sesiones remotas del HOST.", "diversity_remote_unavailable", UiTone.Neutral);
+                    return;
+                }
+                var value = await Task.Run(() => new CatalogDiversityReader(context).Read(source.Token), source.Token);
+                if (!Current()) return;
+                Diversity.Report = value;
+                page.State = value.TotalAssets == 0 ? UiPageState.Empty : UiPageState.Ready;
+            }
             else if (page == Objectives)
             { var value = await _service.PlanningAsync(context, source.Token); if (!Current()) return; CheckPlanning(value, context); Replace(Objectives.Objectives, value.Objectives.Select(o => new ObjectiveCard(o))); Replace(Objectives.Campaigns, value.Campaigns); page.State = value.Objectives.Count == 0 ? UiPageState.Empty : UiPageState.Ready; }
             else if (page == Backups)
@@ -411,6 +448,8 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         { _scopePending = false; LastRefresh = RefreshCurrentAsync(); }
         RefreshCommands();
     }
+    private void DiversityChanged(object? sender, PropertyChangedEventArgs e)
+    { if (e.PropertyName == nameof(DiversityViewModel.Question)) AskDiversity.Refresh(); }
     private void PageChanged(object? sender, PropertyChangedEventArgs e) { RefreshCommands(); if (sender == CurrentPage) StatusChanged(); }
     private void StatusChanged() => Notify(nameof(StatusText));
     private void RefreshCommands() { foreach (var command in _commands) command.Refresh(); Navigate?.Refresh(); CancelRead?.Refresh(); }
@@ -439,5 +478,5 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     }
     private static void Replace<T>(System.Collections.ObjectModel.ObservableCollection<T> target, IEnumerable<T> values) { target.Clear(); foreach (var value in values) target.Add(value); }
     public void Dispose()
-    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _action?.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
+    { if (_disposed) return; _disposed = true; Settings.Diagnostics?.Dispose(); Pipeline.Work?.Dispose(); History.Work?.Dispose(); Automation?.Dispose(); _lifetime.Cancel(); _action?.Cancel(); _normalizationPreparation?.Cancel(); _read?.Cancel(); ++_generation; Explorer.PropertyChanged -= ExplorerChanged; Diversity.PropertyChanged -= DiversityChanged; foreach (var page in Pages) { page.PropertyChanged -= PageChanged; page.Reset(); } _verified.Clear(); Explorer.Dispose(); _read?.Dispose(); _lifetime.Dispose(); RefreshCommands(); CancelNormalization.Refresh(); }
 }
