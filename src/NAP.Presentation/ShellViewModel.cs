@@ -149,7 +149,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
             Intelligence.Answer = answer.Answer;
             Replace(Intelligence.Evidence, answer.Evidence);
             Record(c, "Consulta de diversidad completada; catálogo sin cambios", UiTone.Neutral);
-        }), () => Context is not null && !IsExecuting && Intelligence.State is UiPageState.Ready or UiPageState.Empty &&
+        }), () => Context is not null && !IsExecuting && (Intelligence.State is UiPageState.Ready or UiPageState.Empty) &&
             Intelligence.Report is not null && _insightClient is not null &&
             !string.IsNullOrWhiteSpace(Intelligence.Question) && Intelligence.Question.Length <= 1000);
         SaveObjective = Command(() => ActionAsync(async (c, ct) =>
