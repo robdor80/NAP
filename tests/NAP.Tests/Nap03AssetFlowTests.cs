@@ -172,6 +172,31 @@ public sealed class Nap03AssetFlowTests
     }
 
     [Fact]
+    public async Task SharedInboxOnlyRoutesToAnActivatedUniverse()
+    {
+        using var fixture = new AutomationHostTests.Fixture();
+        var common = Path.Combine(fixture.Root, "mixed-inbox"); Directory.CreateDirectory(common);
+        var activePolicy = AutomationHostTests.Fixture.Enable(fixture.A);
+        File.Move(fixture.A.Zip("a.zip"), Path.Combine(common, "a.zip"));
+        File.Move(fixture.B.Zip("b.zip"), Path.Combine(common, "b.zip"));
+        await using var host = new AutomationHost(fixture.Control, [fixture.A.Context, fixture.B.Context],
+            fixture.Options with { MixedInboxRoot = common }, new DurableExecutionTests.AuditClient());
+        await host.Started;
+        await host.ActivateAsync(fixture.A.Context.Id, activePolicy.Reference, false);
+        host.RequestPendingScan(fixture.A.Context.Id);
+        var timeout = Stopwatch.StartNew();
+        while (host.Snapshot().MixedInbox is not { Forwarded: 1 })
+        {
+            Assert.True(timeout.Elapsed < TimeSpan.FromSeconds(120), "The authorized universe should receive its ZIP.");
+            await Task.Delay(25);
+        }
+        Assert.Single(new InboxPackageDetector().Detect(fixture.A.Roots.InboxRoot));
+        Assert.Empty(new InboxPackageDetector().Detect(fixture.B.Roots.InboxRoot));
+        var paused = host.Control(fixture.A.Context.Id, AutomationControlAction.Pause);
+        Assert.True(paused.Paused);
+    }
+
+    [Fact]
     public async Task NoGeminiAndNoSyntheticAuditCannotPublishAnAsset()
     {
         using var fixture = new AutomationHostTests.Fixture();

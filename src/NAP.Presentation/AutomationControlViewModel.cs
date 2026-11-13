@@ -32,7 +32,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
     public string MixedInboxStatus => _overview?.Host.MixedInbox is { } m
-        ? m.NeedsReview > 0 ? $"Bandeja compartida: {m.NeedsReview} paquetes necesitan revisión ({m.Diagnostic})."
+        ? m.NeedsReview > 0 ? $"Bandeja compartida: {m.NeedsReview} paquetes necesitan revisión. Último: {m.LastProblemFile} ({m.Diagnostic})."
         : $"Bandeja compartida: {m.Forwarded} distribuidos, {m.AlreadyPresent} reconocidos."
         : "";
     public string Pending => _overview?.Queue.Counts.Pending.ToString("N0") ?? "—";

@@ -4,7 +4,7 @@ namespace NAP.Core;
 
 /// <summary>Read-only status of a shared, explicit ingestion directory. Never describes a publication.</summary>
 public sealed record MixedInboxRoutingReport(int Examined, int Forwarded, int AlreadyPresent, int NeedsReview,
-    string? Diagnostic, IReadOnlyList<UniverseId> RoutedUniverses);
+    string? Diagnostic, IReadOnlyList<UniverseId> RoutedUniverses, string? LastProblemFile = null);
 
 /// <summary>Transport-only distributor for an explicitly configured mixed Inbox.
 /// The native universe admission remains the sole authority for ZIP validation,
@@ -18,11 +18,12 @@ internal sealed class MixedUniverseInboxRouter
     internal MixedUniverseInboxRouter(string root, IEnumerable<UniverseContext> contexts, InboxAdmissionOptions options)
     { _root = Path.GetFullPath(root); _contexts = contexts.ToDictionary(c => c.Id); _options = options; }
 
-    internal async Task<MixedInboxRoutingReport> RouteAsync(IReadOnlySet<UniverseId> active, CancellationToken cancellation)
+    internal async Task<MixedInboxRoutingReport> RouteAsync(Func<UniverseId, bool> isAuthorized, CancellationToken cancellation)
     {
         InboxAdmissionEvidence.DirectoryBoundary(_root);
         int examined = 0, forwarded = 0, present = 0, review = 0;
         string? diagnostic = null;
+        string? lastProblem = null;
         var routed = new HashSet<UniverseId>();
         // Bounded sweeps; advance even when an invalid file must remain untouched.
         var candidates = new InboxPackageDetector().Detect(_root);
@@ -71,7 +72,7 @@ internal sealed class MixedUniverseInboxRouter
                 var universe = new UniverseId(manifest.UniverseId);
                 if (!_contexts.TryGetValue(universe, out var target))
                     throw new InvalidDataException("Declared universe is not installed in this Host.");
-                if (!active.Contains(universe)) continue; // No policy/Host authority, no publication or copy.
+                if (!isAuthorized(universe)) continue; // Policy and live Host authority must both allow routing.
                 InboxAdmissionEvidence.DirectoryBoundary(target.Storage.InboxRoot);
                 archive.Dispose(); source.Position = 0;
                 var digest = new Sha256Hasher().Compute(source);
@@ -96,6 +97,7 @@ internal sealed class MixedUniverseInboxRouter
                     source.Position = 0;
                     if (new Sha256Hasher().Compute(source) != digest || source.Length != length)
                         throw new InvalidDataException("Shared source changed while routing.");
+                    if (!isAuthorized(universe)) continue; // Pause while copying revokes publication.
                     InboxAdmissionEvidence.DirectoryBoundary(target.Storage.InboxRoot);
                     File.Move(partial, destination, overwrite: false);
                     routed.Add(universe); forwarded++;
@@ -115,10 +117,11 @@ internal sealed class MixedUniverseInboxRouter
                 System.Text.Json.JsonException or InvalidOperationException or ProductionStorageException or NotSupportedException or ArgumentException)
             {
                 review++;
+                lastProblem = candidate.FileName;
                 diagnostic = error is ProductionStorageException ? "unsafe_storage" :
                     error is UnauthorizedAccessException ? "access_denied" : "invalid_or_unavailable_zip";
             }
         }
-        return new(examined, forwarded, present, review, diagnostic, routed.OrderBy(id => id.Value, StringComparer.Ordinal).ToArray());
+        return new(examined, forwarded, present, review, diagnostic, routed.OrderBy(id => id.Value, StringComparer.Ordinal).ToArray(), lastProblem);
     }
 }

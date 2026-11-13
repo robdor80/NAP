@@ -18,7 +18,7 @@ public sealed record AutomationHostOptions
 public sealed record AutomationUniverseStatus(UniverseId UniverseId, AutomationHostState State, long Turns,
     int PendingCandidates, string? Stage, string? Diagnostic, QueueBatchId? BatchId);
 public sealed record AutomationHostSnapshot(string? InstallationId, string? SessionId, AutomationHostState State,
-    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic, MixedInboxRoutingReport? MixedInbox = null);
+    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic, MixedInboxRoutingReport? MixedInbox = null, string? MixedInboxRoot = null);
 
 /// <summary>Laboratory-only host composition. No default settings, service install, credentials or policy activation.
 /// One controller schedules bounded work on dedicated universe owners; HTTP/readiness never own workflow leases.</summary>
@@ -117,7 +117,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
     }
 
     public AutomationHostSnapshot Snapshot()
-    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic, _mixedReport); }
+    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic, _mixedReport, _options.MixedInboxRoot is null ? null : Path.GetFullPath(_options.MixedInboxRoot)); }
     public AutomationHostControl ReadControl(UniverseId universe)
     { _ = Find(universe); lock (_controlsGate) return Controls.Read(universe); }
 
@@ -352,11 +352,10 @@ public sealed partial class AutomationHost : IAsyncDisposable
             !_slots.Any(s => Allowed(s)) || !_heavy.Wait(0)) return;
         try
         {
-            var active = _slots.Where(s => Allowed(s)).Select(s => s.Context.Id).ToHashSet();
             _mixedScanRequested = false; _nextMixedScan = DateTimeOffset.UtcNow + _options.Admission.RescanInterval;
             _mixedWork = Task.Run(async () =>
             {
-                try { return await _mixedInbox.RouteAsync(active, _transportStop.Token).ConfigureAwait(false); }
+                try { return await _mixedInbox.RouteAsync(id => Allowed(Find(id)), _transportStop.Token).ConfigureAwait(false); }
                 finally { _heavy.Release(); Signal(); }
             });
         }

@@ -62,7 +62,7 @@ internal sealed class ManagedAutomationHost : IDisposable
         AutomationHostLaunchConfiguration configuration, AutomationHostClient client,
         IReadOnlyList<UniverseContext> contexts, string path, CancellationToken cancellation)
     {
-        if (await CanAttachAsync(client, contexts, cancellation))
+        if (await CanAttachAsync(client, contexts, configuration.MixedInboxRoot, cancellation))
             return new ManagedAutomationHost(configuration, client, null);
 
         var executable = Path.Combine(AppContext.BaseDirectory, "NAP.AutomationHost.exe");
@@ -87,7 +87,7 @@ internal sealed class ManagedAutomationHost : IDisposable
             var ready = await spawned.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(25), cancellation);
             if (ready is null || !ready.StartsWith("NAP laboratory host ready: ", StringComparison.Ordinal))
                 throw new InvalidOperationException("Host did not report a valid startup handshake.");
-            if (!await CanAttachAsync(client, contexts, cancellation))
+            if (!await CanAttachAsync(client, contexts, configuration.MixedInboxRoot, cancellation))
                 throw new InvalidDataException("Host IPC scope did not match its launch configuration.");
             return new ManagedAutomationHost(configuration, client, spawned);
         }
@@ -100,7 +100,7 @@ internal sealed class ManagedAutomationHost : IDisposable
     }
 
     private static async Task<bool> CanAttachAsync(AutomationHostClient client,
-        IReadOnlyList<UniverseContext> contexts, CancellationToken cancellation)
+        IReadOnlyList<UniverseContext> contexts, string? mixedInboxRoot, CancellationToken cancellation)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellation);
         deadline.CancelAfter(TimeSpan.FromSeconds(6));
@@ -113,6 +113,9 @@ internal sealed class ManagedAutomationHost : IDisposable
                 !snapshot.Universes.Select(s => s.UniverseId).OrderBy(s => s.Value, StringComparer.Ordinal)
                     .SequenceEqual(contexts.Select(c => c.Id).OrderBy(s => s.Value, StringComparer.Ordinal)))
                 throw new InvalidDataException("Host universe identities do not match the desktop configuration.");
+            if (!string.Equals(mixedInboxRoot is null ? null : Path.GetFullPath(mixedInboxRoot),
+                    snapshot.MixedInboxRoot, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("The attached Host routes a different mixed Inbox.");
 
             foreach (var context in contexts)
             {
