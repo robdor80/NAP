@@ -1,5 +1,7 @@
 # NAP — Nexus Asset Platform
 
+> **Cierre NAP 2.0 (13-11-2026):** [NAP01 — consolidación, estado real de PR y plan NAP01–NAP06](docs/NAP01_CONSOLIDACION_REPOSITORIO_20261113.md). El software integrado no implica certificación ni CUTOVER del MSI; [#47](https://github.com/robdor80/NAP/issues/47) y [#49](https://github.com/robdor80/NAP/issues/49) siguen pendientes. La [PR #62](https://github.com/robdor80/NAP/pull/62) permanece como Draft.
+
 **Normalización técnica segura:** [contrato v1](docs/IMAGE_NORMALIZATION.md). Producción permite preparar y comparar una ampliación mínima de lienzo, autorizarla o rechazarla y crear un candidato independiente. Conserva píxeles y originales, impone límites de crecimiento y separa cualquier corrección del perfil del manifest. No modifica el conversor ni publica automáticamente; el candidato continúa por validación, auditoría PASS y confirmación de publicación.
 
 **Cartografía Nimroel:** `scene` / `scene_cartography` declara mapas y planos con PNG maestro de proporción exacta 16:10, WebP 1600×1000 Q90 y ruta `scenes/cartography/<culture>/<location>/<asset_id>/`. `portrait_npc` conserva su contrato. `scene_narrative` no está habilitado. Consulta el [contrato cartográfico](docs/NIMROEL_CARTOGRAPHY_PACKAGE_V1.md) y el [protocolo Nimroel v1.1](docs/NAP_BIBLIA_PROTOCOLO_NIMROEL_v1.1.md); los originales de Treskal requieren revisión y corrección controlada antes de admitirlos.
