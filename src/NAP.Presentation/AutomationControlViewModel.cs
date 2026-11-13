@@ -106,10 +106,30 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             Changed();
         }
         catch (OperationCanceledException) when (_disposed) { }
+        catch (OperationCanceledException) when (read.IsCancellationRequested)
+        {
+            if (!_disposed && generation == _generation && context == _context())
+                Unavailable("La consulta al Host agotó el tiempo de espera. El trabajo puede continuar; pulsa Actualizar para consultar su estado, sin repetir órdenes.");
+        }
+        catch (TimeoutException)
+        {
+            if (!_disposed && generation == _generation && context == _context())
+                Unavailable("No se pudo conectar con el Host a tiempo. Comprueba su estado y pulsa Actualizar; no vuelvas a lanzar el procesamiento.");
+        }
+        catch (IOException)
+        {
+            if (!_disposed && generation == _generation && context == _context())
+                Unavailable("Se perdió la comunicación con el Host. Comprueba que sigue iniciado y pulsa Actualizar; los trabajos no se reenvían.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            if (!_disposed && generation == _generation && context == _context())
+                Unavailable("El Host rechazó la conexión. Comprueba la configuración y la identidad autorizada; no se realizará ninguna operación local.");
+        }
         catch (Exception) { if (!_disposed && generation == _generation && context == _context()) Unavailable(); }
         finally { _read = null; _reading = false; }
     }
-    private void Unavailable() { Clear(); Status = "No se pudo consultar la automatización"; ExecutionScope = ""; }
+    private void Unavailable(string? message = null) { Clear(); Status = message ?? "No se pudo consultar la automatización"; ExecutionScope = ""; }
     private void Clear() { _overview = null; Review.Clear(); Changed(); }
     private void Changed()
     {
@@ -190,7 +210,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         QueueIncident.SourceChanged => "El archivo original ha cambiado",
         QueueIncident.InvalidZip or QueueIncident.UnsafeZip => "Paquete no válido",
         QueueIncident.InvalidManifest => "Datos del asset no válidos",
-        QueueIncident.StorageUnavailable => "No se pudo acceder al almacenamiento",
+        QueueIncident.StorageUnavailable => "Almacenamiento inaccesible: comprueba la carpeta y revisa el trabajo antes de reanudar",
         QueueIncident.ResourceLimit => "Supera los límites permitidos",
         QueueIncident.AuditWarning => "La revisión de imagen requiere atención",
         QueueIncident.AuditFail => "La imagen no supera la revisión",
