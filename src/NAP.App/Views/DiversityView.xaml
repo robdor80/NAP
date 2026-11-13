@@ -1,0 +1,70 @@
+<UserControl x:Class="NAP.App.Views.DiversityView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="4,0,12,16" MaxWidth="1120" HorizontalAlignment="Left">
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Content="Actualizar recuentos" Command="{Binding DataContext.Refresh, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Consulta SQLite de nuevo sin modificar datos" Style="{StaticResource Secondary}" />
+              <Button Content="Copiar JSON" Click="CopyAggregateJson" ToolTip="Copia solamente recuentos agregados; no incluye imágenes, prompts ni rutas privadas" Style="{StaticResource Secondary}" />
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Text="Inventario de variedad visual" FontWeight="SemiBold" FontSize="18" />
+              <TextBlock Text="{Binding Total, StringFormat='{}{0} assets registrados'}" />
+              <TextBlock Text="{Binding Origin}" Style="{StaticResource Muted}" />
+            </StackPanel>
+          </DockPanel>
+          <TextBlock Text="Recuentos calculados a partir de SQLite, sin acceso de escritura. Solo las categorías registradas pueden analizarse." Style="{StaticResource Muted}" Margin="0,12,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+        <StackPanel>
+          <TextBlock Text="Variedad por completar" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+          <TextBlock Text="Diferencias relativas entre categorías observadas, no cuotas ideales ni assets sobrantes." Style="{StaticResource Muted}" TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding Report.Gaps}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Display}" TextWrapping="Wrap" Margin="0,8,0,0" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+        <StackPanel>
+          <TextBlock Text="Preguntar a Gemini" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+          <TextBlock Text="Escribe una pregunta sobre profesiones, edades, sexos, territorios o escenarios. La IA recibe solamente un JSON agregado." TextWrapping="Wrap" Style="{StaticResource Muted}" />
+          <TextBox Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,12,0,12" MaxLength="1200" />
+          <Button Content="Consultar IA" HorizontalAlignment="Left"
+                  Command="{Binding DataContext.AskDiversity, RelativeSource={RelativeSource AncestorType=Window}}"
+                  ToolTip="{Binding DataContext.AskDiversity.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}"
+                  Style="{StaticResource Primary}" />
+          <TextBlock Text="{Binding Answer.Summary}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,18,0,6" />
+          <ItemsControl ItemsSource="{Binding Answer.Observations}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Margin="0,12,0,0">
+                  <TextBlock Text="{Binding Comment}" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding EvidenceLabel}" TextWrapping="Wrap" Style="{StaticResource Muted}" Margin="0,4,0,0" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+        <StackPanel>
+          <TextBlock Text="Limitaciones de los datos" FontWeight="SemiBold" />
+          <ItemsControl ItemsSource="{Binding Report.Warnings}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate><TextBlock Text="{Binding}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0" /></DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
