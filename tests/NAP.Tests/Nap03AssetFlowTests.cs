@@ -185,7 +185,9 @@ public sealed class Nap03AssetFlowTests
         await host.ActivateAsync(fixture.A.Context.Id, activePolicy.Reference, false);
         host.RequestPendingScan(fixture.A.Context.Id);
         var timeout = Stopwatch.StartNew();
-        while (host.Snapshot().MixedInbox is not { Forwarded: 1 })
+        // The last-routing snapshot is transient; a second scheduled scan may
+        // immediately report AlreadyPresent. Observe the durable atomic ZIP copy.
+        while (!new InboxPackageDetector().Detect(fixture.A.Roots.InboxRoot).Any())
         {
             Assert.True(timeout.Elapsed < TimeSpan.FromSeconds(120), "The authorized universe should receive its ZIP.");
             await Task.Delay(25);
