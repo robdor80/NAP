@@ -44,10 +44,15 @@ try {
     }
     $previewOut = Join-Path $work 'preview'
     $app = Join-Path $installed 'NAP.App.exe'
+    $previewStdout = Join-Path $work 'preview-stdout.txt'
+    $previewStderr = Join-Path $work 'preview-stderr.txt'
     $smoke = Start-Process -FilePath $app -ArgumentList @('--phase6-preview=active',
-        "--phase6-output=$previewOut") -Wait -PassThru
-    if ($smoke.ExitCode -ne 0 -or @(Get-ChildItem -LiteralPath $previewOut -Filter '*.png' -ErrorAction SilentlyContinue).Count -eq 0) {
-        throw 'La app WPF instalada no supero la vista previa sintetica.'
+        "--phase6-output=$previewOut") -RedirectStandardOutput $previewStdout -RedirectStandardError $previewStderr -Wait -PassThru
+    $screenshots = @(Get-ChildItem -LiteralPath $previewOut -Filter '*.png' -ErrorAction SilentlyContinue)
+    Write-Host "NAP06 WPF diagnostic: exit=$($smoke.ExitCode), PNG=$($screenshots.Count)"
+    if ($smoke.ExitCode -ne 0 -or $screenshots.Count -eq 0) {
+        $errorText = if (Test-Path -LiteralPath $previewStderr) { Get-Content -LiteralPath $previewStderr -Raw } else { '' }
+        throw "La app WPF instalada no supero la vista previa sintetica. Exit=$($smoke.ExitCode); detalle=$errorText"
     }
     $uninstall = Join-Path $installed 'unins000.exe'
     if (-not (Test-Path -LiteralPath $uninstall)) { throw 'No existe desinstalador.' }
