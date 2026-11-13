@@ -178,20 +178,20 @@ public static class CatalogDiversityAnalyzer
     private static bool SafeTraitValue(string? value)
     {
         // No URLs, Windows/UNIX paths, email addresses, delimiters, control chars, tokens or freeform narratives.
-        return value is { Length: > 0 and <= 80 } &&
+        return value is { Length: > 0 and <= 48 } &&
             !value.Contains("..", StringComparison.Ordinal) &&
             value.All(c => char.IsLetterOrDigit(c) || c is ' ' or '_' or '-' or '.');
     }
 
     private static Dictionary<string, string> Facets(CatalogDiversityEntry asset)
     {
-        string? Class(string key) => asset.Classification.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value) ? value : null;
+        string? Class(string key) => asset.Classification.TryGetValue(key, out var value) && SafeTraitValue(value) ? value : null;
         string? Trait(params string[] paths) => paths.Select(p => asset.Traits.FirstOrDefault(t => t.Key == p && t.Type == CatalogTraitType.String && SafeTraitValue(t.Value))?.Value)
             .FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
         return new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["tipo"] = asset.AssetType,
-            ["perfil"] = asset.ProductionProfile,
+            ["tipo"] = SafeTraitValue(asset.AssetType) ? asset.AssetType : Unknown,
+            ["perfil"] = SafeTraitValue(asset.ProductionProfile) ? asset.ProductionProfile : Unknown,
             ["profesion"] = Class("role") ?? Trait("/profession", "/occupation", "/role") ?? Unknown,
             ["sexo"] = Class("sex") ?? Trait("/sex", "/gender") ?? Unknown,
             ["edad"] = Trait("/age/life_stage/value", "/age_group", "/age/life_stage", "/life_stage") ?? Unknown,
