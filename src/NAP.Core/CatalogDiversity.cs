@@ -65,6 +65,17 @@ public static class CatalogDiversityAnalyzer
         ("localidad", "sexo"), ("tipo", "perfil")
     ];
     private static readonly string[] Standard = ["tipo", "perfil", "profesion", "sexo", "edad", "cultura", "reino", "region", "localidad"];
+    // Explicitly approved display-only values. Arbitrary JSON strings can contain paths,
+    // credentials or personal data and must never be forwarded to an AI service.
+    private static readonly HashSet<string> PublicTraits = new(StringComparer.Ordinal)
+    {
+        "/age/life_stage/value", "/age/apparent_age/value", "/eyes/color/value",
+        "/hair/color/value", "/body/build/value", "/facial_hair/type/value",
+        "/clothing/style/value", "/profession", "/occupation", "/role",
+        "/sex", "/gender", "/age_group", "/age/life_stage", "/life_stage",
+        "/scene/time_of_day", "/scene/weather", "/scene/season", "/scene/lighting",
+        "/environment/weather", "/environment/season", "/environment/biome"
+    };
     private const string Unknown = "(sin dato)";
     private const int MaxAssets = 50_000, MaxEvidence = 3_000;
     private const int MaxJsonCharacters = 350_000;
@@ -79,7 +90,12 @@ public static class CatalogDiversityAnalyzer
             e.AssetType is null || e.ProductionProfile is null || e.AssetId is null))
             throw new ArgumentException("Invalid catalog diversity entry.", nameof(input));
 
-        var nativeIds = new HashSet<string>(entries.Where(e => !e.Historical).Select(e => e.AssetId), StringComparer.Ordinal);
+        var nativeEntries = entries.Where(e => !e.Historical).ToArray();
+        var legacyEntries = entries.Where(e => e.Historical).ToArray();
+        if (nativeEntries.Select(e => e.AssetId).Distinct(StringComparer.Ordinal).Count() != nativeEntries.Length ||
+            legacyEntries.Select(e => e.AssetId).Distinct(StringComparer.Ordinal).Count() != legacyEntries.Length)
+            throw new InvalidDataException("Identidades duplicadas en una misma fuente de catálogo.");
+        var nativeIds = new HashSet<string>(nativeEntries.Select(e => e.AssetId), StringComparer.Ordinal);
         // A native verified asset supersedes its own historical index projection if both are present.
         var seen = new HashSet<string>(StringComparer.Ordinal);
         var assets = entries.Where(e => (!e.Historical || !nativeIds.Contains(e.AssetId)) &&
@@ -103,12 +119,12 @@ public static class CatalogDiversityAnalyzer
 
         // All scalar visual-identity keys are represented as their literal JSON Pointer,
         // never guessed to be a profession/age/sex when their schema differs.
-        foreach (var dimension in assets.SelectMany(a => a.Traits.Select(t => "rasgo:" + t.Key))
+        foreach (var dimension in assets.SelectMany(a => a.Traits.Where(t => PublicTraits.Contains(t.Key) && SafeTraitValue(t.Value)).Select(t => "rasgo:" + t.Key))
             .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))
         {
             var key = dimension["rasgo:".Length..];
             Add(dimension, assets.Select(a =>
-                a.Traits.FirstOrDefault(t => t.Key == key) is { } t ? t.Value : Unknown).ToArray(), assets.Length);
+                a.Traits.FirstOrDefault(t => t.Key == key && SafeTraitValue(t.Value)) is { } t ? t.Value : Unknown).ToArray(), assets.Length);
         }
 
         foreach (var (left, right) in Crosses)
@@ -158,10 +174,18 @@ public static class CatalogDiversityAnalyzer
         }
     }
 
+    private static bool SafeTraitValue(string? value)
+    {
+        // No URLs, Windows/UNIX paths, email addresses, delimiters, control chars, tokens or freeform narratives.
+        return value is { Length: > 0 and <= 80 } &&
+            !value.Contains("..", StringComparison.Ordinal) &&
+            value.All(c => char.IsLetterOrDigit(c) || c is ' ' or '_' or '-' or '.');
+    }
+
     private static Dictionary<string, string> Facets(CatalogDiversityEntry asset)
     {
         string? Class(string key) => asset.Classification.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value) ? value : null;
-        string? Trait(params string[] paths) => paths.Select(p => asset.Traits.FirstOrDefault(t => t.Key == p && t.Type == CatalogTraitType.String)?.Value)
+        string? Trait(params string[] paths) => paths.Select(p => asset.Traits.FirstOrDefault(t => t.Key == p && t.Type == CatalogTraitType.String && SafeTraitValue(t.Value))?.Value)
             .FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
         return new Dictionary<string, string>(StringComparer.Ordinal)
         {
