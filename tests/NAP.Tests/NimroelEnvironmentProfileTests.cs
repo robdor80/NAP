@@ -113,7 +113,12 @@ public sealed class NimroelEnvironmentProfileTests
         var master = Path.Combine(f.PackageRoot, TestAsset + ".png");
         if (mode == "missing") File.Delete(master);
         else if (mode == "extra") File.WriteAllText(Path.Combine(f.PackageRoot, "preview.txt"), "forbidden");
-        else if (mode == "wrong_case") File.Move(master, Path.Combine(f.PackageRoot, TestAsset + ".PNG"));
+        else if (mode == "wrong_case")
+        {
+            var temporary = Path.Combine(f.PackageRoot, "temporary.bin");
+            File.Move(master, temporary);
+            File.Move(temporary, Path.Combine(f.PackageRoot, TestAsset + ".PNG"));
+        }
         else Directory.CreateDirectory(Path.Combine(f.PackageRoot, "nested"));
         Assert.True(f.ValidateReadOnly().Issues.ShouldStop);
     }
