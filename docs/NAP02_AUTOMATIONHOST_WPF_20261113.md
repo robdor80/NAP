@@ -7,6 +7,7 @@ NAP02 incorpora **al binario WPF ordinario** la composición y localización del
 - Es posible seleccionar explícitamente el mismo archivo mediante `--automation-managed-config=<ruta>`; el modo de conexión `--automation-config=<ruta>` se conserva para procesos Host ya gestionados externamente. No se permiten ambos a la vez.
 - El gestor verifica challenge IPC, sesión, instalación, universo y raíces antes de entregar los servicios remotos a la interfaz. Ante fallo de autenticación, desajuste de identidad o error de configuración **no vuelve** a un escritor local ni inventa un estado operativo.
 - Cerrar WPF no mata el Host que mantiene trabajo durable. Un nuevo WPF puede reconectarse al mismo Host. La detención por universo usa `StopUniverse` y conserva disponibles los demás; el apagado global anterior continúa existiendo como operación separada y explícita.
+- La pantalla de detalle de producción/historial permite **cancelar o reactivar un asset individual** mediante el ledger durable del Host, con confirmación por universo, sin crear una cola local. El control indica que no puede deshacer una etapa indivisible ya iniciada. Un control no verificable no se muestra como disponible.
 - La compilación normal de WPF incluye los artefactos del ejecutable Host. No hay edición de producto recortada.
 
 ## Invariantes de seguridad
