@@ -32,7 +32,7 @@ public sealed class AutomationManagedWpfTests
             var start = new ProcessStartInfo("dotnet")
             {
                 UseShellExecute = false, CreateNoWindow = true,
-                RedirectStandardOutput = true, RedirectStandardError = true
+                RedirectStandardOutput = true, RedirectStandardError = false
             };
             foreach (var argument in new[]
             {
@@ -40,11 +40,12 @@ public sealed class AutomationManagedWpfTests
                 "--smoke-automation", "--smoke-output=" + Path.Combine(f.Files.Root, "wpf-captures")
             }) start.ArgumentList.Add(argument);
             using var window = Process.Start(start)!;
+            // Host deliberately survives WPF. Do not redirect stderr into the WPF pipe:
+            // the child Host would keep that handle open and ReadToEndAsync could block.
             var stdout = window.StandardOutput.ReadToEndAsync();
-            var stderr = window.StandardError.ReadToEndAsync();
             await window.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(60));
-            var output = await stdout; var errors = await stderr;
-            Assert.True(window.ExitCode == 0, output + errors);
+            var output = await stdout;
+            Assert.True(window.ExitCode == 0, output);
             Assert.Contains("\"automationConnected\":true", output);
             Assert.Contains("\"bindingErrors\":0", output);
             Assert.Contains("\"settingsManagedByHost\":true", output);
