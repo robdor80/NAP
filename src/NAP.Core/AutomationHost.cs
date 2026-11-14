@@ -4,6 +4,7 @@ public enum AutomationHostState { Starting, Disabled, Running, Pausing, Paused, 
 public sealed record AutomationHostOptions
 {
     public required string LaboratoryRoot { get; init; }
+    public bool PersonalMode { get; init; }
     public InboxAdmissionOptions Admission { get; init; } = new();
     public string? MixedInboxRoot { get; init; }
     public long MaxMemoryBytes { get; init; } = 512L * 1024 * 1024;
@@ -92,23 +93,35 @@ public sealed partial class AutomationHost : IAsyncDisposable
     {
         _root = Path.GetFullPath(controlRoot); _options = options; _auditor = auditor;
         var lab = Path.GetFullPath(options.LaboratoryRoot);
-        if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
-            !ProductionPaths.Within(Path.GetTempPath(), lab) || !ProductionPaths.Within(lab, _root))
-            throw AutomationValidation.Invalid("This phase only supports an explicit nap-host-* laboratory below TEMP.");
+        if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !ProductionPaths.Within(lab, _root))
+            throw AutomationValidation.Invalid("Host storage must be below the explicitly configured Host root.");
+        if (options.PersonalMode)
+        {
+            if (!OperatingSystem.IsWindows() || ProductionPaths.Within(Path.GetTempPath(), lab) ||
+                options.LaboratoryCheckpoint is not null)
+                throw AutomationValidation.Invalid("Personal Host requires a persistent Windows directory, without laboratory injections.");
+        }
+        else if (!Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
+                 !ProductionPaths.Within(Path.GetTempPath(), lab))
+            throw AutomationValidation.Invalid("Laboratory Host requires an explicit nap-host-* directory below TEMP.");
         InboxAdmissionEvidence.DirectoryBoundary(lab); InboxAdmissionEvidence.DirectoryBoundary(_root);
         _slots = contexts.Select(c => new Slot(c)).ToArray();
         if (_slots.Length is < 1 or > 64 || options.PageSize is < 1 or > 1000 || options.MaxMemoryBytes < 1 || options.MaxRetainedBytes < 1 ||
             options.IdleInterval < TimeSpan.FromMilliseconds(25) || options.IdleInterval > TimeSpan.FromSeconds(30) ||
-            _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }.Any(r => !ProductionPaths.Within(lab, r))))
-            throw AutomationValidation.Invalid("All host roots and budgets must belong to the isolated laboratory.");
+            _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }
+                .Any(r => options.PersonalMode ? ProductionPaths.Overlaps(lab, r) : !ProductionPaths.Within(lab, r))))
+            throw AutomationValidation.Invalid("Host control storage must be isolated from the universe roots.");
+        if (options.PersonalMode)
+            LocalUniverseSettingsStore.Validate(_slots.Select(s => s.Context.Storage));
         options.Admission.Validate();
         if (options.MixedInboxRoot is { } mixed)
         {
-            if (!Path.IsPathFullyQualified(mixed) || !ProductionPaths.Within(lab, mixed) ||
+            if (!Path.IsPathFullyQualified(mixed) ||
+                (options.PersonalMode ? ProductionPaths.Overlaps(lab, mixed) : !ProductionPaths.Within(lab, mixed)) ||
                 ProductionPaths.Overlaps(mixed, _root) ||
                 _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }
                     .Any(r => ProductionPaths.Overlaps(mixed, r))))
-                throw AutomationValidation.Invalid("Shared Inbox must be explicit, disjoint and inside the isolated laboratory.");
+                throw AutomationValidation.Invalid("Shared Inbox must be explicit and separate from Host and universe roots.");
             InboxAdmissionEvidence.DirectoryBoundary(mixed);
             _mixedInbox = new MixedUniverseInboxRouter(mixed, _slots.Select(s => s.Context), options.Admission);
         }
