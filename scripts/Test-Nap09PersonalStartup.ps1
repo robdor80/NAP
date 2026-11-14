@@ -28,7 +28,14 @@ try {
   if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $config)) { throw 'Launch script failed.' }
   $app = Join-Path $InstalledDirectory 'NAP.App.exe'
   $arguments = @('--smoke-automation', "--smoke-output=$fixture\smoke")
-  $process = Start-Process -FilePath $app -ArgumentList $arguments -Wait -PassThru -RedirectStandardOutput $log -RedirectStandardError $err
+  # Start-Process -Wait waits for the entire process tree, but NAP's Host
+  # intentionally survives WPF. Wait only for WPF itself.
+  $process = Start-Process -FilePath $app -ArgumentList $arguments -PassThru -RedirectStandardOutput $log -RedirectStandardError $err
+  if (-not $process.WaitForExit(60000)) {
+    $process.Kill()
+    throw 'NAP WPF did not exit after the personal-startup smoke.'
+  }
+  $process.Refresh()
   $stdout = if (Test-Path -LiteralPath $log) { Get-Content -LiteralPath $log -Raw } else { '' }
   $stderr = if (Test-Path -LiteralPath $err) { Get-Content -LiteralPath $err -Raw } else { '' }
   if ($process.ExitCode -ne 0 -or $stdout -notmatch '"automationConnected":true') {
