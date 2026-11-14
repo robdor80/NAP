@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Security.AccessControl;
+using System.Runtime.Versioning;
 
 namespace NAP.Core;
 
@@ -8,6 +9,7 @@ namespace NAP.Core;
 /// An explicitly provisioned Windows deployment. The ordinary laboratory launch contract
 /// cannot opt into production. Configuration bytes alone never prove safe ownership or ACLs.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public sealed record AutomationProductionLaunchConfiguration(
     int SchemaVersion,
     string DataRoot,
@@ -51,6 +53,7 @@ public sealed record AutomationProductionLaunchConfiguration(
 /// Runtime witness: only a Windows ACL and path inspection can create it.
 /// This is a technical gate, not evidence that a human CUTOVER has been approved.
 /// </summary>
+[SupportedOSPlatform("windows")]
 internal sealed class AutomationProductionBoundary
 {
     private readonly string _dataRoot;
@@ -100,8 +103,19 @@ internal sealed class AutomationProductionBoundary
         // For files/binaries the writer SID itself must NOT have write permissions.
         CheckProtectedDirectory(install, access.WriterSid, access.DesktopSid, false);
         CheckProtectedFile(launch, access.WriterSid, access.DesktopSid);
-        CheckProtectedFile(Path.Combine(install, "NAP.AutomationHost.exe"), access.WriterSid, access.DesktopSid);
-        CheckProtectedFile(Path.Combine(install, "NAP.Core.dll"), access.WriterSid, access.DesktopSid);
+        // Ensure the complete published binary/configuration tree is not mutable
+        // by either the interactive desktop or the runtime writer.
+        var distributedFiles = Directory.EnumerateFiles(install, "*", SearchOption.AllDirectories).Take(5001).ToArray();
+        if (distributedFiles.Length is < 2 or > 5000)
+            throw new InvalidDataException("The protected NAP distribution has an invalid inventory.");
+        var hostExe = Path.Combine(install, "host", "NAP.AutomationHost.exe");
+        var hostCore = Path.Combine(install, "host", "NAP.Core.dll");
+        CheckProtectedFile(hostExe, access.WriterSid, access.DesktopSid);
+        CheckProtectedFile(hostCore, access.WriterSid, access.DesktopSid);
+        foreach (var file in distributedFiles)
+            CheckProtectedFile(file, access.WriterSid, access.DesktopSid);
+        foreach (var directory in Directory.EnumerateDirectories(install, "*", SearchOption.AllDirectories))
+            CheckProtectedDirectory(directory, access.WriterSid, access.DesktopSid, false, false);
         CheckProtectedDirectory(data, access.WriterSid, access.DesktopSid, true);
         CheckProtectedDirectory(control, access.WriterSid, access.DesktopSid, true);
         var roots = contexts.SelectMany(c => new[] { c.Storage.WorkspaceRoot, c.Storage.ProductionRoot, c.Storage.ArchiveRoot }).ToArray();
@@ -160,13 +174,14 @@ internal sealed class AutomationProductionBoundary
         CheckAcl(acl, writer, desktop, allowWriterWrite: false, requireExplicitDacl: false);
     }
 
-    private static void CheckProtectedDirectory(string path, string writer, string desktop, bool allowWriterWrite)
+    private static void CheckProtectedDirectory(string path, string writer, string desktop, bool allowWriterWrite,
+        bool requireExplicitDacl = true)
     {
         var attributes = ProductionPaths.CheckPath(path, NapIssueCodes.PackageRootInvalid);
         if (attributes is null || (attributes.Value & FileAttributes.Directory) == 0)
             throw new InvalidDataException("A required protected directory is missing.");
         var acl = new DirectoryInfo(path).GetAccessControl(AccessControlSections.Owner | AccessControlSections.Access);
-        CheckAcl(acl, writer, desktop, allowWriterWrite, requireExplicitDacl: true);
+        CheckAcl(acl, writer, desktop, allowWriterWrite, requireExplicitDacl);
     }
 
     private static void CheckAcl(FileSystemSecurity acl, string writer, string desktop,
