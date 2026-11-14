@@ -99,3 +99,37 @@ El único efecto es crear un informe JSON nuevo en `%USERPROFILE%\Downloads\NAP0
 **Uso físico opcional y focalizado:** descargar el script adjunto al expediente o desde GitHub y ejecutar en PowerShell x64 normal. No pedir al propietario que revise 39 fichas ni que reproduzca importaciones. Para continuar basta la salida resumida que imprime (recuentos, avisos, ubicación del JSON); solo inspeccionar detalles de reportes cuando exista una incidencia concreta.
 
 **Evidencia técnica:** código GitHub publicado y recuperado; sin ejecución física en Windows 11 ni equivalencia de cobertura con una auditoría ACL forense. No crear usuarios Windows, servicios ni modificar rutas como parte del diagnóstico.
+
+
+## 8. Preflight de puesta en marcha del MSI — resultado físico 14/11/2026 02:27
+
+El propietario ejecutó el auditor NAP09 de solo lectura `NAP09.ReadOnlyPreflight.ps1`, en Windows PowerShell 5.1 y sin elevación, y comunicó exactamente:
+
+```text
+NAP09: diagnostico de solo lectura completado.
+Catalogos detectados: 3/3.
+Binarios instalados detectados: 2/2.
+Procesos NAP: 1; tareas por nombre: 0; servicios por nombre: 0.
+Leases SID actual: 44983; no vacios: 16.
+Avisos: 1.
+CUTOVER: BLOQUEADO. No se ha iniciado produccion ni cambiado datos.
+Informe guardado: C:\Users\andro\Downloads\NAP09_Evidencias\NAP09_Preflight_20261114_022750601.json
+```
+
+**Interpretación estricta de esa salida:**
+- Se localizaron los tres ficheros de catálogo esperados y ambos binarios instalados. Es una comprobación de existencia, **no** prueba de corrección de todos sus bytes o de ausencia de otras copias.
+- Un proceso NAP seguía ejecutándose durante la fotografía. El resumen no identifica cuál; no se afirma que sea Host, ni que se haya detenido.
+- Cero tareas y cero servicios **con nombres coincidentes**. El auditor no revisa rutas de ejecución de tareas con nombres distintos, por lo que no acredita ausencia de escritores antiguos.
+- Se enumeraron 44.983 ficheros `*.lease` para el SID interactivo actual en la coordinación v2, de los cuales 16 estaban no vacíos. **No se ha demostrado su procedencia, corrupción, vigencia ni exclusión respecto a otro SID**. El crecimiento respecto al inventario histórico de 6.864/8 no se interpreta como regeneración legítima ni como fallo sin investigación específica. Nunca borrar, vaciar, renombrar, adoptar, reescribir ni invalidar estos locks desde un script de limpieza.
+- Un aviso (resumen): compatible con la señal del propio auditor ante leases no vacíos, pero el resumen **no prueba** su contenido exacto. La evidencia JSON completa permanece local y no ha sido examinada por ChatGPT.
+- No hay habilitación productiva, nuevas ACL, cuentas, servicios, eliminación de antiguas raíces ni puesta en marcha de Host en universos reales. El dictamen del auditor conserva `CUTOVER: BLOQUEADO`.
+
+### Plan de trabajo posterior — ejecución ChatGPT-first
+
+1. Mantener cerrada la **importación histórica** (39 WebP y 39 evidencias PNG), sin nuevas demostraciones al propietario.
+2. **NAP09-P02 — diseño de frontera del escritor:** contrastar contrato `NAP_2_0_FASE_4_CUTOVER.md` con distribución actual NAP 2.0.2, identidad interactiva y ubicación de raíz `Documents/GitHub`; proponer alternativa de almacenamiento protegido evitando cambiar ACL generales de `Documents/GitHub`, sin ejecutar migración.
+3. **NAP09-P03 — estrategia de coordinación conservadora:** distinguir leases v2 por SID, archivos vacíos persistentes y 16 no vacíos. Preparar únicamente lector/analizador **de solo lectura**; no borrar ni truncar. No acumular revisiones manuales redundantes del propietario.
+4. **NAP09-P04 — backup externo/restauración y plan en frío:** diseñar cobertura de las tres bases, originales, jobs, configuración y receipts; sin mover ni restaurar datos en el equipo por inferencia. Copia local del catálogo previa ≠ respaldo externo íntegro.
+5. **NAP09-P05 — ejecución CUTOVER:** SOLO tras revisión de pasos 2–4, pruebas aisladas y **autorización expresa nueva** para modificar permisos, raíces, identidad/arranque y primeras escrituras reales. La PR documental y su fusión no lo autorizan.
+
+**Siguiente responsabilidad:** ChatGPT prepara documentación, análisis y código de diagnóstico acotado en una rama revisable; el propietario no tiene que aportar más capturas ni comandos salvo que exista una decisión operativa concreta. Mantener las incidencias #47 y #49 abiertas.
