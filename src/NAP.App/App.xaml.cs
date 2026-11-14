@@ -38,6 +38,14 @@ public partial class App : Application
                 if (e.Args.Contains("--compact", StringComparer.Ordinal)) { previewWindow.Width = 1200; previewWindow.Height = 700; }
                 MainWindow = previewWindow; previewWindow.Show(); return;
             }
+            var uxOutput = e.Args.FirstOrDefault(a => a.StartsWith("--ux208-evidence=", StringComparison.Ordinal))?[17..];
+            if (uxOutput is not null)
+            {
+                var fixtureSettings = e.Args.FirstOrDefault(a => a.StartsWith("--settings=", StringComparison.Ordinal))?[11..]
+                    ?? throw new ArgumentException("UX evidence requires explicit temporary settings.");
+                var uxWindow = new MainWindow(Nap208UxEvidence.Create(fixtureSettings), uxEvidence: uxOutput);
+                MainWindow = uxWindow; uxWindow.Show(); return;
+            }
             var automationConfig = e.Args.FirstOrDefault(a => a.StartsWith("--automation-config=", StringComparison.Ordinal))?[20..];
             var managedArgument = e.Args.FirstOrDefault(a => a.StartsWith("--automation-managed-config=", StringComparison.Ordinal))?[28..];
             if (automationConfig is not null && managedArgument is not null)
@@ -102,7 +110,7 @@ public partial class App : Application
         catch (Exception ex)
         {
             if (IsAcceptance) { Console.Error.WriteLine("Aceptación detenida de forma segura: " + ex.Message); Shutdown(1); return; }
-            if (e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Contains("--smoke-automation", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
+            if (e.Args.Any(a => a.StartsWith("--ux208-evidence=", StringComparison.Ordinal)) || e.Args.Contains("--smoke-test", StringComparer.Ordinal) || e.Args.Contains("--smoke-automation", StringComparer.Ordinal) || e.Args.Any(a => a.StartsWith("--phase6-preview=", StringComparison.Ordinal))) { Console.Error.WriteLine(ex); Shutdown(1); return; }
             var error = ExplorerError.From(ex); MessageBox.Show(error.Message + "\nCódigo: " + error.Code, "NAP — Inicio detenido", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }

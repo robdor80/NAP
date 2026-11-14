@@ -1,0 +1,310 @@
+{
+  "result": "PASS",
+  "records": 5000,
+  "bindingErrors": 0,
+  "virtualizationVerified": true,
+  "fixture": "Temporary synthetic SQLite; actual WPF controls; no Gemini network call",
+  "refreshMilliseconds": 184.5211,
+  "textSearchMilliseconds": 579.3219,
+  "initialWorkingSetBytes": 144941056,
+  "finalWorkingSetBytes": 293318656,
+  "peakWorkingSetBytes": 308482048,
+  "counters": {
+    "pageRequests": 61,
+    "detailRequests": 3,
+    "thumbnailRequests": 225,
+    "maximumPageSize": 240
+  },
+  "viewports": [
+    {
+      "page": "Inicio",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 22.62
+    },
+    {
+      "page": "Catálogo",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 145.4111
+    },
+    {
+      "page": "scroll-middle",
+      "width": 1200,
+      "milliseconds": 37.528,
+      "realized": 6,
+      "cachedPages": 2
+    },
+    {
+      "page": "Producción",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 117.2367
+    },
+    {
+      "page": "Historial",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 68.33
+    },
+    {
+      "page": "Ajustes",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 73.1031
+    },
+    {
+      "page": "Objetivos",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 144.6198
+    },
+    {
+      "page": "Estadísticas",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 97.1845
+    },
+    {
+      "page": "Auditor IA",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 308.9031
+    },
+    {
+      "page": "Backups",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 34.4946
+    },
+    {
+      "page": "Git",
+      "width": 1200,
+      "height": 700,
+      "dpiScale": 1,
+      "layoutMilliseconds": 48.4774
+    },
+    {
+      "page": "Inicio",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 44.6323
+    },
+    {
+      "page": "Catálogo",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 111.8268
+    },
+    {
+      "page": "scroll-middle",
+      "width": 1536,
+      "milliseconds": 11.9455,
+      "realized": 10,
+      "cachedPages": 2
+    },
+    {
+      "page": "Producción",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 61.2794
+    },
+    {
+      "page": "Historial",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 52.1986
+    },
+    {
+      "page": "Ajustes",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 47.9094
+    },
+    {
+      "page": "Objetivos",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 134.5913
+    },
+    {
+      "page": "Estadísticas",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 73.9619
+    },
+    {
+      "page": "Auditor IA",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 296.8926
+    },
+    {
+      "page": "Backups",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 22.0766
+    },
+    {
+      "page": "Git",
+      "width": 1536,
+      "height": 960,
+      "dpiScale": 1,
+      "layoutMilliseconds": 31.2833
+    },
+    {
+      "page": "Inicio",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 29.2685
+    },
+    {
+      "page": "Catálogo",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 140.8104
+    },
+    {
+      "page": "scroll-middle",
+      "width": 2560,
+      "milliseconds": 77.6452,
+      "realized": 28,
+      "cachedPages": 3
+    },
+    {
+      "page": "Producción",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 82.23
+    },
+    {
+      "page": "Historial",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 88.7963
+    },
+    {
+      "page": "Ajustes",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 51.2986
+    },
+    {
+      "page": "Objetivos",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 134.5225
+    },
+    {
+      "page": "Estadísticas",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 92.0185
+    },
+    {
+      "page": "Auditor IA",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 262.7562
+    },
+    {
+      "page": "Backups",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 33.2903
+    },
+    {
+      "page": "Git",
+      "width": 2560,
+      "height": 1600,
+      "dpiScale": 1.25,
+      "layoutMilliseconds": 30.8209
+    }
+  ],
+  "screenshots": [
+    "1200-Ajustes-avanzado.png",
+    "1200-Ajustes.png",
+    "1200-Auditor IA.png",
+    "1200-Backups.png",
+    "1200-Catálogo-ficha.png",
+    "1200-Catálogo-filtros.png",
+    "1200-Catálogo-horizontales.png",
+    "1200-Catálogo.png",
+    "1200-Estadísticas.png",
+    "1200-Git.png",
+    "1200-Historial-detalle.png",
+    "1200-Historial.png",
+    "1200-Inicio.png",
+    "1200-Objetivos.png",
+    "1200-Producción-detalle.png",
+    "1200-Producción.png",
+    "1536-Ajustes-avanzado.png",
+    "1536-Ajustes.png",
+    "1536-Auditor IA.png",
+    "1536-Backups.png",
+    "1536-Catálogo-ficha.png",
+    "1536-Catálogo-filtros.png",
+    "1536-Catálogo-horizontales.png",
+    "1536-Catálogo.png",
+    "1536-Estadísticas.png",
+    "1536-Git.png",
+    "1536-Historial-detalle.png",
+    "1536-Historial.png",
+    "1536-Inicio.png",
+    "1536-Objetivos.png",
+    "1536-Producción-detalle.png",
+    "1536-Producción.png",
+    "2560-Ajustes-avanzado.png",
+    "2560-Ajustes.png",
+    "2560-Auditor IA.png",
+    "2560-Backups.png",
+    "2560-Catálogo-ficha.png",
+    "2560-Catálogo-filtros.png",
+    "2560-Catálogo-horizontales.png",
+    "2560-Catálogo.png",
+    "2560-Estadísticas.png",
+    "2560-Git.png",
+    "2560-Historial-detalle.png",
+    "2560-Historial.png",
+    "2560-Inicio.png",
+    "2560-Objetivos.png",
+    "2560-Producción-detalle.png",
+    "2560-Producción.png",
+    "busqueda-2500.png",
+    "catalogo-error-lectura.png",
+    "catalogo-sin-resultados.png",
+    "produccion-error-lectura.png",
+    "produccion-todo-al-dia.png"
+  ],
+  "sourceCommit": "06ece907ea0a335d34b751857c986e44b95b50f3",
+  "platform": "Microsoft Windows NT 10.0.20348.0",
+  "runtime": "10.0.15",
+  "physicalWindows11Validation": false
+}

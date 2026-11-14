@@ -13,6 +13,8 @@
   </UserControl.Resources>
   <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
     <StackPanel>
+      <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="{Binding SimpleStatus}" Style="{StaticResource Heading}"/><TextBlock Text="{Binding SelectedOutbox.Reason}" Foreground="{StaticResource WarningBrush}" Margin="0,12,0,0"/><TextBlock Text="{Binding SelectedOutbox.NextStep}"/><Button Content="Configurar Git" Click="ConfigureGit" HorizontalAlignment="Left" Margin="0,16,0,0"/></StackPanel></Border>
+      <Expander x:Name="AdvancedGit" Header="Configuración avanzada" Margin="0,8,0,0"><StackPanel>
       <c:RobTitledFrame Header="ESTADO Y AUTORIZACIÓN EFECTIVA">
         <StackPanel>
           <TextBlock Text="{Binding DataContext.UniverseLabel, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource Heading}" />
@@ -25,7 +27,7 @@
           <TextBlock Text="{Binding HumanStatus}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding Recommendation}" Foreground="{Binding RecommendationTone, Converter={StaticResource ToneBrush}}" TextWrapping="Wrap" />
           <WrapPanel>
-            <Button Content="Actualizar política, Outbox y recibos" Style="{StaticResource Secondary}" Command="{Binding DataContext.Refresh, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.Refresh.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
+            
             <Button Content="Inspeccionar local y remoto" Style="{StaticResource Primary}" Command="{Binding DataContext.InspectGit, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="{Binding DataContext.InspectGit.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}" />
           </WrapPanel>
           <TextBlock Text="La lectura local no consulta el remoto. Inspeccionar sí lo consulta, sin conceder permisos ni crear política." Style="{StaticResource Muted}" TextWrapping="Wrap" />
@@ -135,6 +137,7 @@
           <TextBlock Text="Recover verifica y puede actualizar el receipt nativo; Prepared no implica commit. Cada retry y cada push requieren su propia confirmación. No se ofrece force ni reparación de anclas." Foreground="{StaticResource WarningBrush}" TextWrapping="Wrap" />
         </StackPanel>
       </c:RobTitledFrame>
+      </StackPanel></Expander>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

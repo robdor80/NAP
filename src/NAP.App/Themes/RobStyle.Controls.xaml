@@ -9,10 +9,10 @@
     <Setter Property="CornerRadius" Value="{StaticResource Radius}" />
     <Setter Property="Padding" Value="{StaticResource SpaceLarge}" />
     <Setter Property="Margin" Value="0,0,16,16" />
-    <Setter Property="Effect" Value="{StaticResource CardShadow}" />
+
   </Style>
   <Style x:Key="EmptyState" TargetType="TextBlock">
-    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource BorderBrush}" />
     <Setter Property="TextWrapping" Value="Wrap" />
     <Setter Property="Margin" Value="0,12,0,16" />
     <Style.Triggers><Trigger Property="Text" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed" /></Trigger><Trigger Property="Text" Value=""><Setter Property="Visibility" Value="Collapsed" /></Trigger></Style.Triggers>
@@ -41,8 +41,8 @@
     <Setter Property="Background" Value="{StaticResource DeepBrush}" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
     <Setter Property="CaretBrush" Value="{StaticResource TextBrush}" />
-    <Setter Property="SelectionBrush" Value="{StaticResource MutedBrush}" />
-    <Setter Property="BorderBrush" Value="{StaticResource MutedBrush}" />
+    <Setter Property="SelectionBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="Padding" Value="12,10" />
     <Setter Property="Margin" Value="0,6,0,12" />
@@ -54,7 +54,7 @@
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsKeyboardFocused" Value="True">
-              <Setter TargetName="Edge" Property="BorderBrush" Value="{StaticResource TextBrush}" />
+              <Setter TargetName="Edge" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
               <Setter Property="Opacity" Value="{StaticResource DisabledContentOpacity}" />
@@ -89,7 +89,7 @@
   <Style TargetType="ComboBox">
     <Setter Property="Background" Value="{StaticResource DeepBrush}" />
     <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-    <Setter Property="BorderBrush" Value="{StaticResource MutedBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
     <Setter Property="MinHeight" Value="40" />
     <Setter Property="Margin" Value="0,6,0,12" />
     <Setter Property="Template">
@@ -143,7 +143,7 @@
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
               <Setter TargetName="Mark" Property="Visibility" Value="Visible" />
-              <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource TextBrush}" />
+              <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="{x:Null}">
               <Setter TargetName="Mark" Property="Visibility" Value="Visible" />
@@ -166,7 +166,7 @@
     </Setter>
   </Style>
   <Style x:Key="Disclosure" TargetType="ToggleButton">
-    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource BorderBrush}" />
     <Setter Property="MinHeight" Value="32" />
     <Setter Property="Template">
       <Setter.Value>
@@ -207,7 +207,7 @@
     </Setter>
   </Style>
   <Style TargetType="Expander">
-    <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource BorderBrush}" />
     <Setter Property="Margin" Value="0,12,0,0" />
     <Setter Property="Template">
       <Setter.Value>
@@ -247,14 +247,14 @@
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="True">
-              <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource TextBrush}" />
+              <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
               <Setter TargetName="Row" Property="Background" Value="{StaticResource CardBrush}" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
               <Setter TargetName="Row" Property="Background" Value="{StaticResource CardBrush}" />
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
-              <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource TextBrush}" />
+              <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>

@@ -7,6 +7,8 @@ namespace NAP.App.Views;
 public partial class SettingsView : UserControl
 {
     public SettingsView() => InitializeComponent();
+    private async void ImportHistoricalPortraits(object sender, RoutedEventArgs e) => await CatalogMaintenance.ImportHistoricalPortraits((DataContext as NAP.Presentation.SettingsViewModel)?.Explorer, sender as Button);
+    private async void ImportHistoricalMasters(object sender, RoutedEventArgs e) => await CatalogMaintenance.ImportHistoricalMasters((DataContext as NAP.Presentation.SettingsViewModel)?.Explorer, sender as Button);
     private void ConfigureGemini_Click(object sender, RoutedEventArgs e)
     {
         if (((App)Application.Current).PersonalHostClient is not { } client)

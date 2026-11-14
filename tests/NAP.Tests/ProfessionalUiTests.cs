@@ -186,7 +186,7 @@ public sealed class ProfessionalUiTests
     {
         using var f = new CatalogTestFixture(); var (shell, proxy, _) = Create(f, configured: false); using (shell)
         {
-            await shell.InitializeAsync(); shell.NavigateTo("RoDo"); await shell.LastRefresh;
+            await shell.InitializeAsync(); Assert.False(shell.Navigate.CanExecute("RoDo")); Assert.DoesNotContain(shell.Tools, t => t.Name == "RoDo"); shell.NavigateTo("RoDo"); await shell.LastRefresh;
             Assert.Equal(UiPageState.Reserved, shell.Rodo.State); Assert.False(shell.Rodo.CanSend); Assert.Empty(shell.Rodo.Conversations);
             Assert.Equal("RoDo estará disponible en la Fase 15.", shell.Rodo.Availability); Assert.Empty(proxy.Calls); Assert.False(shell.AuditAvailable);
         }

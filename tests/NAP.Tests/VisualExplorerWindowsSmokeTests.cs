@@ -36,11 +36,11 @@ public sealed class VisualExplorerWindowsSmokeTests
         using var result = await Run(settings.SettingsPath, Environment.GetEnvironmentVariable("NAP_UI_SMOKE_OUTPUT"));
         Assert.Equal(1, result.RootElement.GetProperty("assets").GetInt32()); Assert.True(result.RootElement.GetProperty("documents").GetInt32() > 0);
         Assert.Equal("Ready", result.RootElement.GetProperty("state").GetString());
-        Assert.Equal(22, result.RootElement.GetProperty("pages").GetInt32()); // 11 páginas, incluida Diversidad, en dos resoluciones WPF.
+        Assert.Equal(20, result.RootElement.GetProperty("pages").GetInt32()); // Diez páginas visibles; RoDo permanece fuera de la navegación.
         Assert.Equal(0, result.RootElement.GetProperty("bindingErrors").GetInt32());
         Assert.Equal("restored", result.RootElement.GetProperty("tray").GetString());
         Assert.Equal("static", result.RootElement.GetProperty("selectorMode").GetString());
-        Assert.Equal(2, result.RootElement.GetProperty("mascotChecks").GetInt32());
+        Assert.Equal(0, result.RootElement.GetProperty("mascotChecks").GetInt32());
         Assert.True(result.RootElement.GetProperty("mascotAnimationReleased").GetBoolean());
         Assert.True(result.RootElement.GetProperty("tooltipChecks").GetInt32() > 0);
         Assert.Equal(new[] { "1200x700", "2560x1600" }, result.RootElement.GetProperty("viewports").EnumerateArray().Select(v => v.GetString()));
@@ -50,7 +50,7 @@ public sealed class VisualExplorerWindowsSmokeTests
     }
     [VisualExplorerWindowsFact]
     public async Task EmptyBootstrapAndVirtualizedPanelRenderWithoutCreatingSettings()
-    { using var f = new CatalogTestFixture(); var path = Path.Combine(f.Root, "missing-settings.json"); using var result = await Run(path); Assert.Equal("Empty", result.RootElement.GetProperty("state").GetString()); Assert.Equal("static", result.RootElement.GetProperty("selectorMode").GetString()); Assert.Equal(2, result.RootElement.GetProperty("mascotChecks").GetInt32()); Assert.False(File.Exists(path)); }
+    { using var f = new CatalogTestFixture(); var path = Path.Combine(f.Root, "missing-settings.json"); using var result = await Run(path); Assert.Equal("Empty", result.RootElement.GetProperty("state").GetString()); Assert.Equal("static", result.RootElement.GetProperty("selectorMode").GetString()); Assert.Equal(0, result.RootElement.GetProperty("mascotChecks").GetInt32()); Assert.False(File.Exists(path)); }
     [VisualExplorerWindowsFact]
     public async Task ImportAddsSecondUniverseAndSwitchesSelectorWithoutCreatingRootsOrSettings()
     {

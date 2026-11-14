@@ -17,7 +17,8 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
 }
 public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
 public sealed record AutomationUniverseStatusRow(string Universe, string State, string Detail);
-public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null);
+public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null, string State = "", AssetTileViewModel? Thumbnail = null, string? ThumbnailIssue = null)
+{ public string DisplayName => UiLabels.AssetName(Name); }
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
 public sealed class AutomationControlViewModel : ObservableObject, IDisposable
@@ -34,6 +35,13 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private long _generation;
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
+    public string? InboxPath => _overview?.Host.MixedInboxRoot ?? _context()?.Storage.InboxRoot;
+    public string GeminiState => !Current() ? "Estado no disponible" : _overview?.Host.Audit is { Configured: true } ? "Configurado" : "Requiere configuración";
+    public string SimpleState => !Current() ? "Necesita atención" : HasReview || SelectedState() is AutomationHostState.Blocked or AutomationHostState.Degraded || _overview!.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded ? "Necesita atención" :
+        _overview.Control.Stopped || _overview.Control.Paused ? "En pausa" : _overview.Queue.Counts.Processing > 0 ? "Procesando" : "En marcha";
+    internal Func<string, CancellationToken, Task<AssetTileViewModel?>>? ThumbnailFactory { get; set; }
+    public IEnumerable<AutomationActivityRow> RecentCompact => Recent.Take(5);
+    public bool HasSeveralUniverses => UniverseStatuses.Count > 1;
     public string InboxLocation => _overview?.Host.MixedInboxRoot is { } root ? $"Deposita los ZIP aquí: {root}" : _context() is { } c ? $"Deposita los ZIP aquí: {c.Storage.InboxRoot}" : "";
     public string AuditStatus => _overview?.Host.Audit is { Configured: true } audit
         ? $"Gemini configurado: {audit.Model}. La respuesta real aparece en cada trabajo."
@@ -123,6 +131,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
             foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident) + (item.SourcePresent ? "" : " · El ZIP ya no está en la bandeja; este aviso pertenece al historial."), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
+            foreach (var old in Recent) old.Thumbnail?.Dispose();
             Recent.Clear();
             foreach (var activity in (value.Queue.Recent ?? []).Where(row => !row.Archived))
             {
@@ -138,7 +147,16 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
                 if (activity.Preparation == "AuditConfigurationRequired") detail = "Falta autorización de proveedor/modelo Gemini. Revisa Ajustes → Gemini.";
                 if (activity.AuditSummary is { } summary) detail += $" · Gemini {activity.AuditModel}: {summary}";
                 var paths = activity.Item.State == QueueState.Completed ? $"Producción: {activity.ProductionPath}\nMaestro: {activity.ArchivePath}\nCatálogo: {context.Storage.CatalogPath}" : null;
-                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths));
+                AssetTileViewModel? thumbnail = null; string? thumbnailIssue = null;
+                try
+                {
+                    if (Recent.Count < 5 && activity.Item.State == QueueState.Completed && ThumbnailFactory is not null)
+                        thumbnail = await ThumbnailFactory(activity.Item.Name, read.Token);
+                }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception) { thumbnailIssue = "Miniatura no disponible. Revisa el recurso en Catálogo."; }
+                if (_disposed || generation != _generation || context != _context()) { thumbnail?.Dispose(); return; }
+                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths, WorkflowWords.State(activity.Item.State), thumbnail, thumbnailIssue));
             }
             InboxReceipts.Clear();
             foreach (var receipt in (value.Host.MixedInbox?.Receipts ?? []).Take(8))
@@ -177,7 +195,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         finally { _read = null; _reading = false; }
     }
     private void Unavailable(string? message = null) { Clear(); Status = message ?? "No se pudo consultar la automatización"; ExecutionScope = ""; }
-    private void Clear() { _overview = null; Review.Clear(); Recent.Clear(); InboxReceipts.Clear(); UniverseStatuses.Clear(); Changed(); }
+    private void Clear() { foreach (var old in Recent) old.Thumbnail?.Dispose(); _overview = null; Review.Clear(); Recent.Clear(); InboxReceipts.Clear(); UniverseStatuses.Clear(); Changed(); }
     private static string Stage(QueueStage stage) => stage switch
     {
         QueueStage.Observation or QueueStage.Admission => "Recibido · Validando ZIP y perfil",
@@ -226,7 +244,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     };
     private void Changed()
     {
-        foreach (var name in new[] { nameof(InboxLocation), nameof(AuditStatus), nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        foreach (var name in new[] { nameof(InboxPath), nameof(GeminiState), nameof(SimpleState), nameof(RecentCompact), nameof(HasSeveralUniverses), nameof(InboxLocation), nameof(AuditStatus), nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)

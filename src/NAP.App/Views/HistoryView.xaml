@@ -1,8 +1,8 @@
 <UserControl x:Class="NAP.App.Views.HistoryView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:v="clr-namespace:NAP.App.Views">
   <DockPanel>
-    <Expander DockPanel.Dock="Bottom" Header="Operaciones manuales" Margin="0,12,0,0">
+    <Expander DockPanel.Dock="Bottom" Header="Avanzado · Operaciones manuales" Margin="0,12,0,0">
       <StackPanel><ListBox ItemsSource="{Binding ManualEntries}" MaxHeight="180"><ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><TextBlock Text="{Binding Label}" FontWeight="SemiBold"/><TextBlock Text="{Binding Result}"/><TextBlock Text="Sin fecha registrada" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ListBox.ItemTemplate></ListBox>
-      <WrapPanel><Button Content="Consultar recibos Git" Command="{Binding DataContext.Navigate,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Git"/><Button Content="Backups" Command="{Binding DataContext.Navigate,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Backups"/></WrapPanel></StackPanel>
+      <WrapPanel><Button Content="Consultar recibos Git" Command="{Binding DataContext.Navigate,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Git"/><Button Content="Copias de seguridad" Command="{Binding DataContext.Navigate,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Backups"/></WrapPanel></StackPanel>
     </Expander>
     <v:WorkflowView DataContext="{Binding Work}"/>
   </DockPanel>

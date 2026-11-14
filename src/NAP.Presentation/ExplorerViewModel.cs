@@ -6,15 +6,17 @@ namespace NAP.Presentation;
 
 public interface IFolderPicker { string? Pick(string title, string current); }
 public sealed record NavigationItem(string Name, bool Enabled);
-public sealed record DocumentView(string Role, string Text);
+public sealed record DocumentView(string Role, string Text)
+{ public string Label => Role switch { "manifest" => "Manifiesto", "info" => "Ficha descriptiva", "prompt" => "Prompt", "identity" or "visual_identity" => "Identidad visual", _ => UiLabels.Words(Role) }; }
 public sealed record DistributionView(string Dimension, string Value, long Count, double Percent, string? ScalarType)
-{ public string ScalarTypeLabel => ScalarType is null ? "" : " (" + ScalarType + ")"; }
+{ public string Label => UiLabels.Dimension(Dimension); public string DisplayValue => UiLabels.Value(Value); public string ScalarTypeLabel => ScalarType is null ? "" : " (" + ScalarType + ")"; }
 public sealed record StorageRootStatus(string Text, UiTone Tone);
 public sealed class FacetViewModel(string dimension, bool trait, IEnumerable<CatalogDistribution> values) : ObservableObject
 {
     private CatalogDistribution? _selected;
     public string Dimension { get; } = dimension;
     public bool IsTrait { get; } = trait;
+    public string Label => UiLabels.Dimension(Dimension);
     public IReadOnlyList<CatalogDistribution?> Choices { get; } = Array.AsReadOnly(new CatalogDistribution?[] { null }.Concat(values).ToArray());
     public CatalogDistribution? Selected { get => _selected; set => Set(ref _selected, value); }
 }
@@ -43,6 +45,9 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private string _section = "Ajustes";
     private string _workspace = "", _production = "", _archive = "";
     private string? _assetId, _assetType, _productionProfile;
+    private string _searchText = "";
+    public string SearchText { get => _searchText; set => Set(ref _searchText, value); }
+    public string? SearchDistributionNotice => string.IsNullOrWhiteSpace(SearchText) ? null : "Para explorar profesiones y otras clasificaciones, restablece la búsqueda y utiliza los filtros.";
     private PagedAssetCollection? _assets;
     private AssetTileViewModel? _selectedAsset;
     private AssetTileViewModel? _preview;
@@ -133,19 +138,46 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void NotifyResource()
     {
         foreach (var property in new[] { nameof(UniverseName), nameof(WebpPath), nameof(MasterPath), nameof(DetailStatusText),
-                     nameof(CanOpenWebp), nameof(CanOpenMaster), nameof(CanOpenFolder), nameof(CanRemove) }) Notify(property);
+                     nameof(SelectedName), nameof(DetailType), nameof(DisplayClassification), nameof(CanOpenWebp), nameof(CanOpenMaster), nameof(CanOpenFolder), nameof(CanRemove) }) Notify(property);
     }
 
+    private long? _catalogTotal;
+    public string CatalogTotal => _catalogTotal?.ToString("N0") ?? "—";
+    public string FilteredTotal => Assets?.Count.ToString("N0") ?? "—";
+    public string PortraitCount => Statistics?.AssetTypes.Where(d => d.Value == "portrait").Sum(d => d.Count).ToString("N0") ?? "—";
+    public string SceneCount => Statistics?.AssetTypes.Where(d => d.Value == "scene").Sum(d => d.Count).ToString("N0") ?? "—";
+    public string? CountNotice => Statistics is not null && Assets is not null && Statistics.TotalAssets != Assets.Count ?
+        "El listado y las estadísticas no coinciden en esta lectura. Actualiza para comprobar el catálogo; no se modifican los datos." : null;
+    public IEnumerable<DistributionView> ProfessionDistribution => Distributions.Where(d => d.Dimension is "role" or "profession" or "profesion").OrderByDescending(d => d.Count).Take(12);
+    public string SelectedName => SelectedAsset?.Title ?? UiLabels.AssetName(Detail?.AssetKey.AssetId ?? LegacyDetail?.AssetId ?? "");
+    public string DetailType => UiLabels.Value(Detail?.AssetType ?? (LegacyDetail is null ? "" : "portrait"));
+    public IEnumerable<KeyValuePair<string, string>> DisplayClassification => Detail is { } detail
+        ? detail.Classification.Select(d => new KeyValuePair<string, string>(UiLabels.Dimension(d.Key), UiLabels.Value(d.Value)))
+        : LegacyDetail is { } legacy ? new[] { new KeyValuePair<string, string>("Cultura", UiLabels.Value(legacy.Culture)), new("Ubicación", UiLabels.Value(legacy.Location)), new("Profesión", UiLabels.Value(legacy.Profession)), new("Sexo", UiLabels.Value(legacy.Sex)) } : [];
     public string StatisticsAssets => Statistics?.TotalAssets.ToString("N0") ?? "—";
     public string StatisticsTypes => Statistics?.AssetTypes.Count.ToString("N0") ?? "—";
     public string StatisticsProfiles => Statistics?.ProductionProfiles.Count.ToString("N0") ?? "—";
     public string? DistributionEmptyMessage => Statistics is null ? UnavailableText : Distributions.Count == 0 ? "No hay datos de distribución para los filtros activos." : null;
     public string? CoverageEmptyMessage => Planning is null ? UnavailableText : Planning.Objectives.Count == 0 ? "No hay objetivos definidos para este universo." : null;
     public string? CatalogEmptyMessage => Assets is null ? UnavailableText : Assets.Count == 0 ? "No hay assets para los filtros activos." : null;
-    public PagedAssetCollection? Assets { get => _assets; private set { if (_assets == value) return; _assets?.Dispose(); _assets = value; Notify(); Notify(nameof(StatusText)); } }
+    public PagedAssetCollection? Assets { get => _assets; private set { if (_assets == value) return; _assets?.Dispose(); _assets = value; Notify(); Notify(nameof(StatusText)); Notify(nameof(FilteredTotal)); Notify(nameof(CountNotice)); } }
     public AssetTileViewModel? SelectedAsset { get => _selectedAsset; set { if (Set(ref _selectedAsset, value)) _ = SelectAsync(value?.Asset); } }
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
     /// <summary>Separate read-only preview tile for visual comparisons; caller owns disposal.</summary>
+    public async Task<AssetTileViewModel?> WorkflowThumbnailAsync(string name, CancellationToken ct)
+    {
+        var context = Context;
+        if (context is null) return null;
+        var id = Path.GetFileNameWithoutExtension(name);
+        // WorkflowDesktopReader replaces underscores with spaces for display. Valid IDs
+        // contain no spaces, so this inverse is unambiguous after naming validation.
+        if (!AssetNamingRules.IsValidAssetId(id)) id = id.Replace(' ', '_');
+        if (!AssetNamingRules.IsValidAssetId(id)) return null;
+        var page = await _service.PageAsync(context, new(assetId: id), 0, 1, ct);
+        if (context != Context || page.Items.FirstOrDefault() is not { } asset) return null;
+        if (asset.AssetKey.UniverseId != context.Id) throw new InvalidDataException("Thumbnail scope mismatch.");
+        var tile = new AssetTileViewModel(_service, context); tile.Populate(asset); return tile;
+    }
     public AssetTileViewModel CreateComparisonTile(CatalogAssetSummary asset)
     {
         ArgumentNullException.ThrowIfNull(asset);
@@ -211,16 +243,19 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         {
             if (loadFacets) await _service.BeginSessionAsync(context, source.Token);
             var filter = CurrentFilter();
-            var page = await _service.PageAsync(context, filter, 0, PagedAssetCollection.PageSize, source.Token);
-            var statistics = await _service.StatisticsAsync(context, filter, source.Token);
+            IExplorerService display = string.IsNullOrWhiteSpace(SearchText) ? _service : new CatalogTextSearch(_service, SearchText.Trim());
+            var page = await display.PageAsync(context, filter, 0, PagedAssetCollection.PageSize, source.Token);
+            var statistics = await display.StatisticsAsync(context, filter, source.Token);
             var planning = await _service.PlanningAsync(context, source.Token);
             CatalogStatistics? facets = null;
-            if (loadFacets) facets = await _service.StatisticsAsync(context, new(), source.Token);
+            facets = await _service.StatisticsAsync(context, new(), source.Token);
             if (source.IsCancellationRequested || generation != _generation) return;
-            if (facets is not null) SetFacets(facets);
-            Assets = new(_service, context, filter, page, Fail); Statistics = statistics; Planning = planning;
+            _catalogTotal = facets.TotalAssets;
+            if (loadFacets) SetFacets(facets);
+            Assets = new(display, context, filter, page, Fail); Statistics = statistics; Planning = planning;
             foreach (var group in new[] { statistics.AssetTypes, statistics.ProductionProfiles, statistics.Classifications, statistics.Traits })
                 foreach (var d in group) Distributions.Add(new(d.Dimension, d.Value, d.Count, statistics.TotalAssets == 0 ? 0 : 100d * d.Count / statistics.TotalAssets, d.TraitType?.ToString()));
+            foreach (var name in new[] { nameof(SearchDistributionNotice), nameof(CatalogTotal), nameof(FilteredTotal), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice) }) Notify(name);
             State = page.TotalCount == 0 ? ExplorerState.Empty : ExplorerState.Ready;
         }
         catch (OperationCanceledException) { }
@@ -252,8 +287,8 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
                     var index = new LegacyMasterEvidenceIndex(context);
                     var evidence = index.Get(legacy.AssetId);
                     var master = evidence is null ? null : index.SourcePath(evidence);
-                    var documents = new[] { ("Ficha descriptiva", legacy.InfoPath),
-                        ("Prompt", legacy.PromptPath), ("Identidad visual", legacy.VisualIdentityPath) }
+                    var documents = new[] { ("info", legacy.InfoPath),
+                        ("prompt", legacy.PromptPath), ("visual_identity", legacy.VisualIdentityPath) }
                         .Where(file => File.Exists(file.Item2))
                         .Select(file => new DocumentView(file.Item1, File.ReadAllText(file.Item2))).ToArray();
                     var absent = documents.Length < 3 || !File.Exists(legacy.WebpPath) || master is not null && !File.Exists(master);
@@ -281,9 +316,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
                 presence.Any(file => new FileInfo(file.Path!).Length != file.SizeBytes) ? "Requiere revisión · hay archivos modificados" : "Procesado · archivos disponibles";
             foreach (var document in detail.Documents)
             {
-                var label = document.Role switch { "manifest" => "Manifiesto", "info" => "Ficha descriptiva",
-                    "prompt" => "Prompt", "visual_identity" => "Identidad visual", _ => document.Role };
-                Documents.Add(new(label, Encoding.UTF8.GetString(document.ToArray())));
+                Documents.Add(new(document.Role, Encoding.UTF8.GetString(document.ToArray())));
             }
             NotifyResource();
             DetailState = ExplorerState.Ready;
@@ -302,7 +335,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         _configurations = Array.AsReadOnly(rows); await SwitchAsync();
     }
     private Task ClearAsync() { ResetValues(); return RefreshAsync(); }
-    private void ResetValues() { AssetId = null; AssetType = null; ProductionProfile = null; foreach (var f in Facets) f.Selected = null; }
+    private void ResetValues() { SearchText = ""; AssetId = null; AssetType = null; ProductionProfile = null; foreach (var f in Facets) f.Selected = null; }
     private void Fail(Exception ex)
     {
         _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; Preview = null;
@@ -312,7 +345,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void CancelScope()
     {
         _validatedRoots = null; _rootValidationStopped = false; NotifyRoots();
-        ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; SelectedAsset = null;
+        ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); _catalogTotal = null; Notify(nameof(CatalogTotal)); Assets = null; SelectedAsset = null;
         Detail = null; LegacyDetail = null; MasterPath = null; Preview = null; Documents.Clear(); NotifyResource(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
         DetailError = null; DetailState = ExplorerState.Empty;
         Statistics = null; Planning = null; Distributions.Clear(); Error = null;
@@ -329,7 +362,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void NotifyRoots() { Notify(nameof(WorkspaceStatus)); Notify(nameof(ProductionStatus)); Notify(nameof(ArchiveStatus)); }
     private void NotifyCatalogText()
     {
-        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
+        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
     }
     public void Dispose() { CancelScope(); _load?.Dispose(); _detailLoad?.Dispose(); }
 }

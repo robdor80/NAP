@@ -1,0 +1,24 @@
+{
+  "version": "2.0.8",
+  "source_commit": "06ece907ea0a335d34b751857c986e44b95b50f3",
+  "workflow_run": 43641707250,
+  "workflow_url": "https://github.com/robdor80/NAP/actions/runs/43641707250",
+  "installer": "NAP-Setup-2.0.8.exe",
+  "sha256": "0785e40c5a49dce32d0c3278253fc1f0b32643246863e7af4aaedb0322f0ff3b",
+  "installer_artifact": "https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14131774969",
+  "evidence_artifact": "https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14132960216",
+  "git_evidence_artifact": "https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14132855070",
+  "packaged_inventory": "inventory.json",
+  "packaged_provenance": "provenance.json",
+  "focused_tests": {
+    "windows_personal": 25,
+    "windows_ux": 36,
+    "linux_git_ui": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "upgrade": "2.0.7 -> 2.0.8: PASS; Restart Manager; user configuration preserved; installed WPF and IPC PASS",
+  "screenshots": 53,
+  "artifact_expiration_utc": "2027-02-12T21:14:00Z",
+  "physical_windows11_validation": false
+}

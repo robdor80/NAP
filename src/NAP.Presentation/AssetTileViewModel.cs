@@ -14,8 +14,8 @@ public sealed class AssetTileViewModel : ObservableObject, IDisposable
     private bool _disposed;
     public AssetTileViewModel(IExplorerService service, UniverseContext context) { _service = service; _context = context; }
     public CatalogAssetSummary? Asset => _asset;
-    public string Title => _asset?.AssetKey.AssetId ?? "Cargando…";
-    public string Subtitle => _asset is null ? "" : _asset.WebpAvailable ? _asset.AssetType + " · " + _asset.ProductionProfile : "WebP ausente";
+    public string Title => _asset is null ? "Cargando…" : UiLabels.AssetName(_asset.AssetKey.AssetId);
+    public string Subtitle => _asset is null ? "" : _asset.WebpAvailable ? UiLabels.Value(_asset.AssetType) : "WebP ausente";
     public string? CachePath { get => _cachePath; private set => Set(ref _cachePath, value); }
     public ExplorerError? Error { get => _error; private set => Set(ref _error, value); }
     public void Populate(CatalogAssetSummary asset)
