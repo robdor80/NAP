@@ -7,6 +7,10 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/AutomationControlViewModel.cs
+      - src/NAP.Presentation/AutomationDesktopBridge.cs
+      - src/NAP.Core/AutomationProtocol.cs
+      - src/NAP.App/App.xaml.cs
       - src/NAP.Presentation/RemoteDesktopService.cs
       - scripts/NAP09.ActivarHostPersonal.ps1
       - scripts/Build-Nap06Release.ps1
@@ -53,9 +57,9 @@ jobs:
       - name: Build normal NAP per-user application
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
-        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP09_ISCC -Version '2.0.3'
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP09_ISCC -Version '2.0.4'
       - name: Quick package check
-        run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.3'
+        run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.4'
       - name: Clean license
         if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
@@ -63,10 +67,10 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: NAP-2.0.3-personal-${{ github.sha }}
+          name: NAP-2.0.4-personal-${{ github.sha }}
           path: |
-            artifacts/nap06/output/NAP-Setup-2.0.3.exe
-            artifacts/nap06/output/NAP-Setup-2.0.3.exe.sha256
+            artifacts/nap06/output/NAP-Setup-2.0.4.exe
+            artifacts/nap06/output/NAP-Setup-2.0.4.exe.sha256
             artifacts/nap06/inventory.json
           if-no-files-found: warn
           retention-days: 30
