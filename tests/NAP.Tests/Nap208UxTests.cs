@@ -124,9 +124,13 @@ public sealed class Nap208UxTests
         }
         using var png = new MemoryStream(); image.SaveAsPng(png);
         using var webp = new MemoryStream(); image.SaveAsWebp(webp);
-        var original = png.ToArray(); var production = webp.ToArray();
-        var mh = Convert.ToHexString(SHA256.HashData(original)).ToLowerInvariant();
-        var ph = Convert.ToHexString(SHA256.HashData(production)).ToLowerInvariant();
+        using var scene = new Image<Rgba32>(160, 96);
+        for (var y = 0; y < 96; y++) for (var x = 0; x < 160; x++)
+            scene[x, y] = y > 45 + 18 * Math.Sin(x / 20d) ? new(37, 97, 100) : new(16, 47, 72);
+        using var scenePng = new MemoryStream(); scene.SaveAsPng(scenePng);
+        using var sceneWebp = new MemoryStream(); scene.SaveAsWebp(sceneWebp);
+        var portraitOriginal = png.ToArray(); var portraitProduction = webp.ToArray();
+        var sceneOriginal = scenePng.ToArray(); var sceneProduction = sceneWebp.ToArray();
         using var db = f.Raw(); using var tx = db.BeginTransaction();
         using var command = db.CreateCommand(); command.Transaction = tx;
         command.CommandText = """
@@ -145,6 +149,10 @@ public sealed class Nap208UxTests
             var role = i % 2 == 0 ? "fisher" : "farmer";
             var sex = i % 2 == 0 ? "female" : "male";
             var id = $"{type}_treskal_{role}_{sex}_sample{i / 999:D2}_{i % 999 + 1:D3}";
+            var original = type == "scene" ? sceneOriginal : portraitOriginal;
+            var production = type == "scene" ? sceneProduction : portraitProduction;
+            var mh = Convert.ToHexString(SHA256.HashData(original)).ToLowerInvariant();
+            var ph = Convert.ToHexString(SHA256.HashData(production)).ToLowerInvariant();
             var dir = "synthetic/" + id;
             var pdir = Directory.CreateDirectory(Path.Combine(f.Context.Storage.ProductionRoot, dir)).FullName;
             var adir = Directory.CreateDirectory(Path.Combine(f.Context.Storage.ArchiveRoot, dir)).FullName;

@@ -25,7 +25,7 @@ internal static class Nap208UxEvidence
         var explorer = new ExplorerViewModel([profile], new(settings), new CountingExplorer(), new NoFolders());
         var automation = new AutomationControlViewModel(() => explorer.Context, new Decline(), new Overview(() => explorer.Context));
         return new(explorer, new ProfessionalUiService(), new Decline(), automation: automation,
-            workflowClient: new Phase6WorkflowPreview("production"), licenses: new LicenseViewModel(null), syntheticReadOnly: true);
+            workflowClient: new EvidenceWork(), licenses: new LicenseViewModel(null), syntheticReadOnly: true);
     }
 
     internal static async Task Capture(MainWindow window, ShellViewModel shell, BindingDiagnostics diagnostics, string output)
@@ -60,6 +60,7 @@ internal static class Nap208UxEvidence
                 // Keyboard focus must reach a visible action in every page shell.
                 var action = Descendants<Button>(surface).FirstOrDefault(b => b.IsVisible && b.IsEnabled && b.Focusable);
                 Require(action is not null && action.Focus(), "Keyboard focus cannot reach an action.");
+                Require(action!.MoveFocus(new(FocusNavigationDirection.Next)) && Keyboard.FocusedElement is FrameworkElement { IsVisible: true }, "Tab navigation cannot reach the next visible control.");
                 Save(surface, Path.Combine(output, $"{width}-{page}.png"), dpiScale);
                 screenshots.Add($"{width}-{page}.png");
                 measured.Add(new { page, width, height, dpiScale, layoutMilliseconds = pageMs });
@@ -72,6 +73,7 @@ internal static class Nap208UxEvidence
                     measured.Add(new { page = "scroll-middle", width, milliseconds = clock.Elapsed.TotalMilliseconds, realized = VisualTreeHelper.GetChildrenCount(panel), cachedPages = vm.Assets!.CachedPages });
                     panel.SetVerticalOffset(panel.ExtentHeight); await Layout(window, surface);
                     Require(VisualTreeHelper.GetChildrenCount(panel) is > 0 and < 100 && vm.Assets.CachedPages <= 4, "Scrolled gallery is not bounded.");
+                    Save(surface, Path.Combine(output, $"{width}-Catálogo-horizontales.png"), dpiScale);
                     panel.SetVerticalOffset(0); await Layout(window, surface);
                     var tile = (AssetTileViewModel)vm.Assets[0]!;
                     Require(tile.Asset is not null, "First page did not populate.");
@@ -117,16 +119,27 @@ internal static class Nap208UxEvidence
         Require(vm.Assets?.Count == 0 && vm.CatalogTotal.Replace(",", "").Replace(".", "") == "5000", "Empty filtered state lost the total.");
         Save(surface, Path.Combine(output, "catalogo-sin-resultados.png"), 1);
         await vm.ResetFilters.ExecuteAsync();
-        // A stopped read must remain visible and cannot alter SQLite.
-        var originalPath = vm.WorkspaceRoot;
-        vm.WorkspaceRoot = Path.Combine(Path.GetTempPath(), "nap208-unavailable-" + Guid.NewGuid().ToString("N"));
-        shell.NavigateTo("Ajustes"); await shell.LastRefresh; await Layout(window, surface);
-        vm.WorkspaceRoot = originalPath;
+        // Explicit fixture failures exercise the real error UI without changing any SQLite bytes.
+        CountingExplorer.FailRead = true;
+        await shell.RefreshCurrentAsync(); await Layout(window, surface);
+        Require(vm.State == ExplorerState.Error && shell.CurrentPage.Notice is not null, "Catalog read error must remain visible.");
+        Save(surface, Path.Combine(output, "catalogo-error-lectura.png"), 1);
+        CountingExplorer.FailRead = false;
+        await shell.RefreshCurrentAsync();
+        EvidenceWork.Mode = "empty";
+        shell.NavigateTo("Producción"); await shell.LastRefresh; await Layout(window, surface);
+        Require(shell.Pipeline.Work!.Rows.Count == 0 && shell.Pipeline.Work.Status.StartsWith("Todo al día"), "Empty production state differs.");
+        Save(surface, Path.Combine(output, "produccion-todo-al-dia.png"), 1);
+        EvidenceWork.Mode = "read-error";
+        await shell.RefreshCurrentAsync(); await Layout(window, surface);
+        Require(shell.Pipeline.Work.Status.StartsWith("No se pudo consultar"), "Workflow read failure must not appear as success.");
+        Save(surface, Path.Combine(output, "produccion-error-lectura.png"), 1);
+        EvidenceWork.Mode = "production";
         Require(diagnostics.Errors == 0, "WPF binding errors: " + diagnostics.Errors);
         var result = new { result = "PASS", records, bindingErrors = diagnostics.Errors, virtualizationVerified = true,
             fixture = "Temporary synthetic SQLite; actual WPF controls; no Gemini network call", refreshMilliseconds = refreshMs,
             textSearchMilliseconds = searchMs, initialWorkingSetBytes = initialMemory, finalWorkingSetBytes = process.WorkingSet64,
-            peakWorkingSetBytes = process.PeakWorkingSet64, counters = CountingExplorer.Counters(), viewports = measured, screenshots,
+            peakWorkingSetBytes = process.PeakWorkingSet64, counters = CountingExplorer.Counters(), viewports = measured, screenshots = Directory.EnumerateFiles(output, "*.png").Select(Path.GetFileName).Order().ToArray(), sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA"),
             platform = Environment.OSVersion.ToString(), runtime = Environment.Version.ToString(), physicalWindows11Validation = false };
         File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
         Console.WriteLine(JsonSerializer.Serialize(result));
@@ -167,13 +180,24 @@ internal static class Nap208UxEvidence
         }
         public Task SendAsync(AutomationOperation operation, UniverseId? universe, object payload, CancellationToken ct) => throw new InvalidOperationException("Visual fixture cannot send HOST commands.");
     }
+    private sealed class EvidenceWork : IWorkflowDesktopClient
+    {
+        internal static string Mode = "production";
+        private readonly Phase6WorkflowPreview _normal = new("production"), _empty = new("empty"), _failed = new("read-error");
+        private Phase6WorkflowPreview Current => Mode == "empty" ? _empty : Mode == "read-error" ? _failed : _normal;
+        public Task<WorkflowPage> PageAsync(UniverseId u, WorkflowPageRequest r, CancellationToken ct) => Current.PageAsync(u, r, ct);
+        public Task<WorkflowDetail> DetailAsync(UniverseId u, WorkflowDetailRequest r, CancellationToken ct) => Current.DetailAsync(u, r, ct);
+        public Task<IReadOnlyList<WorkflowBatch>> BatchesAsync(UniverseId u, CancellationToken ct) => Current.BatchesAsync(u, ct);
+        public Task MutateAsync(UniverseId u, AutomationOperation operation, object r, CancellationToken ct) => throw new InvalidOperationException("Visual fixture cannot mutate workflow.");
+    }
     private sealed class CountingExplorer : IExplorerService, IRemovalClient
     {
+        internal static bool FailRead;
         private readonly ExplorerService _inner = new();
         private static int _pages, _details, _thumbnails, _maxLimit;
         internal static object Counters() => new { pageRequests = _pages, detailRequests = _details, thumbnailRequests = _thumbnails, maximumPageSize = _maxLimit };
         public Task BeginSessionAsync(UniverseContext c, CancellationToken ct) => _inner.BeginSessionAsync(c, ct);
-        public Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter f, int offset, int limit, CancellationToken ct) { Interlocked.Increment(ref _pages); _maxLimit = Math.Max(_maxLimit, limit); return _inner.PageAsync(c, f, offset, limit, ct); }
+        public Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter f, int offset, int limit, CancellationToken ct) { if (FailRead) throw new IOException("Synthetic catalog read failure"); Interlocked.Increment(ref _pages); _maxLimit = Math.Max(_maxLimit, limit); return _inner.PageAsync(c, f, offset, limit, ct); }
         public Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext c, string id, CancellationToken ct) { Interlocked.Increment(ref _details); return _inner.DetailAsync(c, id, ct); }
         public Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter f, CancellationToken ct) => _inner.StatisticsAsync(c, f, ct);
         public Task<CatalogPlanningReadModel> PlanningAsync(UniverseContext c, CancellationToken ct) => _inner.PlanningAsync(c, ct);
