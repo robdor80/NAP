@@ -86,7 +86,7 @@ public sealed class AutomationDesktopBridge
         }
         return AutomationProtocol.Payload(new AutomationReadResult(_host.SessionId, reference, payload));
     }
-    private static bool IsRead(AutomationOperation op) => op is AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
+    private static bool IsRead(AutomationOperation op) => op is AutomationOperation.RemovalPreview or AutomationOperation.Status or AutomationOperation.Batches or AutomationOperation.QueuePage or AutomationOperation.Events or
         AutomationOperation.Dashboard or AutomationOperation.Pipeline or AutomationOperation.Planning or AutomationOperation.Backups or AutomationOperation.InspectGit or
         AutomationOperation.GitReceipts or AutomationOperation.CatalogPage or AutomationOperation.CatalogDetail or AutomationOperation.Statistics or AutomationOperation.NormalizationRead or
         AutomationOperation.ReadBlobChunk or AutomationOperation.CurrentPolicy or AutomationOperation.ReleaseBlob or AutomationOperation.CurrentControl or AutomationOperation.Overview or AutomationOperation.WorkflowPage or AutomationOperation.WorkflowDetail or AutomationOperation.WorkflowBatches or AutomationOperation.Diagnostics or AutomationOperation.GitConfiguration or AutomationOperation.GitOutbox or AutomationOperation.GitHostAccess or AutomationOperation.GitAuthorizationPropose;
@@ -105,7 +105,9 @@ public sealed class AutomationDesktopBridge
             throw new InvalidDataException("Invalid desktop request identity/version.");
         if (request.Operation is AutomationOperation.Activate or AutomationOperation.Pause or AutomationOperation.Resume or AutomationOperation.StopUniverse or AutomationOperation.CancelItem or AutomationOperation.ResumeItem)
             return DispatchAsync(request); // these use the control ledger's durable replay, including across sessions
-        if (IsRead(request.Operation)) return DispatchAsync(request);
+        // Removal rechecks the confirmed inventory under the owner. Keeping its response here
+        // would create another durable copy of the deleted resource's names and paths.
+        if (request.Operation == AutomationOperation.Remove || IsRead(request.Operation)) return DispatchAsync(request);
         // Lazy avoids invoking a mutation twice when two matching requests arrive concurrently.
         return DeduplicateAsync(request, principal);
     }
@@ -173,11 +175,17 @@ public sealed class AutomationDesktopBridge
         }
         switch (request.Operation)
         {
+            case AutomationOperation.RemovalPreview:
+                try { return AutomationProtocol.Payload(await _host.PreviewRemovalAsync(id, Arg<RemovalSelection>())); }
+                catch (Exception error) { return AutomationProtocol.Payload(new RemovalResult(false, [], [error.Message])); }
+            case AutomationOperation.Remove:
+                try { return AutomationProtocol.Payload(await _host.RemoveAsync(id, Arg<RemovalRequest>())); }
+                catch (Exception error) { return AutomationProtocol.Payload(new RemovalResult(false, [], [error.Message])); }
             case AutomationOperation.Diagnostics:
                 var diagnosticQuery = Arg<DiagnosticQuery>();
                 return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseDiagnostics(diagnosticQuery)));
             case AutomationOperation.WorkflowBatches:
-                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseWorkflowBatches()));
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseWorkflowBatches(_host.ReadControl(id).CancelledItems)));
             case AutomationOperation.WorkflowPage:
                 var pageRequest = Arg<WorkflowPageRequest>();
                 return AutomationProtocol.Payload(await _host.QueryAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Browse(pageRequest, _host.ReadControl(id).CancelledItems)));

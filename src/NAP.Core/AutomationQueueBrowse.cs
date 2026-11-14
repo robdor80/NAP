@@ -17,7 +17,7 @@ public sealed partial class AutomationQueueStore
         };
         var exclusions = System.Text.Json.JsonSerializer.Serialize(archived ?? []);
         var archiveFilter = request.Filter == WorkflowFilter.Archived ? " AND id IN (SELECT value FROM json_each($hidden))" :
-            request.Filter is WorkflowFilter.Review or WorkflowFilter.Pending or WorkflowFilter.Processing ? " AND id NOT IN (SELECT value FROM json_each($hidden))" : "";
+            " AND id NOT IN (SELECT value FROM json_each($hidden))";
         var where = states + archiveFilter + " AND ($b IS NULL OR EXISTS (SELECT 1 FROM observations o WHERE o.item_id=items.id AND o.batch_id=$b)) AND ($s='' OR instr(lower(substr(json_extract(payload,'$.SourcePath'),length($r)+2)),lower($s))>0)";
         return Read(db =>
         {
@@ -28,19 +28,20 @@ public sealed partial class AutomationQueueStore
             return (total, items);
         });
     }
-    public IReadOnlyList<WorkflowBatch> BrowseWorkflowBatches() => Read(db =>
+    public IReadOnlyList<WorkflowBatch> BrowseWorkflowBatches(IReadOnlyList<string>? archived = null) => Read(db =>
     {
         // Cohorts already belong to the queue; browsing must not initialize a runtime ledger.
         using var tx=db.BeginTransaction(deferred:true);
+        var hidden = System.Text.Json.JsonSerializer.Serialize(archived ?? []);
         var batches=Payloads<QueueBatch>(db,tx,"SELECT payload FROM batches ORDER BY rowid DESC LIMIT 40");
         return batches.Select(b =>
         {
             // Read progress in the same read transaction as the batch list; no second
             // ledger, no double counting when one ZIP has repeated observations.
             var items = Payloads<QueueItem>(db, tx,
-                "SELECT DISTINCT i.payload FROM items i JOIN observations o ON o.item_id=i.id WHERE o.batch_id=$b", "$b", b.Id.Value);
+                "SELECT DISTINCT i.payload FROM items i JOIN observations o ON o.item_id=i.id WHERE o.batch_id=$b AND i.id NOT IN (SELECT value FROM json_each($hidden))", "$b", b.Id.Value, "$hidden", hidden);
             var observations = Convert.ToInt32(Scalar(db, tx,
-                "SELECT COUNT(*) FROM observations WHERE batch_id=$b", "$b", b.Id.Value));
+                "SELECT COUNT(*) FROM observations WHERE batch_id=$b AND item_id NOT IN (SELECT value FROM json_each($hidden))", "$b", b.Id.Value, "$hidden", hidden));
             var summary = new QueueBatchSummary(observations, items.Count,
                 items.Count(i => i.State == QueueState.Completed),
                 items.Count(i => i.State == QueueState.Duplicate),

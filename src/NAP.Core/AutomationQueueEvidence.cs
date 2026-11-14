@@ -55,7 +55,7 @@ public sealed partial class AutomationQueueStore
         RecordEvidenceEvent(db, tx, item, QueueStage.Review); return decision;
     });
     public IReadOnlyList<ExceptionalConfigurationDecision> Decisions(QueueItemId id) => Read(db => { Item(db, null, id); return Payloads<ExceptionalConfigurationDecision>(db, null, "SELECT payload FROM decisions WHERE item_id=$i ORDER BY decision_id,version", "$i", id.Value); });
-    private static void RecordEvidenceEvent(SqliteConnection db, SqliteTransaction tx, QueueItem item, QueueStage stage)
+    private void RecordEvidenceEvent(SqliteConnection db, SqliteTransaction tx, QueueItem item, QueueStage stage)
     {
         var updated = item with { Revision = item.Revision + 1, UpdatedUtc = DateTimeOffset.UtcNow }; SaveItem(db, tx, updated, item.Revision);
         Event(db, tx, updated, stage, QueueEventCode.EvidenceRecorded, QueueEventResult.Recorded);

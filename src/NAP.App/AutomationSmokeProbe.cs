@@ -12,6 +12,15 @@ internal static class AutomationSmokeProbe
         if (shell.Automation is null || shell.Context is null) throw new InvalidOperationException("Remote shell is unconfigured.");
         await shell.Automation.RefreshAsync(); shell.NavigateTo("Historial"); await shell.LastRefresh;
         shell.NavigateTo("Producción"); await shell.LastRefresh;
+        shell.NavigateTo("Catálogo"); await shell.LastRefresh;
+        if (shell.Explorer.Assets is { Count: > 0 } assets)
+        {
+            await shell.Explorer.SelectAsync(((AssetTileViewModel)assets[0]!).Asset);
+            await window.Dispatcher.InvokeAsync(() => { window.UpdateLayout(); }, DispatcherPriority.Render);
+        }
+        if (!Descendants(window).OfType<System.Windows.Controls.TextBlock>().Any(label => label.Text == window.Title &&
+                label.Text.StartsWith("RobDev · NAP ", StringComparison.Ordinal)))
+            throw new InvalidOperationException("The NAP footer does not show the window's installed version.");
         shell.NavigateTo("Inicio"); await shell.LastRefresh;
         await window.Dispatcher.InvokeAsync(() => { window.UpdateLayout(); }, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("WPF binding errors: " + diagnostics.Errors);
@@ -26,5 +35,15 @@ internal static class AutomationSmokeProbe
         }
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { automationConnected = true, bindingErrors = diagnostics.Errors,
             trayVerified = true, rendered = true, settingsManagedByHost = shell.Explorer.SettingsManagedByHost }));
+    }
+
+    private static IEnumerable<System.Windows.DependencyObject> Descendants(System.Windows.DependencyObject parent)
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, index);
+            yield return child;
+            foreach (var descendant in Descendants(child)) yield return descendant;
+        }
     }
 }

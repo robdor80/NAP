@@ -110,12 +110,32 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public ExplorerState DetailState { get => _detailState; private set { Set(ref _detailState, value); NotifyCatalogText(); } }
     public ExplorerError? Error { get => _error; private set => Set(ref _error, value); }
     public ExplorerError? DetailError { get => _detailError; private set => Set(ref _detailError, value); }
-    public string StatusText => State switch { ExplorerState.Loading => "Cargando catálogo…", ExplorerState.Empty => "Sin assets. Configura las raíces o ajusta los filtros.", ExplorerState.Error => "Lectura detenida. Consulta el diagnóstico.", _ => $"{Assets?.Count ?? 0:N0} assets · solo lectura" };
+    public string StatusText => State switch { ExplorerState.Loading => "Cargando catálogo…", ExplorerState.Empty => "Sin assets. Configura las raíces o ajusta los filtros.", ExplorerState.Error => "Lectura detenida. Consulta el diagnóstico.", _ => $"{Assets?.Count ?? 0:N0} recursos" };
     public string CatalogStatus => Context is null ? "Estado: sin catálogo disponible" : State switch { ExplorerState.Loading => "Estado: consultando catálogo", ExplorerState.Error => "Estado: lectura detenida", ExplorerState.Empty => Statistics is null ? "Estado: sin catálogo disponible" : "Estado: catálogo sin assets para estos filtros", _ => "Estado: catálogo disponible" };
     private string UnavailableText => Error?.Message ?? (Context is null ? "Configura las raíces del universo en Ajustes." : State == ExplorerState.Loading ? "Consultando el catálogo…" : "No hay una lectura del catálogo disponible.");
     public string DetailTitle => Context is null ? "Catálogo no disponible" : DetailState switch { ExplorerState.Loading => "Consultando ficha", ExplorerState.Error => "Ficha no disponible", _ => Detail is null && LegacyDetail is null ? "Sin selección" : "Ficha del asset" };
     public string DetailMessage => Context is null ? UnavailableText : DetailState == ExplorerState.Loading ? "Consultando la ficha del asset…" : DetailState == ExplorerState.Error ? DetailError?.Message ?? "No se puede consultar la ficha." : "Selecciona un asset del catálogo para consultar su ficha.";
-    public string DetailStatusText => DetailState == ExplorerState.Ready ? "Ficha disponible" : "";
+    public IRemovalClient? RemovalClient => _service as IRemovalClient;
+    public string UniverseName => Context?.Profile.DisplayName ?? "";
+    public string? WebpPath => LegacyDetail?.WebpPath ?? FilePath(Detail?.Files.SingleOrDefault(f => f.Kind == "generated_webp"));
+    public string? MasterPath { get; private set; }
+    public string? ResourceFolder => new[] { WebpPath, MasterPath }.OfType<string>()
+        .Select(Path.GetDirectoryName).FirstOrDefault(Directory.Exists);
+    public bool CanOpenWebp => File.Exists(WebpPath);
+    public bool CanOpenMaster => File.Exists(MasterPath);
+    public bool CanOpenFolder => ResourceFolder is not null;
+    public bool CanRemove => RemovalClient is not null && (Detail is not null || LegacyDetail is not null);
+    public string DetailStatusText { get; private set; } = "";
+    private string? FilePath(CatalogFile? file) => file is null || Context is null ? null :
+        Path.Combine(file.Location == CatalogFileLocation.Production ? Context.Storage.ProductionRoot : Context.Storage.ArchiveRoot,
+            file.RelativePath.Replace('/', Path.DirectorySeparatorChar));
+
+    private void NotifyResource()
+    {
+        foreach (var property in new[] { nameof(UniverseName), nameof(WebpPath), nameof(MasterPath), nameof(DetailStatusText),
+                     nameof(CanOpenWebp), nameof(CanOpenMaster), nameof(CanOpenFolder), nameof(CanRemove) }) Notify(property);
+    }
+
     public string StatisticsAssets => Statistics?.TotalAssets.ToString("N0") ?? "—";
     public string StatisticsTypes => Statistics?.AssetTypes.Count.ToString("N0") ?? "—";
     public string StatisticsProfiles => Statistics?.ProductionProfiles.Count.ToString("N0") ?? "—";
@@ -183,7 +203,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private async Task RefreshAsync(bool loadFacets)
     {
         _load?.Cancel(); _load?.Dispose(); var source = _load = new(); var generation = ++_generation; var context = _context;
-        _detailLoad?.Cancel(); Detail = null; LegacyDetail = null; MasterEvidence = null; Preview = null; Documents.Clear(); DetailError = null; DetailState = ExplorerState.Empty;
+        _detailLoad?.Cancel(); Detail = null; LegacyDetail = null; MasterEvidence = null; MasterPath = null; Preview = null; Documents.Clear(); NotifyResource(); DetailError = null; DetailState = ExplorerState.Empty;
         Assets = null; SelectedAsset = null; Statistics = null; Planning = null; Distributions.Clear(); Error = null;
         if (context is null) { State = ExplorerState.Empty; return; }
         State = ExplorerState.Loading;
@@ -218,6 +238,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     {
         _detailLoad?.Cancel(); _detailLoad?.Dispose(); var source = _detailLoad = new(); var context = _context;
         Detail = null; LegacyDetail = null; MasterEvidence = null; Documents.Clear(); Preview = null; DetailError = null;
+        MasterPath = null; DetailStatusText = ""; NotifyResource();
         if (asset is null || context is null) { DetailState = ExplorerState.Empty; return; }
         DetailState = ExplorerState.Loading;
         try
@@ -226,22 +247,45 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
             if (source.IsCancellationRequested || context != _context) return;
             if (legacy is not null)
             {
-                var info = await Task.Run(() => System.IO.File.ReadAllText(legacy.InfoPath), source.Token);
-                var prompt = await Task.Run(() => System.IO.File.ReadAllText(legacy.PromptPath), source.Token);
+                var files = await Task.Run(() =>
+                {
+                    var index = new LegacyMasterEvidenceIndex(context);
+                    var evidence = index.Get(legacy.AssetId);
+                    var master = evidence is null ? null : index.SourcePath(evidence);
+                    var documents = new[] { ("Ficha descriptiva", legacy.InfoPath),
+                        ("Prompt", legacy.PromptPath), ("Identidad visual", legacy.VisualIdentityPath) }
+                        .Where(file => File.Exists(file.Item2))
+                        .Select(file => new DocumentView(file.Item1, File.ReadAllText(file.Item2))).ToArray();
+                    var absent = documents.Length < 3 || !File.Exists(legacy.WebpPath) || master is not null && !File.Exists(master);
+                    var changed = !absent && new FileInfo(legacy.WebpPath).Length != legacy.WebpBytes;
+                    return (evidence, master, documents, absent, changed);
+                }, source.Token);
                 if (source.IsCancellationRequested || context != _context) return;
-                LegacyDetail = legacy;
-                MasterEvidence = await Task.Run(() => new LegacyMasterEvidenceIndex(context).Get(legacy.AssetId), source.Token);
-                if (source.IsCancellationRequested || context != _context) return;
-                Documents.Add(new("info", info)); Documents.Add(new("prompt", prompt));
-                Preview = new(_service, context); Preview.Populate(asset);
+                LegacyDetail = legacy; MasterEvidence = files.evidence; MasterPath = files.master;
+                foreach (var document in files.documents) Documents.Add(document);
+                if (File.Exists(legacy.WebpPath)) { Preview = new(_service, context); Preview.Populate(asset); }
+                DetailStatusText = files.absent ? "Catalogado · faltan archivos" : files.changed
+                    ? "Requiere revisión · WebP modificado" : "Retrato histórico disponible";
+                NotifyResource();
                 DetailState = ExplorerState.Ready;
                 return;
             }
             var detail = await _service.DetailAsync(context, asset.AssetKey.AssetId, source.Token);
             if (source.IsCancellationRequested || context != _context) return;
             if (detail is null) throw new InvalidDataException("Selected asset is no longer cataloged.");
-            Detail = detail; Preview = new(_service, context); Preview.Populate(asset);
-            foreach (var document in detail.Documents) Documents.Add(new(document.Role, Encoding.UTF8.GetString(document.ToArray())));
+            Detail = detail;
+            MasterPath = FilePath(detail.Files.SingleOrDefault(f => f.Kind == "master"));
+            if (CanOpenWebp) { Preview = new(_service, context); Preview.Populate(asset); }
+            var presence = detail.Files.Select(f => (Path: FilePath(f), f.SizeBytes)).ToArray();
+            DetailStatusText = presence.Any(file => !File.Exists(file.Path)) ? "Catalogado · faltan archivos" :
+                presence.Any(file => new FileInfo(file.Path!).Length != file.SizeBytes) ? "Requiere revisión · hay archivos modificados" : "Procesado · archivos disponibles";
+            foreach (var document in detail.Documents)
+            {
+                var label = document.Role switch { "manifest" => "Manifiesto", "info" => "Ficha descriptiva",
+                    "prompt" => "Prompt", "visual_identity" => "Identidad visual", _ => document.Role };
+                Documents.Add(new(label, Encoding.UTF8.GetString(document.ToArray())));
+            }
+            NotifyResource();
             DetailState = ExplorerState.Ready;
         }
         catch (OperationCanceledException) { }
@@ -262,14 +306,14 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void Fail(Exception ex)
     {
         _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; Preview = null;
-        Detail = null; LegacyDetail = null; Documents.Clear(); Statistics = null; Planning = null; Distributions.Clear();
+        Detail = null; LegacyDetail = null; MasterPath = null; Documents.Clear(); NotifyResource(); Statistics = null; Planning = null; Distributions.Clear();
         Error = ExplorerError.From(ex); State = ExplorerState.Error;
     }
     private void CancelScope()
     {
         _validatedRoots = null; _rootValidationStopped = false; NotifyRoots();
         ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; SelectedAsset = null;
-        Detail = null; LegacyDetail = null; Preview = null; Documents.Clear(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
+        Detail = null; LegacyDetail = null; MasterPath = null; Preview = null; Documents.Clear(); NotifyResource(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
         DetailError = null; DetailState = ExplorerState.Empty;
         Statistics = null; Planning = null; Distributions.Clear(); Error = null;
     }
@@ -285,7 +329,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void NotifyRoots() { Notify(nameof(WorkspaceStatus)); Notify(nameof(ProductionStatus)); Notify(nameof(ArchiveStatus)); }
     private void NotifyCatalogText()
     {
-        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(DetailStatusText), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
+        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
     }
     public void Dispose() { CancelScope(); _load?.Dispose(); _detailLoad?.Dispose(); }
 }

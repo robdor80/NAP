@@ -60,7 +60,17 @@ public sealed class ArchiveMasterIndexStore
         var directory = Path.GetDirectoryName(IndexPath)!;
         ArchivePaths.EnsureDirectory(_context, directory);
         var temp = Path.Combine(directory, $"master_index.{Guid.NewGuid():N}.tmp");
-        using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+        Write(index, temp);
+        archiveLock.RequireWrites(_context);
+        ArchiveRootValidator.Require(_context);
+        ArchivePaths.FileExists(temp, NapIssueCodes.ArchiveIndexInvalid);
+        ArchivePaths.FileExists(IndexPath, NapIssueCodes.ArchiveIndexInvalid);
+        File.Move(temp, IndexPath, overwrite: true);
+    }
+
+    internal static void Write(ArchiveMasterIndex index, string path)
+    {
+        using (var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
         {
             using (var writer = new Utf8JsonWriter(output))
             {
@@ -86,11 +96,6 @@ public sealed class ArchiveMasterIndexStore
             output.WriteByte((byte)'\n');
             output.Flush(flushToDisk: true);
         }
-        archiveLock.RequireWrites(_context);
-        ArchiveRootValidator.Require(_context);
-        ArchivePaths.FileExists(temp, NapIssueCodes.ArchiveIndexInvalid);
-        ArchivePaths.FileExists(IndexPath, NapIssueCodes.ArchiveIndexInvalid);
-        File.Move(temp, IndexPath, overwrite: true);
     }
 
     private static string Text(JsonElement element, string name)

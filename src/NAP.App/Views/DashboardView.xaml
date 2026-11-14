@@ -77,7 +77,6 @@
           </StackPanel></DataTemplate></ItemsControl.ItemTemplate>
         </ItemsControl>
       </c:RobTitledFrame>
-      <TextBlock Text="{Binding DataContext.Automation.ArchivedReview, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap" Style="{StaticResource Muted}"/>
       <UniformGrid Columns="4">
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Pendientes" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Pending, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Procesando" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Processing, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>

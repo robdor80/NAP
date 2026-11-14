@@ -1,6 +1,6 @@
 ; NAP06 - laboratorio Windows x64. No servicio, CUTOVER ni migracion de datos.
 #ifndef AppVersion
-  #error "Es obligatorio definir /DAppVersion=2.0.0"
+  #error "Es obligatorio definir /DAppVersion=<version>"
 #endif
 #ifndef PayloadDir
   #error "Es obligatorio definir /DPayloadDir=<ruta>"
@@ -38,7 +38,7 @@ SetupIconFile={#AppIcon}
 UninstallDisplayIcon={app}\NAP.App.exe
 UninstallDisplayName=NAP - Nexus Asset Platform
 VersionInfoVersion={#AppVersion}
-VersionInfoDescription=NAP Installer (laboratorio NAP06)
+VersionInfoDescription=Instalador de NAP
 VersionInfoCompany=RobDev
 VersionInfoProductName=Nexus Asset Platform
 DisableWelcomePage=no

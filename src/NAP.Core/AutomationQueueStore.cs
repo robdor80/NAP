@@ -183,10 +183,12 @@ public sealed partial class AutomationQueueStore : IAutomationQueueStore, IAutom
         if (Execute(db, tx, "UPDATE items SET state=$s,revision=$r,payload=$v WHERE id=$i AND revision=$old", "$s", value.State.ToString(), "$r", value.Revision, "$v", AutomationJson.Encode(value), "$i", value.Id.Value, "$old", revision) != 1)
             throw new AutomationException(AutomationError.RevisionConflict, "Queue item revision changed.");
     }
-    private static void Event(SqliteConnection db, SqliteTransaction tx, QueueItem value, QueueStage stage, QueueEventCode code, QueueEventResult result, WorkflowAttemptId? attempt = null)
+    private void Event(SqliteConnection db, SqliteTransaction tx, QueueItem value, QueueStage stage, QueueEventCode code, QueueEventResult result, WorkflowAttemptId? attempt = null)
     {
         var seq = Convert.ToInt64(Scalar(db, tx, "SELECT ifnull(max(sequence),0)+1 FROM events WHERE item_id=$i", "$i", value.Id.Value));
         var e = new QueueEvent(value.Id, seq, DateTimeOffset.UtcNow, stage, code, result, value.State, value.Incident, attempt ?? value.ActiveAttempt);
-        Execute(db, tx, "INSERT INTO events VALUES($i,$s,$v)", "$i", value.Id.Value, "$s", seq, "$v", AutomationJson.Encode(e));
+        var floor = RemovedInboxPackages.EventFloor(_roots);
+        Execute(db, tx, "INSERT INTO events(rowid,item_id,sequence,payload) VALUES((SELECT max(coalesce(max(rowid),0),$floor)+1 FROM events),$i,$s,$v)",
+            "$floor", floor, "$i", value.Id.Value, "$s", seq, "$v", AutomationJson.Encode(e));
     }
 }

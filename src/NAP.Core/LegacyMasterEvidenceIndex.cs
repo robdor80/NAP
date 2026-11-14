@@ -35,6 +35,7 @@ public sealed class LegacyMasterEvidenceIndex(UniverseContext context)
     /// <summary>Requires explicit user-chosen manifest and directory of downloaded PNG files.</summary>
     public int Import(string evidencePath, string downloadedRoot)
     {
+        using var lease = CatalogBoundary.Acquire(context);
         if (context.Id.Value != "nimroel") throw new InvalidOperationException("Solo Nimroel admite este expediente.");
         var originals = Path.GetFullPath(downloadedRoot);
         if (!Directory.Exists(originals)) throw new DirectoryNotFoundException("No existe la carpeta de PNG descargados.");
@@ -167,6 +168,12 @@ public sealed class LegacyMasterEvidenceIndex(UniverseContext context)
     }
 
     public LegacyMasterEvidence? Get(string assetId) => ReadAll().FirstOrDefault(x => x.AssetId == assetId);
+    public string SourcePath(LegacyMasterEvidence master)
+    {
+        using var db = Connect(DatabasePath, SqliteOpenMode.ReadOnly);
+        var root = (string)CatalogSql.Scalar(db, null, "SELECT source_root FROM meta WHERE singleton=1")!;
+        return ProductionPaths.Resolve(root, master.RelativeSourcePath);
+    }
     public IReadOnlyList<LegacyMasterEvidence> ReadAll()
     {
         if (!File.Exists(DatabasePath)) return [];

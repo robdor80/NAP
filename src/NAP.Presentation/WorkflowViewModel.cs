@@ -13,8 +13,12 @@ public interface IWorkflowItemControlClient
 {
     Task<AutomationHostControl> ReadItemControlAsync(UniverseId universe, CancellationToken cancellation);
 }
-public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkflowDesktopClient, IWorkflowItemControlClient
+public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkflowDesktopClient, IWorkflowItemControlClient, IRemovalClient
 {
+    public Task<RemovalPlan> PreviewRemovalAsync(UniverseContext c, RemovalSelection selection, CancellationToken ct) =>
+        RemovalResponse.Preview(client, c, selection, ct);
+    public Task<RemovalResult> RemoveAsync(UniverseContext c, RemovalRequest request, CancellationToken ct) =>
+        RemovalResponse.Remove(client, c, request, ct);
     public async Task<WorkflowPage> PageAsync(UniverseId u, WorkflowPageRequest r, CancellationToken ct) => AutomationProtocol.Read<WorkflowPage>(await client.CallAsync(AutomationOperation.WorkflowPage,u.Value,r,ct));
     public async Task<WorkflowDetail> DetailAsync(UniverseId u, WorkflowDetailRequest r, CancellationToken ct) => AutomationProtocol.Read<WorkflowDetail>(await client.CallAsync(AutomationOperation.WorkflowDetail,u.Value,r,ct));
     public async Task<IReadOnlyList<WorkflowBatch>> BatchesAsync(UniverseId u,CancellationToken ct) => AutomationProtocol.Read<WorkflowBatch[]>(await client.CallAsync(AutomationOperation.WorkflowBatches,u.Value,new {},ct));
@@ -24,10 +28,10 @@ public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkfl
 }
 public sealed record WorkflowFilterChoice(WorkflowFilter Value,string Label);
 public sealed record WorkflowBatchChoice(QueueBatchId? Id,string Label);
-public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe)
+public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false)
 {
     public string Name => Value.Name;
-    public string State => WorkflowWords.State(Value.State);
+    public string State => Archived ? "Archivado" : WorkflowWords.State(Value.State);
     public string Result => Value.Incident != QueueIncident.None ? AutomationControlViewModel.Problem(Value.Incident) : Value.State == QueueState.Completed ? "Completado" : Value.State == QueueState.Duplicate ? "Ya estaba registrado" : "";
     public string Date => WorkflowWords.Date(Value.UpdatedUtc);
     public UiTone Tone => Value.State is QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource ? UiTone.Warning : Value.State == QueueState.Completed ? UiTone.Success : UiTone.Neutral;
@@ -106,7 +110,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         PreviousDecisions=new(()=>LoadActivity(-20,true),()=>!_disposed&&!_changing&&_decisionOffset>0,FailRead);
     }
     public IReadOnlyList<WorkflowFilterChoice> Filters {get;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión"),new(WorkflowFilter.Archived,"Archivados")];
-    public WorkflowFilterChoice Filter {get=>_filter;set{if(Set(ref _filter,value)) _offset=0;}}
+    public WorkflowFilterChoice Filter {get=>_filter;set{if(Set(ref _filter,value)){_offset=0;Notify(nameof(CanDeleteNotice));}}}
     public string Search {get=>_search;set=>Set(ref _search,value);}
     public ObservableCollection<WorkflowBatchChoice> Batches {get;}=[];
     public WorkflowBatchChoice Batch {get=>_batch;set{if(Set(ref _batch,value))_offset=0;}}
@@ -132,6 +136,17 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled or QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource;
     public string CancelLabel=>NeedsReview?"Archivar aviso":"Cancelar este asset";
     public bool CanResumeItem=>!_disposed&&!_changing&&_controlReadable&&_itemInhibited&&_detail!=null;
+    public string ResumeLabel => NeedsReview ? "Restaurar aviso" : "Reactivar este recurso";
+    public bool CanDeleteNotice => CanResumeItem && NeedsReview && Filter.Value == WorkflowFilter.Archived && _client is IRemovalClient;
+    public IRemovalClient? NoticeRemovalClient => _client as IRemovalClient;
+    public UniverseContext? NoticeContext => _context();
+    public QueueItemId? SelectedNotice => CanDeleteNotice ? _detail?.Item.ItemId : null;
+    public async Task NoticeRemovedAsync()
+    {
+        CloseDetail.Execute(null);
+        await LoadPageAsync(true);
+    }
+
     public bool HasEventPaging=>_eventOffset>0||_detail?.MoreEvents==true;
     public bool HasDecisionPaging=>_decisionOffset>0||_detail?.MoreDecisions==true;
     public string EventPageLabel=>Events.Count==0?"":$"{_eventOffset+1}–{_eventOffset+Events.Count}";
@@ -145,7 +160,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public string Name=>_detail?.Item.Name??"";
     public string Universe=>_context()?.Profile.DisplayName??"";
     public string PackageName=>_detail?.Item.PackageName??"";
-    public string ItemState=>_detail is null?"":WorkflowWords.State(_detail.Item.State);
+    public string ItemState => _detail is null ? "" : _itemInhibited ? "Archivado" : WorkflowWords.State(_detail.Item.State);
     public string Dates=>_detail is null?"":$"Recibido: {WorkflowWords.Date(_detail.Item.CreatedUtc)} · Actualizado: {WorkflowWords.Date(_detail.Item.UpdatedUtc)}";
     public string Problem=>_detail is null?"":AutomationControlViewModel.Problem(_detail.Item.Incident);
     public string Guidance=>_detail?.ReadNotice is {} note?note:_detail?.Preview?.State==ExceptionalDecisionState.Approved
@@ -179,7 +194,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             var batches=await _client.BatchesAsync(c.Id,read.Token);
             if(!Current(scope,c)||generation!=_pageGeneration||read.IsCancellationRequested)return;
             if(page.UniverseId!=c.Id||page.Items.Any(r=>r.UniverseId!=c.Id)||batches.Any(b=>b.UniverseId!=c.Id))throw new InvalidDataException("Workflow scope mismatch.");
-            _total=page.Total;_offset=page.Offset;Rows.Clear();foreach(var row in page.Items)Rows.Add(new(row,c.Profile.DisplayName));
+            _total=page.Total;_offset=page.Offset;Rows.Clear();foreach(var row in page.Items)Rows.Add(new(row,c.Profile.DisplayName, Filter.Value == WorkflowFilter.Archived));
             var prior=Batch.Id;Batches.Clear();Batches.Add(new(null,"Todos los lotes"));
             foreach(var b in batches)
             {
@@ -222,6 +237,11 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             if(d.UniverseId!=c.Id||d.Item.UniverseId!=c.Id||d.Item.ItemId!=item)throw new InvalidDataException("Workflow detail mismatch.");
             _eventThrough=d.EventThrough;_decisionThrough=d.DecisionThrough;
             _detail=d;_choice=null;_controlReadable=control!=null;_itemInhibited=control?.CancelledItems.Contains(item.Value)==true;
+            if (_itemInhibited && Filter.Value != WorkflowFilter.Archived)
+            {
+                CloseDetail.Execute(null);
+                return;
+            }
             EditExpanded=d.Preview==null;Events.Clear();foreach(var e in d.Events)Events.Add(new(WorkflowWords.Date(e.Utc),WorkflowWords.Action(e),e.Incident!=QueueIncident.None?AutomationControlViewModel.Problem(e.Incident):WorkflowWords.State(e.State)));
             Decisions.Clear();foreach(var decision in d.Decisions??[])Decisions.Add(new(WorkflowWords.Date(decision.Utc),decision.State switch{ExceptionalDecisionState.Proposed=>"Corrección propuesta",ExceptionalDecisionState.Approved=>"Corrección aprobada",_=>"Corrección revocada"},$"{decision.Profile} · {decision.Width} × {decision.Height}"));
             DetailStatus=controlsUnavailable?"Los controles del asset no están disponibles. Actualiza para comprobar su estado.":"";NotifyDetail();
@@ -250,7 +270,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(operation==AutomationOperation.CancelItem&&!CanCancelItem)return;
         if(operation==AutomationOperation.ResumeItem&&!CanResumeItem)return;
         var cancelling=operation==AutomationOperation.CancelItem;
-        if(!await _confirmation.ConfirmAsync(new(cancelling?CancelLabel:"Reactivar este asset",
+        if(!await _confirmation.ConfirmAsync(new(cancelling?CancelLabel:ResumeLabel,
             cancelling&&NeedsReview?"El aviso dejará de contarse como pendiente. Se conserva en Archivados, con sus archivos e historial; puedes volver a mostrarlo.":cancelling?"Se bloquearán las próximas etapas de este asset. Una etapa indivisible ya iniciada podrá terminar antes de detenerse.":
                 "Se retirará exclusivamente el bloqueo de este asset; su continuación seguirá sometida a la política autorizada.",
             c.Id,[d.Item.Name, "Identificador: "+item.Value],c.Profile.DisplayName),_lifetime.Token))return;
@@ -261,9 +281,11 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         {
             await _client.MutateAsync(c.Id,operation,new AutomationItemRequest(item.Value),_lifetime.Token);
             if(!Current(scope,c)||ActiveItem!=item)return;
-            await LoadDetailAsync();
+            CloseDetail.Execute(null);
             await LoadPageAsync();
-            DetailStatus=cancelling?"Cancelación persistida para este asset.":"Bloqueo del asset retirado.";
+            Status = d.Item.State is QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource
+                ? (cancelling ? "Aviso archivado." : "Aviso restaurado.")
+                : (cancelling ? "Trabajo cancelado." : "Trabajo reactivado.");
         }
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado de control sin confirmar. Actualiza antes de reintentar.";}}
         finally{_changing=false;RefreshCommands();}
@@ -291,7 +313,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
         finally{_changing=false;Notify(nameof(CanCancelItem));Notify(nameof(CanResumeItem));RefreshCommands();}
     }
-    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CancelLabel),nameof(CanCancelItem),nameof(CanResumeItem)})Notify(n);RefreshCommands();}
+    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CancelLabel),nameof(CanCancelItem),nameof(CanResumeItem),nameof(CanDeleteNotice),nameof(ResumeLabel)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;_controlReadable=false;_itemInhibited=false;Events.Clear();Decisions.Clear();NotifyDetail();}
     private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,CancelItem,ResumeItem,NextEvents,PreviousEvents,NextDecisions,PreviousDecisions})command.Refresh();}
     private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}

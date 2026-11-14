@@ -35,7 +35,8 @@
             <TextBlock Text="{Binding ItemState}" Margin="0,8,0,0"/>
             <WrapPanel Margin="0,8,0,10">
               <Button Content="{Binding CancelLabel}" Command="{Binding CancelItem}" ToolTip="Inhibe futuras etapas del asset; no interrumpe un paso indivisible" Visibility="{Binding CanCancelItem,Converter={StaticResource Visible}}"/>
-              <Button Content="Reactivar este asset" Command="{Binding ResumeItem}" ToolTip="Retira la inhibición persistida de este asset" Visibility="{Binding CanResumeItem,Converter={StaticResource Visible}}"/>
+              <Button Content="{Binding ResumeLabel}" Command="{Binding ResumeItem}" ToolTip="Retira la inhibición persistida de este asset" Visibility="{Binding CanResumeItem,Converter={StaticResource Visible}}"/>
+              <Button Content="Eliminar aviso definitivamente" Click="DeleteNotice" Style="{StaticResource Danger}" Visibility="{Binding CanDeleteNotice,Converter={StaticResource Visible}}"/>
             </WrapPanel>
             <StackPanel Visibility="{Binding NeedsReview,Converter={StaticResource Visible}}">
               <TextBlock Text="{Binding Problem}" Foreground="{StaticResource WarningBrush}" FontWeight="SemiBold"/>

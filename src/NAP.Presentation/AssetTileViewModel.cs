@@ -15,7 +15,7 @@ public sealed class AssetTileViewModel : ObservableObject, IDisposable
     public AssetTileViewModel(IExplorerService service, UniverseContext context) { _service = service; _context = context; }
     public CatalogAssetSummary? Asset => _asset;
     public string Title => _asset?.AssetKey.AssetId ?? "Cargando…";
-    public string Subtitle => _asset is null ? "" : _asset.AssetType + " · " + _asset.ProductionProfile;
+    public string Subtitle => _asset is null ? "" : _asset.WebpAvailable ? _asset.AssetType + " · " + _asset.ProductionProfile : "WebP ausente";
     public string? CachePath { get => _cachePath; private set => Set(ref _cachePath, value); }
     public ExplorerError? Error { get => _error; private set => Set(ref _error, value); }
     public void Populate(CatalogAssetSummary asset)
@@ -33,6 +33,7 @@ public sealed class AssetTileViewModel : ObservableObject, IDisposable
         var source = _thumbnail = new(); var asset = _asset;
         if (asset is null) return;
         Error = null;
+        if (!asset.WebpAvailable) return;
         try
         {
             var result = await _service.ThumbnailAsync(_context, asset, source.Token);

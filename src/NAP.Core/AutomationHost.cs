@@ -392,6 +392,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 slot.Preparation.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };
                 slot.Execution.Checkpoint = boundary => { if (slot.CurrentItem is { } item) _options.LaboratoryCheckpoint?.Invoke(slot.Context.Id, item, boundary); };
                 slot.RuntimeState = new(slot.Context);
+                if (File.Exists(Path.Combine(slot.Context.Storage.StateRoot, "resource-removal.json"))) RecoverResourceRemoval(slot);
             }
             _started.TrySetResult();
             while (!_stopping)

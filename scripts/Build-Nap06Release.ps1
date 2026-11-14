@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?$')]
-    [string]$Version = '2.0.0',
+    [string]$Version,
     [Parameter(Mandatory)][string]$InnoCompiler
 )
 Set-StrictMode -Version Latest
@@ -9,6 +9,10 @@ $ErrorActionPreference = 'Stop'
 if (-not $IsWindows) { throw 'NAP06 requiere Windows x64.' }
 if ($env:PROCESSOR_ARCHITECTURE -ne 'AMD64') { throw 'NAP06 requiere un proceso Windows x64.' }
 $repo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
+if (-not $Version) {
+    $Version = ([xml](Get-Content -Raw (Join-Path $repo 'Directory.Build.props'))).Project.PropertyGroup.Version
+}
+
 $compiler = (Resolve-Path -LiteralPath $InnoCompiler).Path
 $work = Join-Path $repo 'artifacts/nap06'
 if (Test-Path -LiteralPath $work) { throw 'El directorio de trabajo de NAP06 ya existe. Use un checkout limpio para evitar artefactos antiguos.' }

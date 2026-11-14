@@ -82,6 +82,27 @@ public sealed class LegacyMasterEvidenceIndexTests
         Assert.Equal(39, index.Import(report, source)); // idempotent: no silent overwrites
         Assert.Equal(nativeBefore, SHA256.HashData(File.ReadAllBytes(f.Catalog.CatalogPath)));
         Assert.Equal(legacyBefore, SHA256.HashData(File.ReadAllBytes(legacyPath)));
+
+        var selected = exception.AssetId;
+        var legacy = new LegacyPortraitIndex(f.Context);
+        var portrait = legacy.Get(selected)!;
+        var unrelated = Path.Combine(Path.GetDirectoryName(portrait.WebpPath)!, "conservar.txt");
+        File.WriteAllText(unrelated, "ajeno al retrato");
+        var masterPath = index.SourcePath(exception);
+        var request = new RemovalSelection(AssetId: selected);
+        var preview = LocalResourceRemoval.Preview(f.Context, request);
+        Assert.Contains(preview.Entries, e => e.Path == masterPath);
+        var removed = LocalResourceRemoval.Remove(f.Context, new(request, preview.Fingerprint));
+        Assert.True(removed.Removed, string.Join("\n", removed.Problems));
+        Assert.Empty(removed.Problems);
+        Assert.False(File.Exists(masterPath));
+        Assert.False(File.Exists(portrait.WebpPath));
+        Assert.True(File.Exists(unrelated));
+        Assert.Null(legacy.Get(selected));
+        Assert.Null(index.Get(selected));
+        Assert.Equal(38, legacy.Query().Count);
+        Assert.Equal(38, index.ReadAll().Count);
+        Assert.Equal(nativeBefore, SHA256.HashData(File.ReadAllBytes(f.Catalog.CatalogPath)));
     }
 
     [Fact]

@@ -3,6 +3,26 @@ using NAP.Core;
 
 namespace NAP.Presentation;
 
+public interface IRemovalClient
+{
+    Task<RemovalPlan> PreviewRemovalAsync(UniverseContext context, RemovalSelection selection, CancellationToken cancellation);
+    Task<RemovalResult> RemoveAsync(UniverseContext context, RemovalRequest request, CancellationToken cancellation);
+}
+
+internal static class RemovalResponse
+{
+    internal static async Task<RemovalPlan> Preview(AutomationHostClient client, UniverseContext context, RemovalSelection selection, CancellationToken ct)
+    {
+        var response = await client.CallAsync(AutomationOperation.RemovalPreview, context.Id.Value, selection, ct);
+        if (response.TryGetProperty("Problems", out _))
+            throw new InvalidOperationException(string.Join(Environment.NewLine, AutomationProtocol.Read<RemovalResult>(response).Problems));
+        return AutomationProtocol.Read<RemovalPlan>(response);
+    }
+
+    internal static async Task<RemovalResult> Remove(AutomationHostClient client, UniverseContext context, RemovalRequest request, CancellationToken ct) =>
+        AutomationProtocol.Read<RemovalResult>(await client.CallAsync(AutomationOperation.Remove, context.Id.Value, request, ct));
+}
+
 public interface IExplorerService
 {
     Task BeginSessionAsync(UniverseContext context, CancellationToken cancellation) => Task.CompletedTask;
@@ -19,7 +39,7 @@ public interface IExplorerService
 /// One catalog page combines native certified records with indexed historical records.
 /// The original strict AssetCatalog.db v1 remains unchanged.
 /// </summary>
-public sealed class ExplorerService : IExplorerService
+public sealed class ExplorerService : IExplorerService, IRemovalClient
 {
     private readonly SemaphoreSlim _catalog = new(1, 1);
     private UniverseContext? _context;
@@ -35,6 +55,11 @@ public sealed class ExplorerService : IExplorerService
         try { return await Task.Run(() => { cancellation.ThrowIfCancellationRequested(); var value = operation(); cancellation.ThrowIfCancellationRequested(); return value; }, cancellation).ConfigureAwait(false); }
         finally { _catalog.Release(); }
     }
+    public Task<RemovalPlan> PreviewRemovalAsync(UniverseContext c, RemovalSelection selection, CancellationToken ct) =>
+        Run(() => LocalResourceRemoval.Preview(c, selection), ct);
+    public Task<RemovalResult> RemoveAsync(UniverseContext c, RemovalRequest request, CancellationToken ct) =>
+        Task.Run(() => LocalResourceRemoval.Remove(c, request), ct);
+
     public Task BeginSessionAsync(UniverseContext c, CancellationToken ct) =>
         Run(() => { Reader(c).InvalidateValidation(); return 0; }, ct);
 
@@ -57,7 +82,7 @@ public sealed class ExplorerService : IExplorerService
             items.AddRange(historic.Skip(start).Take(limit - items.Count).Select(p =>
                 new CatalogAssetSummary(new(c.Id, p.AssetId), "portrait", "portrait_npc",
                     p.RelativeDirectory + "/" + p.AssetId + ".webp",
-                    new Sha256Digest(p.WebpSha256), p.WebpBytes)));
+                    new Sha256Digest(p.WebpSha256), p.WebpBytes, File.Exists(p.WebpPath))));
         }
         return new CatalogPage(total, offset, items.AsReadOnly());
     }, ct);
@@ -69,9 +94,7 @@ public sealed class ExplorerService : IExplorerService
         Run(() =>
         {
             var index = new LegacyPortraitIndex(c);
-            var value = index.Get(id);
-            if (value is not null) index.Verify(value);
-            return value;
+            return index.Get(id);
         }, ct);
 
     public Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter f, CancellationToken ct) => Run(() =>
