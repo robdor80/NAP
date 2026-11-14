@@ -66,3 +66,5 @@ Además, `src/NAP.Presentation/AutomationDesktopBridge.cs` recibe el principal S
 - PR #73 continúa en Draft; scripts **no instalados ni ejecutados** en MSI desde la nueva rama. En particular, el resumen de 44.983/16 procede del diagnóstico anterior del propietario y no de esta nueva herramienta.
 
 Nota: el inventario no demuestra permisos efectivos, exclusión completa de escritores, ni que un lock no vacío esté ocupado. Mantener #47 abierta. Los 39 retratos y sus PNG no requieren más pruebas de aceptación.
+
+**Referencia API Windows:** Microsoft documenta que `NamedPipeServerStreamAcl.Create` admite `PipeSecurity` explícito, pero si se conserva `CurrentUserOnly` se ignora ese objeto y la tubería se limita a la identidad actual: https://learn.microsoft.com/en-us/dotnet/api/system.io.pipes.namedpipeserverstreamacl.create?view=net-10.0. Una adaptación futura tendrá que retirar el flag **solo en el modo con ACL/SID explícitos**, no en el laboratorio.
