@@ -16,35 +16,35 @@
   <SolidColorBrush x:Key="DeepBrush" Color="{StaticResource PetroleumDeep}" />
   <SolidColorBrush x:Key="TextBrush" Color="{StaticResource Ice}" />
   <SolidColorBrush x:Key="MutedBrush" Color="{StaticResource IceMuted}" />
-  <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource Ice}" />
-  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Ice}" />
+  <SolidColorBrush x:Key="BorderBrush" Color="#24404D" />
+  <SolidColorBrush x:Key="AccentBrush" Color="#67CBEC" />
   <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource Success}" />
   <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource Warning}" />
   <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error}" />
   <SolidColorBrush x:Key="AiBrush" Color="{StaticResource AI}" />
-  <CornerRadius x:Key="Radius">18</CornerRadius>
+  <CornerRadius x:Key="Radius">12</CornerRadius>
   <Thickness x:Key="Stroke">1</Thickness>
   <Thickness x:Key="SpaceSmall">8</Thickness>
   <Thickness x:Key="Space">16</Thickness>
   <Thickness x:Key="SpaceLarge">24</Thickness>
   <Thickness x:Key="FramePadding">24,28,24,24</Thickness>
-  <s:Double x:Key="CornerSize">18</s:Double>
+  <s:Double x:Key="CornerSize">13</s:Double>
   <s:Double x:Key="FrameTitleInset">42</s:Double>
   <s:Double x:Key="FrameTitleGap">8</s:Double>
   <GridLength x:Key="SidebarWidth">176</GridLength>
-  <s:Double x:Key="TileWidth">220</s:Double>
-  <s:Double x:Key="TileHeight">260</s:Double>
+  <s:Double x:Key="TileWidth">250</s:Double>
+  <s:Double x:Key="TileHeight">314</s:Double>
   <s:Double x:Key="RestElevation">5</s:Double>
   <s:Double x:Key="PressedElevation">1</s:Double>
   <s:Double x:Key="DisabledContentOpacity">0.42</s:Double>
   <s:Double x:Key="DisabledBorderOpacity">0.6</s:Double>
   <s:Double x:Key="BodySize">14</s:Double>
-  <s:Double x:Key="CaptionSize">12</s:Double>
+  <s:Double x:Key="CaptionSize">13</s:Double>
   <s:Double x:Key="TitleSize">26</s:Double>
   <s:Double x:Key="CompactTitleSize">22</s:Double>
   <s:Double x:Key="MetricSize">36</s:Double>
   <s:Double x:Key="TechnicalSize">11</s:Double>
-  <s:Double x:Key="IconSize">18</s:Double>
+  <s:Double x:Key="IconSize">13</s:Double>
   <Duration x:Key="QuickTransition">0:0:0.10</Duration>
   <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="14" ShadowDepth="{StaticResource RestElevation}" Opacity="0.25" />
 </ResourceDictionary>

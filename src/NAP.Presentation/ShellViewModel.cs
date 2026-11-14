@@ -53,7 +53,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         Settings.ProfilesLocation = profilesStore?.LocalRoot;
         if (profilesSnapshot is not null) ApplyProfiles(profilesSnapshot);
         Navigation = new[] { new ShellNavigationItem("Inicio", "\uE80F"), new("Catálogo", "\uE8F1"), new("Producción", "\uE895"), new("Historial", "\uE81C"), new("Ajustes", "\uE713") };
-        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Auditor IA", "\uE9CE"), new("Backups", "\uE74E"), new("Git", "\uE8A5"), new("RoDo", "\uE899") };
+        Tools = new[] { new ShellNavigationItem("Objetivos", "\uE81D"), new("Estadísticas", "\uE9D9"), new("Auditor IA", "\uE9CE"), new("Backups", "\uE74E"), new("Git", "\uE8A5") };
         OpenIncident = new(p =>
         {
             Pipeline.Work!.Filter = Pipeline.Work.Filters.Single(f=>f.Value==WorkflowFilter.Review);
