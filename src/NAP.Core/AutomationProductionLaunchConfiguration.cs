@@ -96,26 +96,41 @@ internal sealed class AutomationProductionBoundary
             !ProductionPaths.Within(data, control) ||
             !ProductionPaths.Within(data, config.MixedInboxRoot ?? control) && config.MixedInboxRoot is not null ||
             ProductionPaths.Within(data, backup) || ProductionPaths.Within(install, backup) ||
-            ProductionPaths.Within(Path.GetTempPath(), backup))
-            throw new InvalidDataException("Production roots, configuration and backup must follow distinct protected boundaries.");
+            ProductionPaths.Within(Path.GetTempPath(), backup) ||
+            string.Equals(Path.GetPathRoot(data), Path.GetPathRoot(backup), StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException("Production roots and backup receipt must be on separate protected volumes.");
 
         // A user-writable developer checkout or LocalAppData installation fails this gate.
         // For files/binaries the writer SID itself must NOT have write permissions.
         CheckProtectedDirectory(install, access.WriterSid, access.DesktopSid, false);
         CheckProtectedFile(launch, access.WriterSid, access.DesktopSid);
-        // Ensure the complete published binary/configuration tree is not mutable
-        // by either the interactive desktop or the runtime writer.
-        var distributedFiles = Directory.EnumerateFiles(install, "*", SearchOption.AllDirectories).Take(5001).ToArray();
-        if (distributedFiles.Length is < 2 or > 5000)
-            throw new InvalidDataException("The protected NAP distribution has an invalid inventory.");
-        var hostExe = Path.Combine(install, "host", "NAP.AutomationHost.exe");
-        var hostCore = Path.Combine(install, "host", "NAP.Core.dll");
-        CheckProtectedFile(hostExe, access.WriterSid, access.DesktopSid);
-        CheckProtectedFile(hostCore, access.WriterSid, access.DesktopSid);
-        foreach (var file in distributedFiles)
-            CheckProtectedFile(file, access.WriterSid, access.DesktopSid);
-        foreach (var directory in Directory.EnumerateDirectories(install, "*", SearchOption.AllDirectories))
-            CheckProtectedDirectory(directory, access.WriterSid, access.DesktopSid, false, false);
+        // Walk each directory explicitly, refusing links before recursing. Protect
+        // every published file (not only the EXE): replaceable DLLs are code.
+        var pending = new Queue<string>();
+        pending.Enqueue(install);
+        var publishedCount = 0;
+        while (pending.Count > 0)
+        {
+            var parent = pending.Dequeue();
+            foreach (var entry in Directory.EnumerateFileSystemEntries(parent))
+            {
+                if (++publishedCount > 5000)
+                    throw new InvalidDataException("Protected distribution exceeds its bounded inventory.");
+                var attributes = File.GetAttributes(entry);
+                if ((attributes & FileAttributes.ReparsePoint) != 0)
+                    throw new InvalidDataException("Protected binary tree contains a linked component.");
+                if ((attributes & FileAttributes.Directory) != 0)
+                {
+                    CheckProtectedDirectory(entry, access.WriterSid, access.DesktopSid, false, false);
+                    pending.Enqueue(entry);
+                }
+                else CheckProtectedFile(entry, access.WriterSid, access.DesktopSid);
+            }
+        }
+        if (publishedCount < 2)
+            throw new InvalidDataException("The protected NAP distribution is incomplete.");
+        CheckProtectedFile(Path.Combine(install, "host", "NAP.AutomationHost.exe"), access.WriterSid, access.DesktopSid);
+        CheckProtectedFile(Path.Combine(install, "host", "NAP.Core.dll"), access.WriterSid, access.DesktopSid);
         CheckProtectedDirectory(data, access.WriterSid, access.DesktopSid, true);
         CheckProtectedDirectory(control, access.WriterSid, access.DesktopSid, true);
         var roots = contexts.SelectMany(c => new[] { c.Storage.WorkspaceRoot, c.Storage.ProductionRoot, c.Storage.ArchiveRoot }).ToArray();
@@ -212,21 +227,29 @@ internal sealed class AutomationProductionBoundary
 
     private static void CheckParentChain(string path, string desktop)
     {
-        // Reject desktop ownership or direct delete/ACL-control on any existing parent.
+        // Checking only the desktop SID would miss Everyone/Users grants.
+        // Reject any untrusted destructive ACE on a parent that could replace a
+        // protected subtree, irrespective of the child's own ACL.
+        var system = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null).Value;
+        var admin = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Value;
+        const string installer = "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464";
         for (var current = Path.GetDirectoryName(path); !string.IsNullOrEmpty(current); current = Path.GetDirectoryName(current))
         {
             if (ProductionPaths.CheckPath(current, NapIssueCodes.PackageRootInvalid) is null)
                 throw new DirectoryNotFoundException("Protected NAP parent disappeared.");
             var acl = new DirectoryInfo(current).GetAccessControl(AccessControlSections.Owner | AccessControlSections.Access);
-            if (((SecurityIdentifier)acl.GetOwner(typeof(SecurityIdentifier))!).Value == desktop)
-                throw new UnauthorizedAccessException("Desktop can reclaim a parent of protected NAP files.");
+            var owner = ((SecurityIdentifier)acl.GetOwner(typeof(SecurityIdentifier))!).Value;
+            if (owner != system && owner != admin && owner != installer)
+                throw new UnauthorizedAccessException("A protected NAP parent has a mutable owner.");
             foreach (FileSystemAccessRule rule in acl.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
-                if (rule.AccessControlType == AccessControlType.Allow &&
-                    ((SecurityIdentifier)rule.IdentityReference).Value == desktop &&
+                if (rule.AccessControlType != AccessControlType.Allow ||
                     (rule.FileSystemRights & (FileSystemRights.DeleteSubdirectoriesAndFiles |
-                        FileSystemRights.ChangePermissions | FileSystemRights.TakeOwnership)) != 0)
-                    throw new UnauthorizedAccessException("Desktop can modify a protected NAP parent.");
+                        FileSystemRights.Delete | FileSystemRights.ChangePermissions |
+                        FileSystemRights.TakeOwnership)) == 0) continue;
+                var principal = ((SecurityIdentifier)rule.IdentityReference).Value;
+                if (principal != system && principal != admin && principal != installer)
+                    throw new UnauthorizedAccessException("An untrusted principal can replace a protected NAP parent.");
             }
         }
     }
