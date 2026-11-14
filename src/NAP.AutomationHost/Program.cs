@@ -33,15 +33,14 @@ try
             try { Console.Error.WriteLine($"preparation_storage_unavailable:{universe.Value}:{item.Value}:0x{error.HResult:X8}:{detail[..Math.Min(detail.Length, 65536)]}"); }
             catch (IOException) { /* A broken diagnostic stream must not prevent durable parking. */ }
         },
-        LaboratoryCheckpoint = (_, item, boundary) =>
+        LaboratoryCheckpoint = personal ? null : (Action<UniverseId, QueueItemId, string>)((_, item, boundary) =>
         {
             if (boundary != config.LaboratoryCheckpoint || Interlocked.Exchange(ref checkpointReached, 1) != 0) return;
-            // Only an explicitly configured TEMP laboratory can reach this injection. The fixture kills
-            // this process after observing the durable boundary; this is never a shutdown mechanism.
+            // The laboratory-only checkpoint must NEVER be installed in a personal Host.
             Console.WriteLine("NAP laboratory checkpoint: " + item.Value + ":" + boundary);
             Console.Out.Flush();
             Thread.Sleep(Timeout.Infinite);
-        } }, auditor);
+        }) }, auditor);
     await host.Started;
     var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(config.LaboratoryRoot, "desktop-requests"), auditor);
     await using var server = new AutomationPipeServer(config.Connection, bridge.HandleAsync);
