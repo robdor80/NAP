@@ -77,11 +77,51 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
     public Task<GitCommitResult> RetryCommitAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Call<GitCommitResult>(c, AutomationOperation.RetryCommit, id, ct);
     public Task<GitPushResult> PushAsync(UniverseContext c, GitOperationId id, CancellationToken ct) => Call<GitPushResult>(c, AutomationOperation.Push, id, ct);
     public Task BeginSessionAsync(UniverseContext c, CancellationToken ct) { ct.ThrowIfCancellationRequested(); return Task.CompletedTask; }
-    public Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter filter, int offset, int limit, CancellationToken ct) => Call<CatalogPage>(c, AutomationOperation.CatalogPage, new AutomationCatalogPage(filter, offset, limit), ct);
-    public Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext c, string id, CancellationToken ct) => Call<CatalogAssetSnapshot?>(c, AutomationOperation.CatalogDetail, id, ct);
-    public Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter filter, CancellationToken ct) => Call<CatalogStatistics>(c, AutomationOperation.Statistics, filter, ct);
+    // Legacy Nimroel portraits are read-only and live in their existing separate
+    // index. Keep them visible alongside Host-native results; never import twice.
+    public async Task<CatalogPage> PageAsync(UniverseContext c, CatalogFilter filter, int offset, int limit, CancellationToken ct)
+    {
+        var native = await Call<CatalogPage>(c, AutomationOperation.CatalogPage, new AutomationCatalogPage(filter, offset, limit), ct);
+        var historic = new LegacyPortraitIndex(c).Query(filter);
+        var nativeCount = checked((int)native.TotalCount);
+        var items = new List<CatalogAssetSummary>(native.Items);
+        if (items.Count < limit && offset + items.Count >= nativeCount)
+        {
+            var start = Math.Max(0, offset + items.Count - nativeCount);
+            items.AddRange(historic.Skip(start).Take(limit - items.Count).Select(p =>
+                new CatalogAssetSummary(new(c.Id, p.AssetId), "portrait", "portrait_npc",
+                    p.RelativeDirectory + "/" + p.AssetId + ".webp",
+                    new Sha256Digest(p.WebpSha256), p.WebpBytes)));
+        }
+        return new CatalogPage(checked(nativeCount + historic.Count), offset, items.AsReadOnly());
+    }
+    public Task<CatalogAssetSnapshot?> DetailAsync(UniverseContext c, string id, CancellationToken ct) =>
+        Call<CatalogAssetSnapshot?>(c, AutomationOperation.CatalogDetail, id, ct);
+    public Task<LegacyPortrait?> LegacyDetailAsync(UniverseContext c, string id, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var index = new LegacyPortraitIndex(c);
+        var portrait = index.Get(id);
+        if (portrait is not null) index.Verify(portrait);
+        return Task.FromResult(portrait);
+    }
+    public async Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter filter, CancellationToken ct)
+    {
+        var native = await Call<CatalogStatistics>(c, AutomationOperation.Statistics, filter, ct);
+        var historic = new LegacyPortraitIndex(c).Statistics(filter);
+        static IReadOnlyList<CatalogDistribution> Merge(IReadOnlyList<CatalogDistribution> left, IReadOnlyList<CatalogDistribution> right) =>
+            Array.AsReadOnly(left.Concat(right).GroupBy(x => (x.Dimension, x.Value, x.TraitType))
+                .Select(group => new CatalogDistribution(group.Key.Dimension, group.Key.Value,
+                    group.Sum(x => x.Count), group.Key.TraitType))
+                .OrderBy(x => x.Dimension, StringComparer.Ordinal).ThenBy(x => x.Value, StringComparer.Ordinal).ToArray());
+        return new CatalogStatistics(native.TotalAssets + historic.TotalAssets,
+            Merge(native.AssetTypes, historic.AssetTypes), Merge(native.ProductionProfiles, historic.ProductionProfiles),
+            Merge(native.Classifications, historic.Classifications), Merge(native.Traits, historic.Traits));
+    }
     public async Task<ThumbnailResult> ThumbnailAsync(UniverseContext c, CatalogAssetSummary asset, CancellationToken ct)
     {
+        if (new LegacyPortraitIndex(c).Get(asset.AssetKey.AssetId) is not null)
+            return await new ExplorerService().ThumbnailAsync(c, asset, ct).ConfigureAwait(false);
         var view = await Call<AutomationThumbnailView>(c, AutomationOperation.Thumbnail, asset, ct).ConfigureAwait(false);
         if (view.Bytes.Length > 2 * 1024 * 1024 || view.Width is < 1 or > 320 || view.Height is < 1 or > 320) throw new InvalidDataException("Invalid thumbnail view.");
         var path = _cache.Write(view.Bytes);
