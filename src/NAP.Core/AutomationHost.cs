@@ -220,7 +220,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
             var current = scope.Queue.CurrentPolicy();
             if (current.IsPreproductionAuthorized) return current.Reference;
             if (current.State != AutomationPolicyState.Disabled ||
-                current.Definition.PolicyId is not ("default" or "nap-personal") ||
+                current.Definition.PolicyId is not ("default" or "nap_personal") ||
                 (current.Definition.PolicyId == "default" &&
                  (current.Authorization is not null || current.Definition.Operations != AutomationOperations.None)))
                 throw new AutomationException(AutomationError.PolicyMismatch,
@@ -230,7 +230,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 var defaults = current.Definition;
                 var definition = defaults with
                 {
-                    PolicyId = "nap-personal",
+                    PolicyId = "nap_personal",
                     Version = 1,
                     Operations = StoredAutomationPolicy.ExecutionOperations,
                     Audit = new AutomationAuditBudget(3, 2, 60, 1m)
