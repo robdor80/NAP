@@ -89,9 +89,12 @@ public sealed class DiversityViewModel() : ProfessionalPage("Auditor IA", "Varie
     private CatalogDiversityReport? _report;
     private CatalogDiversityAnswer? _answer;
     private bool _aiAvailable;
-    private string _question = "¿Qué categorías están menos representadas y qué variedad de assets convendría ampliar?";
-    public CatalogDiversityReport? Report { get => _report; internal set { if (_report?.ToJson() != value?.ToJson()) Answer = null; Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); } }
-    public CatalogDiversityAnswer? Answer { get => _answer; internal set => Set(ref _answer, value); }
+    private string _question = "";
+    public CatalogDiversityReport? Report { get => _report; internal set { if (_report?.ToJson() != value?.ToJson()) Answer = null; Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); Notify(nameof(GapLabels)); } }
+    public CatalogDiversityAnswer? Answer { get => _answer; internal set { Set(ref _answer, value); Notify(nameof(AnswerCounts)); } }
+    public IEnumerable<string> AnswerCounts => Answer?.Observations.SelectMany(o => o.Evidence).DistinctBy(e => e.Id)
+        .Select(e => $"{string.Join(" · ", e.Value.Split(" | ").Select(UiLabels.Value))}: {e.Count:N0}") ?? [];
+    public IEnumerable<string> GapLabels => Report?.Gaps.Select(g => $"{UiLabels.Dimension(g.Dimension)} · {UiLabels.Value(g.Value)}: {g.Count:N0}") ?? [];
     public string Question { get => _question; set => Set(ref _question, value); }
     public bool AiAvailable { get => _aiAvailable; internal set => Set(ref _aiAvailable, value); }
     public string Total => Report is null ? "—" : Report.TotalAssets.ToString("N0");
@@ -106,13 +109,14 @@ public sealed class BackupsViewModel() : ProfessionalPage("Backups", "Copias loc
     private BackupHistoryEntry? _selected;
     private BackupKind _kind;
     private string _newest = "3", _daily = "0", _weekly = "0", _monthly = "0";
-    public BackupHistoryEntry? Selected { get => _selected; set => Set(ref _selected, value); }
+    public BackupHistoryEntry? Selected { get => _selected; set { Set(ref _selected, value); Notify(nameof(CanRestoreSelection)); } }
+    public bool CanRestoreSelection => Selected?.Kind == BackupKind.Database;
     public BackupKind Kind { get => _kind; set => Set(ref _kind, value); }
     public string Newest { get => _newest; set => Set(ref _newest, value); }
     public string Daily { get => _daily; set => Set(ref _daily, value); }
     public string Weekly { get => _weekly; set => Set(ref _weekly, value); }
     public string Monthly { get => _monthly; set => Set(ref _monthly, value); }
-    public override string? EmptyMessage => EvidenceMessage(Entries.Count == 0 ? "Todavía no hay copias verificadas para este universo." : null);
+    public override string? EmptyMessage => EvidenceMessage(Entries.Count == 0 ? "Todavía no hay copias de seguridad" : null);
     internal override void Reset() { base.Reset(); Entries.Clear(); Selected = null; }
 }
 public sealed class HistoryViewModel : ProfessionalPage
@@ -134,7 +138,7 @@ public sealed partial class GitViewModel() : ProfessionalPage("Git", "Estado hum
     private GitRepositoryStatus? _repository;
     private GitOperationReceipt? _receipt;
     private string _subject = "";
-    public GitRepositoryStatus? Repository { get => _repository; internal set { Set(ref _repository, value); Notify(nameof(HumanStatus)); Notify(nameof(Recommendation)); Notify(nameof(RecommendationTone)); } }
+    public GitRepositoryStatus? Repository { get => _repository; internal set { Set(ref _repository, value); Notify(nameof(HumanStatus)); Notify(nameof(SimpleStatus)); Notify(nameof(Recommendation)); Notify(nameof(RecommendationTone)); } }
     public string HumanStatus => Repository is null ? "El repositorio aún no se ha inspeccionado" : Repository.Synchronization != GitSynchronization.Synchronized ? "Local y remoto requieren revisión" : Repository.IsClean ? "Repositorio sin cambios" : "Hay cambios locales pendientes";
     public string Recommendation => Repository is null ? "Inspeccionar consulta también el remoto configurado." : !Repository.IndexIsClean ? "Revisa el staging existente fuera de NAP." : "Revisa los cambios y las evidencias antes de cualquier operación.";
     public UiTone RecommendationTone => Repository is null ? UiTone.Neutral : Repository.IndexIsClean && Repository.IsClean && Repository.Synchronization == GitSynchronization.Synchronized ? UiTone.Success : UiTone.Warning;

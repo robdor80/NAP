@@ -13,7 +13,12 @@ public sealed partial class GitViewModel
     private bool _allowCommit, _allowPush;
     private GitOutboxRow? _batch, _intent;
     public IReadOnlyList<GitPublicationMode> Modes { get; } = Enum.GetValues<GitPublicationMode>();
-    public GitConfigurationView? Configuration { get => _configuration; private set { Set(ref _configuration, value); Notify(nameof(ConfigurationSummary)); } }
+    public GitConfigurationView? Configuration { get => _configuration; private set { Set(ref _configuration, value); Notify(nameof(ConfigurationSummary)); Notify(nameof(SimpleStatus)); } }
+    public string SimpleStatus => Configuration is null ? "Necesita atención" :
+        Intents.Any(i => i.State == GitOutboxState.Blocked) || Repository is { IndexIsClean: false } ||
+        Repository is { Synchronization: not GitSynchronization.Synchronized } ? "Necesita atención" :
+        Configuration is { Mode: GitPublicationMode.Disabled } or { Revoked: true } ? "Git desactivado" :
+        Intents.Any(i => i.State is GitOutboxState.Pending or GitOutboxState.Committed) || Repository is { IsClean: false } ? "Pendiente de publicar" : "Git configurado";
     public string ConfigurationSummary => Configuration?.Summary ?? "Configuración Git aún no consultada";
     public GitHostAccess? HostAccess { get => _hostAccess; internal set => Set(ref _hostAccess, value); }
     public GitAuthorizationReview? Review { get => _review; internal set => Set(ref _review, value); }
@@ -71,7 +76,7 @@ public sealed partial class GitViewModel
         foreach (var entry in value.History) PolicyHistory.Add(entry);
         SelectedBatch = selected?.IsBatch == true ? Batches.FirstOrDefault(r => r.Id == selected.Id) : null;
         SelectedIntent = selected?.IsBatch == false ? Intents.FirstOrDefault(r => r.Id == selected.Id) : null;
-        Notify(nameof(OutboxCounts));
+        Notify(nameof(OutboxCounts)); Notify(nameof(SimpleStatus));
     }
     internal void InvalidateConfiguration()
     {
@@ -81,13 +86,13 @@ public sealed partial class GitViewModel
     internal void ClearOutbox()
     {
         Batches.Clear(); Intents.Clear(); PolicyHistory.Clear(); SelectedBatch = null; SelectedIntent = null;
-        Notify(nameof(OutboxCounts));
+        Notify(nameof(OutboxCounts)); Notify(nameof(SimpleStatus));
     }
     private void ResetManagement()
     {
         Configuration = null; Review = null; HostAccess = null; Mode = GitPublicationMode.Disabled;
         Actor = ""; Prefixes = ""; MaximumJobs = "5"; AllowCommit = false; AllowPush = false;
         Batches.Clear(); Intents.Clear(); PolicyHistory.Clear(); SelectedBatch = null; SelectedIntent = null;
-        Notify(nameof(CanCommit)); Notify(nameof(CanPush)); Notify(nameof(OutboxCounts));
+        Notify(nameof(CanCommit)); Notify(nameof(CanPush)); Notify(nameof(OutboxCounts)); Notify(nameof(SimpleStatus));
     }
 }
