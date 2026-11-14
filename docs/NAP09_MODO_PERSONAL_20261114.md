@@ -21,11 +21,11 @@ Es necesario que cada universo tenga ya su carpeta de trabajo, producción, arch
 ## Uso en el MSI una vez disponible el instalador
 
 - Cerrar NAP, instalar **NAP-Setup-2.0.3.exe** desde el artefacto de GitHub Actions NAP09 (es actualización del instalador per-user habitual).
-- Comprobar en PowerShell (sin administrador):
+- Ejecutar una sola vez en PowerShell **normal, sin administrador**:
   ```powershell
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\NAP\updater\NAP09.ActivarHostPersonal.ps1"
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\NAP\updater\NAP09.ActivarHostPersonal.ps1" -Aplicar
   ```
-- Si reconoce las carpetas existentes, habilitarlo con el **mismo** comando y `-Aplicar`; abrir NAP. El Host nace pausado. Activar un universo y su política desde la propia interfaz cuando se quiera procesar.
+- Abrir NAP. El Host nace pausado. Activar un universo y su política desde la propia interfaz cuando se quiera procesar.
 - Colocar un único ZIP real en la bandeja común y comprobar su aparición en la cola y el resultado, sin volver a importar históricos.
 - Si el asistente informa que ya existe launch.json, no lo modifica por sorpresa: revisar de forma puntual ese archivo para distinguir configuración antigua de nueva.
 
