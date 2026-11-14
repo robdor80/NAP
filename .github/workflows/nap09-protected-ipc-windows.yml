@@ -7,12 +7,26 @@ on:
     paths:
       - src/NAP.Core/AutomationProtocol.cs
       - src/NAP.Core/AutomationWindowsEndpointAccess.cs
+      - src/NAP.Core/AutomationProductionLaunchConfiguration.cs
+      - src/NAP.Core/AutomationHost.cs
+      - src/NAP.Core/AutomationHostLaunchConfiguration.cs
+      - src/NAP.AutomationHost/Program.cs
+      - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.App/App.xaml.cs
+      - tests/NAP.Tests/Nap09ProductionBoundaryTests.cs
       - tests/NAP.Tests/Nap09ProtectedIpcTests.cs
       - .github/workflows/nap09-protected-ipc-windows.yml
   pull_request:
     paths:
       - src/NAP.Core/AutomationProtocol.cs
       - src/NAP.Core/AutomationWindowsEndpointAccess.cs
+      - src/NAP.Core/AutomationProductionLaunchConfiguration.cs
+      - src/NAP.Core/AutomationHost.cs
+      - src/NAP.Core/AutomationHostLaunchConfiguration.cs
+      - src/NAP.AutomationHost/Program.cs
+      - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.App/App.xaml.cs
+      - tests/NAP.Tests/Nap09ProductionBoundaryTests.cs
       - tests/NAP.Tests/Nap09ProtectedIpcTests.cs
       - .github/workflows/nap09-protected-ipc-windows.yml
   workflow_dispatch:
@@ -47,7 +61,7 @@ jobs:
       - name: Focused Windows IPC and Host compatibility tests (TEMP only)
         run: |
           New-Item -ItemType Directory -Force artifacts/nap09 | Out-Null
-          $filter = 'FullyQualifiedName~NAP.Tests.Nap09ProtectedIpcTests|FullyQualifiedName~NAP.Tests.AutomationProtocolTests|FullyQualifiedName~NAP.Tests.AutomationHostTests'
+          $filter = 'FullyQualifiedName~NAP.Tests.Nap09ProtectedIpcTests|FullyQualifiedName~NAP.Tests.AutomationProtocolTests|FullyQualifiedName~NAP.Tests.AutomationHostTests|FullyQualifiedName~NAP.Tests.Nap09ProductionBoundaryTests|FullyQualifiedName~NAP.Tests.AutomationManagedWpfTests'
           dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter $filter --settings tests/functional.runsettings --results-directory artifacts/nap09 --logger 'trx;LogFileName=nap09-ipc-windows.trx' --blame-hang-timeout 120s
           if ($LASTEXITCODE -ne 0) { throw 'NAP09 IPC tests failed' }
       - name: Clean private license material
