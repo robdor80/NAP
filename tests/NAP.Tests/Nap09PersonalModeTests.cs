@@ -86,4 +86,38 @@ public sealed class Nap09PersonalModeTests
         }
     }
 
+    [VisualExplorerWindowsFact]
+    public async Task PersonalOneClickAuthorizesAndStartsOnlyAfterExplicitRequest()
+    {
+        using var fixture = new AutomationHostTests.Fixture();
+        var root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "NAP09-personal-activation-" + Guid.NewGuid().ToString("N"));
+        var control = Path.Combine(root, "control");
+        Directory.CreateDirectory(control);
+        try
+        {
+            await using (var host = new AutomationHost(control, [fixture.A.Context],
+                new() { LaboratoryRoot = root, PersonalMode = true }))
+            {
+                await host.Started;
+                var before = await host.QueryAsync(fixture.A.Context.Id, scope => scope.Queue.CurrentPolicy());
+                Assert.Equal(AutomationPolicyState.Disabled, before.State);
+                Assert.True(host.ReadControl(fixture.A.Context.Id).Stopped);
+                var running = await host.ActivatePersonalAsync(fixture.A.Context.Id);
+                Assert.False(running.Stopped);
+                Assert.False(running.Paused);
+                Assert.NotNull(running.Grant);
+                Assert.False(running.Grant!.ResumeOnRestart);
+                var after = await host.QueryAsync(fixture.A.Context.Id, scope => scope.Queue.CurrentPolicy());
+                Assert.True(after.IsExecutionAuthorized);
+                Assert.Equal("nap-personal", after.Definition.PolicyId);
+                Assert.NotNull(after.Authorization);
+                Assert.Equal(Environment.UserName, after.Authorization!.Actor);
+                var stopped = host.Control(fixture.A.Context.Id, AutomationControlAction.Stop);
+                Assert.True(stopped.Stopped);
+            }
+        }
+        finally { if (Directory.Exists(root)) Directory.Delete(root, true); }
+    }
+
 }
