@@ -49,6 +49,7 @@ finally {
 $updaterDirectory = Join-Path $payload 'updater'
 [System.IO.Directory]::CreateDirectory($updaterDirectory) | Out-Null
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/NAP07.Update.ps1') -Destination (Join-Path $updaterDirectory 'NAP07.Update.ps1')
+Copy-Item -LiteralPath (Join-Path $repo 'scripts/NAP09.ActivarHostPersonal.ps1') -Destination (Join-Path $updaterDirectory 'NAP09.ActivarHostPersonal.ps1')
 $installedHost = Join-Path $payload 'host'
 [System.IO.Directory]::CreateDirectory($installedHost) | Out-Null
 Copy-Item -Path (Join-Path $hostStage '*') -Destination $installedHost -Recurse -Force
