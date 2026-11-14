@@ -7,6 +7,7 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/RemoteDesktopService.cs
       - tests/NAP.Tests/Nap09PersonalModeTests.cs
       - .github/workflows/nap09-personal-host.yml
   pull_request:
@@ -15,6 +16,7 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/RemoteDesktopService.cs
       - tests/NAP.Tests/Nap09PersonalModeTests.cs
       - .github/workflows/nap09-personal-host.yml
   workflow_dispatch:
