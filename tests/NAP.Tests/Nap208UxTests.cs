@@ -83,6 +83,20 @@ public sealed class Nap208UxTests
         Assert.Equal(before, SHA256.HashData(File.ReadAllBytes(f.Catalog.CatalogPath)));
     }
 
+    [Fact]
+    public async Task WorkflowDisplayNameResolvesOnlyAnExactValidatedCatalogThumbnail()
+    {
+        using var f = new CatalogTestFixture(nimroel: true);
+        f.Publish(ArchiveTestFixture.NimroelAsset, automatic: true);
+        var path = Path.Combine(f.Root, "ux-settings.json");
+        new LocalUniverseSettingsStore(path).Save([f.Context.Storage]);
+        using var vm = new ExplorerViewModel([f.Context.Profile], new(path), new ExplorerService(), new NoFolders());
+        await vm.InitializeAsync();
+        using var tile = await vm.WorkflowThumbnailAsync(ArchiveTestFixture.NimroelAsset.Replace('_', ' '), default);
+        Assert.Equal(ArchiveTestFixture.NimroelAsset, tile!.Asset!.AssetKey.AssetId);
+        Assert.Null(await vm.WorkflowThumbnailAsync("Nombre sin identidad de catálogo", default));
+    }
+
     [VisualExplorerWindowsFact]
     public async Task RealWpfScreensAndFiveThousandTemporaryRecordsAreMeasuredAndCaptured()
     {

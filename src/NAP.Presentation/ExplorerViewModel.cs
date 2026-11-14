@@ -169,8 +169,10 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         var context = Context;
         if (context is null) return null;
         var id = Path.GetFileNameWithoutExtension(name);
-        // Never guess a catalog identity from a display name, nor scan the catalog for a workflow row.
-        if (!id.Contains('_')) return null;
+        // WorkflowDesktopReader replaces underscores with spaces for display. Valid IDs
+        // contain no spaces, so this inverse is unambiguous after naming validation.
+        if (!AssetNamingRules.IsValidAssetId(id)) id = id.Replace(' ', '_');
+        if (!AssetNamingRules.IsValidAssetId(id)) return null;
         var page = await _service.PageAsync(context, new(assetId: id), 0, 1, ct);
         if (context != Context || page.Items.FirstOrDefault() is not { } asset) return null;
         if (asset.AssetKey.UniverseId != context.Id) throw new InvalidDataException("Thumbnail scope mismatch.");

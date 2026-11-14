@@ -210,7 +210,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
                 try
                 {
                     if (row.State == QueueState.Completed && _thumbnail is not null)
-                        thumbnail = await _thumbnail(string.IsNullOrEmpty(row.PackageName) ? row.Name : row.PackageName, read.Token);
+                        thumbnail = await _thumbnail(row.Name, read.Token);
                 }
                 catch (OperationCanceledException) { throw; }
                 catch (Exception) { thumbnailIssue = "Miniatura no disponible. Revisa el recurso en Catálogo."; }
