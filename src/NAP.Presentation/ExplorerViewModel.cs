@@ -8,13 +8,14 @@ public interface IFolderPicker { string? Pick(string title, string current); }
 public sealed record NavigationItem(string Name, bool Enabled);
 public sealed record DocumentView(string Role, string Text);
 public sealed record DistributionView(string Dimension, string Value, long Count, double Percent, string? ScalarType)
-{ public string ScalarTypeLabel => ScalarType is null ? "" : " (" + ScalarType + ")"; }
+{ public string Label => UiLabels.Dimension(Dimension); public string DisplayValue => UiLabels.Value(Value); public string ScalarTypeLabel => ScalarType is null ? "" : " (" + ScalarType + ")"; }
 public sealed record StorageRootStatus(string Text, UiTone Tone);
 public sealed class FacetViewModel(string dimension, bool trait, IEnumerable<CatalogDistribution> values) : ObservableObject
 {
     private CatalogDistribution? _selected;
     public string Dimension { get; } = dimension;
     public bool IsTrait { get; } = trait;
+    public string Label => UiLabels.Dimension(Dimension);
     public IReadOnlyList<CatalogDistribution?> Choices { get; } = Array.AsReadOnly(new CatalogDistribution?[] { null }.Concat(values).ToArray());
     public CatalogDistribution? Selected { get => _selected; set => Set(ref _selected, value); }
 }
@@ -133,16 +134,29 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void NotifyResource()
     {
         foreach (var property in new[] { nameof(UniverseName), nameof(WebpPath), nameof(MasterPath), nameof(DetailStatusText),
-                     nameof(CanOpenWebp), nameof(CanOpenMaster), nameof(CanOpenFolder), nameof(CanRemove) }) Notify(property);
+                     nameof(SelectedName), nameof(DetailType), nameof(DisplayClassification), nameof(CanOpenWebp), nameof(CanOpenMaster), nameof(CanOpenFolder), nameof(CanRemove) }) Notify(property);
     }
 
+    private long? _catalogTotal;
+    public string CatalogTotal => _catalogTotal?.ToString("N0") ?? "—";
+    public string FilteredTotal => Assets?.Count.ToString("N0") ?? "—";
+    public string PortraitCount => Statistics?.AssetTypes.Where(d => d.Value == "portrait").Sum(d => d.Count).ToString("N0") ?? "—";
+    public string SceneCount => Statistics?.AssetTypes.Where(d => d.Value == "scene").Sum(d => d.Count).ToString("N0") ?? "—";
+    public string? CountNotice => Statistics is not null && Assets is not null && Statistics.TotalAssets != Assets.Count ?
+        "El listado y las estadísticas no coinciden en esta lectura. Actualiza para comprobar el catálogo; no se modifican los datos." : null;
+    public IEnumerable<DistributionView> ProfessionDistribution => Distributions.Where(d => d.Dimension is "role" or "profession" or "profesion").OrderByDescending(d => d.Count).Take(12);
+    public string SelectedName => SelectedAsset?.Title ?? UiLabels.AssetName(Detail?.AssetKey.AssetId ?? LegacyDetail?.AssetId ?? "");
+    public string DetailType => UiLabels.Value(Detail?.AssetType ?? (LegacyDetail is null ? "" : "portrait"));
+    public IEnumerable<KeyValuePair<string, string>> DisplayClassification => Detail is { } detail
+        ? detail.Classification.Select(d => new KeyValuePair<string, string>(UiLabels.Dimension(d.Key), UiLabels.Value(d.Value)))
+        : LegacyDetail is { } legacy ? new[] { new KeyValuePair<string, string>("Cultura", UiLabels.Value(legacy.Culture)), new("Ubicación", UiLabels.Value(legacy.Location)), new("Profesión", UiLabels.Value(legacy.Profession)), new("Sexo", UiLabels.Value(legacy.Sex)) } : [];
     public string StatisticsAssets => Statistics?.TotalAssets.ToString("N0") ?? "—";
     public string StatisticsTypes => Statistics?.AssetTypes.Count.ToString("N0") ?? "—";
     public string StatisticsProfiles => Statistics?.ProductionProfiles.Count.ToString("N0") ?? "—";
     public string? DistributionEmptyMessage => Statistics is null ? UnavailableText : Distributions.Count == 0 ? "No hay datos de distribución para los filtros activos." : null;
     public string? CoverageEmptyMessage => Planning is null ? UnavailableText : Planning.Objectives.Count == 0 ? "No hay objetivos definidos para este universo." : null;
     public string? CatalogEmptyMessage => Assets is null ? UnavailableText : Assets.Count == 0 ? "No hay assets para los filtros activos." : null;
-    public PagedAssetCollection? Assets { get => _assets; private set { if (_assets == value) return; _assets?.Dispose(); _assets = value; Notify(); Notify(nameof(StatusText)); } }
+    public PagedAssetCollection? Assets { get => _assets; private set { if (_assets == value) return; _assets?.Dispose(); _assets = value; Notify(); Notify(nameof(StatusText)); Notify(nameof(FilteredTotal)); Notify(nameof(CountNotice)); } }
     public AssetTileViewModel? SelectedAsset { get => _selectedAsset; set { if (Set(ref _selectedAsset, value)) _ = SelectAsync(value?.Asset); } }
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
     /// <summary>Separate read-only preview tile for visual comparisons; caller owns disposal.</summary>
@@ -215,12 +229,14 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
             var statistics = await _service.StatisticsAsync(context, filter, source.Token);
             var planning = await _service.PlanningAsync(context, source.Token);
             CatalogStatistics? facets = null;
-            if (loadFacets) facets = await _service.StatisticsAsync(context, new(), source.Token);
+            facets = await _service.StatisticsAsync(context, new(), source.Token);
             if (source.IsCancellationRequested || generation != _generation) return;
-            if (facets is not null) SetFacets(facets);
+            _catalogTotal = facets.TotalAssets;
+            if (loadFacets) SetFacets(facets);
             Assets = new(_service, context, filter, page, Fail); Statistics = statistics; Planning = planning;
             foreach (var group in new[] { statistics.AssetTypes, statistics.ProductionProfiles, statistics.Classifications, statistics.Traits })
                 foreach (var d in group) Distributions.Add(new(d.Dimension, d.Value, d.Count, statistics.TotalAssets == 0 ? 0 : 100d * d.Count / statistics.TotalAssets, d.TraitType?.ToString()));
+            foreach (var name in new[] { nameof(CatalogTotal), nameof(FilteredTotal), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice) }) Notify(name);
             State = page.TotalCount == 0 ? ExplorerState.Empty : ExplorerState.Ready;
         }
         catch (OperationCanceledException) { }
@@ -312,7 +328,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void CancelScope()
     {
         _validatedRoots = null; _rootValidationStopped = false; NotifyRoots();
-        ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; SelectedAsset = null;
+        ++_generation; _load?.Cancel(); _detailLoad?.Cancel(); _catalogTotal = null; Notify(nameof(CatalogTotal)); Assets = null; SelectedAsset = null;
         Detail = null; LegacyDetail = null; MasterPath = null; Preview = null; Documents.Clear(); NotifyResource(); Facets.Clear(); AssetTypes.Clear(); ProductionProfiles.Clear();
         DetailError = null; DetailState = ExplorerState.Empty;
         Statistics = null; Planning = null; Distributions.Clear(); Error = null;
