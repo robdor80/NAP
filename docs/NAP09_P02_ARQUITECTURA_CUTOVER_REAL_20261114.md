@@ -80,3 +80,24 @@ Código incorporado en la PR #73, todavía sin despliegue MSI:
 - `.github/workflows/nap09-protected-ipc-windows.yml`: compilación completa Windows 2022/.NET 10 y batería focalizada de IPC/Host, con licencia privada Six Labors y sin NAP CI general.
 
 **Límites:** el transporte opt-in aún **no se conecta** a `NAP.AutomationHost` ni a `ManagedAutomationHost` de producción. Un test con un único usuario y un SID inventado no acredita conexión real entre dos cuentas, Windows ACL efectiva del MSI ni instalación de servicio. No existe `--production-config` utilizable y no se autorizan escrituras reales. La siguiente integración debe acreditar dos identidades distintas en un laboratorio desechable autorizado y protección de configuración/secretos antes de habilitar un arranque productivo.
+
+## 8. Implementación posterior: Host productivo condicionado (rama #73)
+
+**Código nuevo sin ejecución en el MSI:**
+
+- `AutomationProductionLaunchConfiguration` define de manera independiente el arranque `--production-config`. No acepta inyección de auditor sintético ni las raíces temporales ordinarias como producción.
+- `AutomationProductionBoundary.Validate` (antes de construir el Host) exige identidad de Windows escritora exacta y diferente del usuario de la interfaz, instalación protegida bajo `Program Files`, raíz de datos exacta bajo `ProgramData/NAP-Production-v1`, config protegida, raíces separadas y sin enlaces, DACL y propietarios auditables en datos, instalación y padres, backup con recibo SHA-256 en otro volumen e **inventario completo de hashes de binarios** compatible con `Build-Nap06Release.ps1`. Toda divergencia: STOP, sin arranque del proceso de trabajo.
+- `AutomationHostOptions.ProductionBoundary` es un testigo interno del Core: una instancia del Host con raíces no TEMP carece de autorización sin el testigo; el modo laboratorio existente conserva la restricción TEMP.
+- `NAP.AutomationHost/Program.cs` distingue `--laboratory-config` y `--production-config`. Ambos terminan usando los servicios durables existentes, no una segunda fábrica de procesamiento. El modo productivo nunca recurre a `SyntheticAuditor` y mantiene auditoría Gemini solo si está configurada/autorizada.
+- `App.xaml.cs` y `ManagedAutomationHost.cs` hacen que un binding WPF protegido sea **attach-only**, también en arranque normal. Ningún cierre/arranque de WPF crea un escritor productivo bajo el usuario interactivo.
+- `Nap09ProductionBoundaryTests` verifica rechazo de identidad inadecuada, raíz TEMP y configuración inválida sin crear registros Host. `Nap09ProtectedIpcTests` cubre rechazo de SID falso, canal protegido e intercambio del contrato de enlace. CI: workflow específico Windows .NET 10 con pruebas focalizadas, sin probar cuentas/ACL de la máquina del propietario.
+
+**Limitaciones que no se dan por certificadas:**
+
+1. Una coincidencia SHA del *recibo* de backup no prueba que el respaldo haya sido restaurado fuera del equipo. Hace falta verificación real independiente.
+2. La prueba de denegación de dos cuentas Windows distintas (writer + interfaz) todavía no se ha realizado. Una prueba sintética con SID inventado no certifica IPC multiusuario real.
+3. El instalador actual NAP 2.0.2 es de perfil; no existe aún la provisión revisada de distribución en `Program Files`, cuenta escritora, permisos, configuración administrativa o arranque administrado. **No ejecutar el comando productivo en el MSI hasta nueva aprobación.**
+4. El protocolo de publicación Git/Godot desde raíces aisladas, límites de identidades antiguas y denegación de sustitución en padres sigue pendiente de certificación operativa; el gate de ACL es una defensa adicional, no sustituye #47.
+5. No hay primera escritura de producción, ni reconfiguración de NAP en el MSI, ni migración de los 39 retratos. La PR permanece Draft y no está fusionada.
+
+**Orden siguiente:** cerrar pruebas focalizadas y revisión de seguridad, preparar paquete/provisión administrativa sin afectar Documents/GitHub, generar configuración emparejada Host/WPF + inventarios en un escenario sintético protegido, certificar respaldos y cuenta escritora en frío; solo después solicitar autorización explícita de CUTOVER al propietario.
