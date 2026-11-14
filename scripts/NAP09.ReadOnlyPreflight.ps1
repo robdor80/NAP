@@ -198,9 +198,10 @@ if (Test-Path -LiteralPath $outdir) {
 $outfile = Join-Path $outdir ("NAP09_Preflight_" + (Get-Date -Format 'yyyyMMdd_HHmmssfff') + '.json')
 $json = $report | ConvertTo-Json -Depth 7
 # Crear exclusivamente un informe nuevo: nunca sobrescribir otro resultado.
-$utf8 = New-Object System.Text.UTF8Encoding($false)
-$writer = New-Object System.IO.StreamWriter($outfile, $false, $utf8)
-try { $writer.Write($json) } finally { $writer.Dispose() }
+$utf8 = New-Object System.Text.UTF8Encoding -ArgumentList $false
+$bytes = $utf8.GetBytes($json)
+$stream = [IO.File]::Open($outfile, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
+try { $stream.Write($bytes, 0, $bytes.Length) } finally { $stream.Dispose() }
 Write-Host 'NAP09: diagnostico de solo lectura completado.'
 Write-Host ("Catalogos detectados: " + @($catalogFiles | Where-Object { $_.exists }).Count + "/3.")
 Write-Host ("Binarios instalados detectados: " + @($binaries | Where-Object { $_.exists }).Count + "/2.")
