@@ -1,6 +1,6 @@
 namespace NAP.Core;
 
-public enum WorkflowFilter { All, Pending, Processing, Completed, Review }
+public enum WorkflowFilter { All, Pending, Processing, Completed, Review, Archived }
 public sealed record WorkflowPageRequest(int Offset = 0, int Limit = 20, WorkflowFilter Filter = WorkflowFilter.All,
     string Search = "", QueueBatchId? Batch = null);
 public sealed record WorkflowRow(QueueItemId ItemId, UniverseId UniverseId, string Name, QueueState State,

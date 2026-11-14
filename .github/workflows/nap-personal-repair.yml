@@ -1,0 +1,96 @@
+name: NAP personal - reparacion focalizada y entrega
+on:
+  push:
+    branches: [fix/nap-personal-circuito-completo-20261114]
+  workflow_dispatch:
+    inputs:
+      real_gemini:
+        description: Ejecutar una unica aceptacion aislada con Gemini real (requiere secretos privados)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: nap-personal-repair-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  personal:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Compilar App y Host
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release','-p:Version=2.0.5'
+          if ($LASTEXITCODE -ne 0) { throw 'App/Host build failed' }
+      - name: Compilar comprobaciones focalizadas
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release','-p:Version=2.0.5'
+          if ($LASTEXITCODE -ne 0) { throw 'Focused checks build failed' }
+      - name: Cuatro comprobaciones de los fallos reparados
+        if: ${{ !inputs.real_gemini }}
+        run: |
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance' --settings tests/functional.runsettings
+          if ($LASTEXITCODE -ne 0) { throw 'Focused repair checks failed' }
+      - name: Una aceptacion real - ZIP, Gemini, WebP, maestro, SQLite y WPF
+        if: ${{ inputs.real_gemini }}
+        env:
+          NAP_GEMINI_API_KEY: ${{ secrets.NAP_GEMINI_API_KEY }}
+          NAP_GEMINI_MODEL: ${{ secrets.NAP_GEMINI_MODEL }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:NAP_GEMINI_API_KEY) -or [string]::IsNullOrWhiteSpace($env:NAP_GEMINI_MODEL)) {
+            throw 'BLOQUEO_REAL_GEMINI: faltan NAP_GEMINI_API_KEY y/o NAP_GEMINI_MODEL privados. No se ha invocado IA ni se puede declarar aceptacion funcional.'
+          }
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName=NAP.Tests.NapPersonalRepairTests.LiveGeminiPersonalAcceptance' --settings tests/functional.runsettings --logger 'console;verbosity=normal'
+          if ($LASTEXITCODE -ne 0) { throw 'Real Gemini circuit did not complete; do not certify NAP as functional' }
+      - name: Obtener compilador Inno verificado
+        if: ${{ !inputs.real_gemini }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src = Join-Path $env:RUNNER_TEMP 'nap-repair-inno'
+          New-Item -ItemType Directory $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
+          $setup = Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Verification failed' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $setup
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') { throw 'Unexpected compiler signature' }
+          $compiler = Join-Path $env:RUNNER_TEMP 'nap-repair-compiler'
+          $p = Start-Process $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$compiler") -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw 'Compiler setup failed' }
+          "NAP_REPAIR_ISCC=$(Join-Path $compiler 'ISCC.exe')" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Empaquetar actualizacion personal 2.0.5 - sin instalar ni desinstalar
+        if: ${{ !inputs.real_gemini }}
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP_REPAIR_ISCC -Version '2.0.5'
+      - name: Limpiar licencia privada
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - uses: actions/upload-artifact@v4
+        if: ${{ success() && !inputs.real_gemini }}
+        with:
+          name: NAP-2.0.5-personal-${{ github.sha }}
+          path: |
+            artifacts/nap06/output/NAP-Setup-2.0.5.exe
+            artifacts/nap06/output/NAP-Setup-2.0.5.exe.sha256
+            artifacts/nap06/inventory.json
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: ${{ success() && inputs.real_gemini }}
+        with:
+          name: NAP-Gemini-real-${{ github.sha }}
+          path: artifacts/nap-personal-acceptance/
+          if-no-files-found: error

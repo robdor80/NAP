@@ -134,6 +134,14 @@ internal sealed class ManagedAutomationHost : IDisposable
                     overview.Queue.Policy.Definition.Roots != context.Storage)
                     throw new InvalidDataException("Host storage scope differs from the configured desktop universe.");
             }
+            if (snapshot.RuntimeVersion != AutomationHost.RuntimeVersion)
+            {
+                // A personal upgrade must actually use the repaired Host. Shutdown drains
+                // accepted work and preserves the ledgers before the new executable starts.
+                await client.CallAsync(AutomationOperation.ShutdownHost, null, new { }, cancellation);
+                await Task.Delay(500, cancellation);
+                return false;
+            }
             return true;
         }
         catch (Exception error) when (!cancellation.IsCancellationRequested &&

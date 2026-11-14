@@ -8,6 +8,7 @@ public partial class MainWindow : Window
     {
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
+        Title = "RobDev · NAP " + (typeof(App).Assembly.GetName().Version?.ToString(3) ?? "personal");
         if (acceptance) AcceptanceBanner.Visibility = Visibility.Visible;
         if (phase6Preview is not null && Content is System.Windows.UIElement previewContent) previewContent.IsEnabled = false;
         var licenseCheckDate=DateTime.Now.Date;

@@ -34,6 +34,8 @@ permissions:
   contents: read
 jobs:
   personal-host:
+    # The repair branch has its own four focused checks; avoid repeating startup-only checks.
+    if: ${{ github.head_ref != 'fix/nap-personal-circuito-completo-20261114' }}
     runs-on: windows-2022
     timeout-minutes: 20
     defaults:

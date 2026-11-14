@@ -7,6 +7,9 @@
       <TextBlock Text="{Binding DataContext.Automation.Status, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Automatización sin configurar', TargetNullValue='Automatización sin configurar'}" Style="{StaticResource Heading}" FontSize="{StaticResource CompactTitleSize}" Margin="0,0,0,16" AutomationProperties.LiveSetting="Polite" />
       <TextBlock Text="{Binding DataContext.Automation.MixedInboxStatus, RelativeSource={RelativeSource AncestorType=Window}}"
                  Style="{StaticResource Muted}" Margin="0,0,0,8"/>
+      <TextBlock Text="{Binding DataContext.Automation.InboxLocation, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,8"/>
+      <TextBlock Text="{Binding DataContext.Automation.AuditStatus, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+      <TextBlock Text="La recepción es automática mientras el universo está en marcha. Los completados cuentan trabajos nuevos; el catálogo conserva también los retratos históricos." TextWrapping="Wrap" Style="{StaticResource Muted}" Margin="0,0,0,8"/>
       <Button Content="Iniciar automatización"
               Command="{Binding DataContext.Automation.Activate, RelativeSource={RelativeSource AncestorType=Window}}"
               ToolTip="Activa Nimroel tras confirmar; no arranca sin tu permiso."
@@ -22,7 +25,7 @@
           </Style>
         </Button.Style>
       </Button>
-      <Button Content="Procesar pendientes"
+      <Button Content="Buscar ZIP ahora"
               Command="{Binding DataContext.Automation.ProcessPending, RelativeSource={RelativeSource AncestorType=Window}}"
               ToolTip="Revisa de nuevo la bandeja del universo activo. No evita permisos ni reescribe recursos terminados."
               HorizontalAlignment="Left" Margin="0,0,0,12" />
@@ -60,8 +63,21 @@
                      Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0" />
         </StackPanel>
       </Border>
-      <TextBlock Text="{Binding DataContext.Automation.ExistingMixedPackages, RelativeSource={RelativeSource AncestorType=Window}, StringFormat='Paquetes ya presentes en la bandeja mixta: {0}'}"
-                 Style="{StaticResource Muted}" Margin="0,0,0,8" />
+      <c:RobTitledFrame Header="RECEPCIÓN DE ZIP · ÚLTIMOS RECIBOS">
+        <ItemsControl ItemsSource="{Binding DataContext.Automation.InboxReceipts, RelativeSource={RelativeSource AncestorType=Window}}">
+          <ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,6"><TextBlock Text="{Binding Name}" FontWeight="SemiBold"/><TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </c:RobTitledFrame>
+      <c:RobTitledFrame Header="TRABAJOS RECIENTES · VALIDACIÓN, GEMINI Y RESULTADOS">
+        <ItemsControl ItemsSource="{Binding DataContext.Automation.Recent, RelativeSource={RelativeSource AncestorType=Window}}">
+          <ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,6">
+            <Button Content="{Binding Name}" Style="{StaticResource Navigation}" Command="{Binding DataContext.OpenIncident,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ItemId}" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/>
+            <TextBlock Text="{Binding Paths}" TextWrapping="Wrap" Style="{StaticResource Technical}"/>
+          </StackPanel></DataTemplate></ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </c:RobTitledFrame>
+      <TextBlock Text="{Binding DataContext.Automation.ArchivedReview, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap" Style="{StaticResource Muted}"/>
       <UniformGrid Columns="4">
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Pendientes" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Pending, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>
         <Border Style="{StaticResource HomeCard}"><StackPanel><TextBlock Text="Procesando" Style="{StaticResource Muted}" /><TextBlock Text="{Binding DataContext.Automation.Processing, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=—, TargetNullValue=—}" Style="{StaticResource Metric}" /></StackPanel></Border>

@@ -16,10 +16,12 @@ try
     // Credentials are supplied privately at runtime; neither launch.json nor GitHub stores them.
     // No configured Gemini means no automatic PASS: the host parks at the audit boundary.
     using var auditTransport = new HttpClient();
-    var gemini = HostGeminiAuditor.Create(auditTransport,
+    var personalGemini = personal ? new PersonalGeminiAuditor(auditTransport) : null;
+    personalGemini?.Reload();
+    var gemini = personal ? null : HostGeminiAuditor.Create(auditTransport,
         Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY"),
         Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL"), config.SyntheticAudit);
-    IIdentifiedAiAuditClient? auditor = config.SyntheticAudit ? new SyntheticAuditor() : gemini;
+    IIdentifiedAiAuditClient? auditor = config.SyntheticAudit ? new SyntheticAuditor() : personalGemini ?? (IIdentifiedAiAuditClient?)gemini;
     var checkpointReached = 0;
     var storageFailures = 0;
     await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot, PersonalMode = personal,
@@ -42,7 +44,8 @@ try
             Thread.Sleep(Timeout.Infinite);
         }) }, auditor);
     await host.Started;
-    var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(config.LaboratoryRoot, "desktop-requests"), auditor);
+    var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(config.LaboratoryRoot, "desktop-requests"), auditor,
+        reloadAudit: personalGemini is null ? null : personalGemini.Reload);
     await using var server = new AutomationPipeServer(config.Connection, bridge.HandleAsync);
     using var stop = new CancellationTokenSource();
     Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); };

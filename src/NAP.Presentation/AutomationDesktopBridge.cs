@@ -28,6 +28,7 @@ public sealed class AutomationDesktopBridge
     private readonly ConcurrentDictionary<string, Owned> _handles = new();
     private readonly ConcurrentDictionary<string, Task<JsonElement>> _requests = new();
     private readonly string _requestDirectory;
+    private readonly Action? _reloadAudit;
     private readonly ConcurrentDictionary<string, (UniverseId Universe, byte[] Bytes)> _blobs = new();
     private long _blobBytes;
     private long _handleBytes;
@@ -36,9 +37,10 @@ public sealed class AutomationDesktopBridge
     public const long MaximumHandleBytes = 128L * 1024 * 1024;
 
     public AutomationDesktopBridge(AutomationHost host, IEnumerable<UniverseContext> contexts, string requestDirectory, IAiAuditClient? auditor = null,
-        GitProductionService? git = null, GitProductionInspector? gitInspector = null, Func<UniverseContext, GitPublicationPolicyStore>? gitPolicy = null)
+        GitProductionService? git = null, GitProductionInspector? gitInspector = null, Func<UniverseContext, GitPublicationPolicyStore>? gitPolicy = null,
+        Action? reloadAudit = null)
     {
-        _host = host; _contexts = contexts.ToDictionary(c => c.Id);
+        _host = host; _contexts = contexts.ToDictionary(c => c.Id); _reloadAudit = reloadAudit;
         _manual = new(auditor, new HostedUniverseOperationDispatcher(host), git, gitInspector, gitPolicy); _read = new(auditor, new HostedUniverseOperationDispatcher(host, true), git, gitInspector, gitPolicy);
         _normalization = new(new HostedUniverseOperationDispatcher(host)); _requestDirectory = Path.GetFullPath(requestDirectory);
         var lab = Path.GetDirectoryName(host.Controls.DatabasePath)!.TrimEnd(Path.DirectorySeparatorChar);
@@ -151,6 +153,12 @@ public sealed class AutomationDesktopBridge
     private async Task<JsonElement> DispatchAsync(AutomationRequest request, string? principal = null)
     {
         if (request.Operation == AutomationOperation.Status) return AutomationProtocol.Payload(_host.Snapshot());
+        if (request.Operation == AutomationOperation.ReloadAuditConfiguration)
+        {
+            if (_reloadAudit is null) throw new AutomationException(AutomationError.Disabled, "Personal Gemini settings unavailable.");
+            await _host.ReloadAuditConfigurationAsync(_reloadAudit);
+            return AutomationProtocol.Payload(_host.Snapshot().Audit);
+        }
         if (request.Operation == AutomationOperation.ShutdownHost)
         { _host.RequestStop(); await _host.Completion.ConfigureAwait(false); return AutomationProtocol.Payload(_host.Snapshot()); }
         var id = new UniverseId(request.UniverseId ?? throw new InvalidDataException("Universe is required."));
@@ -172,7 +180,7 @@ public sealed class AutomationDesktopBridge
                 return AutomationProtocol.Payload(await _host.QueryAsync(id, s => s.Queue.BrowseWorkflowBatches()));
             case AutomationOperation.WorkflowPage:
                 var pageRequest = Arg<WorkflowPageRequest>();
-                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Browse(pageRequest)));
+                return AutomationProtocol.Payload(await _host.QueryAsync(id, s => new WorkflowDesktopReader(c, s.Queue).Browse(pageRequest, _host.ReadControl(id).CancelledItems)));
             case AutomationOperation.WorkflowDetail:
                 var detailRequest = Arg<WorkflowDetailRequest>();
                 var capabilities = await _host.ReviewCapabilitiesAsync(id, detailRequest.ItemId);
@@ -190,7 +198,7 @@ public sealed class AutomationDesktopBridge
                 return AutomationProtocol.Payload(await _host.RunReviewAsync(id, continuation.ItemId, true, (s, preparation) => preparation.ContinueReview(s.Owner, continuation)));
 
             case AutomationOperation.Overview:
-                var overview = await _host.QueryAsync(id, s => s.Queue.Overview());
+                var overview = await _host.QueryAsync(id, s => s.Queue.DesktopOverview(c, _host.ReadControl(id).CancelledItems));
                 return AutomationProtocol.Payload(new AutomationDesktopOverview(_host.Snapshot(), overview, _host.ReadControl(id)));
             case AutomationOperation.ReleaseBlob:
                 var release = Arg<AutomationReference>().Reference;

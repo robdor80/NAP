@@ -17,6 +17,7 @@ public partial class App : Application
     private HttpClient? _auditTransport;
     private RemoteDesktopService? _remoteDesktop;
     private ManagedAutomationHost? _managedAutomation;
+    internal AutomationHostClient? PersonalHostClient { get; private set; }
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -57,6 +58,7 @@ public partial class App : Application
                 using var document = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(file.FullName));
                 var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
                 var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
+                if (config.PersonalMode) PersonalHostClient = client;
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation, config.PersonalMode);

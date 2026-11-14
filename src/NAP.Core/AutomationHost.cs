@@ -19,7 +19,8 @@ public sealed record AutomationHostOptions
 public sealed record AutomationUniverseStatus(UniverseId UniverseId, AutomationHostState State, long Turns,
     int PendingCandidates, string? Stage, string? Diagnostic, QueueBatchId? BatchId);
 public sealed record AutomationHostSnapshot(string? InstallationId, string? SessionId, AutomationHostState State,
-    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic, MixedInboxRoutingReport? MixedInbox = null, string? MixedInboxRoot = null);
+    IReadOnlyList<AutomationUniverseStatus> Universes, string? Diagnostic, MixedInboxRoutingReport? MixedInbox = null, string? MixedInboxRoot = null,
+    AiAuditAvailability? Audit = null, string? RuntimeVersion = null);
 
 /// <summary>Laboratory-only host composition. No default settings, service install, credentials or policy activation.
 /// One controller schedules bounded work on dedicated universe owners; HTTP/readiness never own workflow leases.</summary>
@@ -87,6 +88,8 @@ public sealed partial class AutomationHost : IAsyncDisposable
     public Task Completion => _stopped.Task;
     public AutomationHostControlStore Controls { get; }
     public string SessionId => _session ?? throw new InvalidOperationException("Host is starting.");
+    public static string RuntimeVersion => typeof(AutomationHost).Assembly.GetCustomAttributes(false)
+        .OfType<System.Reflection.AssemblyInformationalVersionAttribute>().Single().InformationalVersion;
 
     public AutomationHost(string controlRoot, IEnumerable<UniverseContext> contexts, AutomationHostOptions options,
         IIdentifiedAiAuditClient? auditor = null)
@@ -123,14 +126,52 @@ public sealed partial class AutomationHost : IAsyncDisposable
                     .Any(r => ProductionPaths.Overlaps(mixed, r))))
                 throw AutomationValidation.Invalid("Shared Inbox must be explicit and separate from Host and universe roots.");
             InboxAdmissionEvidence.DirectoryBoundary(mixed);
-            _mixedInbox = new MixedUniverseInboxRouter(mixed, _slots.Select(s => s.Context), options.Admission);
+            _mixedInbox = new MixedUniverseInboxRouter(mixed, _slots.Select(s => s.Context), options.Admission, Path.Combine(lab, "inbox-receipts.json"));
         }
         Controls = new(_root, _slots.Select(s => s.Context));
         _controller = new(Run) { IsBackground = true, Name = "NAP AutomationHost controller" }; _controller.Start();
     }
 
     public AutomationHostSnapshot Snapshot()
-    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic, _mixedReport, _options.MixedInboxRoot is null ? null : Path.GetFullPath(_options.MixedInboxRoot)); }
+    { lock (_gate) return new(_installation, _session, _state, _slots.Select(s => s.Status).ToArray(), _diagnostic, _mixedReport, _options.MixedInboxRoot is null ? null : Path.GetFullPath(_options.MixedInboxRoot), AuditAvailability, RuntimeVersion); }
+    private AiAuditAvailability AuditAvailability => _auditor is IAiAuditAvailability available ? available.Availability : new(_auditor is not null, _auditor?.ModelId);
+
+    public async Task ReloadAuditConfigurationAsync(Action reload)
+    {
+        if (!_options.PersonalMode) throw new AutomationException(AutomationError.Disabled, "Personal settings require personal mode.");
+        await _heavy.WaitAsync().ConfigureAwait(false);
+        try
+        {
+            lock (_controlsGate)
+            {
+                if (_stopping || _controls.Values.Any(c => !c.Paused && !c.Stopped) || Interlocked.CompareExchange(ref _auditReserved, 1, 0) != 0)
+                    throw new AutomationException(AutomationError.Busy, "Pause every universe and wait for the current Gemini call before applying settings.");
+                try { reload(); } finally { Interlocked.Exchange(ref _auditReserved, 0); }
+            }
+            if (AuditAvailability.Configured)
+                foreach (var slot in _slots)
+                    await slot.Runtime!.InvokeAsync(s =>
+                    {
+                        var policy = s.Queue.CurrentPolicy();
+                        if (policy.Definition.PolicyId != "nap_personal" || !policy.IsExecutionAuthorized ||
+                            !File.Exists(slot.Preparation!.State.DatabasePath)) return 0;
+                        foreach (var record in slot.Preparation.State.List().Where(r => r.Policy == policy.Reference &&
+                                     r.Code is PreparationCode.AuditConfigurationRequired or PreparationCode.AuditDependencyBlocked &&
+                                     r.Calls.Count < policy.Definition.Audit.MaxAttempts))
+                        {
+                            var item = s.Queue.Get(record.ItemId);
+                            if (item.State != QueueState.NeedsReview || record.AuditGrant is { } grant &&
+                                (grant.ProviderId != _auditor!.ProviderId || grant.ModelId != _auditor.ModelId)) continue;
+                            slot.Preparation.State.Save(s.Owner, record with { AuditState = DurableAuditState.NotRequested,
+                                Code = PreparationCode.Planned, RetryAtUtc = null }, record.Revision);
+                            s.Queue.Transition(s.Owner, item.Id, item.Revision, QueueState.Queued);
+                        }
+                        return 0;
+                    }).ConfigureAwait(false);
+        }
+        finally { _heavy.Release(); }
+        Signal();
+    }
     public AutomationHostControl ReadControl(UniverseId universe)
     { _ = Find(universe); lock (_controlsGate) return Controls.Read(universe); }
 
@@ -528,6 +569,13 @@ public sealed partial class AutomationHost : IAsyncDisposable
         {
             var item = scope.Queue.Get(queued.Id);
             slot.CurrentItem = item.Id;
+            // Repair only the old personal configuration stop, before any remote request.
+            // Invalid packages, rejected audits and historical portraits are never retried here.
+            if (_options.PersonalMode && AuditAvailability.Configured && item.Policy == scope.Queue.CurrentPolicy().Reference &&
+                item.Policy.PolicyId == "nap_personal" && item.State == QueueState.NeedsReview && item.Incident == QueueIncident.InvalidEvidence &&
+                Allowed(slot, item.Id) && File.Exists(slot.Preparation!.State.DatabasePath) &&
+                slot.Preparation!.State.Get(item.Id) is { Code: PreparationCode.AuditConfigurationRequired, Calls.Count: 0 })
+                item = scope.Queue.Transition(scope.Owner, item.Id, item.Revision, QueueState.Queued);
             // Preserve the existing initial physical-integrity review, independently of Git.
             // Outbox reconciliation below never invokes Execute or reports a Git failure here.
             if (slot.InitialRecovery && item.State == QueueState.Completed && Allowed(slot, item.Id) && scope.Queue.GetPolicy(item.Policy).IsExecutionAuthorized)
@@ -551,7 +599,12 @@ public sealed partial class AutomationHost : IAsyncDisposable
                 // Queued alone is insufficient; finish only a verifiable admission before preparation.
                 slot.Admission!.Reconcile(scope.Owner, item.Id);
                 var capacity = _options.MaxRetainedBytes / _slots.Length / 2;
-                if (!RetainedAdmissionInventory.Fits(Path.Combine(scope.Context.Storage.StateRoot, "automation"), Math.Max(0, capacity - policy.Definition.Resources.MaxStagingBytes)))
+                var receipt = slot.Admission.VerifyAdmitted(item.Id);
+                // Reserve the incoming package, not the entire maximum policy allowance.
+                // The personal default's 2 GiB maximum previously consumed this whole
+                // 2 GiB partition, leaving zero bytes even for its existing queue database.
+                var incoming = checked(2 * (item.Zip.SizeBytes + receipt.Files.Sum(f => f.SizeBytes)) + 1024 * 1024);
+                if (incoming > capacity || !RetainedAdmissionInventory.Fits(Path.Combine(scope.Context.Storage.StateRoot, "automation"), capacity - incoming))
                     return new("storage-wait");
                 var prepared = slot.Preparation!.Prepare(scope.Owner, item.Id);
                 if (prepared.Code == PreparationCode.Planned) slot.PriorityItem = item.Id;
@@ -560,11 +613,26 @@ public sealed partial class AutomationHost : IAsyncDisposable
             if (item.State == QueueState.Running || record.AuditState == DurableAuditState.Pass && policy.IsExecutionAuthorized)
             { var result = slot.Execution!.Execute(scope.Owner, item.Id, slot.RunControl); return new(result.Code == DurableExecutionCode.Suspended ? "suspended" : "execution"); }
             if (record.RetryAtUtc > DateTimeOffset.UtcNow || record.AuditState == DurableAuditState.Pass) continue;
-            if (_auditor is null) return new("audit-unconfigured");
+            if (!AuditAvailability.Configured) return new("audit-unconfigured");
+            if (_options.PersonalMode && policy.Definition.PolicyId == "nap_personal")
+            {
+                var state = slot.Preparation!.State;
+                var grant = state.Grant(policy.Reference);
+                if (grant is null)
+                {
+                    var authority = policy.Authorization!;
+                    state.RegisterGrant(scope.Owner, policy, new("personal_" + Guid.NewGuid().ToString("N"), 1,
+                        policy.Reference, authority.AuthorizationId, authority.Actor, authority.AuthorizedUtc,
+                        _auditor!.ProviderId, _auditor.ModelId, 0m,
+                        Enumerable.Repeat(30, policy.Definition.Audit.MaxAttempts - 1).ToArray(), 2, 60, false));
+                }
+                else if (grant.ProviderId != _auditor!.ProviderId || grant.ModelId != _auditor.ModelId)
+                    return new("audit-model-mismatch");
+            }
             if (_remote is { IsCompleted: false } || Interlocked.CompareExchange(ref _auditReserved, 1, 0) != 0) continue;
             try
             {
-                var step = slot.Preparation!.BeginAudit(scope.Owner, item.Id, _auditor.ProviderId, _auditor.ModelId);
+                var step = slot.Preparation!.BeginAudit(scope.Owner, item.Id, _auditor!.ProviderId, _auditor.ModelId);
                 if (step.Dispatch is null) Interlocked.Exchange(ref _auditReserved, 0);
                 if (step.Result.Code == PreparationCode.AuditPass) slot.PriorityItem = item.Id;
                 return new("audit", step.Dispatch);

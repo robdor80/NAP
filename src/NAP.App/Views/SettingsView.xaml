@@ -10,6 +10,13 @@
   <ScrollViewer VerticalScrollBarVisibility="Auto">
       <ScrollViewer.Style><Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding Section}" Value="General"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></ScrollViewer.Style>
     <StackPanel>
+      <c:RobTitledFrame Header="GEMINI">
+        <StackPanel>
+          <TextBlock Text="{Binding DataContext.Automation.AuditStatus, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap"/>
+          <Button Content="Configurar Gemini…" Click="ConfigureGemini_Click" HorizontalAlignment="Left" Margin="0,8,0,8"/>
+          <TextBlock Text="Pausa el universo antes de guardar. La auditoría revisa los datos y el plan de producción; su resultado se conserva con el trabajo." TextWrapping="Wrap" Style="{StaticResource Muted}"/>
+        </StackPanel>
+      </c:RobTitledFrame>
       <c:RobTitledFrame Header="AUTOMATIZACIÓN">
         <StackPanel>
           <TextBlock Text="Automatización sin configurar"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding DataContext.Automation, RelativeSource={RelativeSource AncestorType=Window}}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>

@@ -49,13 +49,18 @@ public sealed partial class DurablePreparationService
             return AuditFailure(owner, record, new(AiAuditErrorKind.Transport, "Interrupted audit has no bound provider response."));
         if (record.RetryAtUtc is { } due && due > _clock.GetUtcNow()) return Result(record, PreparationCode.AuditRetryScheduled);
         var budget = policy.Definition.Audit;
-        var calls = _state.List().Where(r => r.Policy == policy.Reference).SelectMany(r => r.Calls).ToArray();
+        // Personal activation authorizes a bounded audit for each deposited package.
+        // Applying the old lifetime-wide budget of three requests stopped the app
+        // permanently after its first few portraits. Custom/laboratory policies
+        // retain their existing global budget semantics.
+        var personal = policy.Definition.PolicyId == "nap_personal";
+        var calls = personal ? record.Calls.ToArray() : _state.List().Where(r => r.Policy == policy.Reference).SelectMany(r => r.Calls).ToArray();
         if (record.Calls.Count >= budget.MaxAttempts || calls.Length >= budget.MaxRequests ||
             (calls.Length + 1) * grant.MaximumCostPerRequest > budget.MaxCost)
             return Park(owner, item, record, PreparationCode.AuditBudgetExhausted);
         var dependencyCalls = _state.List().Where(r => r.AuditGrant?.Hash == grant.Hash).SelectMany(r => r.Calls)
             .OrderByDescending(c => c.FinishedUtc ?? c.StartedUtc).ToArray();
-        if (dependencyCalls.Any(c => c.Error is AiAuditErrorKind.Unauthorized or AiAuditErrorKind.Forbidden or AiAuditErrorKind.Configuration))
+        if (!personal && dependencyCalls.Any(c => c.Error is AiAuditErrorKind.Unauthorized or AiAuditErrorKind.Forbidden or AiAuditErrorKind.Configuration))
             return Park(owner, item, record, PreparationCode.AuditDependencyBlocked);
         var recent = dependencyCalls.TakeWhile(c => c.State != AuditCallState.Response).ToArray();
         var lastFailure = recent.FirstOrDefault(c => c.State == AuditCallState.TransientFailure);
