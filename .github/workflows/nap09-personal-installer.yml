@@ -7,6 +7,7 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/RemoteDesktopService.cs
       - scripts/NAP09.ActivarHostPersonal.ps1
       - scripts/Build-Nap06Release.ps1
       - .github/workflows/nap09-personal-installer.yml
