@@ -1,6 +1,6 @@
 # NAP 2.0.8 · RobStyle Minimal
 
-Estado: implementación en rama de revisión; validación y entrega en curso. No fusionar en main.
+Estado: implementación y entrega completadas para revisión. PR Draft [#77](https://github.com/robdor80/NAP/pull/77), sin fusionar. Código empaquetado: `06ece907ea0a335d34b751857c986e44b95b50f3`; los commits posteriores solo documentan la entrega.
 
 ## Procedencia comprobada
 
@@ -59,4 +59,79 @@ La ampliación detectó tres fallos: un test antiguo esperaba roles originales c
 
 La matriz visual mide 1200×700, 1536×960 y 2560×1600, esta última con render WPF a 125 %. Es renderización real en Windows Server 2022 de Actions; no equivale a una comprobación física en Windows 11. Se mantienen las capturas y mediciones exactas en el artefacto de evidencias.
 
-Pendientes de registrar en el cierre: ejecución final, métricas exactas, revisión visual de capturas, actualización aislada 2.0.7→2.0.8, instalador y SHA-256. No se publica instalador si falla una comprobación crítica.
+## Cierre y entrega verificada
+
+[Ejecución final del único workflow focalizado](https://github.com/robdor80/NAP/actions/runs/43641707250), sobre `06ece907ea0a335d34b751857c986e44b95b50f3`: **SUCCESS**.
+
+| Comprobación | Resultado |
+|---|---|
+| App WPF + HOST Release, .NET 10, Windows x64 autocontenido | PASS · 0 errores de compilación |
+| Circuito personal, recepción, retirada segura, históricos, Auditor IA e IPC | 25 PASS · 0 FAIL · 0 omitidas |
+| Presentación, filtros, objetivos, copias/restauraciones aisladas, WPF anterior y nuevo, 5.000 registros | 36 PASS · 0 FAIL · 0 omitidas |
+| Permisos de commit/push y etiquetas Git, usuario ordinario Linux | 4 PASS · 0 FAIL · 0 omitidas |
+| Total de comprobaciones focalizadas | **65 PASS · 0 FAIL · 0 omitidas** |
+| Enlaces WPF en el recorrido de 5.000 registros | 0 errores |
+| Inno Setup y actualización per-user 2.0.7→2.0.8 | PASS |
+| Restart Manager cierra el HOST anterior con clrjit.dll en uso | PASS |
+| Configuración de prueba y registro per-user conservados | PASS |
+| Arranque del ejecutable ya instalado, WPF, bandeja e IPC | PASS · 0 errores de enlaces |
+| Bases y archivos reales del propietario | No accedidos ni modificados |
+
+Persisten dos avisos CA2014 de Core y el aviso CA1416 de una prueba Windows, anteriores a este cambio. No se alteró Core para silenciarlos. Las consultas Gemini reales quedaron expresamente fuera de esta repetición: se conservan sus pruebas y lógica, sin nuevo consumo real de proveedor. NAP CI no se ejecutó.
+
+### Mediciones observadas: 5.000 registros temporales
+
+Catálogo SQLite nativo temporal con 3.750 retratos verticales y 1.250 escenas horizontales; los datos se eliminan al terminar la prueba. El hash de SQLite antes y después fue idéntico.
+
+- Relectura del catálogo con una nueva sesión de validación: **184,5 ms**.
+- Búsqueda de «pescadora»: **579,3 ms**, con **2.500** coincidencias. Búsqueda vacía de coincidencias y restablecimiento también PASS.
+- Memoria residente al comienzo: **138,2 MiB**; al final: **279,7 MiB**; pico observado: **294,2 MiB**. Se refrescaron los contadores del proceso antes de leer los valores finales.
+- Recorrido completo: **61** peticiones de páginas, **3** peticiones de ficha y **225** peticiones de miniatura; no se solicitaron las 5.000 imágenes ni las 5.000 fichas.
+- Máximo solicitado por página: **240** resúmenes en la búsqueda. La galería conserva páginas de 60 y LRU máximo de cuatro.
+
+| Ventana de prueba | Render | Mosaicos realizados al desplazar al centro | Páginas en caché observadas | Desplazamiento al centro |
+|---|---|---:|---:|---:|
+| 1200×700 | 100 % | 6 | 2 | 37,5 ms |
+| 1536×960 | 100 % | 10 | 2 | 11,9 ms |
+| 2560×1600 | 125 % | 28 | 3 | 77,6 ms |
+
+Son observaciones de una ejecución en Windows Server 2022 y .NET 10.0.15, con almacenamiento y cachés del runner. No son una garantía de tiempos, FPS o consumo en otros equipos. [Mediciones completas](nap208-evidencias/result.json).
+
+### Capturas reales
+
+[Descargar evidencias WPF y resultados TRX](https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14132960216).
+
+La carpeta `visual/` incluye **53 PNG reales**, generados desde los controles de la App compilada: diez pantallas en cada resolución, fichas de Catálogo, filtros, escenas horizontales, detalles de Producción e Historial, Ajustes avanzado, búsqueda, ausencia de resultados y errores explícitos de lectura. En Producción se comprueba que un fallo de consulta no se presenta como «Todo al día». Se verifica foco alcanzable y navegación Tab. El banner identifica los datos sintéticos temporales.
+
+La carpeta `installed/` contiene además el arranque WPF del producto ya instalado, sus resultados y captura. Los estados de trabajo del recorrido visual usan una fuente de prueba de solo lectura; el catálogo y sus imágenes se leen del SQLite temporal mediante el adaptador real. Las pruebas funcionales del HOST y las evidencias IA se verifican por separado.
+
+La política de red de este entorno impidió descargar los PNG para una inspección manual adicional. Quedan accesibles en el artefacto para la auditoría visual independiente. No se declara esa revisión manual efectuada ni aceptación física de Windows 11.
+
+### Instalador final
+
+[Descargar NAP 2.0.8 — instalador, SHA-256 e inventario (ZIP de Actions)](https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14131774969).
+
+Artefacto exacto: `NAP-2.0.8-UX-Minimal-06ece907ea0a335d34b751857c986e44b95b50f3`. Utilizar este artefacto final, que contiene:
+
+- `output/NAP-Setup-2.0.8.exe`.
+- `output/NAP-Setup-2.0.8.exe.sha256`.
+- `inventory.json`, inventario completo de la entrega.
+- `provenance.json`, versión, fuente y procedencia de compilación.
+- `upgrade-result.json`, resultado de actualización aislada.
+
+SHA-256 del EXE, recalculado por el procedimiento de prueba antes de instalar:
+
+```text
+0785e40c5a49dce32d0c3278253fc1f0b32643246863e7af4aaedb0322f0ff3b
+```
+
+Instalar sobre 2.0.7 con la misma cuenta Windows y la ubicación habitual. Si Inno Setup detecta aplicaciones en uso, aceptar su cierre mediante Restart Manager. No repetir importaciones ni regenerar launch.json. El instalador conserva el procedimiento existente y no incorpora una firma nueva.
+
+Los artefactos de Actions caducan el 12/02/2027. [Índice de entrega](nap208-evidencias/entrega.json) y [evidencias Git](https://github.com/robdor80/NAP/actions/runs/43641707250/artifacts/14132855070).
+
+## Pendientes para la aceptación del propietario
+
+1. Auditoría visual independiente de los PNG y comprobación física en Windows 11 con su escalado habitual. La generación y las comprobaciones WPF automatizadas ya pasaron.
+2. Contrastar la observación 39/41 con sus bases y filtros reales, sin reconstruirlas. No hay evidencia suficiente aquí para atribuirla a corrupción ni corregir cifras.
+3. Autorización posterior antes de cualquier fusión. La PR sigue Draft; main y las PR #73–#76 no fueron modificadas.
+
