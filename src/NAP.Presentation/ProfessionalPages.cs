@@ -186,7 +186,7 @@ public sealed class ShellNavigationItem(string name, string glyph) : ObservableO
     private bool _active;
     public string Name { get; } = name;
     public string Glyph { get; } = glyph;
-    public string DisplayName => Name == "Backups" ? "Copias de seguridad" : Name;
+    public string DisplayName => Name == "Backups" ? "Copias" : Name;
     public bool IsActive { get => _active; internal set => Set(ref _active, value); }
 }
 

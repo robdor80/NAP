@@ -32,6 +32,19 @@ public sealed class Nap208UxTests
     }
 
     [Fact]
+    public async Task EmptyCurrentQueueAndFailedReadHaveDifferentVisibleStates()
+    {
+        using var f = new CatalogTestFixture();
+        var source = new WorkSource { AllCompleted = true };
+        using var work = new WorkflowViewModel(source, () => f.Context, new Decline(), currentOnly: true);
+        await work.LoadPageAsync();
+        Assert.Empty(work.Rows); Assert.Contains("Todo al día", work.Status);
+        source.FailRead = true;
+        await work.LoadPageAsync();
+        Assert.Empty(work.Rows); Assert.Contains("No se pudo consultar", work.Status); Assert.DoesNotContain("Todo al día", work.Status);
+    }
+
+    [Fact]
     public async Task HistoryStartsWithCompletedAndShowsOutcomeOnce()
     {
         using var f = new CatalogTestFixture();
@@ -147,12 +160,15 @@ public sealed class Nap208UxTests
     private sealed class NoFolders : IFolderPicker { public string? Pick(string title, string current) => null; }
     private sealed class WorkSource : IWorkflowDesktopClient
     {
+        public bool AllCompleted { get; init; }
+        public bool FailRead { get; set; }
         public List<WorkflowPageRequest> Requests { get; } = [];
         public Task<WorkflowPage> PageAsync(UniverseId u, WorkflowPageRequest r, CancellationToken ct)
         {
             Requests.Add(r);
+            if (FailRead) throw new IOException("Synthetic read failure");
             var rows = Enumerable.Range(0, 32).Select(i => new WorkflowRow(QueueItemId.Create(), u, "Recurso " + i,
-                i < 5 ? QueueState.Completed : i < 10 ? QueueState.Running : i < 15 ? QueueState.NeedsReview : QueueState.Queued,
+                AllCompleted || i < 5 ? QueueState.Completed : i < 10 ? QueueState.Running : i < 15 ? QueueState.NeedsReview : QueueState.Queued,
                 QueueIncident.None, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow, null, 1)).Where(row => r.Filter switch
                 { WorkflowFilter.Completed => row.State == QueueState.Completed, WorkflowFilter.Processing => row.State == QueueState.Running,
                   WorkflowFilter.Review => row.State == QueueState.NeedsReview, WorkflowFilter.Pending => row.State == QueueState.Queued, _ => true }).ToArray();

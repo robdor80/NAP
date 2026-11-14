@@ -28,7 +28,7 @@ public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkfl
 }
 public sealed record WorkflowFilterChoice(WorkflowFilter Value,string Label, bool CurrentOnly = false);
 public sealed record WorkflowBatchChoice(QueueBatchId? Id,string Label);
-public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false, AssetTileViewModel? Thumbnail = null)
+public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false, AssetTileViewModel? Thumbnail = null, string? ThumbnailIssue = null)
 {
     public string Name => UiLabels.AssetName(Value.Name);
     public string State => Archived ? "Archivado" : WorkflowWords.State(Value.State);
@@ -206,9 +206,16 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             _total=page.Total;_offset=page.Offset;ClearRows();
             foreach (var row in page.Items)
             {
-                var thumbnail = row.State == QueueState.Completed && _thumbnail is not null ? await _thumbnail(string.IsNullOrEmpty(row.PackageName) ? row.Name : row.PackageName, read.Token) : null;
+                AssetTileViewModel? thumbnail = null; string? thumbnailIssue = null;
+                try
+                {
+                    if (row.State == QueueState.Completed && _thumbnail is not null)
+                        thumbnail = await _thumbnail(string.IsNullOrEmpty(row.PackageName) ? row.Name : row.PackageName, read.Token);
+                }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception) { thumbnailIssue = "Miniatura no disponible. Revisa el recurso en Catálogo."; }
                 if (!Current(scope, c) || generation != _pageGeneration || read.IsCancellationRequested) { thumbnail?.Dispose(); return; }
-                Rows.Add(new(row, c.Profile.DisplayName, Filter.Value == WorkflowFilter.Archived, thumbnail));
+                Rows.Add(new(row, c.Profile.DisplayName, Filter.Value == WorkflowFilter.Archived, thumbnail, thumbnailIssue));
             }
             var prior=Batch.Id;Batches.Clear();Batches.Add(new(null,"Todos los lotes"));
             foreach(var b in batches)

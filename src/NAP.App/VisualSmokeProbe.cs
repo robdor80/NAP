@@ -62,7 +62,7 @@ internal static class VisualSmokeProbe
             // Windows constrains native windows to the monitor work area. Measure the live WPF
             // content at the exact logical viewport as well, retaining Window-relative bindings.
             var surface = (FrameworkElement)window.Content; surface.Width = size.Item1 - 48; surface.Height = size.Item2 - 48;
-            foreach (var page in shell.Pages)
+            foreach (var page in shell.Pages.Where(p => p != shell.Rodo))
             {
                 shell.NavigateTo(page.Name); await shell.LastRefresh; await RenderAsync(window, new Size(size.Item1, size.Item2)); pages++;
                 if (lastMascot is not null && lastMascot.IsAnimating) throw new InvalidOperationException("RoDo animation survives view unload.");

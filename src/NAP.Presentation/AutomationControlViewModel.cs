@@ -17,7 +17,7 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
 }
 public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
 public sealed record AutomationUniverseStatusRow(string Universe, string State, string Detail);
-public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null, string State = "", AssetTileViewModel? Thumbnail = null)
+public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null, string State = "", AssetTileViewModel? Thumbnail = null, string? ThumbnailIssue = null)
 { public string DisplayName => UiLabels.AssetName(Name); }
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
@@ -37,7 +37,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
     public string? InboxPath => _overview?.Host.MixedInboxRoot ?? _context()?.Storage.InboxRoot;
     public string GeminiState => _overview?.Host.Audit is { Configured: true } ? "Configurado" : "Requiere configuración";
-    public string SimpleState => !Current() ? "Necesita atención" : HasReview || _overview!.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded ? "Necesita atención" :
+    public string SimpleState => !Current() ? "Necesita atención" : HasReview || SelectedState() is AutomationHostState.Blocked or AutomationHostState.Degraded || _overview!.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded ? "Necesita atención" :
         _overview.Control.Stopped || _overview.Control.Paused ? "En pausa" : _overview.Queue.Counts.Processing > 0 ? "Procesando" : "En marcha";
     internal Func<string, CancellationToken, Task<AssetTileViewModel?>>? ThumbnailFactory { get; set; }
     public IEnumerable<AutomationActivityRow> RecentCompact => Recent.Take(5);
@@ -147,10 +147,16 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
                 if (activity.Preparation == "AuditConfigurationRequired") detail = "Falta autorización de proveedor/modelo Gemini. Revisa Ajustes → Gemini.";
                 if (activity.AuditSummary is { } summary) detail += $" · Gemini {activity.AuditModel}: {summary}";
                 var paths = activity.Item.State == QueueState.Completed ? $"Producción: {activity.ProductionPath}\nMaestro: {activity.ArchivePath}\nCatálogo: {context.Storage.CatalogPath}" : null;
-                var thumbnail = Recent.Count < 5 && activity.Item.State == QueueState.Completed && ThumbnailFactory is not null
-                    ? await ThumbnailFactory(activity.Item.Name, read.Token) : null;
+                AssetTileViewModel? thumbnail = null; string? thumbnailIssue = null;
+                try
+                {
+                    if (Recent.Count < 5 && activity.Item.State == QueueState.Completed && ThumbnailFactory is not null)
+                        thumbnail = await ThumbnailFactory(activity.Item.Name, read.Token);
+                }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception) { thumbnailIssue = "Miniatura no disponible. Revisa el recurso en Catálogo."; }
                 if (_disposed || generation != _generation || context != _context()) { thumbnail?.Dispose(); return; }
-                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths, WorkflowWords.State(activity.Item.State), thumbnail));
+                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths, WorkflowWords.State(activity.Item.State), thumbnail, thumbnailIssue));
             }
             InboxReceipts.Clear();
             foreach (var receipt in (value.Host.MixedInbox?.Receipts ?? []).Take(8))

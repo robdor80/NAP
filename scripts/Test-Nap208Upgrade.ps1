@@ -73,6 +73,14 @@ foreach ($entry in $hashes) {
 }
 $uninstall = Get-ItemProperty -LiteralPath 'HKCU:/Software/Microsoft/Windows/CurrentVersion/Uninstall/{B2F9E5B8-9D72-4DB2-964E-7E3D3E3F5F68}_is1'
 if ($uninstall.DisplayVersion -ne '2.0.8') { throw 'No se registró la actualización per-user.' }
-@{ result = 'PASS'; from = '2.0.7'; to = '2.0.8'; oldHostClosed = $true; userDataUnchanged = $true; setupSha256 = $newHash } |
+# Verify the actual installed desktop after replacement, using only this runner's empty test universe.
+$evidence = Join-Path $pwd 'artifacts/nap208/installed'
+New-Item -ItemType Directory -Force -Path $evidence | Out-Null
+$desktop = Start-Process -FilePath (Join-Path $installed 'NAP.App.exe') -WindowStyle Hidden -ArgumentList @('--smoke-automation', "--smoke-output=`"$evidence`"") -RedirectStandardOutput (Join-Path $evidence 'stdout.json') -RedirectStandardError (Join-Path $evidence 'stderr.log') -PassThru
+if (-not $desktop.WaitForExit(60000)) { throw 'El escritorio instalado no terminó su lectura WPF.' }
+if ($desktop.ExitCode -ne 0) { Get-Content (Join-Path $evidence 'stderr.log'); throw 'Falló el arranque WPF de la aplicación instalada.' }
+$wpf = Get-Content -Raw (Join-Path $evidence 'stdout.json') | ConvertFrom-Json
+if ($wpf.bindingErrors -ne 0 -or -not $wpf.rendered -or -not $wpf.automationConnected) { throw 'WPF/IPC instalado no verificado.' }
+@{ result = 'PASS'; from = '2.0.7'; to = '2.0.8'; oldHostClosed = $true; userDataUnchanged = $true; installedWpf = 'PASS'; bindingErrors = $wpf.bindingErrors; setupSha256 = $newHash } |
     ConvertTo-Json | Set-Content -Encoding utf8 -LiteralPath (Join-Path (Split-Path (Split-Path $NewSetup -Parent) -Parent) 'upgrade-result.json')
 Write-Host 'PASS: 2.0.7 a 2.0.8, Host detenido por Restart Manager, configuración intacta.'
