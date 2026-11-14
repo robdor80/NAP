@@ -6,7 +6,8 @@ namespace NAP.Presentation;
 
 public interface IFolderPicker { string? Pick(string title, string current); }
 public sealed record NavigationItem(string Name, bool Enabled);
-public sealed record DocumentView(string Role, string Text);
+public sealed record DocumentView(string Role, string Text)
+{ public string Label => Role switch { "manifest" => "Manifiesto", "info" => "Ficha descriptiva", "prompt" => "Prompt", "identity" or "visual_identity" => "Identidad visual", _ => UiLabels.Words(Role) }; }
 public sealed record DistributionView(string Dimension, string Value, long Count, double Percent, string? ScalarType)
 { public string Label => UiLabels.Dimension(Dimension); public string DisplayValue => UiLabels.Value(Value); public string ScalarTypeLabel => ScalarType is null ? "" : " (" + ScalarType + ")"; }
 public sealed record StorageRootStatus(string Text, UiTone Tone);
@@ -284,8 +285,8 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
                     var index = new LegacyMasterEvidenceIndex(context);
                     var evidence = index.Get(legacy.AssetId);
                     var master = evidence is null ? null : index.SourcePath(evidence);
-                    var documents = new[] { ("Ficha descriptiva", legacy.InfoPath),
-                        ("Prompt", legacy.PromptPath), ("Identidad visual", legacy.VisualIdentityPath) }
+                    var documents = new[] { ("info", legacy.InfoPath),
+                        ("prompt", legacy.PromptPath), ("visual_identity", legacy.VisualIdentityPath) }
                         .Where(file => File.Exists(file.Item2))
                         .Select(file => new DocumentView(file.Item1, File.ReadAllText(file.Item2))).ToArray();
                     var absent = documents.Length < 3 || !File.Exists(legacy.WebpPath) || master is not null && !File.Exists(master);
@@ -313,9 +314,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
                 presence.Any(file => new FileInfo(file.Path!).Length != file.SizeBytes) ? "Requiere revisión · hay archivos modificados" : "Procesado · archivos disponibles";
             foreach (var document in detail.Documents)
             {
-                var label = document.Role switch { "manifest" => "Manifiesto", "info" => "Ficha descriptiva",
-                    "prompt" => "Prompt", "visual_identity" => "Identidad visual", _ => document.Role };
-                Documents.Add(new(label, Encoding.UTF8.GetString(document.ToArray())));
+                Documents.Add(new(document.Role, Encoding.UTF8.GetString(document.ToArray())));
             }
             NotifyResource();
             DetailState = ExplorerState.Ready;

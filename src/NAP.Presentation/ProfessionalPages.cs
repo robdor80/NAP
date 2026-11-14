@@ -9,6 +9,7 @@ public abstract class ProfessionalPage(string name, string description) : Observ
     private UiNotice? _notice;
     public string Name { get; } = name;
     public string Description { get; } = description;
+    public string DisplayName => Name == "Backups" ? "Copias de seguridad" : Name;
     public UiPageState State { get => _state; internal set { Set(ref _state, value); Notify(nameof(Status)); Notify(nameof(EmptyMessage)); Notify(nameof(EmptyJobs)); Notify(nameof(EmptyReceipts)); } }
     public UiNotice? Notice { get => _notice; internal set => Set(ref _notice, value); }
     public string Status => State switch { UiPageState.Unconfigured => "Configura las raíces del universo en Ajustes.", UiPageState.Loading => "Leyendo datos del universo…",
@@ -185,6 +186,7 @@ public sealed class ShellNavigationItem(string name, string glyph) : ObservableO
     private bool _active;
     public string Name { get; } = name;
     public string Glyph { get; } = glyph;
+    public string DisplayName => Name == "Backups" ? "Copias de seguridad" : Name;
     public bool IsActive { get => _active; internal set => Set(ref _active, value); }
 }
 

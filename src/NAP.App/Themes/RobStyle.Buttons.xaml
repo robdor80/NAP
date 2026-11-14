@@ -62,12 +62,14 @@
     <Setter Property="FontWeight" Value="SemiBold" />
     <Setter Property="Background" Value="{StaticResource AccentBrush}" />
     <Setter Property="Foreground" Value="{StaticResource DeepBrush}" />
+    <Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{StaticResource TextBrush}"/></Trigger></Style.Triggers>
   </Style>
   <Style x:Key="Secondary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" />
   <Style x:Key="Danger" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
     <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
   </Style>
+  <Style x:Key="TextAction" TargetType="Button" BasedOn="{StaticResource Secondary}"><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="HorizontalContentAlignment" Value="Left"/></Style>
   <Style x:Key="Navigation" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="BorderBrush" Value="Transparent" />

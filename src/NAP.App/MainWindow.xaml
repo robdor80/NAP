@@ -58,7 +58,7 @@
                     <Button.Style><Style TargetType="Button" BasedOn="{StaticResource Navigation}"><Style.Triggers><DataTrigger Binding="{Binding DataContext.IsCompact,RelativeSource={RelativeSource AncestorType=Window}}" Value="True"><Setter Property="MinHeight" Value="32"/><Setter Property="Padding" Value="10,6"/><Setter Property="Margin" Value="0,0,0,2"/></DataTrigger></Style.Triggers></Style></Button.Style>
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Glyph}" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource IconSize}" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
-                      <TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                      <TextBlock Text="{Binding DisplayName}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                     </StackPanel>
                   </Button>
                 </DataTemplate>
@@ -79,7 +79,7 @@
               <ItemsControl ItemsSource="{Binding Tools}" Margin="4,8,4,4">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
-                    <Button Style="{StaticResource ToolsNavigation}" Content="{Binding Name}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
+                    <Button Style="{StaticResource ToolsNavigation}" Content="{Binding DisplayName}" Command="{Binding DataContext.Navigate, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Name}" />
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
@@ -113,7 +113,7 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel>
-            <TextBlock x:Name="PageTitle" Text="{Binding CurrentPage.Name}">
+            <TextBlock x:Name="PageTitle" Text="{Binding CurrentPage.DisplayName}">
               <TextBlock.Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource Heading}">
                   <Style.Triggers><DataTrigger Binding="{Binding CurrentPage.Name}" Value="RoDo"><Setter Property="HorizontalAlignment" Value="Left" /></DataTrigger></Style.Triggers>

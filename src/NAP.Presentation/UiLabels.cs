@@ -9,8 +9,8 @@ public static class UiLabels
     {
         "culture" or "cultura" => "Cultura", "location" or "localidad" => "Ubicación",
         "role" or "profession" or "profesion" => "Profesión", "sex" or "sexo" => "Sexo",
-        "/age/apparent_age/value" or "apparent_age" => "Edad aparente", "asset_type" => "Tipo de recurso",
-        "production_profile" => "Perfil", _ => Words(key)
+        "/age/apparent_age/value" or "apparent_age" => "Edad aparente", "asset_type" or "tipo" => "Tipo de recurso",
+        "production_profile" or "perfil" => "Perfil", _ => Words(key)
     };
     public static string Value(string key) => key.ToLowerInvariant() switch
     {
