@@ -42,3 +42,27 @@ Ninguna opción está aprobada todavía. El plan debe devolver al propietario un
 - El corte operativo se mantiene **BLOQUEADO**. No generar `launch.json` productivo ni convertir la ruta TEMP en ruta real sin contrato.
 - No limpiar leases, no elevar PowerShell, no hacer desinstalaciones, no cambiar ACL ni usuarios, no activar NAP CI general/ZIP masivos, y no repetir importaciones ni capturas de los 39 retratos.
 - Esta PR documenta; **no pretende certificar** que el equipo haya satisfecho las garantías de #47.
+
+
+## 5. Hallazgo de código adicional: IPC entre identidades
+
+La lectura directa de `src/NAP.Core/AutomationProtocol.cs` confirma que **cliente y servidor** construyen las tuberías con `PipeOptions.CurrentUserOnly`. Esto impide que la UI interactiva se conecte sin más a un escritor bajo una identidad Windows separada, aunque se conozca la clave HMAC. No basta cambiar `--laboratory-config` por `--production-config` ni levantar el límite TEMP.
+
+Además, `src/NAP.Presentation/AutomationDesktopBridge.cs` recibe el principal SID de la tubería y lo incluye en deduplicación/datos de revisión; al crear un canal entre identidades debe seguir verificando autorización de **cada** principal y operación, sin exponer secretos, conceder permisos a Everyone ni aceptar clientes arbitrarios.
+
+**Decisión de implementación P02/P03 (sin ejecutar CUTOVER):**
+
+- Diseñar un canal Windows de producción **distinto** del canal de laboratorio `CurrentUserOnly`: ACL explícita para SID escritor y cliente autorizado, autenticación mutua HMAC existente, vinculación de sesión/instalación y controles de permisos por operación/principal. Nunca abrir una tubería pública solo porque se conoce un secreto.
+- Mantener invariado el canal de laboratorio, para conservar CI y NAP08.
+- Probar en cuentas/raíces **sintéticas** que un SID no autorizado es rechazado, los tokens falsos no permiten acciones y no hay doble escritor. La prueba de autenticación no reemplaza prueba de ACL/ownership del MSI.
+- Solo tras esa prueba conectar `ManagedAutomationHost` con un modo productivo protegido, sin arranque como usuario de desarrollo, sin fallback local y sin admitir modo laboratorio hacia raíces reales.
+
+## 6. Trabajo de código P03 completado en la rama
+
+- `scripts/NAP09.CoordinationInventory.ps1`: lectura no destructiva de leases persistentes, agrupación por scope, conteo de vacíos, clasificación de 16 no vacíos y anomalías (sin intentar tomar/borrar locks).
+- `scripts/NAP09.WriterInventory.ps1`: inventario no destructivo de procesos, tareas programadas por acción/nombre, servicios y cadena de padres/ACL; no exporta argumentos de línea de órdenes ni secretos.
+- `tests/nap09/Test-CoordinationInventory.ps1`: fixture TEMP con cuatro archivos, tres ámbitos, dos no vacíos y una denominación inválida, verificando que ninguno cambia.
+- CI independiente `.github/workflows/nap09-coordination-inventory.yml` en Windows Server 2022 con PowerShell 5.1, sin NAP CI general, producción ni licencia externa.
+- PR #73 continúa en Draft; scripts **no instalados ni ejecutados** en MSI desde la nueva rama. En particular, el resumen de 44.983/16 procede del diagnóstico anterior del propietario y no de esta nueva herramienta.
+
+Nota: el inventario no demuestra permisos efectivos, exclusión completa de escritores, ni que un lock no vacío esté ocupado. Mantener #47 abierta. Los 39 retratos y sus PNG no requieren más pruebas de aceptación.
