@@ -1,6 +1,6 @@
 <UserControl x:Class="NAP.App.Views.PipelineView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:v="clr-namespace:NAP.App.Views">
   <DockPanel>
-    <Expander DockPanel.Dock="Bottom" Header="Trabajo manual" IsExpanded="{Binding ManualExpanded}" Margin="0,12,0,0">
+    <Expander DockPanel.Dock="Bottom" Header="Avanzado · Trabajo manual" IsExpanded="{Binding ManualExpanded}" Margin="0,12,0,0">
       <StackPanel><TextBlock Text="{Binding Notice.Message}" Foreground="{StaticResource WarningBrush}"/><v:ManualPipelineView Height="320"/></StackPanel>
     </Expander>
     <v:WorkflowView DataContext="{Binding Work}"><v:WorkflowView.Style><Style TargetType="v:WorkflowView"><Style.Triggers><DataTrigger Binding="{Binding DataContext.Pipeline.ManualExpanded,RelativeSource={RelativeSource AncestorType=Window}}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></v:WorkflowView.Style></v:WorkflowView>

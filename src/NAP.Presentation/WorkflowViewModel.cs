@@ -26,13 +26,13 @@ public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkfl
     public async Task<AutomationHostControl> ReadItemControlAsync(UniverseId u, CancellationToken ct) =>
         AutomationProtocol.Read<AutomationHostControl>(await client.CallAsync(AutomationOperation.CurrentControl,u.Value,new {},ct));
 }
-public sealed record WorkflowFilterChoice(WorkflowFilter Value,string Label);
+public sealed record WorkflowFilterChoice(WorkflowFilter Value,string Label, bool CurrentOnly = false);
 public sealed record WorkflowBatchChoice(QueueBatchId? Id,string Label);
 public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false)
 {
-    public string Name => Value.Name;
+    public string Name => UiLabels.AssetName(Value.Name);
     public string State => Archived ? "Archivado" : WorkflowWords.State(Value.State);
-    public string Result => Value.Incident != QueueIncident.None ? AutomationControlViewModel.Problem(Value.Incident) : Value.State == QueueState.Completed ? "Completado" : Value.State == QueueState.Duplicate ? "Ya estaba registrado" : "";
+    public string Result => Value.Incident != QueueIncident.None ? AutomationControlViewModel.Problem(Value.Incident) : "";
     public string Date => WorkflowWords.Date(Value.UpdatedUtc);
     public UiTone Tone => Value.State is QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource ? UiTone.Warning : Value.State == QueueState.Completed ? UiTone.Success : UiTone.Neutral;
 }
@@ -90,8 +90,10 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private ReviewChoice? _choice;
     private WorkflowFilterChoice _filter;
     private WorkflowBatchChoice _batch=new(null,"Todos los lotes");
-    public WorkflowViewModel(IWorkflowDesktopClient? client,Func<UniverseContext?> context,IUserConfirmation confirmation)
+    public WorkflowViewModel(IWorkflowDesktopClient? client,Func<UniverseContext?> context,IUserConfirmation confirmation, bool currentOnly = false, bool completedOnly = false)
     {
+        if (currentOnly) Filters = [new(WorkflowFilter.All, "Activos", true), .. Filters];
+        if (completedOnly) Filters = [Filters.Single(f => f.Value == WorkflowFilter.Completed), .. Filters.Where(f => f.Value != WorkflowFilter.Completed)];
         _client=client;_itemControl=client as IWorkflowItemControlClient;_context=context;_confirmation=confirmation;_filter=Filters[0]; Batches.Add(_batch);
         Poll=new(()=>LoadPageAsync(false,true),()=>!_disposed&&!_changing&&ActiveItem==null,FailRead);
         CloseDetail=new(_=>{ResetActivity();_focusedItem=null;Selected=null;_detailRead?.Cancel();++_detailGeneration;ClearDetail();DetailStatus="";});
@@ -109,7 +111,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         NextDecisions=new(()=>LoadActivity(20,true),()=>!_disposed&&!_changing&&_detail?.MoreDecisions==true,FailRead);
         PreviousDecisions=new(()=>LoadActivity(-20,true),()=>!_disposed&&!_changing&&_decisionOffset>0,FailRead);
     }
-    public IReadOnlyList<WorkflowFilterChoice> Filters {get;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión"),new(WorkflowFilter.Archived,"Archivados")];
+    public IReadOnlyList<WorkflowFilterChoice> Filters {get; private set;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión"),new(WorkflowFilter.Archived,"Archivados")];
     public WorkflowFilterChoice Filter {get=>_filter;set{if(Set(ref _filter,value)){_offset=0;Notify(nameof(CanDeleteNotice));}}}
     public string Search {get=>_search;set=>Set(ref _search,value);}
     public ObservableCollection<WorkflowBatchChoice> Batches {get;}=[];
@@ -190,7 +192,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(!quiet)Status="Actualizando…";
         try
         {
-            var page=await _client.PageAsync(c.Id,new(_offset,20,Filter.Value,Search,Batch.Id),read.Token);
+            var page = Filter.CurrentOnly ? await ReadCurrentPage(c.Id, read.Token) : await _client.PageAsync(c.Id,new(_offset,20,Filter.Value,Search,Batch.Id),read.Token);
             var batches=await _client.BatchesAsync(c.Id,read.Token);
             if(!Current(scope,c)||generation!=_pageGeneration||read.IsCancellationRequested)return;
             if(page.UniverseId!=c.Id||page.Items.Any(r=>r.UniverseId!=c.Id)||batches.Any(b=>b.UniverseId!=c.Id))throw new InvalidDataException("Workflow scope mismatch.");
@@ -208,11 +210,40 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             if(match!=null)Selected=match;
             else if(_focusedItem!=null)await LoadDetailAsync();
             else Selected=null;
-            Status=Rows.Count==0?"No hay registros para estos filtros":"";Notify(nameof(PageLabel));RefreshCommands();
+            Status=Rows.Count==0 ? Filter.CurrentOnly && string.IsNullOrWhiteSpace(Search) && Batch.Id is null ? "Todo al día. No hay recursos pendientes ni incidencias" : "No hay registros para estos filtros" : "";Notify(nameof(PageLabel));RefreshCommands();
         }
         catch(OperationCanceledException){if(Current(scope,c)&&generation==_pageGeneration)FailRead(new IOException());}
         catch(Exception e){if(Current(scope,c)&&generation==_pageGeneration)FailRead(e);}
         finally{read.Dispose();if(ReferenceEquals(_pageRead,read))_pageRead=null;}
+    }
+    // Compose three disjoint existing reads. At most 20 rows plus three count probes; no queue mutation.
+    private async Task<WorkflowPage> ReadCurrentPage(UniverseId universe, CancellationToken ct)
+    {
+        var groups = new[] { WorkflowFilter.Processing, WorkflowFilter.Review, WorkflowFilter.Pending };
+        var totals = new List<(WorkflowFilter Filter, int Count)>();
+        foreach (var filter in groups)
+        {
+            var probe = await _client!.PageAsync(universe, new(0, 1, filter, Search, Batch.Id), ct);
+            ValidatePage(probe, universe);
+            totals.Add((filter, probe.Total));
+        }
+        var offset = _offset;
+        var rows = new List<WorkflowRow>(20);
+        foreach (var group in totals)
+        {
+            if (offset >= group.Count) { offset -= group.Count; continue; }
+            var page = await _client!.PageAsync(universe, new(offset, Math.Min(20 - rows.Count, group.Count - offset), group.Filter, Search, Batch.Id), ct);
+            ValidatePage(page, universe);
+            rows.AddRange(page.Items);
+            offset = 0;
+            if (rows.Count == 20) break;
+        }
+        return new(universe, _offset, totals.Sum(g => g.Count), rows);
+    }
+    private static void ValidatePage(WorkflowPage page, UniverseId universe)
+    {
+        if (page.UniverseId != universe || page.Items.Any(r => r.UniverseId != universe))
+            throw new InvalidDataException("Workflow scope mismatch.");
     }
     private bool Current(long scope,UniverseContext? c)=>!_disposed&&scope==_scope&&c==_context();
     public async Task LoadDetailAsync()

@@ -8,25 +8,28 @@
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <WrapPanel>
       <TextBox Width="190" MaxLength="80" Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar por nombre del paquete" AutomationProperties.Name="Buscar por nombre del paquete"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding Apply}"/></TextBox.InputBindings></TextBox>
-      <ComboBox Width="180" Margin="8,6,8,12" ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter}" DisplayMemberPath="Label" AutomationProperties.Name="Estado"/>
+      <Button Content="Buscar" Command="{Binding Apply}"/>
+      <Expander Header="Filtros" Margin="12,6,0,12"><WrapPanel>      <ComboBox Width="180" Margin="8,6,8,12" ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter}" DisplayMemberPath="Label" AutomationProperties.Name="Estado"/>
       <ComboBox Width="235" Margin="0,6,8,12" ItemsSource="{Binding Batches}" SelectedItem="{Binding Batch}" DisplayMemberPath="Label" Visibility="{Binding HasBatches,Converter={StaticResource Visible}}" AutomationProperties.Name="Lote" ToolTip="Los 40 lotes más recientes"/>
-      <Button Content="Filtrar" Command="{Binding Apply}" ToolTip="{Binding Apply.DisabledReason}" Margin="0,6,0,12"/>
+      <Button Content="Aplicar" Command="{Binding Apply}" ToolTip="{Binding Apply.DisabledReason}" Margin="0,6,0,12"/>
+</WrapPanel></Expander>
     </WrapPanel>
-    <TextBlock Grid.Row="1" Text="{Binding Status}" Style="{StaticResource EmptyState}"/>
+    <StackPanel Grid.Row="1"><TextBlock Text="{Binding Status}" Style="{StaticResource EmptyState}"/><TextBlock Text="{Binding DetailStatus}" Style="{StaticResource EmptyState}" Foreground="{StaticResource WarningBrush}"/></StackPanel>
     <Grid Grid.Row="2">
-      <Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
-      <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="Assets">
+      <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="Trabajos">
         <ListBox.ItemTemplate><DataTemplate>
           <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource CardBrush}" Padding="8,12">
             <StackPanel>
               <DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding Tone,Converter={StaticResource ToneBrush}}" Margin="12,0,0,0"/><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/></DockPanel>
-              <TextBlock Text="{Binding Result}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
-              <WrapPanel Margin="0,6,0,0"><TextBlock Text="{Binding Universe}" Style="{StaticResource Muted}" Margin="0,0,16,0"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></WrapPanel>
+              <TextBlock Text="{Binding Result}" Style="{StaticResource EmptyState}"/>
+              <TextBlock Text="{Binding Date}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
             </StackPanel>
           </Border>
         </DataTemplate></ListBox.ItemTemplate>
       </ListBox>
-      <Grid Grid.Column="2">
+      <Grid Grid.Column="1" Margin="16,0,0,0" Width="340">
+        <Grid.Style><Style TargetType="Grid"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding HasDetail}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></Grid.Style>
         <TextBlock Text="{Binding DetailStatus}" Style="{StaticResource EmptyState}"/>
         <ScrollViewer x:Name="ReviewDetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding HasDetail,Converter={StaticResource Visible}}">
           <StackPanel Margin="0,0,12,0">
@@ -61,7 +64,7 @@
               <Button Content="Aprobar corrección" Command="{Binding Approve}" ToolTip="{Binding Approve.DisabledReason}" Margin="0,12,8,8" Visibility="{Binding CanApprove,Converter={StaticResource Visible}}"/>
               <Button Content="Continuar este asset" Command="{Binding Continue}" ToolTip="{Binding Continue.DisabledReason}" Visibility="{Binding CanContinue,Converter={StaticResource Visible}}"/>
             </StackPanel>
-            <Expander Header="Actividad" Margin="0,20,0,12" IsExpanded="{Binding ActivityExpanded}">
+            <Expander Header="Detalles técnicos y actividad" Margin="0,20,0,12" IsExpanded="{Binding ActivityExpanded}">
               <StackPanel Margin="0,8,0,0"><TextBlock Text="{Binding Dates}" Style="{StaticResource Muted}" Margin="0,0,0,8"/><TextBlock Text="{Binding PackageName}" Style="{StaticResource Muted}" Margin="0,0,0,12"/>
                 <StackPanel Visibility="{Binding HasDecisions,Converter={StaticResource Visible}}"><TextBlock x:Name="DecisionsHeading" Text="Decisiones guardadas" FontWeight="SemiBold" Margin="0,0,0,12"/><ItemsControl ItemsSource="{Binding Decisions}"><ItemsControl.ItemTemplate><DataTemplate><StackPanel Margin="0,0,0,12"><TextBlock Text="{Binding Action}"/><TextBlock Text="{Binding Result}"/><TextBlock Text="{Binding Date}" Style="{StaticResource Muted}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
                   <WrapPanel x:Name="DecisionsPaging" Visibility="{Binding HasDecisionPaging,Converter={StaticResource Visible}}"><TextBlock Text="{Binding DecisionPageLabel}" VerticalAlignment="Center" Margin="0,0,12,0"/><Button Content="Más recientes" Command="{Binding PreviousDecisions}" ToolTip="{Binding PreviousDecisions.DisabledReason}" AutomationProperties.Name="Decisiones más recientes"/><Button Content="Anteriores" Command="{Binding NextDecisions}" ToolTip="{Binding NextDecisions.DisabledReason}" AutomationProperties.Name="Decisiones anteriores"/></WrapPanel>
