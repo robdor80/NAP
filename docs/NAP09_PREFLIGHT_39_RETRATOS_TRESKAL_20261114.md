@@ -1,7 +1,7 @@
 # NAP09 — Preflight y adopción controlada de 39 retratos históricos de Treskal
 
 **Fecha:** 2026-11-14  
-**Estado:** IMPORTACIÓN HISTÓRICA VISIBLE EN NAP 2.0.2; vínculo de PNG y CUTOVER real pendientes.  
+**Estado:** IMPORTACIÓN HISTÓRICA Y VINCULACIÓN DE 39 MAESTROS ACREDITADAS EN NAP 2.0.2; CUTOVER real independiente y pendiente.  
 **Repositorio:** robdor80/NAP; rama separada desde `main@3edf82cd5a8035389111108a022c164eafec68d1`.  
 **Equipo de comprobación:** MSI Raider GE78 HX / Windows 11 x64 / NAP instalado 2.0.2 según acta NAP08.
 
@@ -78,3 +78,11 @@ La comprobación guiada de NAP 2.0.2 desde el acceso directo normal ha aportado 
 El paso funcional siguiente para enriquecer el legado ya visible es **«Vincular 39 PNG maestros»**, que exige el manifiesto de conciliación `MAESTROS_39_CONCILIACION_20261113.json` y la carpeta local descargada `Videojuego Nimroel - ASSETS MAESTROS PNG`. No confundir este vínculo con importación de WebP ni con habilitar procesamiento automático. No declarar la operación completada hasta ejecutarla realmente.
 
 **Acuerdo operativo de esta intervención:** no pedir nuevas capturas de fichas, recuentos ni series de comandos sin necesidad concreta. Registrar como avance la importación visible; mantener las barreras de CUTOVER productivo como asunto distinto.
+
+
+## 7. Vinculación de 39 PNG maestros — PASS físico (14/11/2026, 02:00)
+
+**Evidencia:** captura aportada por el propietario de NAP 2.0.2 en el MSI, diálogo `NAP — Maestros históricos`:
+> 39 evidencias de PNG históricos incorporadas a NAP. 14 coincidencias con SHA histórico; 1 coincidencia con PNG de Git histórico documentada; 24 líneas base nuevas. Los archivos originales y AssetCatalog.db no se han modificado. TeraBox remoto NO ha sido verificado por API.
+
+El resultado acredita el éxito de la **importación de evidencia histórica** desde el manifiesto de conciliación en NAP 2.0.2. El catálogo WebP había sido incorporado previamente y se veía en pantalla. No pedir duplicar estas acciones ni repetir pruebas manuales sin incidencia concreta. No elevar este hecho a certificación CUTOVER: faltan garantías distintas de autoridad escritora, integridad de respaldo externo y despliegue. La base `LegacyMasterEvidence.db` es el destino esperado según el contrato y la interfaz confirmó importación; no se ha hecho inspección forense separada de ese fichero.
