@@ -48,6 +48,14 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
         if (view.Reference is not null && value is not null) _references.Add(value, new(view.SessionId, view.Reference, c.Id));
         return (T)value!;
     }
+    public async Task<CatalogDiversityInventory> ReadDiversityAsync(UniverseContext context, CancellationToken cancellation) =>
+        AutomationProtocol.Read<CatalogDiversityInventory>(await client.CallAsync(
+            AutomationOperation.DiversityInventory, context.Id.Value, new { }, cancellation).ConfigureAwait(false));
+
+    public async Task<CatalogDiversityReply> AskDiversityAsync(UniverseContext context, string question, CancellationToken cancellation) =>
+        AutomationProtocol.Read<CatalogDiversityReply>(await client.CallAsync(
+            AutomationOperation.DiversityAsk, context.Id.Value, new CatalogDiversityQuestion(question), cancellation).ConfigureAwait(false));
+
     public Task<DashboardSnapshot> DashboardAsync(UniverseContext c, CancellationToken ct) => Call<DashboardSnapshot>(c, AutomationOperation.Dashboard, new { }, ct);
     public Task<PipelineSnapshot> PipelineAsync(UniverseContext c, CancellationToken ct) => Call<PipelineSnapshot>(c, AutomationOperation.Pipeline, new { }, ct);
     public Task<PreparedPipelineAsset> PrepareAsync(UniverseContext c, InboxPackageCandidate candidate, CancellationToken ct) => Call<PreparedPipelineAsset>(c, AutomationOperation.Prepare, new AutomationPrepare(candidate.FileName), ct);

@@ -21,6 +21,17 @@ internal static class AutomationSmokeProbe
         if (!Descendants(window).OfType<System.Windows.Controls.TextBlock>().Any(label => label.Text == window.Title &&
                 label.Text.StartsWith("RobDev · NAP ", StringComparison.Ordinal)))
             throw new InvalidOperationException("The NAP footer does not show the window's installed version.");
+        shell.NavigateTo("Auditor IA"); await shell.LastRefresh;
+        await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(), DispatcherPriority.Render);
+        var askButton = Descendants(window).OfType<System.Windows.Controls.Button>()
+            .Single(button => Equals(button.Content, "Consultar IA"));
+        var diversityAssets = shell.Diversity.Report?.TotalAssets ?? 0;
+        var diversityEnabled = askButton.IsEnabled;
+        if (diversityEnabled != (diversityAssets > 0 && shell.Diversity.AiAvailable))
+            throw new InvalidOperationException("The diversity question button disagrees with the personal Host inventory.");
+        if (diversityAssets > 0 && !Descendants(window).OfType<System.Windows.Controls.TextBlock>()
+                .Any(label => label.Text.StartsWith(shell.Diversity.Total + " assets registrados", StringComparison.Ordinal)))
+            throw new InvalidOperationException("The diversity inventory count is missing from WPF.");
         shell.NavigateTo("Inicio"); await shell.LastRefresh;
         await window.Dispatcher.InvokeAsync(() => { window.UpdateLayout(); }, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("WPF binding errors: " + diagnostics.Errors);
@@ -34,7 +45,8 @@ internal static class AutomationSmokeProbe
             using var file = System.IO.File.Create(System.IO.Path.Combine(output, "automation-wpf.png")); encoder.Save(file);
         }
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { automationConnected = true, bindingErrors = diagnostics.Errors,
-            trayVerified = true, rendered = true, settingsManagedByHost = shell.Explorer.SettingsManagedByHost }));
+            trayVerified = true, rendered = true, settingsManagedByHost = shell.Explorer.SettingsManagedByHost,
+            diversityAssets, diversityEnabled }));
     }
 
     private static IEnumerable<System.Windows.DependencyObject> Descendants(System.Windows.DependencyObject parent)

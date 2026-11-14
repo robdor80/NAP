@@ -1,7 +1,7 @@
 name: NAP personal - reparacion focalizada y entrega
 on:
   push:
-    branches: [fix/nap-personal-circuito-completo-20261114, codex/nap-2.0.6-gestion-recursos]
+    branches: [fix/nap-personal-circuito-completo-20261114, codex/nap-2.0.6-gestion-recursos, codex/nap-2.0.7-auditor-ia-host]
   workflow_dispatch:
     inputs:
       real_gemini:
@@ -17,6 +17,8 @@ jobs:
   personal:
     runs-on: windows-2022
     timeout-minutes: 25
+    env:
+      NAP_ARTIFACT_PREFIX: ${{ github.ref_name == 'codex/nap-2.0.7-auditor-ia-host' && 'NAP-2.0.7-Auditor-IA-Host' || 'NAP-personal' }}
     defaults:
       run:
         shell: pwsh
@@ -40,7 +42,7 @@ jobs:
       - name: Comprobaciones focalizadas de NAP personal
         if: ${{ !inputs.real_gemini }}
         run: |
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance)|FullyQualifiedName~ThirtyNineDownloadedPngsAreValidatedAndStoredWithoutChangingNativeOrHistoricalCatalog' --settings tests/functional.runsettings
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance)|FullyQualifiedName~ThirtyNineDownloadedPngsAreValidatedAndStoredWithoutChangingNativeOrHistoricalCatalog|FullyQualifiedName~CatalogDiversityTests|(FullyQualifiedName~Nap207DiversityHostTests&FullyQualifiedName!~LiveGeminiDiversity)' --settings tests/functional.runsettings
           if ($LASTEXITCODE -ne 0) { throw 'Focused repair checks failed' }
       - name: Una aceptacion real - ZIP, Gemini, WebP, maestro, SQLite y WPF
         if: ${{ inputs.real_gemini }}
@@ -76,17 +78,27 @@ jobs:
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP_REPAIR_ISCC
+      - name: Comprobar actualizacion de 2.0.6 a 2.0.7
+        if: ${{ !inputs.real_gemini && github.ref_name == 'codex/nap-2.0.7-auditor-ia-host' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $old = Join-Path $env:RUNNER_TEMP 'nap-206-procedencia'
+          gh run download 43608354180 --repo robdor80/NAP --name NAP-personal-324ff5e18f9e099c71931035e248ec1244c63b76 --dir $old
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo obtener el instalador de referencia 2.0.6.' }
+          ./scripts/Test-Nap207Upgrade.ps1 -PreviousSetup (Join-Path $old 'output/NAP-Setup-2.0.6.exe') -NewSetup (Join-Path $pwd 'artifacts/nap06/output/NAP-Setup-2.0.7.exe')
       - name: Limpiar licencia privada
         if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - uses: actions/upload-artifact@v4
         if: ${{ success() && !inputs.real_gemini }}
         with:
-          name: NAP-personal-${{ github.sha }}
+          name: ${{ env.NAP_ARTIFACT_PREFIX }}-${{ github.sha }}
           path: |
             artifacts/nap06/output/NAP-Setup-*.exe
             artifacts/nap06/output/NAP-Setup-*.exe.sha256
             artifacts/nap06/inventory.json
+            artifacts/nap06/upgrade-result.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         if: ${{ success() && inputs.real_gemini }}

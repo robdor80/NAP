@@ -9,6 +9,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
     private readonly ICatalogDiversityAiClient? _diversityClient;
+    private readonly RemoteDesktopService? _personalDiversity;
     private readonly IUserConfirmation _confirmation;
     private readonly bool _syntheticReadOnly;
     private readonly IImageNormalizationUiService _normalization;
@@ -29,10 +30,11 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private readonly List<ProductionAssetResult> _verified = [];
     public ShellViewModel(ExplorerViewModel explorer, IProfessionalUiService service, IUserConfirmation confirmation,
         IUniverseProfileStore? profilesStore = null, IProfileFilePicker? profilePicker = null, UniverseProfilesSnapshot? profilesSnapshot = null,
-        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false, ICatalogDiversityAiClient? catalogDiversityAi = null)
+        IImageNormalizationUiService? normalization = null, AutomationControlViewModel? automation = null, IWorkflowDesktopClient? workflowClient = null, IDiagnosticDesktopClient? diagnosticClient = null, LicenseViewModel? licenses = null, bool readLocalDiagnostics = false, bool syntheticReadOnly = false, ICatalogDiversityAiClient? catalogDiversityAi = null, bool personalHostDiversity = false)
     {
         Explorer = explorer; _service = service; _confirmation = confirmation; _profilesStore = profilesStore; _profilePicker = profilePicker;
         _syntheticReadOnly = syntheticReadOnly; _diversityClient = catalogDiversityAi;
+        _personalDiversity = personalHostDiversity ? service as RemoteDesktopService : null;
         Automation = automation;
         Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation);
         History.Work = new(workflowClient, () => Explorer.Context, confirmation) { ActivityExpanded = true };
@@ -176,18 +178,9 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Reintentar commit", "Core revalidará la operación Prepared y su index propio.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "HEAD base: " + receipt.BaseHead], ct)) { var result = await _service.RetryCommitAsync(c, receipt.OperationId, ct); Record(c, "Commit recuperado: " + result.CommitSha, UiTone.Success); } }), () => GitWritable() && Git.CanCommit && Git.SelectedReceipt?.State == GitReceiptState.Prepared);
         PushGit = Command(() => ActionAsync(async (c, ct) =>
         { var receipt = Git.SelectedReceipt!; if (await Confirm(c, "Publicar commit", "Push normal a la rama y remoto congelados. Nunca force, upstream nuevo ni todas las ramas.", [receipt.OperationId.Value, "Rama: " + receipt.Branch, "Remoto: " + receipt.RemoteName, "Commit: " + receipt.CommitSha], ct)) { var result = await _service.PushAsync(c, receipt.OperationId, ct); Record(c, "Push: " + result.Outcome, UiTone.Success); } }), () => GitWritable() && Git.CanPush && Git.SelectedReceipt?.State == GitReceiptState.Committed);
-        AskDiversity = Command(() => ActionAsync(async (c, ct) =>
-        {
-            var report = await Task.Run(() => new CatalogDiversityReader(c).Read(ct), ct);
-            if (!Active(c)) return;
-            if (report.TotalAssets == 0) { Diversity.Report = report; Diversity.Answer = null; return; }
-            var reply = await _diversityClient!.AskAsync(report, Diversity.Question.Trim(), ct);
-            if (!Active(c)) return;
-            Diversity.Report = report; Diversity.Answer = reply;
-            Record(c, "Consulta de variedad visual completada sin modificar SQLite", UiTone.Ai);
-        }), () => Context is not null && !IsExecuting && !Explorer.SettingsManagedByHost &&
-            Diversity.State == UiPageState.Ready && Diversity.Report?.TotalAssets > 0 &&
-            _diversityClient is not null && !string.IsNullOrWhiteSpace(Diversity.Question) && Diversity.Question.Length <= 1200);
+        AskDiversity = Command(AskDiversityAsync, () => Context is not null && CurrentPage == Diversity && !IsExecuting &&
+            Diversity.State == UiPageState.Ready && Diversity.Report?.TotalAssets > 0 && Diversity.AiAvailable &&
+            !string.IsNullOrWhiteSpace(Diversity.Question) && Diversity.Question.Length <= 1200);
         Diversity.PropertyChanged += DiversityChanged;
         InitializeGitCommands();
         foreach (var page in Pages) page.PropertyChanged += PageChanged;
@@ -230,7 +223,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public bool IsExecuting { get => _executing; private set { Set(ref _executing, value); Notify(nameof(CanChangeContext)); StatusChanged(); RefreshCommands(); } }
     public bool CanChangeContext => !_disposed && !IsExecuting;
     public bool AuditAvailable => _service.AuditAvailable;
-    public bool DiversityAiAvailable => _diversityClient is not null;
+    public bool DiversityAiAvailable => Diversity.AiAvailable;
     public bool MinimizeToTray { get => _trayOnMinimize; set => Set(ref _trayOnMinimize, value); }
     public string StatusText => IsExecuting ? "Operación explícita en curso · conserva esta sesión abierta" : CurrentPage.Status;
     private async Task OpenAfterRead(Task read,UniverseContext? context,QueueItemId item)
@@ -286,8 +279,8 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         if (command == SaveSettings) return SelectedUniverse is null ? "Selecciona primero un universo." : "Completa las tres raíces con rutas absolutas existentes.";
         if (Context is null) return Explorer.Error is null ? "Configura primero las raíces del universo." : "Las raíces configuradas no están disponibles o no son seguras. Revisa Ajustes.";
         if (command == AskDiversity)
-            return Explorer.SettingsManagedByHost ? "Este auditor solo está disponible en sesión local." :
-                _diversityClient is null ? "Configura NAP_GEMINI_API_KEY y NAP_GEMINI_MODEL para hacer preguntas a Gemini." :
+            return Explorer.SettingsManagedByHost && _personalDiversity is null ? "El auditor requiere una sesión personal del HOST." :
+                !Diversity.AiAvailable ? "Configura y autoriza Gemini antes de consultar." :
                 Diversity.State != UiPageState.Ready ? "Actualiza primero los recuentos del catálogo." :
                 Diversity.Report?.TotalAssets == 0 ? "No hay assets indexados que consultar." :
                 string.IsNullOrWhiteSpace(Diversity.Question) || Diversity.Question.Length > 1200 ? "Escribe una pregunta de hasta 1200 caracteres." :
@@ -333,6 +326,52 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         catch (Exception error) { if (Active(context)) Fail(error); return; }
         finally { _action = null; IsExecuting = false; }
         if (!_disposed) await RefreshCurrentAsync();
+    }
+    private async Task AskDiversityAsync()
+    {
+        var context = Context!;
+        var question = Diversity.Question.Trim();
+        var generation = _generation;
+        using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
+        cancellation.CancelAfter(TimeSpan.FromSeconds(65));
+        bool Current() => Active(context) && CurrentPage == Diversity && generation == _generation &&
+            question == Diversity.Question.Trim();
+        Diversity.Notice = null;
+        Diversity.Answer = null;
+        try
+        {
+            CatalogDiversityReply reply;
+            if (_personalDiversity is not null)
+                reply = await _personalDiversity.AskDiversityAsync(context, question, cancellation.Token);
+            else
+            {
+                var report = await Task.Run(() => new CatalogDiversityReader(context).Read(cancellation.Token), cancellation.Token);
+                var answer = report.TotalAssets == 0 ? null :
+                    await _diversityClient!.AskAsync(report, question, cancellation.Token);
+                reply = new(report, answer);
+            }
+            if (!Current()) return;
+            Scope(reply.Report.UniverseId, context);
+            Diversity.Report = reply.Report;
+            Diversity.Answer = reply.Answer;
+            Diversity.State = reply.Report.TotalAssets == 0 ? UiPageState.Empty : UiPageState.Ready;
+        }
+        catch (Exception error)
+        {
+            if (!Current()) return;
+            if (error is AutomationException { Code: AutomationError.Disabled }) Diversity.AiAvailable = false;
+            var message = error switch
+            {
+                AutomationRemoteOperationException remote => remote.Issues.Issues.First(i => i.StopsProcessing).Message,
+                InvalidDataException => "Gemini devolvió una respuesta que no se pudo verificar con los recuentos del catálogo.",
+                AutomationException { Code: AutomationError.Disabled } => "Configura y autoriza Gemini en Ajustes.",
+                AutomationException { Code: AutomationError.Busy } => "Ya hay una consulta en curso. Espera a que termine.",
+                OperationCanceledException =>
+                    "La consulta agotó el tiempo de espera.",
+                _ => "No se pudo completar la consulta de Gemini. Revisa la conexión o la configuración y vuelve a intentarlo."
+            };
+            Diversity.Notice = new(message, "diversity_query_failed", UiTone.Error);
+        }
     }
     private bool Active(UniverseContext context) => !_disposed && context == Context && !_lifetime.IsCancellationRequested;
     private async Task<bool> Confirm(UniverseContext c, string title, string explanation, IReadOnlyList<string> details, CancellationToken ct)
@@ -390,16 +429,21 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
             }
             else if (page == Diversity)
             {
-                if (Explorer.SettingsManagedByHost)
+                if (Explorer.SettingsManagedByHost && _personalDiversity is null)
                 {
                     page.State = UiPageState.Reserved;
                     page.Notice = new("La consulta de diversidad no está habilitada sobre sesiones remotas del HOST.", "diversity_remote_unavailable", UiTone.Neutral);
                     return;
                 }
-                var value = await Task.Run(() => new CatalogDiversityReader(context).Read(source.Token), source.Token);
+                var inventory = _personalDiversity is not null
+                    ? await _personalDiversity.ReadDiversityAsync(context, source.Token)
+                    : new CatalogDiversityInventory(await Task.Run(() => new CatalogDiversityReader(context).Read(source.Token), source.Token),
+                        _diversityClient is not null);
                 if (!Current()) return;
-                Diversity.Report = value;
-                page.State = value.TotalAssets == 0 ? UiPageState.Empty : UiPageState.Ready;
+                Scope(inventory.Report.UniverseId, context);
+                Diversity.Report = inventory.Report;
+                Diversity.AiAvailable = inventory.AiAvailable;
+                page.State = inventory.Report.TotalAssets == 0 ? UiPageState.Empty : UiPageState.Ready;
             }
             else if (page == Objectives)
             { var value = await _service.PlanningAsync(context, source.Token); if (!Current()) return; CheckPlanning(value, context); Replace(Objectives.Objectives, value.Objectives.Select(o => new ObjectiveCard(o))); Replace(Objectives.Campaigns, value.Campaigns); page.State = value.Objectives.Count == 0 ? UiPageState.Empty : UiPageState.Ready; }
@@ -449,7 +493,10 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         RefreshCommands();
     }
     private void DiversityChanged(object? sender, PropertyChangedEventArgs e)
-    { if (e.PropertyName == nameof(DiversityViewModel.Question)) AskDiversity.Refresh(); }
+    {
+        if (e.PropertyName == nameof(DiversityViewModel.Question)) AskDiversity.Refresh();
+        if (e.PropertyName == nameof(DiversityViewModel.AiAvailable)) Notify(nameof(DiversityAiAvailable));
+    }
     private void PageChanged(object? sender, PropertyChangedEventArgs e) { RefreshCommands(); if (sender == CurrentPage) StatusChanged(); }
     private void StatusChanged() => Notify(nameof(StatusText));
     private void RefreshCommands() { foreach (var command in _commands) command.Refresh(); Navigate?.Refresh(); CancelRead?.Refresh(); }

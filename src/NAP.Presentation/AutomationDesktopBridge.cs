@@ -29,6 +29,10 @@ public sealed class AutomationDesktopBridge
     private readonly ConcurrentDictionary<string, Task<JsonElement>> _requests = new();
     private readonly string _requestDirectory;
     private readonly Action? _reloadAudit;
+    private readonly ICatalogDiversityAiClient? _diversityAi;
+    private readonly IAiAuditAvailability? _diversityAvailability;
+    private int _diversityInFlight;
+    private bool DiversityAvailable => _diversityAi is not null && _diversityAvailability?.Availability.Configured == true;
     private readonly ConcurrentDictionary<string, (UniverseId Universe, byte[] Bytes)> _blobs = new();
     private long _blobBytes;
     private long _handleBytes;
@@ -41,6 +45,11 @@ public sealed class AutomationDesktopBridge
         Action? reloadAudit = null)
     {
         _host = host; _contexts = contexts.ToDictionary(c => c.Id); _reloadAudit = reloadAudit;
+        if (host.PersonalMode && auditor is ICatalogDiversityAiClient diversity && auditor is IAiAuditAvailability availability)
+        {
+            _diversityAi = diversity;
+            _diversityAvailability = availability;
+        }
         _manual = new(auditor, new HostedUniverseOperationDispatcher(host), git, gitInspector, gitPolicy); _read = new(auditor, new HostedUniverseOperationDispatcher(host, true), git, gitInspector, gitPolicy);
         _normalization = new(new HostedUniverseOperationDispatcher(host)); _requestDirectory = Path.GetFullPath(requestDirectory);
         var lab = Path.GetDirectoryName(host.Controls.DatabasePath)!.TrimEnd(Path.DirectorySeparatorChar);
@@ -105,9 +114,10 @@ public sealed class AutomationDesktopBridge
             throw new InvalidDataException("Invalid desktop request identity/version.");
         if (request.Operation is AutomationOperation.Activate or AutomationOperation.Pause or AutomationOperation.Resume or AutomationOperation.StopUniverse or AutomationOperation.CancelItem or AutomationOperation.ResumeItem)
             return DispatchAsync(request); // these use the control ledger's durable replay, including across sessions
-        // Removal rechecks the confirmed inventory under the owner. Keeping its response here
-        // would create another durable copy of the deleted resource's names and paths.
-        if (request.Operation == AutomationOperation.Remove || IsRead(request.Operation)) return DispatchAsync(request);
+        // Removal rechecks the confirmed inventory under the owner. Diversity is read-only.
+        // Do not persist their responses or the user's question in the mutation journal.
+        if (request.Operation is AutomationOperation.Remove or AutomationOperation.DiversityInventory or AutomationOperation.DiversityAsk ||
+            IsRead(request.Operation)) return DispatchAsync(request);
         // Lazy avoids invoking a mutation twice when two matching requests arrive concurrently.
         return DeduplicateAsync(request, principal);
     }
@@ -152,6 +162,61 @@ public sealed class AutomationDesktopBridge
         File.Move(temporary, path, true); return response;
     }
 
+    private async Task<JsonElement> DiversityAsync(UniverseId universe, AutomationRequest request)
+    {
+        if (!_host.PersonalMode)
+            throw new AutomationException(AutomationError.Disabled, "Catalog diversity requires a personal Host.");
+
+        var ask = request.Operation == AutomationOperation.DiversityAsk;
+        var question = ask ? AutomationProtocol.Read<CatalogDiversityQuestion>(request.Payload).Question : null;
+        if (ask && (string.IsNullOrWhiteSpace(question) || question.Length > 1200))
+            throw new AutomationException(AutomationError.InvalidContract, "A diversity question must contain up to 1200 characters.");
+        if (ask && !DiversityAvailable)
+            throw new AutomationException(AutomationError.Disabled, "Gemini is not configured and authorized.");
+        if (ask && Interlocked.CompareExchange(ref _diversityInFlight, 1, 0) != 0)
+            throw new AutomationException(AutomationError.Busy, "Another catalog question is already in progress.");
+
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+        try
+        {
+            CatalogDiversityReport report;
+            try
+            {
+                report = await _host.QueryAsync(universe,
+                    scope => new CatalogDiversityReader(scope.Context).Read(deadline.Token), deadline.Token).ConfigureAwait(false);
+            }
+            catch (Exception error) when (error is CatalogException or ProductionStorageException or ArchiveStorageException or
+                IOException or InvalidDataException or UnauthorizedAccessException or Microsoft.Data.Sqlite.SqliteException or JsonException)
+            {
+                throw DiversityError("diversity_inventory_unavailable", "No se pudieron leer los recuentos. Revisa el catálogo y vuelve a actualizar.");
+            }
+            if (!ask) return AutomationProtocol.Payload(new CatalogDiversityInventory(report, DiversityAvailable));
+            if (report.TotalAssets == 0) return AutomationProtocol.Payload(new CatalogDiversityReply(report, null));
+
+            // The HTTP call runs after the owner mailbox has finished reading SQLite.
+            // Questions, replies and the user's provider credentials stay out of the request journal.
+            try
+            {
+                var answer = await _diversityAi!.AskAsync(report, question!.Trim(), deadline.Token).ConfigureAwait(false);
+                return AutomationProtocol.Payload(new CatalogDiversityReply(report, answer));
+            }
+            catch (InvalidDataException)
+            {
+                throw DiversityError("diversity_evidence_invalid", "La respuesta de Gemini no se pudo verificar con los recuentos del catálogo.");
+            }
+            catch (AiAuditClientException error) when (error.Code == AiAuditErrorKind.Configuration)
+            {
+                throw new AutomationException(AutomationError.Disabled, "Gemini is not configured and authorized.");
+            }
+        }
+        catch (OperationCanceledException) when (deadline.IsCancellationRequested)
+        { throw DiversityError("diversity_timeout", "La consulta agotó el tiempo de espera."); }
+        finally { if (ask) Volatile.Write(ref _diversityInFlight, 0); }
+    }
+
+    private static AutomationRemoteOperationException DiversityError(string code, string message) =>
+        new(code, [new(code, NapIssueSeverity.Error, NapIssueDisposition.Stop, message)]);
+
     private async Task<JsonElement> DispatchAsync(AutomationRequest request, string? principal = null)
     {
         if (request.Operation == AutomationOperation.Status) return AutomationProtocol.Payload(_host.Snapshot());
@@ -175,6 +240,9 @@ public sealed class AutomationDesktopBridge
         }
         switch (request.Operation)
         {
+            case AutomationOperation.DiversityInventory:
+            case AutomationOperation.DiversityAsk:
+                return await DiversityAsync(id, request).ConfigureAwait(false);
             case AutomationOperation.RemovalPreview:
                 try { return AutomationProtocol.Payload(await _host.PreviewRemovalAsync(id, Arg<RemovalSelection>())); }
                 catch (Exception error) { return AutomationProtocol.Payload(new RemovalResult(false, [], [error.Message])); }

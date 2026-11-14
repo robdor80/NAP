@@ -19,6 +19,13 @@
       </Border>
 
       <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+        <Expander Header="Distribuciones del catálogo">
+          <ListBox ItemsSource="{Binding Report.Evidence}" DisplayMemberPath="Display" MaxHeight="350"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Recuentos del catálogo" />
+        </Expander>
+      </Border>
+
+      <Border Style="{StaticResource Card}" Margin="0,12,0,0">
         <StackPanel>
           <TextBlock Text="Variedad por completar" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
           <TextBlock Text="Diferencias relativas entre categorías observadas, no cuotas ideales ni assets sobrantes." Style="{StaticResource Muted}" TextWrapping="Wrap" />
@@ -36,7 +43,7 @@
         <StackPanel>
           <TextBlock Text="Preguntar a Gemini" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
           <TextBlock Text="Escribe una pregunta sobre profesiones, edades, sexos, territorios o escenarios. La IA recibe solamente un JSON agregado." TextWrapping="Wrap" Style="{StaticResource Muted}" />
-          <TextBox Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,12,0,12" MaxLength="1200" />
+          <TextBox AutomationProperties.Name="Pregunta para Gemini" Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,12,0,12" MaxLength="1200" />
           <Button Content="Consultar IA" HorizontalAlignment="Left"
                   Command="{Binding DataContext.AskDiversity, RelativeSource={RelativeSource AncestorType=Window}}"
                   ToolTip="{Binding DataContext.AskDiversity.DisabledReason, RelativeSource={RelativeSource AncestorType=Window}}"
