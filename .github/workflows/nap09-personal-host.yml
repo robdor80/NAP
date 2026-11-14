@@ -1,0 +1,49 @@
+name: NAP09 - Host personal sencillo
+on:
+  push:
+    branches: [feature/nap09-preflight-retratos-treskal-20261114]
+    paths:
+      - src/NAP.Core/AutomationHost.cs
+      - src/NAP.Core/AutomationHostLaunchConfiguration.cs
+      - src/NAP.AutomationHost/Program.cs
+      - src/NAP.App/ManagedAutomationHost.cs
+      - tests/NAP.Tests/Nap09PersonalModeTests.cs
+      - .github/workflows/nap09-personal-host.yml
+  pull_request:
+    paths:
+      - src/NAP.Core/AutomationHost.cs
+      - src/NAP.Core/AutomationHostLaunchConfiguration.cs
+      - src/NAP.AutomationHost/Program.cs
+      - src/NAP.App/ManagedAutomationHost.cs
+      - tests/NAP.Tests/Nap09PersonalModeTests.cs
+      - .github/workflows/nap09-personal-host.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  personal-host:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore NAP.sln --verbosity minimal
+      - name: Build
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
+          if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+      - name: One personal Host smoke
+        run: |
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~Nap09PersonalModeTests' --settings tests/functional.runsettings
+          if ($LASTEXITCODE -ne 0) { throw 'Personal Host smoke failed' }
+      - name: Clean license
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
