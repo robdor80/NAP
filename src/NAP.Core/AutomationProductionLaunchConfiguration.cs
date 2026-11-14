@@ -124,10 +124,10 @@ internal sealed class AutomationProductionBoundary
             {
                 if (++publishedCount > 5000)
                     throw new InvalidDataException("Protected distribution exceeds its bounded inventory.");
-                var attributes = File.GetAttributes(entry);
-                if ((attributes & FileAttributes.ReparsePoint) != 0)
+                var entryAttributes = File.GetAttributes(entry);
+                if ((entryAttributes & FileAttributes.ReparsePoint) != 0)
                     throw new InvalidDataException("Protected binary tree contains a linked component.");
-                if ((attributes & FileAttributes.Directory) != 0)
+                if ((entryAttributes & FileAttributes.Directory) != 0)
                 {
                     CheckProtectedDirectory(entry, access.WriterSid, access.DesktopSid, false, false);
                     pending.Enqueue(entry);
