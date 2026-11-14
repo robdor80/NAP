@@ -25,7 +25,7 @@ public sealed record UiNotice(string Message, string Code, UiTone Tone)
         return GitUiStoppedException.FromCode(code) ?? new("Operación detenida. Revisa la configuración o el diagnóstico antes de reintentar.", code, UiTone.Error);
     }
 }
-public sealed record UiConfirmation(string Title, string Explanation, UniverseId UniverseId, IReadOnlyList<string> Details, string? UniverseName = null);
+public sealed record UiConfirmation(string Title, string Explanation, UniverseId UniverseId, IReadOnlyList<string> Details, string? UniverseName = null, string? InboxOption = null);
 public interface IUserConfirmation { Task<bool> ConfirmAsync(UiConfirmation confirmation, CancellationToken cancellation); }
 public sealed record PipelineStep(string Label, bool IsCurrent, UiTone Tone);
 public sealed record PipelineJob(JobStateRecord Record)

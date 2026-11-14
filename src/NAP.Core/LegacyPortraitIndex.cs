@@ -59,6 +59,7 @@ public sealed class LegacyPortraitIndex(UniverseContext context)
                 if (!string.Equals(check.ExecuteScalar()?.ToString(), "ok", StringComparison.Ordinal))
                     throw new InvalidDataException("Falló la comprobación del índice histórico.");
             }
+            using var lease = CatalogBoundary.Acquire(context);
             File.Move(temp, target, overwrite: true);
         }
         finally { if (File.Exists(temp)) File.Delete(temp); }

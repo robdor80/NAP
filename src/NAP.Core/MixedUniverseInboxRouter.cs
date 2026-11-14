@@ -20,6 +20,34 @@ internal sealed class MixedUniverseInboxRouter
     private int _offset;
     private readonly string _historyPath;
     private readonly List<MixedInboxReceipt> _receipts = [];
+    internal object PublicationGate { get; } = new();
+    internal string HistoryPath => _historyPath;
+    internal bool IsOriginal(string path) => ProductionPaths.Same(_root, Path.GetDirectoryName(path)!);
+
+    internal IReadOnlyList<(string Original, string Copy)> FindReceipts(UniverseId universe, string[] copies)
+    {
+        lock (PublicationGate)
+            return _receipts.Where(r => r.Universe == universe.Value && r.InboxFileName is { } name &&
+                    copies.Contains(name, StringComparer.OrdinalIgnoreCase) && ProductionPaths.SafeSegment(name) &&
+                    ProductionPaths.SafeSegment(r.FileName))
+                .Select(r => (Path.Combine(_root, r.FileName), Path.Combine(_contexts[universe].Storage.InboxRoot, r.InboxFileName!))).ToArray();
+    }
+
+    internal void Forget(UniverseId universe, IReadOnlyList<string> copies)
+    {
+        lock (PublicationGate)
+        {
+            var remaining = _receipts.Where(r => r.Universe != universe.Value || !copies.Contains(r.InboxFileName!)).ToArray();
+            if (remaining.Length == _receipts.Count) return;
+            Save(remaining);
+            _receipts.Clear();
+            _receipts.AddRange(remaining);
+        }
+    }
+    internal IReadOnlyList<MixedInboxReceipt> Receipts()
+    {
+        lock (PublicationGate) return _receipts.AsEnumerable().Reverse().ToArray();
+    }
     internal MixedUniverseInboxRouter(string root, IEnumerable<UniverseContext> contexts, InboxAdmissionOptions options, string historyPath)
     {
         _root = Path.GetFullPath(root); _contexts = contexts.ToDictionary(c => c.Id); _options = options; _historyPath = historyPath;
@@ -36,17 +64,27 @@ internal sealed class MixedUniverseInboxRouter
     }
     private void Record(string name, string? universe, string? inboxName, string status)
     {
-        var prior = _receipts.LastOrDefault(r => r.FileName == name);
-        if (prior is not null && prior.Universe == universe && prior.InboxFileName == inboxName &&
-            (prior.Status == status || prior.Status == "forwarded" && status == "already_present")) return;
-        _receipts.RemoveAll(r => r.FileName == name);
-        _receipts.Add(new(name, universe, inboxName, status, DateTimeOffset.UtcNow));
-        if (_receipts.Count > 100) _receipts.RemoveAt(0);
+        lock (PublicationGate)
+        {
+            if (universe is not null && inboxName is { Length: 72 } &&
+                inboxName.StartsWith("nap-", StringComparison.Ordinal) &&
+                RemovedInboxPackages.Contains(_contexts[new UniverseId(universe)].Storage, new Sha256Digest(inboxName[4..^4]))) return;
+            var prior = _receipts.LastOrDefault(r => r.FileName == name);
+            if (prior is not null && prior.Universe == universe && prior.InboxFileName == inboxName &&
+                (prior.Status == status || prior.Status == "forwarded" && status == "already_present")) return;
+            var next = _receipts.Where(r => r.FileName != name).Append(new(name, universe, inboxName, status, DateTimeOffset.UtcNow)).TakeLast(100).ToArray();
+            Save(next);
+            _receipts.Clear();
+            _receipts.AddRange(next);
+        }
+    }
+    private void Save(IReadOnlyList<MixedInboxReceipt> receipts)
+    {
         var temporary = _historyPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
         try
         {
             using (var output = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None))
-            { JsonSerializer.Serialize(output, _receipts); output.Flush(true); }
+            { JsonSerializer.Serialize(output, receipts); output.Flush(true); }
             File.Move(temporary, _historyPath, true);
         }
         finally { if (File.Exists(temporary)) File.Delete(temporary); }
@@ -111,6 +149,7 @@ internal sealed class MixedUniverseInboxRouter
                 archive.Dispose(); source.Position = 0;
                 var digest = new Sha256Hasher().Compute(source);
                 source.Position = 0;
+                if (RemovedInboxPackages.Contains(target.Storage, digest)) continue;
                 var filename = "nap-" + digest.Hex.ToLowerInvariant() + ".zip";
                 var destination = Path.Combine(target.Storage.InboxRoot, filename);
                 if (ProductionPaths.FileExists(destination, NapIssueCodes.PackageStructureInvalid))
@@ -134,9 +173,13 @@ internal sealed class MixedUniverseInboxRouter
                         throw new InvalidDataException("Shared source changed while routing.");
                     if (!isAuthorized(universe)) continue; // Pause while copying revokes publication.
                     InboxAdmissionEvidence.DirectoryBoundary(target.Storage.InboxRoot);
-                    File.Move(partial, destination, overwrite: false);
-                    Record(candidate.FileName, universe.Value, filename, "forwarded");
-                    routed.Add(universe); forwarded++;
+                    lock (PublicationGate)
+                    {
+                        if (RemovedInboxPackages.Contains(target.Storage, digest)) continue;
+                        File.Move(partial, destination, overwrite: false);
+                        Record(candidate.FileName, universe.Value, filename, "forwarded");
+                        routed.Add(universe); forwarded++;
+                    }
                 }
                 catch (IOException) when (ProductionPaths.FileExists(destination, NapIssueCodes.PackageStructureInvalid))
                 {
@@ -160,6 +203,6 @@ internal sealed class MixedUniverseInboxRouter
                 Record(candidate.FileName, null, null, diagnostic);
             }
         }
-        return new(examined, forwarded, present, review, diagnostic, routed.OrderBy(id => id.Value, StringComparer.Ordinal).ToArray(), lastProblem, _receipts.AsEnumerable().Reverse().ToArray());
+        return new(examined, forwarded, present, review, diagnostic, routed.OrderBy(id => id.Value, StringComparer.Ordinal).ToArray(), lastProblem, Receipts());
     }
 }

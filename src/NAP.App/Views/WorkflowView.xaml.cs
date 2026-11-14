@@ -1,10 +1,18 @@
 using System.Windows;
 using System.Windows.Controls;
 using NAP.Presentation;
+using NAP.Core;
 namespace NAP.App.Views;
 public partial class WorkflowView : UserControl
 {
     public WorkflowView()=>InitializeComponent();
+    private async void DeleteNotice(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || DataContext is not WorkflowViewModel
+            { NoticeRemovalClient: { } client, NoticeContext: { } context, SelectedNotice: { } id } model) return;
+        await RemovalDialog.RunAsync(button, client, context, new(Notice: id),
+            () => model.NoticeContext == context && model.SelectedNotice == id, model.NoticeRemovedAsync);
+    }
     private void OpenComparison(object sender,RoutedEventArgs e)
     {
         if(DataContext is not WorkflowViewModel {HasPreview:true} model)return;

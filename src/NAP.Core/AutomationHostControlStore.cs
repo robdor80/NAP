@@ -125,6 +125,41 @@ public sealed class AutomationHostControlStore
         BeforeCommit?.Invoke(); tx.Commit(); return next;
     });
 
+    // Called inside the attached SQLite transaction while the host's control gate is held.
+    internal void ForgetItems(SqliteConnection db, SqliteTransaction tx, UniverseId universe, IReadOnlySet<string> items)
+    {
+        var receipts = new List<AutomationControlReceipt>();
+        using (var command = Command(db, tx, "SELECT payload FROM host.commands WHERE json_extract(payload,'$.Command.UniverseId.Value')=$u ORDER BY json_extract(payload,'$.Result.Revision')", "$u", universe.Value))
+        using (var rows = command.ExecuteReader())
+            while (rows.Read()) receipts.Add(AutomationJson.Decode<AutomationControlReceipt>(rows.GetString(0)));
+        var head = AutomationJson.Decode<AutomationHostControl>((string)Scalar(db, tx,
+            "SELECT payload FROM host.controls WHERE universe=$u", "$u", universe.Value)!);
+        if (receipts.Count != head.Revision) throw AutomationValidation.Corrupt("El historial de controles no coincide con su revisión.");
+        if (!receipts.Any(r => r.Command.ItemId is { } item && items.Contains(item.Value))) return;
+
+        var previous = AutomationJson.Decode<AutomationHostControl>((string)Scalar(db, tx,
+            "SELECT payload FROM host.history WHERE universe=$u AND revision=0", "$u", universe.Value)!);
+        Execute(db, tx, "DELETE FROM host.history WHERE universe=$u AND revision>0", "$u", universe.Value);
+        foreach (var receipt in receipts)
+        {
+            var command = receipt.Command;
+            if (command.ItemId is { } item && items.Contains(item.Value))
+            {
+                Execute(db, tx, "DELETE FROM host.commands WHERE id=$i", "$i", command.Id);
+                continue;
+            }
+            command = command with { ExpectedRevision = previous.Revision };
+            var next = receipt.Result with { Revision = previous.Revision + 1, CancelledItems = receipt.Result.CancelledItems.Where(id => !items.Contains(id)).ToArray() };
+            var updated = new AutomationControlReceipt(command, next);
+            Execute(db, tx, "UPDATE host.commands SET payload=$p,hash=$h WHERE id=$i", "$p", AutomationJson.Encode(updated), "$h", AutomationJson.Hash(updated).Hex, "$i", command.Id);
+            Execute(db, tx, "INSERT INTO host.history VALUES($u,$r,$p,$h,$b)", "$u", universe.Value, "$r", next.Revision,
+                "$p", AutomationJson.Encode(next), "$h", AutomationJson.Hash(next).Hex, "$b", AutomationJson.Hash(previous).Hex);
+            previous = next;
+        }
+        Execute(db, tx, "UPDATE host.controls SET payload=$p,hash=$h WHERE universe=$u", "$p", AutomationJson.Encode(previous),
+            "$h", AutomationJson.Hash(previous).Hex, "$u", universe.Value);
+    }
+
     private void ValidateGrant(AutomationHostGrant grant, UniverseId universe)
     {
         var c = _contexts.SingleOrDefault(c => c.Id == universe) ?? throw AutomationValidation.Invalid("Unknown universe.");

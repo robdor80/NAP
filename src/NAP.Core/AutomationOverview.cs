@@ -37,7 +37,7 @@ public sealed partial class AutomationQueueStore
     {
         var overview = Overview(archived);
         var reader = new WorkflowDesktopReader(context, this);
-        var recent = Browse(new WorkflowPageRequest(Limit: 8)).Items.Select(item =>
+        var recent = Browse(new WorkflowPageRequest(Limit: 8), archived).Items.Select(item =>
         {
             var stage = Events(item.Id).LastOrDefault()?.Stage ?? QueueStage.Observation;
             PreparationRecord? preparation = null;
@@ -47,7 +47,7 @@ public sealed partial class AutomationQueueStore
                 preparation?.ExpectedAuditReceipt?.Summary, preparation?.Calls.LastOrDefault()?.Error?.ToString(),
                 preparation?.Snapshot is { } snapshot ? Path.Combine(context.Storage.ProductionRoot, snapshot.Plan.DestinationRelativeDirectory) : null,
                 preparation?.Snapshot is { } archive ? Path.Combine(context.Storage.ArchiveRoot, archive.Plan.ArchiveRelativeDirectory) : null,
-                archived.Contains(item.Id.Value));
+                false);
         }).ToArray();
         return overview with { Recent = recent };
     }

@@ -38,7 +38,6 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string AuditStatus => _overview?.Host.Audit is { Configured: true } audit
         ? $"Gemini configurado: {audit.Model}. La respuesta real aparece en cada trabajo."
         : "Gemini sin configurar o sin autorización. Ve a Ajustes → Gemini; los recursos esperarán sin publicarse.";
-    public string ArchivedReview => _overview?.Queue.ArchivedReview > 0 ? $"{_overview.Queue.ArchivedReview} avisos archivados. Consúltalos en Producción → Archivados." : "";
     public ObservableCollection<AutomationActivityRow> Recent { get; } = [];
     public ObservableCollection<AutomationActivityRow> InboxReceipts { get; } = [];
     public string MixedInboxStatus => _overview?.Host.MixedInbox is { } m
@@ -125,9 +124,9 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             Review.Clear();
             foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident) + (item.SourcePresent ? "" : " · El ZIP ya no está en la bandeja; este aviso pertenece al historial."), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
             Recent.Clear();
-            foreach (var activity in value.Queue.Recent ?? [])
+            foreach (var activity in (value.Queue.Recent ?? []).Where(row => !row.Archived))
             {
-                var detail = activity.Archived ? "Aviso archivado" : activity.Item.State switch
+                var detail = activity.Item.State switch
                 {
                     QueueState.Completed => "Completado · WebP, maestro y catálogo registrados",
                     QueueState.Duplicate => "Duplicado · Sin volver a publicar",
@@ -227,7 +226,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     };
     private void Changed()
     {
-        foreach (var name in new[] { nameof(InboxLocation), nameof(AuditStatus), nameof(ArchivedReview), nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        foreach (var name in new[] { nameof(InboxLocation), nameof(AuditStatus), nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)

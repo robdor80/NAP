@@ -55,9 +55,60 @@ public sealed class NapPersonalRepairTests
         Assert.Equal(1, f.Queue.Overview([item.Id.Value]).ArchivedReview);
         Assert.Empty(f.Queue.Browse(new(Filter: WorkflowFilter.Review), [item.Id.Value]).Items);
         Assert.Single(f.Queue.Browse(new(Filter: WorkflowFilter.Archived), [item.Id.Value]).Items);
+        Assert.Empty(f.Queue.Browse(new(Filter: WorkflowFilter.All), [item.Id.Value]).Items);
+        Assert.Empty(f.Queue.DesktopOverview(f.Context, [item.Id.Value]).Recent!);
         Assert.Equal(item, f.Queue.Get(item.Id));
         Assert.NotEmpty(f.Queue.Events(item.Id));
         Assert.Equal(1, f.Queue.Overview().Counts.NeedsReview);
+    }
+
+    [Fact]
+    public async Task PermanentlyRemovingAnArchivedNoticeIsScopedAndSurvivesAnotherScan()
+    {
+        using var fixture = new AutomationHostTests.Fixture();
+        var context = fixture.A.Context;
+        var input = fixture.A.Zip();
+        var unrelated = Path.Combine(context.Storage.InboxRoot, "conservar.zip");
+        File.WriteAllText(unrelated, "archivo ajeno");
+        var zip = new QueueZipIdentity(new Sha256Digest(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(input))).ToLowerInvariant()), new FileInfo(input).Length);
+        QueueItem first, second;
+        using (var owner = fixture.A.Queue.AcquireOwner())
+        {
+            first = fixture.A.Queue.Observe(owner, context.Id, input, zip);
+            first = fixture.A.Queue.Transition(owner, first.Id, first.Revision, QueueState.NeedsReview, QueueIncident.ProfileUnknown);
+            second = fixture.A.Queue.Observe(owner, context.Id, unrelated, new(new Sha256Digest(new string('b', 64)), 13));
+        }
+        var internalCopy = Path.Combine(context.Storage.StateRoot, "automation", "originals", first.Id.Value);
+        Directory.CreateDirectory(internalCopy);
+        File.Copy(input, Path.Combine(internalCopy, "received.zip"));
+
+        await using var host = new AutomationHost(fixture.Control, [context], fixture.Options);
+        await host.Started;
+        host.Control(context.Id, AutomationControlAction.CancelItem, first.Id);
+        host.Control(context.Id, AutomationControlAction.CancelItem, second.Id);
+        var selection = new RemovalSelection(Notice: first.Id);
+        var plan = await host.PreviewRemovalAsync(context.Id, selection);
+        Assert.Contains(input, plan.Preserved);
+        Assert.Contains(plan.Entries, e => e.Path == internalCopy && e.Directory);
+        File.WriteAllText(Path.Combine(internalCopy, "changed.txt"), "cambio posterior");
+        Assert.False((await host.RemoveAsync(context.Id, new(selection, plan.Fingerprint))).Removed);
+        plan = await host.PreviewRemovalAsync(context.Id, selection);
+        var result = await host.RemoveAsync(context.Id, new(selection, plan.Fingerprint));
+        Assert.True(result.Removed, string.Join("\n", result.Problems));
+        Assert.Empty(result.Problems);
+        Assert.False(Directory.Exists(internalCopy));
+        Assert.True(File.Exists(input));
+        Assert.True(File.Exists(unrelated));
+        Assert.Equal(second.Id.Value, Assert.Single(host.ReadControl(context.Id).CancelledItems));
+        await host.QueryAsync(context.Id, scope =>
+        {
+            Assert.Equal(second.Id, Assert.Single(scope.Queue.List()).Id);
+            var admission = new InboxAdmissionService(context, scope.Queue, PreparationTestFixture.Fast);
+            var observed = admission.ProbeAsync(input).GetAwaiter().GetResult();
+            Assert.Equal(InboxAdmissionCode.AlreadyKnown, admission.AdmitReady(scope.Owner, observed).Code);
+            Assert.Equal(second.Id, Assert.Single(scope.Queue.List()).Id);
+            return true;
+        });
     }
 
     [VisualExplorerWindowsFact]
@@ -151,6 +202,7 @@ public sealed class NapPersonalRepairTests
                 await session.RenderDesktop(recent);
                 Console.WriteLine("REAL_GEMINI_ACCEPTANCE: automatic ZIP -> nimroel/portrait_npc -> real Gemini PASS -> WebP 768x960 -> original master hash preserved -> SQLite catalog + thumbnail + desktop result verified. Isolated roots only.");
             }
+            else await session.VerifyRemoval(asset, input, master);
         }
         finally
         {
@@ -219,6 +271,48 @@ public sealed class NapPersonalRepairTests
                 var thumbnail = await _host!.QueryAsync(context.Id, scope => new ProductionThumbnailCache(context).GetOwnedAsync(scope, asset).GetAwaiter().GetResult());
                 Assert.True(File.Exists(thumbnail.CachePath));
             }
+        }
+        internal async Task VerifyRemoval(string asset, string input, string master)
+        {
+            var host = _host!;
+            var webp = Assert.Single(Directory.GetFiles(context.Storage.ProductionRoot, "*.webp", SearchOption.AllDirectories));
+            var neighbor = Path.Combine(Path.GetDirectoryName(webp)!, "conservar.txt");
+            File.WriteAllText(neighbor, "archivo ajeno");
+            var queueItem = await host.QueryAsync(context.Id, scope =>
+            {
+                var item = Assert.Single(scope.Queue.List());
+                var admission = new InboxAdmissionService(context, scope.Queue, PreparationTestFixture.Fast);
+                var source = item.SourcePath;
+                var observation = admission.ProbeAsync(source).GetAwaiter().GetResult();
+                admission.AdmitReady(scope.Owner, observation);
+                Assert.Equal(item.Id, Assert.Single(scope.Queue.List()).Id);
+                return item;
+            });
+
+            File.Delete(webp);
+            Assert.False(Assert.Single(new CatalogExplorerReader(context).Page().Items).WebpAvailable);
+            var selection = new RemovalSelection(AssetId: asset, IncludeInbox: true);
+            var plan = await host.PreviewRemovalAsync(context.Id, selection);
+            Assert.Contains(plan.Entries, e => e.Path == input && e.Inbox);
+            Assert.Contains(plan.Entries, e => e.Path == master);
+            Assert.Contains(plan.Preserved, p => p.Contains("contiene otros archivos"));
+            var removed = await host.RemoveAsync(context.Id, new(selection, plan.Fingerprint));
+            Assert.True(removed.Removed, string.Join("\n", removed.Problems));
+            Assert.Empty(removed.Problems);
+            Assert.False(File.Exists(master));
+            Assert.False(File.Exists(input));
+            Assert.Equal("archivo ajeno", File.ReadAllText(neighbor));
+            Assert.Null(new CatalogExplorerReader(context).Detail(asset));
+            Assert.Empty(new ArchiveMasterIndexStore(context).Load().Entries);
+            await host.QueryAsync(context.Id, scope =>
+            {
+                Assert.Empty(scope.Queue.List());
+                Assert.Null(new PreparationStateStore(context.Storage).Get(queueItem.Id));
+                Assert.Null(new ExecutionStateStore(context.Storage).Get(queueItem.Id));
+                return true;
+            });
+            await Task.Delay(150);
+            Assert.DoesNotContain(host.Snapshot().MixedInbox?.Receipts ?? [], receipt => receipt.FileName == Path.GetFileName(input));
         }
         internal async Task RenderDesktop(AutomationRecentItem recent)
         {

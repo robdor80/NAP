@@ -4,7 +4,7 @@ namespace NAP.Core;
 
 /// <summary>Small index projection, not publication/recovery evidence. No documents or master bytes.</summary>
 public sealed record CatalogAssetSummary(UniverseAssetKey AssetKey, string AssetType, string ProductionProfile,
-    string ProductionRelativePath, Sha256Digest ProductionDigest, long ProductionSizeBytes);
+    string ProductionRelativePath, Sha256Digest ProductionDigest, long ProductionSizeBytes, bool WebpAvailable = true);
 public sealed record CatalogPage(long TotalCount, int Offset, IReadOnlyList<CatalogAssetSummary> Items);
 
 /// <summary>Read-only UI queries over schema v1. Existing full integrity/publication APIs remain unchanged.</summary>
@@ -60,12 +60,12 @@ public sealed class CatalogExplorerReader(UniverseContext context)
                 var id = reader.GetString(0); var type = reader.GetString(1); var profile = reader.GetString(2);
                 if (reader.IsDBNull(6)) throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "A cataloged production output is absent.");
                 var path = reader.GetString(6); var digest = new Sha256Digest(reader.GetString(3)); var size = reader.GetInt64(4);
-                ProductionPaths.Resolve(context.Storage.ProductionRoot, path);
+                var file = ProductionPaths.Resolve(context.Storage.ProductionRoot, path);
                 if (!AssetNamingRules.MatchesAssetType(id, type) || !AssetNamingRules.IsValidMachineIdentifier(profile) || size <= 0 ||
                     reader.GetString(7) != digest.Hex || reader.GetInt64(8) != size || reader.GetInt64(9) != 1 ||
                     path != reader.GetString(5) + "/" + id + ".webp")
                     throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "Inconsistent production index projection.");
-                items.Add(new(new(context.Id, id), type, profile, path, digest, size));
+                items.Add(new(new(context.Id, id), type, profile, path, digest, size, File.Exists(file)));
             }
             if (items.Select(i => i.AssetKey).Distinct().Count() != items.Count)
                 throw CatalogException.Stop(NapIssueCodes.CatalogIntegrityFailed, "Ambiguous production output.");

@@ -1,7 +1,7 @@
 name: NAP personal - reparacion focalizada y entrega
 on:
   push:
-    branches: [fix/nap-personal-circuito-completo-20261114]
+    branches: [fix/nap-personal-circuito-completo-20261114, codex/nap-2.0.6-gestion-recursos]
   workflow_dispatch:
     inputs:
       real_gemini:
@@ -29,18 +29,18 @@ jobs:
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: |
-          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release','-p:Version=2.0.5'
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','src/NAP.App/NAP.App.csproj','-c','Release'
           if ($LASTEXITCODE -ne 0) { throw 'App/Host build failed' }
       - name: Compilar comprobaciones focalizadas
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: |
-          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release','-p:Version=2.0.5'
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','tests/NAP.Tests/NAP.Tests.csproj','-c','Release'
           if ($LASTEXITCODE -ne 0) { throw 'Focused checks build failed' }
-      - name: Cuatro comprobaciones de los fallos reparados
+      - name: Comprobaciones focalizadas de NAP personal
         if: ${{ !inputs.real_gemini }}
         run: |
-          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance' --settings tests/functional.runsettings
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance)|FullyQualifiedName~ThirtyNineDownloadedPngsAreValidatedAndStoredWithoutChangingNativeOrHistoricalCatalog' --settings tests/functional.runsettings
           if ($LASTEXITCODE -ne 0) { throw 'Focused repair checks failed' }
       - name: Una aceptacion real - ZIP, Gemini, WebP, maestro, SQLite y WPF
         if: ${{ inputs.real_gemini }}
@@ -68,24 +68,24 @@ jobs:
           $signature = Get-AuthenticodeSignature -LiteralPath $setup
           if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') { throw 'Unexpected compiler signature' }
           $compiler = Join-Path $env:RUNNER_TEMP 'nap-repair-compiler'
-          $p = Start-Process $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$compiler") -PassThru -Wait
+          $p = Start-Process $setup -WindowStyle Hidden -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$compiler") -PassThru -Wait
           if ($p.ExitCode -ne 0) { throw 'Compiler setup failed' }
           "NAP_REPAIR_ISCC=$(Join-Path $compiler 'ISCC.exe')" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
-      - name: Empaquetar actualizacion personal 2.0.5 - sin instalar ni desinstalar
+      - name: Empaquetar actualizacion personal
         if: ${{ !inputs.real_gemini }}
         env:
           SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
-        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP_REPAIR_ISCC -Version '2.0.5'
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP_REPAIR_ISCC
       - name: Limpiar licencia privada
         if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - uses: actions/upload-artifact@v4
         if: ${{ success() && !inputs.real_gemini }}
         with:
-          name: NAP-2.0.5-personal-${{ github.sha }}
+          name: NAP-personal-${{ github.sha }}
           path: |
-            artifacts/nap06/output/NAP-Setup-2.0.5.exe
-            artifacts/nap06/output/NAP-Setup-2.0.5.exe.sha256
+            artifacts/nap06/output/NAP-Setup-*.exe
+            artifacts/nap06/output/NAP-Setup-*.exe.sha256
             artifacts/nap06/inventory.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4

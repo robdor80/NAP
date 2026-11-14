@@ -7,7 +7,7 @@ namespace NAP.Presentation;
 
 /// <summary>WPF adapters for the authenticated host. Never fall back to a local writer after an RPC failure.</summary>
 public sealed record AutomationThumbnailView(byte[] Bytes, int Width, int Height, bool CacheHit);
-public sealed class RemoteDesktopService(AutomationHostClient client, bool auditAvailable) : IProfessionalUiService, IExplorerService, IImageNormalizationUiService, IGitManagementUiService, IDisposable
+public sealed class RemoteDesktopService(AutomationHostClient client, bool auditAvailable) : IProfessionalUiService, IExplorerService, IRemovalClient, IImageNormalizationUiService, IGitManagementUiService, IDisposable
 {
     private readonly AutomationThumbnailCache _cache = new();
     private sealed record Reference(string SessionId, string Value, UniverseId Universe);
@@ -91,7 +91,7 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
             items.AddRange(historic.Skip(start).Take(limit - items.Count).Select(p =>
                 new CatalogAssetSummary(new(c.Id, p.AssetId), "portrait", "portrait_npc",
                     p.RelativeDirectory + "/" + p.AssetId + ".webp",
-                    new Sha256Digest(p.WebpSha256), p.WebpBytes)));
+                    new Sha256Digest(p.WebpSha256), p.WebpBytes, File.Exists(p.WebpPath))));
         }
         return new CatalogPage(checked(nativeCount + historic.Count), offset, items.AsReadOnly());
     }
@@ -100,11 +100,12 @@ public sealed class RemoteDesktopService(AutomationHostClient client, bool audit
     public Task<LegacyPortrait?> LegacyDetailAsync(UniverseContext c, string id, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-        var index = new LegacyPortraitIndex(c);
-        var portrait = index.Get(id);
-        if (portrait is not null) index.Verify(portrait);
-        return Task.FromResult(portrait);
+        return Task.FromResult(new LegacyPortraitIndex(c).Get(id));
     }
+    public Task<RemovalPlan> PreviewRemovalAsync(UniverseContext c, RemovalSelection selection, CancellationToken ct) =>
+        RemovalResponse.Preview(client, c, selection, ct);
+    public Task<RemovalResult> RemoveAsync(UniverseContext c, RemovalRequest request, CancellationToken ct) =>
+        RemovalResponse.Remove(client, c, request, ct);
     public async Task<CatalogStatistics> StatisticsAsync(UniverseContext c, CatalogFilter filter, CancellationToken ct)
     {
         var native = await Call<CatalogStatistics>(c, AutomationOperation.Statistics, filter, ct);

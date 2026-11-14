@@ -81,6 +81,7 @@ public sealed class InboxAdmissionService
             if (size > _options.MaxZipBytes) return Result(source, InboxAdmissionCode.ResourceLimit);
             var modified = File.GetLastWriteTimeUtc(source); var hash = new Sha256Hasher().Compute(input);
             if (input.Length != size || modified != File.GetLastWriteTimeUtc(source)) return Result(source, InboxAdmissionCode.SourceChanged);
+            if (RemovedInboxPackages.Contains(_context.Storage, hash)) return Result(source, InboxAdmissionCode.AlreadyKnown);
             item = _queue.Observe(owner, _context.Id, source, new(hash, size), batch); Checkpoint?.Invoke("observation-recorded");
             if (item.ActiveAttempt is not null) return Resume(owner, item, token);
             if (item.State == QueueState.MissingSource) item = _queue.Transition(owner, item.Id, item.Revision, QueueState.WaitingStable);
