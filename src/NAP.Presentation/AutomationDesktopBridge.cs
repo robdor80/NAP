@@ -208,6 +208,8 @@ public sealed class AutomationDesktopBridge
                 return AutomationProtocol.Payload(_host.RequestPendingScan(id));
             case AutomationOperation.Activate:
                 var a = Arg<AutomationActivation>(); return AutomationProtocol.Payload(await _host.ActivateAsync(id, a.Policy, a.ResumeOnRestart, request.RequestId));
+            case AutomationOperation.ActivatePersonal:
+                return AutomationProtocol.Payload(await _host.ActivatePersonalAsync(id, request.RequestId));
             case AutomationOperation.Pause: case AutomationOperation.Resume: case AutomationOperation.StopUniverse: case AutomationOperation.CancelItem: case AutomationOperation.ResumeItem:
                 var action = request.Operation switch { AutomationOperation.Pause => AutomationControlAction.Pause, AutomationOperation.Resume => AutomationControlAction.Resume,
                     AutomationOperation.StopUniverse => AutomationControlAction.Stop, AutomationOperation.CancelItem => AutomationControlAction.CancelItem, _ => AutomationControlAction.ResumeItem };
