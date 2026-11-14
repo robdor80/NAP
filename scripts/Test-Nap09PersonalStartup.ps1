@@ -26,11 +26,13 @@ try {
   $generator = Join-Path $InstalledDirectory 'updater\NAP09.ActivarHostPersonal.ps1'
   & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $generator -Aplicar -BandejaComun $mixed
   if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $config)) { throw 'Launch script failed.' }
-  $app = Join-Path $InstalledDirectory 'NAP.App.exe'
-  $arguments = @('--smoke-automation', "--smoke-output=$fixture\smoke")
+  # Run the same WPF assembly through dotnet to capture Console.Error from
+  # the WinExe startup; a native GUI launcher can discard standard streams.
+  $app = Join-Path $InstalledDirectory 'NAP.App.dll'
+  $arguments = @($app, '--smoke-automation', "--smoke-output=$fixture\smoke")
   # Start-Process -Wait waits for the entire process tree, but NAP's Host
   # intentionally survives WPF. Wait only for WPF itself.
-  $process = Start-Process -FilePath $app -ArgumentList $arguments -PassThru -RedirectStandardOutput $log -RedirectStandardError $err
+  $process = Start-Process -FilePath 'dotnet' -ArgumentList $arguments -PassThru -RedirectStandardOutput $log -RedirectStandardError $err
   if (-not $process.WaitForExit(60000)) {
     $process.Kill()
     throw 'NAP WPF did not exit after the personal-startup smoke.'
@@ -40,8 +42,7 @@ try {
   $stderr = if (Test-Path -LiteralPath $err) { [string](Get-Content -LiteralPath $err -Raw) } else { '' }
   if ($process.ExitCode -ne 0 -or $stdout -notmatch '"automationConnected":true') {
     throw ("NAP09 personal launch FAILED exit={0}; stderr={1}; stdout={2}" -f $process.ExitCode,
-      $stderr.Substring(0, [Math]::Min($stderr.Length, 4000)),
-      $stdout.Substring(0, [Math]::Min($stdout.Length, 2000)))
+      ([string]$stderr), ([string]$stdout))
   }
   Write-Host 'NAP09 personal launch via real PowerShell config PASS.'
 }
