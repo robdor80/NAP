@@ -11,6 +11,7 @@ on:
       - src/NAP.Presentation/AutomationDesktopBridge.cs
       - src/NAP.Core/AutomationProtocol.cs
       - src/NAP.App/App.xaml.cs
+      - src/NAP.App/Views/DashboardView.xaml
       - src/NAP.Presentation/RemoteDesktopService.cs
       - scripts/NAP09.ActivarHostPersonal.ps1
       - scripts/Build-Nap06Release.ps1
