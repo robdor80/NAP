@@ -44,6 +44,22 @@ public partial class App : Application
             var installedHostConfig = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "Host", "launch.json");
             var managedConfig = managedArgument ?? (automationConfig is null && System.IO.File.Exists(installedHostConfig) ? installedHostConfig : null);
+            if (managedConfig is not null && managedArgument is null)
+            {
+                // An installed protected binding is ATTACH ONLY: the normal desktop must
+                // never fork the writer using its interactive Windows identity.
+                var candidate = new System.IO.FileInfo(managedConfig);
+                if (!candidate.Exists || candidate.Length is < 1 or > 2 * 1024 * 1024 ||
+                    (candidate.Attributes & System.IO.FileAttributes.ReparsePoint) != 0)
+                    throw new System.IO.InvalidDataException("Installed Host binding is unsafe.");
+                using var payload = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(managedConfig));
+                var installed = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(payload.RootElement);
+                if (installed.ProtectedEndpoint is not null)
+                {
+                    automationConfig = managedConfig;
+                    managedConfig = null;
+                }
+            }
             if (managedConfig is not null)
             {
                 // A present configuration is authoritative. Never fall back to local writers
