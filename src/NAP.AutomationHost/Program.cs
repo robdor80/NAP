@@ -10,6 +10,8 @@ try
     var info = new FileInfo(args[1]); if (info.Length > 2 * 1024 * 1024) throw new InvalidDataException("Launch configuration exceeds its bound.");
     using var document = JsonDocument.Parse(File.ReadAllBytes(info.FullName));
     var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
+    if (config.ProtectedEndpoint is not null)
+        throw new InvalidDataException("Protected production endpoint cannot launch from laboratory mode.");
     // Credentials are supplied privately at runtime; neither launch.json nor GitHub stores them.
     // No configured Gemini means no automatic PASS: the host parks at the audit boundary.
     using var auditTransport = new HttpClient();
