@@ -10,7 +10,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: nap08-nap202-\${{ github.ref }}
+  group: nap08-nap202-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   windows-nap202:
@@ -26,7 +26,7 @@ jobs:
           dotnet-version: 10.0.x
       - name: Inno Setup 6.7.4 oficial con attestacion y firma verificada
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           $src=Join-Path $env:RUNNER_TEMP 'nap202-inno'
           New-Item -ItemType Directory -Force $src | Out-Null
@@ -47,7 +47,7 @@ jobs:
           "NAP202_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - name: Compilar NAP 2.0.2 WPF y AutomationHost autocontenidos
         env:
-          SIXLABORS_LICENSE_B64: \${{ secrets.SIXLABORS_LICENSE_B64 }}
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
         run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP202_ISCC -Version '2.0.2'
       - name: Verificar version real e integridad de 2.0.2
         run: |
@@ -70,13 +70,13 @@ jobs:
       - name: Instalar abrir WPF desinstalar y preservar datos en runner TEMP
         run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.2'
       - name: Eliminar licencia temporal del runner
-        if: \${{ always() }}
+        if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
       - name: Publicar instalador descargable 2.0.2
-        if: \${{ success() }}
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: NAP-2.0.2-Windows11-Instalador-\${{ github.sha }}
+          name: NAP-2.0.2-Windows11-Instalador-${{ github.sha }}
           path: |
             artifacts/nap06/output/NAP-Setup-2.0.2.exe
             artifacts/nap06/output/NAP-Setup-2.0.2.exe.sha256
