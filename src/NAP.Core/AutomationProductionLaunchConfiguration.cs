@@ -9,7 +9,6 @@ namespace NAP.Core;
 /// An explicitly provisioned Windows deployment. The ordinary laboratory launch contract
 /// cannot opt into production. Configuration bytes alone never prove safe ownership or ACLs.
 /// </summary>
-[SupportedOSPlatform("windows")]
 public sealed record AutomationProductionLaunchConfiguration(
     int SchemaVersion,
     string DataRoot,
@@ -36,6 +35,7 @@ public sealed record AutomationProductionLaunchConfiguration(
     /// <summary>Validates the protected installed distribution before any Host constructor may write.</summary>
     public AutomationHost CreateHost(string configurationPath, string installedDirectory, IIdentifiedAiAuditClient? auditor)
     {
+        if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Production Host requires Windows.");
         var contexts = Contexts();
         var boundary = AutomationProductionBoundary.Validate(this, contexts, configurationPath, installedDirectory);
         var options = new AutomationHostOptions
