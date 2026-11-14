@@ -6,6 +6,9 @@ namespace NAP.Presentation;
 /// <summary>Desktop session. Scope/generation protect every result; mutations retain their typed Core plans and explicit confirmation.</summary>
 public sealed partial class ShellViewModel : ObservableObject, IDisposable
 {
+    // La version visible procede del ejecutable NAP.App instalado, no de un rotulo fijo.
+    public string ProductVersionText => "RobDev · NAP " +
+        (System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "2.0");
     public AutomationControlViewModel? Automation { get; }
     private readonly IProfessionalUiService _service;
     private readonly ICatalogDiversityAiClient? _diversityClient;

@@ -1,0 +1,87 @@
+# NAP08: único instalador NAP 2.0.2 con código corregido, sin despliegue productivo.
+name: NAP08 - NAP 2.0.2 Windows installer
+on:
+  push:
+    branches:
+      - feature/nap08-certificacion-fisica-msi-20261113
+    paths:
+      - '.github/workflows/nap08-nap202-installer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap08-nap202-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-nap202:
+    runs-on: windows-2022
+    timeout-minutes: 65
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Inno Setup 6.7.4 oficial con attestacion y firma verificada
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src=Join-Path $env:RUNNER_TEMP 'nap202-inno'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Inno download FAIL' }
+          $setup=Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Inno attestation FAIL' }
+          $sig=Get-AuthenticodeSignature -LiteralPath $setup
+          if ($sig.Status -ne 'Valid' -or $sig.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Inno vendor signature FAIL'
+          }
+          $root=Join-Path $env:RUNNER_TEMP 'nap202-inno-compiler'
+          $p=Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$root") -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw 'Inno compiler setup FAIL' }
+          $iscc=Join-Path $root 'ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC missing' }
+          "NAP202_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Compilar NAP 2.0.2 WPF y AutomationHost autocontenidos
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP202_ISCC -Version '2.0.2'
+      - name: Verificar version real e integridad de 2.0.2
+        run: |
+          $path='artifacts/nap06'
+          $exe=Join-Path $path 'output/NAP-Setup-2.0.2.exe'
+          $sha=(Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          $expect=(Get-Content -LiteralPath "$exe.sha256" -Raw).Trim().Split(' ')[0]
+          $manifest=Get-Content -LiteralPath (Join-Path $path 'inventory.json') -Raw | ConvertFrom-Json
+          $appVersion=(Get-Item -LiteralPath (Join-Path $path 'payload/NAP.App.exe')).VersionInfo.ProductVersion
+          $hostVersion=(Get-Item -LiteralPath (Join-Path $path 'payload/host/NAP.AutomationHost.exe')).VersionInfo.ProductVersion
+          if ($sha -cne $expect -or $manifest.version -ne '2.0.2' -or
+              @($manifest.files).Count -lt 20 -or
+              -not $appVersion.StartsWith('2.0.2') -or -not $hostVersion.StartsWith('2.0.2')) {
+            throw 'Version 2.0.2 o integridad del instalador invalida'
+          }
+          Write-Host "NAP 2.0.2 app: $appVersion"
+          Write-Host "NAP 2.0.2 host: $hostVersion"
+          Write-Host "NAP 2.0.2 SHA256: $sha"
+          Write-Host "Archivos inventariados: $(@($manifest.files).Count)"
+      - name: Instalar abrir WPF desinstalar y preservar datos en runner TEMP
+        run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.2'
+      - name: Eliminar licencia temporal del runner
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Publicar instalador descargable 2.0.2
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAP-2.0.2-Windows11-Instalador-${{ github.sha }}
+          path: |
+            artifacts/nap06/output/NAP-Setup-2.0.2.exe
+            artifacts/nap06/output/NAP-Setup-2.0.2.exe.sha256
+            artifacts/nap06/inventory.json
+            artifacts/nap06/provenance.json
+            artifacts/nap06/test-results.json
+          if-no-files-found: error
+          retention-days: 30

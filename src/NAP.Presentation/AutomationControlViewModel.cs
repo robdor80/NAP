@@ -196,9 +196,19 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         var context = _context(); if (context is null) return;
         if (!await _confirmation.ConfirmAsync(new("Detener automatización", "Se detendrá la automatización de todos los universos conectados.", context.Id, []), _lifetime.Token)) return;
         _changing = true; ++_generation; Clear(); Status = "Deteniendo automatización…";
-        try { await _client.SendAsync(AutomationOperation.ShutdownHost, null, new { }, _lifetime.Token); }
-        finally { _changing = false; }
-        await RefreshAsync();
+        try
+        {
+            // ShutdownHost only acknowledges after the Host has drained and stopped.
+            // A second Overview request here races the intentional disappearance of
+            // the IPC endpoint and incorrectly reports a timeout after success.
+            await _client.SendAsync(AutomationOperation.ShutdownHost, null, new { }, _lifetime.Token);
+            if (!_disposed)
+            {
+                Status = "Automatización detenida";
+                ExecutionScope = "En marcha: 0 universos";
+            }
+        }
+        finally { _changing = false; Changed(); }
     }
     public static string Describe(AutomationHostState state, AutomationQueueCounts counts, int pendingCandidates = 0) => state switch
     {

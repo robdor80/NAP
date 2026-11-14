@@ -1,0 +1,52 @@
+# NAP08: comprobar solo parada del Host y proyeccion WPF; sin instaladores ni datos reales.
+name: NAP08 - Host shutdown UX Windows
+on:
+  push:
+    branches:
+      - feature/nap08-certificacion-fisica-msi-20261113
+    paths:
+      - 'src/NAP.Presentation/AutomationControlViewModel.cs'
+      - 'tests/NAP.Tests/AutomationManagedWpfTests.cs'
+      - '.github/workflows/nap08-host-shutdown-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap08-shutdown-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-host-shutdown:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore NAP .NET 10
+        run: dotnet restore NAP.sln --verbosity minimal
+      - name: Build Windows Release (licencia del runner, nunca empaquetada)
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: |
+          ./.github/scripts/Invoke-LicensedDotnet.ps1 -DotnetArguments 'build','NAP.sln','-c','Release','--no-restore'
+          if ($LASTEXITCODE -ne 0) { throw 'NAP08 build failed' }
+      - name: Test parada global por WPF en HOST TEMP real
+        run: |
+          New-Item -ItemType Directory -Force artifacts/nap08-shutdown | Out-Null
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~AutomationManagedWpfTests.WpfGlobalShutdownShowsStoppedWithoutQueryingAnExitedHost' --settings tests/functional.runsettings --results-directory artifacts/nap08-shutdown --logger 'trx;LogFileName=shutdown.trx'
+          if ($LASTEXITCODE -ne 0) { throw 'NAP08 Host shutdown test failed' }
+      - name: Eliminar material privado temporal
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Evidencia acotada
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap08-host-shutdown-${{ github.sha }}
+          path: artifacts/nap08-shutdown/
+          if-no-files-found: warn
+          retention-days: 30
