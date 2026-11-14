@@ -86,14 +86,15 @@ internal sealed class ManagedAutomationHost : IDisposable
             WorkingDirectory = AppContext.BaseDirectory
         };
         if (!File.Exists(executable)) start.ArgumentList.Add(assembly);
-        start.ArgumentList.Add("--laboratory-config");
+        start.ArgumentList.Add(configuration.PersonalMode ? "--personal-config" : "--laboratory-config");
         start.ArgumentList.Add(path);
 
         var spawned = Process.Start(start) ?? throw new InvalidOperationException("Host process did not start.");
         try
         {
             var ready = await spawned.StandardOutput.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(25), cancellation);
-            if (ready is null || !ready.StartsWith("NAP laboratory host ready: ", StringComparison.Ordinal))
+            var prefix = configuration.PersonalMode ? "NAP personal host ready: " : "NAP laboratory host ready: ";
+            if (ready is null || !ready.StartsWith(prefix, StringComparison.Ordinal))
                 throw new InvalidOperationException("Host did not report a valid startup handshake.");
             if (!await CanAttachAsync(client, contexts, configuration.MixedInboxRoot, cancellation))
                 throw new InvalidDataException("Host IPC scope did not match its launch configuration.");
