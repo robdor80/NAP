@@ -206,7 +206,11 @@ public sealed class AutomationPipeServer : IAsyncDisposable
                     principal = sid ?? throw new UnauthorizedAccessException("No authenticated client SID.");
                 }
                 else principal = pipe.GetImpersonationUserName();
-                _protectedEndpoint?.RequireCaller(principal);
+                if (_protectedEndpoint is not null)
+                {
+                    if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
+                    _protectedEndpoint.RequireCaller(principal);
+                }
                 AutomationResponse response;
                 try { response = new(1, request.RequestId, true, null, await _handler(request, principal).ConfigureAwait(false)); }
                 catch (Exception error)
