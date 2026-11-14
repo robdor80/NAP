@@ -10,6 +10,8 @@ on:
       - src/NAP.Presentation/RemoteDesktopService.cs
       - scripts/NAP09.ActivarHostPersonal.ps1
       - scripts/Build-Nap06Release.ps1
+      - scripts/Test-Nap06Installer.ps1
+      - scripts/Test-Nap09PersonalStartup.ps1
       - .github/workflows/nap09-personal-installer.yml
   workflow_dispatch:
 permissions:
