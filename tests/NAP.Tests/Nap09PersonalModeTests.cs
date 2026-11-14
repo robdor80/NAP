@@ -110,7 +110,7 @@ public sealed class Nap09PersonalModeTests
                 Assert.False(running.Grant!.ResumeOnRestart);
                 var after = await host.QueryAsync(fixture.A.Context.Id, scope => scope.Queue.CurrentPolicy());
                 Assert.True(after.IsExecutionAuthorized);
-                Assert.Equal("nap-personal", after.Definition.PolicyId);
+                Assert.Equal("nap_personal", after.Definition.PolicyId);
                 Assert.NotNull(after.Authorization);
                 Assert.Equal(Environment.UserName, after.Authorization!.Actor);
                 var stopped = host.Control(fixture.A.Context.Id, AutomationControlAction.Stop);
