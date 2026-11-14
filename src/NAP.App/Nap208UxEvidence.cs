@@ -136,6 +136,7 @@ internal static class Nap208UxEvidence
         Save(surface, Path.Combine(output, "produccion-error-lectura.png"), 1);
         EvidenceWork.Mode = "production";
         Require(diagnostics.Errors == 0, "WPF binding errors: " + diagnostics.Errors);
+        process.Refresh(); // Process caches OS counters until explicitly refreshed.
         var result = new { result = "PASS", records, bindingErrors = diagnostics.Errors, virtualizationVerified = true,
             fixture = "Temporary synthetic SQLite; actual WPF controls; no Gemini network call", refreshMilliseconds = refreshMs,
             textSearchMilliseconds = searchMs, initialWorkingSetBytes = initialMemory, finalWorkingSetBytes = process.WorkingSet64,
