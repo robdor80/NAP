@@ -56,7 +56,13 @@ public partial class App : Application
                 var file = new System.IO.FileInfo(automationConfig); if (file.Length > 2 * 1024 * 1024) throw new System.IO.InvalidDataException("Host config exceeds its bound.");
                 using var document = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(file.FullName));
                 var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
-                var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
+                var protectedEndpoint = config.ProtectedEndpoint is { } binding
+                    ? new AutomationWindowsEndpointAccess(binding.WriterSid, binding.DesktopSid)
+                    : null;
+                if (protectedEndpoint is not null && managedConfig is not null)
+                    throw new InvalidOperationException("Protected writer cannot start as the interactive desktop; use attach-only mode.");
+                var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection, protectedEndpoint);
+                _remoteDesktop = new(client, config.SyntheticAudit);
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);
