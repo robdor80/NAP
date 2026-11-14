@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 25
     env:
-      NAP_ARTIFACT_PREFIX: ${{ github.ref_name == 'codex/nap-2.0.7-auditor-ia-host' && 'NAP-2.0.7-Auditor-IA-Host' || 'NAP-personal' }}
+      NAP_ARTIFACT_PREFIX: ${{ github.ref_name == 'codex/nap-2.0.8-ux-minimal' && 'NAP-2.0.8-UX-Minimal' || github.ref_name == 'codex/nap-2.0.7-auditor-ia-host' && 'NAP-2.0.7-Auditor-IA-Host' || 'NAP-personal' }}
     defaults:
       run:
         shell: pwsh
@@ -44,6 +44,14 @@ jobs:
         run: |
           dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter '(FullyQualifiedName~NapPersonalRepairTests&FullyQualifiedName!~LiveGeminiPersonalAcceptance)|FullyQualifiedName~ThirtyNineDownloadedPngsAreValidatedAndStoredWithoutChangingNativeOrHistoricalCatalog|FullyQualifiedName~CatalogDiversityTests|(FullyQualifiedName~Nap207DiversityHostTests&FullyQualifiedName!~LiveGeminiDiversity)' --settings tests/functional.runsettings
           if ($LASTEXITCODE -ne 0) { throw 'Focused repair checks failed' }
+      - name: UX 2.0.8 - WPF real, accesibilidad y catálogo sintético temporal
+        if: ${{ !inputs.real_gemini && github.ref_name == 'codex/nap-2.0.8-ux-minimal' }}
+        run: |
+          dotnet test tests/NAP.Tests/NAP.Tests.csproj -c Release --no-build --no-restore --filter 'FullyQualifiedName~Nap208UxTests' --results-directory artifacts/nap208/tests --logger 'trx;LogFileName=ux208.trx' --settings tests/functional.runsettings
+          if ($LASTEXITCODE -ne 0) { throw 'Fallo en comprobaciones UX 2.0.8.' }
+          [xml]$trx = Get-Content -Raw artifacts/nap208/tests/ux208.trx
+          if ([int]$trx.TestRun.ResultSummary.Counters.passed -lt 4 -or [int]$trx.TestRun.ResultSummary.Counters.failed -ne 0) { throw 'No se ejecutaron todas las comprobaciones UX.' }
+          if (-not (Test-Path artifacts/nap208/visual/result.json)) { throw 'Faltan evidencias WPF reales; no publicar instalador.' }
       - name: Una aceptacion real - ZIP, Gemini, WebP, maestro, SQLite y WPF
         if: ${{ inputs.real_gemini }}
         env:
@@ -90,6 +98,12 @@ jobs:
       - name: Limpiar licencia privada
         if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && github.ref_name == 'codex/nap-2.0.8-ux-minimal' }}
+        with:
+          name: NAP-2.0.8-evidencias-${{ github.sha }}
+          path: artifacts/nap208/
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: ${{ success() && !inputs.real_gemini }}
         with:
