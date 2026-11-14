@@ -3,61 +3,95 @@ using NAP.Core;
 using NAP.AI;
 using NAP.Presentation;
 
-if (args.Length != 2 || args[0] != "--laboratory-config")
-{ Console.Error.WriteLine("An explicit --laboratory-config file is required. No production/service mode is available."); return 2; }
+// Production is deliberately not the default mode. It cannot be reached through
+// the interactive WPF launcher, nor by repointing a laboratory launch JSON.
+if (args.Length != 2 || args[0] is not ("--laboratory-config" or "--production-config"))
+{
+    Console.Error.WriteLine("An explicit --laboratory-config or --production-config file is required.");
+    return 2;
+}
 try
 {
-    var info = new FileInfo(args[1]); if (info.Length > 2 * 1024 * 1024) throw new InvalidDataException("Launch configuration exceeds its bound.");
+    var laboratoryMode = args[0] == "--laboratory-config";
+    var info = new FileInfo(Path.GetFullPath(args[1]));
+    if (!info.Exists || info.Length is < 1 or > 2 * 1024 * 1024 ||
+        (info.Attributes & FileAttributes.ReparsePoint) != 0)
+        throw new InvalidDataException("Host configuration is missing, linked or outside the size limit.");
     using var document = JsonDocument.Parse(File.ReadAllBytes(info.FullName));
-    var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
-    if (config.ProtectedEndpoint is not null)
-        throw new InvalidDataException("Protected production endpoint cannot launch from laboratory mode.");
-    // Credentials are supplied privately at runtime; neither launch.json nor GitHub stores them.
-    // No configured Gemini means no automatic PASS: the host parks at the audit boundary.
+    var lab = laboratoryMode ? AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement) : null;
+    var production = laboratoryMode ? null : AutomationProtocol.Read<AutomationProductionLaunchConfiguration>(document.RootElement);
+    if (lab?.ProtectedEndpoint is not null)
+        throw new InvalidDataException("A protected Windows writer cannot start from a laboratory configuration.");
+
+    var contexts = lab is null ? production!.Contexts() : lab.Contexts();
+    var synthetic = lab?.SyntheticAudit ?? false;
+    // No audit credentials are stored in launch.json or published to GitHub.
+    // Missing Gemini credentials remain an audit boundary, NEVER an automatic PASS.
     using var auditTransport = new HttpClient();
     var gemini = HostGeminiAuditor.Create(auditTransport,
         Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY"),
-        Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL"), config.SyntheticAudit);
-    IIdentifiedAiAuditClient? auditor = config.SyntheticAudit ? new SyntheticAuditor() : gemini;
+        Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL"), synthetic);
+    IIdentifiedAiAuditClient? auditor = synthetic ? new SyntheticAuditor() : gemini;
+
     var checkpointReached = 0;
     var storageFailures = 0;
-    await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
-        Admission = config.Admission ?? new(), MixedInboxRoot = config.MixedInboxRoot,
-        LaboratoryStorageFailure = (universe, item, error) =>
+    // Production checks Windows SID, protected distribution/configuration, all data
+    // roots, ACLs and a pinned backup receipt BEFORE constructing the first writer.
+    // Only a separately installed writer account can reach the protected branch.
+    await using var host = laboratoryMode
+        ? new AutomationHost(lab!.ControlRoot, contexts, new()
         {
-            // This executable validates temporary synthetic laboratory roots before starting.
-            // Keep the original stack/HResult here, never in a public IPC projection or receipt.
-            if (Interlocked.Increment(ref storageFailures) > 16) return;
-            var detail = error.ToString();
-            try { Console.Error.WriteLine($"preparation_storage_unavailable:{universe.Value}:{item.Value}:0x{error.HResult:X8}:{detail[..Math.Min(detail.Length, 65536)]}"); }
-            catch (IOException) { /* A broken diagnostic stream must not prevent durable parking. */ }
-        },
-        LaboratoryCheckpoint = (_, item, boundary) =>
-        {
-            if (boundary != config.LaboratoryCheckpoint || Interlocked.Exchange(ref checkpointReached, 1) != 0) return;
-            // Only an explicitly configured TEMP laboratory can reach this injection. The fixture kills
-            // this process after observing the durable boundary; this is never a shutdown mechanism.
-            Console.WriteLine("NAP laboratory checkpoint: " + item.Value + ":" + boundary);
-            Console.Out.Flush();
-            Thread.Sleep(Timeout.Infinite);
-        } }, auditor);
+            LaboratoryRoot = lab.LaboratoryRoot,
+            Admission = lab.Admission ?? new(),
+            MixedInboxRoot = lab.MixedInboxRoot,
+            LaboratoryStorageFailure = (universe, item, error) =>
+            {
+                if (Interlocked.Increment(ref storageFailures) > 16) return;
+                var detail = error.ToString();
+                try { Console.Error.WriteLine($"preparation_storage_unavailable:{universe.Value}:{item.Value}:0x{error.HResult:X8}:{detail[..Math.Min(detail.Length, 65536)]}"); }
+                catch (IOException) { }
+            },
+            LaboratoryCheckpoint = (_, item, boundary) =>
+            {
+                if (boundary != lab.LaboratoryCheckpoint || Interlocked.Exchange(ref checkpointReached, 1) != 0) return;
+                Console.WriteLine("NAP laboratory checkpoint: " + item.Value + ":" + boundary);
+                Console.Out.Flush();
+                Thread.Sleep(Timeout.Infinite);
+            }
+        }, auditor)
+        : production!.CreateHost(info.FullName,
+            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..")), auditor);
+
     await host.Started;
-    var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(config.LaboratoryRoot, "desktop-requests"), auditor);
-    await using var server = new AutomationPipeServer(config.Connection, bridge.HandleAsync);
+    var root = lab?.LaboratoryRoot ?? production!.DataRoot;
+    var connection = lab?.Connection ?? production!.Connection;
+    var endpoint = production is null ? null
+        : new AutomationWindowsEndpointAccess(production.WriterSid, production.DesktopSid);
+    var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(root, "desktop-requests"), auditor);
+    await using var server = new AutomationPipeServer(connection, bridge.HandleAsync, endpoint);
+
     using var stop = new CancellationTokenSource();
     Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); };
-    Console.WriteLine("NAP laboratory host ready: " + host.SessionId);
+    Console.WriteLine((laboratoryMode ? "NAP laboratory host ready: " : "NAP protected host ready: ") + host.SessionId);
     var signal = Task.Delay(Timeout.Infinite, stop.Token);
     var finished = await Task.WhenAny(signal, host.Completion);
     if (finished == host.Completion) await host.Completion;
     return 0;
 }
-catch (Exception error) { Console.Error.WriteLine("host_stopped:" + error.GetType().Name); return 1; }
+catch (Exception error)
+{
+    // No secret, filesystem path or received configuration content is printed.
+    Console.Error.WriteLine("host_stopped:" + error.GetType().Name);
+    return 1;
+}
 
 internal sealed class SyntheticAuditor : IIdentifiedAiAuditClient
 {
     public string ProviderId => "synthetic_provider";
     public string ModelId => "synthetic_model";
     public Task<AiAuditReport> AuditAsync(AiAuditRequest request, CancellationToken cancellationToken = default)
-    { cancellationToken.ThrowIfCancellationRequested(); return Task.FromResult(new AiAuditReport(AiAuditDecision.Pass, "Explicit synthetic laboratory auditor", [])); }
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(new AiAuditReport(AiAuditDecision.Pass, "Explicit synthetic laboratory auditor", []));
+    }
 }
