@@ -45,8 +45,9 @@
             </WrapPanel>
             <StackPanel Visibility="{Binding NeedsReview,Converter={StaticResource Visible}}">
               <TextBlock Text="{Binding Problem}" Foreground="{StaticResource WarningBrush}" FontWeight="SemiBold"/>
-              <TextBlock Text="{Binding Guidance}" Margin="0,8,0,16"/>
+
             </StackPanel>
+            <TextBlock Text="{Binding Guidance}" Style="{StaticResource EmptyState}" Foreground="{StaticResource WarningBrush}"/>
             <Image Source="{Binding OriginalImage,Converter={StaticResource Png}}" Stretch="Uniform" MaxHeight="180" Visibility="{Binding ShowOriginal,Converter={StaticResource Visible}}" AutomationProperties.Name="Original preservado"/>
             <TextBlock Text="Vista previa no disponible"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Muted}"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding HasImage}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
             <Expander Header="Cambiar corrección" IsExpanded="{Binding EditExpanded}" Visibility="{Binding HasOptions,Converter={StaticResource Visible}}" Margin="0,12,0,0"><StackPanel>

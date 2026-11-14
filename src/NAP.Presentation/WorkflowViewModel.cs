@@ -195,6 +195,11 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         try
         {
             var page = Filter.CurrentOnly ? await ReadCurrentPage(c.Id, read.Token) : await _client.PageAsync(c.Id,new(_offset,20,Filter.Value,Search,Batch.Id),read.Token);
+            if (page.Total > 0 && page.Offset >= page.Total)
+            {
+                _offset = (page.Total - 1) / 20 * 20;
+                page = Filter.CurrentOnly ? await ReadCurrentPage(c.Id, read.Token) : await _client.PageAsync(c.Id, new(_offset, 20, Filter.Value, Search, Batch.Id), read.Token);
+            }
             var batches=await _client.BatchesAsync(c.Id,read.Token);
             if(!Current(scope,c)||generation!=_pageGeneration||read.IsCancellationRequested)return;
             if(page.UniverseId!=c.Id||page.Items.Any(r=>r.UniverseId!=c.Id)||batches.Any(b=>b.UniverseId!=c.Id))throw new InvalidDataException("Workflow scope mismatch.");
