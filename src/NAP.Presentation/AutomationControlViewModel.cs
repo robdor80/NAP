@@ -24,6 +24,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private readonly IAutomationOverviewClient _client;
     private readonly Func<UniverseContext?> _context;
     private readonly IUserConfirmation _confirmation;
+    private readonly bool _personalMode;
     private readonly CancellationTokenSource _lifetime = new();
     private CancellationTokenSource? _read;
     private AutomationDesktopOverview? _overview;
@@ -48,7 +49,13 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public ObservableCollection<AutomationUniverseStatusRow> UniverseStatuses { get; } = [];
     public string ExistingMixedPackages => _overview?.Host.MixedInbox is { } mixed
         ? mixed.AlreadyPresent.ToString("N0") : "—";
-    public bool CanActivate => !_disposed && !_changing && Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Stopped;
+    private bool CanPreparePersonal => _personalMode && Current() &&
+        _overview!.Queue.Policy.State == AutomationPolicyState.Disabled &&
+        _overview.Queue.Policy.Authorization is null &&
+        _overview.Queue.Policy.Definition.PolicyId == "default" &&
+        _overview.Queue.Policy.Definition.Operations == AutomationOperations.None;
+    public bool CanActivate => !_disposed && !_changing && Current() && _overview!.Control.Stopped &&
+        (_overview.Queue.Policy.IsPreproductionAuthorized || CanPreparePersonal);
     public bool CanStopUniverse => !_disposed && !_changing && Current() && !_overview!.Control.Stopped;
     public bool CanPause => !_disposed && !_changing && Current() && _overview!.Control is { Grant: not null, Paused: false, Stopped: false } && SelectedState() == AutomationHostState.Running;
     private bool AuthorizedGrant => Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Grant is { } grant &&
@@ -65,14 +72,16 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public UiAsyncCommand Resume { get; }
     public UiAsyncCommand Stop { get; }
     public UiAsyncCommand StopUniverse { get; }
-    public AutomationControlViewModel(AutomationHostClient client, Func<UniverseContext?> context, IUserConfirmation confirmation)
-        : this(context, confirmation, new AutomationOverviewClient(client)) { }
-    public AutomationControlViewModel(Func<UniverseContext?> context, IUserConfirmation confirmation, IAutomationOverviewClient client)
+    public AutomationControlViewModel(AutomationHostClient client, Func<UniverseContext?> context,
+        IUserConfirmation confirmation, bool personalMode = false)
+        : this(context, confirmation, new AutomationOverviewClient(client), personalMode) { }
+    public AutomationControlViewModel(Func<UniverseContext?> context, IUserConfirmation confirmation,
+        IAutomationOverviewClient client, bool personalMode = false)
     {
-        _client = client; _context = context; _confirmation = confirmation;
+        _client = client; _context = context; _confirmation = confirmation; _personalMode = personalMode;
         Refresh = new(RefreshAsync, () => !_disposed, _ => Unavailable());
         ProcessPending = new(() => Change(AutomationOperation.ScanPending), () => CanProcessPending, _ => Unavailable());
-        Activate = new(ActivateAsync, () => !_disposed && !_changing && Current() && _overview!.Queue.Policy.IsPreproductionAuthorized && _overview.Control.Stopped, _ => Unavailable());
+        Activate = new(ActivateAsync, () => CanActivate, _ => Unavailable());
         Pause = new(() => Change(AutomationOperation.Pause), () => CanPause, _ => Unavailable());
         Resume = new(() => Change(AutomationOperation.Resume), () => CanResume, _ => Unavailable());
         Stop = new(StopAsync, () => !_disposed && !_changing && Current(), _ => Unavailable());
@@ -172,12 +181,23 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     }
     private async Task ActivateAsync()
     {
-        if (!Current()) return;
+        if (!CanActivate) return;
         var context = _context()!; var policy = _overview!.Queue.Policy;
-        if (!await _confirmation.ConfirmAsync(new("Activar automatización", "Se aplicará la política autorizada de este universo de laboratorio.", context.Id, []), _lifetime.Token)) return;
-        if (!Current() || context != _context()) return;
+        var preparePersonal = CanPreparePersonal;
+        var explanation = preparePersonal
+            ? "NAP activará el procesamiento automático de Nimroel con tus carpetas actuales. Se comprobarán los ZIP que ya haya en las bandejas y los que añadas después; se conservarán los originales. La auditoría con Gemini necesita estar configurada para completar los trabajos. Puedes detenerlo desde NAP."
+            : "Se aplicará la política que ya autorizaste para este universo.";
+        if (!await _confirmation.ConfirmAsync(new("Iniciar automatización", explanation, context.Id, []), _lifetime.Token)) return;
+        if (!CanActivate || context != _context()) return;
         _changing = true; ++_generation; Clear();
-        try { await _client.SendAsync(AutomationOperation.Activate, context.Id, new AutomationActivation(policy.Reference, false), _lifetime.Token); }
+        try
+        {
+            if (preparePersonal)
+                await _client.SendAsync(AutomationOperation.ActivatePersonal, context.Id, new { }, _lifetime.Token);
+            else
+                await _client.SendAsync(AutomationOperation.Activate, context.Id,
+                    new AutomationActivation(policy.Reference, false), _lifetime.Token);
+        }
         finally { _changing = false; }
         await RefreshAsync();
     }
