@@ -1,0 +1,41 @@
+name: NAP09 - diagnostico rapido de arranque personal
+on:
+  push:
+    branches: [feature/nap09-preflight-retratos-treskal-20261114]
+    paths:
+      - scripts/Test-Nap09PersonalStartup.ps1
+      - .github/workflows/nap09-personal-startup-repro.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+jobs:
+  reproduce:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Download already-built NAP 2.0.3 (no recompilation)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $dest = Join-Path $env:RUNNER_TEMP 'nap09-existing-package'
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          gh run download 43553299082 --repo robdor80/NAP --name NAP-2.0.3-personal-d8994680433b5da3a69d3dc61f5d655e78c8a128 --dir $dest
+          if ($LASTEXITCODE -ne 0) { throw 'NAP09 package not available' }
+          $file = Get-ChildItem -LiteralPath $dest -Recurse -File -Filter 'NAP-Setup-2.0.3.exe' | Select-Object -First 1
+          if (-not $file) { throw 'Installer not found in original artifact.' }
+          $hash = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne '6acb6195daa86a5d98c2969eae902b1aa2557c13721d71b5484dc0073f559d83') {
+            throw 'Original package checksum mismatch.'
+          }
+          $result = Start-Process -FilePath $file.FullName -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART') -Wait -PassThru
+          if ($result.ExitCode -ne 0) { throw 'Installed package failed in the synthetic runner.' }
+      - name: Reproduce WPF startup with the same PowerShell 5.1 personal configuration
+        run: ./scripts/Test-Nap09PersonalStartup.ps1 -InstalledDirectory (Join-Path $env:LOCALAPPDATA 'Programs/NAP')

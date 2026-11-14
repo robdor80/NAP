@@ -54,6 +54,9 @@ try {
         $errorText = if (Test-Path -LiteralPath $previewStderr) { Get-Content -LiteralPath $previewStderr -Raw } else { '' }
         throw "La app WPF instalada no supero la vista previa sintetica. Exit=$($smoke.ExitCode); detalle=$errorText"
     }
+    if ($Version -in @('2.0.3', '2.0.4')) {
+        & (Join-Path $repo 'scripts/Test-Nap09PersonalStartup.ps1') -InstalledDirectory $installed
+    }
     $uninstall = Join-Path $installed 'unins000.exe'
     if (-not (Test-Path -LiteralPath $uninstall)) { throw 'No existe desinstalador.' }
     $u = Start-Process -FilePath $uninstall -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART') -Wait -PassThru

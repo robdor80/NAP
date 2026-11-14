@@ -3,11 +3,14 @@ namespace NAP.Core;
 public sealed record AutomationUniverseDefinition(UniverseStorageConfig Storage, string ProfileJson);
 public sealed record AutomationHostLaunchConfiguration(int SchemaVersion, string LaboratoryRoot, string ControlRoot,
     AutomationConnection Connection, IReadOnlyList<AutomationUniverseDefinition> Universes, bool SyntheticAudit = false,
-    string? LaboratoryCheckpoint = null, InboxAdmissionOptions? Admission = null, string? MixedInboxRoot = null)
+    string? LaboratoryCheckpoint = null, InboxAdmissionOptions? Admission = null, string? MixedInboxRoot = null,
+    bool PersonalMode = false)
 {
     public IReadOnlyList<UniverseContext> Contexts()
     {
         if (SchemaVersion != 1 || Universes is null || Universes.Count is < 1 or > 64) throw new InvalidDataException("Unsupported host launch configuration.");
+        if (PersonalMode && (SyntheticAudit || LaboratoryCheckpoint is not null))
+            throw new InvalidDataException("Personal mode cannot enable the synthetic auditor or laboratory fault injection.");
         if (LaboratoryCheckpoint is not null && (!SyntheticAudit || LaboratoryCheckpoint.Length is < 1 or > 160))
             throw new InvalidDataException("Fault injection requires the explicit synthetic auditor.");
         return Universes.Select(u =>

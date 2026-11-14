@@ -4,6 +4,7 @@ public enum AutomationHostState { Starting, Disabled, Running, Pausing, Paused, 
 public sealed record AutomationHostOptions
 {
     public required string LaboratoryRoot { get; init; }
+    public bool PersonalMode { get; init; }
     public InboxAdmissionOptions Admission { get; init; } = new();
     public string? MixedInboxRoot { get; init; }
     public long MaxMemoryBytes { get; init; } = 512L * 1024 * 1024;
@@ -92,23 +93,35 @@ public sealed partial class AutomationHost : IAsyncDisposable
     {
         _root = Path.GetFullPath(controlRoot); _options = options; _auditor = auditor;
         var lab = Path.GetFullPath(options.LaboratoryRoot);
-        if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
-            !ProductionPaths.Within(Path.GetTempPath(), lab) || !ProductionPaths.Within(lab, _root))
-            throw AutomationValidation.Invalid("This phase only supports an explicit nap-host-* laboratory below TEMP.");
+        if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !ProductionPaths.Within(lab, _root))
+            throw AutomationValidation.Invalid("Host storage must be below the explicitly configured Host root.");
+        if (options.PersonalMode)
+        {
+            if (!OperatingSystem.IsWindows() || ProductionPaths.Within(Path.GetTempPath(), lab) ||
+                options.LaboratoryCheckpoint is not null)
+                throw AutomationValidation.Invalid("Personal Host requires a persistent Windows directory, without laboratory injections.");
+        }
+        else if (!Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
+                 !ProductionPaths.Within(Path.GetTempPath(), lab))
+            throw AutomationValidation.Invalid("Laboratory Host requires an explicit nap-host-* directory below TEMP.");
         InboxAdmissionEvidence.DirectoryBoundary(lab); InboxAdmissionEvidence.DirectoryBoundary(_root);
         _slots = contexts.Select(c => new Slot(c)).ToArray();
         if (_slots.Length is < 1 or > 64 || options.PageSize is < 1 or > 1000 || options.MaxMemoryBytes < 1 || options.MaxRetainedBytes < 1 ||
             options.IdleInterval < TimeSpan.FromMilliseconds(25) || options.IdleInterval > TimeSpan.FromSeconds(30) ||
-            _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }.Any(r => !ProductionPaths.Within(lab, r))))
-            throw AutomationValidation.Invalid("All host roots and budgets must belong to the isolated laboratory.");
+            _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }
+                .Any(r => options.PersonalMode ? ProductionPaths.Overlaps(lab, r) : !ProductionPaths.Within(lab, r))))
+            throw AutomationValidation.Invalid("Host control storage must be isolated from the universe roots.");
+        if (options.PersonalMode)
+            LocalUniverseSettingsStore.Validate(_slots.Select(s => s.Context.Storage));
         options.Admission.Validate();
         if (options.MixedInboxRoot is { } mixed)
         {
-            if (!Path.IsPathFullyQualified(mixed) || !ProductionPaths.Within(lab, mixed) ||
+            if (!Path.IsPathFullyQualified(mixed) ||
+                (options.PersonalMode ? ProductionPaths.Overlaps(lab, mixed) : !ProductionPaths.Within(lab, mixed)) ||
                 ProductionPaths.Overlaps(mixed, _root) ||
                 _slots.Any(s => new[] { s.Context.Storage.WorkspaceRoot, s.Context.Storage.ProductionRoot, s.Context.Storage.ArchiveRoot }
                     .Any(r => ProductionPaths.Overlaps(mixed, r))))
-                throw AutomationValidation.Invalid("Shared Inbox must be explicit, disjoint and inside the isolated laboratory.");
+                throw AutomationValidation.Invalid("Shared Inbox must be explicit and separate from Host and universe roots.");
             InboxAdmissionEvidence.DirectoryBoundary(mixed);
             _mixedInbox = new MixedUniverseInboxRouter(mixed, _slots.Select(s => s.Context), options.Admission);
         }
@@ -186,6 +199,59 @@ public sealed partial class AutomationHost : IAsyncDisposable
         CancellationToken cancellation = default) => QueryAsync<IReadOnlyList<AutomationBatchProjection>>(universe, s =>
             new AutomationRuntimeStateStore(s.Context).List(s.Owner, offset, limit).Select(c =>
                 new AutomationBatchProjection(c, s.Queue.BatchSummary(c.BatchId))).ToArray(), cancellation);
+
+    /// <summary>
+    /// One-click personal startup. Reuses the existing queue policy ledger and Host
+    /// activation; an explicit confirmation happens in WPF before this IPC call.
+    /// Never authorizes a custom policy or a laboratory Host.
+    /// </summary>
+    public async Task<AutomationHostControl> ActivatePersonalAsync(UniverseId universe,
+        string? commandId = null, CancellationToken cancellation = default)
+    {
+        if (!_options.PersonalMode)
+            throw new AutomationException(AutomationError.Disabled, "Personal activation is available only in personal mode.");
+        await Started.ConfigureAwait(false);
+        var slot = Find(universe);
+        await slot.Runtime!.Started.ConfigureAwait(false);
+        if (!ReadControl(universe).Stopped)
+            throw new AutomationException(AutomationError.Busy, "Stop the universe before changing its personal activation.");
+        var policy = await slot.Runtime.InvokeAsync(scope =>
+        {
+            var current = scope.Queue.CurrentPolicy();
+            if (current.IsPreproductionAuthorized) return current.Reference;
+            if (current.State != AutomationPolicyState.Disabled ||
+                current.Definition.PolicyId is not ("default" or "nap_personal") ||
+                (current.Definition.PolicyId == "default" &&
+                 (current.Authorization is not null || current.Definition.Operations != AutomationOperations.None)))
+                throw new AutomationException(AutomationError.PolicyMismatch,
+                    "An existing custom policy must be reviewed; personal activation will not replace it.");
+            if (current.Definition.PolicyId == "default")
+            {
+                var defaults = current.Definition;
+                var definition = defaults with
+                {
+                    PolicyId = "nap_personal",
+                    Version = 1,
+                    Operations = StoredAutomationPolicy.ExecutionOperations,
+                    Audit = new AutomationAuditBudget(3, 2, 60, 1m)
+                };
+                current = scope.Queue.SavePolicy(scope.Owner, definition);
+            }
+            if (current.Authorization is null)
+            {
+                var authorization = new AutomationAuthorization("authorization_" + Guid.NewGuid().ToString("N"),
+                    universe, current.Reference, Environment.UserName, DateTimeOffset.UtcNow);
+                current = scope.Queue.RecordAuthorization(scope.Owner, current.Reference,
+                    current.Revision, authorization);
+            }
+            current = scope.Queue.SetPolicyState(scope.Owner, current.Reference,
+                current.Revision, AutomationPolicyState.Enabled);
+            return current.Reference;
+        }, cancellation).ConfigureAwait(false);
+        // A stopped universe is only launched on an explicit user action, without
+        // automatic reactivation after reboot.
+        return await ActivateAsync(universe, policy, false, commandId, cancellation).ConfigureAwait(false);
+    }
 
     public async Task<AutomationHostControl> ActivateAsync(UniverseId universe, PolicyReference policy, bool resumeOnRestart,
         string? commandId = null, CancellationToken cancellation = default)
