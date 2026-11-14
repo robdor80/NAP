@@ -36,8 +36,8 @@ try {
     throw 'NAP WPF did not exit after the personal-startup smoke.'
   }
   $process.Refresh()
-  $stdout = if (Test-Path -LiteralPath $log) { Get-Content -LiteralPath $log -Raw } else { '' }
-  $stderr = if (Test-Path -LiteralPath $err) { Get-Content -LiteralPath $err -Raw } else { '' }
+  $stdout = if (Test-Path -LiteralPath $log) { [string](Get-Content -LiteralPath $log -Raw) } else { '' }
+  $stderr = if (Test-Path -LiteralPath $err) { [string](Get-Content -LiteralPath $err -Raw) } else { '' }
   if ($process.ExitCode -ne 0 -or $stdout -notmatch '"automationConnected":true') {
     throw ("NAP09 personal launch FAILED exit={0}; stderr={1}; stdout={2}" -f $process.ExitCode,
       $stderr.Substring(0, [Math]::Min($stderr.Length, 4000)),
