@@ -53,7 +53,15 @@ try
     if (finished == host.Completion) await host.Completion;
     return 0;
 }
-catch (Exception error) { Console.Error.WriteLine("host_stopped:" + error.GetType().Name); return 1; }
+catch (Exception error)
+{
+    // A personal desktop tool needs a useful local startup error, not a generic
+    // exception type that conceals the reason. Avoid logging configuration bytes,
+    // IPC keys or API credentials.
+    var diagnostic = error.GetBaseException();
+    Console.Error.WriteLine("host_stopped:" + diagnostic.GetType().Name + ":" + diagnostic.Message);
+    return 1;
+}
 
 internal sealed class SyntheticAuditor : IIdentifiedAiAuditClient
 {
