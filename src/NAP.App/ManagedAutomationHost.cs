@@ -36,6 +36,8 @@ internal sealed class ManagedAutomationHost : IDisposable
 
         using var document = JsonDocument.Parse(await File.ReadAllBytesAsync(path, cancellation));
         var configuration = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement);
+        if (configuration.ProtectedEndpoint is not null)
+            throw new InvalidOperationException("Protected Host must be provisioned independently; the interactive WPF may only attach, never spawn its writer.");
         var contexts = configuration.Contexts();
         var client = new AutomationHostClient(configuration.Connection);
 
