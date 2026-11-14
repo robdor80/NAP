@@ -45,7 +45,7 @@ $paths = New-Object 'System.Collections.Generic.HashSet[string]' ([StringCompare
 foreach ($item in @($manifest.files)) {
     $relative = [string]$item.path
     if ([string]::IsNullOrWhiteSpace($relative) -or $relative.StartsWith('/') -or
-        $relative.Contains('\\') -or $relative.Contains(':') -or
+        $relative.Contains('\') -or $relative.Contains(':') -or
         @($relative.Split('/')) -contains '..' -or @($relative.Split('/')) -contains '.') {
         throw 'Unsafe relative path in NAP06 manifest.'
     }
