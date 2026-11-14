@@ -1,0 +1,92 @@
+# NAP09 protected package build only. This workflow does not install or activate.
+name: NAP09 - protected Windows package (no CUTOVER)
+
+on:
+  push:
+    branches:
+      - feature/nap09-preflight-retratos-treskal-20261114
+    paths:
+      - installer/NAP09.Protected.iss
+      - scripts/Build-Nap09Protected.ps1
+      - scripts/Test-Nap09ProtectedPackage.ps1
+      - .github/workflows/nap09-protected-package.yml
+  pull_request:
+    paths:
+      - installer/NAP09.Protected.iss
+      - scripts/Build-Nap09Protected.ps1
+      - scripts/Test-Nap09ProtectedPackage.ps1
+      - .github/workflows/nap09-protected-package.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nap09-protected-package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: windows-2022
+    timeout-minutes: 8
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate protected package without installation
+        run: ./scripts/Test-Nap09ProtectedPackage.ps1 -Version '2.0.3'
+
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 50
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Download and verify pinned official Inno Setup 6.7.4
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src = Join-Path $env:RUNNER_TEMP 'nap09-inno-official'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Inno download failed' }
+          $setup = Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Official Inno attestation failed' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $setup
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Inno signature was not issued by trusted vendor'
+          }
+          $root = Join-Path $env:RUNNER_TEMP 'nap09-inno-compiler'
+          $process = Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$root") -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw 'Inno compiler installation failed' }
+          $iscc = Join-Path $root 'ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC missing' }
+          "NAP09_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build NAP06 shared payload and protected executable in detached Windows runner
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./scripts/Build-Nap09Protected.ps1 -InnoCompiler $env:NAP09_ISCC -Version '2.0.3'
+      - name: Validate protected setup and SHA-256 report (do NOT install)
+        run: ./scripts/Test-Nap09ProtectedPackage.ps1 -Version '2.0.3'
+      - name: Delete licensed build material
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Store uninstalled candidate and evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nap09-unsigned-protected-candidate-${{ github.sha }}
+          path: |
+            artifacts/nap06/output/NAP-ProtectedSetup-*.exe
+            artifacts/nap06/output/NAP-ProtectedSetup-*.sha256
+            artifacts/nap06/inventory.json
+            artifacts/nap06/nap09-protected-provenance.json
+          if-no-files-found: warn
+          retention-days: 14
