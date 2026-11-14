@@ -17,6 +17,7 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
 }
 public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
 public sealed record AutomationUniverseStatusRow(string Universe, string State, string Detail);
+public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null);
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
 public sealed class AutomationControlViewModel : ObservableObject, IDisposable
@@ -33,6 +34,13 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     private long _generation;
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
+    public string InboxLocation => _overview?.Host.MixedInboxRoot is { } root ? $"Deposita los ZIP aquí: {root}" : _context() is { } c ? $"Deposita los ZIP aquí: {c.Storage.InboxRoot}" : "";
+    public string AuditStatus => _overview?.Host.Audit is { Configured: true } audit
+        ? $"Gemini configurado: {audit.Model}. La respuesta real aparece en cada trabajo."
+        : "Gemini sin configurar o sin autorización. Ve a Ajustes → Gemini; los recursos esperarán sin publicarse.";
+    public string ArchivedReview => _overview?.Queue.ArchivedReview > 0 ? $"{_overview.Queue.ArchivedReview} avisos archivados. Consúltalos en Producción → Archivados." : "";
+    public ObservableCollection<AutomationActivityRow> Recent { get; } = [];
+    public ObservableCollection<AutomationActivityRow> InboxReceipts { get; } = [];
     public string MixedInboxStatus => _overview?.Host.MixedInbox is { } m
         ? m.NeedsReview > 0 ? $"Bandeja compartida: {m.NeedsReview} paquetes necesitan revisión. Último: {m.LastProblemFile} ({m.Diagnostic})."
         : $"Último análisis de bandeja compartida: {m.Forwarded} distribuidos, {m.AlreadyPresent} ya existentes."
@@ -115,11 +123,34 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             var active = value.Host.Universes.Count(s => s.State is AutomationHostState.Running or AutomationHostState.Pausing or AutomationHostState.Stopping);
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
-            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
+            foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident) + (item.SourcePresent ? "" : " · El ZIP ya no está en la bandeja; este aviso pertenece al historial."), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
+            Recent.Clear();
+            foreach (var activity in value.Queue.Recent ?? [])
+            {
+                var detail = activity.Archived ? "Aviso archivado" : activity.Item.State switch
+                {
+                    QueueState.Completed => "Completado · WebP, maestro y catálogo registrados",
+                    QueueState.Duplicate => "Duplicado · Sin volver a publicar",
+                    QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource => Problem(activity.Item.Incident),
+                    QueueState.Running => "Publicando y registrando el recurso",
+                    _ => activity.Preparation is "Planned" or "AuditConfigurationRequired" ? "Validado · Esperando auditoría Gemini" : Stage(activity.Stage)
+                };
+                if (activity.AuditError is { } error) detail += " · Gemini: " + AuditError(error);
+                if (activity.Preparation == "AuditConfigurationRequired") detail = "Falta autorización de proveedor/modelo Gemini. Revisa Ajustes → Gemini.";
+                if (activity.AuditSummary is { } summary) detail += $" · Gemini {activity.AuditModel}: {summary}";
+                var paths = activity.Item.State == QueueState.Completed ? $"Producción: {activity.ProductionPath}\nMaestro: {activity.ArchivePath}\nCatálogo: {context.Storage.CatalogPath}" : null;
+                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths));
+            }
+            InboxReceipts.Clear();
+            foreach (var receipt in (value.Host.MixedInbox?.Receipts ?? []).Take(8))
+                InboxReceipts.Add(new(receipt.FileName, RouteStatus(receipt), receipt.Utc.ToLocalTime().ToString("g")));
             UniverseStatuses.Clear();
             foreach (var universe in value.Host.Universes.OrderBy(u => u.UniverseId.Value, StringComparer.Ordinal))
                 UniverseStatuses.Add(new(universe.UniverseId.Value, UniverseState(universe.State),
-                    universe.PendingCandidates == 1 ? "1 paquete esperando admisión" : $"{universe.PendingCandidates:N0} paquetes esperando admisión"));
+                    universe.Stage == "audit-unconfigured" ? "Esperando configuración de Gemini en Ajustes" :
+                    universe.Stage == "audit-model-mismatch" ? "El modelo difiere del autorizado para estos trabajos" :
+                    universe.Diagnostic is { } diagnostic ? $"Requiere revisión: {diagnostic}" :
+                    universe.PendingCandidates > 0 ? $"{universe.PendingCandidates:N0} paquetes esperando admisión" : StageName(universe.Stage)));
             Changed();
         }
         catch (OperationCanceledException) when (_disposed) { }
@@ -147,7 +178,43 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         finally { _read = null; _reading = false; }
     }
     private void Unavailable(string? message = null) { Clear(); Status = message ?? "No se pudo consultar la automatización"; ExecutionScope = ""; }
-    private void Clear() { _overview = null; Review.Clear(); UniverseStatuses.Clear(); Changed(); }
+    private void Clear() { _overview = null; Review.Clear(); Recent.Clear(); InboxReceipts.Clear(); UniverseStatuses.Clear(); Changed(); }
+    private static string Stage(QueueStage stage) => stage switch
+    {
+        QueueStage.Observation or QueueStage.Admission => "Recibido · Validando ZIP y perfil",
+        QueueStage.Preparation or QueueStage.Normalization => "Preparando el recurso y conservando originales",
+        QueueStage.Audit => "Auditoría Gemini pendiente o en curso",
+        QueueStage.Execution or QueueStage.Catalog or QueueStage.Verification => "Convirtiendo, archivando y registrando",
+        _ => "Revisión del trabajo"
+    };
+    private static string StageName(string? stage) => stage switch
+    {
+        "idle" or "batch-closed" or "git-idle" => "Escaneo automático activo",
+        "admission" or "batch-open" => "Buscando y validando ZIP",
+        "audit" or "audit-response" => "Revisión Gemini",
+        "preparation" => "Preparando originales",
+        "execution" => "Publicando WebP y catálogo",
+        "paused" => "Reanuda para recibir nuevos ZIP",
+        _ => "Consultando progreso"
+    };
+    private static string RouteStatus(MixedInboxReceipt receipt) => receipt.Status switch
+    {
+        "forwarded" or "already_present" => $"Identificado: {receipt.Universe} · Copia recibida como {receipt.InboxFileName}; consulta el trabajo debajo. Original conservado.",
+        "waiting_stable" => "Esperando a que termine la copia del ZIP",
+        "universe_paused" => $"Universo {receipt.Universe} detenido o sin activar",
+        "universe_not_installed" => $"Universo {receipt.Universe} sin configurar en este Host",
+        "access_denied" => "No se puede leer el ZIP: acceso denegado",
+        "unsafe_storage" => "Revisa la ruta del ZIP; no es una ubicación admitida",
+        _ => "No se puede admitir: comprueba que el ZIP tenga un único manifiesto v2 en su raíz y sea legible"
+    };
+    private static string AuditError(string code) => code switch
+    {
+        "Unauthorized" or "Forbidden" => "Clave sin acceso al modelo; revisa Ajustes → Gemini",
+        "RateLimited" => "Cuota o límite de peticiones alcanzado",
+        "Timeout" or "Transport" or "Server" => "Sin respuesta; consulta el estado antes de repetir",
+        "Configuration" => "Configuración no válida",
+        _ => "Respuesta no válida o modelo no disponible"
+    };
     private static string UniverseState(AutomationHostState state) => state switch
     {
         AutomationHostState.Running => "En marcha",
@@ -160,7 +227,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     };
     private void Changed()
     {
-        foreach (var name in new[] { nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
+        foreach (var name in new[] { nameof(InboxLocation), nameof(AuditStatus), nameof(ArchivedReview), nameof(Pending), nameof(MixedInboxStatus), nameof(ExistingMixedPackages), nameof(Processing), nameof(Completed), nameof(NeedsReview), nameof(HasReview), nameof(ReviewLabel), nameof(ReviewRemainder), nameof(CanPause), nameof(CanResume), nameof(CanActivate), nameof(CanStopUniverse), nameof(CanProcessPending) }) Notify(name);
         Activate.Refresh(); Pause.Refresh(); Resume.Refresh(); Stop.Refresh(); StopUniverse.Refresh(); ProcessPending.Refresh();
     }
     private async Task Change(AutomationOperation operation)
@@ -185,7 +252,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         var context = _context()!; var policy = _overview!.Queue.Policy;
         var preparePersonal = CanPreparePersonal;
         var explanation = preparePersonal
-            ? "NAP activará el procesamiento automático de Nimroel con tus carpetas actuales. Se comprobarán los ZIP que ya haya en las bandejas y los que añadas después; se conservarán los originales. La auditoría con Gemini necesita estar configurada para completar los trabajos. Puedes detenerlo desde NAP."
+            ? "NAP activará el procesamiento automático de este universo con tus carpetas actuales. Se comprobarán los ZIP que ya haya en las bandejas y los que añadas después; se conservarán los originales. Autorizas la auditoría de los planes con el proveedor y modelo Gemini configurados, con los límites de peticiones de la política personal. Gemini necesita estar configurado para completar los trabajos. Puedes detenerlo desde NAP."
             : "Se aplicará la política que ya autorizaste para este universo.";
         if (!await _confirmation.ConfirmAsync(new("Iniciar automatización", explanation, context.Id, []), _lifetime.Token)) return;
         if (!CanActivate || context != _context()) return;

@@ -105,7 +105,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         NextDecisions=new(()=>LoadActivity(20,true),()=>!_disposed&&!_changing&&_detail?.MoreDecisions==true,FailRead);
         PreviousDecisions=new(()=>LoadActivity(-20,true),()=>!_disposed&&!_changing&&_decisionOffset>0,FailRead);
     }
-    public IReadOnlyList<WorkflowFilterChoice> Filters {get;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión")];
+    public IReadOnlyList<WorkflowFilterChoice> Filters {get;}=[new(WorkflowFilter.All,"Todos"),new(WorkflowFilter.Pending,"Pendientes"),new(WorkflowFilter.Processing,"En curso"),new(WorkflowFilter.Completed,"Completados"),new(WorkflowFilter.Review,"Necesitan revisión"),new(WorkflowFilter.Archived,"Archivados")];
     public WorkflowFilterChoice Filter {get=>_filter;set{if(Set(ref _filter,value)) _offset=0;}}
     public string Search {get=>_search;set=>Set(ref _search,value);}
     public ObservableCollection<WorkflowBatchChoice> Batches {get;}=[];
@@ -129,7 +129,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     public bool CanApprove=>_detail?.CanApprove==true;
     public bool CanContinue=>_detail?.CanContinue==true;
     public bool CanCancelItem=>!_disposed&&!_changing&&_controlReadable&&!_itemInhibited&&_detail?.Item.State is
-        QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled;
+        QueueState.Observed or QueueState.WaitingStable or QueueState.Queued or QueueState.Running or QueueState.RetryScheduled or QueueState.NeedsReview or QueueState.Rejected or QueueState.MissingSource;
+    public string CancelLabel=>NeedsReview?"Archivar aviso":"Cancelar este asset";
     public bool CanResumeItem=>!_disposed&&!_changing&&_controlReadable&&_itemInhibited&&_detail!=null;
     public bool HasEventPaging=>_eventOffset>0||_detail?.MoreEvents==true;
     public bool HasDecisionPaging=>_decisionOffset>0||_detail?.MoreDecisions==true;
@@ -249,8 +250,8 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(operation==AutomationOperation.CancelItem&&!CanCancelItem)return;
         if(operation==AutomationOperation.ResumeItem&&!CanResumeItem)return;
         var cancelling=operation==AutomationOperation.CancelItem;
-        if(!await _confirmation.ConfirmAsync(new(cancelling?"Cancelar este asset":"Reactivar este asset",
-            cancelling?"Se bloquearán las próximas etapas de este asset. Una etapa indivisible ya iniciada podrá terminar antes de detenerse.":
+        if(!await _confirmation.ConfirmAsync(new(cancelling?CancelLabel:"Reactivar este asset",
+            cancelling&&NeedsReview?"El aviso dejará de contarse como pendiente. Se conserva en Archivados, con sus archivos e historial; puedes volver a mostrarlo.":cancelling?"Se bloquearán las próximas etapas de este asset. Una etapa indivisible ya iniciada podrá terminar antes de detenerse.":
                 "Se retirará exclusivamente el bloqueo de este asset; su continuación seguirá sometida a la política autorizada.",
             c.Id,[d.Item.Name, "Identificador: "+item.Value],c.Profile.DisplayName),_lifetime.Token))return;
         if(!Current(scope,c)||_detail!=d||ActiveItem!=item)return;
@@ -261,6 +262,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             await _client.MutateAsync(c.Id,operation,new AutomationItemRequest(item.Value),_lifetime.Token);
             if(!Current(scope,c)||ActiveItem!=item)return;
             await LoadDetailAsync();
+            await LoadPageAsync();
             DetailStatus=cancelling?"Cancelación persistida para este asset.":"Bloqueo del asset retirado.";
         }
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado de control sin confirmar. Actualiza antes de reintentar.";}}
@@ -289,7 +291,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         catch(Exception){if(Current(scope,c)){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}}
         finally{_changing=false;Notify(nameof(CanCancelItem));Notify(nameof(CanResumeItem));RefreshCommands();}
     }
-    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CanCancelItem),nameof(CanResumeItem)})Notify(n);RefreshCommands();}
+    private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CancelLabel),nameof(CanCancelItem),nameof(CanResumeItem)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;_controlReadable=false;_itemInhibited=false;Events.Clear();Decisions.Clear();NotifyDetail();}
     private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,CancelItem,ResumeItem,NextEvents,PreviousEvents,NextDecisions,PreviousDecisions})command.Refresh();}
     private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}

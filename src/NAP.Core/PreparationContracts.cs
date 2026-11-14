@@ -40,6 +40,11 @@ public interface IIdentifiedAiAuditClient : IAiAuditClient
     string ProviderId { get; }
     string ModelId { get; }
 }
+public sealed record AiAuditAvailability(bool Configured, string? Model, string? Diagnostic = null);
+public interface IAiAuditAvailability
+{
+    AiAuditAvailability Availability { get; }
+}
 public sealed record DurableAuditCall(string RequestId, int Number, DateTimeOffset StartedUtc,
     AuditCallState State, AiAuditErrorKind? Error, int? HttpStatus, DateTimeOffset? FinishedUtc);
 public sealed record DurableAuditReceipt(int SchemaVersion, string RequestId, QueueItemId ItemId,

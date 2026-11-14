@@ -3,7 +3,7 @@ namespace NAP.Core;
 
 public sealed partial class AutomationQueueStore
 {
-    public (int Total, IReadOnlyList<QueueItem> Items) Browse(WorkflowPageRequest request)
+    public (int Total, IReadOnlyList<QueueItem> Items) Browse(WorkflowPageRequest request, IReadOnlyList<string>? archived = null)
     {
         if (request.Offset < 0 || request.Limit is < 1 or > 40 || request.Search is null || request.Search.Length > 80 || !Enum.IsDefined(request.Filter))
             throw AutomationValidation.Invalid("Invalid bounded workflow query.");
@@ -15,13 +15,16 @@ public sealed partial class AutomationQueueStore
             WorkflowFilter.Review => "state IN ('NeedsReview','Rejected','MissingSource')",
             _ => "1=1"
         };
-        var where = states + " AND ($b IS NULL OR EXISTS (SELECT 1 FROM observations o WHERE o.item_id=items.id AND o.batch_id=$b)) AND ($s='' OR instr(lower(substr(json_extract(payload,'$.SourcePath'),length($r)+2)),lower($s))>0)";
+        var exclusions = System.Text.Json.JsonSerializer.Serialize(archived ?? []);
+        var archiveFilter = request.Filter == WorkflowFilter.Archived ? " AND id IN (SELECT value FROM json_each($hidden))" :
+            request.Filter is WorkflowFilter.Review or WorkflowFilter.Pending or WorkflowFilter.Processing ? " AND id NOT IN (SELECT value FROM json_each($hidden))" : "";
+        var where = states + archiveFilter + " AND ($b IS NULL OR EXISTS (SELECT 1 FROM observations o WHERE o.item_id=items.id AND o.batch_id=$b)) AND ($s='' OR instr(lower(substr(json_extract(payload,'$.SourcePath'),length($r)+2)),lower($s))>0)";
         return Read(db =>
         {
             using var tx = db.BeginTransaction(deferred: true);
-            var total = Convert.ToInt32(Scalar(db, tx, "SELECT COUNT(*) FROM items WHERE " + where, "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot)));
+            var total = Convert.ToInt32(Scalar(db, tx, "SELECT COUNT(*) FROM items WHERE " + where, "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot), "$hidden", exclusions));
             var items = Payloads<QueueItem>(db, tx, "SELECT payload FROM items WHERE " + where + " ORDER BY json_extract(payload,'$.UpdatedUtc') DESC,rowid DESC LIMIT $l OFFSET $o",
-                "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot), "$l", request.Limit, "$o", request.Offset);
+                "$b", request.Batch?.Value, "$s", request.Search, "$r", Path.TrimEndingDirectorySeparator(_roots.InboxRoot), "$l", request.Limit, "$o", request.Offset, "$hidden", exclusions);
             return (total, items);
         });
     }

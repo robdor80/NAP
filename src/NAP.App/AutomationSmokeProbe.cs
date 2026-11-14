@@ -12,6 +12,7 @@ internal static class AutomationSmokeProbe
         if (shell.Automation is null || shell.Context is null) throw new InvalidOperationException("Remote shell is unconfigured.");
         await shell.Automation.RefreshAsync(); shell.NavigateTo("Historial"); await shell.LastRefresh;
         shell.NavigateTo("Producción"); await shell.LastRefresh;
+        shell.NavigateTo("Inicio"); await shell.LastRefresh;
         await window.Dispatcher.InvokeAsync(() => { window.UpdateLayout(); }, DispatcherPriority.Render);
         if (diagnostics.Errors != 0) throw new InvalidOperationException("WPF binding errors: " + diagnostics.Errors);
         window.VerifyTrayRoundTrip();

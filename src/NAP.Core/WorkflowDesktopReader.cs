@@ -13,9 +13,9 @@ public sealed class WorkflowDesktopReader(UniverseContext context, AutomationQue
         }
         return new(item.Id, item.UniverseId, name.Replace('_', ' '), item.State, item.Incident, item.CreatedUtc, item.UpdatedUtc, item.BatchId, item.Revision, Path.GetFileName(item.SourcePath));
     }
-    public WorkflowPage Browse(WorkflowPageRequest request)
+    public WorkflowPage Browse(WorkflowPageRequest request, IReadOnlyList<string>? archived = null)
     {
-        var page = queue.Browse(request);
+        var page = queue.Browse(request, archived);
         return new(context.Id, request.Offset, page.Total, page.Items.Select(Row).ToArray());
     }
     public WorkflowDetail Detail(WorkflowDetailRequest request, ReviewCapability capabilities)

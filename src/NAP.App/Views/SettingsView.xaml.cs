@@ -7,6 +7,12 @@ namespace NAP.App.Views;
 public partial class SettingsView : UserControl
 {
     public SettingsView() => InitializeComponent();
+    private void ConfigureGemini_Click(object sender, RoutedEventArgs e)
+    {
+        if (((App)Application.Current).PersonalHostClient is not { } client)
+        { MessageBox.Show("Configura el Host personal para usar Gemini desde NAP.", "NAP"); return; }
+        new GeminiSettingsWindow(client) { Owner = Window.GetWindow(this) }.ShowDialog();
+    }
     private void CheckUpdates_Click(object sender, RoutedEventArgs e)
     {
         // Solo lectura: el navegador de releases no instala ni ejecuta binarios.
