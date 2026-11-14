@@ -148,6 +148,8 @@ public sealed class AutomationPipeServer : IAsyncDisposable
         AutomationWindowsEndpointAccess? protectedEndpoint = null)
     {
         _connection = connection; _key = AutomationProtocol.Key(connection); _handler = handler;
+        if (protectedEndpoint is not null && !OperatingSystem.IsWindows())
+            throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
         _protectedEndpoint = protectedEndpoint;
         _protectedAcl = protectedEndpoint?.ServerAcl();
         _accept = AcceptAsync();
@@ -161,6 +163,8 @@ public sealed class AutomationPipeServer : IAsyncDisposable
             try
             {
                 await _connections.WaitAsync(_stop.Token).ConfigureAwait(false); acquired = true;
+                if (_protectedAcl is not null && !OperatingSystem.IsWindows())
+                    throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
                 pipe = _protectedAcl is null
                     ? new NamedPipeServerStream(_connection.PipeName, PipeDirection.InOut, 4, PipeTransmissionMode.Byte,
                         PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly)
