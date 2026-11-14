@@ -7,6 +7,10 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/AutomationControlViewModel.cs
+      - src/NAP.Presentation/AutomationDesktopBridge.cs
+      - src/NAP.Core/AutomationProtocol.cs
+      - src/NAP.App/App.xaml.cs
       - src/NAP.Presentation/RemoteDesktopService.cs
       - tests/NAP.Tests/Nap09PersonalModeTests.cs
       - .github/workflows/nap09-personal-host.yml
@@ -16,6 +20,10 @@ on:
       - src/NAP.Core/AutomationHostLaunchConfiguration.cs
       - src/NAP.AutomationHost/Program.cs
       - src/NAP.App/ManagedAutomationHost.cs
+      - src/NAP.Presentation/AutomationControlViewModel.cs
+      - src/NAP.Presentation/AutomationDesktopBridge.cs
+      - src/NAP.Core/AutomationProtocol.cs
+      - src/NAP.App/App.xaml.cs
       - src/NAP.Presentation/RemoteDesktopService.cs
       - tests/NAP.Tests/Nap09PersonalModeTests.cs
       - .github/workflows/nap09-personal-host.yml
