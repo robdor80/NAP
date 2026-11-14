@@ -84,6 +84,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
     private bool _signalsClosed;
     private int _released;
     private void Signal() { lock (_signalGate) if (!_signalsClosed) _wake.Set(); }
+    public bool PersonalMode => _options.PersonalMode;
     public Task Started => _started.Task;
     public Task Completion => _stopped.Task;
     public AutomationHostControlStore Controls { get; }

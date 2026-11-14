@@ -88,14 +88,16 @@ public sealed class DiversityViewModel() : ProfessionalPage("Auditor IA", "Varie
 {
     private CatalogDiversityReport? _report;
     private CatalogDiversityAnswer? _answer;
+    private bool _aiAvailable;
     private string _question = "¿Qué categorías están menos representadas y qué variedad de assets convendría ampliar?";
     public CatalogDiversityReport? Report { get => _report; internal set { if (_report?.ToJson() != value?.ToJson()) Answer = null; Set(ref _report, value); Notify(nameof(Total)); Notify(nameof(Origin)); } }
     public CatalogDiversityAnswer? Answer { get => _answer; internal set => Set(ref _answer, value); }
     public string Question { get => _question; set => Set(ref _question, value); }
+    public bool AiAvailable { get => _aiAvailable; internal set => Set(ref _aiAvailable, value); }
     public string Total => Report is null ? "—" : Report.TotalAssets.ToString("N0");
     public string Origin => Report is null ? "" : $"{Report.NativeAssets:N0} publicaciones NAP · {Report.HistoricalAssets:N0} retratos históricos";
     public override string? EmptyMessage => EvidenceMessage(Report?.TotalAssets == 0 ? "Todavía no hay assets indexados. No se pueden medir diferencias de variedad." : null);
-    internal override void Reset() { base.Reset(); Report = null; Answer = null; }
+    internal override void Reset() { base.Reset(); Report = null; Answer = null; AiAvailable = false; }
 }
 public sealed class BackupsViewModel() : ProfessionalPage("Backups", "Copias locales verificadas de catálogo, repositorio y Git.")
 {

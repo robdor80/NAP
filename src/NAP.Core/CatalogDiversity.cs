@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NAP.Core;
 
@@ -10,23 +11,26 @@ public sealed record CatalogDiversityEntry(string AssetId, string AssetType, str
 /// <summary>Counts originate exclusively from rows read from the universe-scoped catalog(s).</summary>
 public sealed record CatalogDiversityEvidence(string Id, string Dimension, string Value, long Count, long Population)
 {
+    [JsonIgnore]
     public string Display => $"{Dimension}: {Value} — {Count:N0} de {Population:N0}";
 }
 
 public sealed record CatalogDiversityGap(string Dimension, string Value, long Count,
     string ReferenceValue, long ReferenceCount)
 {
+    [JsonIgnore]
     public string Display => $"{Dimension}: {Value} ({Count:N0}), frente a {ReferenceValue} ({ReferenceCount:N0}).";
 }
 
 public sealed class CatalogDiversityReport
 {
-    internal CatalogDiversityReport(UniverseId universe, long native, long historical,
-        IEnumerable<CatalogDiversityEvidence> evidence, IEnumerable<CatalogDiversityGap> gaps,
-        IEnumerable<string> warnings)
+    [JsonConstructor]
+    internal CatalogDiversityReport(UniverseId universeId, long nativeAssets, long historicalAssets,
+        IReadOnlyList<CatalogDiversityEvidence> evidence, IReadOnlyList<CatalogDiversityGap> gaps,
+        IReadOnlyList<string> warnings)
     {
-        UniverseId = universe;
-        NativeAssets = native; HistoricalAssets = historical;
+        UniverseId = universeId;
+        NativeAssets = nativeAssets; HistoricalAssets = historicalAssets;
         Evidence = Array.AsReadOnly(evidence.ToArray());
         Gaps = Array.AsReadOnly(gaps.ToArray());
         Warnings = Array.AsReadOnly(warnings.ToArray());
@@ -34,6 +38,7 @@ public sealed class CatalogDiversityReport
     public UniverseId UniverseId { get; }
     public long NativeAssets { get; }
     public long HistoricalAssets { get; }
+    [JsonIgnore]
     public long TotalAssets => NativeAssets + HistoricalAssets;
     public IReadOnlyList<CatalogDiversityEvidence> Evidence { get; }
     public IReadOnlyList<CatalogDiversityGap> Gaps { get; }
@@ -51,9 +56,13 @@ public sealed class CatalogDiversityReport
 
 public sealed record CatalogDiversityObservation(string Comment, IReadOnlyList<CatalogDiversityEvidence> Evidence)
 {
+    [JsonIgnore]
     public string EvidenceLabel => string.Join(" · ", Evidence.Select(e => e.Display));
 }
 public sealed record CatalogDiversityAnswer(string Summary, IReadOnlyList<CatalogDiversityObservation> Observations);
+public sealed record CatalogDiversityInventory(CatalogDiversityReport Report, bool AiAvailable);
+public sealed record CatalogDiversityQuestion(string Question);
+public sealed record CatalogDiversityReply(CatalogDiversityReport Report, CatalogDiversityAnswer? Answer);
 
 /// <summary>No SQL, file mutations, model inference, arbitrary target quotas, or inferred zero-population categories.</summary>
 public static class CatalogDiversityAnalyzer
@@ -145,6 +154,22 @@ public static class CatalogDiversityAnalyzer
                 counts.TryGetValue((l, v), out var count);
                 if (count != 0 || left == "profesion" && right is "sexo" or "edad")
                     rows.Add(($"{left} × {right}", $"{l} | {v}", count, total));
+            }
+        }
+
+        // Keep locality in the evidence. Separate pairwise totals cannot answer a question
+        // about the sex distribution of one profession in a specific locality.
+        const string localRoleSex = "localidad × profesion × sexo";
+        var knownSexes = facets.Select(f => f["sexo"]).Where(sex => sex != Unknown).Distinct(StringComparer.Ordinal).ToArray();
+        foreach (var group in facets.Where(f => f["localidad"] != Unknown && f["profesion"] != Unknown)
+            .GroupBy(f => (Location: f["localidad"], Role: f["profesion"])))
+        {
+            var population = group.LongCount();
+            var counts = group.GroupBy(f => f["sexo"], StringComparer.Ordinal).ToDictionary(g => g.Key, g => g.LongCount(), StringComparer.Ordinal);
+            foreach (var sex in knownSexes.Concat(counts.Keys).Distinct(StringComparer.Ordinal))
+            {
+                if (rows.Count >= MaxEvidence) throw new InvalidDataException("Auditoría demasiado extensa para enviar todos los recuentos sin truncamiento.");
+                rows.Add((localRoleSex, $"{group.Key.Location} | {group.Key.Role} | {sex}", counts.GetValueOrDefault(sex), population));
             }
         }
 

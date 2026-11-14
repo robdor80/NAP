@@ -15,7 +15,7 @@ public enum AutomationOperation
     Backup, PlanRestore, Restore, PlanRetention, Retain, InspectGit, GitReceipts, PlanCommit, Commit,
     RecoverGit, RetryCommit, Push, CatalogPage, CatalogDetail, Statistics, Thumbnail,
     NormalizationPrepare, NormalizationDecide, NormalizationRead, ReadBlobChunk, CurrentPolicy, ShutdownHost, ReleaseBlob, CurrentControl, Overview, WorkflowPage, WorkflowDetail, ReviewPropose, ReviewApprove, ReviewContinue, WorkflowBatches, Diagnostics,
-    GitConfiguration, GitOutbox, GitAuthorizationPropose, GitAuthorizationSave, GitAuthorizationRevoke, GitHostAccess, GitOutboxRetry, ScanPending, ActivatePersonal, ReloadAuditConfiguration, RemovalPreview, Remove
+    GitConfiguration, GitOutbox, GitAuthorizationPropose, GitAuthorizationSave, GitAuthorizationRevoke, GitHostAccess, GitOutboxRetry, ScanPending, ActivatePersonal, ReloadAuditConfiguration, RemovalPreview, Remove, DiversityInventory, DiversityAsk
 }
 public sealed record AutomationRequest(int Version, string RequestId, AutomationOperation Operation,
     string? UniverseId, JsonElement Payload);

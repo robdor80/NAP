@@ -48,26 +48,36 @@ public sealed class PersonalGeminiSettings
 }
 
 /// <summary>Reload only through the Host's paused/drained audit boundary. Manual and automatic paths share this instance.</summary>
-public sealed class PersonalGeminiAuditor(HttpClient transport) : IIdentifiedAiAuditClient, IAiAuditAvailability
+public sealed class PersonalGeminiAuditor(HttpClient transport) : IIdentifiedAiAuditClient, IAiAuditAvailability, ICatalogDiversityAiClient
 {
-    private GeminiOperationAuditClient? _client;
+    private sealed record Configuration(GeminiOperationAuditClient Audit, GeminiCatalogDiversityClient Diversity, string Model);
+    private volatile Configuration? _configuration;
+    private volatile string _diagnostic = "missing_configuration";
     public string ProviderId => "gemini-interactions-v1";
     public string ModelId => Availability.Model ?? "unconfigured";
-    public AiAuditAvailability Availability { get; private set; } = new(false, null, "missing_configuration");
+    public AiAuditAvailability Availability => _configuration is { } configuration
+        ? new(true, configuration.Model) : new(false, null, _diagnostic);
     public void Reload()
     {
-        _client = null;
+        Configuration? configuration = null;
+        var diagnostic = "missing_configuration";
         try
         {
             var settings = OperatingSystem.IsWindows() ? new PersonalGeminiSettings().Load() : null;
             var key = settings?.Key ?? Environment.GetEnvironmentVariable("NAP_GEMINI_API_KEY");
             var model = settings?.Model ?? Environment.GetEnvironmentVariable("NAP_GEMINI_MODEL");
-            _client = HostGeminiAuditor.Create(transport, key, model);
-            Availability = new(_client is not null, _client is null ? null : model, _client is null ? "missing_configuration" : null);
+            if (HostGeminiAuditor.Create(transport, key, model) is { } audit)
+                configuration = new(audit, new(transport, key!, model!), model!);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException or JsonException or FormatException or InvalidDataException)
-        { Availability = new(false, null, "invalid_configuration"); }
+        { diagnostic = "invalid_configuration"; }
+        _diagnostic = diagnostic;
+        _configuration = configuration;
     }
     public Task<AiAuditReport> AuditAsync(AiAuditRequest request, CancellationToken cancellationToken = default) =>
-        (_client ?? throw new AiAuditClientException(AiAuditErrorKind.Configuration, "Configura y autoriza Gemini en Ajustes.")).AuditAsync(request, cancellationToken);
+        (_configuration?.Audit ?? throw new AiAuditClientException(AiAuditErrorKind.Configuration, "Configura y autoriza Gemini en Ajustes.")).AuditAsync(request, cancellationToken);
+
+    public Task<CatalogDiversityAnswer> AskAsync(CatalogDiversityReport report, string question, CancellationToken cancellation = default) =>
+        (_configuration?.Diversity ?? throw new AiAuditClientException(AiAuditErrorKind.Configuration, "Configura y autoriza Gemini en Ajustes."))
+            .AskAsync(report, question, cancellation);
 }
