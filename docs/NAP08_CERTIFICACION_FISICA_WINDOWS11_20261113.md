@@ -1,5 +1,8 @@
 # NAP08 — Certificacion fisica Windows 11 / MSI Raider GE78 HX
 
+> **Estado actualizado, 14/11/2026:** pruebas físicas principales PASS; NAP 2.0.2 instalado y UX de parada Host corregida/verificada. **Certificación integral sin reservas NO emitida** por las excepciones del acta. Véase [ACTA FÍSICA MSI 14/11/2026](NAP08_ACTA_FISICA_MSI_20261114.md). Las instrucciones y estados iniciales que figuran más abajo son histórico del plan original; no deben interpretarse como estado actual ni ejecutarse de nuevo, en particular los pasos que exigían un usuario Windows vacío. La cuenta temporal se eliminó a petición del propietario; no recrearla.
+
+
 Fecha: 13/11/2026. Repositorio: robdor80/NAP. Base: main@3edf82cd5a8035389111108a022c164eafec68d1.
 Rama independiente: feature/nap08-certificacion-fisica-msi-20261113.
 Responsables: ChatGPT prepara/audita; propietario ejecuta y acepta en MSI Windows 11 x64.
