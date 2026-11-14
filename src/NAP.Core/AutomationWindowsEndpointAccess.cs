@@ -1,6 +1,7 @@
 using System.IO.Pipes;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Runtime.Versioning;
 
 namespace NAP.Core;
 
@@ -8,6 +9,7 @@ namespace NAP.Core;
 /// Opt-in Windows cross-principal pipe ACL. Never selected by laboratory or default Host.
 /// This is transport authorization, NOT an approval to use real production roots.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public sealed class AutomationWindowsEndpointAccess
 {
     public string WriterSid { get; }
