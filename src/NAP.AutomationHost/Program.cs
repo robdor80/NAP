@@ -13,6 +13,8 @@ if (args.Length != 2 || args[0] is not ("--laboratory-config" or "--production-c
 try
 {
     var laboratoryMode = args[0] == "--laboratory-config";
+    if (!laboratoryMode && !OperatingSystem.IsWindows())
+        throw new PlatformNotSupportedException("Protected production Host requires Windows.");
     var info = new FileInfo(Path.GetFullPath(args[1]));
     if (!info.Exists || info.Length is < 1 or > 2 * 1024 * 1024 ||
         (info.Attributes & FileAttributes.ReparsePoint) != 0)
@@ -65,8 +67,12 @@ try
     await host.Started;
     var root = lab?.LaboratoryRoot ?? production!.DataRoot;
     var connection = lab?.Connection ?? production!.Connection;
-    var endpoint = production is null ? null
-        : new AutomationWindowsEndpointAccess(production.WriterSid, production.DesktopSid);
+    AutomationWindowsEndpointAccess? endpoint = null;
+    if (production is not null)
+    {
+        if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Protected pipe requires Windows.");
+        endpoint = new AutomationWindowsEndpointAccess(production.WriterSid, production.DesktopSid);
+    }
     var bridge = new AutomationDesktopBridge(host, contexts, Path.Combine(root, "desktop-requests"), auditor);
     await using var server = new AutomationPipeServer(connection, bridge.HandleAsync, endpoint);
 
