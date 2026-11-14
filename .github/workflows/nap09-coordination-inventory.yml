@@ -1,0 +1,29 @@
+name: NAP09 - Coordinacion de solo lectura
+
+on:
+  push:
+    branches:
+      - feature/nap09-preflight-retratos-treskal-20261114
+    paths:
+      - scripts/NAP09.CoordinationInventory.ps1
+      - tests/nap09/Test-CoordinationInventory.ps1
+      - .github/workflows/nap09-coordination-inventory.yml
+  pull_request:
+    paths:
+      - scripts/NAP09.CoordinationInventory.ps1
+      - tests/nap09/Test-CoordinationInventory.ps1
+      - .github/workflows/nap09-coordination-inventory.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory-fixture:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: PowerShell 5.1 - synthetic lease inventory
+        shell: powershell
+        run: .\tests\nap09\Test-CoordinationInventory.ps1
