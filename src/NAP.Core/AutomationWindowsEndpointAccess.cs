@@ -54,8 +54,9 @@ public sealed class AutomationWindowsEndpointAccess
 
     internal void RequireCaller(string principal)
     {
-        if (!string.Equals(principal, WriterSid, StringComparison.Ordinal) &&
-            !string.Equals(principal, DesktopSid, StringComparison.Ordinal))
-            throw new UnauthorizedAccessException("Client SID was not authorized for this endpoint.");
+        // The protected writer may serve the pipe but must not impersonate a desktop
+        // client. All client requests originate from the one approved desktop SID.
+        if (!string.Equals(principal, DesktopSid, StringComparison.Ordinal))
+            throw new UnauthorizedAccessException("The protected endpoint accepts only its authorized desktop SID.");
     }
 }
