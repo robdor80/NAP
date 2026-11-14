@@ -17,7 +17,7 @@ public sealed class AutomationOverviewClient(AutomationHostClient client) : IAut
 }
 public sealed record AutomationReviewRow(string Name, string Problem, string Date, QueueItemId? ItemId=null);
 public sealed record AutomationUniverseStatusRow(string Universe, string State, string Detail);
-public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null, string State = "")
+public sealed record AutomationActivityRow(string Name, string Detail, string Date, QueueItemId? ItemId = null, string? Paths = null, string State = "", AssetTileViewModel? Thumbnail = null)
 { public string DisplayName => UiLabels.AssetName(Name); }
 
 /// <summary>Display projection only. No local execution state, decisions or fallback writer.</summary>
@@ -39,6 +39,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string GeminiState => _overview?.Host.Audit is { Configured: true } ? "Configurado" : "Requiere configuración";
     public string SimpleState => !Current() ? "Necesita atención" : HasReview || _overview!.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded ? "Necesita atención" :
         _overview.Control.Stopped || _overview.Control.Paused ? "En pausa" : _overview.Queue.Counts.Processing > 0 ? "Procesando" : "En marcha";
+    internal Func<string, CancellationToken, Task<AssetTileViewModel?>>? ThumbnailFactory { get; set; }
     public IEnumerable<AutomationActivityRow> RecentCompact => Recent.Take(5);
     public bool HasSeveralUniverses => UniverseStatuses.Count > 1;
     public string InboxLocation => _overview?.Host.MixedInboxRoot is { } root ? $"Deposita los ZIP aquí: {root}" : _context() is { } c ? $"Deposita los ZIP aquí: {c.Storage.InboxRoot}" : "";
@@ -130,6 +131,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
             ExecutionScope = active == 1 ? "En marcha: 1 universo" : $"En marcha: {active} universos";
             Review.Clear();
             foreach (var item in value.Queue.Review) Review.Add(new(item.FileName, Problem(item.Incident) + (item.SourcePresent ? "" : " · El ZIP ya no está en la bandeja; este aviso pertenece al historial."), item.UpdatedUtc.ToLocalTime().ToString("g", System.Globalization.CultureInfo.GetCultureInfo("es-ES")),item.ItemId));
+            foreach (var old in Recent) old.Thumbnail?.Dispose();
             Recent.Clear();
             foreach (var activity in (value.Queue.Recent ?? []).Where(row => !row.Archived))
             {
@@ -145,7 +147,10 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
                 if (activity.Preparation == "AuditConfigurationRequired") detail = "Falta autorización de proveedor/modelo Gemini. Revisa Ajustes → Gemini.";
                 if (activity.AuditSummary is { } summary) detail += $" · Gemini {activity.AuditModel}: {summary}";
                 var paths = activity.Item.State == QueueState.Completed ? $"Producción: {activity.ProductionPath}\nMaestro: {activity.ArchivePath}\nCatálogo: {context.Storage.CatalogPath}" : null;
-                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths, WorkflowWords.State(activity.Item.State)));
+                var thumbnail = Recent.Count < 5 && activity.Item.State == QueueState.Completed && ThumbnailFactory is not null
+                    ? await ThumbnailFactory(activity.Item.Name, read.Token) : null;
+                if (_disposed || generation != _generation || context != _context()) { thumbnail?.Dispose(); return; }
+                Recent.Add(new(activity.Item.Name, detail, activity.Item.UpdatedUtc.ToLocalTime().ToString("g"), activity.Item.ItemId, paths, WorkflowWords.State(activity.Item.State), thumbnail));
             }
             InboxReceipts.Clear();
             foreach (var receipt in (value.Host.MixedInbox?.Receipts ?? []).Take(8))
@@ -184,7 +189,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
         finally { _read = null; _reading = false; }
     }
     private void Unavailable(string? message = null) { Clear(); Status = message ?? "No se pudo consultar la automatización"; ExecutionScope = ""; }
-    private void Clear() { _overview = null; Review.Clear(); Recent.Clear(); InboxReceipts.Clear(); UniverseStatuses.Clear(); Changed(); }
+    private void Clear() { foreach (var old in Recent) old.Thumbnail?.Dispose(); _overview = null; Review.Clear(); Recent.Clear(); InboxReceipts.Clear(); UniverseStatuses.Clear(); Changed(); }
     private static string Stage(QueueStage stage) => stage switch
     {
         QueueStage.Observation or QueueStage.Admission => "Recibido · Validando ZIP y perfil",

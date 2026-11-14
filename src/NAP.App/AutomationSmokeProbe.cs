@@ -22,6 +22,7 @@ internal static class AutomationSmokeProbe
                 label.Text.StartsWith("RobDev · NAP ", StringComparison.Ordinal)))
             throw new InvalidOperationException("The NAP footer does not show the window's installed version.");
         shell.NavigateTo("Auditor IA"); await shell.LastRefresh;
+        shell.Diversity.Question = "¿Cuántos recursos hay?";
         await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(), DispatcherPriority.Render);
         var askButton = Descendants(window).OfType<System.Windows.Controls.Button>()
             .Single(button => Equals(button.Content, "Consultar IA"));
@@ -30,7 +31,7 @@ internal static class AutomationSmokeProbe
         if (diversityEnabled != (diversityAssets > 0 && shell.Diversity.AiAvailable))
             throw new InvalidOperationException("The diversity question button disagrees with the personal Host inventory.");
         if (diversityAssets > 0 && !Descendants(window).OfType<System.Windows.Controls.TextBlock>()
-                .Any(label => label.Text.StartsWith(shell.Diversity.Total + " assets registrados", StringComparison.Ordinal)))
+                .Any(label => label.Text == "Total del catálogo: " + shell.Diversity.Total))
             throw new InvalidOperationException("The diversity inventory count is missing from WPF.");
         shell.NavigateTo("Inicio"); await shell.LastRefresh;
         await window.Dispatcher.InvokeAsync(() => { window.UpdateLayout(); }, DispatcherPriority.Render);

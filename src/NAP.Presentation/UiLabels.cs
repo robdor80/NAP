@@ -25,6 +25,7 @@ public static class UiLabels
     public static string AssetName(string id)
     {
         var stem = Path.GetFileNameWithoutExtension(id);
+        if (stem.StartsWith("portrait ", StringComparison.Ordinal) || stem.StartsWith("scene ", StringComparison.Ordinal)) stem = stem.Replace(' ', '_');
         var parts = stem.Split('_', StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 3 || parts[0] is not ("portrait" or "scene")) return Words(stem);
         var words = parts.Skip(2).Where(p => p is not ("male" or "female" or "npc")).ToArray();

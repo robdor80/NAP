@@ -44,6 +44,9 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private string _section = "Ajustes";
     private string _workspace = "", _production = "", _archive = "";
     private string? _assetId, _assetType, _productionProfile;
+    private string _searchText = "";
+    public string SearchText { get => _searchText; set => Set(ref _searchText, value); }
+    public string? SearchDistributionNotice => string.IsNullOrWhiteSpace(SearchText) ? null : "Para explorar profesiones y otras clasificaciones, restablece la búsqueda y utiliza los filtros.";
     private PagedAssetCollection? _assets;
     private AssetTileViewModel? _selectedAsset;
     private AssetTileViewModel? _preview;
@@ -160,6 +163,18 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     public AssetTileViewModel? SelectedAsset { get => _selectedAsset; set { if (Set(ref _selectedAsset, value)) _ = SelectAsync(value?.Asset); } }
     public AssetTileViewModel? Preview { get => _preview; private set { _preview?.Dispose(); _preview = value; Notify(); } }
     /// <summary>Separate read-only preview tile for visual comparisons; caller owns disposal.</summary>
+    public async Task<AssetTileViewModel?> WorkflowThumbnailAsync(string name, CancellationToken ct)
+    {
+        var context = Context;
+        if (context is null) return null;
+        var id = Path.GetFileNameWithoutExtension(name);
+        // Never guess a catalog identity from a display name, nor scan the catalog for a workflow row.
+        if (!id.Contains('_')) return null;
+        var page = await _service.PageAsync(context, new(assetId: id), 0, 1, ct);
+        if (context != Context || page.Items.FirstOrDefault() is not { } asset) return null;
+        if (asset.AssetKey.UniverseId != context.Id) throw new InvalidDataException("Thumbnail scope mismatch.");
+        var tile = new AssetTileViewModel(_service, context); tile.Populate(asset); return tile;
+    }
     public AssetTileViewModel CreateComparisonTile(CatalogAssetSummary asset)
     {
         ArgumentNullException.ThrowIfNull(asset);
@@ -225,18 +240,19 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         {
             if (loadFacets) await _service.BeginSessionAsync(context, source.Token);
             var filter = CurrentFilter();
-            var page = await _service.PageAsync(context, filter, 0, PagedAssetCollection.PageSize, source.Token);
-            var statistics = await _service.StatisticsAsync(context, filter, source.Token);
+            IExplorerService display = string.IsNullOrWhiteSpace(SearchText) ? _service : new CatalogTextSearch(_service, SearchText.Trim());
+            var page = await display.PageAsync(context, filter, 0, PagedAssetCollection.PageSize, source.Token);
+            var statistics = await display.StatisticsAsync(context, filter, source.Token);
             var planning = await _service.PlanningAsync(context, source.Token);
             CatalogStatistics? facets = null;
             facets = await _service.StatisticsAsync(context, new(), source.Token);
             if (source.IsCancellationRequested || generation != _generation) return;
             _catalogTotal = facets.TotalAssets;
             if (loadFacets) SetFacets(facets);
-            Assets = new(_service, context, filter, page, Fail); Statistics = statistics; Planning = planning;
+            Assets = new(display, context, filter, page, Fail); Statistics = statistics; Planning = planning;
             foreach (var group in new[] { statistics.AssetTypes, statistics.ProductionProfiles, statistics.Classifications, statistics.Traits })
                 foreach (var d in group) Distributions.Add(new(d.Dimension, d.Value, d.Count, statistics.TotalAssets == 0 ? 0 : 100d * d.Count / statistics.TotalAssets, d.TraitType?.ToString()));
-            foreach (var name in new[] { nameof(CatalogTotal), nameof(FilteredTotal), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice) }) Notify(name);
+            foreach (var name in new[] { nameof(SearchDistributionNotice), nameof(CatalogTotal), nameof(FilteredTotal), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice) }) Notify(name);
             State = page.TotalCount == 0 ? ExplorerState.Empty : ExplorerState.Ready;
         }
         catch (OperationCanceledException) { }
@@ -318,7 +334,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
         _configurations = Array.AsReadOnly(rows); await SwitchAsync();
     }
     private Task ClearAsync() { ResetValues(); return RefreshAsync(); }
-    private void ResetValues() { AssetId = null; AssetType = null; ProductionProfile = null; foreach (var f in Facets) f.Selected = null; }
+    private void ResetValues() { SearchText = ""; AssetId = null; AssetType = null; ProductionProfile = null; foreach (var f in Facets) f.Selected = null; }
     private void Fail(Exception ex)
     {
         _load?.Cancel(); _detailLoad?.Cancel(); Assets = null; Preview = null;
@@ -345,7 +361,7 @@ public sealed class ExplorerViewModel : ObservableObject, IDisposable
     private void NotifyRoots() { Notify(nameof(WorkspaceStatus)); Notify(nameof(ProductionStatus)); Notify(nameof(ArchiveStatus)); }
     private void NotifyCatalogText()
     {
-        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
+        foreach (var property in new[] { nameof(StatusText), nameof(CatalogStatus), nameof(DetailTitle), nameof(DetailMessage), nameof(PortraitCount), nameof(SceneCount), nameof(ProfessionDistribution), nameof(CountNotice), nameof(StatisticsAssets), nameof(StatisticsTypes), nameof(StatisticsProfiles), nameof(DistributionEmptyMessage), nameof(CoverageEmptyMessage), nameof(CatalogEmptyMessage) }) Notify(property);
     }
     public void Dispose() { CancelScope(); _load?.Dispose(); _detailLoad?.Dispose(); }
 }

@@ -20,11 +20,13 @@
       <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="Trabajos">
         <ListBox.ItemTemplate><DataTemplate>
           <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource CardBrush}" Padding="8,12">
-            <StackPanel>
-              <DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding Tone,Converter={StaticResource ToneBrush}}" Margin="12,0,0,0"/><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/></DockPanel>
+            <DockPanel>
+              <c:ThumbnailView DataContext="{Binding Thumbnail}" Width="64" Height="64" Margin="0,0,16,0" DockPanel.Dock="Left"><c:ThumbnailView.Style><Style TargetType="c:ThumbnailView"><Style.Triggers><DataTrigger Binding="{Binding Thumbnail}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></c:ThumbnailView.Style></c:ThumbnailView>
+              <StackPanel><DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding Tone,Converter={StaticResource ToneBrush}}" Margin="12,0,0,0"/><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/></DockPanel>
               <TextBlock Text="{Binding Result}" Style="{StaticResource EmptyState}"/>
               <TextBlock Text="{Binding Date}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
-            </StackPanel>
+              </StackPanel>
+            </DockPanel>
           </Border>
         </DataTemplate></ListBox.ItemTemplate>
       </ListBox>

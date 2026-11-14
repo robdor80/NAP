@@ -36,8 +36,9 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         _syntheticReadOnly = syntheticReadOnly; _diversityClient = catalogDiversityAi;
         _personalDiversity = personalHostDiversity ? service as RemoteDesktopService : null;
         Automation = automation;
-        Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation, currentOnly: true);
-        History.Work = new(workflowClient, () => Explorer.Context, confirmation, completedOnly: true);
+        if (Automation is not null) Automation.ThumbnailFactory = explorer.WorkflowThumbnailAsync;
+        Pipeline.Work = new(workflowClient, () => Explorer.Context, confirmation, currentOnly: true, thumbnail: explorer.WorkflowThumbnailAsync);
+        History.Work = new(workflowClient, () => Explorer.Context, confirmation, completedOnly: true, thumbnail: explorer.WorkflowThumbnailAsync);
         _normalization = normalization ?? new ImageNormalizationUiService();
         Catalog = new(explorer); Statistics = new(explorer); Settings = new(explorer); _current = Dashboard;
         Settings.Licenses = licenses ?? new LicenseViewModel(null);

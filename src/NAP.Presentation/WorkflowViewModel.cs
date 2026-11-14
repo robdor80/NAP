@@ -28,7 +28,7 @@ public sealed class WorkflowDesktopClient(AutomationHostClient client) : IWorkfl
 }
 public sealed record WorkflowFilterChoice(WorkflowFilter Value,string Label, bool CurrentOnly = false);
 public sealed record WorkflowBatchChoice(QueueBatchId? Id,string Label);
-public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false)
+public sealed record WorkflowDisplayRow(WorkflowRow Value,string Universe, bool Archived = false, AssetTileViewModel? Thumbnail = null)
 {
     public string Name => UiLabels.AssetName(Value.Name);
     public string State => Archived ? "Archivado" : WorkflowWords.State(Value.State);
@@ -76,6 +76,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private bool _controlReadable, _itemInhibited;
     private readonly Func<UniverseContext?> _context;
     private readonly IUserConfirmation _confirmation;
+    private readonly Func<string, CancellationToken, Task<AssetTileViewModel?>>? _thumbnail;
     private readonly CancellationTokenSource _lifetime=new();
     private CancellationTokenSource? _pageRead,_detailRead;
     private long _scope,_pageGeneration,_detailGeneration;
@@ -90,8 +91,9 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private ReviewChoice? _choice;
     private WorkflowFilterChoice _filter;
     private WorkflowBatchChoice _batch=new(null,"Todos los lotes");
-    public WorkflowViewModel(IWorkflowDesktopClient? client,Func<UniverseContext?> context,IUserConfirmation confirmation, bool currentOnly = false, bool completedOnly = false)
+    public WorkflowViewModel(IWorkflowDesktopClient? client,Func<UniverseContext?> context,IUserConfirmation confirmation, bool currentOnly = false, bool completedOnly = false, Func<string, CancellationToken, Task<AssetTileViewModel?>>? thumbnail = null)
     {
+        _thumbnail = thumbnail;
         if (currentOnly) Filters = [new(WorkflowFilter.All, "Activos", true), .. Filters];
         if (completedOnly) Filters = [Filters.Single(f => f.Value == WorkflowFilter.Completed), .. Filters.Where(f => f.Value != WorkflowFilter.Completed)];
         _client=client;_itemControl=client as IWorkflowItemControlClient;_context=context;_confirmation=confirmation;_filter=Filters[0]; Batches.Add(_batch);
@@ -188,7 +190,7 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
         if(_disposed)return;if(reset){_offset=0;CloseDetail.Execute(null);}
         _pageRead?.Cancel();var read=_pageRead=CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);read.CancelAfter(TimeSpan.FromSeconds(20));
         var generation=++_pageGeneration;var scope=_scope;var c=_context();var selected=ActiveItem;
-        if(_client==null||c==null){Rows.Clear();ClearDetail();Status="La automatización no está conectada";read.Dispose();_pageRead=null;return;}
+        if(_client==null||c==null){ClearRows();ClearDetail();Status="La automatización no está conectada";read.Dispose();_pageRead=null;return;}
         if(!quiet)Status="Actualizando…";
         try
         {
@@ -196,7 +198,13 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
             var batches=await _client.BatchesAsync(c.Id,read.Token);
             if(!Current(scope,c)||generation!=_pageGeneration||read.IsCancellationRequested)return;
             if(page.UniverseId!=c.Id||page.Items.Any(r=>r.UniverseId!=c.Id)||batches.Any(b=>b.UniverseId!=c.Id))throw new InvalidDataException("Workflow scope mismatch.");
-            _total=page.Total;_offset=page.Offset;Rows.Clear();foreach(var row in page.Items)Rows.Add(new(row,c.Profile.DisplayName, Filter.Value == WorkflowFilter.Archived));
+            _total=page.Total;_offset=page.Offset;ClearRows();
+            foreach (var row in page.Items)
+            {
+                var thumbnail = row.State == QueueState.Completed && _thumbnail is not null ? await _thumbnail(string.IsNullOrEmpty(row.PackageName) ? row.Name : row.PackageName, read.Token) : null;
+                if (!Current(scope, c) || generation != _pageGeneration || read.IsCancellationRequested) { thumbnail?.Dispose(); return; }
+                Rows.Add(new(row, c.Profile.DisplayName, Filter.Value == WorkflowFilter.Archived, thumbnail));
+            }
             var prior=Batch.Id;Batches.Clear();Batches.Add(new(null,"Todos los lotes"));
             foreach(var b in batches)
             {
@@ -347,8 +355,9 @@ public sealed class WorkflowViewModel : ObservableObject,IDisposable
     private void NotifyDetail(){foreach(var n in new[]{nameof(HasDetail),nameof(HasOptions),nameof(HasPreview),nameof(CanApprove),nameof(CanContinue),nameof(HasEventPaging),nameof(HasDecisionPaging),nameof(EventPageLabel),nameof(DecisionPageLabel),nameof(Comparison),nameof(HasDecisions),nameof(HasImage),nameof(ShowOriginal),nameof(NeedsReview),nameof(OriginalImage),nameof(CandidateImage),nameof(Name),nameof(Universe),nameof(ItemState),nameof(Dates),nameof(PackageName),nameof(Problem),nameof(Guidance),nameof(Choices),nameof(Choice),nameof(OriginalSize),nameof(CandidateSize),nameof(Transformation),nameof(ProfileChange),nameof(CancelLabel),nameof(CanCancelItem),nameof(CanResumeItem),nameof(CanDeleteNotice),nameof(ResumeLabel)})Notify(n);RefreshCommands();}
     private void ClearDetail(){_detail=null;_choice=null;_controlReadable=false;_itemInhibited=false;Events.Clear();Decisions.Clear();NotifyDetail();}
     private void RefreshCommands(){foreach(var command in new[]{Next,Previous,Propose,Approve,Continue,CancelItem,ResumeItem,NextEvents,PreviousEvents,NextDecisions,PreviousDecisions})command.Refresh();}
-    private void FailRead(Exception _){Rows.Clear();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}
+    private void ClearRows() { foreach (var row in Rows) row.Thumbnail?.Dispose(); Rows.Clear(); }
+    private void FailRead(Exception _){ClearRows();_total=0;Selected=null;ClearDetail();Status="No se pudo consultar la automatización. Actualiza para volver a intentarlo.";Notify(nameof(PageLabel));RefreshCommands();}
     private void FailMutation(Exception _){ClearDetail();DetailStatus="Resultado sin confirmar. Actualiza antes de continuar.";}
-    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();Rows.Clear();_selected=null;_focusedItem=null;_offset=0;ResetActivity();_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
+    public void ContextChanged(){++_scope;++_pageGeneration;++_detailGeneration;_pageRead?.Cancel();_detailRead?.Cancel();ClearRows();_selected=null;_focusedItem=null;_offset=0;ResetActivity();_total=0;_search="";_filter=Filters[0];_batch=new(null,"Todos los lotes");Batches.Clear();Batches.Add(_batch);ClearDetail();Status="";DetailStatus="";foreach(var n in new[]{nameof(Selected),nameof(Search),nameof(Filter),nameof(Batch),nameof(HasBatches),nameof(PageLabel)})Notify(n);}
     public void Dispose(){if(_disposed)return;_disposed=true;_lifetime.Cancel();ContextChanged();_lifetime.Dispose();}
 }

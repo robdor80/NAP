@@ -4,7 +4,7 @@ namespace NAP.App;
 public partial class MainWindow : Window
 {
     private readonly TrayHost _tray;
-    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false, string? phase6Preview = null, bool acceptance = false, bool acceptanceProbe = false)
+    public MainWindow(ShellViewModel shell, bool smokeTest = false, string? smokeOutput = null, bool smokeImport = false, string? smokeNormalizationProfile = null, bool automationSmoke = false, string? phase6Preview = null, bool acceptance = false, bool acceptanceProbe = false, string? uxEvidence = null)
     {
         var diagnostics = new BindingDiagnostics(); diagnostics.Attach();
         InitializeComponent(); DataContext = shell; _tray = new(this, shell);
@@ -33,6 +33,13 @@ public partial class MainWindow : Window
         Loaded += async (_, _) =>
         {
             await shell.InitializeAsync();
+            if (uxEvidence is not null)
+            {
+                AcceptanceBanner.Text = "PRUEBA UX · DATOS SINTÉTICOS TEMPORALES"; AcceptanceBanner.Visibility = Visibility.Visible;
+                try { await Nap208UxEvidence.Capture(this, shell, diagnostics, uxEvidence); Application.Current.Shutdown(0); }
+                catch (Exception error) { Console.Error.WriteLine("ux208_evidence_failed: " + error); Application.Current.Shutdown(8); }
+                return;
+            }
             if (acceptance)
             {
                 shell.MinimizeToTray = true;

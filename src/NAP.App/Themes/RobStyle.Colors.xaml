@@ -28,7 +28,7 @@
   <Thickness x:Key="Space">16</Thickness>
   <Thickness x:Key="SpaceLarge">24</Thickness>
   <Thickness x:Key="FramePadding">24,28,24,24</Thickness>
-  <s:Double x:Key="CornerSize">13</s:Double>
+  <s:Double x:Key="CornerSize">12</s:Double>
   <s:Double x:Key="FrameTitleInset">42</s:Double>
   <s:Double x:Key="FrameTitleGap">8</s:Double>
   <GridLength x:Key="SidebarWidth">176</GridLength>
@@ -44,7 +44,7 @@
   <s:Double x:Key="CompactTitleSize">22</s:Double>
   <s:Double x:Key="MetricSize">36</s:Double>
   <s:Double x:Key="TechnicalSize">11</s:Double>
-  <s:Double x:Key="IconSize">13</s:Double>
+  <s:Double x:Key="IconSize">18</s:Double>
   <Duration x:Key="QuickTransition">0:0:0.10</Duration>
   <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="14" ShadowDepth="{StaticResource RestElevation}" Opacity="0.25" />
 </ResourceDictionary>

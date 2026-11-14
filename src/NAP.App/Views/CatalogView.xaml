@@ -9,7 +9,7 @@
     <DockPanel>
       <ToggleButton x:Name="FiltersToggle" DockPanel.Dock="Right" Content="Filtros" Style="{StaticResource Disclosure}" Margin="12,0,16,12" AutomationProperties.Name="Mostrar filtros del catálogo"/>
       <Button DockPanel.Dock="Right" Content="Buscar" Command="{Binding ApplyFilters}"/>
-      <TextBox Text="{Binding AssetId,UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Buscar identificador del recurso" ToolTip="Identificador exacto del recurso"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding ApplyFilters}"/></TextBox.InputBindings></TextBox>
+      <TextBox Text="{Binding SearchText,UpdateSourceTrigger=PropertyChanged}" MaxLength="80" AutomationProperties.Name="Buscar recursos" ToolTip="Buscar por nombre o identificador"><TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding ApplyFilters}"/></TextBox.InputBindings></TextBox>
     </DockPanel>
     <StackPanel Grid.Row="1">
       <Border Style="{StaticResource Card}" Visibility="{Binding IsChecked,ElementName=FiltersToggle,Converter={StaticResource Visible}}">
@@ -17,7 +17,7 @@
           <WrapPanel><StackPanel Width="185" Margin="0,0,16,0"><TextBlock Text="Tipo de recurso"/><ComboBox ItemsSource="{Binding AssetTypes}" SelectedItem="{Binding AssetType}"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={StaticResource UiValue}}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox></StackPanel>
             <ItemsControl ItemsSource="{Binding Facets}"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><StackPanel Width="170" Margin="0,0,16,0"><TextBlock Text="{Binding Label}"/><ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Selected}" ItemTemplate="{StaticResource FacetChoice}" AutomationProperties.Name="{Binding Label}"/></StackPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
           </WrapPanel>
-          <Expander Header="Filtros avanzados"><StackPanel Width="240" HorizontalAlignment="Left"><TextBlock Text="Perfil"/><ComboBox ItemsSource="{Binding ProductionProfiles}" SelectedItem="{Binding ProductionProfile}"/></StackPanel></Expander>
+          <Expander Header="Filtros avanzados"><StackPanel Width="240" HorizontalAlignment="Left"><TextBlock Text="Identificador exacto"/><TextBox Text="{Binding AssetId,UpdateSourceTrigger=PropertyChanged}"/><TextBlock Text="Perfil"/><ComboBox ItemsSource="{Binding ProductionProfiles}" SelectedItem="{Binding ProductionProfile}"/></StackPanel></Expander>
           <WrapPanel><Button Content="Aplicar filtros" Command="{Binding ApplyFilters}"/><Button Content="Restablecer" Command="{Binding ResetFilters}"/></WrapPanel>
         </StackPanel></ScrollViewer>
       </Border>
