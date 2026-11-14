@@ -68,3 +68,15 @@ Además, `src/NAP.Presentation/AutomationDesktopBridge.cs` recibe el principal S
 Nota: el inventario no demuestra permisos efectivos, exclusión completa de escritores, ni que un lock no vacío esté ocupado. Mantener #47 abierta. Los 39 retratos y sus PNG no requieren más pruebas de aceptación.
 
 **Referencia API Windows:** Microsoft documenta que `NamedPipeServerStreamAcl.Create` admite `PipeSecurity` explícito, pero si se conserva `CurrentUserOnly` se ignora ese objeto y la tubería se limita a la identidad actual: https://learn.microsoft.com/en-us/dotnet/api/system.io.pipes.namedpipeserverstreamacl.create?view=net-10.0. Una adaptación futura tendrá que retirar el flag **solo en el modo con ACL/SID explícitos**, no en el laboratorio.
+
+
+## 7. Implementación P02 (transporte opt-in sin activar producción)
+
+Código incorporado en la PR #73, todavía sin despliegue MSI:
+
+- `src/NAP.Core/AutomationWindowsEndpointAccess.cs`: política Windows explícita, SID de escritor y SID de interfaz distintos, rechazo de grupos genéricos; solo el escritor correcto puede construir la ACL. ACL protegida de tubería para dos usuarios identificados, no para Everyone.
+- `src/NAP.Core/AutomationProtocol.cs`: cliente/servidor aceptan opcionalmente esta política. Sin política mantienen **exactamente** el canal de laboratorio `CurrentUserOnly`; con política, servidor usa `NamedPipeServerStreamAcl.Create` y exige SID exacto de cada cliente antes de enviar la solicitud al puente WPF. HMAC de autenticación existente permanece activo.
+- `tests/NAP.Tests/Nap09ProtectedIpcTests.cs`: rechaza SID de grupo o SID idéntico, rechazo de escritor distinto y ensayo de ida/vuelta de canal protegido con la identidad real del runner como escritor y SID sintético adicional.
+- `.github/workflows/nap09-protected-ipc-windows.yml`: compilación completa Windows 2022/.NET 10 y batería focalizada de IPC/Host, con licencia privada Six Labors y sin NAP CI general.
+
+**Límites:** el transporte opt-in aún **no se conecta** a `NAP.AutomationHost` ni a `ManagedAutomationHost` de producción. Un test con un único usuario y un SID inventado no acredita conexión real entre dos cuentas, Windows ACL efectiva del MSI ni instalación de servicio. No existe `--production-config` utilizable y no se autorizan escrituras reales. La siguiente integración debe acreditar dos identidades distintas en un laboratorio desechable autorizado y protección de configuración/secretos antes de habilitar un arranque productivo.
