@@ -9,12 +9,14 @@ on:
       - installer/NAP09.Protected.iss
       - scripts/Build-Nap09Protected.ps1
       - scripts/Test-Nap09ProtectedPackage.ps1
+      - scripts/Test-Nap09ProtectedInstall.ps1
       - .github/workflows/nap09-protected-package.yml
   pull_request:
     paths:
       - installer/NAP09.Protected.iss
       - scripts/Build-Nap09Protected.ps1
       - scripts/Test-Nap09ProtectedPackage.ps1
+      - scripts/Test-Nap09ProtectedInstall.ps1
       - .github/workflows/nap09-protected-package.yml
   workflow_dispatch:
 
@@ -75,6 +77,8 @@ jobs:
         run: ./scripts/Build-Nap09Protected.ps1 -InnoCompiler $env:NAP09_ISCC -Version '2.0.3'
       - name: Validate protected setup and SHA-256 report (do NOT install)
         run: ./scripts/Test-Nap09ProtectedPackage.ps1 -Version '2.0.3'
+      - name: Synthetic protected install and uninstall on isolated CI runner only
+        run: ./scripts/Test-Nap09ProtectedInstall.ps1 -Version '2.0.3'
       - name: Delete licensed build material
         if: ${{ always() }}
         run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
