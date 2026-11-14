@@ -7,6 +7,21 @@
       <TextBlock Text="{Binding DataContext.Automation.Status, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue='Automatización sin configurar', TargetNullValue='Automatización sin configurar'}" Style="{StaticResource Heading}" FontSize="{StaticResource CompactTitleSize}" Margin="0,0,0,16" AutomationProperties.LiveSetting="Polite" />
       <TextBlock Text="{Binding DataContext.Automation.MixedInboxStatus, RelativeSource={RelativeSource AncestorType=Window}}"
                  Style="{StaticResource Muted}" Margin="0,0,0,8"/>
+      <Button Content="Iniciar automatización"
+              Command="{Binding DataContext.Automation.Activate, RelativeSource={RelativeSource AncestorType=Window}}"
+              ToolTip="Activa Nimroel tras confirmar; no arranca sin tu permiso."
+              HorizontalAlignment="Left" Margin="0,0,0,12">
+        <Button.Style>
+          <Style TargetType="Button" BasedOn="{StaticResource Secondary}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding DataContext.Automation.CanActivate, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+      </Button>
       <Button Content="Procesar pendientes"
               Command="{Binding DataContext.Automation.ProcessPending, RelativeSource={RelativeSource AncestorType=Window}}"
               ToolTip="Revisa de nuevo la bandeja del universo activo. No evita permisos ni reescribe recursos terminados."
