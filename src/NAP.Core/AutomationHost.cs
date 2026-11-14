@@ -200,6 +200,59 @@ public sealed partial class AutomationHost : IAsyncDisposable
             new AutomationRuntimeStateStore(s.Context).List(s.Owner, offset, limit).Select(c =>
                 new AutomationBatchProjection(c, s.Queue.BatchSummary(c.BatchId))).ToArray(), cancellation);
 
+    /// <summary>
+    /// One-click personal startup. Reuses the existing queue policy ledger and Host
+    /// activation; an explicit confirmation happens in WPF before this IPC call.
+    /// Never authorizes a custom policy or a laboratory Host.
+    /// </summary>
+    public async Task<AutomationHostControl> ActivatePersonalAsync(UniverseId universe,
+        string? commandId = null, CancellationToken cancellation = default)
+    {
+        if (!_options.PersonalMode)
+            throw new AutomationException(AutomationError.Disabled, "Personal activation is available only in personal mode.");
+        await Started.ConfigureAwait(false);
+        var slot = Find(universe);
+        await slot.Runtime!.Started.ConfigureAwait(false);
+        if (!ReadControl(universe).Stopped)
+            throw new AutomationException(AutomationError.Busy, "Stop the universe before changing its personal activation.");
+        var policy = await slot.Runtime.InvokeAsync(scope =>
+        {
+            var current = scope.Queue.CurrentPolicy();
+            if (current.IsPreproductionAuthorized) return current.Reference;
+            if (current.State != AutomationPolicyState.Disabled ||
+                current.Definition.PolicyId is not ("default" or "nap-personal") ||
+                (current.Definition.PolicyId == "default" &&
+                 (current.Authorization is not null || current.Definition.Operations != AutomationOperations.None)))
+                throw new AutomationException(AutomationError.PolicyMismatch,
+                    "An existing custom policy must be reviewed; personal activation will not replace it.");
+            if (current.Definition.PolicyId == "default")
+            {
+                var defaults = current.Definition;
+                var definition = defaults with
+                {
+                    PolicyId = "nap-personal",
+                    Version = 1,
+                    Operations = StoredAutomationPolicy.ExecutionOperations,
+                    Audit = new AutomationAuditBudget(3, 2, 60, 1m)
+                };
+                current = scope.Queue.SavePolicy(scope.Owner, definition);
+            }
+            if (current.Authorization is null)
+            {
+                var authorization = new AutomationAuthorization("authorization_" + Guid.NewGuid().ToString("N"),
+                    universe, current.Reference, Environment.UserName, DateTimeOffset.UtcNow);
+                current = scope.Queue.RecordAuthorization(scope.Owner, current.Reference,
+                    current.Revision, authorization);
+            }
+            current = scope.Queue.SetPolicyState(scope.Owner, current.Reference,
+                current.Revision, AutomationPolicyState.Enabled);
+            return current.Reference;
+        }, cancellation).ConfigureAwait(false);
+        // A stopped universe is only launched on an explicit user action, without
+        // automatic reactivation after reboot.
+        return await ActivateAsync(universe, policy, false, commandId, cancellation).ConfigureAwait(false);
+    }
+
     public async Task<AutomationHostControl> ActivateAsync(UniverseId universe, PolicyReference policy, bool resumeOnRestart,
         string? commandId = null, CancellationToken cancellation = default)
     {
