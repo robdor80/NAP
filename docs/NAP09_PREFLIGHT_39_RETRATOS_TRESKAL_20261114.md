@@ -86,3 +86,16 @@ El paso funcional siguiente para enriquecer el legado ya visible es **«Vincular
 > 39 evidencias de PNG históricos incorporadas a NAP. 14 coincidencias con SHA histórico; 1 coincidencia con PNG de Git histórico documentada; 24 líneas base nuevas. Los archivos originales y AssetCatalog.db no se han modificado. TeraBox remoto NO ha sido verificado por API.
 
 El resultado acredita el éxito de la **importación de evidencia histórica** desde el manifiesto de conciliación en NAP 2.0.2. El catálogo WebP había sido incorporado previamente y se veía en pantalla. No pedir duplicar estas acciones ni repetir pruebas manuales sin incidencia concreta. No elevar este hecho a certificación CUTOVER: faltan garantías distintas de autoridad escritora, integridad de respaldo externo y despliegue. La base `LegacyMasterEvidence.db` es el destino esperado según el contrato y la interfaz confirmó importación; no se ha hecho inspección forense separada de ese fichero.
+
+
+## 8. Inventario preventivo de CUTOVER — herramienta preparada
+
+**Entrega:** `scripts/NAP09.ReadOnlyPreflight.ps1` (PowerShell 5.1, no administrador), creado sobre esta rama y publicado en la PR #73. Utiliza las rutas Nimroel que el propietario mostró en Ajustes; no modifica ningún dato de NAP, original, configuración, registro, servicio, permiso ni coordinación.
+
+La herramienta reúne en **una sola ejecución**: existencia/atributos de las cuatro raíces relevantes, owner/herencia ACL declarativos (sin atribuir seguridad aprobada), SHA-256 de las tres bases locales y de App/Host instalados, versión de binarios, lista acotada de procesos NAP, tareas y servicios con nombres NAP, y conteo/ocupación de leases del **SID actual** bajo la convención `ExecutionFileLease`. No abre ni borra leases ni recorre identidades ajenas. No incluye claves Gemini ni command lines de procesos.
+
+El único efecto es crear un informe JSON nuevo en `%USERPROFILE%\Downloads\NAP09_Evidencias`. El resultado indica expresamente `CUTOVER BLOQUEADO`: una instantánea de lectura no sustituye la prueba de exclusión de todos los escritores antiguos, los permisos de padres, una copia **externa restaurable**, la autoridad escritora dedicada ni la autorización individual de activar producción.
+
+**Uso físico opcional y focalizado:** descargar el script adjunto al expediente o desde GitHub y ejecutar en PowerShell x64 normal. No pedir al propietario que revise 39 fichas ni que reproduzca importaciones. Para continuar basta la salida resumida que imprime (recuentos, avisos, ubicación del JSON); solo inspeccionar detalles de reportes cuando exista una incidencia concreta.
+
+**Evidencia técnica:** código GitHub publicado y recuperado; sin ejecución física en Windows 11 ni equivalencia de cobertura con una auditoría ACL forense. No crear usuarios Windows, servicios ni modificar rutas como parte del diagnóstico.
