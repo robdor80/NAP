@@ -1,0 +1,69 @@
+name: NAP09 - instalador personal 2.0.3
+on:
+  push:
+    branches: [feature/nap09-preflight-retratos-treskal-20261114]
+    paths:
+      - src/NAP.Core/AutomationHost.cs
+      - src/NAP.Core/AutomationHostLaunchConfiguration.cs
+      - src/NAP.AutomationHost/Program.cs
+      - src/NAP.App/ManagedAutomationHost.cs
+      - scripts/NAP09.ActivarHostPersonal.ps1
+      - scripts/Build-Nap06Release.ps1
+      - .github/workflows/nap09-personal-installer.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nap09-personal-installer-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 50
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Get verified Inno Setup 6.7.4
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $src = Join-Path $env:RUNNER_TEMP 'nap09-inno'
+          New-Item -ItemType Directory -Force $src | Out-Null
+          gh release download is-6_7_4 --repo jrsoftware/issrc --pattern 'innosetup-6.7.4.exe' --dir $src
+          if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
+          $setup = Join-Path $src 'innosetup-6.7.4.exe'
+          gh release verify-asset is-6_7_4 $setup --repo jrsoftware/issrc
+          if ($LASTEXITCODE -ne 0) { throw 'Verification failed' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $setup
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Pyrsys B.V.') {
+            throw 'Unexpected installer signature'
+          }
+          $compiler = Join-Path $env:RUNNER_TEMP 'nap09-compiler'
+          $p = Start-Process -FilePath $setup -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$compiler") -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw 'Inno compiler setup failed' }
+          "NAP09_ISCC=$(Join-Path $compiler 'ISCC.exe')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build normal NAP per-user application
+        env:
+          SIXLABORS_LICENSE_B64: ${{ secrets.SIXLABORS_LICENSE_B64 }}
+        run: ./scripts/Build-Nap06Release.ps1 -InnoCompiler $env:NAP09_ISCC -Version '2.0.3'
+      - name: Quick package check
+        run: ./scripts/Test-Nap06Installer.ps1 -Version '2.0.3'
+      - name: Clean license
+        if: ${{ always() }}
+        run: ./.github/scripts/Invoke-LicensedDotnet.ps1 -Cleanup
+      - name: Downloadable normal installer
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAP-2.0.3-personal-${{ github.sha }}
+          path: |
+            artifacts/nap06/output/NAP-Setup-2.0.3.exe
+            artifacts/nap06/output/NAP-Setup-2.0.3.exe.sha256
+            artifacts/nap06/inventory.json
+          if-no-files-found: warn
+          retention-days: 30
