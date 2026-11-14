@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Runtime.Versioning;
+using System.Text.Json;
 using NAP.Core;
 using Xunit;
 
@@ -47,16 +48,34 @@ public sealed class Nap09ProtectedIpcTests
     }
 
     [VisualExplorerWindowsFact]
-    public async Task ProtectedOptInCanUseExactWriterSidWithoutChangingLaboratoryDefault()
+    public async Task ProtectedEndpointRejectsWriterAttemptToActAsDesktop()
     {
         var current = CurrentSid();
         var policy = new AutomationWindowsEndpointAccess(current, OtherAccountSid(current));
         var connection = new AutomationConnection("nap-nap09-test-" + Guid.NewGuid().ToString("N"),
             Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
         await using var server = new AutomationPipeServer(connection,
-            (_, principal) => Task.FromResult(AutomationProtocol.Payload(new { authorized = principal == current })), policy);
+            (_, principal) => Task.FromResult(AutomationProtocol.Payload(new { authorized = principal == policy.DesktopSid })), policy);
         var client = new AutomationHostClient(connection, policy);
-        var response = await client.CallAsync(AutomationOperation.Status, null, new { });
-        Assert.True(response.GetProperty("authorized").GetBoolean());
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => client.CallAsync(AutomationOperation.Status, null, new { }));
+    }
+
+    [VisualExplorerWindowsFact]
+    public void ProtectedAttachConfigurationRoundTripsButCannotUseSyntheticAudit()
+    {
+        using var f = new AutomationHostTests.Fixture();
+        var current = CurrentSid();
+        var binding = new AutomationWindowsEndpointBinding(OtherAccountSid(current), current);
+        var connection = new AutomationConnection("nap-nap09-test-" + Guid.NewGuid().ToString("N"),
+            Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
+        var launch = new AutomationHostLaunchConfiguration(1, f.Root, f.Control, connection,
+            [new(f.A.Roots, UniverseProfileSnapshotRenderer.Render(f.A.Context.Profile))],
+            ProtectedEndpoint: binding);
+        using var json = JsonDocument.Parse(JsonSerializer.Serialize(launch, AutomationProtocol.Json));
+        var copy = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(json.RootElement);
+        Assert.Equal(binding, copy.ProtectedEndpoint);
+        Assert.Single(copy.Contexts());
+        Assert.Throws<InvalidDataException>(() => (launch with { SyntheticAudit = true }).Contexts());
+        Assert.Throws<InvalidDataException>(() => (launch with { LaboratoryCheckpoint = "pause" }).Contexts());
     }
 }
