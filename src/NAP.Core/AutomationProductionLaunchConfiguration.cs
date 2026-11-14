@@ -81,8 +81,6 @@ internal sealed class AutomationProductionBoundary
         using var identity = WindowsIdentity.GetCurrent();
         if (identity.User?.Value != access.WriterSid)
             throw new UnauthorizedAccessException("Production Host requires its dedicated writer identity.");
-        if (new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
-            throw new UnauthorizedAccessException("Production writer must not run as a local administrator.");
         if (config.Universes.Count != contexts.Count || contexts.Count is < 1 or > 64 ||
             config.Universes.Select(x => x.Storage.UniverseId).Distinct().Count() != contexts.Count)
             throw new InvalidDataException("Universe roots must be explicit and unique.");
@@ -107,6 +105,8 @@ internal sealed class AutomationProductionBoundary
             ProductionPaths.Within(Path.GetTempPath(), backup) ||
             string.Equals(Path.GetPathRoot(data), Path.GetPathRoot(backup), StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("Production roots and backup receipt must be on separate protected volumes.");
+        if (new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
+            throw new UnauthorizedAccessException("Production writer must not run as a local administrator.");
 
         // A user-writable developer checkout or LocalAppData installation fails this gate.
         // For files/binaries the writer SID itself must NOT have write permissions.
