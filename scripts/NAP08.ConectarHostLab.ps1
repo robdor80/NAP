@@ -1,4 +1,4 @@
-# NAP08 — Conectar el AutomationHost del NAP 2.0.1 instalado a un laboratorio TEMP.
+# NAP08 — Conectar el AutomationHost del NAP 2.0.2 instalado a un laboratorio TEMP.
 # Misma cuenta Windows, sin otra instalacion y sin modificar %LOCALAPPDATA%\NAP.
 [CmdletBinding()]
 param()
@@ -12,12 +12,12 @@ $profilePath = Join-Path $installed 'config\universes\nimroel\profile.json'
 
 foreach ($file in @($app, $hostExe, $profilePath)) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
-        throw "Falta un componente de NAP 2.0.1 instalado: $file"
+        throw "Falta un componente de NAP 2.0.2 instalado: $file"
     }
 }
 $version = [Diagnostics.FileVersionInfo]::GetVersionInfo($app).ProductVersion
-if (-not $version.StartsWith('2.0.1', [StringComparison]::Ordinal)) {
-    throw "La prueba necesita la version NAP 2.0.1 instalada. Encontrada: $version"
+if ($version -notmatch '^2\.0\.2(?:\+|$)') {
+    throw "La prueba necesita la version NAP 2.0.2 instalada. Encontrada: $version"
 }
 if (@(Get-Process -Name 'NAP.App' -ErrorAction SilentlyContinue).Count -gt 0) {
     throw 'NAP ya esta abierto. Cierralo desde su icono en la bandeja (Salir) y vuelve a hacer doble clic.'
@@ -93,7 +93,7 @@ $model = [Environment]::GetEnvironmentVariable('NAP_GEMINI_MODEL', 'Process')
 try {
     [Environment]::SetEnvironmentVariable('NAP_GEMINI_API_KEY', $null, 'Process')
     [Environment]::SetEnvironmentVariable('NAP_GEMINI_MODEL', $null, 'Process')
-    Write-Host 'NAP08: abriendo NAP 2.0.1 con AutomationHost de laboratorio.'
+    Write-Host 'NAP08: abriendo NAP 2.0.2 con AutomationHost de laboratorio.'
     Write-Host 'Universo: Nimroel (laboratorio NAP08). Sin acceso a rutas reales.'
     Start-Process -FilePath $app -WorkingDirectory $installed -ArgumentList ('--automation-managed-config="' + $configPath + '"') -ErrorAction Stop
 } finally {
