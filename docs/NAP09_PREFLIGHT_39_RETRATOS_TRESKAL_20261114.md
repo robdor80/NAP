@@ -1,7 +1,7 @@
 # NAP09 — Preflight y adopción controlada de 39 retratos históricos de Treskal
 
 **Fecha:** 2026-11-14  
-**Estado:** INICIADA (solo preparación documental y comprobación humana guiada, sin CUTOVER).  
+**Estado:** IMPORTACIÓN HISTÓRICA VISIBLE EN NAP 2.0.2; vínculo de PNG y CUTOVER real pendientes.  
 **Repositorio:** robdor80/NAP; rama separada desde `main@3edf82cd5a8035389111108a022c164eafec68d1`.  
 **Equipo de comprobación:** MSI Raider GE78 HX / Windows 11 x64 / NAP instalado 2.0.2 según acta NAP08.
 
@@ -59,3 +59,22 @@ No instalar cuentas, servicios, ACL ni migrar Documents/GitHub por inferencia. E
 - [Contrato CUTOVER](NAP_2_0_FASE_4_CUTOVER.md).
 - [Incidencia bloqueante #47](https://github.com/robdor80/NAP/issues/47).
 - [Acta física NAP08 (rama PR #72)](https://github.com/robdor80/NAP/blob/feature/nap08-certificacion-fisica-msi-20261113/docs/NAP08_ACTA_FISICA_MSI_20261114.md).
+
+
+## 6. Avance físico comunicado por el propietario — 14/11/2026, madrugada
+
+La comprobación guiada de NAP 2.0.2 desde el acceso directo normal ha aportado evidencia directa de los siguientes hechos:
+
+- Ajustes del universo Nimroel: Workspace `C:\Users\andro\Documents\NAP\Nimroel`, Production `C:\Users\andro\Documents\GitHub\Videojuego_Nimroel\Worldbuilding\Direccion artistica\Assets` y Archive `C:\Users\andro\Documents\Nimroel_Maestros_PNG`, marcadas válidas por la aplicación.
+- Antes de importar, `state/AssetCatalog.db` existía (139264 bytes); `LegacyPortraits.db` y `LegacyMasterEvidence.db` no existían.
+- En el repositorio de producción local se contaron 39 WebP, 39 prompts, 39 fichas informativas y 39 JSON de identidad visual: 156 archivos presentes. Este recuento no sustituye un nuevo hash de integridad.
+- NAP se cerró y se copió `AssetCatalog.db` a `C:\Users\andro\Downloads\NAP09_Backup_20261114_015053`; el SHA-256 del original y de la copia coincidieron. Es una **copia local puntual**, no prueba de restauración externa integral.
+- El usuario ejecutó la importación histórica desde Catálogo. La captura posterior muestra el mapa previo y retratos históricos (herreros, carpinteros y personaje infantil) renderizados en la galería. **Importación visible y funcional**; no se debe volver a pedir la misma demostración.
+- No hay evidencia directa del número exacto indexado tras la importación ni de vinculación de las huellas PNG maestras. Estas comprobaciones solo se reabrirán si aparece un fallo operativo real, no como barrera rutinaria para ver las imágenes.
+- No se han acreditado ni autorizado activación de AutomationHost en raíces reales, reconfiguración de permisos/identidades, migración ni CUTOVER completo. #47 permanece abierta.
+
+### Próxima acción útil, sin repetición de pruebas
+
+El paso funcional siguiente para enriquecer el legado ya visible es **«Vincular 39 PNG maestros»**, que exige el manifiesto de conciliación `MAESTROS_39_CONCILIACION_20261113.json` y la carpeta local descargada `Videojuego Nimroel - ASSETS MAESTROS PNG`. No confundir este vínculo con importación de WebP ni con habilitar procesamiento automático. No declarar la operación completada hasta ejecutarla realmente.
+
+**Acuerdo operativo de esta intervención:** no pedir nuevas capturas de fichas, recuentos ni series de comandos sin necesidad concreta. Registrar como avance la importación visible; mantener las barreras de CUTOVER productivo como asunto distinto.
