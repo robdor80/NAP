@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Security.AccessControl;
 using System.Runtime.Versioning;
+using System.Text.Json;
 
 namespace NAP.Core;
 
@@ -21,7 +22,9 @@ public sealed record AutomationProductionLaunchConfiguration(
     string BackupReceiptPath,
     string BackupReceiptSha256,
     string? MixedInboxRoot = null,
-    InboxAdmissionOptions? Admission = null)
+    InboxAdmissionOptions? Admission = null,
+    string? DistributionInventoryPath = null,
+    string? DistributionInventorySha256 = null)
 {
     public IReadOnlyList<UniverseContext> Contexts()
     {
@@ -90,9 +93,12 @@ internal sealed class AutomationProductionBoundary
         var install = Full(installedDirectory);
         var launch = Full(configurationPath);
         var backup = Full(config.BackupReceiptPath);
+        var inventoryPath = Full(config.DistributionInventoryPath ?? "");
         if (!ProductionPaths.Same(requiredData, data) ||
             !ProductionPaths.Within(programFiles, install) ||
             !ProductionPaths.Within(install, launch) ||
+            !ProductionPaths.Within(install, inventoryPath) ||
+            ProductionPaths.Same(launch, inventoryPath) ||
             !ProductionPaths.Within(data, control) ||
             !ProductionPaths.Within(data, config.MixedInboxRoot ?? control) && config.MixedInboxRoot is not null ||
             ProductionPaths.Within(data, backup) || ProductionPaths.Within(install, backup) ||
@@ -104,11 +110,13 @@ internal sealed class AutomationProductionBoundary
         // For files/binaries the writer SID itself must NOT have write permissions.
         CheckProtectedDirectory(install, access.WriterSid, access.DesktopSid, false);
         CheckProtectedFile(launch, access.WriterSid, access.DesktopSid);
+        CheckProtectedFile(inventoryPath, access.WriterSid, access.DesktopSid);
         // Walk each directory explicitly, refusing links before recursing. Protect
         // every published file (not only the EXE): replaceable DLLs are code.
         var pending = new Queue<string>();
         pending.Enqueue(install);
         var publishedCount = 0;
+        var publishedPaths = new List<string>();
         while (pending.Count > 0)
         {
             var parent = pending.Dequeue();
@@ -124,9 +132,15 @@ internal sealed class AutomationProductionBoundary
                     CheckProtectedDirectory(entry, access.WriterSid, access.DesktopSid, false, false);
                     pending.Enqueue(entry);
                 }
-                else CheckProtectedFile(entry, access.WriterSid, access.DesktopSid);
+                else
+                {
+                    CheckProtectedFile(entry, access.WriterSid, access.DesktopSid);
+                    publishedPaths.Add(Path.GetFullPath(entry));
+                }
             }
         }
+        VerifyDistributionInventory(install, inventoryPath, config.DistributionInventorySha256,
+            launch, publishedPaths);
         if (publishedCount < 2)
             throw new InvalidDataException("The protected NAP distribution is incomplete.");
         CheckProtectedFile(Path.Combine(install, "host", "NAP.AutomationHost.exe"), access.WriterSid, access.DesktopSid);
@@ -179,6 +193,61 @@ internal sealed class AutomationProductionBoundary
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path))
             throw new InvalidDataException("Production paths must be absolute.");
         return Path.GetFullPath(path);
+    }
+
+    private static void VerifyDistributionInventory(string installedDirectory, string inventoryPath,
+        string? expectedInventoryHash, string launchConfigPath, IReadOnlyList<string> published)
+    {
+        if (expectedInventoryHash is not { Length: 64 } ||
+            !expectedInventoryHash.All(x => x is >= '0' and <= '9' or >= 'a' and <= 'f'))
+            throw new InvalidDataException("The protected distribution inventory needs a pinned SHA-256.");
+        byte[] bytes;
+        using (var input = File.OpenRead(inventoryPath))
+        {
+            if (input.Length is < 1 or > 2 * 1024 * 1024)
+                throw new InvalidDataException("Protected distribution manifest exceeds its size limit.");
+            bytes = new byte[input.Length];
+            input.ReadExactly(bytes);
+        }
+        if (!string.Equals(Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant(),
+            expectedInventoryHash, StringComparison.Ordinal))
+            throw new InvalidDataException("Protected distribution manifest SHA-256 mismatch.");
+
+        using var document = JsonDocument.Parse(bytes);
+        var root = document.RootElement;
+        if (root.GetProperty("schema_version").GetInt32() != 1 ||
+            root.GetProperty("app").GetString() != "Nexus Asset Platform" ||
+            root.GetProperty("target").GetString() != "win-x64" ||
+            root.GetProperty("mode").GetString() != "self-contained")
+            throw new InvalidDataException("Unrecognized NAP06 distribution inventory.");
+        var files = root.GetProperty("files").EnumerateArray().ToArray();
+        if (files.Length is < 20 or > 5000 || root.GetProperty("count").GetInt32() != files.Length)
+            throw new InvalidDataException("Distribution inventory has inconsistent entries.");
+        var expected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var entry in files)
+        {
+            var relative = entry.GetProperty("path").GetString();
+            if (string.IsNullOrWhiteSpace(relative) || relative.Contains('\\') ||
+                relative.StartsWith('/') || relative.Split('/').Any(x => !ProductionPaths.SafeSegment(x)))
+                throw new InvalidDataException("Unsafe path in distribution inventory.");
+            var full = Full(Path.Combine(installedDirectory, relative.Replace('/', Path.DirectorySeparatorChar)));
+            if (!ProductionPaths.Within(installedDirectory, full) || !expected.Add(full))
+                throw new InvalidDataException("Duplicate or out-of-bounds distribution entry.");
+            var size = entry.GetProperty("bytes").GetInt64();
+            var hash = entry.GetProperty("sha256").GetString();
+            if (size < 0 || hash is not { Length: 64 } ||
+                !hash.All(x => x is >= '0' and <= '9' or >= 'a' and <= 'f') ||
+                !ProductionPaths.FileExists(full, NapIssueCodes.PackageRootInvalid))
+                throw new InvalidDataException("Invalid distribution entry or missing binary.");
+            using var stream = File.OpenRead(full);
+            if (stream.Length != size ||
+                !string.Equals(Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant(), hash, StringComparison.Ordinal))
+                throw new InvalidDataException("Installed distribution differs from the SHA-256 pin.");
+        }
+        var actual = published.Where(p => !ProductionPaths.Same(p, launchConfigPath) &&
+            !ProductionPaths.Same(p, inventoryPath)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (!expected.SetEquals(actual))
+            throw new InvalidDataException("Published distribution has missing or unlisted files.");
     }
 
     private static void CheckProtectedFile(string path, string writer, string desktop)
