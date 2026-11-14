@@ -44,22 +44,6 @@ public partial class App : Application
             var installedHostConfig = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NAP", "Host", "launch.json");
             var managedConfig = managedArgument ?? (automationConfig is null && System.IO.File.Exists(installedHostConfig) ? installedHostConfig : null);
-            if (managedConfig is not null && managedArgument is null)
-            {
-                // An installed protected binding is ATTACH ONLY: the normal desktop must
-                // never fork the writer using its interactive Windows identity.
-                var candidate = new System.IO.FileInfo(managedConfig);
-                if (!candidate.Exists || candidate.Length is < 1 or > 2 * 1024 * 1024 ||
-                    (candidate.Attributes & System.IO.FileAttributes.ReparsePoint) != 0)
-                    throw new System.IO.InvalidDataException("Installed Host binding is unsafe.");
-                using var payload = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(managedConfig));
-                var installed = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(payload.RootElement);
-                if (installed.ProtectedEndpoint is not null)
-                {
-                    automationConfig = managedConfig;
-                    managedConfig = null;
-                }
-            }
             if (managedConfig is not null)
             {
                 // A present configuration is authoritative. Never fall back to local writers
@@ -72,13 +56,7 @@ public partial class App : Application
                 var file = new System.IO.FileInfo(automationConfig); if (file.Length > 2 * 1024 * 1024) throw new System.IO.InvalidDataException("Host config exceeds its bound.");
                 using var document = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllBytes(file.FullName));
                 var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
-                var protectedEndpoint = config.ProtectedEndpoint is { } binding
-                    ? new AutomationWindowsEndpointAccess(binding.WriterSid, binding.DesktopSid)
-                    : null;
-                if (protectedEndpoint is not null && managedConfig is not null)
-                    throw new InvalidOperationException("Protected writer cannot start as the interactive desktop; use attach-only mode.");
-                var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection, protectedEndpoint);
-                _remoteDesktop = new(client, config.SyntheticAudit);
+                var client = _managedAutomation?.Client ?? new AutomationHostClient(config.Connection); _remoteDesktop = new(client, config.SyntheticAudit);
                 var explorer = new ExplorerViewModel(contexts.Select(c => c.Profile), new(System.IO.Path.Combine(config.LaboratoryRoot, "desktop-unused-settings.json")),
                     _remoteDesktop, new FolderPicker(), hostConfigurations: contexts.Select(c => c.Storage).ToArray());
                 var confirmation = new WpfConfirmation(); var controls = new AutomationControlViewModel(client, () => explorer.Context, confirmation);

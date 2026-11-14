@@ -4,8 +4,6 @@ public enum AutomationHostState { Starting, Disabled, Running, Pausing, Paused, 
 public sealed record AutomationHostOptions
 {
     public required string LaboratoryRoot { get; init; }
-    // Only AutomationProductionLaunchConfiguration.CreateHost can mint this runtime witness.
-    internal AutomationProductionBoundary? ProductionBoundary { get; init; }
     public InboxAdmissionOptions Admission { get; init; } = new();
     public string? MixedInboxRoot { get; init; }
     public long MaxMemoryBytes { get; init; } = 512L * 1024 * 1024;
@@ -94,12 +92,7 @@ public sealed partial class AutomationHost : IAsyncDisposable
     {
         _root = Path.GetFullPath(controlRoot); _options = options; _auditor = auditor;
         var lab = Path.GetFullPath(options.LaboratoryRoot);
-        if (options.ProductionBoundary is { } production)
-        {
-            if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Protected Host requires Windows.");
-            production.Require(lab, _root, contexts.ToArray());
-        }
-        else if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
+        if (!Path.IsPathFullyQualified(options.LaboratoryRoot) || !Path.GetFileName(Path.TrimEndingDirectorySeparator(lab)).StartsWith("nap-host-", StringComparison.Ordinal) ||
             !ProductionPaths.Within(Path.GetTempPath(), lab) || !ProductionPaths.Within(lab, _root))
             throw AutomationValidation.Invalid("This phase only supports an explicit nap-host-* laboratory below TEMP.");
         InboxAdmissionEvidence.DirectoryBoundary(lab); InboxAdmissionEvidence.DirectoryBoundary(_root);

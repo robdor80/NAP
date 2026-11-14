@@ -87,23 +87,10 @@ public sealed class AutomationHostClient
 {
     private readonly AutomationConnection _connection;
     private readonly byte[] _key;
-    private readonly AutomationWindowsEndpointAccess? _protectedEndpoint;
-    public AutomationHostClient(AutomationConnection connection, AutomationWindowsEndpointAccess? protectedEndpoint = null)
-    {
-        _connection = connection;
-        _key = AutomationProtocol.Key(connection);
-        _protectedEndpoint = protectedEndpoint;
-    }
+    public AutomationHostClient(AutomationConnection connection) { _connection = connection; _key = AutomationProtocol.Key(connection); }
     public async Task<AutomationResponse> SendAsync(AutomationRequest request, CancellationToken cancellation = default)
     {
-        if (_protectedEndpoint is not null)
-        {
-            if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
-            using var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
-            _protectedEndpoint.RequireCaller(identity.User?.Value ?? "");
-        }
-        using var pipe = new NamedPipeClientStream(".", _connection.PipeName, PipeDirection.InOut,
-            _protectedEndpoint is null ? PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly : PipeOptions.Asynchronous);
+        using var pipe = new NamedPipeClientStream(".", _connection.PipeName, PipeDirection.InOut, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
         await pipe.ConnectAsync(5000, cancellation).ConfigureAwait(false);
         var client = RandomNumberGenerator.GetBytes(32); await pipe.WriteAsync(client, cancellation).ConfigureAwait(false);
         var server = new byte[32]; var proof = new byte[32];
@@ -140,20 +127,10 @@ public sealed class AutomationPipeServer : IAsyncDisposable
     private readonly CancellationTokenSource _stop = new();
     private readonly SemaphoreSlim _connections = new(4, 4);
     private readonly ConcurrentDictionary<int, Task> _clients = new();
-    private readonly AutomationWindowsEndpointAccess? _protectedEndpoint;
-    private readonly PipeSecurity? _protectedAcl;
     private readonly Task _accept;
     private int _sequence;
-    public AutomationPipeServer(AutomationConnection connection, Func<AutomationRequest, string, Task<JsonElement>> handler,
-        AutomationWindowsEndpointAccess? protectedEndpoint = null)
-    {
-        _connection = connection; _key = AutomationProtocol.Key(connection); _handler = handler;
-        if (protectedEndpoint is not null && !OperatingSystem.IsWindows())
-            throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
-        _protectedEndpoint = protectedEndpoint;
-        _protectedAcl = protectedEndpoint?.ServerAcl();
-        _accept = AcceptAsync();
-    }
+    public AutomationPipeServer(AutomationConnection connection, Func<AutomationRequest, string, Task<JsonElement>> handler)
+    { _connection = connection; _key = AutomationProtocol.Key(connection); _handler = handler; _accept = AcceptAsync(); }
 
     private async Task AcceptAsync()
     {
@@ -163,14 +140,8 @@ public sealed class AutomationPipeServer : IAsyncDisposable
             try
             {
                 await _connections.WaitAsync(_stop.Token).ConfigureAwait(false); acquired = true;
-                if (_protectedAcl is not null && !OperatingSystem.IsWindows())
-                    throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
-                pipe = _protectedAcl is null
-                    ? new NamedPipeServerStream(_connection.PipeName, PipeDirection.InOut, 4, PipeTransmissionMode.Byte,
-                        PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly)
-                    : NamedPipeServerStreamAcl.Create(_connection.PipeName, PipeDirection.InOut, 4,
-                        PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 0, _protectedAcl,
-                        HandleInheritability.None, PipeAccessRights.ChangePermissions);
+                pipe = new(_connection.PipeName, PipeDirection.InOut, 4, PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
                 await pipe.WaitForConnectionAsync(_stop.Token).ConfigureAwait(false);
                 var id = Interlocked.Increment(ref _sequence); var client = ServeAsync(pipe); _clients[id] = client;
                 _ = client.ContinueWith(t => { _ = t.Exception; _clients.TryRemove(id, out _); }, CancellationToken.None,
@@ -206,11 +177,6 @@ public sealed class AutomationPipeServer : IAsyncDisposable
                     principal = sid ?? throw new UnauthorizedAccessException("No authenticated client SID.");
                 }
                 else principal = pipe.GetImpersonationUserName();
-                if (_protectedEndpoint is not null)
-                {
-                    if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Protected endpoint requires Windows.");
-                    _protectedEndpoint.RequireCaller(principal);
-                }
                 AutomationResponse response;
                 try { response = new(1, request.RequestId, true, null, await _handler(request, principal).ConfigureAwait(false)); }
                 catch (Exception error)
