@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Runtime.Versioning;
 using NAP.Core;
 using Xunit;
 
@@ -8,6 +9,7 @@ namespace NAP.Tests;
 /// <summary>
 /// NAP09: optional pipe transport only. Never starts AutomationHost or touches production.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public sealed class Nap09ProtectedIpcTests
 {
     private static string CurrentSid()
