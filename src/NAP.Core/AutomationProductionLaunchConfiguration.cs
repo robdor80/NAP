@@ -112,6 +112,7 @@ internal sealed class AutomationProductionBoundary
         // For files/binaries the writer SID itself must NOT have write permissions.
         CheckProtectedDirectory(install, access.WriterSid, access.DesktopSid, false);
         CheckProtectedFile(launch, access.WriterSid, access.DesktopSid);
+        CheckSecretConfiguration(launch, access.WriterSid, access.DesktopSid);
         CheckProtectedFile(inventoryPath, access.WriterSid, access.DesktopSid);
         // Walk each directory explicitly, refusing links before recursing. Protect
         // every published file (not only the EXE): replaceable DLLs are code.
@@ -247,7 +248,12 @@ internal sealed class AutomationProductionBoundary
                 throw new InvalidDataException("Installed distribution differs from the SHA-256 pin.");
         }
         var actual = published.Where(p => !ProductionPaths.Same(p, launchConfigPath) &&
-            !ProductionPaths.Same(p, inventoryPath)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            !ProductionPaths.Same(p, inventoryPath) &&
+            // Inno Setup owns precisely two uninstaller files outside the NAP06
+            // payload inventory. Both remain under read-only protected file ACLs.
+            !(ProductionPaths.Same(Path.GetDirectoryName(p)!, installedDirectory) &&
+              Path.GetFileName(p) is "unins000.exe" or "unins000.dat"))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
         if (!expected.SetEquals(actual))
             throw new InvalidDataException("Published distribution has missing or unlisted files.");
     }
@@ -258,6 +264,25 @@ internal sealed class AutomationProductionBoundary
             throw new InvalidDataException("Protected distribution is missing a required file.");
         var acl = new FileInfo(path).GetAccessControl(AccessControlSections.Owner | AccessControlSections.Access);
         CheckAcl(acl, writer, desktop, allowWriterWrite: false, requireExplicitDacl: false);
+    }
+
+    private static void CheckSecretConfiguration(string path, string writer, string desktop)
+    {
+        var acl = new FileInfo(path).GetAccessControl(AccessControlSections.Owner | AccessControlSections.Access);
+        if (!acl.AreAccessRulesProtected)
+            throw new UnauthorizedAccessException("Host launch secret must have a non-inheriting private DACL.");
+        var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null).Value,
+            new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Value,
+            writer, desktop
+        };
+        foreach (FileSystemAccessRule rule in acl.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+        {
+            var sid = ((SecurityIdentifier)rule.IdentityReference).Value;
+            if (rule.AccessControlType != AccessControlType.Allow || !allowed.Contains(sid))
+                throw new UnauthorizedAccessException("A protected Host key cannot be readable by a third-party SID.");
+        }
     }
 
     private static void CheckProtectedDirectory(string path, string writer, string desktop, bool allowWriterWrite,
