@@ -36,7 +36,7 @@ public sealed class AutomationControlViewModel : ObservableObject, IDisposable
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string ExecutionScope { get => _executionScope; private set => Set(ref _executionScope, value); }
     public string? InboxPath => _overview?.Host.MixedInboxRoot ?? _context()?.Storage.InboxRoot;
-    public string GeminiState => _overview?.Host.Audit is { Configured: true } ? "Configurado" : "Requiere configuración";
+    public string GeminiState => !Current() ? "Estado no disponible" : _overview?.Host.Audit is { Configured: true } ? "Configurado" : "Requiere configuración";
     public string SimpleState => !Current() ? "Necesita atención" : HasReview || SelectedState() is AutomationHostState.Blocked or AutomationHostState.Degraded || _overview!.Host.State is AutomationHostState.Blocked or AutomationHostState.Degraded ? "Necesita atención" :
         _overview.Control.Stopped || _overview.Control.Paused ? "En pausa" : _overview.Queue.Counts.Processing > 0 ? "Procesando" : "En marcha";
     internal Func<string, CancellationToken, Task<AssetTileViewModel?>>? ThumbnailFactory { get; set; }
