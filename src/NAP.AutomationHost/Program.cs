@@ -3,13 +3,16 @@ using NAP.Core;
 using NAP.AI;
 using NAP.Presentation;
 
-if (args.Length != 2 || args[0] != "--laboratory-config")
-{ Console.Error.WriteLine("An explicit --laboratory-config file is required. No production/service mode is available."); return 2; }
+if (args.Length != 2 || args[0] is not ("--laboratory-config" or "--personal-config"))
+{ Console.Error.WriteLine("Use --laboratory-config or --personal-config with an explicit configuration."); return 2; }
 try
 {
     var info = new FileInfo(args[1]); if (info.Length > 2 * 1024 * 1024) throw new InvalidDataException("Launch configuration exceeds its bound.");
     using var document = JsonDocument.Parse(File.ReadAllBytes(info.FullName));
     var config = AutomationProtocol.Read<AutomationHostLaunchConfiguration>(document.RootElement); var contexts = config.Contexts();
+    var personal = args[0] == "--personal-config";
+    if (config.PersonalMode != personal)
+        throw new InvalidDataException("Host execution mode and launch configuration disagree.");
     // Credentials are supplied privately at runtime; neither launch.json nor GitHub stores them.
     // No configured Gemini means no automatic PASS: the host parks at the audit boundary.
     using var auditTransport = new HttpClient();
@@ -19,7 +22,7 @@ try
     IIdentifiedAiAuditClient? auditor = config.SyntheticAudit ? new SyntheticAuditor() : gemini;
     var checkpointReached = 0;
     var storageFailures = 0;
-    await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot,
+    await using var host = new AutomationHost(config.ControlRoot, contexts, new() { LaboratoryRoot = config.LaboratoryRoot, PersonalMode = personal,
         Admission = config.Admission ?? new(), MixedInboxRoot = config.MixedInboxRoot,
         LaboratoryStorageFailure = (universe, item, error) =>
         {
@@ -44,7 +47,7 @@ try
     await using var server = new AutomationPipeServer(config.Connection, bridge.HandleAsync);
     using var stop = new CancellationTokenSource();
     Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); };
-    Console.WriteLine("NAP laboratory host ready: " + host.SessionId);
+    Console.WriteLine((personal ? "NAP personal host ready: " : "NAP laboratory host ready: ") + host.SessionId);
     var signal = Task.Delay(Timeout.Infinite, stop.Token);
     var finished = await Task.WhenAny(signal, host.Completion);
     if (finished == host.Completion) await host.Completion;
